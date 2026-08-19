@@ -8,8 +8,7 @@ One `.tdb` file per workspace. No extra server. MIT license.
 
 ## Status
 
-**P1 (in progress)** — compaction extract, merge/pending, Settings list, token-budgeted short map.  
-P0 tools and session-start map remain. Auto-recall stays **off** by default. See [PLAN.md](./PLAN.md).
+**P2** — 20 cross-session questions (pref / entity / dated decision / experience + negatives). Auto-recall stays **off**. See [PLAN.md](./PLAN.md).
 
 ## Tools
 
@@ -52,6 +51,7 @@ lib/tools.js     ctx_* tools
 lib/extract.js   Rule + small-prompt distill, pending replay
 lib/client.js    Settings page 「Trivium 记忆」
 scripts/link-dsh.mjs
+scripts/p2-cases.mjs
 PLAN.md
 ```
 

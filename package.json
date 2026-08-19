@@ -31,7 +31,9 @@
   "scripts": {
     "link-dsh": "node scripts/link-dsh.mjs",
     "smoke-p0": "node scripts/smoke-p0.mjs",
-    "smoke-p1": "node scripts/smoke-p1.mjs"
+    "smoke-p1": "node scripts/smoke-p1.mjs",
+    "smoke-p2": "node scripts/p2-cases.mjs",
+    "verify-live-p2": "node scripts/verify-live-p2.mjs"
   },
   "engines": {
     "node": "^22.19.0 || >=24"

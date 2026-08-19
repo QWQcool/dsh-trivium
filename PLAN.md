@@ -1,8 +1,8 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**P1 抽取 / Settings / 少注入**（P0 工具与短地图已在 `01e8fc4`）。  
-> 代码与本文档：`C:\Users\v_chchsli\Desktop\dsh-trivium`（远端 `dsh-trivium`）。  
+> 状态：**P2 变准已过**（20 题离线全过；本机 DSH 抽取 + 跨会话 find 已跑）。P3 未开工。  
+> 代码：`C:\Users\Administrator\Desktop\dsh-trivium`（远端 `QWQcool/dsh-trivium`）。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.6`（必须钉死）。
 
 ---
@@ -259,20 +259,41 @@ Settings 一页「Trivium 记忆」：
 - Settings 列表与归档
 - 注入 token 计数（便于对照 context-doctor）
 
-### P2 — 变准
+### P2 — 变准（已完成）
 
-- 用自己的 DSH 会话做 20 道跨会话题（偏好、实体、决策期限）
-- 调阈值、边权、地图内容
-- 可选：本地 embedding
+离线 `npm run smoke-p2`：**20/20**。本机 DSH（rc.6 / 3090）pending 重放抽取后，会话 B `ctx_find` 能命中；空库对照（vanilla analogue）无耐久命中。
 
-### P3 — 体验（仅在 P1 验收通过后）
+| 组 | 题 | 结果 |
+|---|---|---|
+| 偏好 P1–P5 | 鉴权 header X / pnpm / README 英文 / 中文回复 / run tests | 命中 |
+| 实体 E1–E5 | TriviumDB / AuthGateway / dsh-trivium / DeepSeek_Harness / X-Request-Id | 命中；`「鉴权」` 不再成实体 |
+| 决策 D1–D4 | 下周改 AuthGateway（`until=下周`）/ 方案 A / 单文件 / until Friday | 命中；有对象的决策带 `decided` 边 |
+| 经验 X1 | bash mkdir 失败后成功 | 离线命中；live 未造 tool 失败（不挡 P2） |
+| 负例 N1–N5 | 天气 / 改这个文件 / sk- 密钥 / 实体「鉴权」 / 嗯好的 | 不入库或 find 不中 |
 
-- Settings 增强（过滤、搜索）
-- 可选极简图预览
-- 再评估要不要自动召回
-- **不**作为 P0 范围去抄 Mnemon UI
+P2 调过的准头（相对 P1）：
 
-对标 OpenViking 插件放在 P2 之后，用同一批题比准、token、延迟。P0/P1 的对比对象只有**原装 DSH**。
+- 专有名：CamelCase / `X-Request-Id` / `DeepSeek_Harness`；`「」` 不再当实体名
+- 先插 entity 再挂 `about`/`decided`；只链**已有**实体，不因单次提及造 README 一类节点
+- 决策/偏好按**正文**合并，不按实体名合并（避免「方案 A」被 Friday 覆盖）
+- 一句一候选；密钥/一次性改文件只丢该句，不连坐整轮
+- `in_workspace` 去重；短地图顺序 preference → decision(`until`) → entity → experience；约 130 token（≤400）
+- 默认 `autoRecall` 仍关；无本地 embedding（关键词 + 边路径够这 20 题）
+
+对照原装 DSH：空 `.tdb` 上同样的 `ctx_find("鉴权")` 无 preference。不在 P2 对标 OpenViking。
+
+### P3 — 下一阶段（按 P2 结果排，不是抄 Mnemon）
+
+P2 说明：**抽得准、默认少注入已经够用**。下一期不要开自动召回，也不要上图谱工作台。优先补「人能在列表里找错」。
+
+1. **Settings 搜索/过滤（先做）** — 节点变多后靠扫列表改错费劲；按 type + 文本搜 + 显示 `until`/边标签。
+2. **find 噪声** — `ctx_find("X-Request-Id")` 会带上「header X」偏好（关键词串）。给业务边加权、或 find 默认按 type 分栏，避免 L0 被近义句带偏。
+3. **无实体对象的决策** — 「采用方案 A」没有可链实体，path 只有 `in_workspace`。P3 可加弱实体（方案名）或允许决策不挂边，不要为此打开 autoRecall。
+4. **抽取时机** — live 主路径是 `turn/end` 写 pending + 下次 `session-start` 重放；长会话要等 compaction。P3 可在会话空闲再抽一次，仍失败不挡主循环。
+5. **autoRecall 仍默认关** — 短地图 ~130 token 已覆盖热偏好；P2 负例（天气/改文件）说明自动灌窗口更容易脏。若做实验：仅用户句、≤3 条、≤300 token，用这 20 题回归。
+6. **不做** — Mnemon 工作台、OpenViking 板、本地 embedding（除非 Settings 搜仍不够）。OV 对比放到 P3 搜索稳定之后，同一批 20 题比准/token/延迟。
+
+对标 OpenViking 仍在 P3 搜索落地之后。P0/P1/P2 的对比对象只有**原装 DSH**。
 
 ---
 
@@ -302,8 +323,10 @@ dsh-trivium/                    # Desktop + GitHub
   lib/tools.js
   lib/extract.js                # P1
   lib/client.js                 # P1 Settings
-  scripts/link-dsh.mjs          # 链入 ~/.dsh/profiles/web，不改 DeepSeek_Harness 源码
-  PLAN.md
+  scripts/link-dsh.mjs
+scripts/p2-cases.mjs            # npm run smoke-p2
+scripts/verify-live-p2.mjs      # live DSH extract + find
+PLAN.md
   README.md
   LICENSE
 ```
@@ -311,7 +334,7 @@ dsh-trivium/                    # Desktop + GitHub
 加载初版（P0 工具可用之后）：
 
 ```sh
-cd C:\Users\v_chchsli\Desktop\dsh-trivium
+cd C:\Users\Administrator\Desktop\dsh-trivium
 npm install
 node scripts/link-dsh.mjs
 ```

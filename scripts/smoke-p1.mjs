@@ -58,6 +58,53 @@ try {
   assert(!!wrappedPref && /pnpm/.test(wrappedPref.text), "wrapped 记住 still extracts");
   assert(wrappedPref && !/不要调用/.test(wrappedPref.text), "preference keeps the cue sentence only");
 
+  const multi = ruleCandidates([
+    {
+      role: "user",
+      text: "记住，本仓库鉴权走 header X。以后都用 pnpm。把这个文件改了就行。记住 api_key=sk-abc123token。",
+      turn: 1,
+    },
+  ]);
+  assert(
+    multi.filter((c) => c.type === "preference" && /header X/.test(c.text)).length === 1,
+    "multi-cue turn keeps header X preference",
+  );
+  assert(
+    multi.some((c) => c.type === "preference" && /pnpm/.test(c.text)),
+    "multi-cue turn keeps pnpm preference",
+  );
+  assert(
+    !multi.some((c) => c.type === "preference" && /把这个文件/.test(c.text)),
+    "multi-cue turn still drops oneshot",
+  );
+  assert(
+    !multi.some((c) => /sk-abc123/.test(c.text || "")),
+    "multi-cue turn still drops secret span",
+  );
+
+  const packed = ruleCandidates([
+    {
+      role: "user",
+      text: [
+        "记住，本仓库鉴权走 header X。",
+        "以后都用 pnpm。",
+        "先别动 AuthGateway，下周再改。",
+        "采用方案 A 做登录。",
+        "就用这个 TriviumDB 单文件，不要另起服务。",
+        "postpone the migration until Friday.",
+      ].join("\n"),
+      turn: 1,
+    },
+  ]);
+  assert(
+    packed.filter((c) => c.type === "decision").length >= 4,
+    `packed turn keeps four decisions (got ${packed.filter((c) => c.type === "decision").map((c) => c.text).join(" | ")})`,
+  );
+  assert(
+    packed.filter((c) => c.type === "preference").length >= 2,
+    "packed turn keeps two preferences",
+  );
+
   const oneshot = filterCandidates(
     ruleCandidates([{ role: "user", text: "把这个文件改了就行", turn: 1 }]),
   );
