@@ -1,0 +1,53 @@
+{
+  "name": "dsh-trivium",
+  "version": "0.1.0",
+  "description": "In-process graph memory kernel for DeepSeek Harness, backed by TriviumDB.",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "link-dsh": "node scripts/link-dsh.mjs"
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-llm": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-tools": "0.1.0-rc.6"
+  },
+  "dependencies": {
+    "triviumdb": "^0.7.4"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "dsh",
+    "triviumdb",
+    "memory",
+    "graph",
+    "context"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YoKONCy/dsh-trivium.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YoKONCy/dsh-trivium/issues"
+  },
+  "homepage": "https://github.com/YoKONCy/dsh-trivium#readme"
+}

@@ -1,0 +1,9 @@
+# dsh-trivium — host-plane memory kernel for every preset.
+- insert:
+    - id: dsh-trivium
+      name: dsh-trivium
+      config:
+        autoRecall: false
+        mapTokenBudget: 400
+        expandDepth: 1
+        topK: 8
