@@ -1,7 +1,7 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**P0 骨架已开工**（独立仓库，尚未链入 DSH 跑测）。  
+> 状态：**P1 抽取 / Settings / 少注入**（P0 工具与短地图已在 `01e8fc4`）。  
 > 代码与本文档：`C:\Users\v_chchsli\Desktop\dsh-trivium`（远端 `dsh-trivium`）。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.6`（必须钉死）。
 

@@ -118,6 +118,7 @@ const insertBlock = `    - id: dsh-trivium
       name: dsh-trivium
       config:
         autoRecall: false
+        extractEnabled: true
         writeApproval: false
         mapTokenBudget: 400
         expandDepth: 1

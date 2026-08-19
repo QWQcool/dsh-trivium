@@ -7,6 +7,7 @@
   "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",
+    "./client": "./lib/client.js",
     "./package.json": "./package.json"
   },
   "files": [
@@ -18,11 +19,19 @@
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-client-ui-settings"
+      ],
+      "platform": "web"
     }
   },
   "scripts": {
     "link-dsh": "node scripts/link-dsh.mjs",
-    "smoke-p0": "node scripts/smoke-p0.mjs"
+    "smoke-p0": "node scripts/smoke-p0.mjs",
+    "smoke-p1": "node scripts/smoke-p1.mjs"
   },
   "engines": {
     "node": "^22.19.0 || >=24"

@@ -8,8 +8,8 @@ One `.tdb` file per workspace. No extra server. MIT license.
 
 ## Status
 
-**P0 (in progress)** — plugin skeleton, four tools, short map on session start.  
-Extraction, Settings UI, and auto-recall are **not** in this stage. See [PLAN.md](./PLAN.md).
+**P1 (in progress)** — compaction extract, merge/pending, Settings list, token-budgeted short map.  
+P0 tools and session-start map remain. Auto-recall stays **off** by default. See [PLAN.md](./PLAN.md).
 
 ## Tools
 
@@ -45,10 +45,12 @@ Memory file: `<workspace>/.dsh/trivium.tdb`.
 ## Layout
 
 ```
-lib/index.js     Cordis apply: tools + session-start inject
-lib/store.js     TriviumDB open / insert / search
+lib/index.js     Cordis apply: tools, session-start map, extract hooks
+lib/store.js     TriviumDB open / insert / search / archive
 lib/schema.js    Node types and edge labels
 lib/tools.js     ctx_* tools
+lib/extract.js   Rule + small-prompt distill, pending replay
+lib/client.js    Settings page 「Trivium 记忆」
 scripts/link-dsh.mjs
 PLAN.md
 ```
