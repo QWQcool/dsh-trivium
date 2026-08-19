@@ -33,6 +33,8 @@
     "smoke-p0": "node scripts/smoke-p0.mjs",
     "smoke-p1": "node scripts/smoke-p1.mjs",
     "smoke-p2": "node scripts/p2-cases.mjs",
+    "smoke-p3": "node scripts/smoke-p3.mjs",
+    "smoke-p4": "node scripts/smoke-p4.mjs",
     "verify-live-p2": "node scripts/verify-live-p2.mjs"
   },
   "engines": {

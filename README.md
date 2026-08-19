@@ -8,7 +8,7 @@ One `.tdb` file per workspace. No extra server. MIT license.
 
 ## Status
 
-**P2** — 20 cross-session questions (pref / entity / dated decision / experience + negatives). Auto-recall stays **off**. See [PLAN.md](./PLAN.md).
+**P4** — Kernel find: business-edge ranking and stale `until` filter. Auto-recall stays **off**. See [PLAN.md](./PLAN.md).
 
 ## Tools
 
@@ -52,6 +52,7 @@ lib/extract.js   Rule + small-prompt distill, pending replay
 lib/client.js    Settings page 「Trivium 记忆」
 scripts/link-dsh.mjs
 scripts/p2-cases.mjs
+scripts/smoke-p3.mjs
 PLAN.md
 ```
 

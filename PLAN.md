@@ -1,7 +1,7 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**P2 变准已过**（20 题离线全过；本机 DSH 抽取 + 跨会话 find 已跑）。P3 未开工。  
+> 状态：**P4 内核进行中**（find 按业务边排序、过期 `until` 默认过滤）。P3 搜索已落地。  
 > 代码：`C:\Users\Administrator\Desktop\dsh-trivium`（远端 `QWQcool/dsh-trivium`）。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.6`（必须钉死）。
 
@@ -282,18 +282,39 @@ P2 调过的准头（相对 P1）：
 
 对照原装 DSH：空 `.tdb` 上同样的 `ctx_find("鉴权")` 无 preference。不在 P2 对标 OpenViking。
 
-### P3 — 下一阶段（按 P2 结果排，不是抄 Mnemon）
+### P3 — 体验（进行中）
 
-P2 说明：**抽得准、默认少注入已经够用**。下一期不要开自动召回，也不要上图谱工作台。优先补「人能在列表里找错」。
+P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回，也不要上图谱工作台。
 
-1. **Settings 搜索/过滤（先做）** — 节点变多后靠扫列表改错费劲；按 type + 文本搜 + 显示 `until`/边标签。
-2. **find 噪声** — `ctx_find("X-Request-Id")` 会带上「header X」偏好（关键词串）。给业务边加权、或 find 默认按 type 分栏，避免 L0 被近义句带偏。
-3. **无实体对象的决策** — 「采用方案 A」没有可链实体，path 只有 `in_workspace`。P3 可加弱实体（方案名）或允许决策不挂边，不要为此打开 autoRecall。
-4. **抽取时机** — live 主路径是 `turn/end` 写 pending + 下次 `session-start` 重放；长会话要等 compaction。P3 可在会话空闲再抽一次，仍失败不挡主循环。
-5. **autoRecall 仍默认关** — 短地图 ~130 token 已覆盖热偏好；P2 负例（天气/改文件）说明自动灌窗口更容易脏。若做实验：仅用户句、≤3 条、≤300 token，用这 20 题回归。
-6. **不做** — Mnemon 工作台、OpenViking 板、本地 embedding（除非 Settings 搜仍不够）。OV 对比放到 P3 搜索稳定之后，同一批 20 题比准/token/延迟。
+已落地：
 
-对标 OpenViking 仍在 P3 搜索落地之后。P0/P1/P2 的对比对象只有**原装 DSH**。
+1. **Settings 搜索/过滤** — `?type=` + `?q=`；列表显示 `until` 与边 path（`about`/`decided`/…）。
+2. **find 噪声** — 只保留 query 出现在 name/text/until 里的主命中，再沿 `about|decided|broke|fixed` 扩 1 跳；不再跟 `in_workspace` 把整图拖进来。`ctx_find` 按 type 分栏。
+3. **方案名弱实体** — 「采用方案 A」会建 `方案 A` 实体并 `decided` 过去。
+4. **空闲抽取** — `turn/end` 后约 12 秒仍 dirty 则再抽一次（compaction 优先；失败仍 pending）。
+
+仍默认关：`autoRecall`。仍不做：Mnemon 工作台、OV 板、本地 embedding。
+
+### P4 — 内核（进行中）：find 用边和 until
+
+面（图谱 UI / Mnemon / 新工具 / 默认 autoRecall）先不动。这一刀只改召回核：
+
+- 业务边（`about`/`decided`/`broke`/`fixed`）权重大于 `in_workspace`，find 排序上提有业务边的命中
+- 决策写入 `until` 的同时尽量解析 `untilAt`；**过期决策默认不出现在 find 里**，除非查询本身在问这个期限（如 `周五` / `下周`）
+- 边权写入 TDB（`in_workspace=0.15`，业务边≈1）；引擎扩散若还不按 label 过滤，插件层继续只沿业务边扩 1 跳
+
+### TDB 引擎缺口（可问作者 / 可提 PR）
+
+插件能绕开，但核要「图检索一次返回」时会顶到这些 API：
+
+1. **`neighbors(id, depth)` / `search*` 的 expand 不能按边 label 白名单扩散** — `JsSearchConfig` 没有 `expandLabels`。现在只能自己扫边，否则 `in_workspace` 会把整库粘在一起。希望：`neighbors(id, { depth, labels })` 或 search `expandLabels: ["about","decided"]`。
+2. **没有入边 API** — `getEdges` 只有出边；反向 `about`/`decided` 要扫 `allNodeIds`。README 写过 Reverse Hash Net，Node 绑定没露出 `getIncomingEdges(id)`。
+3. **`unlink(src, dst)` 不能按 label 删一条边** — 两点之间多种 label 会一起断。
+4. **`searchHybrid`/`searchAdvanced` 的图扩散是否尊重 `weight`、负权抑制，文档未写清** — 我们已写入不同 weight，但 find 排序仍在插件层做。
+5. **payload 日期没有一等过滤** — `untilAt` 是我们的 JSON。TQL `FIND { untilAt: { $lt: "..." } }` 若对 ISO 字符串/`$lt` 可用，可少扫节点；需要确认索引 + 比较规则。
+6. **零向量 hybrid** — 全 0 向量时扩散/余弦几乎无意义，这是我们没用 embedding，不是引擎 bug。
+
+对标 OpenViking 仍不做。本地 embedding 仍后置。
 
 ---
 
@@ -325,6 +346,7 @@ dsh-trivium/                    # Desktop + GitHub
   lib/client.js                 # P1 Settings
   scripts/link-dsh.mjs
   scripts/p2-cases.mjs            # npm run smoke-p2
+  scripts/smoke-p3.mjs            # npm run smoke-p3
   scripts/verify-live-p2.mjs      # live DSH extract + find
   PLAN.md
   README.md
