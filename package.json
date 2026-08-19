@@ -21,7 +21,8 @@
     }
   },
   "scripts": {
-    "link-dsh": "node scripts/link-dsh.mjs"
+    "link-dsh": "node scripts/link-dsh.mjs",
+    "smoke-p0": "node scripts/smoke-p0.mjs"
   },
   "engines": {
     "node": "^22.19.0 || >=24"

@@ -4,6 +4,7 @@
       name: dsh-trivium
       config:
         autoRecall: false
+        writeApproval: false
         mapTokenBudget: 400
         expandDepth: 1
         topK: 8
