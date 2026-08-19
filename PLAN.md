@@ -324,9 +324,9 @@ dsh-trivium/                    # Desktop + GitHub
   lib/extract.js                # P1
   lib/client.js                 # P1 Settings
   scripts/link-dsh.mjs
-scripts/p2-cases.mjs            # npm run smoke-p2
-scripts/verify-live-p2.mjs      # live DSH extract + find
-PLAN.md
+  scripts/p2-cases.mjs            # npm run smoke-p2
+  scripts/verify-live-p2.mjs      # live DSH extract + find
+  PLAN.md
   README.md
   LICENSE
 ```
