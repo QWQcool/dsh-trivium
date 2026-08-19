@@ -44,10 +44,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YoKONCy/dsh-trivium.git"
+    "url": "git+https://github.com/QWQcool/dsh-trivium.git"
   },
   "bugs": {
-    "url": "https://github.com/YoKONCy/dsh-trivium/issues"
+    "url": "https://github.com/QWQcool/dsh-trivium/issues"
   },
-  "homepage": "https://github.com/YoKONCy/dsh-trivium#readme"
+  "homepage": "https://github.com/QWQcool/dsh-trivium#readme"
 }
