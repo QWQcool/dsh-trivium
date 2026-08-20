@@ -2,7 +2,7 @@
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
 > 状态：**v0.2.0 第一期内核收口**。P4 find（边 / until / 实体锚定）已齐；Settings 可改名、合并、导入导出 JSON；注入三选一（关 / autoRecall / 实体名折中，默认关，互斥）；可选远程 embedding（默认关，须手填 OpenAI 兼容 endpoint）。Live 新面回家再测。  
-> 代码：GitHub `QWQcool/dsh-trivium`。npm 包名 `dsh-trivium@0.2.0`。  
+> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.2.0`](https://www.npmjs.com/package/dsh-trivium) 已发布。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.6`（必须钉死）。
 
 ---

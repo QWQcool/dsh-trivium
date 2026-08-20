@@ -69,9 +69,23 @@ Offline: `npm run smoke-p1` / `smoke-p2` / `smoke-p4` / `smoke-p5`.
 - **Vectors are optional.** Remote OpenAI-compatible embedding can fill the 1536-d slot; local models are not shipped. Old rows stay zero until you backfill.
 - **Old dirty rows stay.** Settings can edit or archive them; we do not auto-wipe a workspace library.
 
-## Install (when testing against local DSH)
+## Install
 
-This repo is **not** copied into `DeepSeek_Harness`. Link it into the web profile:
+Requires `@deepseek-ai/dsh@0.1.0-rc.6`. Do **not** copy this repo into `DeepSeek_Harness`.
+
+From npm (v0.2.0):
+
+```sh
+dsh plugin --profile web add dsh-trivium
+```
+
+From GitHub:
+
+```sh
+dsh plugin --profile web add github:QWQcool/dsh-trivium
+```
+
+Local checkout (this repo, while developing):
 
 ```sh
 cd dsh-trivium
@@ -79,15 +93,9 @@ npm install
 node scripts/link-dsh.mjs
 ```
 
-Restart `dsh web`, pick a workspace, then ask the agent to `ctx_remember` and `ctx_find`.
+Restart `dsh web`, pick a workspace, then `ctx_remember` / `ctx_find`. Memory file: `<workspace>/.dsh/trivium.tdb`.
 
-Manual equivalent:
-
-```sh
-dsh plugin --profile web add /absolute/path/to/dsh-trivium
-```
-
-Memory file: `<workspace>/.dsh/trivium.tdb`.
+Package: [npmjs.com/package/dsh-trivium](https://www.npmjs.com/package/dsh-trivium).
 
 ## Layout
 
