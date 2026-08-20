@@ -1,7 +1,7 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**P4 内核进行中**（find 按业务边排序、过期 `until` 默认过滤）。P3 搜索已落地。  
+> 状态：**P4 内核进行中**（实体名锚定 → 业务边未过期邻居；find 按业务边排序、过期 `until` 默认过滤）。P3 搜索已落地。  
 > 代码：`C:\Users\Administrator\Desktop\dsh-trivium`（远端 `QWQcool/dsh-trivium`）。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.6`（必须钉死）。
 
@@ -302,6 +302,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - 业务边（`about`/`decided`/`broke`/`fixed`）权重大于 `in_workspace`，find 排序上提有业务边的命中
 - 决策写入 `until` 的同时尽量解析 `untilAt`；**过期决策默认不出现在 find 里**，除非查询本身在问这个期限（如 `周五` / `下周`）
 - 边权写入 TDB（`in_workspace=0.15`，业务边≈1）；引擎扩散若还不按 label 过滤，插件层继续只沿业务边扩 1 跳
+- **实体名锚定** — query 精确等于或包含已有 entity 的 `name`/`aliases` 时，将该实体当锚点，只沿 `about`/`decided`/`broke`/`fixed` 扩 1 跳入/出边；邻居正文不必含 query。过期 `until` 仍默认隐藏。不加 `ctx_find` 新参数。
 
 ### TDB 引擎缺口（可问作者 / 可提 PR）
 

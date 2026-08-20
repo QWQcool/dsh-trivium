@@ -1,6 +1,7 @@
 /**
- * Kernel find: business-edge rank, stale `until` filtered unless the query
- * is about the deadline. Does not need DSH.
+ * Kernel find: entity-name anchor → unexpired about/decided/broke/fixed
+ * neighbors (payload need not repeat the name); business-edge rank; stale
+ * `until` hidden unless the query is about the deadline. Does not need DSH.
  */
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -59,8 +60,24 @@ try {
     type: "preference",
     text: "AuthGateway 日志走 header X。",
   });
+  const silentPref = insertNode(db, {
+    type: "preference",
+    text: "日志走 header X。",
+  });
+  const silentLive = insertNode(db, {
+    type: "decision",
+    text: "先别动，下周再改。",
+    until: "下周",
+    untilAt: resolveUntilAt("下周", new Date("2026-08-19T00:00:00.000Z")),
+  });
+  const pnpm = insertNode(db, {
+    type: "preference",
+    text: "以后都用 pnpm。",
+  });
   db.link(live, entity, EDGE_LABELS.decided, 1);
   db.link(stale, entity, EDGE_LABELS.decided, 1);
+  db.link(silentPref, entity, EDGE_LABELS.about, 1);
+  db.link(silentLive, entity, EDGE_LABELS.decided, 1);
   db.flush();
 
   const now = new Date("2026-08-20T12:00:00.000Z");
@@ -96,6 +113,55 @@ try {
       `business-edge decision ranks before in_workspace-only pref (order=${order})`,
     );
   }
+
+  assert(
+    byGw.some((h) => h.id === silentPref),
+    "find(AuthGateway) expands about-neighbor whose text omits the entity name",
+  );
+  assert(
+    byGw.some((h) => h.id === silentLive),
+    "find(AuthGateway) expands decided-neighbor whose text omits the entity name",
+  );
+  assert(
+    !byGw.some((h) => h.id === pnpm),
+    "find(AuthGateway) does not pull unlinked pnpm pref",
+  );
+
+  const byPhrase = searchNodes(db, "AuthGateway 的决策", { topK: 8, expandDepth: 1, now }).map(
+    (h) => formatHit(db, h),
+  );
+  assert(
+    byPhrase.some((h) => h.id === entity),
+    "find(AuthGateway 的决策) still anchors the entity",
+  );
+  assert(
+    byPhrase.some((h) => h.id === silentLive),
+    "find(AuthGateway 的决策) returns unexpired decided neighbor",
+  );
+  assert(
+    byPhrase.some((h) => h.id === silentPref),
+    "find(AuthGateway 的决策) returns about preference neighbor",
+  );
+  assert(
+    !byPhrase.some((h) => h.id === stale),
+    `find(AuthGateway 的决策) hides stale until (got ${byPhrase.map((h) => h.id + ":" + h.l0).join("; ")})`,
+  );
+  assert(
+    !byPhrase.some((h) => h.id === pnpm),
+    "find(AuthGateway 的决策) does not pull unlinked pnpm pref",
+  );
+
+  const byPnpm = searchNodes(db, "pnpm", { topK: 8, expandDepth: 1, now }).map((h) =>
+    formatHit(db, h),
+  );
+  assert(
+    byPnpm.some((h) => h.id === pnpm),
+    "find(pnpm) still hits the unlinked preference",
+  );
+  assert(
+    !byPnpm.some((h) => h.id === silentPref || h.id === silentLive),
+    "find(pnpm) does not expand AuthGateway neighbors",
+  );
 
   closeAll();
 } catch (err) {
