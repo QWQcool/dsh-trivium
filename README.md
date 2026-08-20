@@ -8,7 +8,7 @@ One `.tdb` file per workspace. No extra server. MIT license.
 
 ## Status
 
-**P4 kernel + Settings correction** — find with edges/`until`; Settings: neighbors, edit/rename, merge, JSON export. Recall stays **off** unless you pick `autoRecall` or entity-name inject (mutually exclusive). Optional remote embedding. See [PLAN.md](./PLAN.md).
+**v0.2.0** — P4 kernel + Settings correction: find with edges/`until`; edit/rename, merge, JSON export/import; recall **off** unless `autoRecall` or entity-name inject (mutually exclusive). Optional remote embedding (manual URL, default off). See [PLAN.md](./PLAN.md).
 
 ## Tools
 
@@ -33,7 +33,7 @@ This is a **kernel**, not a memory workbench. We did **not** run LoCoMo, OpenVik
 | What is stored | Nodes + labelled edges (entity / preference / decision / experience) | Session only | Documents or snippets | Markdown + `[[links]]` | Layered memory schema | Rich items + UI |
 | How it enters the window | Short map ≤400 tokens; tools to drill; recall **off** (optional auto / entity-name inject) | Prompt / tools | Often dump or search | Follow links | Pre-step / layered load | Sidebar + recall |
 | Graph | Engine edges (`about` / `decided` / `broke` / `fixed`); find returns **path** | None | Rare | Scan `[[slug]]` | Depends on product | UI-first |
-| Human correction | Settings: search, neighbors, edit/rename, merge, archive vs delete, JSON export | — | Varies | Edit files | Product UI | Full workbench |
+| Human correction | Settings: search, neighbors, edit/rename, merge, archive vs delete, JSON export/import | — | Varies | Edit files | Product UI | Full workbench |
 | First-period non-goals | Graph canvas, fifth tool, default auto-recall, local embedding | — | Feature-list race | 9-tool Python vectors | LoCoMo / parse farm / Skill hub | UI completeness |
 
 **Why not a live OV comparison.** OV’s DSH plugin is the right *hook* shape (`inject`, pin rc.6, pending replay). Copying its product thickness (layers, skills, eval farm) is explicitly out of scope. Measuring “who wins LoCoMo” would optimize the wrong thing for a four-tool kernel.
@@ -50,7 +50,7 @@ On `@deepseek-ai/dsh@0.1.0-rc.6`, plugin linked into the web profile (not copied
 - Optional remote embedding stays off until a URL is saved; no local model.
 - Failure isolation: a broken `.tdb` path does not kill the agent loop.
 
-Offline: `npm run smoke-p1` / `smoke-p2` / `smoke-p4`.
+Offline: `npm run smoke-p1` / `smoke-p2` / `smoke-p4` / `smoke-p5`.
 
 ## Strengths
 
@@ -60,9 +60,9 @@ Offline: `npm run smoke-p1` / `smoke-p2` / `smoke-p4`.
 - **Visible and reversible.** Settings can edit, merge, archive vs delete, and export/import JSON; find ignores archived nodes.
 - **Honest degradation.** Keyword + graph walk by default. Optional remote embedding; extract / TDB / embed errors log and continue.
 
-## Limits (v0.1)
+## Limits (v0.2.0)
 
-- **Not a workbench.** No graph canvas, no Mnemon sidebar, no cross-agent share, no PDF/Zotero RAG. Settings can edit, merge, and export.
+- **Not a workbench.** No graph canvas, no Mnemon sidebar, no cross-agent share, no PDF/Zotero RAG. Settings can edit, merge, and export/import.
 - **Recall is off by default.** If the model never calls `ctx_find`, the short map is all it gets unless you enable entity-name inject or `autoRecall` (mutually exclusive).
 - **Extract is conservative.** It will miss facts that do not match the whitelist; a real tool-fail→success experience only links when the fail/fix text or a nearby user turn names an entity.
 - **Engine gaps we paper over.** No `expandLabels` / `getIncomingEdges` in the Node binding, so the plugin scans edges itself. Same `.tdb` must not be opened by two Node processes (normal `dsh web` use is one process).

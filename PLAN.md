@@ -1,8 +1,8 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**P3 面补充已落地**（Settings 邻居展开 / 按实体看挂边 / 过期可显隐；短地图留 until 决策）。P4 核已齐。Live 验收清单已暂存，未开口不跑。  
-> 代码：`C:\Users\Administrator\Desktop\dsh-trivium`（远端 `QWQcool/dsh-trivium`）。  
+> 状态：**v0.2.0 第一期内核收口**。P4 find（边 / until / 实体锚定）已齐；Settings 可改名、合并、导入导出 JSON；注入三选一（关 / autoRecall / 实体名折中，默认关，互斥）；可选远程 embedding（默认关，须手填 OpenAI 兼容 endpoint）。Live 新面回家再测。  
+> 代码：GitHub `QWQcool/dsh-trivium`。npm 包名 `dsh-trivium@0.2.0`。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.6`（必须钉死）。
 
 ---
@@ -235,11 +235,13 @@ Settings 一页「Trivium 记忆」：
 - 按 type / `q` 筛选；过期决策默认隐藏，可勾选显示
 - 点行展开业务边邻居（入边 `<-about-` / 出边 `about->`）；实体可「只看挂在这上面的」
 - 列表显示 `until`、过期标记、path
+- 改正文 / 改名 / 别名；同类型合并（`same_as` 后归档）
 - 归档（软删，find 不再返回）/ 删除（从 `.tdb` 去掉）；页上写明区别
-- 开关：`autoRecall`（默认关）、抽取开关
+- 导出 / 导入 JSON 快照（按 `uri` 去重合进当前库）
+- 开关：注入策略三选一（关 / `autoRecall` / 实体名折中，默认关）、抽取、远程 embedding（默认关，手填 URL）
 - 显示当前 `.tdb` 路径与节点数
 
-不在第一期做：图谱可视化、Mnemon 式工作台、记忆编辑器富文本。能看见、能删，就满足「人可纠正脏记忆」。
+不在第一期做：图谱可视化、Mnemon 式工作台、记忆编辑器富文本、本地 embedding。能看见、能改、能归档，就满足「人可纠正脏记忆」。
 
 ---
 
@@ -284,7 +286,7 @@ P2 调过的准头（相对 P1）：
 
 对照原装 DSH：空 `.tdb` 上同样的 `ctx_find("鉴权")` 无 preference。不在 P2 对标 OpenViking。
 
-### P3 — 体验（进行中）
+### P3 — 体验（已完成）
 
 P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回，也不要上图谱工作台。
 
@@ -299,9 +301,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 
 仍默认关：`autoRecall`。仍不做：Mnemon 工作台、图谱画布、OV 板、本地 embedding。
 
-仍默认关：`autoRecall`。仍不做：Mnemon 工作台、OV 板、本地 embedding。
-
-### P4 — 内核（进行中）：find 用边和 until
+### P4 — 内核（已完成）：find 用边和 until
 
 面（图谱 UI / Mnemon / 新工具 / 默认 autoRecall）先不动。这一刀只改召回核：
 
@@ -317,9 +317,9 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - **`ctx_read` 入边** — 返回 `incoming[]`（from/label/type/l0），全文读实体时能看见谁 `about`/`decided`/`broke`/`fixed` 过来。
 - **抽取挂边** — preference 的 `about` 只取 **span 内**专有名，不再因邻句「TriviumDB 是内核」误挂。experience 从 fail/fix（或同 turn 用户句）取 `linkName` 并 `fixed`。
 
-其后仍先核、后面；不要开图谱 / Mnemon / autoRecall / OV / 本地 embedding / 第五工具。TDB `expandLabels` / `getIncomingEdges` 仍绕开，不挡插件。
+其后仍先核、后面；不要开图谱 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。TDB `expandLabels` / `getIncomingEdges` 仍绕开，等引擎露出再换。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。
 
-### 待 live 验收（暂存，未开口不跑）
+### 待 live 验收（新面回家再测）
 
 只报缺陷、不加功能。钉 `@deepseek-ai/dsh@0.1.0-rc.6`。同一 `.tdb` 不要被两个 Node 进程同时打开（验收时不要再跑会 `openWorkspaceDb` 的 smoke）。脚本：`npm run verify-live-p2`（以及 `scripts/verify-live.mjs`）。
 
@@ -371,28 +371,32 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 代码**不**放进 `DeepSeek_Harness/dsh-extra/plugins/`。本仓库即插件本体，测试时 junction 到 DSH web profile。
 
 ```
-dsh-trivium/                    # Desktop + GitHub
-  package.json                  # name: dsh-trivium, MIT
+dsh-trivium/                    # GitHub QWQcool/dsh-trivium
+  package.json                  # name: dsh-trivium  version 0.2.0  MIT
   cordis.patch.yml
   lib/index.js
   lib/store.js
   lib/schema.js
+  lib/embed.js                  # optional remote embedding
+  lib/settings.js               # ~/.dsh/trivium.json
   lib/tools.js
-  lib/extract.js                # P1
-  lib/client.js                 # P1 Settings
+  lib/extract.js
+  lib/client.js                 # Settings
+  lib/server.js
   scripts/link-dsh.mjs
-  scripts/p2-cases.mjs            # npm run smoke-p2
-  scripts/smoke-p3.mjs            # npm run smoke-p3
-  scripts/verify-live-p2.mjs      # live DSH extract + find
+  scripts/p2-cases.mjs
+  scripts/smoke-p3.mjs
+  scripts/smoke-p4.mjs
+  scripts/smoke-p5.mjs
   PLAN.md
   README.md
   LICENSE
 ```
 
-加载初版（P0 工具可用之后）：
+加载：
 
 ```sh
-cd C:\Users\Administrator\Desktop\dsh-trivium
+cd dsh-trivium
 npm install
 node scripts/link-dsh.mjs
 ```
