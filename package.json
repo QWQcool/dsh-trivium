@@ -1,6 +1,6 @@
 {
   "name": "dsh-trivium",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "In-process graph memory kernel for DeepSeek Harness, backed by TriviumDB.",
   "license": "MIT",
   "type": "module",
@@ -36,6 +36,7 @@
     "smoke-p3": "node scripts/smoke-p3.mjs",
     "smoke-p4": "node scripts/smoke-p4.mjs",
     "smoke-p5": "node scripts/smoke-p5.mjs",
+    "smoke-p6": "node scripts/smoke-p6.mjs",
     "verify-live-p2": "node scripts/verify-live-p2.mjs"
   },
   "engines": {

@@ -1,8 +1,8 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**v0.2.0 第一期内核收口**。P4 find（边 / until / 实体锚定）已齐；Settings 可改名、合并、导入导出 JSON；注入三选一（关 / autoRecall / 实体名折中，默认关，互斥）；可选远程 embedding（默认关，须手填 OpenAI 兼容 endpoint）。Live 新面回家再测。  
-> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.2.0`](https://www.npmjs.com/package/dsh-trivium) 已发布。  
+> 状态：**v0.3.0**。内核仍是四工具 + 短地图；Settings 增加只读 Markdown 导出与 WorkBuddy MEMORY.md 一次性严导入；抽取/导入每批 ≤3000 字。Live 新面回家再测。  
+> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.3.0`](https://www.npmjs.com/package/dsh-trivium)。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.6`（必须钉死）。
 
 ---
@@ -317,7 +317,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - **`ctx_read` 入边** — 返回 `incoming[]`（from/label/type/l0），全文读实体时能看见谁 `about`/`decided`/`broke`/`fixed` 过来。
 - **抽取挂边** — preference 的 `about` 只取 **span 内**专有名，不再因邻句「TriviumDB 是内核」误挂。experience 从 fail/fix（或同 turn 用户句）取 `linkName` 并 `fixed`。
 
-其后仍先核、后面；不要开图谱 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。TDB `expandLabels` / `getIncomingEdges` 仍绕开，等引擎露出再换。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。
+其后仍先核、后面；不要开图谱 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。TDB `expandLabels` / `getIncomingEdges` 仍绕开，等引擎露出再换。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。
 
 ### 待 live 验收（新面回家再测）
 
@@ -372,7 +372,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 
 ```
 dsh-trivium/                    # GitHub QWQcool/dsh-trivium
-  package.json                  # name: dsh-trivium  version 0.2.0  MIT
+  package.json                  # name: dsh-trivium  version 0.3.0  MIT
   cordis.patch.yml
   lib/index.js
   lib/store.js
@@ -381,6 +381,7 @@ dsh-trivium/                    # GitHub QWQcool/dsh-trivium
   lib/settings.js               # ~/.dsh/trivium.json
   lib/tools.js
   lib/extract.js
+  lib/markdown.js               # MEMORY.md export, WorkBuddy one-shot import
   lib/client.js                 # Settings
   lib/server.js
   scripts/link-dsh.mjs
@@ -388,6 +389,7 @@ dsh-trivium/                    # GitHub QWQcool/dsh-trivium
   scripts/smoke-p3.mjs
   scripts/smoke-p4.mjs
   scripts/smoke-p5.mjs
+  scripts/smoke-p6.mjs
   PLAN.md
   README.md
   LICENSE
