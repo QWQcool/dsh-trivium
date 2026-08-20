@@ -220,6 +220,27 @@ try {
     `entity path includes incoming fixed (got ${expEntityPath || "(none)"})`,
   );
 
+  const staleIso = insertNode(db, {
+    type: "decision",
+    name: "AuthGateway",
+    text: "AuthGateway freeze until 2020-01-03.",
+    until: "2020-01-03",
+    untilAt: "2020-01-03T23:59:59.000Z",
+  });
+  db.link(staleIso, entity, EDGE_LABELS.decided, 1);
+  db.flush();
+  const byFridayIso = searchNodes(db, "周五", { topK: 8, expandDepth: 1, now }).map((h) =>
+    formatHit(db, h, { query: "周五", now }),
+  );
+  assert(
+    byFridayIso.some((h) => h.id === staleIso),
+    "find(周五) includes ISO-until stale decision",
+  );
+  const fridayEntity = byFridayIso.find((h) => h.id === entity);
+  assert(
+    !!fridayEntity && (fridayEntity.path || []).some((p) => p.includes(`<-decided-${staleIso}`)),
+    "find(周五) entity path shows ISO stale incoming",
+  );
   const oldDec = insertNode(db, { type: "decision", text: "旧方案：用 cookie 会话。" });
   const newDec = insertNode(db, { type: "decision", text: "现方案：用 header 会话。" });
   db.link(oldDec, newDec, EDGE_LABELS.sameAs, 0.5);

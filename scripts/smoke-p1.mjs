@@ -177,6 +177,28 @@ try {
     "tool fail then success → experience",
   );
 
+  const expLinked = ruleCandidates([
+    { role: "user", text: "AuthGateway 接登录。", turn: 3 },
+    { role: "tool", name: "bash", ok: false, text: "ENOENT mkdir", turn: 4 },
+    { role: "tool", name: "bash", ok: true, text: "ok after mkdir", turn: 4 },
+  ]);
+  assert(
+    expLinked.some((c) => c.type === "experience" && c.linkName === "AuthGateway"),
+    "experience linkName from preceding user entity",
+  );
+
+  const dump = ruleCandidates([
+    {
+      role: "assistant",
+      text: "path: <-about-3(auth-header) | <-decided-5(AuthGateway) | in_workspace->1(dsh-trivium-live21)",
+      turn: 5,
+    },
+  ]);
+  assert(
+    !dump.some((c) => c.type === "entity" && /^(about-3|auth-header|dsh-trivium-live21)$/i.test(c.name || "")),
+    "find-dump assistant text does not mint path-noise entities",
+  );
+
   const parsed = parseModelJson('```json\n{"candidates":[{"type":"entity","name":"Foo","text":"Foo"}]}\n```');
   assert(parsed.length === 1 && parsed[0].name === "Foo", "model JSON fence parsed");
 
@@ -189,6 +211,27 @@ try {
   ]);
   assert(first[0]?.action === "insert", "first preference inserted");
   assert(second[0]?.action === "merge" && second[0].id === first[0].id, "duplicate preference merged");
+
+  const gw = insertNode(db, { type: "entity", name: "AuthGateway", text: "AuthGateway" });
+  applyCandidates(db, [
+    { type: "decision", text: "先别动 AuthGateway，下周再改。", linkName: "AuthGateway", linkLabel: "decided" },
+    {
+      type: "decision",
+      text: "先别动 AuthGateway，下周再改。",
+      name: "AuthGateway",
+      linkName: "AuthGateway",
+      linkLabel: "decided",
+    },
+  ]);
+  let decidedEdges = 0;
+  for (const id of db.allNodeIds()) {
+    const n = db.get(id);
+    if (n?.payload?.type !== "decision") continue;
+    decidedEdges += (n.edges || []).filter(
+      (e) => e.label === "decided" && Number(e.targetId ?? e.target_id) === gw,
+    ).length;
+  }
+  assert(decidedEdges === 1, `decision links once (got ${decidedEdges})`);
 
   const entityId = insertNode(db, { type: "entity", name: "dsh-trivium", text: "this repository" });
   db.link(first[0].id, entityId, EDGE_LABELS.about, 1);

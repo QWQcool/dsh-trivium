@@ -35,6 +35,7 @@
     "smoke-p2": "node scripts/p2-cases.mjs",
     "smoke-p3": "node scripts/smoke-p3.mjs",
     "smoke-p4": "node scripts/smoke-p4.mjs",
+    "smoke-p5": "node scripts/smoke-p5.mjs",
     "verify-live-p2": "node scripts/verify-live-p2.mjs"
   },
   "engines": {
