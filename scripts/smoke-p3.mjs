@@ -6,7 +6,17 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { distill } from "../lib/extract.js";
-import { closeAll, formatHit, listNodes, openWorkspaceDb, searchNodes } from "../lib/store.js";
+import { EDGE_LABELS } from "../lib/schema.js";
+import {
+  buildShortMapReport,
+  closeAll,
+  formatHit,
+  insertNode,
+  listNodes,
+  openWorkspaceDb,
+  searchNodes,
+} from "../lib/store.js";
+import { resolveUntilAt } from "../lib/until.js";
 
 const cwd = mkdtempSync(join(tmpdir(), "dsh-trivium-p3-"));
 let failed = 0;
@@ -57,6 +67,63 @@ try {
 
   const qUntil = listNodes(db, { q: "下周", type: "decision" });
   assert(qUntil.length === 1 && qUntil[0].until === "下周", "type=decision + q=下周");
+
+  const gw = listed.find((n) => n.type === "entity" && n.name === "AuthGateway");
+  assert(!!gw, "list includes AuthGateway entity");
+  assert(
+    Array.isArray(gw.incoming) && gw.incoming.some((e) => e.label === "decided"),
+    "entity row carries incoming decided for expand-in-place",
+  );
+  const aboutGw = listNodes(db, { aboutId: gw.id });
+  assert(
+    aboutGw.some((n) => n.id === gw.id),
+    "about=AuthGateway includes the entity",
+  );
+  assert(
+    aboutGw.some((n) => n.type === "decision" && /AuthGateway|下周/.test(n.text + n.until)),
+    "about=AuthGateway includes decided neighbor",
+  );
+  assert(
+    !aboutGw.some((n) => n.type === "preference" && /pnpm/.test(n.text)),
+    "about=AuthGateway does not pull unlinked pnpm pref",
+  );
+
+  const staleId = insertNode(db, {
+    type: "decision",
+    text: "AuthGateway 上周就该冻结。",
+    until: "周五",
+    untilAt: "2020-01-03T23:59:59.000Z",
+  });
+  db.link(staleId, gw.id, EDGE_LABELS.decided, 1);
+  db.flush();
+  assert(
+    !listNodes(db).some((n) => n.id === staleId),
+    "Settings list hides stale decisions by default",
+  );
+  assert(
+    listNodes(db, { includeStale: true }).some((n) => n.id === staleId),
+    "Settings list shows stale when includeStale",
+  );
+  assert(
+    listNodes(db, { q: "周五" }).some((n) => n.id === staleId),
+    "Settings q=周五 still lists the stale decision",
+  );
+  assert(
+    !listNodes(db, { aboutId: gw.id }).some((n) => n.id === staleId),
+    "about=AuthGateway still hides stale neighbor by default",
+  );
+  assert(
+    listNodes(db, { aboutId: gw.id, includeStale: true }).some((n) => n.id === staleId),
+    "about=AuthGateway + includeStale shows the stale neighbor",
+  );
+
+  const map = buildShortMapReport(db, 400);
+  assert(map.tokens <= 400, `short map ${map.tokens} <= 400`);
+  assert(/preference:/.test(map.text), "short map still names preferences");
+  assert(
+    /until/.test(map.text),
+    `short map reserves an unexpired until decision (got ${map.text})`,
+  );
 
   const e5 = searchNodes(db, "X-Request-Id", { topK: 8, expandDepth: 1 }).map((h) =>
     formatHit(db, h),

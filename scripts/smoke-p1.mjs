@@ -46,6 +46,36 @@ try {
     pref.some((c) => c.type === "preference" && /鉴权/.test(c.text)),
     "记住… → preference",
   );
+  assert(
+    !pref.some((c) => c.type === "preference" && /鉴权/.test(c.text) && c.linkName === "TriviumDB"),
+    "single-sentence 鉴权 pref has no TriviumDB linkName",
+  );
+
+  const adjacentSteal = ruleCandidates([
+    { role: "user", text: "记住，本仓库鉴权走 header X。TriviumDB 是内核。", turn: 1 },
+  ]);
+  const stolen = adjacentSteal.find((c) => c.type === "preference" && /鉴权/.test(c.text));
+  assert(
+    !!stolen && stolen.linkName !== "TriviumDB",
+    "鉴权 pref does not steal adjacent TriviumDB",
+  );
+
+  const namedPref = ruleCandidates([
+    { role: "user", text: "记住，AuthGateway 日志走 header X。", turn: 1 },
+  ]);
+  assert(
+    namedPref.some((c) => c.type === "preference" && c.linkName === "AuthGateway"),
+    "preference in-span proper name becomes about-link",
+  );
+
+  const expLink = ruleCandidates([
+    { role: "tool", name: "bash", ok: false, text: "AuthGateway ENOENT mkdir", turn: 4 },
+    { role: "tool", name: "bash", ok: true, text: "ok after mkdir", turn: 4 },
+  ]);
+  assert(
+    expLink.some((c) => c.type === "experience" && c.linkName === "AuthGateway"),
+    "experience linkName from fail text",
+  );
 
   const wrapped = ruleCandidates([
     {

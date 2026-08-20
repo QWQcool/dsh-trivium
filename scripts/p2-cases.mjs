@@ -92,6 +92,7 @@ try {
   const map = buildShortMapReport(dbA, 400);
   assert(map.tokens <= 400, `short map ${map.tokens} <= 400`);
   assert(/preference:/.test(map.text), "short map lists preferences first");
+  assert(/until/.test(map.text), "short map names an unexpired until decision");
   dbA.flush();
   closeAll();
 
@@ -143,7 +144,10 @@ try {
       `${c.id} find(${c.q}) ${c.type} ${c.text} (got ${hits.map((h) => `[${h.type}] ${h.l0} path=${h.path.join(",")}`).join(" ;; ") || "none"}) types=${types}`,
     );
     if (c.id === "P1" && hit) {
-      assert(/about->/.test(hit.path.join("|")) || /TriviumDB|dsh-trivium/.test(hit.path.join("|")), `${c.id} path carries entity`);
+      assert(
+        !/about->\d+\(TriviumDB\)/.test(hit.path.join("|")),
+        "P1 鉴权 pref is not about adjacent TriviumDB",
+      );
     }
     if (c.id === "D1" && hit) {
       const node = dbB.get(hit.id);

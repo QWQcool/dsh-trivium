@@ -11,6 +11,7 @@ import {
   closeAll,
   formatHit,
   insertNode,
+  listIncomingBusiness,
   openWorkspaceDb,
   searchNodes,
 } from "../lib/store.js";
@@ -105,12 +106,37 @@ try {
 
   const liveHit = byGw.find((h) => h.id === live);
   const prefHit = byGw.find((h) => h.id === pref);
+  const entityHit = byGw.find((h) => h.id === entity);
+  const entityPath = (entityHit?.path || []).join("|");
   assert(!!liveHit && /decided->/.test((liveHit.path || []).join("|")), "live decision path decided->");
+  assert(
+    /<-about-/.test(entityPath) && entityPath.includes(String(silentPref)),
+    `entity path includes incoming about (got ${entityPath || "(none)"})`,
+  );
+  assert(
+    /<-decided-/.test(entityPath) &&
+      (entityPath.includes(String(live)) || entityPath.includes(String(silentLive))),
+    `entity path includes incoming decided (got ${entityPath || "(none)"})`,
+  );
+  assert(
+    !entityPath.includes(`<-decided-${stale}`),
+    `entity path hides stale incoming unless query asks until (got ${entityPath || "(none)"})`,
+  );
+
+  const untilEntity = byUntil.find((h) => h.id === entity);
+  assert(
+    !!untilEntity && (untilEntity.path || []).some((p) => p.includes(`<-decided-${stale}`)),
+    "find(周五) entity path still shows stale incoming",
+  );
   if (prefHit && liveHit) {
     const order = byGw.map((h) => h.id);
     assert(
       order.indexOf(live) < order.indexOf(pref),
       `business-edge decision ranks before in_workspace-only pref (order=${order})`,
+    );
+    assert(
+      order.indexOf(entity) < order.indexOf(pref),
+      `incoming business edges rank entity above in_workspace-only pref (order=${order})`,
     );
   }
 
@@ -161,6 +187,51 @@ try {
   assert(
     !byPnpm.some((h) => h.id === silentPref || h.id === silentLive),
     "find(pnpm) does not expand AuthGateway neighbors",
+  );
+
+  const incoming = listIncomingBusiness(db, entity);
+  assert(
+    incoming.some((e) => e.from === silentPref && e.label === "about"),
+    "listIncomingBusiness includes about",
+  );
+  assert(
+    incoming.some((e) => e.from === live && e.label === "decided"),
+    "listIncomingBusiness includes decided",
+  );
+
+  const exp = insertNode(db, {
+    type: "experience",
+    text: "mkdir 失败后改用 fs.mkdir。",
+    fail: "bash mkdir",
+    fix: "fs.mkdir",
+  });
+  db.link(exp, entity, EDGE_LABELS.fixed, 0.9);
+  db.flush();
+  const byExp = searchNodes(db, "AuthGateway", { topK: 8, expandDepth: 1, now }).map((h) =>
+    formatHit(db, h),
+  );
+  assert(
+    byExp.some((h) => h.id === exp),
+    "find(AuthGateway) expands fixed experience neighbor",
+  );
+  const expEntityPath = (byExp.find((h) => h.id === entity)?.path || []).join("|");
+  assert(
+    /<-fixed-/.test(expEntityPath) && expEntityPath.includes(String(exp)),
+    `entity path includes incoming fixed (got ${expEntityPath || "(none)"})`,
+  );
+
+  const oldDec = insertNode(db, { type: "decision", text: "旧方案：用 cookie 会话。" });
+  const newDec = insertNode(db, { type: "decision", text: "现方案：用 header 会话。" });
+  db.link(oldDec, newDec, EDGE_LABELS.sameAs, 0.5);
+  db.flush();
+  const bySame = searchNodes(db, "用 cookie", { topK: 8, expandDepth: 1, now });
+  assert(
+    bySame.some((h) => h.id === oldDec),
+    "find(用 cookie) still hits the old node",
+  );
+  assert(
+    bySame.some((h) => h.id === newDec),
+    "find follows same_as to the canonical node",
   );
 
   closeAll();

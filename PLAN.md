@@ -1,7 +1,7 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**P4 内核进行中**（实体名锚定已落地；下一刀 = 锚点入边写进 path）。Live 验收清单已暂存，未开口不跑。P3 搜索已落地。  
+> 状态：**P3 面补充已落地**（Settings 邻居展开 / 按实体看挂边 / 过期可显隐；短地图留 until 决策）。P4 核已齐。Live 验收清单已暂存，未开口不跑。  
 > 代码：`C:\Users\Administrator\Desktop\dsh-trivium`（远端 `QWQcool/dsh-trivium`）。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.6`（必须钉死）。
 
@@ -232,8 +232,10 @@ workspace 切换：关掉旧库，打开新路径的 `.tdb`。记忆默认**按�
 
 Settings 一页「Trivium 记忆」：
 
-- 按 type 筛选的节点列表（name/text、边数、来源 session、时间）
-- 归档 / 删除
+- 按 type / `q` 筛选；过期决策默认隐藏，可勾选显示
+- 点行展开业务边邻居（入边 `<-about-` / 出边 `about->`）；实体可「只看挂在这上面的」
+- 列表显示 `until`、过期标记、path
+- 归档（软删，find 不再返回）/ 删除（从 `.tdb` 去掉）；页上写明区别
 - 开关：`autoRecall`（默认关）、抽取开关
 - 显示当前 `.tdb` 路径与节点数
 
@@ -292,6 +294,10 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 2. **find 噪声** — 只保留 query 出现在 name/text/until 里的主命中，再沿 `about|decided|broke|fixed` 扩 1 跳；不再跟 `in_workspace` 把整图拖进来。`ctx_find` 按 type 分栏。
 3. **方案名弱实体** — 「采用方案 A」会建 `方案 A` 实体并 `decided` 过去。
 4. **空闲抽取** — `turn/end` 后约 12 秒仍 dirty 则再抽一次（compaction 优先；失败仍 pending）。
+5. **Settings 看见边** — 点行展开 `incoming`/`outgoing`；实体「只看挂在这上面的」（`?about=`）；过期决策默认隐藏（`?stale=1` 打开）；归档 vs 删除文案。
+6. **短地图 until** — named 最多 4 条偏好后预留最多 2 条未过期 `until` 决策，总预算仍 ≤400；提示用实体名 `ctx_find`。
+
+仍默认关：`autoRecall`。仍不做：Mnemon 工作台、图谱画布、OV 板、本地 embedding。
 
 仍默认关：`autoRecall`。仍不做：Mnemon 工作台、OV 板、本地 embedding。
 
@@ -304,10 +310,14 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - 边权写入 TDB（`in_workspace=0.15`，业务边≈1）；引擎扩散若还不按 label 过滤，插件层继续只沿业务边扩 1 跳
 - **实体名锚定** — query 精确等于或包含已有 entity 的 `name`/`aliases` 时，将该实体当锚点，只沿 `about`/`decided`/`broke`/`fixed` 扩 1 跳入/出边；邻居正文不必含 query。过期 `until` 仍默认隐藏。不加 `ctx_find` 新参数。离线 `smoke-p4` 已锁。
 
-**P4 下一刀（开发，未开工）：锚点入边写进 path。**  
-`formatHit` 现在只展示出边，实体命中往往只有 `in_workspace`；邻居自己的 path 才有 `about`/`decided`。下一刀在插件层把入边（仅业务 label）补进该命中的 path（例如 `<-decided-12(先别动…)`），仍不新加 `ctx_find` 参数，仍不调 TDB `getIncomingEdges`。回归：`find("AuthGateway")` 的 entity 行 path 含入边 about/decided。
+- **锚点入边 path** — `formatHit` / Settings 列表把入边（仅 `about`/`decided`/`broke`/`fixed`）写成 `<-decided-12(先别动…)`，与出边 `label->id` 并列。不加工具参数，仍自己扫入边。`find("AuthGateway")` 的 entity 行 path 含 about/decided 入边。
+- **入边参与排序** — 实体只有出边 `in_workspace` 时，仍按入边业务边给 `rankBoost`，避免锚点排在未连边噪声后面。
+- **过期入边默认不进 path** — 与 find 藏过期决策一致；query 在问期限时，实体 path 仍可出现该入边。
+- **`same_as` 跟随** — 命中旧节点且存在 `same_as`→留存节点时，find 一并返回留存节点（不把 `same_as` 当业务扩散边）。
+- **`ctx_read` 入边** — 返回 `incoming[]`（from/label/type/l0），全文读实体时能看见谁 `about`/`decided`/`broke`/`fixed` 过来。
+- **抽取挂边** — preference 的 `about` 只取 **span 内**专有名，不再因邻句「TriviumDB 是内核」误挂。experience 从 fail/fix（或同 turn 用户句）取 `linkName` 并 `fixed`。
 
-其后仍先核、后面；不要开图谱 / Mnemon / autoRecall / OV / 本地 embedding / 第五工具。抽取挂错实体（如「鉴权」pref `about`→TriviumDB）排更后。
+其后仍先核、后面；不要开图谱 / Mnemon / autoRecall / OV / 本地 embedding / 第五工具。TDB `expandLabels` / `getIncomingEdges` 仍绕开，不挡插件。
 
 ### 待 live 验收（暂存，未开口不跑）
 
@@ -321,6 +331,13 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 6. Settings 能搜、能归档，归档后 find 不再返回。
 7. P2 抽取 pending 重放后，E/P/D 题能命中；空库对照无耐久命中。X1（tool 失败再成功）live 仍缺，不挡已完成的 P2。
 8. **P4 实体锚定：** 会话 B `ctx_find("AuthGateway")` 给出未过期决策/偏好（邻居正文可无实体名）；过期 `until` 决策默认隐藏；`ctx_find("AuthGateway 的决策")` 仍能锚定；不拖未连边的无关 pref（如 pnpm）。
+9. **入边 path：** `ctx_find("AuthGateway")` 的 entity 行 path 含 `<-about-` / `<-decided-`，**不含**过期决策入边；`ctx_find("周五")` 时实体 path 仍可见该过期入边。
+10. **`ctx_read`：** 读 AuthGateway 的 JSON 含 `incoming`，其中有 about/decided（及有对象的 fixed）。
+11. **`same_as`：** 旧决策 `same_as`→新决策后，用旧决策正文 `ctx_find` 能拿到留存节点。
+12. **抽取挂边：** 「记住，本仓库鉴权走 header X。TriviumDB 是内核。」抽出的鉴权 pref **不** `about`→TriviumDB；「记住，AuthGateway 日志走 header X。」则 `about`→AuthGateway。
+13. **经验扩邻：** 对某实体有 `fixed`/`broke` 的 experience，在该实体上 `ctx_find` 能扩到它，实体 path 含 `<-fixed-` 或 `<-broke-`。
+14. **Settings 面：** 能展开业务边邻居；AuthGateway 上「只看挂在这上面的」能看到未过期决策/偏好、看不到未连边 pnpm；过期决策默认不在列表，勾选后可见；页上能区分归档 vs 删除。
+15. **短地图：** session-start 仍 ≤400 token，named 里能看到带 `until` 的未过期决策；默认 autoRecall 仍关。
 
 ### TDB 引擎缺口（可问作者 / 可提 PR）
 

@@ -8,7 +8,7 @@ One `.tdb` file per workspace. No extra server. MIT license.
 
 ## Status
 
-**P4** — Kernel find: business-edge ranking and stale `until` filter. Auto-recall stays **off**. See [PLAN.md](./PLAN.md).
+**P4** — Kernel find + Settings one-pager (neighbors, entity filter, stale toggle). Auto-recall stays **off**. See [PLAN.md](./PLAN.md).
 
 ## Tools
 
