@@ -2,7 +2,7 @@
 
 DeepSeek Harness 的**进程内图记忆内核**。按节点和边记，按需读。每个工作区一个 `.tdb` 文件，不另起服务。MIT。
 
-不是 Mnemon / OpenViking 那种记忆工作台。四个工具，默认几乎不往窗口里灌。
+四个工具，默认几乎不往窗口里灌。
 
 > **快速安装**（已有 `dsh web`）：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区。设置页会出现「Trivium 记忆」。
 
