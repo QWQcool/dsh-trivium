@@ -2,6 +2,7 @@
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
 > 状态：**v0.3.0**。内核仍是四工具 + 短地图；Settings 增加只读 Markdown 导出与 WorkBuddy MEMORY.md 一次性严导入；抽取/导入每批 ≤3000 字。Live 新面回家再测。  
+> 下一刀面：**会话图**（compaction 情节方框 + 可选记忆芯片），规划见 [`PLAN-session-map.md`](./PLAN-session-map.md)。不是记忆图谱工作台。  
 > 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.3.0`](https://www.npmjs.com/package/dsh-trivium)。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.6`（必须钉死）。
 
@@ -241,7 +242,8 @@ Settings 一页「Trivium 记忆」：
 - 开关：注入策略三选一（关 / `autoRecall` / 实体名折中，默认关）、抽取、远程 embedding（默认关，手填 URL）
 - 显示当前 `.tdb` 路径与节点数
 
-不在第一期做：图谱可视化、Mnemon 式工作台、记忆编辑器富文本、本地 embedding。能看见、能改、能归档，就满足「人可纠正脏记忆」。
+不在第一期做：记忆图谱工作台、Mnemon 式编辑器、本地 embedding。能看见、能改、能归档，就满足「人可纠正脏记忆」。  
+情节方框（compaction / fork）是另一面，见 [`PLAN-session-map.md`](./PLAN-session-map.md)，不要和记忆列表揉在一起。
 
 ---
 
@@ -317,7 +319,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - **`ctx_read` 入边** — 返回 `incoming[]`（from/label/type/l0），全文读实体时能看见谁 `about`/`decided`/`broke`/`fixed` 过来。
 - **抽取挂边** — preference 的 `about` 只取 **span 内**专有名，不再因邻句「TriviumDB 是内核」误挂。experience 从 fail/fix（或同 turn 用户句）取 `linkName` 并 `fixed`。
 
-其后仍先核、后面；不要开图谱 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。TDB `expandLabels` / `getIncomingEdges` 仍绕开，等引擎露出再换。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。
+其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。情节会话图按 [`PLAN-session-map.md`](./PLAN-session-map.md) 开，不在 Settings 里做。TDB `expandLabels` / `getIncomingEdges` 仍绕开，等引擎露出再换。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。
 
 ### 待 live 验收（新面回家再测）
 
@@ -391,6 +393,7 @@ dsh-trivium/                    # GitHub QWQcool/dsh-trivium
   scripts/smoke-p5.mjs
   scripts/smoke-p6.mjs
   PLAN.md
+  PLAN-session-map.md           # 会话图（情节方框 + 芯片）
   README.md
   LICENSE
 ```

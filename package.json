@@ -23,7 +23,8 @@
     "client": {
       "inject": [
         "@deepseek-ai/dsh-client-runtime",
-        "@deepseek-ai/dsh-client-ui-settings"
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-conversation"
       ],
       "platform": "web"
     }
@@ -37,6 +38,9 @@
     "smoke-p4": "node scripts/smoke-p4.mjs",
     "smoke-p5": "node scripts/smoke-p5.mjs",
     "smoke-p6": "node scripts/smoke-p6.mjs",
+    "smoke-p7": "node scripts/smoke-p7.mjs",
+    "smoke-p8": "node scripts/smoke-p8.mjs",
+    "smoke-p9": "node scripts/smoke-p9.mjs",
     "verify-live-p2": "node scripts/verify-live-p2.mjs"
   },
   "engines": {
