@@ -1,7 +1,7 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**P4 内核进行中**（实体名锚定 → 业务边未过期邻居；find 按业务边排序、过期 `until` 默认过滤）。P3 搜索已落地。  
+> 状态：**P4 内核进行中**（实体名锚定已落地；下一刀 = 锚点入边写进 path）。Live 验收清单已暂存，未开口不跑。P3 搜索已落地。  
 > 代码：`C:\Users\Administrator\Desktop\dsh-trivium`（远端 `QWQcool/dsh-trivium`）。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.6`（必须钉死）。
 
@@ -302,7 +302,25 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - 业务边（`about`/`decided`/`broke`/`fixed`）权重大于 `in_workspace`，find 排序上提有业务边的命中
 - 决策写入 `until` 的同时尽量解析 `untilAt`；**过期决策默认不出现在 find 里**，除非查询本身在问这个期限（如 `周五` / `下周`）
 - 边权写入 TDB（`in_workspace=0.15`，业务边≈1）；引擎扩散若还不按 label 过滤，插件层继续只沿业务边扩 1 跳
-- **实体名锚定** — query 精确等于或包含已有 entity 的 `name`/`aliases` 时，将该实体当锚点，只沿 `about`/`decided`/`broke`/`fixed` 扩 1 跳入/出边；邻居正文不必含 query。过期 `until` 仍默认隐藏。不加 `ctx_find` 新参数。
+- **实体名锚定** — query 精确等于或包含已有 entity 的 `name`/`aliases` 时，将该实体当锚点，只沿 `about`/`decided`/`broke`/`fixed` 扩 1 跳入/出边；邻居正文不必含 query。过期 `until` 仍默认隐藏。不加 `ctx_find` 新参数。离线 `smoke-p4` 已锁。
+
+**P4 下一刀（开发，未开工）：锚点入边写进 path。**  
+`formatHit` 现在只展示出边，实体命中往往只有 `in_workspace`；邻居自己的 path 才有 `about`/`decided`。下一刀在插件层把入边（仅业务 label）补进该命中的 path（例如 `<-decided-12(先别动…)`），仍不新加 `ctx_find` 参数，仍不调 TDB `getIncomingEdges`。回归：`find("AuthGateway")` 的 entity 行 path 含入边 about/decided。
+
+其后仍先核、后面；不要开图谱 / Mnemon / autoRecall / OV / 本地 embedding / 第五工具。抽取挂错实体（如「鉴权」pref `about`→TriviumDB）排更后。
+
+### 待 live 验收（暂存，未开口不跑）
+
+只报缺陷、不加功能。钉 `@deepseek-ai/dsh@0.1.0-rc.6`。同一 `.tdb` 不要被两个 Node 进程同时打开（验收时不要再跑会 `openWorkspaceDb` 的 smoke）。脚本：`npm run verify-live-p2`（以及 `scripts/verify-live.mjs`）。
+
+1. 插件已挂 web profile；不装 Python、不另开记忆端口。
+2. 短地图 ≤400 token；默认 `autoRecall` 关；Trajectory 能看到 `dsh-trivium` 注入。
+3. TDB / 抽取失败时对话仍可用。
+4. 会话 A 记下「鉴权走 header X」并连实体；会话 B `ctx_find("鉴权")` 命中，path 含该实体。
+5. 闲聊 / 一次性改文件 / 密钥 **不** 变成 preference；`「鉴权」` 不成实体。
+6. Settings 能搜、能归档，归档后 find 不再返回。
+7. P2 抽取 pending 重放后，E/P/D 题能命中；空库对照无耐久命中。X1（tool 失败再成功）live 仍缺，不挡已完成的 P2。
+8. **P4 实体锚定：** 会话 B `ctx_find("AuthGateway")` 给出未过期决策/偏好（邻居正文可无实体名）；过期 `until` 决策默认隐藏；`ctx_find("AuthGateway 的决策")` 仍能锚定；不拖未连边的无关 pref（如 pnpm）。
 
 ### TDB 引擎缺口（可问作者 / 可提 PR）
 
