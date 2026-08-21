@@ -75,6 +75,23 @@ try {
   syncForkLineage(db, { childSessionId: child, parentSessionId: sessionId, atSeq: 124 });
   const afterFork = listEpisodeRecords(db, sessionId).filter((e) => e.kind === "checkpoint" || e.kind === "fork");
   assert(afterFork.filter((e) => e.atSeq === 124).length === 1, "fork at checkpoint atSeq does not double-write");
+  assert(!afterFork.some((e) => e.kind === "fork"), "fork at existing checkpoint does not insert a dummy fork box");
+
+  const lonely = "sess-p7-lonely";
+  const lonelyChild = "sess-p7-lonely-child";
+  ensureTail(db, lonely, { atSeq: 0, summary: "" });
+  const beforeLonely = listEpisodeRecords(db, lonely).length;
+  syncForkLineage(db, { childSessionId: lonelyChild, parentSessionId: lonely, atSeq: 534 });
+  const lonelyRows = listEpisodeRecords(db, lonely);
+  assert(lonelyRows.length === beforeLonely, "fork from a single tail does not insert a cut box");
+  assert(!lonelyRows.some((e) => e.kind === "fork"), "single-box fork has no dummy fork episode");
+  const lonelySnap = sessionMapSnapshot(db, lonely);
+  const tailId = lonelyRows.find((e) => e.kind === "tail")?.id;
+  const childTail = listEpisodeRecords(db, lonelyChild).find((e) => e.kind === "tail");
+  assert(
+    lonelySnap.edges.some((e) => e.label === "forks_from" && e.from === childTail?.id && e.to === tailId),
+    "single-box fork attaches to the existing tail",
+  );
   const snap = sessionMapSnapshot(db, sessionId);
   assert(
     snap.edges.some((e) => e.label === "forks_from") && snap.edges.some((e) => e.label === "continues"),
