@@ -8,7 +8,7 @@ DeepSeek Harness 的跨会话图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前在 `@deepseek-ai/dsh@0.1.0-rc.6` 上测试。
+> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前测试宿主：`@deepseek-ai/dsh@0.1.0-rc.8`（从 rc.6 跟过来：设置里的「Trivium 记忆」、新会话短地图、跨会话 `ctx_find`、会话图标签均可用）。
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -20,7 +20,7 @@ dsh plugin --profile web add dsh-trivium
 <workspace>/.dsh/trivium.tdb
 ```
 
-用 [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart) 的，双击启动就会装上，不必再执行上面这条。
+用 [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart) 的（启动器已钉 `0.1.0-rc.8`），双击启动就会装上，不必再执行上面这条。
 
 本地跟源码联调：
 
@@ -109,7 +109,7 @@ dsh plugin --profile web add dsh-trivium
 
 ## 界面截图
 
-以下都是本机 DSH Web（rc.6）里的实测画面。
+以下入口在本机 DSH Web（`0.1.0-rc.8`）上仍在。截图摄于较早的 rc.6 界面。
 
 ### 会话 — `ctx_find("鉴权")`
 
@@ -145,11 +145,29 @@ dsh plugin --profile web add dsh-trivium
 - Markdown 导出是给人看的，不能再解析回去。WorkBuddy 导入是一次性，不是双向同步。
 - 会话图只投影 compaction 与 fork，不会按消息条数自己切方框。
 - 改插件设置后需要重启 `dsh web`。
+- 宿主升到 rc.8 后，DSH 自己的旧会话库可能打不开（官方 SQLite 格式不兼容）。工作区里的 `.tdb` 图记忆还在；对不上号的旧会话图方框可以当情节残留，不影响 `ctx_find`。
+
+---
+
+## 更新说明
+
+**0.4.1** — 宿主钉到 `@deepseek-ai/dsh@0.1.0-rc.8`。功能与 0.4.0 相同。已在 rc.8 上确认：设置「Trivium 记忆」、新会话短地图、跨会话 `ctx_find`、会话图标签。
+
+**0.4.0** — 会话图、记忆芯片、从检查点 fork。
+
+---
+
+## 发布信息
+
+**0.4.1** — 宿主钉到 `@deepseek-ai/dsh@0.1.0-rc.8`。功能与 0.4.0 相同。已在 rc.8 上确认：设置「Trivium 记忆」、新会话短地图、跨会话 `ctx_find`、会话图标签。
+
+**0.4.0** — 会话图、记忆芯片、从检查点 fork。
 
 ---
 
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.1`](https://www.npmjs.com/package/dsh-trivium)
+- 测试宿主：`@deepseek-ai/dsh@0.1.0-rc.8`
 - License: MIT（依赖 [TriviumDB](https://github.com/TriviumDB/triviumdb) 为 Apache-2.0）
