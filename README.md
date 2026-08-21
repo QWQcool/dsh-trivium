@@ -55,8 +55,8 @@ dsh plugin --profile web add dsh-trivium
 - **跨会话** — 会话 A 记下「鉴权走 header X」，会话 B 调用 `ctx_find("鉴权")` 命中，并带上它连着谁（`about` / `decided` / `broke` / `fixed`）。
 - **默认安静** — 新会话只注入一张短地图（≤400 token）。模型要用再调工具，不会每一步灌满。
 - **会话图** — compaction 切一段就收成一个方框；点方框用 DSH 原生 fork 开分支；勾选的记忆芯片从当前这段的下一轮注入。
-- **人能改错** — 设置 → Trivium 记忆：搜、看邻居、改名 / 正文、合并、归档或删除。
-- **抽取偏严** — 闲聊、一次性改文件、密钥不入库。
+- **人能改错** — 会话图芯片条可新增、归档、删除；设置页管搜、改名 / 正文、合并、全局开关。
+- **抽取偏严** — 闲聊、一次性改文件、密钥**不会从对话自动入库**。芯片「新增」按你写的存（点一次整段一条）。
 - **可选 embedding** — 默认关。官方 DeepSeek 对话接口没有 embeddings；可填 OpenAI 兼容地址。
 
 ### 四个工具
@@ -74,7 +74,7 @@ dsh plugin --profile web add dsh-trivium
 
 ## 会话图
 
-入口：当前会话标题栏 **对话 / 轨迹 / 会话图**。这是情节图，不是记忆编辑器；改错的节点仍走设置页。
+入口：当前会话标题栏 **对话 / 轨迹 / 会话图**。这是情节图，不是记忆编辑器；改名、合并、全局开关仍走设置页。芯片条上可以直接新增、归档、删除。
 
 ### 方框
 
@@ -101,6 +101,9 @@ dsh plugin --profile web add dsh-trivium
 |---|---|
 | 勾上某条 | 当前这段里你再发的**下一条**带上它（L0，≤300 token） |
 | 取消勾选 | 再下一轮不再带 |
+| 新增 | 点一次写入一条；整段粘贴也是一条 |
+| 选择 → 归档 | 软删除：find / 短地图 / 芯片不再出现，节点还在 `.tdb` |
+| 选择 → 删除 | 从 `.tdb` 去掉，不可恢复 |
 | 已经发出去的轮次 | 不回写 |
 
 芯片按会话隔离。新开会话、fork 出的子会话默认都不勾；需要的话在分叉对话框旁打开「分叉时继承钉选」，或到子会话里重新勾。短地图仍在 session-start 自动带，不占芯片位。建议标记只是提示，不会自动勾上。
@@ -140,7 +143,7 @@ dsh plugin --profile web add dsh-trivium
 ## 限制
 
 - 模型不调 `ctx_find`、也不勾芯片时，窗口里主要是开场短地图。
-- 抽取会漏；脏数据要在设置里改或归档。
+- 抽取会漏；脏数据可在芯片条归档 / 删除，或到设置里改、合并。
 - 同一个 `.tdb` 不要两个 Node 进程同时打开（正常只开一个 `dsh web` 即可）。
 - Markdown 导出是给人看的，不能再解析回去。WorkBuddy 导入是一次性，不是双向同步。
 - 会话图只投影 compaction 与 fork，不会按消息条数自己切方框。
@@ -151,13 +154,7 @@ dsh plugin --profile web add dsh-trivium
 
 ## 更新说明
 
-**0.4.1** — 宿主钉到 `@deepseek-ai/dsh@0.1.0-rc.8`。功能与 0.4.0 相同。已在 rc.8 上确认：设置「Trivium 记忆」、新会话短地图、跨会话 `ctx_find`、会话图标签。
-
-**0.4.0** — 会话图、记忆芯片、从检查点 fork。
-
----
-
-## 发布信息
+**0.4.2** — 会话图芯片条可新增（整段粘贴一条）、批量归档 / 删除。自动抽取仍偏严；芯片新增按你写的入库。
 
 **0.4.1** — 宿主钉到 `@deepseek-ai/dsh@0.1.0-rc.8`。功能与 0.4.0 相同。已在 rc.8 上确认：设置「Trivium 记忆」、新会话短地图、跨会话 `ctx_find`、会话图标签。
 
@@ -168,6 +165,6 @@ dsh plugin --profile web add dsh-trivium
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.1`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.2`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.0-rc.8`
 - License: MIT（依赖 [TriviumDB](https://github.com/TriviumDB/triviumdb) 为 Apache-2.0）
