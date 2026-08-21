@@ -155,6 +155,8 @@ dsh plugin --profile web add dsh-trivium
 
 ## 更新说明
 
+**0.4.4** — 依赖 `triviumdb@0.7.5`：入边、按 label 扩邻、按 label 删边走引擎 API，不再全表扫边。find / 会话图行为不变。
+
 **0.4.3** — 会话图「更新检查点」：把当前对话里 DSH 已有的压缩标记和侧边栏 fork 补进图，给装插件之前的旧会话用。没压过的会话仍然只有「后续」。
 
 **0.4.2** — 会话图芯片条可新增（整段粘贴一条）、批量归档 / 删除。自动抽取仍偏严；芯片新增按你写的入库。
@@ -168,6 +170,6 @@ dsh plugin --profile web add dsh-trivium
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.3`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.4`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.0-rc.8`
-- License: MIT（依赖 [TriviumDB](https://github.com/TriviumDB/triviumdb) 为 Apache-2.0）
+- License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）

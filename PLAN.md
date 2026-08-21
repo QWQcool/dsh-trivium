@@ -1,9 +1,9 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**v0.4.3**。内核仍是四工具 + 短地图；会话标题栏增加「会话图」（compaction 方框、DSH fork、可选记忆芯片；芯片条可新增 / 归档 / 删除；旧会话可更新检查点）。Settings 仍管库、改名合并、开关。  
+> 状态：**v0.4.4**。内核仍是四工具 + 短地图；会话标题栏增加「会话图」（compaction 方框、DSH fork、可选记忆芯片；芯片条可新增 / 归档 / 删除；旧会话可更新检查点）。Settings 仍管库、改名合并、开关。存储钉 `triviumdb@0.7.5`（入边 / label 扩邻 / 按 label 删边）。  
 > 情节图规划见 [`PLAN-session-map.md`](./PLAN-session-map.md)。不是记忆图谱工作台。  
-> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.3`](https://www.npmjs.com/package/dsh-trivium)。  
+> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.4`](https://www.npmjs.com/package/dsh-trivium)。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.0-rc.8`（必须钉死；rc.6 上验收过内核，rc.8 上复测设置 / 短地图 / 跨会话 find / 会话图标签）。
 
 ---
@@ -312,14 +312,14 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - 边权写入 TDB（`in_workspace=0.15`，业务边≈1）；引擎扩散若还不按 label 过滤，插件层继续只沿业务边扩 1 跳
 - **实体名锚定** — query 精确等于或包含已有 entity 的 `name`/`aliases` 时，将该实体当锚点，只沿 `about`/`decided`/`broke`/`fixed` 扩 1 跳入/出边；邻居正文不必含 query。过期 `until` 仍默认隐藏。不加 `ctx_find` 新参数。离线 `smoke-p4` 已锁。
 
-- **锚点入边 path** — `formatHit` / Settings 列表把入边（仅 `about`/`decided`/`broke`/`fixed`）写成 `<-decided-12(先别动…)`，与出边 `label->id` 并列。不加工具参数，仍自己扫入边。`find("AuthGateway")` 的 entity 行 path 含 about/decided 入边。
+- **锚点入边 path** — `formatHit` / Settings 列表把入边（仅 `about`/`decided`/`broke`/`fixed`）写成 `<-decided-12(先别动…)`，与出边 `label->id` 并列。入边走 `getIncomingEdges`。`find("AuthGateway")` 的 entity 行 path 含 about/decided 入边。
 - **入边参与排序** — 实体只有出边 `in_workspace` 时，仍按入边业务边给 `rankBoost`，避免锚点排在未连边噪声后面。
 - **过期入边默认不进 path** — 与 find 藏过期决策一致；query 在问期限时，实体 path 仍可出现该入边。
 - **`same_as` 跟随** — 命中旧节点且存在 `same_as`→留存节点时，find 一并返回留存节点（不把 `same_as` 当业务扩散边）。
 - **`ctx_read` 入边** — 返回 `incoming[]`（from/label/type/l0），全文读实体时能看见谁 `about`/`decided`/`broke`/`fixed` 过来。
 - **抽取挂边** — preference 的 `about` 只取 **span 内**专有名，不再因邻句「TriviumDB 是内核」误挂。experience 从 fail/fix（或同 turn 用户句）取 `linkName` 并 `fixed`。
 
-其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。情节会话图按 [`PLAN-session-map.md`](./PLAN-session-map.md) 开，不在 Settings 里做。TDB `expandLabels` / `getIncomingEdges` 仍绕开，等引擎露出再换。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。
+其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。情节会话图按 [`PLAN-session-map.md`](./PLAN-session-map.md) 开，不在 Settings 里做。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。v0.4.4：接 `triviumdb@0.7.5` 的 `getIncomingEdges` / `neighbors(..., labels)` / `unlink(..., label)`。
 
 ### 待 live 验收（新面回家再测）
 
@@ -341,16 +341,16 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 14. **Settings 面：** 能展开业务边邻居；AuthGateway 上「只看挂在这上面的」能看到未过期决策/偏好、看不到未连边 pnpm；过期决策默认不在列表，勾选后可见；页上能区分归档 vs 删除。
 15. **短地图：** session-start 仍 ≤400 token，named 里能看到带 `until` 的未过期决策；默认 autoRecall 仍关。
 
-### TDB 引擎缺口（可问作者 / 可提 PR）
+### TDB 引擎（`triviumdb@0.7.5`）
 
-插件能绕开，但核要「图检索一次返回」时会顶到这些 API：
+已从全表扫描切到引擎 API（旧绑定仍可回退）：
 
-1. **`neighbors(id, depth)` / `search*` 的 expand 不能按边 label 白名单扩散** — `JsSearchConfig` 没有 `expandLabels`。现在只能自己扫边，否则 `in_workspace` 会把整库粘在一起。希望：`neighbors(id, { depth, labels })` 或 search `expandLabels: ["about","decided"]`。
-2. **没有入边 API** — `getEdges` 只有出边；反向 `about`/`decided` 要扫 `allNodeIds`。README 写过 Reverse Hash Net，Node 绑定没露出 `getIncomingEdges(id)`。
-3. **`unlink(src, dst)` 不能按 label 删一条边** — 两点之间多种 label 会一起断。
-4. **`searchHybrid`/`searchAdvanced` 的图扩散是否尊重 `weight`、负权抑制，文档未写清** — 我们已写入不同 weight，但 find 排序仍在插件层做。
-5. **payload 日期没有一等过滤** — `untilAt` 是我们的 JSON。TQL `FIND { untilAt: { $lt: "..." } }` 若对 ISO 字符串/`$lt` 可用，可少扫节点；需要确认索引 + 比较规则。
-6. **零向量 hybrid** — 全 0 向量时扩散/余弦几乎无意义，这是我们没用 embedding，不是引擎 bug。
+1. **入边** — `getIncomingEdges(id, label?)`；find path / `ctx_read` incoming / merge 入边改写不再扫 `allNodeIds`。
+2. **按 label 扩邻** — `neighbors(id, depth, labels)` 只走 `about`/`decided`/`broke`/`fixed`，避开 `in_workspace` 把整库粘在一起。
+3. **按 label 删边** — `unlink(src, dst, label?)`；`dropLink` 只断指定关系。
+4. **`JsSearchConfig.expandLabels` 已有** — find 排序、过期 `until` 仍在插件层（查询在问期限时要放行），暂不把 expand 交给 `searchHybrid`。
+5. **payload 日期** — 引擎有 `$lt` / `$before`；过期过滤仍看我们的 `untilAt` JSON，因为还要配合 `queryMentionsUntil`。
+6. **零向量 hybrid** — 全 0 向量时扩散/余弦几乎无意义，这是我们默认没开 embedding，不是引擎 bug。
 
 对标 OpenViking 仍不做。本地 embedding 仍后置。
 
@@ -374,7 +374,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 
 ```
 dsh-trivium/                    # GitHub QWQcool/dsh-trivium
-  package.json                  # name: dsh-trivium  version 0.4.3  MIT
+  package.json                  # name: dsh-trivium  version 0.4.4  MIT
   cordis.patch.yml
   lib/index.js
   lib/store.js

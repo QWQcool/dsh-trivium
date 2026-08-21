@@ -9,7 +9,9 @@ import { join } from "node:path";
 import { EDGE_LABELS } from "../lib/schema.js";
 import {
   closeAll,
+  dropLink,
   formatHit,
+  hasEdge,
   insertNode,
   listIncomingBusiness,
   openWorkspaceDb,
@@ -253,6 +255,17 @@ try {
   assert(
     bySame.some((h) => h.id === newDec),
     "find follows same_as to the canonical node",
+  );
+  assert(hasEdge(db, silentPref, entity, EDGE_LABELS.about), "about edge exists before labeled unlink");
+  assert(
+    (db.get(silentPref)?.edges || []).some((e) => e.label === EDGE_LABELS.inWorkspace),
+    "in_workspace exists before labeled unlink",
+  );
+  assert(dropLink(db, silentPref, entity, EDGE_LABELS.about), "labeled unlink drops about only");
+  assert(!hasEdge(db, silentPref, entity, EDGE_LABELS.about), "about edge gone after labeled unlink");
+  assert(
+    (db.get(silentPref)?.edges || []).some((e) => e.label === EDGE_LABELS.inWorkspace),
+    "labeled unlink keeps in_workspace",
   );
 
   closeAll();
