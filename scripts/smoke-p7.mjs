@@ -6,7 +6,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "no
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { BUSINESS_EDGES, EDGE_LABELS, NODE_TYPES } from "../lib/schema.js";
-import { recordCheckpoint, ensureTail, listEpisodeRecords, sessionMapSnapshot, syncForkLineage } from "../lib/episode.js";
+import { backfillSessionMap, recordCheckpoint, ensureTail, listEpisodeRecords, sessionMapSnapshot, syncForkLineage } from "../lib/episode.js";
 import { buildPinInject, listChips, setSessionPins } from "../lib/pins.js";
 import { SETTINGS_FILE } from "../lib/settings.js";
 import {
@@ -96,6 +96,33 @@ try {
   assert(
     snap.edges.some((e) => e.label === "forks_from") && snap.edges.some((e) => e.label === "continues"),
     "map snapshot has continues and forks_from",
+  );
+
+  const oldSess = "sess-p7-legacy";
+  const oldChild = "sess-p7-legacy-child";
+  const filled = backfillSessionMap(db, {
+    sessionId: oldSess,
+    compactations: [
+      { atSeq: 40, compactionId: "cmp-old", summary: "旧会话已经压过一次" },
+      { atSeq: 40, summary: "duplicate seq ignored" },
+    ],
+    forks: [{ childSessionId: oldChild, parentSessionId: oldSess, atSeq: 40 }],
+  });
+  assert(filled.ok && filled.checkpoints === 1, "backfill writes one checkpoint per atSeq");
+  assert(filled.forks === 1, "backfill projects the fork link");
+  const againFill = backfillSessionMap(db, {
+    sessionId: oldSess,
+    compactations: [{ atSeq: 40, compactionId: "cmp-old", summary: "旧会话已经压过一次" }],
+    forks: [{ childSessionId: oldChild, parentSessionId: oldSess, atSeq: 40 }],
+  });
+  const oldChecks = listEpisodeRecords(db, oldSess).filter((e) => e.kind === "checkpoint");
+  assert(oldChecks.length === 1 && againFill.checkpoints === 1, "backfill is idempotent on the same atSeq");
+  const oldChildTail = listEpisodeRecords(db, oldChild).find((e) => e.kind === "tail");
+  assert(
+    againFill.edges.some(
+      (e) => e.label === "forks_from" && e.from === oldChildTail?.id && e.to === oldChecks[0].id,
+    ),
+    "backfill fork hangs off the reconstructed checkpoint",
   );
 
   const pref = insertNode(db, {

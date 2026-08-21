@@ -54,7 +54,7 @@ dsh plugin --profile web add dsh-trivium
 
 - **跨会话** — 会话 A 记下「鉴权走 header X」，会话 B 调用 `ctx_find("鉴权")` 命中，并带上它连着谁（`about` / `decided` / `broke` / `fixed`）。
 - **默认安静** — 新会话只注入一张短地图（≤400 token）。模型要用再调工具，不会每一步灌满。
-- **会话图** — compaction 切一段就收成一个方框；点方框用 DSH 原生 fork 开分支；勾选的记忆芯片从当前这段的下一轮注入。
+- **会话图** — compaction 切一段就收成一个方框；旧会话可点「更新检查点」补上已经发生过的压缩 / 分叉；勾选的记忆芯片从当前这段的下一轮注入。
 - **人能改错** — 会话图芯片条可新增、归档、删除；设置页管搜、改名 / 正文、合并、全局开关。
 - **抽取偏严** — 闲聊、一次性改文件、密钥**不会从对话自动入库**。芯片「新增」按你写的存（点一次整段一条）。
 - **可选 embedding** — 默认关。官方 DeepSeek 对话接口没有 embeddings；可填 OpenAI 兼容地址。
@@ -80,6 +80,7 @@ dsh plugin --profile web add dsh-trivium
 
 - 没压过上下文：只有一个「后续」方框。
 - 一次成功的 compaction 之后：左边历史检查点（摘要来自 DSH），右边仍是「后续」。
+- 装插件之前已经压过 / 分过叉的旧会话：点「更新检查点」，从当前对话里的压缩标记和侧边栏分叉补方框（可重复点，不会双写）。没压过就仍只有「后续」——会话长、工具多不等于 DSH 已经压缩（默认约窗口 80% 才自动压）。
 - 方框自己不压缩。质量来自 DSH 已经做的摘要替换；fork 时不会再总结一遍。
 - 「改名」只改方框标题，不动 DSH 摘要。点方框可跳回对话里对应的检查点，或打开轨迹。
 
@@ -146,13 +147,15 @@ dsh plugin --profile web add dsh-trivium
 - 抽取会漏；脏数据可在芯片条归档 / 删除，或到设置里改、合并。
 - 同一个 `.tdb` 不要两个 Node 进程同时打开（正常只开一个 `dsh web` 即可）。
 - Markdown 导出是给人看的，不能再解析回去。WorkBuddy 导入是一次性，不是双向同步。
-- 会话图只投影 compaction 与 fork，不会按消息条数自己切方框。
+- 会话图只投影 compaction 与 fork，不会按消息条数自己切方框。窗口没到 DSH 压缩线时，「更新检查点」也补不出历史方框。
 - 改插件设置后需要重启 `dsh web`。
 - 宿主升到 rc.8 后，DSH 自己的旧会话库可能打不开（官方 SQLite 格式不兼容）。工作区里的 `.tdb` 图记忆还在；对不上号的旧会话图方框可以当情节残留，不影响 `ctx_find`。
 
 ---
 
 ## 更新说明
+
+**0.4.3** — 会话图「更新检查点」：把当前对话里 DSH 已有的压缩标记和侧边栏 fork 补进图，给装插件之前的旧会话用。没压过的会话仍然只有「后续」。
 
 **0.4.2** — 会话图芯片条可新增（整段粘贴一条）、批量归档 / 删除。自动抽取仍偏严；芯片新增按你写的入库。
 
@@ -165,6 +168,6 @@ dsh plugin --profile web add dsh-trivium
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.2`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.3`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.0-rc.8`
 - License: MIT（依赖 [TriviumDB](https://github.com/TriviumDB/triviumdb) 为 Apache-2.0）
