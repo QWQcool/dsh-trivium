@@ -6,7 +6,8 @@
  *
  * Also junctions @deepseek-ai/dsh-tools and dsh-llm into this repo's
  * node_modules so Node's realpath walk (junction → Desktop) still finds
- * the profile fallback peers.
+ * the profile peers. Replaces a nested real copy (exact-pin leftover)
+ * with a junction so BlockAssembler instanceof matches the host.
  */
 import {
   existsSync,
@@ -14,6 +15,7 @@ import {
   mkdirSync,
   readFileSync,
   readlinkSync,
+  rmSync,
   symlinkSync,
   unlinkSync,
   writeFileSync,
@@ -64,7 +66,16 @@ function removeLink(path) {
   unlinkSync(path);
 }
 
-function junction(from, to) {
+function removeTreeOrLink(path) {
+  if (isLink(path)) {
+    removeLink(path);
+    return;
+  }
+  if (!existsSync(path)) return;
+  rmSync(path, { recursive: true, force: true });
+}
+
+function junction(from, to, { replace = false } = {}) {
   mkdirSync(dirname(to), { recursive: true });
   if (isLink(to)) {
     try {
@@ -74,7 +85,8 @@ function junction(from, to) {
     }
     removeLink(to);
   } else if (existsSync(join(to, "package.json"))) {
-    return;
+    if (!replace) return;
+    removeTreeOrLink(to);
   } else if (existsSync(to)) {
     fail(`refusing to replace non-link path ${to}`);
   }
@@ -110,7 +122,7 @@ for (const name of PEERS) {
     console.warn(`[dsh-trivium] peer not found in DSH profile, skip junction: ${name}`);
     continue;
   }
-  junction(target, join(ROOT, "node_modules", name));
+  junction(target, join(ROOT, "node_modules", name), { replace: true });
   console.log(`[dsh-trivium] peer   ${name} -> ${target}`);
 }
 

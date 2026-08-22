@@ -6,7 +6,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "no
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { BUSINESS_EDGES, EDGE_LABELS, NODE_TYPES } from "../lib/schema.js";
-import { backfillSessionMap, recordCheckpoint, ensureTail, listEpisodeRecords, sessionMapSnapshot, syncForkLineage } from "../lib/episode.js";
+import { backfillSessionMap, cutSessionMap, recordCheckpoint, ensureTail, listEpisodeRecords, sessionMapSnapshot, syncForkLineage } from "../lib/episode.js";
 import { buildPinInject, listChips, setSessionPins } from "../lib/pins.js";
 import { SETTINGS_FILE } from "../lib/settings.js";
 import {
@@ -149,6 +149,25 @@ try {
 
   ensureTail(db, sessionId);
   assert(listEpisodeRecords(db, sessionId).filter((e) => e.kind === "tail").length === 1, "ensureTail still one tail");
+
+  const cutSess = "sess-p7-cut";
+  const cut1 = cutSessionMap(db, { sessionId: cutSess, atSeq: 40, summary: "先测三个数据集" });
+  assert(cut1.ok && cut1.created, "manual cut creates a checkpoint");
+  const cutChain = (cut1.nodes || []).filter((n) => n.sessionId === cutSess);
+  assert(cutChain.some((n) => n.kind === "checkpoint" && n.atSeq === 40), "cut writes historical box");
+  assert(cutChain.some((n) => n.kind === "tail"), "cut keeps a tail box");
+  const cut2 = cutSessionMap(db, { sessionId: cutSess, atSeq: 40, summary: "重复切" });
+  assert(cut2.ok && cut2.created === false, "same atSeq does not add another box");
+  assert(
+    listEpisodeRecords(db, cutSess).filter((e) => e.kind === "checkpoint").length === 1,
+    "manual cut is idempotent on atSeq",
+  );
+  const cut3 = cutSessionMap(db, { sessionId: cutSess, atSeq: 80, summary: "再切一格" });
+  assert(cut3.ok && cut3.created, "later atSeq extends the chain");
+  assert(
+    listEpisodeRecords(db, cutSess).filter((e) => e.kind === "checkpoint").length === 2,
+    "second cut adds another historical box",
+  );
 } catch (err) {
   failed += 1;
   console.error("FAIL exception " + (err && err.stack ? err.stack : err));

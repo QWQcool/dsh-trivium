@@ -8,7 +8,7 @@ DeepSeek Harness 的跨会话图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前测试宿主：`@deepseek-ai/dsh@0.1.0-rc.8`（从 rc.6 跟过来：设置里的「Trivium 记忆」、新会话短地图、跨会话 `ctx_find`、会话图标签均可用）。
+> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（`dsh-llm` / `dsh-tools` peer 兼容 `0.1.0-rc.8` 与 `0.1.1-rc.2`）。设置里的「Trivium 记忆」、新会话短地图、跨会话 `ctx_find`、会话图标签均可用。
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -20,7 +20,7 @@ dsh plugin --profile web add dsh-trivium
 <workspace>/.dsh/trivium.tdb
 ```
 
-用 [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart) 的（启动器已钉 `0.1.0-rc.8`），双击启动就会装上，不必再执行上面这条。
+用 [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart) 的，双击启动就会装上，不必再执行上面这条。
 
 本地跟源码联调：
 
@@ -80,7 +80,8 @@ dsh plugin --profile web add dsh-trivium
 
 - 没压过上下文：只有一个「后续」方框。
 - 一次成功的 compaction 之后：左边历史检查点（摘要来自 DSH），右边仍是「后续」。
-- 装插件之前已经压过 / 分过叉的旧会话：点「更新检查点」，从当前对话里的压缩标记和侧边栏分叉补方框（可重复点，不会双写）。没压过就仍只有「后续」——会话长、工具多不等于 DSH 已经压缩（默认约窗口 80% 才自动压）。
+- 点「生成检查点」：把当前「后续」收成左边一格，右边继续当后续。只切情节图，**不**压缩模型窗口。同一轮次再点不会双写。
+- 装插件之前已经压过 / 分过叉的旧会话：点「更新检查点」，从当前对话里的压缩标记和侧边栏分叉补方框（可重复点，不会双写）。没压过就仍只有「后续」——会话长、工具多不等于 DSH 已经压缩（默认约窗口 80% 才自动压）。要压上下文请在对话里输入 `/compact`。
 - 方框自己不压缩。质量来自 DSH 已经做的摘要替换；fork 时不会再总结一遍。
 - 「改名」只改方框标题，不动 DSH 摘要。点方框可跳回对话里对应的检查点，或打开轨迹。
 
@@ -113,7 +114,7 @@ dsh plugin --profile web add dsh-trivium
 
 ## 界面截图
 
-以下入口在本机 DSH Web（`0.1.0-rc.8`）上仍在。截图摄于较早的 rc.6 界面。
+以下入口在本机 DSH Web（`0.1.1-rc.2`）上仍在。截图摄于较早的 rc.6 界面。
 
 ### 会话 — `ctx_find("鉴权")`
 
@@ -147,13 +148,17 @@ dsh plugin --profile web add dsh-trivium
 - 抽取会漏；脏数据可在芯片条归档 / 删除，或到设置里改、合并。
 - 同一个 `.tdb` 不要两个 Node 进程同时打开（正常只开一个 `dsh web` 即可）。
 - Markdown 导出是给人看的，不能再解析回去。WorkBuddy 导入是一次性，不是双向同步。
-- 会话图只投影 compaction 与 fork，不会按消息条数自己切方框。窗口没到 DSH 压缩线时，「更新检查点」也补不出历史方框。
+- 会话图默认只投影 compaction 与 fork，不会按消息条数自己切方框。窗口没到 DSH 压缩线时，「更新检查点」也补不出历史方框；要分段请点「生成检查点」。
 - 改插件设置后需要重启 `dsh web`。
 - 宿主升到 rc.8 后，DSH 自己的旧会话库可能打不开（官方 SQLite 格式不兼容）。工作区里的 `.tdb` 图记忆还在；对不上号的旧会话图方框可以当情节残留，不影响 `ctx_find`。
 
 ---
 
 ## 更新说明
+
+**0.4.6** — 会话图可「生成检查点」：把当前「后续」收成左边一格。不触发 DSH 压缩。
+
+**0.4.5** — 宿主 peer 放宽到 `0.1.0-rc.8` 与 `0.1.1-rc.2`，不再嵌一套旧 `dsh-llm` / `dsh-tools`。
 
 **0.4.4** — 依赖 `triviumdb@0.7.5`：入边、按 label 扩邻、按 label 删边走引擎 API，不再全表扫边。find / 会话图行为不变。
 
@@ -170,6 +175,6 @@ dsh plugin --profile web add dsh-trivium
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.4`](https://www.npmjs.com/package/dsh-trivium)
-- 测试宿主：`@deepseek-ai/dsh@0.1.0-rc.8`
+- npm: [`dsh-trivium@0.4.6`](https://www.npmjs.com/package/dsh-trivium)
+- 测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（兼 `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
