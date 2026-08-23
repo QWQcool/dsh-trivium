@@ -45,7 +45,7 @@ dsh plugin --profile web add dsh-trivium
 
 ```text
 请在 DeepSeek Harness 上执行：dsh plugin --profile web add dsh-trivium
-然后重启 dsh web。设置里会出现「Trivium 记忆」，会话标题栏「对话 / 轨迹」旁会出现「会话图」。
+然后重启 dsh web。设置里会出现「Trivium 记忆」，会话标题栏「对话 / 轨迹」旁会出现「会话图」（可「生成检查点」手切方框）。
 ```
 
 ---
@@ -54,16 +54,16 @@ dsh plugin --profile web add dsh-trivium
 
 - **跨会话** — 会话 A 记下「鉴权走 header X」，会话 B 调用 `ctx_find("鉴权")` 命中，并带上它连着谁（`about` / `decided` / `broke` / `fixed`）。
 - **默认安静** — 新会话只注入一张短地图（≤400 token）。模型要用再调工具，不会每一步灌满。
-- **会话图** — compaction 切一段就收成一个方框；旧会话可点「更新检查点」补上已经发生过的压缩 / 分叉；勾选的记忆芯片从当前这段的下一轮注入。
-- **人能改错** — 会话图芯片条可新增、归档、删除；设置页管搜、改名 / 正文、合并、全局开关。
+- **会话图** — compaction 切一段就收成一个方框；没压过可点「生成检查点」手切一格（不压缩模型窗口）；旧会话可点「更新检查点」补已经发生过的压缩 / 分叉；勾选的记忆芯片从当前这段的下一轮注入。
+- **人能改错** — 会话图芯片条可新增、归档、删除；设置页管搜、改名 / 正文、合并、导入导出、全局开关。
 - **抽取偏严** — 闲聊、一次性改文件、密钥**不会从对话自动入库**。芯片「新增」按你写的存（点一次整段一条）。
-- **可选 embedding** — 默认关。官方 DeepSeek 对话接口没有 embeddings；可填 OpenAI 兼容地址。
+- **可选 embedding** — 默认关。官方 DeepSeek 对话接口没有 embeddings；可填 OpenAI 兼容地址。不开也能用：关键词 + 图遍历。
 
 ### 四个工具
 
 | 工具 | 说明 |
 |---|---|
-| `ctx_find` | 检索，返回摘要和图路径 |
+| `ctx_find` | 检索，返回 L0 摘要和图路径（含入边 `<-label-id`）。查询点到已有实体名时，还会带上未过期的 about/decided/broke/fixed 邻居。带 `until` 的过期决策默认不出现，除非查询本身在问期限（如「周五」） |
 | `ctx_read` | 按 id 读全文和入边 |
 | `ctx_remember` | 手动写入 |
 | `ctx_link` | 两点之间建有向边 |
@@ -112,6 +112,18 @@ dsh plugin --profile web add dsh-trivium
 
 ---
 
+## 设置页（Trivium 记忆）
+
+设置里的「Trivium 记忆」管库，不替代会话图。
+
+- **注入策略（三选一，默认关）** — 关：只有开场短地图。autoRecall：本步含用户文本时最多灌 3 条 L0。实体名折中：话里点到已有实体才灌 1 跳业务边邻居。芯片钉选与此并存，优先占预算。
+- **抽取** — 默认在 `compaction/end` 和空闲后再抽；失败进 pending，下次 session-start 重放。每批正文 ≤3000 字、最多 24 条。
+- **条目** — 可搜、按类型筛、展开业务边邻居、「只看挂在这上面的」、默认隐藏过期决策。可改名 / 改正文 / 别名 / until，同类型合并，归档或删除。
+- **导出导入** — JSON 是真回写。Markdown 只读投影（给人看、给 git 看），不能再解析回去。WorkBuddy `MEMORY.md` 可一次性严导入，不是双向同步。
+- **embedding** — 默认关。打开后填 OpenAI 兼容 URL；失败退回关键词 + 图检索。改完设置需重启 `dsh web`。
+
+---
+
 ## 界面截图
 
 以下入口在本机 DSH Web（`0.1.1-rc.2`）上仍在。截图摄于较早的 rc.6 界面。
@@ -138,7 +150,7 @@ dsh plugin --profile web add dsh-trivium
 
 ![会话图](docs/screenshots/06-session-map.png)
 
-标题栏出现「会话图」。没压过的会话只有一个「后续」方框；顶部是记忆芯片（默认不勾）。compaction 之后左边出现历史方框，分叉从方框连到子会话。
+标题栏出现「会话图」。没压过的会话只有一个「后续」方框；顶部是记忆芯片（默认不勾）。可点「生成检查点」把后续收成左边一格。compaction 或 `/compact` 之后左边也会出现历史方框，分叉从方框连到子会话。
 
 ---
 
@@ -155,6 +167,8 @@ dsh plugin --profile web add dsh-trivium
 ---
 
 ## 更新说明
+
+**0.4.7** — 存储升到 `triviumdb@0.7.6`（引擎侧 `searchExact` / `searchBatch`）。find / 会话图行为不变。
 
 **0.4.6** — 会话图可「生成检查点」：把当前「后续」收成左边一格。不触发 DSH 压缩。
 
@@ -175,6 +189,6 @@ dsh plugin --profile web add dsh-trivium
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.6`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.7`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（兼 `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
