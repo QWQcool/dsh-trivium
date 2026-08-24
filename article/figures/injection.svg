@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 440" font-family="-apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <style>
+    .bg{fill:#f8fafc}
+    .c1{fill:#f0fdf4;stroke:#bbf7d0;stroke-width:1.5}
+    .c2{fill:#fff7ed;stroke:#fed7aa;stroke-width:1.5}
+    .title{font-weight:700;font-size:19px;fill:#0f172a}
+    .h1{font-weight:700;font-size:13px;fill:#15803d}
+    .h2{font-weight:700;font-size:13px;fill:#b45309}
+    .on{font-size:11px;font-weight:700;fill:#16a34a}
+    .off{font-size:11px;font-weight:700;fill:#dc2626}
+    .txt{font-size:12px;fill:#334155}
+    .note{font-weight:700;font-size:14px;fill:#0f172a}
+    .small{font-size:11px;fill:#64748b}
+    .barlbl{font-size:12px;font-weight:600;fill:#334155}
+  </style>
+
+  <rect class="bg" x="0" y="0" width="720" height="440"/>
+  <text class="title" x="360" y="34" text-anchor="middle">默认少注入：窗口更静</text>
+
+  <!-- Card 1 -->
+  <rect class="c1" x="40" y="78" width="190" height="208" rx="12"/>
+  <text class="h1" x="135" y="104" text-anchor="middle">session-start 地图</text>
+  <text class="on" x="135" y="124" text-anchor="middle">默认：开</text>
+  <text class="txt" x="135" y="156" text-anchor="middle">≤ 400 token</text>
+  <text class="txt" x="135" y="182" text-anchor="middle">仅计数 + 几个名字</text>
+  <text class="txt" x="135" y="208" text-anchor="middle">每会话一次</text>
+  <text class="txt" x="135" y="234" text-anchor="middle">逼模型用工具下钻</text>
+
+  <!-- Card 2 -->
+  <rect class="c2" x="265" y="78" width="190" height="208" rx="12"/>
+  <text class="h2" x="360" y="104" text-anchor="middle">autoRecall</text>
+  <text class="off" x="360" y="124" text-anchor="middle">默认：关</text>
+  <text class="txt" x="360" y="156" text-anchor="middle">含直接用户文本时</text>
+  <text class="txt" x="360" y="182" text-anchor="middle">每步 ≤ 300 token</text>
+  <text class="txt" x="360" y="208" text-anchor="middle">最多 3 条 L0</text>
+  <text class="txt" x="360" y="234" text-anchor="middle">不调 find 工具</text>
+
+  <!-- Card 3 -->
+  <rect class="c2" x="490" y="78" width="190" height="208" rx="12"/>
+  <text class="h2" x="585" y="104" text-anchor="middle">实体名折中</text>
+  <text class="off" x="585" y="124" text-anchor="middle">默认：关</text>
+  <text class="txt" x="585" y="156" text-anchor="middle">话里出现 entity</text>
+  <text class="txt" x="585" y="182" text-anchor="middle">名 / 别名 → 灌</text>
+  <text class="txt" x="585" y="208" text-anchor="middle">该实体 1 跳邻居</text>
+  <text class="txt" x="585" y="234" text-anchor="middle">—</text>
+
+  <!-- note -->
+  <text class="note" x="360" y="324" text-anchor="middle">三者互斥，默认全关 → 窗口最静</text>
+
+  <!-- bars: typical window injection volume (illustrative) -->
+  <text class="small" x="360" y="356" text-anchor="middle">典型窗口内注入量（示意）</text>
+  <rect x="120" y="372" width="60" height="20" rx="4" fill="#16a34a"/>
+  <text class="barlbl" x="190" y="387">默认（最静）</text>
+  <rect x="120" y="400" width="160" height="20" rx="4" fill="#f59e0b"/>
+  <text class="barlbl" x="290" y="415">autoRecall</text>
+  <rect x="120" y="428" width="210" height="20" rx="4" fill="#f59e0b"/>
+  <text class="barlbl" x="340" y="443">实体名折中</text>
+</svg>

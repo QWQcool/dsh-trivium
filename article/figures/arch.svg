@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 470" font-family="-apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <style>
+    .bg{fill:#f8fafc}
+    .card{fill:#ffffff;stroke:#e2e8f0;stroke-width:1.5}
+    .cardb{fill:#eff6ff;stroke:#bfdbfe;stroke-width:1.5}
+    .cardg{fill:#f0fdf4;stroke:#bbf7d0;stroke-width:1.5}
+    .cardr{fill:#fef2f2;stroke:#fecaca;stroke-width:1.5}
+    .title{font-weight:700;font-size:19px;fill:#0f172a}
+    .hdr{font-weight:700;font-size:14px;fill:#1d4ed8}
+    .hdrg{font-weight:700;font-size:14px;fill:#15803d}
+    .hdrr{font-weight:700;font-size:13px;fill:#dc2626}
+    .sub{font-size:11px;fill:#64748b}
+    .txt{font-size:13px;fill:#334155}
+    .txtb{font-size:13px;fill:#1e40af;font-weight:600}
+    .small{font-size:11px;fill:#64748b}
+    .green{font-weight:700;font-size:13px;fill:#16a34a}
+    .red{font-weight:700;font-size:12px;fill:#dc2626}
+    .arrow{stroke:#475569;stroke-width:2;fill:none}
+  </style>
+
+  <rect class="bg" x="0" y="0" width="720" height="470"/>
+  <text class="title" x="360" y="34" text-anchor="middle">不另起服务：进程内内核</text>
+
+  <!-- divider -->
+  <line x1="372" y1="60" x2="372" y2="430" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+  <!-- LEFT: dsh-trivium -->
+  <rect class="cardb" x="40" y="78" width="300" height="232" rx="14"/>
+  <text class="hdr" x="190" y="104" text-anchor="middle">DSH 进程（同一个）</text>
+  <rect x="70" y="122" width="240" height="46" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+  <text class="txtb" x="190" y="150" text-anchor="middle">模型 / Agent 调度</text>
+  <rect x="70" y="184" width="240" height="56" rx="8" fill="#dcfce7" stroke="#86efac"/>
+  <text class="txtb" x="190" y="210" text-anchor="middle">TriviumDB（内存图）</text>
+  <text class="sub" x="190" y="228" text-anchor="middle">进程内持有 · 随 DSH 加载</text>
+
+  <rect x="80" y="334" width="220" height="46" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text class="txt" x="190" y="358" text-anchor="middle" font-weight="600">.dsh/trivium.tdb</text>
+  <text class="sub" x="190" y="373" text-anchor="middle">每工作区一个文件</text>
+
+  <path class="arrow" d="M190 y310 V334" marker-end="url(#ah)"/>
+  <text class="small" x="198" y="328">进程退出时落盘</text>
+  <text class="green" x="40" y="412">✓ 无需独立服务 / 端口 / 运维</text>
+
+  <!-- RIGHT: common approach -->
+  <text class="sub" x="540" y="104" text-anchor="middle" font-weight="600">常见记忆方案</text>
+  <rect class="card" x="410" y="120" width="120" height="44" rx="8"/>
+  <text class="txt" x="470" y="147" text-anchor="middle">你的进程</text>
+
+  <rect x="396" y="196" width="258" height="158" rx="12" fill="none" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <rect class="cardr" x="416" y="214" width="218" height="52" rx="8"/>
+  <text class="txt" x="525" y="244" text-anchor="middle">记忆服务</text>
+  <text class="sub" x="525" y="259" text-anchor="middle">独立进程</text>
+  <rect class="cardr" x="416" y="280" width="218" height="52" rx="8"/>
+  <text class="txt" x="525" y="310" text-anchor="middle">向量库</text>
+  <text class="sub" x="525" y="325" text-anchor="middle">独立端口</text>
+  <text class="red" x="525" y="380" text-anchor="middle">需独立进程 + 端口 + 运维</text>
+
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#475569"/>
+    </marker>
+  </defs>
+</svg>
