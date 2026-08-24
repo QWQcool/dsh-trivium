@@ -45,6 +45,47 @@ dsh plugin --profile web add dsh-trivium
 
 装完重启 **dsh web**。源码联调则在仓库里 `git pull` 后再跑一次 `node scripts/link-dsh.mjs`。
 
+## 卸载
+
+```sh
+dsh plugin --profile web remove dsh-trivium
+```
+
+重启 **dsh web** 后，设置里的「Trivium 记忆」和标题栏「会话图」都会消失。四个工具不再注册。
+
+卸载**不会**自动删记忆文件。要彻底清掉再手动删：
+
+| 路径 | 内容 |
+|---|---|
+| `<workspace>/.dsh/trivium.tdb` | 该工作区的图记忆（节点、边、会话图方框） |
+| `<workspace>/.dsh/trivium-pending.json` | 抽取失败待重放的队列；没有则跳过 |
+| `~/.dsh/trivium.json` | 注入策略、抽取开关、embedding、各会话芯片钉选 |
+
+只卸插件、留 `.tdb`：以后再装回来，工作区记忆还在。多个工作区各有自己的 `.tdb`，删一个不影响别的。
+
+临时关掉、先不卸载：在该 profile 的 `cordis.patch.yml` 里加：
+
+```yaml
+- id: dsh-trivium
+  disabled: true
+```
+
+再重启 `dsh web`。
+
+## 权限与数据
+
+插件随 `dsh web` 进程加载，不另起端口、不另起服务。
+
+| 访问 | 默认 | 说明 |
+|---|---|---|
+| 工作区 `.dsh/trivium.tdb` | 读写 | 记忆库。同一文件不要两个 Node 进程同时打开 |
+| `~/.dsh/trivium.json` | 读写 | 设置和芯片钉选；可含你手填的 embedding API key |
+| `.dsh/trivium-pending.json` | 读写 | 抽取失败时的本地队列 |
+| 网络 | 关 | 对话不外发。打开 embedding 并填了 URL 才会把被检索文本发到你填的地址。设置页点「检查更新」会请求 npm registry（只拿版本号，不含对话） |
+| 对话原文 | 不外发 | 抽取和检索都在本机；embedding 开启后，被检索的文本会发到你填的地址 |
+
+官方 DeepSeek 对话接口没有 embeddings。不开 embedding 也能用：关键词 + 图遍历。改完设置或 embedding 后需重启 `dsh web`。
+
 ## AI 时代安装
 
 把下面这句话复制给助手即可：
@@ -209,6 +250,22 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 **0.4.1** — 宿主钉到 `@deepseek-ai/dsh@0.1.0-rc.8`。功能与 0.4.0 相同。已在 rc.8 上确认：设置「Trivium 记忆」、新会话短地图、跨会话 `ctx_find`、会话图标签。
 
 **0.4.0** — 会话图、记忆芯片、从检查点 fork。
+
+## 排障
+
+| 现象 | 处理 |
+|---|---|
+| 设置里没有「Trivium 记忆」，标题栏没有「会话图」 | 确认装的是 web profile，然后**重启** `dsh web`，再打开一个工作区。只刷新浏览器不够。 |
+| 改了注入 / 抽取 / embedding 没生效 | 同样要重启 `dsh web`。 |
+| 会话图只有一个「后续」方框 | 正常。方框跟 DSH 压缩走，会话长不等于已经压过（默认约窗口 80% 才自动压）。要分段：对话里 `/compact`，或点「生成检查点」（只切图，不压窗口）。旧会话可点「更新检查点」补已经发生过的压缩 / 分叉。 |
+| `ctx_find` 什么都没有 | 新会话默认只注入短地图，模型要自己调工具。也可以在芯片条「新增」或对模型说「记住：…」。闲聊和一次性改文件不会自动入库。 |
+| 报 `.tdb` 被占用 / 打不开 | 只开一个 `dsh web`。不要同时跑两份链接了本插件的 Node 进程。 |
+| embedding 填了但检索没变准 | 失败会退回关键词 + 图。看 `~/.dsh/trivium.json` 里 URL 是否 OpenAI 兼容（含 `/v1` 那种）。改完重启。 |
+| 卸载后记忆还在 / 再装后钉选还在 | 记忆在工作区 `.tdb`，钉选在 `~/.dsh/trivium.json`。要清就按上面「卸载」删文件。 |
+| 检查更新失败 | 只请求 npm registry 拿最新版本号，不影响记忆；过一会儿再点即可。 |
+| rc.8 之后旧对话打不开 | 那是 DSH 自己的会话库格式变了，不是 `.tdb` 坏了。图记忆仍可 `ctx_find`；对不上号的旧方框可当情节残留。 |
+
+本地联调：仓库里 `npm install` 后 `node scripts/link-dsh.mjs`，再重启 `dsh web`。`triviumdb` 是原生模块，装不上时先看 Node 是否满足 `package.json` 的 `engines`（`^22.19.0 || >=24`）。
 
 ---
 

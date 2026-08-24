@@ -47,6 +47,47 @@ dsh plugin --profile web add dsh-trivium
 
 Restart **dsh web**. For a source checkout, `git pull` then run `node scripts/link-dsh.mjs` again.
 
+## Uninstall
+
+```sh
+dsh plugin --profile web remove dsh-trivium
+```
+
+After restarting **dsh web**, Settings no longer shows **Trivium memory**, and the title bar no longer shows **Session graph**. The four tools are unregistered.
+
+Uninstall does **not** delete memory files. To wipe them, delete:
+
+| Path | Contents |
+|---|---|
+| `<workspace>/.dsh/trivium.tdb` | Graph memory for that workspace (nodes, edges, session-graph boxes) |
+| `<workspace>/.dsh/trivium-pending.json` | Failed-extract replay queue; skip if missing |
+| `~/.dsh/trivium.json` | Injection policy, extract switch, embedding, per-session chip pins |
+
+Keep `.tdb` after uninstall: reinstall later and that workspace’s memory is still there. Each workspace has its own `.tdb`; deleting one does not affect others.
+
+Disable without uninstall: in that profile’s `cordis.patch.yml` add:
+
+```yaml
+- id: dsh-trivium
+  disabled: true
+```
+
+Then restart `dsh web`.
+
+## Permissions and data
+
+The plugin loads inside the `dsh web` process. It does not open its own port or extra service.
+
+| Access | Default | Notes |
+|---|---|---|
+| Workspace `.dsh/trivium.tdb` | read/write | Memory store. Do not open the same file from two Node processes at once |
+| `~/.dsh/trivium.json` | read/write | Settings and chip pins; may contain an embedding API key you typed |
+| `.dsh/trivium-pending.json` | read/write | Local queue when extract fails |
+| Network | off | Chat text is not sent out. Embedding outbound happens only if you turn it on and fill a URL. Settings **Check for updates** fetches the npm registry (version only, no transcript) |
+| Transcript | stays local | Extract and search run on this machine; with embedding on, retrieved text is sent to the URL you filled |
+
+The official DeepSeek chat API has no embeddings endpoint. Keyword + graph walk still work without it. Restart `dsh web` after changing settings or embedding.
+
 ## AI-era installation
 
 Copy this to your assistant:
@@ -212,6 +253,22 @@ The title bar shows **Session graph**. A session that has never compacted has on
 **0.4.1** — Host pinned to `@deepseek-ai/dsh@0.1.0-rc.8`. Same features as 0.4.0. Confirmed on rc.8: Settings “Trivium memory”, new-session short map, cross-session `ctx_find`, session graph tab.
 
 **0.4.0** — Session graph, memory chips, fork from a checkpoint.
+
+## Troubleshooting
+
+| Symptom | What to do |
+|---|---|
+| Settings has no **Trivium memory**, title bar has no **Session graph** | Confirm the **web** profile, then **restart** `dsh web` and open a workspace. Reloading the browser is not enough. |
+| Injection / extract / embedding changes have no effect | Restart `dsh web` as well. |
+| Session graph shows only a **Next** box | Expected. Boxes follow DSH compaction; a long session is not the same as already compacted (auto-compact is around 80% of the window). To split: `/compact` in the conversation, or **Create checkpoint** (plot only, does not compact the window). Older sessions can use **Update checkpoints** to backfill past compaction / forks. |
+| `ctx_find` returns nothing | A new session injects the short map only; the model must call the tool. You can also **Add** on the chip strip or tell the model “remember: …”. Chitchat and one-off file edits are not auto-written. |
+| `.tdb` is locked / will not open | Run one `dsh web`. Do not run two Node processes that both linked this plugin. |
+| Embedding is filled but search is no more accurate | Failures fall back to keyword + graph. Check that `~/.dsh/trivium.json` has an OpenAI-compatible URL (the `/v1` kind). Restart after changing it. |
+| Memory still there after uninstall / pins still there after reinstall | Memory is the workspace `.tdb`; pins are `~/.dsh/trivium.json`. Delete those files if you want a clean wipe (see Uninstall). |
+| Check for updates fails | That request only hits the npm registry for the latest version. Memory is unaffected; try again later. |
+| Old conversations will not open after rc.8 | That is DSH’s own session-store format change, not a broken `.tdb`. Graph memory still works via `ctx_find`; leftover boxes on unmatched old sessions are plot residue. |
+
+Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then restart `dsh web`. `triviumdb` is a native module; if it will not install, check Node against `package.json` `engines` (`^22.19.0 || >=24`).
 
 ---
 
