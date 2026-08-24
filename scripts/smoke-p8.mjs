@@ -162,11 +162,7 @@ try {
     "explicit chip keeps more than extract's 240-char line cap",
   );
   const secret = addChipsFromText(db, "记住 api_key=sk-abcdefghijklmnopqrstuvwxyz", { sessionId: otherChild });
-  assert(secret.ok && secret.ids.length === 1, "explicit chip add does not refuse secret-looking text");
-  assert(
-    /sk-abcdefghijklmnopqrstuvwxyz/.test(db.get(secret.ids[0])?.payload?.text || ""),
-    "secret-looking chip text is stored as typed",
-  );
+  assert(secret.ok === false, "chip add refuses secret-looking text");
 
   const arch = batchChipAction(db, { action: "archive", ids: [made.ids[0]], sessionId: otherChild });
   assert(arch.count === 1, "batch archive one chip");

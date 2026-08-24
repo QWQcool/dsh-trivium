@@ -1,194 +1,229 @@
-# dsh-trivium — DSH 进程内图记忆
+# dsh-trivium — In-process graph memory for DeepSeek Harness
 
-DeepSeek Harness 的跨会话图记忆插件：按节点和边记，默认少注入，设置页可改可归档。会话标题栏多一个 **会话图**：compaction 收成方框，可从检查点 fork，可选记忆芯片钉进下一轮。每个工作区一个 `.dsh/trivium.tdb`，不另起服务。
+<p align="center">
+  <img width="820" alt="dsh-trivium cover" src="docs/cover.png">
+</p>
 
-> **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」，对话旁出现「会话图」）。
+In-process graph memory for DeepSeek Harness. One `.tdb` per workspace. No extra server.
+
+DSH 进程内图记忆 · 按节点和边记 · 默认少注入
+
+> **Quick install**: `dsh plugin --profile web add dsh-trivium` → restart **dsh web** → open a workspace (Settings shows **Trivium memory**; the conversation title bar shows **Session graph**). Details in [Installation](#installation).
+
+[**English**](README.md) | [中文版](README.zh-CN.md)
 
 ---
 
-## 安装
+## Installation
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（`dsh-llm` / `dsh-tools` peer 兼容 `0.1.0-rc.8` 与 `0.1.1-rc.2`）。设置里的「Trivium 记忆」、新会话短地图、跨会话 `ctx_find`、会话图标签均可用。
+> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. Tested host: `@deepseek-ai/dsh@0.1.1-rc.2` (`dsh-llm` / `dsh-tools` peers also accept `0.1.0-rc.8`).
 
 ```sh
 dsh plugin --profile web add dsh-trivium
 ```
 
-重启 **dsh web** 后生效。记忆文件在当前工作区：
+Restart **dsh web**. Memory lives in the current workspace:
 
 ```
 <workspace>/.dsh/trivium.tdb
 ```
 
-用 [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart) 的，双击启动就会装上，不必再执行上面这条。
+If you launch DSH with [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart), the plugin is installed for you — skip the command above.
 
-本地跟源码联调：
+Local source checkout:
 
 ```sh
 npm install
 node scripts/link-dsh.mjs
 ```
 
-然后重启 `dsh web`。
+Then restart `dsh web`.
 
-## 更新
+## Updating
 
 ```sh
 dsh plugin --profile web add dsh-trivium
 ```
 
-装完重启 **dsh web**。源码联调则在仓库里 `git pull` 后再跑一次 `node scripts/link-dsh.mjs`。
+Restart **dsh web**. For a source checkout, `git pull` then run `node scripts/link-dsh.mjs` again.
 
-## AI 时代安装
+## AI-era installation
 
-把下面这句话复制给助手即可：
+Copy this to your assistant:
 
 ```text
-请在 DeepSeek Harness 上执行：dsh plugin --profile web add dsh-trivium
-然后重启 dsh web。设置里会出现「Trivium 记忆」，会话标题栏「对话 / 轨迹」旁会出现「会话图」（可「生成检查点」手切方框）。
+On DeepSeek Harness, run: dsh plugin --profile web add dsh-trivium
+Then restart dsh web. Settings will show "Trivium memory", and the session title bar
+will show "Session graph" next to Conversation / Trajectory (use "Create checkpoint" to split a box by hand).
 ```
 
 ---
 
-## 做什么
+## Graph memory that stays quiet
 
-- **跨会话** — 会话 A 记下「鉴权走 header X」，会话 B 调用 `ctx_find("鉴权")` 命中，并带上它连着谁（`about` / `decided` / `broke` / `fixed`）。
-- **默认安静** — 新会话只注入一张短地图（≤400 token）。模型要用再调工具，不会每一步灌满。
-- **会话图** — compaction 切一段就收成一个方框；没压过可点「生成检查点」手切一格（不压缩模型窗口）；旧会话可点「更新检查点」补已经发生过的压缩 / 分叉；勾选的记忆芯片从当前这段的下一轮注入。
-- **人能改错** — 会话图芯片条可新增、归档、删除；设置页管搜、改名 / 正文、合并、导入导出、全局开关。
-- **抽取偏严** — 闲聊、一次性改文件、密钥**不会从对话自动入库**。芯片「新增」按你写的存（点一次整段一条）。
-- **可选 embedding** — 默认关。官方 DeepSeek 对话接口没有 embeddings；可填 OpenAI 兼容地址。不开也能用：关键词 + 图遍历。
+Trivium is a memory kernel, not a journal, calendar, or chat companion. It stores **nodes and edges**, injects as little as possible, and lets you correct mistakes.
 
-### 四个工具
+- **Cross-session graph** — session A stores “auth goes in header X”; session B calls `ctx_find("auth")` and gets the hit plus who it links to (`about` / `decided` / `broke` / `fixed`).
+- **Default quiet** — a new session injects one short map (≤400 tokens). The model calls tools when it needs more. Nothing is dumped every step.
+- **Session graph** — each successful compaction becomes a box; “Create checkpoint” splits a box without compressing the model window; fork from a checkpoint. Optional memory chips pin facts into the next turn.
+- **Human-editable** — chips can add, archive, or delete; Settings search, rename, merge, import/export, and global switches.
+- **Strict extraction** — chitchat, one-off file edits, and secrets are **not** auto-written from the transcript. Chip “Add” stores exactly what you typed (one paste = one node), still through the write hygiene gate.
+- **Write hygiene** — `ctx_remember`, chip add, extract, and external import refuse mojibake, stutter loops, JSON envelopes, base64 residue, and secrets. Dirty nodes already in `.tdb` stay visible in Settings so you can archive them; they are hidden from find / short map / chips.
+- **Optional embedding** — off by default. The official DeepSeek chat API has no embeddings endpoint; fill an OpenAI-compatible URL if you want one. Keyword + graph walk still work without it.
 
-| 工具 | 说明 |
+### Under the hood
+
+- **In-process, one file** — TriviumDB (vectors + JSON payload + directed weighted graph) opens with the DSH process. No sidecar HTTP/Python service.
+- **Four tools only** — `ctx_find` / `ctx_read` / `ctx_remember` / `ctx_link`. The session graph does not add a fifth.
+- **Injection via `agent.inject()`** — not the system prompt, so `persona.complete: true` cannot silently drop the map.
+- **Recall carries paths** — every hit says which node it came from and along which edge.
+- **Failures never block the agent** — store / embedding / extract errors are logged; the main loop continues.
+- **UI follows the host language** — Settings and the session graph switch with DSH `locale/change` (`zh` / `en`).
+- **First-turn map** — the short map is injected once per session. If `session-start` loses a race with the first model step, `pre-step` fills it in; it is not rewritten every step (prefix-cache friendly).
+
+## Features
+
+### Cross-session graph
+
+Nodes are `entity` / `preference` / `decision` / `experience`. Business edges are `about`, `decided`, `broke`, `fixed`.
+
+`ctx_find` returns L0 summaries plus edge paths (incoming as `<-label-id`). If the query names an existing entity, unexpired `about` / `decided` / `broke` / `fixed` neighbors come along even when the neighbor text does not contain the query. Decisions with `until` stay hidden after they expire, unless the query itself is asking about that deadline (e.g. “Friday”).
+
+### Session graph
+
+Entry: current session title bar **Conversation / Trajectory / Session graph**. This is a plot of compaction and forks, not the memory editor. Rename, merge, and global switches stay on the Settings page. The chip strip can add, archive, and delete.
+
+**Boxes**
+
+- Never compacted: one “Next” box.
+- After a successful compaction: historical checkpoints on the left (summaries from DSH), “Next” still on the right.
+- **Create checkpoint**: fold the current “Next” into a left box; the right side stays “Next”. Plot only — **does not** compact the model window. Clicking again in the same turn does not double-write.
+- Sessions that compacted or forked before the plugin was installed: **Update checkpoints** backfills boxes from compression markers in the transcript and sidebar forks (safe to click again). No compaction still means only “Next” — a long session with many tools is not the same as DSH having compacted (auto-compact is around 80% of the window). To compact context, type `/compact` in the conversation.
+- Boxes themselves do not summarize. Quality comes from summaries DSH already wrote; fork does not re-summarize.
+- “Rename” changes the box title only. Click a box to jump to that checkpoint in the conversation, or open Trajectory.
+
+**Forks**
+
+The fork icon on a box opens “Fork as new session”. That name appears in the left session list (default: source title plus `(1)`).
+
+Confirm runs the host `session.fork`: the child shows up in the sidebar, prefix (including already-compacted summaries) is copied by DSH. With a checkpoint, the cut is at that checkpoint; with only “Next”, the edge leaves the box you clicked.
+
+Forks created from the conversation page also show up on the session graph. Archive a child in the sidebar and its fork box disappears; unarchive brings it back.
+
+Canvas: drag empty space to pan, scroll to zoom.
+
+### Memory chips
+
+Expand the strip at the top of the session graph. Lists unarchived preference / decision / entity (experience stays out, to keep noise down).
+
+| Action | When it takes effect |
 |---|---|
-| `ctx_find` | 检索，返回 L0 摘要和图路径（含入边 `<-label-id`）。查询点到已有实体名时，还会带上未过期的 about/decided/broke/fixed 邻居。带 `until` 的过期决策默认不出现，除非查询本身在问期限（如「周五」） |
-| `ctx_read` | 按 id 读全文和入边 |
-| `ctx_remember` | 手动写入 |
-| `ctx_link` | 两点之间建有向边 |
+| Check a chip | The **next** message you send in this segment carries it (L0, ≤300 tokens) |
+| Uncheck | The turn after that no longer carries it |
+| Add | One click writes one node; a whole paste is still one node |
+| Select → Archive | Soft delete: gone from find / short map / chips; the node remains in `.tdb` |
+| Select → Delete | Removed from `.tdb`, not recoverable |
+| Turns already sent | Not rewritten |
 
-内核仍是这四个。会话图不加第五个工具。
+Chips are per session. New sessions and forked children start unchecked. Inherit pins in the fork dialog, or check them again on the child. The short map still arrives at session-start and does not use a chip slot.
 
----
+### Settings (Trivium memory)
 
-## 会话图
+Settings → **Trivium memory** manages the store. It does not replace the session graph.
 
-入口：当前会话标题栏 **对话 / 轨迹 / 会话图**。这是情节图，不是记忆编辑器；改名、合并、全局开关仍走设置页。芯片条上可以直接新增、归档、删除。
+- **Injection (pick one, default off)** — Off: short map at start only. autoRecall: at most 3 L0 hits when the step has user text. Entity-name middle path: 1-hop business neighbors only when the utterance names an existing entity. Checked chips share the budget and win first.
+- **Extraction** — default after `compaction/end` and a short idle; failures go to pending and replay on the next session-start. Per batch: body ≤3000 chars, at most 24 items.
+- **Entries** — search, filter by type, expand business-edge neighbors, “only nodes hanging on this one”, hide expired decisions by default. Rename / edit body / aliases / until, merge same type, archive or delete.
+- **Export / import** — JSON is a real round-trip. Markdown is a read-only projection (for people and git), not parseable back. One-shot strict import from WorkBuddy `MEMORY.md`, Claude Code `CLAUDE.md`, and Codex `AGENTS.md`. No watch, no session jsonl, no two-way sync.
+- **Check for updates** — Settings compares the installed version with npm latest and shows `dsh plugin --profile web add dsh-trivium` when a newer version exists. It does not auto-upgrade.
+- **Embedding** — off by default. Turn on and fill an OpenAI-compatible URL; failures fall back to keyword + graph. Restart `dsh web` after changing settings.
 
-### 方框
+### Agent tools
 
-- 没压过上下文：只有一个「后续」方框。
-- 一次成功的 compaction 之后：左边历史检查点（摘要来自 DSH），右边仍是「后续」。
-- 点「生成检查点」：把当前「后续」收成左边一格，右边继续当后续。只切情节图，**不**压缩模型窗口。同一轮次再点不会双写。
-- 装插件之前已经压过 / 分过叉的旧会话：点「更新检查点」，从当前对话里的压缩标记和侧边栏分叉补方框（可重复点，不会双写）。没压过就仍只有「后续」——会话长、工具多不等于 DSH 已经压缩（默认约窗口 80% 才自动压）。要压上下文请在对话里输入 `/compact`。
-- 方框自己不压缩。质量来自 DSH 已经做的摘要替换；fork 时不会再总结一遍。
-- 「改名」只改方框标题，不动 DSH 摘要。点方框可跳回对话里对应的检查点，或打开轨迹。
-
-### 分叉
-
-点方框上的分叉图标，会弹出「分叉为新会话」。这个名字会出现在左侧会话列表里（默认是源标题加 `(1)`）。
-
-确认后走宿主的 `session.fork`：子会话出现在侧边栏，前缀（含当时已经压过的摘要）由 DSH 拷过去。有检查点时从那个检查点切开；只有「后续」时就从你点的那个方框连出去。
-
-对话页里用 DSH 自带 fork，切回会话图也能看到对应分支。侧边栏归档一个子会话后，图上的分叉方框会跟着消失；取消归档会再出现。
-
-画布：空白处拖动平移，滚轮缩放。
-
-### 记忆芯片
-
-会话图顶部可展开勾选。列出未归档的 preference / decision / entity（experience 不进芯片，避免太吵）。
-
-| 操作 | 生效时机 |
+| Tool | What it does |
 |---|---|
-| 勾上某条 | 当前这段里你再发的**下一条**带上它（L0，≤300 token） |
-| 取消勾选 | 再下一轮不再带 |
-| 新增 | 点一次写入一条；整段粘贴也是一条 |
-| 选择 → 归档 | 软删除：find / 短地图 / 芯片不再出现，节点还在 `.tdb` |
-| 选择 → 删除 | 从 `.tdb` 去掉，不可恢复 |
-| 已经发出去的轮次 | 不回写 |
+| `ctx_find` | Search; L0 summaries and graph paths (incoming `<-label-id`). Entity-name queries also return unexpired about/decided/broke/fixed neighbors. Expired `until` decisions stay out unless the query asks about the deadline |
+| `ctx_read` | Full text and incoming edges by id |
+| `ctx_remember` | Manual write |
+| `ctx_link` | Directed edge between two nodes |
 
-芯片按会话隔离。新开会话、fork 出的子会话默认都不勾；需要的话在分叉对话框旁打开「分叉时继承钉选」，或到子会话里重新勾。短地图仍在 session-start 自动带，不占芯片位。建议标记只是提示，不会自动勾上。
+The kernel is still these four. The session graph does not add a fifth tool.
 
 ---
 
-## 设置页（Trivium 记忆）
+## Screenshots
 
-设置里的「Trivium 记忆」管库，不替代会话图。
+Captured inside DSH Web (`0.1.1-rc.2`). Screenshots below are from the Chinese UI; the plugin follows the DSH host language (`zh` / `en`).
 
-- **注入策略（三选一，默认关）** — 关：只有开场短地图。autoRecall：本步含用户文本时最多灌 3 条 L0。实体名折中：话里点到已有实体才灌 1 跳业务边邻居。芯片钉选与此并存，优先占预算。
-- **抽取** — 默认在 `compaction/end` 和空闲后再抽；失败进 pending，下次 session-start 重放。每批正文 ≤3000 字、最多 24 条。
-- **条目** — 可搜、按类型筛、展开业务边邻居、「只看挂在这上面的」、默认隐藏过期决策。可改名 / 改正文 / 别名 / until，同类型合并，归档或删除。
-- **导出导入** — JSON 是真回写。Markdown 只读投影（给人看、给 git 看），不能再解析回去。WorkBuddy `MEMORY.md` 可一次性严导入，不是双向同步。
-- **embedding** — 默认关。打开后填 OpenAI 兼容 URL；失败退回关键词 + 图检索。改完设置需重启 `dsh web`。
+### Conversation — `ctx_find("鉴权")`
 
----
+<img width="560" alt="ctx_find auth" src="docs/screenshots/02-ctx-find.png">
 
-## 界面截图
+Session-start injects the short map; the model calls `ctx_find` and hits “auth in this repo goes in header X”.
 
-以下入口在本机 DSH Web（`0.1.1-rc.2`）上仍在。截图摄于较早的 rc.6 界面。
+### Trajectory — injection is visible
 
-### 会话 — `ctx_find("鉴权")`
+<img width="560" alt="Trajectory" src="docs/screenshots/03-trajectory.png">
 
-![ctx_find 鉴权](docs/screenshots/02-ctx-find.png)
+### Settings — injection strategy
 
-会话开头注入 `dsh-trivium` 短地图；模型调用 `ctx_find`，命中「本仓库鉴权走 header X」。
+<img width="560" alt="Settings" src="docs/screenshots/04-settings.png">
 
-### 轨迹 — 上下文注入可见
+### Settings — memory entries
 
-![轨迹](docs/screenshots/03-trajectory.png)
+<img width="560" alt="Entry list" src="docs/screenshots/05-settings-list.png">
 
-### 设置 — 注入策略
+### Session graph — third tab next to Conversation / Trajectory
 
-![设置](docs/screenshots/04-settings.png)
+<img width="560" alt="Session graph" src="docs/screenshots/06-session-map.png">
 
-### 设置 — 记忆条目
-
-![条目列表](docs/screenshots/05-settings-list.png)
-
-### 会话图 — 对话 / 轨迹旁的第三标签
-
-![会话图](docs/screenshots/06-session-map.png)
-
-标题栏出现「会话图」。没压过的会话只有一个「后续」方框；顶部是记忆芯片（默认不勾）。可点「生成检查点」把后续收成左边一格。compaction 或 `/compact` 之后左边也会出现历史方框，分叉从方框连到子会话。
+The title bar shows **Session graph**. A session that has never compacted has one “Next” box; memory chips sit on top (unchecked by default). **Create checkpoint** folds “Next” into a left box. After compaction or `/compact`, historical boxes appear on the left; forks leave a box toward a child session.
 
 ---
 
-## 限制
+## Limitations
 
-- 模型不调 `ctx_find`、也不勾芯片时，窗口里主要是开场短地图。
-- 抽取会漏；脏数据可在芯片条归档 / 删除，或到设置里改、合并。
-- 同一个 `.tdb` 不要两个 Node 进程同时打开（正常只开一个 `dsh web` 即可）。
-- Markdown 导出是给人看的，不能再解析回去。WorkBuddy 导入是一次性，不是双向同步。
-- 会话图默认只投影 compaction 与 fork，不会按消息条数自己切方框。窗口没到 DSH 压缩线时，「更新检查点」也补不出历史方框；要分段请点「生成检查点」。
-- 改插件设置后需要重启 `dsh web`。
-- 宿主升到 rc.8 后，DSH 自己的旧会话库可能打不开（官方 SQLite 格式不兼容）。工作区里的 `.tdb` 图记忆还在；对不上号的旧会话图方框可以当情节残留，不影响 `ctx_find`。
-
----
-
-## 更新说明
-
-**0.4.7** — 存储升到 `triviumdb@0.7.6`（引擎侧 `searchExact` / `searchBatch`）。find / 会话图行为不变。
-
-**0.4.6** — 会话图可「生成检查点」：把当前「后续」收成左边一格。不触发 DSH 压缩。
-
-**0.4.5** — 宿主 peer 放宽到 `0.1.0-rc.8` 与 `0.1.1-rc.2`，不再嵌一套旧 `dsh-llm` / `dsh-tools`。
-
-**0.4.4** — 依赖 `triviumdb@0.7.5`：入边、按 label 扩邻、按 label 删边走引擎 API，不再全表扫边。find / 会话图行为不变。
-
-**0.4.3** — 会话图「更新检查点」：把当前对话里 DSH 已有的压缩标记和侧边栏 fork 补进图，给装插件之前的旧会话用。没压过的会话仍然只有「后续」。
-
-**0.4.2** — 会话图芯片条可新增（整段粘贴一条）、批量归档 / 删除。自动抽取仍偏严；芯片新增按你写的入库。
-
-**0.4.1** — 宿主钉到 `@deepseek-ai/dsh@0.1.0-rc.8`。功能与 0.4.0 相同。已在 rc.8 上确认：设置「Trivium 记忆」、新会话短地图、跨会话 `ctx_find`、会话图标签。
-
-**0.4.0** — 会话图、记忆芯片、从检查点 fork。
+- If the model never calls `ctx_find` and no chips are checked, the window is mostly the opening short map.
+- Extraction misses things; dirty data can be archived / deleted on the chip strip or edited / merged in Settings.
+- Do not open the same `.tdb` from two Node processes at once (one `dsh web` is enough).
+- Markdown export is for humans; it cannot be parsed back. External import (WorkBuddy / Claude Code / Codex) is one-shot, not two-way sync, and does not ingest session jsonl dumps.
+- The session graph projects compaction and fork by default; it does not split boxes by message count. If the window has not reached DSH’s compact line, **Update checkpoints** will not invent history boxes — use **Create checkpoint**.
+- Plugin setting changes need a `dsh web` restart.
+- After the host moved to rc.8, DSH’s own older session store may not open (official SQLite format change). The workspace `.tdb` graph is still there; leftover boxes on unmatched old sessions are plot residue and do not affect `ctx_find`.
 
 ---
 
-## 发布信息
+## Changelog
+
+**0.4.8** — Write + inject hygiene gate (secrets, mojibake, stutter, JSON envelopes, base64 residue). Settings / session graph follow DSH language. Settings can check npm for updates. One-shot strict import also discovers Claude Code `CLAUDE.md` and Codex `AGENTS.md`. First-turn short map is guaranteed if `session-start` races the first step.
+
+**0.4.7** — Storage bump to `triviumdb@0.7.6` (`searchExact` / `searchBatch` on the engine). find / session graph behavior unchanged.
+
+**0.4.6** — Session graph **Create checkpoint**: fold the current “Next” into a left box. Does not trigger DSH compaction.
+
+**0.4.5** — Host peers widened to `0.1.0-rc.8` and `0.1.1-rc.2`; no nested old `dsh-llm` / `dsh-tools`.
+
+**0.4.4** — `triviumdb@0.7.5`: incoming edges, expand-by-label, delete-by-label go through engine APIs instead of scanning all edges. find / session graph behavior unchanged.
+
+**0.4.3** — Session graph **Update checkpoints**: backfill DSH compression markers and sidebar forks for sessions that existed before the plugin. Never-compacted sessions still have only “Next”.
+
+**0.4.2** — Chip strip can add (one paste = one node) and batch archive / delete. Auto-extract stays strict; chip add writes what you typed.
+
+**0.4.1** — Host pinned to `@deepseek-ai/dsh@0.1.0-rc.8`. Same features as 0.4.0. Confirmed on rc.8: Settings “Trivium memory”, new-session short map, cross-session `ctx_find`, session graph tab.
+
+**0.4.0** — Session graph, memory chips, fork from a checkpoint.
+
+---
+
+## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.7`](https://www.npmjs.com/package/dsh-trivium)
-- 测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（兼 `0.1.0-rc.8`）
-- License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
+- npm: [`dsh-trivium@0.4.8`](https://www.npmjs.com/package/dsh-trivium)
+- Tested host: `@deepseek-ai/dsh@0.1.1-rc.2` (also `0.1.0-rc.8`)
+- License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
+
+---
+
+## Acknowledgements
+
+Parts of the write hygiene gate, npm update check, host-locale UI switching, and Claude Code / Codex file discovery were adapted from [dsh-auto-memory](https://github.com/Aik358/dsh-auto-memory) (Aik358). The product stays a graph kernel (nodes, edges, four tools, quiet default) rather than a journal / calendar companion.
