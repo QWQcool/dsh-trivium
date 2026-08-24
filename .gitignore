@@ -17,3 +17,6 @@ dist/
 
 # Local agent memory / run logs — not for the public plugin repo
 .workbuddy/
+
+# Promo article — not part of the plugin
+article/
