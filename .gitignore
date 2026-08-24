@@ -14,3 +14,6 @@ Thumbs.db
 coverage/
 dist/
 *.log
+
+# Local agent memory / run logs — not for the public plugin repo
+.workbuddy/
