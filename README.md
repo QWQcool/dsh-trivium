@@ -6,9 +6,9 @@
 
 In-process graph memory for DeepSeek Harness. One `.tdb` per workspace. No extra server.
 
-DSH 进程内图记忆 · 按节点和边记 · 默认少注入
+The kernel stays close to DSH: no extra process, no extra nav by default. Pin memory fragments with optional chip inject; the plot canvas is an optional extra, loaded from Settings.
 
-> **Quick install**: `dsh plugin --profile web add dsh-trivium` → restart **dsh web** → open a workspace (Settings shows **Trivium memory**; the conversation title bar shows **Session graph**). Details in [Installation](#installation).
+> **Quick install**: `dsh plugin --profile web add dsh-trivium` → restart **dsh web** → open a workspace (Settings shows **Trivium memory**; the **Chips** tab stays off until you turn it on). Details in [Installation](#installation).
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -53,7 +53,7 @@ Restart **dsh web**. For a source checkout, `git pull` then run `node scripts/li
 dsh plugin --profile web remove dsh-trivium
 ```
 
-After restarting **dsh web**, Settings no longer shows **Trivium memory**, and the title bar no longer shows **Session graph**. The four tools are unregistered.
+After restarting **dsh web**, Settings no longer shows **Trivium memory**, and the title bar no longer shows **Chips**. The four tools are unregistered.
 
 Uninstall does **not** delete memory files. To wipe them, delete:
 
@@ -94,8 +94,7 @@ Copy this to your assistant:
 
 ```text
 On DeepSeek Harness, run: dsh plugin --profile web add dsh-trivium
-Then restart dsh web. Settings will show "Trivium memory", and the session title bar
-will show "Session graph" next to Conversation / Trajectory (use "Create checkpoint" to split a box by hand).
+Then restart dsh web. Settings will show "Trivium memory". The Chips tab is off by default; turn it on under Settings → Trivium memory if you want to pin fragments into the next turn.
 ```
 
 ---
@@ -105,8 +104,8 @@ will show "Session graph" next to Conversation / Trajectory (use "Create checkpo
 Trivium is a memory kernel, not a journal, calendar, or chat companion. It stores **nodes and edges**, injects as little as possible, and lets you correct mistakes.
 
 - **Cross-session graph** — session A stores “auth goes in header X”; session B calls `ctx_find("auth")` and gets the hit plus who it links to (`about` / `decided` / `broke` / `fixed`).
-- **Default quiet** — a new session injects one short map (≤400 tokens). The model calls tools when it needs more. Nothing is dumped every step.
-- **Session graph** — each successful compaction becomes a box; “Create checkpoint” splits a box without compressing the model window; fork from a checkpoint. Optional memory chips pin facts into the next turn.
+- **Default quiet** — a new session injects one short map (≤400 tokens). The model calls tools when it needs more. Nothing is dumped every step. No extra title-bar tab until you turn **Chips** on.
+- **Chips (off by default)** — Settings → Trivium memory. When on, the title bar shows **Chips**; checked items pin into the next turn (L0, ≤300 tokens). Under it, **Session layer** (also off) draws compaction / forks as boxes.
 - **Human-editable** — chips can add, archive, or delete; Settings search, rename, merge, import/export, and global switches.
 - **Strict extraction** — chitchat, one-off file edits, and secrets are **not** auto-written from the transcript. Chip “Add” stores exactly what you typed (one paste = one node), still through the write hygiene gate.
 - **Write hygiene** — `ctx_remember`, chip add, extract, and external import refuse mojibake, stutter loops, JSON envelopes, base64 residue, and secrets. Dirty nodes already in `.tdb` stay visible in Settings so you can archive them; they are hidden from find / short map / chips.
@@ -115,11 +114,11 @@ Trivium is a memory kernel, not a journal, calendar, or chat companion. It store
 ### Under the hood
 
 - **In-process, one file** — TriviumDB (vectors + JSON payload + directed weighted graph) opens with the DSH process. No sidecar HTTP/Python service.
-- **Four tools only** — `ctx_find` / `ctx_read` / `ctx_remember` / `ctx_link`. The session graph does not add a fifth.
+- **Four tools only** — `ctx_find` / `ctx_read` / `ctx_remember` / `ctx_link`. Chips / session layer do not add a fifth.
 - **Injection via `agent.inject()`** — not the system prompt, so `persona.complete: true` cannot silently drop the map.
 - **Recall carries paths** — every hit says which node it came from and along which edge.
 - **Failures never block the agent** — store / embedding / extract errors are logged; the main loop continues.
-- **UI follows the host language** — Settings and the session graph switch with DSH `locale/change` (`zh` / `en`).
+- **UI follows the host language** — Settings and the Chips tab switch with DSH `locale/change` (`zh` / `en`).
 - **First-turn map** — the short map is injected once per session. If `session-start` loses a race with the first model step, `pre-step` fills it in; it is not rewritten every step (prefix-cache friendly).
 
 ## Features
@@ -130,32 +129,11 @@ Nodes are `entity` / `preference` / `decision` / `experience`. Business edges ar
 
 `ctx_find` returns L0 summaries plus edge paths (incoming as `<-label-id`). If the query names an existing entity, unexpired `about` / `decided` / `broke` / `fixed` neighbors come along even when the neighbor text does not contain the query. Decisions with `until` stay hidden after they expire, unless the query itself is asking about that deadline (e.g. “Friday”).
 
-### Session graph
+### Chips (optional)
 
-Entry: current session title bar **Conversation / Trajectory / Session graph**. This is a plot of compaction and forks, not the memory editor. Rename, merge, and global switches stay on the Settings page. The chip strip can add, archive, and delete.
+Off by default. Turn on **Chips tab** in Settings, then restart `dsh web`. The title bar shows **Conversation / Trajectory / Chips**. This is a pin strip, not the memory editor. Rename, merge, and global switches stay on the Settings page.
 
-**Boxes**
-
-- Never compacted: one “Next” box.
-- After a successful compaction: historical checkpoints on the left (summaries from DSH), “Next” still on the right.
-- **Create checkpoint**: fold the current “Next” into a left box; the right side stays “Next”. Plot only — **does not** compact the model window. Clicking again in the same turn does not double-write.
-- Sessions that compacted or forked before the plugin was installed: **Update checkpoints** backfills boxes from compression markers in the transcript and sidebar forks (safe to click again). No compaction still means only “Next” — a long session with many tools is not the same as DSH having compacted (auto-compact is around 80% of the window). To compact context, type `/compact` in the conversation.
-- Boxes themselves do not summarize. Quality comes from summaries DSH already wrote; fork does not re-summarize.
-- “Rename” changes the box title only. Click a box to jump to that checkpoint in the conversation, or open Trajectory.
-
-**Forks**
-
-The fork icon on a box opens “Fork as new session”. That name appears in the left session list (default: source title plus `(1)`).
-
-Confirm runs the host `session.fork`: the child shows up in the sidebar, prefix (including already-compacted summaries) is copied by DSH. With a checkpoint, the cut is at that checkpoint; with only “Next”, the edge leaves the box you clicked.
-
-Forks created from the conversation page also show up on the session graph. Archive a child in the sidebar and its fork box disappears; unarchive brings it back.
-
-Canvas: drag empty space to pan, scroll to zoom.
-
-### Memory chips
-
-Expand the strip at the top of the session graph. Lists unarchived preference / decision / entity (experience stays out, to keep noise down).
+Lists unarchived preference / decision / entity (experience stays out). Check to pin into the next turn (L0, ≤300 tokens). Add / archive / delete on the strip.
 
 | Action | When it takes effect |
 |---|---|
@@ -166,12 +144,16 @@ Expand the strip at the top of the session graph. Lists unarchived preference / 
 | Select → Delete | Removed from `.tdb`, not recoverable |
 | Turns already sent | Not rewritten |
 
-Chips are per session. New sessions and forked children start unchecked. Inherit pins in the fork dialog, or check them again on the child. The short map still arrives at session-start and does not use a chip slot.
+Chips are per session. New sessions and forked children start unchecked. Inherit pins when the session layer fork dialog is on, or check them again on the child. The short map still arrives at session-start and does not use a chip slot.
+
+**Session layer** is a nested switch, also off. When on, the same tab draws compaction / fork boxes (Create checkpoint, Update checkpoints, fork from a box). Episode nodes are not recalled by `ctx_find`. Turning the layer off stops writing episodes; existing `.tdb` nodes stay.
 
 ### Settings (Trivium memory)
 
-Settings → **Trivium memory** manages the store. It does not replace the session graph.
+Settings → **Trivium memory** manages the store and the two optional surfaces.
 
+- **Chips tab (default off)** — title-bar **Chips** + pin inject. Restart `dsh web` after save.
+- **Session layer (default off, under Chips)** — plot canvas. Requires the Chips tab.
 - **Injection (pick one, default off)** — Off: short map at start only. autoRecall: at most 3 L0 hits when the step has user text. Entity-name middle path: 1-hop business neighbors only when the utterance names an existing entity. Checked chips share the budget and win first.
 - **Extraction** — default after `compaction/end` and a short idle; failures go to pending and replay on the next session-start. Per batch: body ≤3000 chars, at most 24 items.
 - **Entries** — search, filter by type, expand business-edge neighbors, “only nodes hanging on this one”, hide expired decisions by default. Rename / edit body / aliases / until, merge same type, archive or delete.
@@ -188,7 +170,7 @@ Settings → **Trivium memory** manages the store. It does not replace the sessi
 | `ctx_remember` | Manual write |
 | `ctx_link` | Directed edge between two nodes |
 
-The kernel is still these four. The session graph does not add a fifth tool.
+The kernel is still these four. Chips / session layer do not add a fifth tool.
 
 ---
 
@@ -214,11 +196,11 @@ Session-start injects the short map; the model calls `ctx_find` and hits “auth
 
 <img width="560" alt="Entry list" src="docs/screenshots/05-settings-list.png">
 
-### Session graph — third tab next to Conversation / Trajectory
+### Chips tab — optional, next to Conversation / Trajectory
 
-<img width="560" alt="Session graph" src="docs/screenshots/06-session-map.png">
+<img width="560" alt="Chips / session layer" src="docs/screenshots/06-session-map.png">
 
-The title bar shows **Session graph**. A session that has never compacted has one “Next” box; memory chips sit on top (unchecked by default). **Create checkpoint** folds “Next” into a left box. After compaction or `/compact`, historical boxes appear on the left; forks leave a box toward a child session.
+Off by default. After you turn **Chips** on in Settings and restart, the title bar shows **Chips**. With **Session layer** also on, a never-compacted session has one “Next” box; chips sit on top (unchecked by default). **Create checkpoint** folds “Next” into a left box. After compaction or `/compact`, historical boxes appear on the left; forks leave a box toward a child session.
 
 ---
 
@@ -228,13 +210,15 @@ The title bar shows **Session graph**. A session that has never compacted has on
 - Extraction misses things; dirty data can be archived / deleted on the chip strip or edited / merged in Settings.
 - Do not open the same `.tdb` from two Node processes at once (one `dsh web` is enough).
 - Markdown export is for humans; it cannot be parsed back. External import (WorkBuddy / Claude Code / Codex) is one-shot, not two-way sync, and does not ingest session jsonl dumps.
-- The session graph projects compaction and fork by default; it does not split boxes by message count. If the window has not reached DSH’s compact line, **Update checkpoints** will not invent history boxes — use **Create checkpoint**.
+- The session layer (when on) projects compaction and fork; it does not split boxes by message count. If the window has not reached DSH’s compact line, **Update checkpoints** will not invent history boxes — use **Create checkpoint**.
 - Plugin setting changes need a `dsh web` restart.
 - After the host moved to rc.8, DSH’s own older session store may not open (official SQLite format change). The workspace `.tdb` graph is still there; leftover boxes on unmatched old sessions are plot residue and do not affect `ctx_find`.
 
 ---
 
 ## Changelog
+
+**0.4.9** — Chips tab and session-layer canvas are both off by default. Title bar shows **Chips** only after the Settings switch; session boxes sit under that switch. Kernel (four tools, short map, in-process `.tdb`) unchanged.
 
 **0.4.8** — Write + inject hygiene gate (secrets, mojibake, stutter, JSON envelopes, base64 residue). Settings / session graph follow DSH language. Settings can check npm for updates. One-shot strict import also discovers Claude Code `CLAUDE.md` and Codex `AGENTS.md`. First-turn short map is guaranteed if `session-start` races the first step.
 
@@ -258,9 +242,10 @@ The title bar shows **Session graph**. A session that has never compacted has on
 
 | Symptom | What to do |
 |---|---|
-| Settings has no **Trivium memory**, title bar has no **Session graph** | Confirm the **web** profile, then **restart** `dsh web` and open a workspace. Reloading the browser is not enough. |
-| Injection / extract / embedding changes have no effect | Restart `dsh web` as well. |
-| Session graph shows only a **Next** box | Expected. Boxes follow DSH compaction; a long session is not the same as already compacted (auto-compact is around 80% of the window). To split: `/compact` in the conversation, or **Create checkpoint** (plot only, does not compact the window). Older sessions can use **Update checkpoints** to backfill past compaction / forks. |
+| Settings has no **Trivium memory** | Confirm the **web** profile, then **restart** `dsh web` and open a workspace. Reloading the browser is not enough. |
+| Title bar has no **Chips** | Expected. Turn on **Chips tab** in Settings, save, then restart `dsh web`. |
+| Injection / extract / embedding / chip tab changes have no effect | Restart `dsh web` as well. |
+| Session layer shows only a **Next** box | Expected when the nested session layer is on. Boxes follow DSH compaction; a long session is not the same as already compacted (auto-compact is around 80% of the window). To split: `/compact` in the conversation, or **Create checkpoint** (plot only, does not compact the window). Older sessions can use **Update checkpoints** to backfill past compaction / forks. |
 | `ctx_find` returns nothing | A new session injects the short map only; the model must call the tool. You can also **Add** on the chip strip or tell the model “remember: …”. Chitchat and one-off file edits are not auto-written. |
 | `.tdb` is locked / will not open | Run one `dsh web`. Do not run two Node processes that both linked this plugin. |
 | Embedding is filled but search is no more accurate | Failures fall back to keyword + graph. Check that `~/.dsh/trivium.json` has an OpenAI-compatible URL (the `/v1` kind). Restart after changing it. |
@@ -275,7 +260,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.8`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.9`](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.1.1-rc.2` (also `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

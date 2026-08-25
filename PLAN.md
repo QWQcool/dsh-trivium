@@ -1,9 +1,9 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**v0.4.6**。内核仍是四工具 + 短地图；会话标题栏增加「会话图」（compaction 方框、DSH fork、可选记忆芯片；可手切「生成检查点」；旧会话可更新检查点）。Settings 仍管库、改名合并、开关。存储钉 `triviumdb@0.7.5`（入边 / label 扩邻 / 按 label 删边）。  
+> 状态：**v0.4.9**。内核仍是四工具 + 短地图。芯片标签与会话层**默认关**；设置里打开芯片后，标题栏才出现「芯片」；会话层嵌在其下，默认关。Settings 仍管库、改名合并、开关。存储钉 `triviumdb@0.7.6`。  
 > 情节图规划见 [`PLAN-session-map.md`](./PLAN-session-map.md)。不是记忆图谱工作台。  
-> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.6`](https://www.npmjs.com/package/dsh-trivium)。  
+> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.9`](https://www.npmjs.com/package/dsh-trivium)。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.1-rc.2`（peer 兼容 `0.1.0-rc.8`；不要把 `dsh-llm` exact-pin 嵌进插件 `node_modules`）。
 
 ---
@@ -11,6 +11,8 @@
 ## 1. 一句话
 
 进程内图记忆，一个 `.tdb` 文件：DSH 启动即打开工作区记忆库，按**节点和边**记，按需读，不另起服务。
+
+内核贴近 DSH：默认不另起进程、不加导航。要钉住某些记忆片段再开芯片注入；情节画布是可选的自嗨层，开关加载。
 
 对外标识一律用 **`dsh-trivium`**（仓库名、npm 包名、Cordis `id`、GitHub topic `dsh-plugin`）。内部可简称 TDB 内核，不要用 `TDBM_Dsh` 当对外名。
 
@@ -319,7 +321,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - **`ctx_read` 入边** — 返回 `incoming[]`（from/label/type/l0），全文读实体时能看见谁 `about`/`decided`/`broke`/`fixed` 过来。
 - **抽取挂边** — preference 的 `about` 只取 **span 内**专有名，不再因邻句「TriviumDB 是内核」误挂。experience 从 fail/fix（或同 turn 用户句）取 `linkName` 并 `fixed`。
 
-其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。情节会话图按 [`PLAN-session-map.md`](./PLAN-session-map.md) 开，不在 Settings 里做。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。v0.4.4：接 `triviumdb@0.7.5` 的 `getIncomingEdges` / `neighbors(..., labels)` / `unlink(..., label)`。v0.4.5：peer 放宽到 `0.1.1-rc.2`，去掉嵌套旧 llm/tools。v0.4.6：会话图「生成检查点」手切情节格。
+其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。芯片标签与情节画布均默认关，见 [`PLAN-session-map.md`](./PLAN-session-map.md)。v0.4.9：芯片 / 会话层开关默认关。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。v0.4.4：接 `triviumdb@0.7.5` 的 `getIncomingEdges` / `neighbors(..., labels)` / `unlink(..., label)`。v0.4.5：peer 放宽到 `0.1.1-rc.2`，去掉嵌套旧 llm/tools。v0.4.6：会话图「生成检查点」手切情节格。
 
 ### 待 live 验收（新面回家再测）
 
@@ -374,7 +376,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 
 ```
 dsh-trivium/                    # GitHub QWQcool/dsh-trivium
-  package.json                  # name: dsh-trivium  version 0.4.6  MIT
+  package.json                  # name: dsh-trivium  version 0.4.9  MIT
   cordis.patch.yml
   lib/index.js
   lib/store.js

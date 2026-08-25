@@ -1,7 +1,7 @@
 {
   "name": "dsh-trivium",
-  "version": "0.4.8",
-  "description": "In-process graph memory and session map for DeepSeek Harness, backed by TriviumDB.",
+  "version": "0.4.9",
+  "description": "In-process graph memory for DeepSeek Harness, backed by TriviumDB.",
   "license": "MIT",
   "type": "module",
   "main": "lib/index.js",

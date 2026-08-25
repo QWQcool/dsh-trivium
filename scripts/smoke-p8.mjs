@@ -19,7 +19,7 @@ import {
   splitChipDraft,
   stripMarkdownMarkup,
 } from "../lib/pins.js";
-import { SETTINGS_FILE } from "../lib/settings.js";
+import { SETTINGS_FILE, chipsEnabledOf, sessionLayerEnabledOf, writeUiSettings, readUiSettings } from "../lib/settings.js";
 import { closeAll, ensureLink, insertNode, openWorkspaceDb } from "../lib/store.js";
 
 const cwd = mkdtempSync(join(tmpdir(), "dsh-trivium-p8-"));
@@ -37,6 +37,15 @@ function assert(cond, msg) {
 
 try {
   assert(CHIP_TYPES.join(",") === "preference,decision,entity", "CHIP_TYPES stay preference/decision/entity");
+  assert(chipsEnabledOf({}) === false, "chips default off when key missing");
+  assert(sessionLayerEnabledOf({ sessionLayerEnabled: true }) === false, "session layer off unless chips on");
+  assert(
+    sessionLayerEnabledOf({ chipsEnabled: true, sessionLayerEnabled: true }) === true,
+    "session layer on only with chips",
+  );
+  writeUiSettings({ chipsEnabled: false, sessionLayerEnabled: true });
+  assert(readUiSettings().sessionLayerEnabled === true, "session layer preference kept while chips off");
+  assert(sessionLayerEnabledOf(readUiSettings()) === false, "runtime still treats nested layer as off");
 
   const db = await openWorkspaceDb(cwd);
   const sessionId = "sess-p8";
