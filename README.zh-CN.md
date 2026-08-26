@@ -6,7 +6,7 @@
 
 DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注入，设置页可改可归档。内核贴近 DSH：不另起进程、默认不加导航。要钉住某些记忆片段，再在设置里打开 **芯片** 注入；情节画布是可选的自嗨层，嵌在芯片开关下。每个工作区一个 `.dsh/trivium.tdb`，不另起服务。
 
-> **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片(记忆白名单)** 默认关）。完整步骤见 [安装](#安装)。
+> **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -66,7 +66,7 @@ dsh plugin --profile web remove dsh-trivium
 
 `remove` 会删掉本插件的文件：`~/.dsh/trivium.json`，以及它打开过的每个工作区里的 `.dsh/trivium.tdb`、`trivium.jsonl` 和 `trivium-pending.json`。`.dsh/` 下其它文件不动。用 `dsh plugin add dsh-trivium` 升级**不会**清记忆。若 `trivium.jsonl` 已提交，`git checkout` 可以找回。
 
-然后再重启 **dsh web**：设置里不再有「Trivium 记忆」，标题栏不再有「芯片(记忆白名单)」，四个工具不再注册。
+然后再重启 **dsh web**：设置里不再有「Trivium 记忆」，标题栏不再有「芯片」，四个工具不再注册。
 
 从未用本版打开过的工作区，可能还留着旧 `.tdb`；看到就手动删那个文件。只想停用、不卸载（数据还在）：在该 profile 的 `cordis.patch.yml` 里加：
 
@@ -98,7 +98,7 @@ dsh plugin --profile web remove dsh-trivium
 
 ```text
 请在 DeepSeek Harness 上执行：dsh plugin --profile web add dsh-trivium
-然后重启 dsh web。设置里会出现「Trivium 记忆」。标题栏标签叫「芯片(记忆白名单)」，默认关；在设置「Trivium 记忆」里打开即可，拨一下就保存，不必再重启。
+然后重启 dsh web。设置里会出现「Trivium 记忆」。标题栏标签叫「芯片」，默认关；在设置「Trivium 记忆」里打开「芯片（记忆白名单）」即可，拨一下就保存，不必再重启。
 ```
 
 ---
@@ -109,7 +109,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 - **跨会话** — 会话 A 记下「鉴权走 header X」，会话 B 调用 `ctx_find("鉴权")` 命中，并带上它连着谁（`about` / `decided` / `broke` / `fixed`）。
 - **默认安静** — 新会话只注入一张短地图（≤400 token）。模型要用再调工具，不会每一步灌满。标题栏默认也不加第三标签。
-- **芯片 / 记忆白名单（默认关）** — 设置里打开后，标题栏「对话 / 轨迹」旁出现 **芯片(记忆白名单)**（以前叫「会话图」）。拨一下即写入 `~/.dsh/trivium.json`，重启后仍保持。勾选的条目从下一轮注入（L0，≤300 token）。其下还有 **会话层**（也默认关）：把 compaction / 分叉画成方框。
+- **芯片 / 记忆白名单（默认关）** — 设置里打开后，标题栏「对话 / 轨迹」旁出现 **芯片**。拨一下即写入 `~/.dsh/trivium.json`，重启后仍保持。勾选的条目从下一轮注入（L0，≤300 token）。其下还有 **会话层**（也默认关）：把 compaction / 分叉画成方框。
 - **人能改错** — 芯片条可新增、归档、删除；设置页管搜、改名 / 正文、合并、导入导出、全局开关。
 - **抽取偏严** — 闲聊、一次性改文件、密钥**不会从对话自动入库**。芯片「新增」按你写的存（点一次整段一条），同样过写入卫生闸门。
 - **写入卫生** — `ctx_remember`、芯片新增、抽取、外部导入会拒绝乱码、复读、JSON envelope、base64 残骸和密钥。已经进 `.tdb` 的脏节点仍可在设置里看见以便归档；find / 短地图 / 芯片不再带它们。
@@ -122,7 +122,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 - **注入走 `agent.inject()`** — 不写 system prompt，避免 `persona.complete: true` 把地图静默丢掉。
 - **召回带路径** — 每条命中都说明从哪个节点、沿哪条边过来。
 - **失败不挡主循环** — 存储 / embedding / 抽取出错只记日志，Agent 继续。
-- **界面跟随宿主语言** — 设置页和「芯片(记忆白名单)」标签随 DSH `locale/change` 切换（`zh` / `en`）。
+- **界面跟随宿主语言** — 设置页和「芯片」标签随 DSH `locale/change` 切换（`zh` / `en`），也可在配置设置里锁定。
 - **首轮短地图** — 每个会话只注入一次。若 `session-start` 和第一步赛跑输了，`pre-step` 会补上；不会每步重写（前缀缓存友好）。
 
 ## 功能
@@ -135,7 +135,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ### 芯片（记忆白名单）
 
-默认关。在设置里打开 **芯片（记忆白名单）**：不必再点「保存设置」，也不必重启。标题栏立刻出现 **对话 / 轨迹 / 芯片(记忆白名单)**，选择写入 `~/.dsh/trivium.json`，重启后仍在。这是钉选白名单，不是记忆编辑器；改名、合并、全局开关仍走设置页。
+默认关。在设置里打开 **芯片（记忆白名单）**：不必再点「保存设置」，也不必重启。标题栏立刻出现 **对话 / 轨迹 / 芯片**，选择写入 `~/.dsh/trivium.json`，重启后仍在。这是钉选白名单，不是记忆编辑器；改名、合并、全局开关仍走设置页。
 
 列出未归档的 preference / decision / entity（experience 不进芯片）。勾选后从下一轮注入（L0，≤300 token）。条上可新增、归档、删除。
 
@@ -199,19 +199,27 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 <img width="560" alt="轨迹" src="docs/screenshots/03-trajectory.png">
 
-### 设置 — 注入策略
+### 设置 — 检查更新、语言、注入策略
 
-<img width="560" alt="设置" src="docs/screenshots/04-settings.png">
+<img width="560" alt="设置配置" src="docs/screenshots/04-settings.png">
+
+「检查更新」下面是可折叠的 **配置设置**（本插件语言、注入策略）。
+
+### 设置 — 抽取、芯片、Git 旁路
+
+<img width="560" alt="设置开关" src="docs/screenshots/05-settings-options.png">
+
+芯片开关下嵌 **会话层（情节画布）**。同一页还有 Git 旁路、Markdown 导出、外部记忆一次性导入、远程 embedding。
 
 ### 设置 — 记忆条目
 
-<img width="560" alt="条目列表" src="docs/screenshots/05-settings-list.png">
+<img width="560" alt="条目列表" src="docs/screenshots/06-settings-list.png">
 
-### 芯片(记忆白名单) — 可选，在对话 / 轨迹旁
+### 芯片 — 可选，在对话 / 轨迹旁
 
-<img width="560" alt="芯片 / 会话层" src="docs/screenshots/06-session-map.png">
+<img width="560" alt="芯片标签" src="docs/screenshots/07-chips.png">
 
-默认关。设置里打开 **芯片(记忆白名单)** 后，标题栏立刻出现该标签。若同时打开 **会话层**，没压过的会话只有一个「后续」方框；顶部是记忆芯片（默认不勾）。可点「生成检查点」把后续收成左边一格。compaction 或 `/compact` 之后左边也会出现历史方框，分叉从方框连到子会话。
+默认关。设置里打开 **芯片（记忆白名单）** 后，标题栏立刻出现 **芯片**。若同时打开 **会话层**，没压过的会话只有一个「后续」方框；顶部是记忆芯片（默认不勾）。可点「生成检查点」把后续收成左边一格。compaction 或 `/compact` 之后左边也会出现历史方框，分叉从方框连到子会话。
 
 ---
 
@@ -229,6 +237,8 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ---
 
 ## 更新说明
+
+**0.4.13** — 标题栏只显示 **芯片**；设置里的开关仍叫 **芯片（记忆白名单）**。会话层开关立刻刷新芯片页。设置 / 芯片截图更新。
 
 **0.4.12** — Git 旁路：工作区 `.dsh/trivium.jsonl` 作为文本源（业务节点和边）。`.tdb` 仍是本地索引。写入延迟约 1.5 秒，不额外调模型。clone / `git pull` 后文件变了会导回。开关**默认关**。**生成** 用当前 `.tdb` 覆盖写出 jsonl；关掉后 **删除 jsonl** 会清掉已知文件。设置页把可选项收到「检查更新」下的配置折叠里。界面语言可跟随宿主或锁定中/英。
 
@@ -261,7 +271,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 | 现象 | 处理 |
 |---|---|
 | 设置里没有「Trivium 记忆」 | 确认装的是 web profile，然后**重启** `dsh web`，再打开一个工作区。只刷新浏览器不够。 |
-| 标题栏没有「芯片(记忆白名单)」 | 在设置里打开「芯片（记忆白名单）」（拨一下就会保存）。切回对话页，标签应立刻出现，不用重启。 |
+| 标题栏没有「芯片」 | 在设置里打开「芯片（记忆白名单）」（拨一下就会保存）。切回对话页，标签应立刻出现，不用重启。 |
 | 改了注入 / 抽取 / embedding / 芯片开关没生效 | 芯片 / 抽取 / 注入拨一下即保存。Embedding URL 仍要点「保存设置」。只有设置页本身没出现时才重启 `dsh web`。 |
 | 会话层只有一个「后续」方框 | 正常（在会话层已打开时）。方框跟 DSH 压缩走，会话长不等于已经压过（默认约窗口 80% 才自动压）。要分段：对话里 `/compact`，或点「生成检查点」（只切图，不压窗口）。旧会话可点「更新检查点」补已经发生过的压缩 / 分叉。 |
 | `ctx_find` 什么都没有 | 新会话默认只注入短地图，模型要自己调工具。也可以在芯片条「新增」或对模型说「记住：…」。闲聊和一次性改文件不会自动入库。 |
@@ -278,7 +288,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.12`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.13`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（兼 `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

@@ -8,7 +8,7 @@ In-process graph memory for DeepSeek Harness. One `.tdb` per workspace. No extra
 
 The kernel stays close to DSH: no extra process, no extra nav by default. Pin memory fragments with optional chip inject; the plot canvas is an optional extra, loaded from Settings.
 
-> **Quick install**: `dsh plugin --profile web add dsh-trivium` → restart **dsh web** → open a workspace (Settings shows **Trivium memory**; the **Chips (memory whitelist)** tab stays off until you turn it on). Details in [Installation](#installation).
+> **Quick install**: `dsh plugin --profile web add dsh-trivium` → restart **dsh web** → open a workspace (Settings shows **Trivium memory**; the **Chips** tab stays off until you turn it on). Details in [Installation](#installation).
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -68,7 +68,7 @@ dsh plugin --profile web remove dsh-trivium
 
 `remove` deletes this plugin’s files: `~/.dsh/trivium.json`, and in every workspace the plugin has opened, `.dsh/trivium.tdb`, `trivium.jsonl`, and `trivium-pending.json`. Other files under `.dsh/` stay. Updating with `dsh plugin add dsh-trivium` does **not** wipe memory. If `trivium.jsonl` was committed, `git checkout` brings it back.
 
-Restart **dsh web** afterward: Settings no longer shows **Trivium memory**, the title bar no longer shows **Chips (memory whitelist)**, and the four tools are unregistered.
+Restart **dsh web** afterward: Settings no longer shows **Trivium memory**, the title bar no longer shows **Chips**, and the four tools are unregistered.
 
 Workspaces never opened after this version may still have an old `.tdb`; delete that file by hand if you find one. Disable without uninstall (data stays): in that profile’s `cordis.patch.yml` add:
 
@@ -101,8 +101,8 @@ Copy this to your assistant:
 ```text
 On DeepSeek Harness, run: dsh plugin --profile web add dsh-trivium
 Then restart dsh web. Settings will show "Trivium memory". The title-bar tab is
-"Chips (memory whitelist)" and is off by default; turn it on under Settings →
-Trivium memory. The toggle saves immediately; no second restart.
+"Chips" and is off by default; turn it on under Settings → Trivium memory
+(Chips / memory whitelist). The toggle saves immediately; no second restart.
 ```
 
 ---
@@ -112,8 +112,8 @@ Trivium memory. The toggle saves immediately; no second restart.
 Trivium is a memory kernel, not a journal, calendar, or chat companion. It stores **nodes and edges**, injects as little as possible, and lets you correct mistakes.
 
 - **Cross-session graph** — session A stores “auth goes in header X”; session B calls `ctx_find("auth")` and gets the hit plus who it links to (`about` / `decided` / `broke` / `fixed`).
-- **Default quiet** — a new session injects one short map (≤400 tokens). The model calls tools when it needs more. Nothing is dumped every step. No extra title-bar tab until you turn **Chips (memory whitelist)** on.
-- **Chips / memory whitelist (off by default)** — Settings → Trivium memory. Toggle saves to `~/.dsh/trivium.json` immediately and survives restart. The title bar then shows **Chips (memory whitelist)** next to Conversation / Trajectory (this used to be labelled Session graph). Checked items pin into the next turn (L0, ≤300 tokens). Under it, **Session layer** (also off) draws compaction / forks as boxes.
+- **Default quiet** — a new session injects one short map (≤400 tokens). The model calls tools when it needs more. Nothing is dumped every step. No extra title-bar tab until you turn **Chips** on.
+- **Chips / memory whitelist (off by default)** — Settings → Trivium memory. Toggle saves to `~/.dsh/trivium.json` immediately and survives restart. The title bar then shows **Chips** next to Conversation / Trajectory. Checked items pin into the next turn (L0, ≤300 tokens). Under it, **Session layer** (also off) draws compaction / forks as boxes.
 - **Human-editable** — chips can add, archive, or delete; Settings search, rename, merge, import/export, and global switches.
 - **Strict extraction** — chitchat, one-off file edits, and secrets are **not** auto-written from the transcript. Chip “Add” stores exactly what you typed (one paste = one node), still through the write hygiene gate.
 - **Write hygiene** — `ctx_remember`, chip add, extract, and external import refuse mojibake, stutter loops, JSON envelopes, base64 residue, and secrets. Dirty nodes already in `.tdb` stay visible in Settings so you can archive them; they are hidden from find / short map / chips.
@@ -139,7 +139,7 @@ Nodes are `entity` / `preference` / `decision` / `experience`. Business edges ar
 
 ### Chips (memory whitelist)
 
-Off by default. In Settings, turn on **Chips (memory whitelist)** — no extra Save click, no restart. The title bar shows **Conversation / Trajectory / Chips (memory whitelist)** at once, and the choice is stored in `~/.dsh/trivium.json` so it survives restart. This is a pin whitelist, not the memory editor. Rename, merge, and global switches stay on the Settings page.
+Off by default. In Settings, turn on **Chips (memory whitelist)** — no extra Save click, no restart. The title bar shows **Conversation / Trajectory / Chips** at once, and the choice is stored in `~/.dsh/trivium.json` so it survives restart. This is a pin whitelist, not the memory editor. Rename, merge, and global switches stay on the Settings page.
 
 Lists unarchived preference / decision / entity (experience stays out). Check to pin into the next turn (L0, ≤300 tokens). Add / archive / delete on the strip.
 
@@ -162,7 +162,7 @@ Settings → **Trivium memory** manages the store. Check for updates sits at the
 
 | Switch | Default | What it does |
 |---|---|---|
-| **Chips (memory whitelist)** | off | Title-bar tab next to Conversation / Trajectory. Checked chips are a whitelist for the next turn (L0, ≤300 tokens). |
+| **Chips (memory whitelist)** | off | Title-bar **Chips** tab next to Conversation / Trajectory. Checked chips are a whitelist for the next turn (L0, ≤300 tokens). |
 | **Session layer** | off (needs Chips on) | Plot canvas on the same tab: Create checkpoint, Update checkpoints, fork from a box. |
 | **Git sidecar** | off | Debounced write of `.dsh/trivium.jsonl`. **Generate** (on) overwrites from the current `.tdb`. **Delete jsonl** (off) removes known files. Clone / pull re-imports. |
 | **Plugin language** | follow host | Chinese / English for this plugin's Settings card and Chips tab only. Does not change DSH. |
@@ -203,19 +203,27 @@ Session-start injects the short map; the model calls `ctx_find` and hits “auth
 
 <img width="560" alt="Trajectory" src="docs/screenshots/03-trajectory.png">
 
-### Settings — injection strategy
+### Settings — updates, language, injection
 
-<img width="560" alt="Settings" src="docs/screenshots/04-settings.png">
+<img width="560" alt="Settings config" src="docs/screenshots/04-settings.png">
+
+Check for updates sits above a collapsed **Configuration** fold (plugin language, injection strategy).
+
+### Settings — extract, chips, Git sidecar
+
+<img width="560" alt="Settings options" src="docs/screenshots/05-settings-options.png">
+
+Nested under chips: **Session layer (plot canvas)**. Git sidecar, Markdown export, one-shot external import, and remote embedding are on the same page.
 
 ### Settings — memory entries
 
-<img width="560" alt="Entry list" src="docs/screenshots/05-settings-list.png">
+<img width="560" alt="Entry list" src="docs/screenshots/06-settings-list.png">
 
-### Chips (memory whitelist) — optional, next to Conversation / Trajectory
+### Chips — optional, next to Conversation / Trajectory
 
-<img width="560" alt="Chips / session layer" src="docs/screenshots/06-session-map.png">
+<img width="560" alt="Chips tab" src="docs/screenshots/07-chips.png">
 
-Off by default. After you turn **Chips (memory whitelist)** on in Settings, the title bar shows that tab immediately. With **Session layer** also on, a never-compacted session has one “Next” box; chips sit on top (unchecked by default). **Create checkpoint** folds “Next” into a left box. After compaction or `/compact`, historical boxes appear on the left; forks leave a box toward a child session.
+Off by default. After you turn **Chips (memory whitelist)** on in Settings, the title bar shows **Chips** immediately. With **Session layer** also on, a never-compacted session has one “Next” box; chips sit on top (unchecked by default). **Create checkpoint** folds “Next” into a left box. After compaction or `/compact`, historical boxes appear on the left; forks leave a box toward a child session.
 
 ---
 
@@ -233,6 +241,8 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 ---
 
 ## Changelog
+
+**0.4.13** — Title-bar tab is **Chips** (short); the Settings switch stays **Chips (memory whitelist)**. Toggling the session layer refreshes the Chips tab immediately. Settings / Chips screenshots updated.
 
 **0.4.12** — Git sidecar: workspace `.dsh/trivium.jsonl` is the text source of truth (business nodes and edges). `.tdb` stays the local index. Writes are debounced (~1.5s), no extra model calls. Clone / `git pull` re-imports when the file changed. Switch is **off** by default. **Generate** overwrites jsonl from the current `.tdb`; **Delete jsonl** (switch off) removes known files. Settings folds optional config below Check for updates. Plugin language can follow the host or lock zh/en.
 
@@ -265,7 +275,7 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 | Symptom | What to do |
 |---|---|
 | Settings has no **Trivium memory** | Confirm the **web** profile, then **restart** `dsh web` and open a workspace. Reloading the browser is not enough. |
-| Title bar has no **Chips (memory whitelist)** | Turn on **Chips (memory whitelist)** in Settings (it saves as soon as you toggle). Switch back to the conversation; the tab should appear without restarting. |
+| Title bar has no **Chips** | Turn on **Chips (memory whitelist)** in Settings (it saves as soon as you toggle). Switch back to the conversation; the tab should appear without restarting. |
 | Injection / extract / embedding / chip tab changes have no effect | Chip / extract / recall toggles save immediately. Embedding URL still uses **Save**. Restart `dsh web` only if the settings page itself is missing. |
 | Session layer shows only a **Next** box | Expected when the nested session layer is on. Boxes follow DSH compaction; a long session is not the same as already compacted (auto-compact is around 80% of the window). To split: `/compact` in the conversation, or **Create checkpoint** (plot only, does not compact the window). Older sessions can use **Update checkpoints** to backfill past compaction / forks. |
 | `ctx_find` returns nothing | A new session injects the short map only; the model must call the tool. You can also **Add** on the chip strip or tell the model “remember: …”. Chitchat and one-off file edits are not auto-written. |
@@ -282,7 +292,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.12`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.13`](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.1.1-rc.2` (also `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 
