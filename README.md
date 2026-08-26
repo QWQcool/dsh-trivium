@@ -242,6 +242,8 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 
 ## Changelog
 
+**0.4.14** — Storage bump to `triviumdb@0.8.1` (harder WAL/locks, optional read-only share, ARM64 fixes). Four tools / short map / find paths unchanged.
+
 **0.4.13** — Title-bar tab is **Chips** (short); the Settings switch stays **Chips (memory whitelist)**. Toggling the session layer refreshes the Chips tab immediately. Settings / Chips screenshots updated.
 
 **0.4.12** — Git sidecar: workspace `.dsh/trivium.jsonl` is the text source of truth (business nodes and edges). `.tdb` stays the local index. Writes are debounced (~1.5s), no extra model calls. Clone / `git pull` re-imports when the file changed. Switch is **off** by default. **Generate** overwrites jsonl from the current `.tdb`; **Delete jsonl** (switch off) removes known files. Settings folds optional config below Check for updates. Plugin language can follow the host or lock zh/en.
@@ -292,7 +294,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.13`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.14`](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.1.1-rc.2` (also `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

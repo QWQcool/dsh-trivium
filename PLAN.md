@@ -1,9 +1,9 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**v0.4.11**。内核仍是四工具 + 短地图。芯片（记忆白名单）与会话层**默认关**；设置里拨开后标题栏立刻出现「芯片(记忆白名单)」，写入 `~/.dsh/trivium.json`。`dsh plugin remove` 清掉已知 `.tdb` 与该配置文件。存储钉 `triviumdb@0.7.6`。  
+> 状态：**v0.4.14**。内核仍是四工具 + 短地图。芯片（记忆白名单）与会话层**默认关**；设置里拨开后标题栏立刻出现「芯片(记忆白名单)」，写入 `~/.dsh/trivium.json`。`dsh plugin remove` 清掉已知 `.tdb` 与该配置文件。存储钉 `triviumdb@0.8.1`。  
 > 情节图规划见 [`PLAN-session-map.md`](./PLAN-session-map.md)。不是记忆图谱工作台。  
-> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.11`](https://www.npmjs.com/package/dsh-trivium)。  
+> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.14`](https://www.npmjs.com/package/dsh-trivium)。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.1-rc.2`（peer 兼容 `0.1.0-rc.8`；不要把 `dsh-llm` exact-pin 嵌进插件 `node_modules`）。
 
 ---
@@ -343,7 +343,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 14. **Settings 面：** 能展开业务边邻居；AuthGateway 上「只看挂在这上面的」能看到未过期决策/偏好、看不到未连边 pnpm；过期决策默认不在列表，勾选后可见；页上能区分归档 vs 删除。
 15. **短地图：** session-start 仍 ≤400 token，named 里能看到带 `until` 的未过期决策；默认 autoRecall 仍关。
 
-### TDB 引擎（`triviumdb@0.7.5`）
+### TDB 引擎（`triviumdb@0.8.1`）
 
 已从全表扫描切到引擎 API（旧绑定仍可回退）：
 
@@ -376,7 +376,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 
 ```
 dsh-trivium/                    # GitHub QWQcool/dsh-trivium
-  package.json                  # name: dsh-trivium  version 0.4.11  MIT
+  package.json                  # name: dsh-trivium  version 0.4.14  MIT
   cordis.patch.yml
   lib/index.js
   lib/store.js

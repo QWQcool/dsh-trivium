@@ -238,6 +238,8 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 更新说明
 
+**0.4.14** — 存储升到 `triviumdb@0.8.1`（WAL/锁更硬、可选只读共享、ARM64 修复）。四工具 / 短地图 / find 路径不变。
+
 **0.4.13** — 标题栏只显示 **芯片**；设置里的开关仍叫 **芯片（记忆白名单）**。会话层开关立刻刷新芯片页。设置 / 芯片截图更新。
 
 **0.4.12** — Git 旁路：工作区 `.dsh/trivium.jsonl` 作为文本源（业务节点和边）。`.tdb` 仍是本地索引。写入延迟约 1.5 秒，不额外调模型。clone / `git pull` 后文件变了会导回。开关**默认关**。**生成** 用当前 `.tdb` 覆盖写出 jsonl；关掉后 **删除 jsonl** 会清掉已知文件。设置页把可选项收到「检查更新」下的配置折叠里。界面语言可跟随宿主或锁定中/英。
@@ -288,7 +290,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.13`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.14`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（兼 `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
