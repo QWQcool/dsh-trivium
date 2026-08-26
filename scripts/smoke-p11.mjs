@@ -5,7 +5,7 @@
 import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { listedWorkspaces, rememberWorkspace, settingsFilePath } from "../lib/settings.js";
+import { listedWorkspaces, rememberWorkspace, readUiSettings, settingsFilePath, writeUiSettings } from "../lib/settings.js";
 import {
   isTriviumArtifactName,
   purgeAllTraces,
@@ -67,6 +67,13 @@ try {
   assert(existsSync(join(cwd, ".dsh", "keep-me.txt")) === true, "unrelated .dsh file kept");
   assert(existsSync(settingsFilePath()) === false, "home trivium.json deleted");
   assert(rememberWorkspace(cwd).length >= 1, "can record again after wipe");
+
+  writeUiSettings({ chipsEnabled: true, sessionLayerEnabled: true });
+  writeUiSettings({ extractEnabled: false });
+  assert(readUiSettings().chipsEnabled === true, "later settings save keeps chipsEnabled");
+  assert(readUiSettings().sessionLayerEnabled === true, "later settings save keeps sessionLayerEnabled");
+  rememberWorkspace(join(root, "ws2"));
+  assert(readUiSettings().chipsEnabled === true, "rememberWorkspace does not drop chipsEnabled");
 } finally {
   closeAll();
   rmSync(root, { recursive: true, force: true });

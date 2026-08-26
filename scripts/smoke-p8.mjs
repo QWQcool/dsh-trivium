@@ -2,7 +2,7 @@
  * Second knife: chip q filter, suggested neighbors (not auto-pinned), inherit copy.
  * Uses a temp dir — does not open a .tdb DSH may already hold.
  */
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { EDGE_LABELS } from "../lib/schema.js";
@@ -19,12 +19,12 @@ import {
   splitChipDraft,
   stripMarkdownMarkup,
 } from "../lib/pins.js";
-import { SETTINGS_FILE, chipsEnabledOf, sessionLayerEnabledOf, writeUiSettings, readUiSettings } from "../lib/settings.js";
+import { chipsEnabledOf, sessionLayerEnabledOf, writeUiSettings, readUiSettings } from "../lib/settings.js";
 import { closeAll, ensureLink, insertNode, openWorkspaceDb } from "../lib/store.js";
 
 const cwd = mkdtempSync(join(tmpdir(), "dsh-trivium-p8-"));
+process.env.DSH_TRIVIUM_SETTINGS = join(cwd, "home-trivium.json");
 let failed = 0;
-const prevSettings = existsSync(SETTINGS_FILE) ? readFileSync(SETTINGS_FILE, "utf8") : null;
 
 function assert(cond, msg) {
   if (cond) {
@@ -187,19 +187,6 @@ try {
   console.error("FAIL exception " + (err && err.stack ? err.stack : err));
 } finally {
   closeAll();
-  try {
-    if (prevSettings == null) {
-      try {
-        rmSync(SETTINGS_FILE, { force: true });
-      } catch {
-        // ignore
-      }
-    } else {
-      writeFileSync(SETTINGS_FILE, prevSettings, "utf8");
-    }
-  } catch {
-    // ignore
-  }
   try {
     rmSync(cwd, { recursive: true, force: true });
   } catch {
