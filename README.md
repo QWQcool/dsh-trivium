@@ -49,23 +49,17 @@ Restart **dsh web**. For a source checkout, `git pull` then run `node scripts/li
 
 ## Uninstall
 
+Stop **dsh web** first so the `.tdb` is not locked, then:
+
 ```sh
 dsh plugin --profile web remove dsh-trivium
 ```
 
-After restarting **dsh web**, Settings no longer shows **Trivium memory**, and the title bar no longer shows **Chips**. The four tools are unregistered.
+`remove` deletes this plugin’s files: `~/.dsh/trivium.json`, and in every workspace the plugin has opened, `.dsh/trivium.tdb` plus `trivium-pending.json`. Other files under `.dsh/` stay. Updating with `dsh plugin add dsh-trivium` does **not** wipe memory.
 
-Uninstall does **not** delete memory files. To wipe them, delete:
+Restart **dsh web** afterward: Settings no longer shows **Trivium memory**, the title bar no longer shows **Chips**, and the four tools are unregistered.
 
-| Path | Contents |
-|---|---|
-| `<workspace>/.dsh/trivium.tdb` | Graph memory for that workspace (nodes, edges, session-graph boxes) |
-| `<workspace>/.dsh/trivium-pending.json` | Failed-extract replay queue; skip if missing |
-| `~/.dsh/trivium.json` | Injection policy, extract switch, embedding, per-session chip pins |
-
-Keep `.tdb` after uninstall: reinstall later and that workspace’s memory is still there. Each workspace has its own `.tdb`; deleting one does not affect others.
-
-Disable without uninstall: in that profile’s `cordis.patch.yml` add:
+Workspaces never opened after this version may still have an old `.tdb`; delete that file by hand if you find one. Disable without uninstall (data stays): in that profile’s `cordis.patch.yml` add:
 
 ```yaml
 - id: dsh-trivium
@@ -218,6 +212,8 @@ Off by default. After you turn **Chips** on in Settings and restart, the title b
 
 ## Changelog
 
+**0.4.10** — `dsh plugin remove` deletes known workspace `.tdb` files and `~/.dsh/trivium.json`. Plugin update does not wipe. Disable-in-place still keeps data.
+
 **0.4.9** — Chips tab and session-layer canvas are both off by default. Title bar shows **Chips** only after the Settings switch; session boxes sit under that switch. Kernel (four tools, short map, in-process `.tdb`) unchanged.
 
 **0.4.8** — Write + inject hygiene gate (secrets, mojibake, stutter, JSON envelopes, base64 residue). Settings / session graph follow DSH language. Settings can check npm for updates. One-shot strict import also discovers Claude Code `CLAUDE.md` and Codex `AGENTS.md`. First-turn short map is guaranteed if `session-start` races the first step.
@@ -249,7 +245,7 @@ Off by default. After you turn **Chips** on in Settings and restart, the title b
 | `ctx_find` returns nothing | A new session injects the short map only; the model must call the tool. You can also **Add** on the chip strip or tell the model “remember: …”. Chitchat and one-off file edits are not auto-written. |
 | `.tdb` is locked / will not open | Run one `dsh web`. Do not run two Node processes that both linked this plugin. |
 | Embedding is filled but search is no more accurate | Failures fall back to keyword + graph. Check that `~/.dsh/trivium.json` has an OpenAI-compatible URL (the `/v1` kind). Restart after changing it. |
-| Memory still there after uninstall / pins still there after reinstall | Memory is the workspace `.tdb`; pins are `~/.dsh/trivium.json`. Delete those files if you want a clean wipe (see Uninstall). |
+| Memory still there after uninstall | Stop `dsh web` before `dsh plugin remove`. Leftover `.tdb` is a workspace never opened on 0.4.10+; delete `.dsh/trivium.tdb` in that folder. Disable-in-place does not wipe. |
 | Check for updates fails | That request only hits the npm registry for the latest version. Memory is unaffected; try again later. |
 | Old conversations will not open after rc.8 | That is DSH’s own session-store format change, not a broken `.tdb`. Graph memory still works via `ctx_find`; leftover boxes on unmatched old sessions are plot residue. |
 
@@ -260,7 +256,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.9`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.10`](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.1.1-rc.2` (also `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

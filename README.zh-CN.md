@@ -47,23 +47,17 @@ dsh plugin --profile web add dsh-trivium
 
 ## 卸载
 
+先停掉 **dsh web**，避免 `.tdb` 被占用，然后：
+
 ```sh
 dsh plugin --profile web remove dsh-trivium
 ```
 
-重启 **dsh web** 后，设置里的「Trivium 记忆」和标题栏「芯片」都会消失。四个工具不再注册。
+`remove` 会删掉本插件的文件：`~/.dsh/trivium.json`，以及它打开过的每个工作区里的 `.dsh/trivium.tdb` 和 `trivium-pending.json`。`.dsh/` 下其它文件不动。用 `dsh plugin add dsh-trivium` 升级**不会**清记忆。
 
-卸载**不会**自动删记忆文件。要彻底清掉再手动删：
+然后再重启 **dsh web**：设置里不再有「Trivium 记忆」，标题栏不再有「芯片」，四个工具不再注册。
 
-| 路径 | 内容 |
-|---|---|
-| `<workspace>/.dsh/trivium.tdb` | 该工作区的图记忆（节点、边、会话图方框） |
-| `<workspace>/.dsh/trivium-pending.json` | 抽取失败待重放的队列；没有则跳过 |
-| `~/.dsh/trivium.json` | 注入策略、抽取开关、embedding、各会话芯片钉选 |
-
-只卸插件、留 `.tdb`：以后再装回来，工作区记忆还在。多个工作区各有自己的 `.tdb`，删一个不影响别的。
-
-临时关掉、先不卸载：在该 profile 的 `cordis.patch.yml` 里加：
+从未用本版打开过的工作区，可能还留着旧 `.tdb`；看到就手动删那个文件。只想停用、不卸载（数据还在）：在该 profile 的 `cordis.patch.yml` 里加：
 
 ```yaml
 - id: dsh-trivium
@@ -216,6 +210,8 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 更新说明
 
+**0.4.10** — `dsh plugin remove` 会删掉已知工作区的 `.tdb` 和 `~/.dsh/trivium.json`。升级安装不清记忆。配置里 disabled 仍保留数据。
+
 **0.4.9** — 芯片标签和会话层画布都默认关。设置里打开芯片后标题栏才出现「芯片」；情节方框嵌在其下。内核（四工具、短地图、进程内 `.tdb`）不变。
 
 **0.4.8** — 写入 + 注入卫生闸门（密钥、乱码、复读、JSON envelope、base64 残骸）。设置页 / 会话图跟随 DSH 语言。设置页可检查 npm 更新。一次性严导入同时发现 Claude Code `CLAUDE.md` 与 Codex `AGENTS.md`。若 `session-start` 和第一步赛跑，首轮短地图仍会补上。
@@ -247,7 +243,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 | `ctx_find` 什么都没有 | 新会话默认只注入短地图，模型要自己调工具。也可以在芯片条「新增」或对模型说「记住：…」。闲聊和一次性改文件不会自动入库。 |
 | 报 `.tdb` 被占用 / 打不开 | 只开一个 `dsh web`。不要同时跑两份链接了本插件的 Node 进程。 |
 | embedding 填了但检索没变准 | 失败会退回关键词 + 图。看 `~/.dsh/trivium.json` 里 URL 是否 OpenAI 兼容（含 `/v1` 那种）。改完重启。 |
-| 卸载后记忆还在 / 再装后钉选还在 | 记忆在工作区 `.tdb`，钉选在 `~/.dsh/trivium.json`。要清就按上面「卸载」删文件。 |
+| 卸载后记忆还在 | 先停 `dsh web` 再 `dsh plugin remove`。剩下的 `.tdb` 是从未用 0.4.10 打开过的工作区，到该文件夹删 `.dsh/trivium.tdb`。只在配置里 disabled 不会清文件。 |
 | 检查更新失败 | 只请求 npm registry 拿最新版本号，不影响记忆；过一会儿再点即可。 |
 | rc.8 之后旧对话打不开 | 那是 DSH 自己的会话库格式变了，不是 `.tdb` 坏了。图记忆仍可 `ctx_find`；对不上号的旧方框可当情节残留。 |
 
@@ -258,7 +254,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.9`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.10`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（兼 `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

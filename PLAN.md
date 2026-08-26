@@ -1,9 +1,9 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**v0.4.9**。内核仍是四工具 + 短地图。芯片标签与会话层**默认关**；设置里打开芯片后，标题栏才出现「芯片」；会话层嵌在其下，默认关。Settings 仍管库、改名合并、开关。存储钉 `triviumdb@0.7.6`。  
+> 状态：**v0.4.10**。内核仍是四工具 + 短地图。芯片标签与会话层**默认关**；设置里打开芯片后，标题栏才出现「芯片」；会话层嵌在其下，默认关。`dsh plugin remove` 清掉已知 `.tdb` 与 `~/.dsh/trivium.json`。存储钉 `triviumdb@0.7.6`。  
 > 情节图规划见 [`PLAN-session-map.md`](./PLAN-session-map.md)。不是记忆图谱工作台。  
-> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.9`](https://www.npmjs.com/package/dsh-trivium)。  
+> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.10`](https://www.npmjs.com/package/dsh-trivium)。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.1-rc.2`（peer 兼容 `0.1.0-rc.8`；不要把 `dsh-llm` exact-pin 嵌进插件 `node_modules`）。
 
 ---
@@ -321,7 +321,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - **`ctx_read` 入边** — 返回 `incoming[]`（from/label/type/l0），全文读实体时能看见谁 `about`/`decided`/`broke`/`fixed` 过来。
 - **抽取挂边** — preference 的 `about` 只取 **span 内**专有名，不再因邻句「TriviumDB 是内核」误挂。experience 从 fail/fix（或同 turn 用户句）取 `linkName` 并 `fixed`。
 
-其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。芯片标签与情节画布均默认关，见 [`PLAN-session-map.md`](./PLAN-session-map.md)。v0.4.9：芯片 / 会话层开关默认关。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。v0.4.4：接 `triviumdb@0.7.5` 的 `getIncomingEdges` / `neighbors(..., labels)` / `unlink(..., label)`。v0.4.5：peer 放宽到 `0.1.1-rc.2`，去掉嵌套旧 llm/tools。v0.4.6：会话图「生成检查点」手切情节格。
+其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。芯片标签与情节画布均默认关，见 [`PLAN-session-map.md`](./PLAN-session-map.md)。v0.4.10：卸载清痕迹。v0.4.9：芯片 / 会话层开关默认关。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。v0.4.4：接 `triviumdb@0.7.5` 的 `getIncomingEdges` / `neighbors(..., labels)` / `unlink(..., label)`。v0.4.5：peer 放宽到 `0.1.1-rc.2`，去掉嵌套旧 llm/tools。v0.4.6：会话图「生成检查点」手切情节格。
 
 ### 待 live 验收（新面回家再测）
 
@@ -376,7 +376,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 
 ```
 dsh-trivium/                    # GitHub QWQcool/dsh-trivium
-  package.json                  # name: dsh-trivium  version 0.4.9  MIT
+  package.json                  # name: dsh-trivium  version 0.4.10  MIT
   cordis.patch.yml
   lib/index.js
   lib/store.js
