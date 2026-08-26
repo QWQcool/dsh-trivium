@@ -33,6 +33,7 @@ try {
   assert(isTriviumArtifactName("trivium.tdb") === true, "tdb is an artifact");
   assert(isTriviumArtifactName("trivium.tdb.lock") === true, "tdb sidecar is an artifact");
   assert(isTriviumArtifactName("trivium-pending.json") === true, "pending is an artifact");
+  assert(isTriviumArtifactName("trivium.jsonl") === true, "jsonl is an artifact");
   assert(isTriviumArtifactName("sessions.json") === false, "other .dsh files stay");
 
   assert(shouldWipeOnUninstall({ npm_lifecycle_event: "preuninstall", npm_command: "remove" }) === true, "pnpm remove wipes");
@@ -45,6 +46,7 @@ try {
   await openWorkspaceDb(cwd);
   writeFileSync(join(cwd, ".dsh", "keep-me.txt"), "dsh");
   writeFileSync(join(cwd, ".dsh", "trivium-pending.json"), '{"turns":[]}');
+  writeFileSync(join(cwd, ".dsh", "trivium.jsonl"), '{"v":1,"format":"dsh-trivium-jsonl"}\n');
   closeAll();
   assert(existsSync(dbPathFor(cwd)), "tdb created");
   assert(
@@ -64,6 +66,7 @@ try {
   assert(result.ok === true, "purge reports ok");
   assert(existsSync(dbPathFor(cwd)) === false, "tdb deleted");
   assert(existsSync(join(cwd, ".dsh", "trivium-pending.json")) === false, "pending deleted");
+  assert(existsSync(join(cwd, ".dsh", "trivium.jsonl")) === false, "jsonl deleted");
   assert(existsSync(join(cwd, ".dsh", "keep-me.txt")) === true, "unrelated .dsh file kept");
   assert(existsSync(settingsFilePath()) === false, "home trivium.json deleted");
   assert(rememberWorkspace(cwd).length >= 1, "can record again after wipe");

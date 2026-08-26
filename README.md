@@ -25,8 +25,19 @@ dsh plugin --profile web add dsh-trivium
 Restart **dsh web**. Memory lives in the current workspace:
 
 ```
-<workspace>/.dsh/trivium.tdb
+<workspace>/.dsh/trivium.tdb      # local index (binary; gitignore this)
+<workspace>/.dsh/trivium.jsonl    # git source of truth (business facts)
 ```
+
+Commit `trivium.jsonl`. Ignore the binary store:
+
+```gitignore
+.dsh/trivium.tdb
+.dsh/trivium.tdb*
+.dsh/trivium-pending.json
+```
+
+Clone / `git pull` re-imports when the jsonl changed. Settings → **Git sidecar** is **off** by default (same as chips). Turn it on under **Settings** (the fold below Check for updates). The switch only starts or stops auto-write. **Generate** (while on) overwrites `.dsh/trivium.jsonl` from the current `.tdb` at the same path. **Delete jsonl** (while off) removes known workspace jsonl files (`.tdb` stays). Episodes, embeddings, and chip pins stay local.
 
 If you launch DSH with [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart), the plugin is installed for you — skip the command above.
 
@@ -55,7 +66,7 @@ Stop **dsh web** first so the `.tdb` is not locked, then:
 dsh plugin --profile web remove dsh-trivium
 ```
 
-`remove` deletes this plugin’s files: `~/.dsh/trivium.json`, and in every workspace the plugin has opened, `.dsh/trivium.tdb` plus `trivium-pending.json`. Other files under `.dsh/` stay. Updating with `dsh plugin add dsh-trivium` does **not** wipe memory.
+`remove` deletes this plugin’s files: `~/.dsh/trivium.json`, and in every workspace the plugin has opened, `.dsh/trivium.tdb`, `trivium.jsonl`, and `trivium-pending.json`. Other files under `.dsh/` stay. Updating with `dsh plugin add dsh-trivium` does **not** wipe memory. If `trivium.jsonl` was committed, `git checkout` brings it back.
 
 Restart **dsh web** afterward: Settings no longer shows **Trivium memory**, the title bar no longer shows **Chips (memory whitelist)**, and the four tools are unregistered.
 
@@ -75,6 +86,7 @@ The plugin loads inside the `dsh web` process. It does not open its own port or 
 | Access | Default | Notes |
 |---|---|---|
 | Workspace `.dsh/trivium.tdb` | read/write | Memory store. Do not open the same file from two Node processes at once |
+| Workspace `.dsh/trivium.jsonl` | read/write | Git sidecar (off by default). Business nodes/edges only; no embeddings |
 | `~/.dsh/trivium.json` | read/write | Settings and chip pins; may contain an embedding API key you typed |
 | `.dsh/trivium-pending.json` | read/write | Local queue when extract fails |
 | Network | off | Chat text is not sent out. Embedding outbound happens only if you turn it on and fill a URL. Settings **Check for updates** fetches the npm registry (version only, no transcript) |
@@ -146,12 +158,14 @@ Chips are per session. New sessions and forked children start unchecked. Inherit
 
 ### Settings (Trivium memory)
 
-Settings → **Trivium memory** manages the store and the two optional surfaces. Toggles write `~/.dsh/trivium.json` as soon as you flip them.
+Settings → **Trivium memory** manages the store. Check for updates sits at the top; **memory entries** stay visible. Everything else is inside a **Settings** fold (collapsed by default): injection, extract, chips, Git sidecar, plugin language, import, embedding. Toggles write `~/.dsh/trivium.json` as soon as you flip them.
 
 | Switch | Default | What it does |
 |---|---|---|
 | **Chips (memory whitelist)** | off | Title-bar tab next to Conversation / Trajectory. Checked chips are a whitelist for the next turn (L0, ≤300 tokens). |
 | **Session layer** | off (needs Chips on) | Plot canvas on the same tab: Create checkpoint, Update checkpoints, fork from a box. |
+| **Git sidecar** | off | Debounced write of `.dsh/trivium.jsonl`. **Generate** (on) overwrites from the current `.tdb`. **Delete jsonl** (off) removes known files. Clone / pull re-imports. |
+| **Plugin language** | follow host | Chinese / English for this plugin's Settings card and Chips tab only. Does not change DSH. |
 | **Injection** | off | Short map only, unless you pick autoRecall or entity-name path. |
 | **Extract** | on | Write from compaction / idle. |
 | **Embedding** | off | Needs **Save** plus a URL; restart after changing the URL. |
@@ -159,7 +173,7 @@ Settings → **Trivium memory** manages the store and the two optional surfaces.
 Injection detail: autoRecall injects at most 3 L0 hits when the step has user text; entity-name path injects 1-hop business neighbors only when the utterance names an existing entity. Checked chips share the budget and win first. Extract runs after `compaction/end` and a short idle; failures go to pending and replay on the next session-start (body ≤3000 chars, at most 24 items).
 
 - **Entries** — search, filter by type, expand business-edge neighbors, “only nodes hanging on this one”, hide expired decisions by default. Rename / edit body / aliases / until, merge same type, archive or delete.
-- **Export / import** — JSON is a real round-trip. Markdown is a read-only projection (for people and git), not parseable back. One-shot strict import from WorkBuddy `MEMORY.md`, Claude Code `CLAUDE.md`, and Codex `AGENTS.md`. No watch, no session jsonl, no two-way sync.
+- **Export / import** — JSON is a real round-trip. Markdown is a read-only projection (for people). Git sync uses `.dsh/trivium.jsonl` (business facts, auto). One-shot strict import from WorkBuddy `MEMORY.md`, Claude Code `CLAUDE.md`, and Codex `AGENTS.md`. No watch of those files, no session jsonl dumps.
 - **Check for updates** — Settings compares the installed version with npm latest and shows `dsh plugin --profile web add dsh-trivium` when a newer version exists. It does not auto-upgrade.
 
 ### Agent tools
@@ -177,7 +191,7 @@ The kernel is still these four. Chips / session layer do not add a fifth tool.
 
 ## Screenshots
 
-Captured inside DSH Web (`0.1.1-rc.2`). Screenshots below are from the Chinese UI; the plugin follows the DSH host language (`zh` / `en`).
+Captured inside DSH Web (`0.1.1-rc.2`). Screenshots below are from the Chinese UI. The plugin follows the DSH host language unless you pick Chinese / English under **Settings**.
 
 ### Conversation — `ctx_find("鉴权")`
 
@@ -210,14 +224,17 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 - If the model never calls `ctx_find` and no chips are checked, the window is mostly the opening short map.
 - Extraction misses things; dirty data can be archived / deleted on the chip strip or edited / merged in Settings.
 - Do not open the same `.tdb` from two Node processes at once (one `dsh web` is enough).
-- Markdown export is for humans; it cannot be parsed back. External import (WorkBuddy / Claude Code / Codex) is one-shot, not two-way sync, and does not ingest session jsonl dumps.
+- Markdown export is for humans; it cannot be parsed back. Git-friendly write-back is `trivium.jsonl`, not Markdown. External import (WorkBuddy / Claude Code / Codex) is one-shot, not two-way sync, and does not ingest session jsonl dumps.
+- Do not merge `.tdb` in git (binary). Track `trivium.jsonl`; ignore `.tdb`. jsonl merge conflicts are ordinary text — resolve, then reopen the workspace.
 - The session layer (when on) projects compaction and fork; it does not split boxes by message count. If the window has not reached DSH’s compact line, **Update checkpoints** will not invent history boxes — use **Create checkpoint**.
-- Plugin setting toggles (chips / session layer / recall / extract) save immediately. Embedding URL still uses Save; restart only if the Settings card itself is missing.
+- Plugin setting toggles (chips / session layer / git sidecar / recall / extract) save immediately. Embedding URL still uses Save; restart only if the Settings card itself is missing.
 - After the host moved to rc.8, DSH’s own older session store may not open (official SQLite format change). The workspace `.tdb` graph is still there; leftover boxes on unmatched old sessions are plot residue and do not affect `ctx_find`.
 
 ---
 
 ## Changelog
+
+**0.4.12** — Git sidecar: workspace `.dsh/trivium.jsonl` is the text source of truth (business nodes and edges). `.tdb` stays the local index. Writes are debounced (~1.5s), no extra model calls. Clone / `git pull` re-imports when the file changed. Switch is **off** by default. **Generate** overwrites jsonl from the current `.tdb`; **Delete jsonl** (switch off) removes known files. Settings folds optional config below Check for updates. Plugin language can follow the host or lock zh/en.
 
 **0.4.11** — Title-bar tab is **Chips (memory whitelist)** (was Session graph). The switch persists to `~/.dsh/trivium.json` as soon as it is toggled; the tab appears or disappears immediately, no restart.
 
@@ -254,7 +271,7 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 | `ctx_find` returns nothing | A new session injects the short map only; the model must call the tool. You can also **Add** on the chip strip or tell the model “remember: …”. Chitchat and one-off file edits are not auto-written. |
 | `.tdb` is locked / will not open | Run one `dsh web`. Do not run two Node processes that both linked this plugin. |
 | Embedding is filled but search is no more accurate | Failures fall back to keyword + graph. Check that `~/.dsh/trivium.json` has an OpenAI-compatible URL (the `/v1` kind). Restart after changing it. |
-| Memory still there after uninstall | Stop `dsh web` before `dsh plugin remove`. Leftover `.tdb` is a workspace never opened on 0.4.10+; delete `.dsh/trivium.tdb` in that folder. Disable-in-place does not wipe. |
+| Memory still there after uninstall | Stop `dsh web` before `dsh plugin remove`. Leftover `.tdb` is a workspace never opened on 0.4.10+; delete `.dsh/trivium.tdb` in that folder. Committed `trivium.jsonl` comes back with `git checkout`. Disable-in-place does not wipe. |
 | Check for updates fails | That request only hits the npm registry for the latest version. Memory is unaffected; try again later. |
 | Old conversations will not open after rc.8 | That is DSH’s own session-store format change, not a broken `.tdb`. Graph memory still works via `ctx_find`; leftover boxes on unmatched old sessions are plot residue. |
 
@@ -265,7 +282,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.11`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.12`](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.1.1-rc.2` (also `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

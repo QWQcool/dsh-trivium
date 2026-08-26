@@ -23,8 +23,19 @@ dsh plugin --profile web add dsh-trivium
 重启 **dsh web** 后生效。记忆文件在当前工作区：
 
 ```
-<workspace>/.dsh/trivium.tdb
+<workspace>/.dsh/trivium.tdb      # 本地索引（二进制，建议 gitignore）
+<workspace>/.dsh/trivium.jsonl    # git 源（业务事实）
 ```
+
+把 `trivium.jsonl` 交给 git。二进制库不要进版本库：
+
+```gitignore
+.dsh/trivium.tdb
+.dsh/trivium.tdb*
+.dsh/trivium-pending.json
+```
+
+clone / `git pull` 后若 jsonl 变了会自动导回。设置里 **Git 旁路** 默认关（和芯片一样）。在「检查更新」下面的 **配置设置** 里打开。开关只控制是否自动写出。开着时 **生成** 用当前 `.tdb` 覆盖写出同一路径的 jsonl；关掉后 **删除 jsonl** 会清掉已知工作区的 jsonl（`.tdb` 不动）。情节、向量、芯片钉选仍只留在本机。
 
 用 [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart) 的，双击启动就会装上，不必再执行上面这条。
 
@@ -53,7 +64,7 @@ dsh plugin --profile web add dsh-trivium
 dsh plugin --profile web remove dsh-trivium
 ```
 
-`remove` 会删掉本插件的文件：`~/.dsh/trivium.json`，以及它打开过的每个工作区里的 `.dsh/trivium.tdb` 和 `trivium-pending.json`。`.dsh/` 下其它文件不动。用 `dsh plugin add dsh-trivium` 升级**不会**清记忆。
+`remove` 会删掉本插件的文件：`~/.dsh/trivium.json`，以及它打开过的每个工作区里的 `.dsh/trivium.tdb`、`trivium.jsonl` 和 `trivium-pending.json`。`.dsh/` 下其它文件不动。用 `dsh plugin add dsh-trivium` 升级**不会**清记忆。若 `trivium.jsonl` 已提交，`git checkout` 可以找回。
 
 然后再重启 **dsh web**：设置里不再有「Trivium 记忆」，标题栏不再有「芯片(记忆白名单)」，四个工具不再注册。
 
@@ -73,6 +84,7 @@ dsh plugin --profile web remove dsh-trivium
 | 访问 | 默认 | 说明 |
 |---|---|---|
 | 工作区 `.dsh/trivium.tdb` | 读写 | 记忆库。同一文件不要两个 Node 进程同时打开 |
+| 工作区 `.dsh/trivium.jsonl` | 读写 | Git 旁路（默认关）。只含业务节点和边，不含向量 |
 | `~/.dsh/trivium.json` | 读写 | 设置和芯片钉选；可含你手填的 embedding API key |
 | `.dsh/trivium-pending.json` | 读写 | 抽取失败时的本地队列 |
 | 网络 | 关 | 对话不外发。打开 embedding 并填了 URL 才会把被检索文本发到你填的地址。设置页点「检查更新」会请求 npm registry（只拿版本号，不含对话） |
@@ -142,12 +154,14 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ### 设置页（Trivium 记忆）
 
-设置里的「Trivium 记忆」管库，也管这两层可选表面。开关拨一下就写入 `~/.dsh/trivium.json`。
+设置里的「Trivium 记忆」管库。「检查更新」在最上，**记忆条目**保持可见。其余选项收在 **配置设置** 折叠里（默认收起）：注入、抽取、芯片、Git 旁路、界面语言、导入、embedding。开关拨一下就写入 `~/.dsh/trivium.json`。
 
 | 开关 | 默认 | 作用 |
 |---|---|---|
 | **芯片（记忆白名单）** | 关 | 标题栏「对话 / 轨迹」旁的标签。勾选的芯片是下一轮注入白名单（L0，≤300 token）。 |
 | **会话层** | 关（要先开芯片） | 同一标签里的情节画布：生成检查点、更新检查点、从方框分叉。 |
+| **Git 旁路** | 关 | 图有改动后延迟写入 `.dsh/trivium.jsonl`。开着可 **生成**（从当前 `.tdb` 覆盖写出）；关掉可 **删除 jsonl**。clone / pull 会导回。 |
+| **界面语言** | 跟随宿主 | 只改本插件设置页和芯片标签的中英文，不改 DSH。 |
 | **注入策略** | 关 | 只有开场短地图；可改 autoRecall 或实体名折中。 |
 | **抽取** | 开 | compaction / 空闲后写入。 |
 | **embedding** | 关 | 要填 URL 并点「保存设置」，改 URL 后重启。 |
@@ -155,7 +169,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 注入细节：autoRecall 在本步含用户文本时最多灌 3 条 L0；实体名折中只在话里点到已有实体时灌 1 跳业务边邻居。芯片钉选优先占预算。抽取失败进 pending，下次 session-start 重放（每批正文 ≤3000 字、最多 24 条）。
 
 - **条目** — 可搜、按类型筛、展开业务边邻居、「只看挂在这上面的」、默认隐藏过期决策。可改名 / 改正文 / 别名 / until，同类型合并，归档或删除。
-- **导出导入** — JSON 是真回写。Markdown 只读投影（给人看、给 git 看），不能再解析回去。WorkBuddy `MEMORY.md`、Claude Code `CLAUDE.md`、Codex `AGENTS.md` 可一次性严导入。不持续同步，不导入会话 jsonl。
+- **导出导入** — JSON 是真回写。Markdown 只读投影（给人看）。给 git 用的是 `.dsh/trivium.jsonl`（业务事实，自动写）。WorkBuddy `MEMORY.md`、Claude Code `CLAUDE.md`、Codex `AGENTS.md` 可一次性严导入。不监视那些文件，不导入会话 jsonl。
 - **检查更新** — 设置页对比已装版本和 npm latest，有新版时给出 `dsh plugin --profile web add dsh-trivium`。不会在后台自动升级。
 
 ### 四个工具
@@ -173,7 +187,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 界面截图
 
-以下入口在本机 DSH Web（`0.1.1-rc.2`）上仍在。截图为中文界面；插件会跟随 DSH 宿主语言（`zh` / `en`）。
+以下入口在本机 DSH Web（`0.1.1-rc.2`）上仍在。截图为中文界面。插件默认跟随 DSH 宿主语言；也可在 **配置设置** 里锁定中文或英文。
 
 ### 会话 — `ctx_find("鉴权")`
 
@@ -206,14 +220,17 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 - 模型不调 `ctx_find`、也不勾芯片时，窗口里主要是开场短地图。
 - 抽取会漏；脏数据可在芯片条归档 / 删除，或到设置里改、合并。
 - 同一个 `.tdb` 不要两个 Node 进程同时打开（正常只开一个 `dsh web` 即可）。
-- Markdown 导出是给人看的，不能再解析回去。外部导入（WorkBuddy / Claude Code / Codex）是一次性，不是双向同步，也不会吃会话 jsonl。
+- Markdown 导出是给人看的，不能再解析回去。能回写进 git 的是 `trivium.jsonl`，不是 Markdown。外部导入（WorkBuddy / Claude Code / Codex）是一次性，不是双向同步，也不会吃会话 jsonl。
+- `.tdb` 不要在 git 里合并（二进制）。跟踪 `trivium.jsonl`，忽略 `.tdb`。jsonl 冲突按普通文本解决，再打开工作区即可。
 - 会话层打开时只投影 compaction 与 fork，不会按消息条数自己切方框。窗口没到 DSH 压缩线时，「更新检查点」也补不出历史方框；要分段请点「生成检查点」。
-- 芯片 / 会话层 / 注入 / 抽取开关拨一下即保存。Embedding URL 仍要点「保存设置」。只有设置页本身没出现时才需要重启 `dsh web`。
+- 芯片 / 会话层 / Git 旁路 / 注入 / 抽取开关拨一下即保存。Embedding URL 仍要点「保存设置」。只有设置页本身没出现时才需要重启 `dsh web`。
 - 宿主升到 rc.8 后，DSH 自己的旧会话库可能打不开（官方 SQLite 格式不兼容）。工作区里的 `.tdb` 图记忆还在；对不上号的旧情节方框可以当残留，不影响 `ctx_find`。
 
 ---
 
 ## 更新说明
+
+**0.4.12** — Git 旁路：工作区 `.dsh/trivium.jsonl` 作为文本源（业务节点和边）。`.tdb` 仍是本地索引。写入延迟约 1.5 秒，不额外调模型。clone / `git pull` 后文件变了会导回。开关**默认关**。**生成** 用当前 `.tdb` 覆盖写出 jsonl；关掉后 **删除 jsonl** 会清掉已知文件。设置页把可选项收到「检查更新」下的配置折叠里。界面语言可跟随宿主或锁定中/英。
 
 **0.4.11** — 标题栏标签改为 **芯片(记忆白名单)**（不再叫「会话图」）。开关拨一下即写入 `~/.dsh/trivium.json`；标签立刻出现或消失，不必重启。
 
@@ -250,7 +267,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 | `ctx_find` 什么都没有 | 新会话默认只注入短地图，模型要自己调工具。也可以在芯片条「新增」或对模型说「记住：…」。闲聊和一次性改文件不会自动入库。 |
 | 报 `.tdb` 被占用 / 打不开 | 只开一个 `dsh web`。不要同时跑两份链接了本插件的 Node 进程。 |
 | embedding 填了但检索没变准 | 失败会退回关键词 + 图。看 `~/.dsh/trivium.json` 里 URL 是否 OpenAI 兼容（含 `/v1` 那种）。改完重启。 |
-| 卸载后记忆还在 | 先停 `dsh web` 再 `dsh plugin remove`。剩下的 `.tdb` 是从未用 0.4.10 打开过的工作区，到该文件夹删 `.dsh/trivium.tdb`。只在配置里 disabled 不会清文件。 |
+| 卸载后记忆还在 | 先停 `dsh web` 再 `dsh plugin remove`。剩下的 `.tdb` 是从未用 0.4.10 打开过的工作区，到该文件夹删 `.dsh/trivium.tdb`。已提交的 `trivium.jsonl` 用 `git checkout` 找回。只在配置里 disabled 不会清文件。 |
 | 检查更新失败 | 只请求 npm registry 拿最新版本号，不影响记忆；过一会儿再点即可。 |
 | rc.8 之后旧对话打不开 | 那是 DSH 自己的会话库格式变了，不是 `.tdb` 坏了。图记忆仍可 `ctx_find`；对不上号的旧方框可当情节残留。 |
 
@@ -261,7 +278,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.11`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.12`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（兼 `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
