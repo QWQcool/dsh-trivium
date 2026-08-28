@@ -237,7 +237,7 @@ try {
   db.link(first[0].id, entityId, EDGE_LABELS.about, 1);
   db.flush();
 
-  savePending(cwd, { sessionId: "s1", turns: [{ role: "user", text: "记住以后都用 pnpm" }] });
+  await savePending(cwd, { sessionId: "s1", turns: [{ role: "user", text: "记住以后都用 pnpm" }] });
   const pending = loadPending(cwd);
   assert(pending?.turns?.[0]?.text.includes("pnpm"), "pending saved");
   const replay = await distill({ db, turns: pending.turns, sessionId: "s1" });
