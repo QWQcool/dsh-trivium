@@ -44,7 +44,10 @@ clone / `git pull` 后若 jsonl 变了会自动导回。设置里 **Git 旁路**
 ```sh
 npm install
 node scripts/link-dsh.mjs
+npm test              # 可选：跑全部离线 smoke
 ```
+
+`npm test` 不需要 DSH 宿主，也不会碰你真实的 `~/.dsh/trivium.json`（每个脚本用独立的临时设置文件）。想只跑一部分就传子串：`npm test -- p8`。
 
 然后重启 `dsh web`。
 
@@ -238,6 +241,8 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 更新说明
 
+**0.4.18** — `~/.dsh/trivium.json` 改为原子写（此前写到一半被杀会让所有开关和芯片钉选静默回默认），POSIX 下权限收紧为仅属主可读。新增 `npm test` 聚合入口（每个脚本用独立临时设置文件），`smoke-p0` 新增「重开后 hybrid 文本索引仍可用」的断言。四工具 / 短地图 / find 路径行为不变。
+
 **0.4.17** — 存储升到 `triviumdb@0.8.8`（引擎行为相对 0.4.16 不变）。适配宿主 `@deepseek-ai/dsh@0.1.5-rc.1`：`session.header.seedLength` 被移除，会话层 fork 切点改读 `session.inheritedEventCount`。四工具 / 短地图 / find 路径不变。
 
 **0.4.16** — 存储升到 `triviumdb@0.8.4`：引擎构造函数改为 options 对象（`{ dim }`），不再收数字位置参数；TQL 行 id 变字符串，插件内部归一为数字。四工具 / 短地图 / find 路径不变。
@@ -296,7 +301,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.17`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.18`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.5-rc.1`（兼 `0.1.1-rc.2` / `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

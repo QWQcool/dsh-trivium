@@ -1,6 +1,6 @@
 {
   "name": "dsh-trivium",
-  "version": "0.4.17",
+  "version": "0.4.18",
   "description": "In-process graph memory for DeepSeek Harness, backed by TriviumDB.",
   "license": "MIT",
   "type": "module",
@@ -31,6 +31,7 @@
     }
   },
   "scripts": {
+    "test": "node scripts/run-all.mjs",
     "link-dsh": "node scripts/link-dsh.mjs",
     "smoke-p0": "node scripts/smoke-p0.mjs",
     "smoke-p1": "node scripts/smoke-p1.mjs",
@@ -41,6 +42,7 @@
     "smoke-p6": "node scripts/smoke-p6.mjs",
     "smoke-p7": "node scripts/smoke-p7.mjs",
     "smoke-p8": "node scripts/smoke-p8.mjs",
+    "smoke-p9": "node scripts/smoke-p9.mjs",
     "smoke-p10": "node scripts/smoke-p10.mjs",
     "smoke-p11": "node scripts/smoke-p11.mjs",
     "smoke-p12": "node scripts/smoke-p12.mjs",

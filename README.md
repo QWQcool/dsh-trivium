@@ -46,7 +46,10 @@ Local source checkout:
 ```sh
 npm install
 node scripts/link-dsh.mjs
+npm test              # optional: runs every offline smoke script
 ```
+
+`npm test` needs no DSH host and never touches your real `~/.dsh/trivium.json` (each script gets its own temp settings file). Pass a substring to narrow it: `npm test -- p8`.
 
 Then restart `dsh web`.
 
@@ -242,6 +245,8 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 
 ## Changelog
 
+**0.4.18** — `~/.dsh/trivium.json` is now written atomically (a truncated write used to reset every switch and chip pin silently) and is owner-only on POSIX. `npm test` runs every offline smoke script with isolated settings, and `smoke-p0` pins the hybrid text-index-after-reopen invariant. Four tools / short map / find paths unchanged.
+
 **0.4.17** — Storage bump to `triviumdb@0.8.8` (engine behavior unchanged from 0.4.16). Host adaptation for `@deepseek-ai/dsh@0.1.5-rc.1`: `session.header.seedLength` was removed, so the session-layer fork cut now reads `session.inheritedEventCount`. Four tools / short map / find paths unchanged.
 
 **0.4.16** — Storage bump to `triviumdb@0.8.4`: the engine constructor now takes an options object (`{ dim }`) instead of numeric positional args, and TQL rows return string ids that the plugin coerces back to numbers. Four tools / short map / find paths unchanged.
@@ -300,7 +305,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.17`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.18`](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.1.5-rc.1` (also `0.1.1-rc.2` / `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

@@ -6,7 +6,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { closeAll, formatHit, insertNode, openWorkspaceDb, searchNodes } from "../lib/store.js";
-import { EDGE_LABELS } from "../lib/schema.js";
+import { DIM, EDGE_LABELS } from "../lib/schema.js";
 
 const cwd = mkdtempSync(join(tmpdir(), "dsh-trivium-p0-"));
 let failed = false;
@@ -51,6 +51,23 @@ try {
     pathText.includes(String(entityId)) || pathText.includes("dsh-trivium"),
     `path mentions entity (got: ${pathText || "(none)"})`,
   );
+
+  // Text-index invariant. triviumdb 0.8.8 opens with `loadTextIndex: false`, so
+  // the persisted BM25 sidecar is NOT loaded; only rebuildTextIndex() inside
+  // openWorkspaceDb() keeps hybrid text recall alive after a reopen. searchNodes
+  // above cannot catch a regression (its keyword fallback still scores), so ask
+  // the engine channel directly. Delete that rebuild and this fails.
+  const textChannel = dbB.searchHybrid(new Array(DIM).fill(0), "鉴权", 8, 1, 0.01, 0.2);
+  assert(
+    textChannel.length > 0,
+    `hybrid text channel survives reopen (got ${textChannel.length} hits)`,
+  );
+  const entityChannel = dbB.searchHybrid(new Array(DIM).fill(0), "dsh-trivium", 8, 1, 0.01, 0.2);
+  assert(
+    entityChannel.length > 0,
+    `hybrid text channel indexes the entity name too (got ${entityChannel.length} hits)`,
+  );
+
   closeAll();
 } catch (err) {
   failed = true;
