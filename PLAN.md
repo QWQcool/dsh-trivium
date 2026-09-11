@@ -225,9 +225,15 @@ DSH Agent Loop
 | `session/event` | 缓冲 user/assistant 文本（截断、去图、去 tool） |
 | `turn/end` | 不抽取；只把缓冲标成「待蒸馏」 |
 | `compaction/end` | 触发抽取（主路径） |
-| 进程退出 / 定时 | `flush()` TDB；抽取失败进 pending，下次 session-start 重放 |
+| 进程退出（插件 dispose） | `closeAll()` → 逐库 `flush()` + `close()`；抽取失败进 pending，下次 session-start 重放 |
 
-workspace 切换：关掉旧库，打开新路径的 `.tdb`。记忆默认**按工作区隔离**。
+写盘时机是**写后触发**，没有定时器：`insertNode` / `updateNode` / `archiveNode` / `deleteNode` / 情节 upsert 各自在提交后 `flush()`。唯一的定时器是 turn 结束后约 12 秒的抽取 idle timer，它不负责落盘。
+
+workspace 切换：打开新路径的 `.tdb`；**旧库保持打开**，不做淘汰。`store.js` 的 `dbs` 按 cwd 缓存，只在插件 dispose 或 `dsh plugin remove` 时 `closeAll()`。记忆默认**按工作区隔离**。
+
+> **已知取舍（实测，不是估算）**：库按工作区常驻，内存 ≈ **14 KB/节点**，只与「所有已打开工作区的总节点数」有关，与工作区个数无关。300 节点的小库常驻 4.5 MB；3000 节点 43 MB；3 个工作区 × 3000 节点共 128 MB。几百节点 × 几个工作区的典型场景只有几十 MB，所以**刻意不做 LRU**。
+>
+> 将来真要回收，别用 LRU：`sidecar.js` 的 1.5s 防抖闭包持有 db 引用、`runExtract` 在 `await` 之间可能被淘汰、`activeCwd` 必须永不淘汰。正确做法是按引用计数，在 `session/disposed` 时关掉该工作区已无活跃会话的库。也**别指望调小 `payloadCacheMb` 省内存** —— 实测占用主要来自每节点的向量与索引，payload 缓存（默认 64 MiB 上限）根本没被填满。
 
 ---
 
