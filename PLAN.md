@@ -1,10 +1,10 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**v0.4.14**。内核仍是四工具 + 短地图。芯片（记忆白名单）与会话层**默认关**；设置里拨开后标题栏立刻出现「芯片(记忆白名单)」，写入 `~/.dsh/trivium.json`。`dsh plugin remove` 清掉已知 `.tdb` 与该配置文件。存储钉 `triviumdb@0.8.1`。  
+> 状态：**v0.4.14**。内核仍是四工具 + 短地图。芯片（记忆白名单）与会话层**默认关**；设置里拨开后标题栏立刻出现「芯片(记忆白名单)」，写入 `~/.dsh/trivium.json`。`dsh plugin remove` 清掉已知 `.tdb` 与该配置文件。存储钉 `triviumdb@0.8.8`。  
 > 情节图规划见 [`PLAN-session-map.md`](./PLAN-session-map.md)。不是记忆图谱工作台。  
 > 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.14`](https://www.npmjs.com/package/dsh-trivium)。  
-> DSH 目标版本：`@deepseek-ai/dsh@0.1.1-rc.2`（peer 兼容 `0.1.0-rc.8`；不要把 `dsh-llm` exact-pin 嵌进插件 `node_modules`）。
+> DSH 目标版本：`@deepseek-ai/dsh@0.1.5-rc.1`（peer 兼容 `0.1.1-rc.2` 与 `0.1.0-rc.8`；不要把 `dsh-llm` exact-pin 嵌进插件 `node_modules`）。
 
 ---
 
@@ -108,7 +108,7 @@ DSH Agent Loop
 | `triviumdb` | 存储内核 | 预编译 napi，与 DSH 同进程 |
 | `@deepseek-ai/dsh-tools` 的 `defineTool` | 注册工具 | peer，走 profile fallback |
 | `@deepseek-ai/dsh-llm` 的 message 构造器 | 注入可见消息 | 同 OV 插件，勿手搓 shape |
-| DSH `0.1.1-rc.2` | 运行时 | peer 兼容 rc.8 与 0.1.1-rc.2；由宿主提供，插件不嵌套安装 |
+| DSH `0.1.5-rc.1` | 运行时 | peer 兼容 rc.8 / 0.1.1-rc.2 / 0.1.5-rc.1；由宿主提供，插件不嵌套安装 |
 
 ---
 
@@ -343,7 +343,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 14. **Settings 面：** 能展开业务边邻居；AuthGateway 上「只看挂在这上面的」能看到未过期决策/偏好、看不到未连边 pnpm；过期决策默认不在列表，勾选后可见；页上能区分归档 vs 删除。
 15. **短地图：** session-start 仍 ≤400 token，named 里能看到带 `until` 的未过期决策；默认 autoRecall 仍关。
 
-### TDB 引擎（`triviumdb@0.8.1`）
+### TDB 引擎（`triviumdb@0.8.8`）
 
 已从全表扫描切到引擎 API（旧绑定仍可回退）：
 
@@ -353,6 +353,19 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 4. **`JsSearchConfig.expandLabels` 已有** — find 排序、过期 `until` 仍在插件层（查询在问期限时要放行），暂不把 expand 交给 `searchHybrid`。
 5. **payload 日期** — 引擎有 `$lt` / `$before`；过期过滤仍看我们的 `untilAt` JSON，因为还要配合 `queryMentionsUntil`。
 6. **零向量 hybrid** — 全 0 向量时扩散/余弦几乎无意义，这是我们默认没开 embedding，不是引擎 bug。
+
+0.8.3+ 迁移（0.8.2 → 0.8.8）已适配的两处破坏性变更：
+
+1. **构造函数不再收数字位置参数** — `new TriviumDB(path, dim)` 抛 `TDB_API_MIGRATION_REQUIRED`；改传 `{ dim }`（`dim` / `dtype` / `syncMode` 等都进 options）。`store.js` 是唯一构造点。
+2. **TQL 行 id 变成字符串** — `FIND` / `MATCH` 返回的 `row._.id` 是 `"2"` 而非 `2`；`normalizeTql` 现在统一 `Number()` 归一，否则 `findByType` 全空（短地图 / workspace 根 / 实体锚定一起塌）。
+
+其余引擎 API（`insert` / `get` / `updatePayload` / `link` / `unlink` / `neighbors` / `getIncomingEdges` / `searchHybrid` / `indexText` / `tql`）签名不变。
+
+### DSH 宿主（0.1.1-rc.2 → 0.1.5-rc.1）
+
+宿主破坏性变更对本插件只有一处命中：**`session.header.seedLength` 被移除**（header 校验现在直接拒收该字段）。情节层 fork 切点改用会话实例上的 `inheritedEventCount`（`sessionSeedLength()` 兼容回退到旧 header）。客户端面同样优先读 `inheritedEventCount`。
+
+已核不变：`agent/session-start`、`agent/pre-step`（`{agent, messages}` + `next()` → `{kind:'enter', messages}`）、`session/event`、`session/disposed`、`tools/pre-execute`（`{kind:'ask'}`）、`agent.inject(UserMessage)`、`agent.session` / `agent.options`、`ctx.llm.stream`、`ctx.webServer.register`、四个工具注册；客户端 `conversation.view` / `settings.section` 插槽、`slots.inject/register/entries`、`sessions.binding/fork/open`、`locale.getLocale` / `locale/change`、`require("@deepseek-ai/dsh-client-ui-primitives")`（0.1.5 前端静态模块表仍提供）。peer 范围 `>=0.1.1-rc.2 <0.2.0` 已覆盖 `0.1.5-rc.x`，无需放宽。
 
 对标 OpenViking 仍不做。本地 embedding 仍后置。
 
@@ -416,7 +429,7 @@ node scripts/link-dsh.mjs
 
 | 风险 | 应对 |
 |---|---|
-| DSH 预览破 API | peer 范围覆盖 rc.8 与 0.1.1-rc.2；注入只用官方构造器 |
+| DSH 预览破 API | peer 范围覆盖 rc.8 / 0.1.1-rc.2 / 0.1.5-rc.1；注入只用官方构造器 |
 | triviumdb napi 与 Node 版本 | 与 DSH 要求的 Node（`^22.19` 或 `>=24`）对齐并在 Windows 实测 |
 | embedding 成本/失败 | 允许无向量退化；抽取低频（compaction 时） |
 | 脏记忆被稳定召回 | 白名单抽取 + 人可归档 + 默认少注入 |

@@ -14,7 +14,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（`dsh-llm` / `dsh-tools` peer 兼容 `0.1.0-rc.8` 与 `0.1.1-rc.2`）。
+> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前测试宿主：`@deepseek-ai/dsh@0.1.5-rc.1`（`dsh-llm` / `dsh-tools` peer 兼容 `0.1.1-rc.2` 与 `0.1.0-rc.8`）。
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -291,7 +291,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
 - npm: [`dsh-trivium@0.4.14`](https://www.npmjs.com/package/dsh-trivium)
-- 测试宿主：`@deepseek-ai/dsh@0.1.1-rc.2`（兼 `0.1.0-rc.8`）
+- 测试宿主：`@deepseek-ai/dsh@0.1.5-rc.1`（兼 `0.1.1-rc.2` / `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
 ---

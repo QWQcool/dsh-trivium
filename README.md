@@ -16,7 +16,7 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 ## Installation
 
-> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. Tested host: `@deepseek-ai/dsh@0.1.1-rc.2` (`dsh-llm` / `dsh-tools` peers also accept `0.1.0-rc.8`).
+> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. Tested host: `@deepseek-ai/dsh@0.1.5-rc.1` (`dsh-llm` / `dsh-tools` peers also accept `0.1.1-rc.2` and `0.1.0-rc.8`).
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -295,7 +295,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
 - npm: [`dsh-trivium@0.4.14`](https://www.npmjs.com/package/dsh-trivium)
-- Tested host: `@deepseek-ai/dsh@0.1.1-rc.2` (also `0.1.0-rc.8`)
+- Tested host: `@deepseek-ai/dsh@0.1.5-rc.1` (also `0.1.1-rc.2` / `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 
 ---
