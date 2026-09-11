@@ -242,6 +242,12 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 
 ## Changelog
 
+**0.4.17** — Storage bump to `triviumdb@0.8.8` (engine behavior unchanged from 0.4.16). Host adaptation for `@deepseek-ai/dsh@0.1.5-rc.1`: `session.header.seedLength` was removed, so the session-layer fork cut now reads `session.inheritedEventCount`. Four tools / short map / find paths unchanged.
+
+**0.4.16** — Storage bump to `triviumdb@0.8.4`: the engine constructor now takes an options object (`{ dim }`) instead of numeric positional args, and TQL rows return string ids that the plugin coerces back to numbers. Four tools / short map / find paths unchanged.
+
+**0.4.15** — Storage bump to `triviumdb@0.8.2`. The settings API rejects non-loopback requests and unlisted `cwd` values; the extract buffer is cleared after a run and `savePending` no longer blocks the turn.
+
 **0.4.14** — Storage bump to `triviumdb@0.8.1` (harder WAL/locks, optional read-only share, ARM64 fixes). Four tools / short map / find paths unchanged.
 
 **0.4.13** — Title-bar tab is **Chips** (short); the Settings switch stays **Chips (memory whitelist)**. Toggling the session layer refreshes the Chips tab immediately. Settings / Chips screenshots updated.
@@ -294,7 +300,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.14`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.17`](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.1.5-rc.1` (also `0.1.1-rc.2` / `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

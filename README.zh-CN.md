@@ -238,6 +238,12 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 更新说明
 
+**0.4.17** — 存储升到 `triviumdb@0.8.8`（引擎行为相对 0.4.16 不变）。适配宿主 `@deepseek-ai/dsh@0.1.5-rc.1`：`session.header.seedLength` 被移除，会话层 fork 切点改读 `session.inheritedEventCount`。四工具 / 短地图 / find 路径不变。
+
+**0.4.16** — 存储升到 `triviumdb@0.8.4`：引擎构造函数改为 options 对象（`{ dim }`），不再收数字位置参数；TQL 行 id 变字符串，插件内部归一为数字。四工具 / 短地图 / find 路径不变。
+
+**0.4.15** — 存储升到 `triviumdb@0.8.2`。设置 API 拒绝非回环请求与未登记 `cwd`；抽取后清空缓冲，`savePending` 不再阻塞当轮。
+
 **0.4.14** — 存储升到 `triviumdb@0.8.1`（WAL/锁更硬、可选只读共享、ARM64 修复）。四工具 / 短地图 / find 路径不变。
 
 **0.4.13** — 标题栏只显示 **芯片**；设置里的开关仍叫 **芯片（记忆白名单）**。会话层开关立刻刷新芯片页。设置 / 芯片截图更新。
@@ -290,7 +296,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.14`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.17`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.5-rc.1`（兼 `0.1.1-rc.2` / `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
