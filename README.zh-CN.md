@@ -125,7 +125,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 - **注入走 `agent.inject()`** — 不写 system prompt，避免 `persona.complete: true` 把地图静默丢掉。
 - **召回带路径** — 每条命中都说明从哪个节点、沿哪条边过来。
 - **失败不挡主循环** — 存储 / embedding / 抽取出错只记日志，Agent 继续。
-- **界面跟随宿主语言** — 设置页和「芯片」标签随 DSH `locale/change` 切换（`zh` / `en`），也可在配置设置里锁定。
+- **界面跟随宿主语言** — 设置页和「芯片」标签随 DSH `locale/change` 切换（`zh` / `en`），也可在配置设置里锁定。其它已解析的宿主语言、以及浏览器未命名任何注册语言的情况，一律回落英文（与宿主自己的 `FALLBACK_LOCALE` 一致）。
 - **首轮短地图** — 每个会话只注入一次。若 `session-start` 和第一步赛跑输了，`pre-step` 会补上；不会每步重写（前缀缓存友好）。
 
 ## 功能
@@ -241,6 +241,8 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 更新说明
 
+**0.4.19** — 修复插件自身界面在英文宿主上渲染成简体中文（[issue #2](https://github.com/QWQcool/dsh-trivium/issues/2)）。`locale` 服务改经 `ctx.inject(["locale"], …)` 获取，「跟随宿主」不再依赖插件组合顺序；兜底语言改为 `en`——与宿主自己的 `FALLBACK_LOCALE` 一致，也是其它已解析宿主语言的归宿。设置卡与芯片标签只在 zh / en 之间选择，浏览器未命名任何注册语言时不再给出中文卡。四工具 / 短地图 / find 路径不变。
+
 **0.4.18** — `~/.dsh/trivium.json` 改为原子写（此前写到一半被杀会让所有开关和芯片钉选静默回默认），POSIX 下权限收紧为仅属主可读。新增 `npm test` 聚合入口（每个脚本用独立临时设置文件），`smoke-p0` 新增「重开后 hybrid 文本索引仍可用」的断言。四工具 / 短地图 / find 路径行为不变。
 
 **0.4.17** — 存储升到 `triviumdb@0.8.8`（引擎行为相对 0.4.16 不变）。适配宿主 `@deepseek-ai/dsh@0.1.5-rc.1`：`session.header.seedLength` 被移除，会话层 fork 切点改读 `session.inheritedEventCount`。四工具 / 短地图 / find 路径不变。
@@ -284,6 +286,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 | 现象 | 处理 |
 |---|---|
 | 设置里没有「Trivium 记忆」 | 确认装的是 web profile，然后**重启** `dsh web`，再打开一个工作区。只刷新浏览器不够。 |
+| 英文宿主下设置卡 / 芯片标签显示中文 | 0.4.19 已修（[issue #2](https://github.com/QWQcool/dsh-trivium/issues/2)）。旧版本可在 **设置 → Trivium 记忆 → 配置设置 → 插件语言 → English** 手动选一次，会写进 `~/.dsh/trivium.json`，刷新页面即可，不用重启宿主。 |
 | 标题栏没有「芯片」 | 在设置里打开「芯片（记忆白名单）」（拨一下就会保存）。切回对话页，标签应立刻出现，不用重启。 |
 | 改了注入 / 抽取 / embedding / 芯片开关没生效 | 芯片 / 抽取 / 注入拨一下即保存。Embedding URL 仍要点「保存设置」。只有设置页本身没出现时才重启 `dsh web`。 |
 | 会话层只有一个「后续」方框 | 正常（在会话层已打开时）。方框跟 DSH 压缩走，会话长不等于已经压过（默认约窗口 80% 才自动压）。要分段：对话里 `/compact`，或点「生成检查点」（只切图，不压窗口）。旧会话可点「更新检查点」补已经发生过的压缩 / 分叉。 |
@@ -301,7 +304,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.18`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.19`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.5-rc.1`（兼 `0.1.1-rc.2` / `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

@@ -1,9 +1,9 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**v0.4.18**。内核仍是四工具 + 短地图。芯片（记忆白名单）与会话层**默认关**；设置里拨开后标题栏立刻出现「芯片(记忆白名单)」，写入 `~/.dsh/trivium.json`。`dsh plugin remove` 清掉已知 `.tdb` 与该配置文件。存储钉 `triviumdb@0.8.8`。  
+> 状态：**v0.4.19**。内核仍是四工具 + 短地图。芯片（记忆白名单）与会话层**默认关**；设置里拨开后标题栏立刻出现「芯片(记忆白名单)」，写入 `~/.dsh/trivium.json`。`dsh plugin remove` 清掉已知 `.tdb` 与该配置文件。存储钉 `triviumdb@0.8.8`。  
 > 情节图规划见 [`PLAN-session-map.md`](./PLAN-session-map.md)。不是记忆图谱工作台。  
-> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.18`](https://www.npmjs.com/package/dsh-trivium)。  
+> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.19`](https://www.npmjs.com/package/dsh-trivium)。  
 > DSH 目标版本：`@deepseek-ai/dsh@0.1.5-rc.1`（peer 兼容 `0.1.1-rc.2` 与 `0.1.0-rc.8`；不要把 `dsh-llm` exact-pin 嵌进插件 `node_modules`）。
 
 ---
@@ -247,7 +247,7 @@ Settings 一页「Trivium 记忆」：
 - 改正文 / 改名 / 别名；同类型合并（`same_as` 后归档）
 - 归档（软删，find 不再返回）/ 删除（从 `.tdb` 去掉）；页上写明区别
 - 导出 / 导入 JSON 快照（按 `uri` 去重合进当前库）
-- 开关：注入策略三选一（关 / `autoRecall` / 实体名折中，默认关）、抽取、远程 embedding（默认关，手填 URL）
+- 开关：注入策略三选一（关 / `autoRecall` / 实体名折中，默认关）、抽取、远程 embedding（默认关，手填 URL）、插件界面语言（跟随宿主 / 中文 / English，兜底与宿主一致为英文）
 - 显示当前 `.tdb` 路径与节点数
 
 不在第一期做：记忆图谱工作台、Mnemon 式编辑器、本地 embedding。能看见、能改、能归档，就满足「人可纠正脏记忆」。  
@@ -327,7 +327,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - **`ctx_read` 入边** — 返回 `incoming[]`（from/label/type/l0），全文读实体时能看见谁 `about`/`decided`/`broke`/`fixed` 过来。
 - **抽取挂边** — preference 的 `about` 只取 **span 内**专有名，不再因邻句「TriviumDB 是内核」误挂。experience 从 fail/fix（或同 turn 用户句）取 `linkName` 并 `fixed`。
 
-其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。芯片标签与情节画布均默认关，见 [`PLAN-session-map.md`](./PLAN-session-map.md)。v0.4.10：卸载清痕迹。v0.4.9：芯片 / 会话层开关默认关。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。v0.4.4：接 `triviumdb@0.7.5` 的 `getIncomingEdges` / `neighbors(..., labels)` / `unlink(..., label)`。v0.4.5：peer 放宽到 `0.1.1-rc.2`，去掉嵌套旧 llm/tools。v0.4.6：会话图「生成检查点」手切情节格。
+其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。芯片标签与情节画布均默认关，见 [`PLAN-session-map.md`](./PLAN-session-map.md)。v0.4.10：卸载清痕迹。v0.4.9：芯片 / 会话层开关默认关。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。v0.4.4：接 `triviumdb@0.7.5` 的 `getIncomingEdges` / `neighbors(..., labels)` / `unlink(..., label)`。v0.4.5：peer 放宽到 `0.1.1-rc.2`，去掉嵌套旧 llm/tools。v0.4.6：会话图「生成检查点」手切情节格。v0.4.19：插件界面语言跟随宿主修复（issue #2，见「客户端语言」）。
 
 ### 待 live 验收（新面回家再测）
 
@@ -375,6 +375,14 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 
 对标 OpenViking 仍不做。本地 embedding 仍后置。
 
+### 客户端语言（0.4.19，issue #2）
+
+插件自己的 UI 文案（Settings 卡 + 芯片标签）只认 `zh` / `en`。三条约束：
+
+1. **服务读取** — `locale` 由 `@deepseek-ai/dsh-client-locale` 在它自己的 `apply` 里 `ctx.provide("locale", …)`，可能晚于本插件；且未声明 `inject` 的服务读 `ctx.locale` 拿不到值（不是受支持的 `ctx` 读法）。所以改走 `ctx.inject(["locale"], cb)`——cordis 注册表方法会混到 `ctx` 上（`lib/index.js` 早有 `ctx.inject(["webServer"])` 同款用法），依赖可用时回调，但不把 `locale` 升为硬依赖：宿主缺该服务时插件仍要能加载。
+2. **兜底对齐宿主** — 宿主 `FALLBACK_LOCALE = "en"`，插件原先 `zh`。现在 `FALLBACK_UI_LOCALE = "en"`；`normalizeLocale` 对任何非 `zh*` 的已解析语言返回 `en`（`""` 仍表示「未读到」）。浏览器未命名任何注册语言时，宿主自己就会解析成 `en`，插件随之英文。
+3. **可观测** — `lib/client.js` 是 `window.__ModuleLoader__.load({id, factory})` bundle，客户端模块系统只解析包名（相对路径直接抛），语言决策无法拆成可 `require` 的独立文件；改为导出测试探针 `exports.__locale`，由 `scripts/smoke-p13.mjs` 用桩 `__ModuleLoader__` / 桩 `require` 加载**真实 bundle**、驱动 `apply()` 断言（含延迟到达的 locale 服务、`ru` 宿主、服务抛错、`ctx.inject` 抛错四条降级路径）。
+
 ---
 
 ## 13. 验收（P0 + P1）
@@ -395,7 +403,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 
 ```
 dsh-trivium/                    # GitHub QWQcool/dsh-trivium
-  package.json                  # name: dsh-trivium  version 0.4.18  MIT
+  package.json                  # name: dsh-trivium  version 0.4.19  MIT
   cordis.patch.yml
   lib/index.js
   lib/store.js

@@ -129,7 +129,7 @@ Trivium is a memory kernel, not a journal, calendar, or chat companion. It store
 - **Injection via `agent.inject()`** — not the system prompt, so `persona.complete: true` cannot silently drop the map.
 - **Recall carries paths** — every hit says which node it came from and along which edge.
 - **Failures never block the agent** — store / embedding / extract errors are logged; the main loop continues.
-- **UI follows the host language** — Settings and the Chips (memory whitelist) tab switch with DSH `locale/change` (`zh` / `en`).
+- **UI follows the host language** — Settings and the Chips (memory whitelist) tab switch with DSH `locale/change` (`zh` / `en`). Any other resolved host language — and a browser that names no registered language — falls to English, the same `FALLBACK_LOCALE` the host itself uses.
 - **First-turn map** — the short map is injected once per session. If `session-start` loses a race with the first model step, `pre-step` fills it in; it is not rewritten every step (prefix-cache friendly).
 
 ## Features
@@ -245,6 +245,8 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 
 ## Changelog
 
+**0.4.19** — Fixed the plugin's own UI rendering Simplified Chinese on an English host ([issue #2](https://github.com/QWQcool/dsh-trivium/issues/2)). The `locale` service is now reached through `ctx.inject(["locale"], …)`, so **follow host** no longer depends on composition order, and the plugin fallback is `en` — the host's own `FALLBACK_LOCALE`, and the bucket every other resolved host language lands in. The Settings card and the Chips tab only ever choose between zh and en, so a browser naming no registered language no longer gets a Chinese card. Four tools / short map / find paths unchanged.
+
 **0.4.18** — `~/.dsh/trivium.json` is now written atomically (a truncated write used to reset every switch and chip pin silently) and is owner-only on POSIX. `npm test` runs every offline smoke script with isolated settings, and `smoke-p0` pins the hybrid text-index-after-reopen invariant. Four tools / short map / find paths unchanged.
 
 **0.4.17** — Storage bump to `triviumdb@0.8.8` (engine behavior unchanged from 0.4.16). Host adaptation for `@deepseek-ai/dsh@0.1.5-rc.1`: `session.header.seedLength` was removed, so the session-layer fork cut now reads `session.inheritedEventCount`. Four tools / short map / find paths unchanged.
@@ -288,6 +290,7 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 | Symptom | What to do |
 |---|---|
 | Settings has no **Trivium memory** | Confirm the **web** profile, then **restart** `dsh web` and open a workspace. Reloading the browser is not enough. |
+| Settings card / Chips tab shows Chinese on an English host | Fixed in 0.4.19 ([issue #2](https://github.com/QWQcool/dsh-trivium/issues/2)). On an older build pick **Settings → Trivium memory → Settings → Plugin language → English**; that is stored in `~/.dsh/trivium.json` and a page reload is enough (no host restart). |
 | Title bar has no **Chips** | Turn on **Chips (memory whitelist)** in Settings (it saves as soon as you toggle). Switch back to the conversation; the tab should appear without restarting. |
 | Injection / extract / embedding / chip tab changes have no effect | Chip / extract / recall toggles save immediately. Embedding URL still uses **Save**. Restart `dsh web` only if the settings page itself is missing. |
 | Session layer shows only a **Next** box | Expected when the nested session layer is on. Boxes follow DSH compaction; a long session is not the same as already compacted (auto-compact is around 80% of the window). To split: `/compact` in the conversation, or **Create checkpoint** (plot only, does not compact the window). Older sessions can use **Update checkpoints** to backfill past compaction / forks. |
@@ -305,7 +308,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.18`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.19`](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.1.5-rc.1` (also `0.1.1-rc.2` / `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 
