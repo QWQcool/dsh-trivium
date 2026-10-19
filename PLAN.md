@@ -1,10 +1,10 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**v0.4.20**。内核仍是四工具 + 短地图。芯片（记忆白名单）与会话层**默认关**；设置里拨开后标题栏立刻出现「芯片(记忆白名单)」，写入 `~/.dsh/trivium.json`。`dsh plugin remove` 清掉已知 `.tdb` 与该配置文件。存储钉 `triviumdb@0.8.9`。  
+> 状态：**v0.4.21**。内核仍是四工具 + 短地图。芯片（记忆白名单）与会话层**默认关**；设置里拨开后标题栏立刻出现「芯片(记忆白名单)」，写入 `~/.dsh/trivium.json`。`dsh plugin remove` 清掉已知 `.tdb` 与该配置文件。存储钉 `triviumdb@0.8.9`。  
 > 情节图规划见 [`PLAN-session-map.md`](./PLAN-session-map.md)。不是记忆图谱工作台。  
-> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.20`](https://www.npmjs.com/package/dsh-trivium)。  
-> DSH 目标版本：`@deepseek-ai/dsh@0.1.5-rc.1`（peer 兼容 `0.1.1-rc.2` 与 `0.1.0-rc.8`；不要把 `dsh-llm` exact-pin 嵌进插件 `node_modules`）。
+> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.21`](https://www.npmjs.com/package/dsh-trivium)。  
+> DSH 目标版本：`@deepseek-ai/dsh@0.2.1-rc.2`（peer 兼容 `0.1.x`：`0.1.0-rc.8` / `0.1.1-rc.2` / `0.1.5-rc.1`，以及 `0.2.x`；不要把 `dsh-llm` exact-pin 嵌进插件 `node_modules`）。
 
 ---
 
@@ -108,7 +108,7 @@ DSH Agent Loop
 | `triviumdb` | 存储内核 | 预编译 napi，与 DSH 同进程 |
 | `@deepseek-ai/dsh-tools` 的 `defineTool` | 注册工具 | peer，走 profile fallback |
 | `@deepseek-ai/dsh-llm` 的 message 构造器 | 注入可见消息 | 同 OV 插件，勿手搓 shape |
-| DSH `0.1.5-rc.1` | 运行时 | peer 兼容 rc.8 / 0.1.1-rc.2 / 0.1.5-rc.1；由宿主提供，插件不嵌套安装 |
+| DSH `0.2.1-rc.2` | 运行时 | peer 兼容 0.1.x（rc.8 / 0.1.1-rc.2 / 0.1.5-rc.1）与 0.2.x；由宿主提供，插件不嵌套安装 |
 
 ---
 
@@ -327,7 +327,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 - **`ctx_read` 入边** — 返回 `incoming[]`（from/label/type/l0），全文读实体时能看见谁 `about`/`decided`/`broke`/`fixed` 过来。
 - **抽取挂边** — preference 的 `about` 只取 **span 内**专有名，不再因邻句「TriviumDB 是内核」误挂。experience 从 fail/fix（或同 turn 用户句）取 `linkName` 并 `fixed`。
 
-其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。芯片标签与情节画布均默认关，见 [`PLAN-session-map.md`](./PLAN-session-map.md)。v0.4.10：卸载清痕迹。v0.4.9：芯片 / 会话层开关默认关。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。v0.4.4：接 `triviumdb@0.7.5` 的 `getIncomingEdges` / `neighbors(..., labels)` / `unlink(..., label)`。v0.4.5：peer 放宽到 `0.1.1-rc.2`，去掉嵌套旧 llm/tools。v0.4.6：会话图「生成检查点」手切情节格。v0.4.19：插件界面语言跟随宿主修复（issue #2，见「客户端语言」）。v0.4.20：存储升到 `triviumdb@0.8.9`（napi 接口零变更）。
+其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。芯片标签与情节画布均默认关，见 [`PLAN-session-map.md`](./PLAN-session-map.md)。v0.4.10：卸载清痕迹。v0.4.9：芯片 / 会话层开关默认关。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。v0.4.4：接 `triviumdb@0.7.5` 的 `getIncomingEdges` / `neighbors(..., labels)` / `unlink(..., label)`。v0.4.5：peer 放宽到 `0.1.1-rc.2`，去掉嵌套旧 llm/tools。v0.4.6：会话图「生成检查点」手切情节格。v0.4.19：插件界面语言跟随宿主修复（issue #2，见「客户端语言」）。v0.4.20：存储升到 `triviumdb@0.8.9`（napi 接口零变更）。v0.4.21：适配 DSH 0.2.x（会话格式 v4 的 producer-owned source + `agent/created`）。
 
 ### 待 live 验收（新面回家再测）
 
@@ -369,9 +369,16 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 
 0.8.9（0.4.20）是纯内核升级，**JS / napi 接口零变更**：`triviumdb.d.ts` 与 `index.js` 与 0.8.8 逐字节一致（SHA256 相同），差异只在各平台预编译 `.node`。上游改动集中在 QuIVer（SM-L2 成为默认查询路径、支持任意维度）、FIND 规划不再物化被丢弃的候选，以及服务端版的 Web Console。插件侧只需 bump 依赖；14 个离线冒烟脚本原样通过。
 
-### DSH 宿主（0.1.1-rc.2 → 0.1.5-rc.1）
+### DSH 宿主（0.1.x → 0.2.x）
 
-宿主破坏性变更对本插件只有一处命中：**`session.header.seedLength` 被移除**（header 校验现在直接拒收该字段）。情节层 fork 切点改用会话实例上的 `inheritedEventCount`（`sessionSeedLength()` 兼容回退到旧 header）。客户端面同样优先读 `inheritedEventCount`。
+0.1.5 的破坏性变更对本插件只有一处命中：**`session.header.seedLength` 被移除**（header 校验现在直接拒收该字段）。情节层 fork 切点改用会话实例上的 `inheritedEventCount`（`sessionSeedLength()` 兼容回退到旧 header）。客户端面同样优先读 `inheritedEventCount`。
+
+0.2.x 有两处命中：
+
+1. **会话格式 v4** — 消息 `source` 从共享的 `kind: "plugin"` 改为生产者自有 kind：第三方生产者写 `kind: "plugin:dsh-trivium"` 并去掉 `plugin` 字段，否则整轮以 `format v4 message requires a producer-owned source kind` 失败。`lib/host-format.js` 按已安装 `dsh-llm` 版本选择形状（`>=0.2.0` 走 v4；读不到版本时假定 v4），`lib/index.js` 的所有消息源都经 `producerSource()`。
+2. **`agent/created`** — 0.1.6+ 用 `agent/created`（payload `{ agent, source, signal? }`）替代串行的 `agent/session-start`。现在两个事件都监听，并用 `started` 集合按会话去重，防止宿主同时发两个时短地图 / 抽取跑两遍。
+
+peer 范围随之放宽到 `<0.3.0`。`scripts/smoke-p14.mjs` 钉住两种 source 形状与版本判定。
 
 已核不变：`agent/session-start`、`agent/pre-step`（`{agent, messages}` + `next()` → `{kind:'enter', messages}`）、`session/event`、`session/disposed`、`tools/pre-execute`（`{kind:'ask'}`）、`agent.inject(UserMessage)`、`agent.session` / `agent.options`、`ctx.llm.stream`、`ctx.webServer.register`、四个工具注册；客户端 `conversation.view` / `settings.section` 插槽、`slots.inject/register/entries`、`sessions.binding/fork/open`、`locale.getLocale` / `locale/change`、`require("@deepseek-ai/dsh-client-ui-primitives")`（0.1.5 前端静态模块表仍提供）。peer 范围 `>=0.1.1-rc.2 <0.2.0` 已覆盖 `0.1.5-rc.x`，无需放宽。
 
@@ -405,7 +412,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 
 ```
 dsh-trivium/                    # GitHub QWQcool/dsh-trivium
-  package.json                  # name: dsh-trivium  version 0.4.20  MIT
+  package.json                  # name: dsh-trivium  version 0.4.21  MIT
   cordis.patch.yml
   lib/index.js
   lib/store.js
@@ -445,7 +452,7 @@ node scripts/link-dsh.mjs
 
 | 风险 | 应对 |
 |---|---|
-| DSH 预览破 API | peer 范围覆盖 rc.8 / 0.1.1-rc.2 / 0.1.5-rc.1；注入只用官方构造器 |
+| DSH 预览破 API | peer 范围覆盖 0.1.x（rc.8 / 0.1.1-rc.2 / 0.1.5-rc.1）与 0.2.x；会话消息 source 按宿主版本选形状；注入只用官方构造器 |
 | triviumdb napi 与 Node 版本 | 与 DSH 要求的 Node（`^22.19` 或 `>=24`）对齐并在 Windows 实测 |
 | embedding 成本/失败 | 允许无向量退化；抽取低频（compaction 时） |
 | 脏记忆被稳定召回 | 白名单抽取 + 人可归档 + 默认少注入 |

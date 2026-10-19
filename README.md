@@ -245,6 +245,8 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 
 ## Changelog
 
+**0.4.21** — Host adaptation for `@deepseek-ai/dsh@0.2.x`. Session format v4 replaced the shared `kind: "plugin"` message source with producer-owned kinds: a third-party producer must write `kind: "plugin:dsh-trivium"` and drop the `plugin` field, or the whole turn fails with "format v4 message requires a producer-owned source kind". The plugin now picks the shape from the installed `dsh-llm` version, so 0.1.x keeps working. `agent/created` (0.1.6+) is handled next to `agent/session-start`, with a one-shot guard in case a host emits both. Peer range widened to `<0.3.0`. New `smoke-p14` pins both source shapes and the version switch. Four tools / short map / find paths unchanged.
+
 **0.4.20** — Storage bump to `triviumdb@0.8.9`. The napi surface is unchanged (`triviumdb.d.ts` and `index.js` hash identically to 0.8.8), so this is a kernel-only update: SM-L2 is now the default QuIVer query path, FIND planning no longer materializes discarded candidates, and the server edition ships an attributed Web Console. All 14 offline smoke scripts pass unchanged. Four tools / short map / find paths unchanged.
 
 **0.4.19** — Fixed the plugin's own UI rendering Simplified Chinese on an English host ([issue #2](https://github.com/QWQcool/dsh-trivium/issues/2)). The `locale` service is now reached through `ctx.inject(["locale"], …)`, so **follow host** no longer depends on composition order, and the plugin fallback is `en` — the host's own `FALLBACK_LOCALE`, and the bucket every other resolved host language lands in. The Settings card and the Chips tab only ever choose between zh and en, so a browser naming no registered language no longer gets a Chinese card. Four tools / short map / find paths unchanged.
@@ -310,7 +312,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.20`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.21`](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.1.5-rc.1` (also `0.1.1-rc.2` / `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 
