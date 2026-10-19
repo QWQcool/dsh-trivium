@@ -1,6 +1,6 @@
 {
   "name": "dsh-trivium",
-  "version": "0.4.19",
+  "version": "0.4.20",
   "description": "In-process graph memory for DeepSeek Harness, backed by TriviumDB.",
   "license": "MIT",
   "type": "module",
@@ -58,7 +58,7 @@
     "@deepseek-ai/dsh-tools": ">=0.1.0-rc.8 <0.1.1 || >=0.1.1-rc.2 <0.2.0"
   },
   "dependencies": {
-    "triviumdb": "^0.8.8"
+    "triviumdb": "^0.8.9"
   },
   "keywords": [
     "dsh-plugin",

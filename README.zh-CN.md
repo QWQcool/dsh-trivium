@@ -241,6 +241,8 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 更新说明
 
+**0.4.20** — 存储升到 `triviumdb@0.8.9`。napi 接口零变更（`triviumdb.d.ts` 与 `index.js` 与 0.8.8 哈希完全一致），属纯内核升级：QuIVer 默认走 SM-L2 查询路径，FIND 规划不再物化被丢弃的候选，服务端版本带上带署名的 Web Console。14 个离线冒烟脚本原样通过。四工具 / 短地图 / find 路径不变。
+
 **0.4.19** — 修复插件自身界面在英文宿主上渲染成简体中文（[issue #2](https://github.com/QWQcool/dsh-trivium/issues/2)）。`locale` 服务改经 `ctx.inject(["locale"], …)` 获取，「跟随宿主」不再依赖插件组合顺序；兜底语言改为 `en`——与宿主自己的 `FALLBACK_LOCALE` 一致，也是其它已解析宿主语言的归宿。设置卡与芯片标签只在 zh / en 之间选择，浏览器未命名任何注册语言时不再给出中文卡。四工具 / 短地图 / find 路径不变。
 
 **0.4.18** — `~/.dsh/trivium.json` 改为原子写（此前写到一半被杀会让所有开关和芯片钉选静默回默认），POSIX 下权限收紧为仅属主可读。新增 `npm test` 聚合入口（每个脚本用独立临时设置文件），`smoke-p0` 新增「重开后 hybrid 文本索引仍可用」的断言。四工具 / 短地图 / find 路径行为不变。
@@ -304,7 +306,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.19`](https://www.npmjs.com/package/dsh-trivium)
+- npm: [`dsh-trivium@0.4.20`](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.5-rc.1`（兼 `0.1.1-rc.2` / `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
