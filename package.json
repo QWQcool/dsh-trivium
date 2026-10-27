@@ -50,6 +50,8 @@
     "smoke-p14": "node scripts/smoke-p14.mjs",
     "smoke-p15": "node scripts/smoke-p15.mjs",
     "smoke-p16": "node scripts/smoke-p16.mjs",
+    "smoke-p17": "node scripts/smoke-p17.mjs",
+    "smoke-p18": "node scripts/smoke-p18.mjs",
     "preuninstall": "node ./lib/purge.js",
     "verify-live-p2": "node scripts/verify-live-p2.mjs"
   },
