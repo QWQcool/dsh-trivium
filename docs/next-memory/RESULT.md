@@ -52,7 +52,7 @@
 
 ### 未完成项与原因
 
-1. **真实浏览器交互证据（截图/录像）缺失。** 本轮环境没有运行中的 `dsh web` 宿主，`lib/client.js` 只能在源码层做结构断言（`smoke-p18.mjs`：41 项，覆盖页签存在、按需请求、`role="dialog"`、Escape 关闭、焦点归还、提交中禁用、409 冲突文案、双开关分离）。1440/900/390 宽度、深色主题、真实键盘走查与「替代→撤销→409→刷新」的实际点击链路**未在真实宿主中执行**。这是审查清单「必须提供的证据」里唯一没补齐的一项，需要在一台能起 DSH WebUI 的机器上补做。
+1. ~~真实浏览器交互证据缺失~~ → **已补齐**，见下节「真实宿主证据」。1440/900/390 宽度、深色主题、「替代 → 409 → 刷新 → 成功 → 撤销」的实际点击链路都在运行的 DeepSeek Harness（`dsh@0.2.1-rc.4`）上跑过。仍未覆盖的只有真实**双窗口**并发（409 是在客户端边界注入过期 ETag 制造的）和逐个 Tab 的键盘走查——Escape 关闭与焦点归还目前只有源码级断言。
 2. **`withWorkspaceQueue` 是进程内队列。** 单进程足够（DSH 插件本来就跑在宿主进程里）；多进程同时写同一个 `.tdb` 不在本轮范围，也没有声称支持。
 3. **Git 旁路删除链关系不自动生效。** 文件里缺少一条本地已有的替代关系时，按计划「先报告冲突」，不静默撤销；要撤销必须在 UI 里显式操作。这是有意取舍，已写进 README。
 4. **没有完整的不可变操作审计日志。** 只有边 metadata 上的 `reason` / `at` / `operationId`，撤销即丢失。计划明确首版不承诺审计日志。
@@ -109,11 +109,32 @@
 
 - 基线回归日志：`node scripts/run-all.mjs` → **21/21 通过**（16 组基线 + p16-p20）。`smoke-p15` 的 48 项 issue #3 检查仍全过，没有改期望值掩盖退化。
 - 新增正确性测试日志：p16 55 项、p17 51 项、p18 41 项、p19 76 项、p20 45 项。
-- 打包消费项目验证：`dist/dsh-trivium-0.5.0.tgz`（34 个文件）装入临时消费目录，用真实 `@deepseek-ai/dsh-llm@0.2.1-rc.3` / `dsh-tools@0.2.1-rc.3` 运行 `scripts/verify-package.mjs`，`status: passed`（版本、原生绑定、宿主模块导入、v4 来源形状、四工具注册、显式期限、仅当前事实检索、多词检索、清空期限）。
+- 打包消费项目验证：`dist/dsh-trivium-0.5.0.tgz`（34 个文件）装入临时消费目录，用真实 `@deepseek-ai/dsh-llm@0.2.1-rc.3` / `dsh-tools@0.2.1-rc.3` 运行 `scripts/verify-package.mjs`，`status: passed`（版本、原生绑定、宿主模块导入、v4 来源形状、四工具注册、显式期限、仅当前事实检索、多词检索、清空期限、**运行时 pre-step 注入**、**同轮去重**）。
   - 说明：`npm install` 在该临时目录报 ERESOLVE，原因是目录里手工铺的 peer 包 `package.json` 版本读不出来（`Found: dsh-llm@undefined`），与本包 peer 范围无关；因此改为把 tarball 内容直接铺进 `node_modules/dsh-trivium` 再验证，等价于安装结果。
-- 桌面/窄屏/暗色截图与交互证据：**未提供**，原因见「未完成项」第 1 条。
-- console/network 异常：无真实宿主会话，因此没有 console/network 记录可给。
-- `ACCEPTANCE_CASES.json` 逐项结果：CTX-01..10、SRC-01..03、TRACE-01..04、REV-01..11、IO-01..03 全部有对应断言并通过（分布在 p16-p20）。UI-01/UI-02 只有源码级断言，缺真实浏览器证据。
+- 桌面/窄屏/暗色截图与交互证据：**已提供**，`docs/next-memory/evidence/`（16 张截图 + `run.json` / `run-conflict.json` 逐步日志 + `README.md` 逐图说明）。宿主为 `@deepseek-ai/dsh@0.2.1-rc.4`，插件是本仓库 0.5.0 源码 junction，模型 DeepSeek-V4.1-Flash 真实调用。
+  - 900 宽：宿主设置弹窗仍是 800px（NAV 188 + 内容 612），插件卡片 559px，与 1440 完全一致，可用。
+  - 390 宽：**无横向溢出**（`scrollWidth === innerWidth`，实测数据见 `evidence/measure-narrow.json`），但宿主设置弹窗保留固定 188px 侧栏，内容列只剩 154px、插件卡片 101px，中文被压成一字一行。插件自身的布局已经会收缩（两个页签换行堆叠、两列栅格退成单列），但物理宽度不足，靠插件 CSS 无法解决。**这一条记为已知边界：900 以上的窄桌面可用，390 只证明不产生横向滚动，不证明可用。**
+  - 深色主题：`16-dark-1440.png`。
+  - 真实注入：`13-trajectory-injection.png` 的轨迹里能看到 `dsh-trivium autoRecall (L0 only; ...)` 与 `dsh-trivium memory map (...)` 两条插件上下文，模型随后用 `ctx_read` 读了这两条 id。
+- console/network 异常：插件 API 全程 200/400/404/409，没有 500；未捕获浏览器端异常。这是「目视 + 逐步返回值」级别的证据，不是完整 console 录制。
+- `ACCEPTANCE_CASES.json` 逐项结果：CTX-01..10、SRC-01..03、TRACE-01..04、REV-01..11、IO-01..03 全部有对应断言并通过（分布在 p16-p20）。UI-01 的点击链路已在真实宿主走通（替代 → 409 → 刷新重试 → 成功 → 撤销，截图 04-09）；UI-02 的宽度与深色有截图（1440/900 可用；390 无横向溢出但受宿主侧栏限制不可读，见证据说明），键盘走查只有源码级断言。
+
+## 真实宿主证据
+
+真机跑一轮暴露了两个离线套件抓不到的问题，都已修复。
+
+1. **`remainingOf is not defined`**。`lib/index.js` 的 pre-step 用了 `remainingOf` 却没有 import；`agent/pre-step` 在第一个真实轮次就抛错并被兜底 catch 吞掉，症状是「芯片/召回打开了却什么都不注入」。离线套件只对源码做正则断言，识别不出未定义标识符；`smoke-p16` 直接测账本模块，也绕过了 `index.js`。
+   - 修复：补 import。
+   - 防回归：`scripts/verify-package.mjs` 新增**运行时** pre-step 检查——用真实 peer 构造 coordinator，驱动一次 `agent/pre-step`，断言注入块存在、含 `dsh-trivium autoRecall`、每块 ≤300 估算 token，且同一轮第二次 pre-step 不重复注入。检查清单里已加入 `runtime pre-step injection` 与 `same-turn de-duplication`。
+2. **409 提示文案重复**。冲突横幅把「内容已在别处变更（409）…」和同义的服务端句子拼了两遍。现在 `code` 为 `etag` 时只显示前者，其它 409 原因（循环、线性链限制）仍带服务端说明。
+
+另外确认了两件之前只有推断的事：
+
+- **映射到真实宿主**：`GET /api/dsh-trivium/status` 在 `dsh@0.2.1-rc.4` 下返回 `version: "0.5.0"`、`turnTokenBudget: 300`、`derived.sidecar`、`preStep`，说明 M0/M2 新增字段在真实宿主里可用。
+- **注入真的进模型**：轨迹视图（`13-trajectory-injection.png`）同时显示 `dsh-trivium autoRecall` 与 `dsh-trivium memory map` 两条上下文消息，随后模型对注入的节点连续调用 `ctx_read`，并在回答里引用了它们的正文。`ctx_read` 的输出只有 id 与 payload 白名单字段，没有 `source`、`revision` 等元数据。
+
+证据与逐图说明：`docs/next-memory/evidence/README.md`。
+
 
 ## 需要审查者重点检查的地方
 

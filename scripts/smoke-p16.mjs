@@ -70,7 +70,7 @@ try {
   check(map.tokens <= 400, "CTX-01 the map stays within 400 estimated tokens");
   const indexSrc = readFileSync(join(ROOT, "lib", "index.js"), "utf8");
   check(
-    /if \(!chipsOn && mode === "off"\) return decision;/.test(indexSrc),
+    /if \(!chipsOn && mode === "off"\) \{[\s\S]{0,120}?return decision;/.test(indexSrc),
     "CTX-01 both channels off returns before any pin/recall planning",
   );
   const serverSrc = readFileSync(join(ROOT, "lib", "server.js"), "utf8");

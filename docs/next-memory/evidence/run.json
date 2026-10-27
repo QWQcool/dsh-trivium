@@ -1,0 +1,370 @@
+{
+  "steps": [
+    {
+      "name": "dismiss-onboarding",
+      "value": "",
+      "ok": true
+    },
+    {
+      "name": "open-session",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "seed-nodes",
+      "value": {
+        "oldId": 14,
+        "newId": 15
+      },
+      "ok": true
+    },
+    {
+      "name": "open-account-menu",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "click-settings",
+      "value": "~设置",
+      "ok": true
+    },
+    {
+      "name": "open-trivium-section",
+      "value": "Trivium 记忆",
+      "ok": true
+    },
+    {
+      "name": "open-config-fold",
+      "value": "",
+      "ok": true
+    },
+    {
+      "name": "enable-auto-recall",
+      "value": "clicked:true",
+      "ok": true
+    },
+    {
+      "name": "close-settings",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "send-message",
+      "value": "sent:DIV",
+      "ok": true
+    },
+    {
+      "name": "read-turn-status",
+      "value": {
+        "recallMode": "auto",
+        "planTokens": 0,
+        "planBudget": 300,
+        "planRecords": [],
+        "deferred": [],
+        "trace": {
+          "traceId": "tmvquqtmw-2",
+          "at": "2026-10-27T15:40:23.048Z",
+          "tokens": 0
+        },
+        "mapTokens": 174
+      },
+      "ok": true
+    },
+    {
+      "name": "shot-turn",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\12-turn-injected.png"
+    },
+    {
+      "name": "open-trajectory",
+      "value": "轨迹",
+      "ok": true
+    },
+    {
+      "name": "shot-trajectory",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\13-trajectory-injection.png"
+    },
+    {
+      "name": "back-to-chat",
+      "value": "对话",
+      "ok": true
+    },
+    {
+      "name": "read-transcript",
+      "value": "缓存现在用的是什么方案？证据轮 mvquqdhx缓存现在用的是什么方案？证据轮 mvquqdhx | 23:40 | 已完成 | 已完成，用时 5秒 |  | 当前采用的是方案C：缓存层使用进程内 LRU，Redis 只负责持久化。 |  | 依据如下（均出自证据轮 mvquqdhx）： |  | 记忆\t内容\t轮内状态\t创建时间 | decision#15\t方案C：进程内 LRU + Redis 仅持久化\t新\t15:40:10.729Z | decision#14\t方案B：继续只用 Redis，不做本地缓存\t旧\t15:40:10.393Z | decision#6\t方案B（同一说法）\t更早的轮 mvqtxhjb\t— |  | 在同一证据轮 mvquqdhx 里，这两条记录相互矛盾；其中 decision#15 被标记为“新”，而且时间戳更晚，所以 decision#14 属于被后续决策取代的旧结论。更早的 decision#6 同样是指被取代的方案B。 |  | 需要我把它整理成一条不含歧义的当前结论（例如“缓存层当前采用进程内 LRU，Redis 降级为持久化层”）吗？ |  | 用量 23.3K tok | 23:40 | 发消息或创建任务, / 调用指令, ",
+      "ok": true
+    },
+    {
+      "name": "open-account-menu-2",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "click-settings-2",
+      "value": "~设置",
+      "ok": true
+    },
+    {
+      "name": "open-trivium-2",
+      "value": "Trivium 记忆",
+      "ok": true
+    },
+    {
+      "name": "tab-recall",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "scroll-traces",
+      "value": "scrolled",
+      "ok": true
+    },
+    {
+      "name": "shot-recall",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\10-recall-check-turn.png"
+    },
+    {
+      "name": "read-recall-panel",
+      "value": "本轮预算 | 0 / 300 估算 | 运行只读检查 | 语义通道未运行：只读检查不请求 embedding。 | 入选 | 本轮没有可注入的内容。 | 最近召回诊断 | semantic: off | (empty) | — | 0 / 300 估算 | semantic: off | 缓存现在用的是什么方案？证据轮 mvquqdhx缓存现在用的是什么方案？证据轮 mvquqdhx | native-hybrid → keyword-fallback → entity-anchor → same-as-normalize → business-expand | 150 / 300 估算",
+      "ok": true
+    },
+    {
+      "name": "run-preview",
+      "value": "typed",
+      "ok": true
+    },
+    {
+      "name": "click-run-preview",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "shot-preview",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\11-recall-preview.png"
+    },
+    {
+      "name": "read-preview",
+      "value": "将发送给模型的文本 | dsh-trivium autoRecall (L0 only; use ctx_read for full text): | - [decision#6] 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvqtxhjb 旧。 (in_workspace->1(C:\\Users\\Administrator\\D)) | - [decision#8] 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvqu1vy4 旧。 (in_workspace->1(C:\\Users\\Administrator\\D)) | - [decision#10] 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvqu59lx 旧。 (in_workspace->1(C:\\Users\\Administrator\\D)) | 最近召回诊断 | semantic: off | 缓存 | native-hybrid → keyword-fallback → entity-anchor → same-as-normalize → business-expand | 149 / 300 估算 | semantic: off | (empty) | — | 0 / 300 估算 | semantic: off | 缓存现在用的是什么方案？证据轮 mvquqdhx缓存现在用的是什么方案？证据轮 mvquqdhx | native-hybrid → keyword-fallback → entity-anchor → same-as-normalize → business-expand | 150 / 300 估算",
+      "ok": true
+    },
+    {
+      "name": "tab-list",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "expand-old",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "shot-entries",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\01-memory-entries-1440.png"
+    },
+    {
+      "name": "tab-source",
+      "value": "clicked",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\02-source-tab.png"
+    },
+    {
+      "name": "read-source",
+      "value": "容 | 来源 | 决策历史 | 来源类型 | chip | 记录时间 | 2026-10-27T15:40:10.393Z | 摘录 | 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvquqdhx 旧。 | 宿主没有提供会话跳转接口，因此不提供跳转。 | 替代… | 归档 | 删除 | #13 decision · LRU | 采用方案C：缓存层改用进程内 LRU，Redis 只做持久化。证据轮 mvquhnkc 新。 | in_workspace->1(C:\\Users\\Administrator\\D) | 替代… | 归档 | 删除 | #12 decision | 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvquhnkc 旧。 | in_works",
+      "ok": true
+    },
+    {
+      "name": "tab-history",
+      "value": "clicked",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\03-history-tab.png"
+    },
+    {
+      "name": "tab-content",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "open-supersede-dialog",
+      "value": "clicked",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\04-supersede-dialog.png"
+    },
+    {
+      "name": "read-dialog",
+      "value": "确认替代关系\n选一条已有决策来替代这条。旧版本的正文与期限都保留，不会被归档。\n选择替代它的决策\n选择替代它的决策\n#15 LRU\n#13 LRU\n#12 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvquhnkc 旧。\n#11 LRU\n#10 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvqu59lx 旧。\n#9 LRU\n#8 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvqu1vy4 旧。\n#7 LRU\n#6 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvqtxhjb 旧。\n将被替代\n#14\n采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvquqdhx 旧。\n新决策\n—\n说明（可选，最多 240 字）\n取消\n确认替代关系",
+      "ok": true
+    },
+    {
+      "name": "choose-successor",
+      "value": "selected:15",
+      "ok": true
+    },
+    {
+      "name": "type-reason",
+      "value": "typed",
+      "ok": true
+    },
+    {
+      "name": "shot-dialog-filled",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\05-dialog-filled.png"
+    },
+    {
+      "name": "install-stale-etag-hook",
+      "value": "hooked",
+      "ok": true
+    },
+    {
+      "name": "confirm-conflict",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "shot-conflict",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\06-conflict-409.png"
+    },
+    {
+      "name": "read-conflict",
+      "value": "确认替代关系 | 选一条已有决策来替代这条。旧版本的正文与期限都保留，不会被归档。 | 选择替代它的决策 | 选择替代它的决策 | #15 LRU | #13 LRU | #12 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvquhnkc 旧。 | #11 LRU | #10 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvqu59lx 旧。 | #9 LRU | #8 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvqu1vy4 旧。 | #7 LRU | #6 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvqtxhjb 旧。 | 将被替代 | #14 | 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvquqdhx 旧。 | 新决策 | #15 LRU | 采用方案C：缓存层改用进程内 LRU，Redis 只做持久化。证据轮 mvquqdhx 新。 | 说明（可选，最多 240 字） | 内容已在别处变更（409）。你的选择已保留，刷新后可以重试。 内容已在别处变更，请刷新。 | 刷新并重试 | 取消 | 确认替代关系",
+      "ok": true
+    },
+    {
+      "name": "click-refresh-retry",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "confirm-success",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "read-after-success",
+      "value": "已建立替代关系\n#15 decision · LRU\n采用方案C：缓存层改用进程",
+      "ok": true
+    },
+    {
+      "name": "dialog-gone",
+      "value": true,
+      "ok": true
+    },
+    {
+      "name": "show-replaced",
+      "value": "checked",
+      "ok": true
+    },
+    {
+      "name": "shot-superseded",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\07-superseded-visible.png"
+    },
+    {
+      "name": "read-superseded-row",
+      "value": "#14 属于被后续决策取代的旧结论。更早的 decision#6 同样是指被取代的方案B。 |  | 需要我把它整理成一条不含歧义的当前结论（例如“缓存层当前采用进程内 LRU，Redis 降级为持久化层”）吗？ |  | 用量 23.3K tok | 23:",
+      "ok": true
+    },
+    {
+      "name": "expand-current",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "shot-before-revoke",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\08-before-revoke.png"
+    },
+    {
+      "name": "click-revoke",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "read-after-revoke",
+      "value": "已撤销替代关系\n#15 decision · LRU\n采用方案C：缓存层改用进程",
+      "ok": true
+    },
+    {
+      "name": "shot-revoked",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\09-revoked.png"
+    },
+    {
+      "name": "width-900",
+      "value": "900x900",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\14-width-900.png"
+    },
+    {
+      "name": "width-390",
+      "value": "390x390",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\15-width-390.png"
+    },
+    {
+      "name": "dark",
+      "value": "dark",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\16-dark-1440.png"
+    },
+    {
+      "name": "back-light",
+      "value": "ok",
+      "ok": true
+    },
+    {
+      "name": "restore-recall-off",
+      "value": "clicked:true",
+      "ok": true
+    },
+    {
+      "name": "read-final-status",
+      "value": {
+        "recallMode": "off",
+        "version": "0.5.0",
+        "nodeCount": 15
+      },
+      "ok": true
+    }
+  ],
+  "notes": {
+    "seeded": {
+      "oldId": 14,
+      "newId": 15
+    },
+    "turnStatus": {
+      "recallMode": "auto",
+      "planTokens": 0,
+      "planBudget": 300,
+      "planRecords": [],
+      "deferred": [],
+      "trace": {
+        "traceId": "tmvquqtmw-2",
+        "at": "2026-10-27T15:40:23.048Z",
+        "tokens": 0
+      },
+      "mapTokens": 174
+    },
+    "dialogTarget": "14",
+    "successorId": 15,
+    "finalStatus": {
+      "recallMode": "off",
+      "version": "0.5.0",
+      "nodeCount": 15
+    }
+  }
+}

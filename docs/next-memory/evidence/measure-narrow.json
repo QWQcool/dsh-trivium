@@ -1,0 +1,92 @@
+{
+  "w1440": {
+    "modal": 800,
+    "children": [
+      {
+        "tag": "NAV",
+        "w": 188,
+        "text": "设置\n通用设置\n模型\n内置插"
+      },
+      {
+        "tag": "DIV",
+        "w": 612,
+        "text": "打开配置文件\n关闭\nTriv"
+      }
+    ],
+    "pluginCard": 559,
+    "tabs": [
+      {
+        "label": "记忆条目",
+        "w": 74,
+        "y": 1828
+      },
+      {
+        "label": "召回检查",
+        "w": 74,
+        "y": 1828
+      }
+    ],
+    "scrollWidth": 1440,
+    "innerWidth": 1440
+  },
+  "w900": {
+    "modal": 800,
+    "children": [
+      {
+        "tag": "NAV",
+        "w": 188,
+        "text": "设置\n通用设置\n模型\n内置插"
+      },
+      {
+        "tag": "DIV",
+        "w": 612,
+        "text": "打开配置文件\n关闭\nTriv"
+      }
+    ],
+    "pluginCard": 559,
+    "tabs": [
+      {
+        "label": "记忆条目",
+        "w": 74,
+        "y": 1828
+      },
+      {
+        "label": "召回检查",
+        "w": 74,
+        "y": 1828
+      }
+    ],
+    "scrollWidth": 900,
+    "innerWidth": 900
+  },
+  "w390": {
+    "modal": 342,
+    "children": [
+      {
+        "tag": "NAV",
+        "w": 188,
+        "text": "设置\n通用设置\n模型\n内置插"
+      },
+      {
+        "tag": "DIV",
+        "w": 154,
+        "text": "打开配置文件\n关闭\nTriv"
+      }
+    ],
+    "pluginCard": 101,
+    "tabs": [
+      {
+        "label": "记忆条目",
+        "w": 74,
+        "y": 7090
+      },
+      {
+        "label": "召回检查",
+        "w": 74,
+        "y": 7124
+      }
+    ],
+    "scrollWidth": 390,
+    "innerWidth": 390
+  }
+}

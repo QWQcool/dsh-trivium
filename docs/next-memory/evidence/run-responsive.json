@@ -1,0 +1,71 @@
+{
+  "steps": [
+    {
+      "name": "dismiss",
+      "value": "",
+      "ok": true
+    },
+    {
+      "name": "open-session",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "seed",
+      "value": {
+        "oldId": 18,
+        "newId": 19
+      },
+      "ok": true
+    },
+    {
+      "name": "open-menu",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "settings",
+      "value": "~设置",
+      "ok": true
+    },
+    {
+      "name": "trivium",
+      "value": "Trivium 记忆",
+      "ok": true
+    },
+    {
+      "name": "tab-list",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "expand-first",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "shot-1440",
+      "value": "1440x1440",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\01-memory-entries-1440.png"
+    },
+    {
+      "name": "shot-900",
+      "value": "[object Promise] / 800px modal",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\14-width-900.png"
+    },
+    {
+      "name": "shot-390",
+      "value": "[object Promise] / card 390px",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\15-width-390.png"
+    },
+    {
+      "name": "shot-dark",
+      "value": "dark",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\16-dark-1440.png"
+    }
+  ]
+}

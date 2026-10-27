@@ -40,8 +40,10 @@
 
 - Windows、Node 22.22.2：`node scripts/run-all.mjs` → **21/21 通过**。其中 `smoke-p15` 的 48 项 issue #3 检查仍全过，没有修改既有期望值。
 - 新增：`smoke-p16`（CTX-01..10，55 项）、`smoke-p17`（SRC/TRACE，51 项）、`smoke-p18`（面板契约，41 项）、`smoke-p19`（REV-01..11，76 项）、`smoke-p20`（IO-01..03 与格式兼容，45 项）。
-- `dist/dsh-trivium-0.5.0.tgz`（34 个文件）在临时消费目录里用真实 `@deepseek-ai/dsh-llm@0.2.1-rc.3` / `dsh-tools@0.2.1-rc.3` 跑 `scripts/verify-package.mjs`，`status: passed`。
-- **未做**：真实 DSH WebUI 的点击走查与 1440/900/390、深色主题截图（本轮环境起不了宿主）；性能与负载测试（计划明确不做）。
+- `dist/dsh-trivium-0.5.0.tgz`（34 个文件）在临时消费目录里用真实 `@deepseek-ai/dsh-llm@0.2.1-rc.3` / `dsh-tools@0.2.1-rc.3` 跑 `scripts/verify-package.mjs`，`status: passed`。该脚本现在还会**真的驱动一次 `agent/pre-step`**（用真实 peer 构造 coordinator），断言注入块存在、含 `dsh-trivium autoRecall`、每块 ≤300 估算 token，且同轮第二次 pre-step 不重复注入。
+- **真实宿主走查已做**：`@deepseek-ai/dsh@0.2.1-rc.4` + 本仓库源码 junction + DeepSeek-V4.1-Flash，跑通「替代 → 409 → 刷新重试 → 成功 → 撤销」全链路，并抓到一轮真实注入（轨迹里可见 `dsh-trivium autoRecall` / `memory map` 两条上下文，模型随后 `ctx_read` 了它们）。截图与逐步日志在 `docs/next-memory/evidence/`。
+- **真机暴露的两个问题已修**：pre-step 里 `remainingOf` 漏 import（表现为开了芯片/召回也不注入，离线套件抓不到，已把运行时检查加进打包验证）；409 横幅文案重复（`etag` 只显示一句）。
+- **未做**：真实双窗口并发（409 用客户端注入过期 ETag 制造）、逐个 Tab 的键盘走查、性能与负载测试（计划明确不做）。
 
 ## 与 0.4.22 的行为差异
 

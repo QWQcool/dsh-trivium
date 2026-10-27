@@ -1,0 +1,136 @@
+{
+  "steps": [
+    {
+      "name": "dismiss",
+      "value": "",
+      "ok": true
+    },
+    {
+      "name": "open-session",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "seed",
+      "value": {
+        "oldId": 16,
+        "newId": 17
+      },
+      "ok": true
+    },
+    {
+      "name": "open-menu",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "settings",
+      "value": "~设置",
+      "ok": true
+    },
+    {
+      "name": "trivium",
+      "value": "Trivium 记忆",
+      "ok": true
+    },
+    {
+      "name": "tab-list",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "expand-old",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "open-dialog",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "pick",
+      "value": "ok",
+      "ok": true
+    },
+    {
+      "name": "reason",
+      "value": "ok",
+      "ok": true
+    },
+    {
+      "name": "stale-hook",
+      "value": "ok",
+      "ok": true
+    },
+    {
+      "name": "confirm",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "shot-conflict",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\06-conflict-409.png"
+    },
+    {
+      "name": "read-conflict",
+      "value": "继续使用 Redis，不做本地缓存。证据轮 mvqu1vy4 旧。 | #7 LRU | #6 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvqtxhjb 旧。 | 将被替代 | #16 | 采用方案B：缓存层继续使用 Redis，不做本地缓存。证据轮 mvquvpbi 旧。 | 新决策 | #17 LRU | 采用方案C：缓存层改用进程内 LRU，Redis 只做持久化。证据轮 mvquvpbi 新。 | 说明（可选，最多 240 字） | 内容已在别处变更（409）。你的选择已保留，刷新后可以重试。 | 刷新并重试 | 取消 | 确认替代关系",
+      "ok": true
+    },
+    {
+      "name": "retry",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "confirm-2",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "read-success",
+      "value": "已建立替代关系\n#17 decision · LRU\n采用方案C：缓存层改用进程",
+      "ok": true
+    },
+    {
+      "name": "show-replaced",
+      "value": "checked",
+      "ok": true
+    },
+    {
+      "name": "shot-superseded",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\07-superseded-visible.png"
+    },
+    {
+      "name": "expand-current",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "shot-before-revoke",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\08-before-revoke.png"
+    },
+    {
+      "name": "revoke",
+      "value": "clicked",
+      "ok": true
+    },
+    {
+      "name": "read-revoke",
+      "value": "已撤销替代关系\n#17 decision · LRU\n采用方案C：缓存层改用进程",
+      "ok": true
+    },
+    {
+      "name": "shot-revoked",
+      "value": "ok",
+      "ok": true,
+      "shot": "C:\\Users\\Administrator\\Desktop\\dsh-trivium\\docs\\next-memory\\evidence\\09-revoked.png"
+    }
+  ]
+}

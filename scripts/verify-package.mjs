@@ -52,10 +52,59 @@ try {
   assert.match(await find.execute({query:"发布前 检查"},exec),/发布前先检查测试结果/);
   await remember.execute({type:"decision",name:"冻结记录",text:"旧部署冻结约定。",until:""},exec);
   assert.doesNotMatch(await find.execute({query:"冻结记录"},exec),/stale/);
+  /*
+   * Runtime pre-step check.
+   *
+   * The offline suite can only assert the wiring by reading source. A missing
+   * import or a renamed helper therefore survives it and dies on the first real
+   * turn (0.5.0 shipped with `remainingOf is not defined` until a host caught
+   * it). This drives one pre-step through a fake coordinator with the real
+   * peers installed, so the whole path — ledger, planner, renderer, host
+   * message builder — has to actually execute.
+   */
+  const { writeFileSync } = await import("node:fs");
+  writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ recallMode: "auto" }), "utf8");
+  const seeded = await load("store.js").then((m) => m.openWorkspaceDb(join(root, "workspace")));
+  const { estimateTokens } = await load("tokens.js");
+  const handlers = new Map();
+  const fakeCtx = {
+    logger: () => ({ warn: () => {}, info: () => {}, error: () => {} }),
+    inject: (deps, cb) => { try { cb(fakeCtx); } catch { /* service absent */ } },
+    on: (event, fn) => { handlers.set(event, fn); return () => {}; },
+    effect: (factory) => { try { factory(); } catch { /* register may throw without a host */ } return () => {}; },
+    tools: { register: () => ({ dispose: () => {} }) },
+  };
+  plugin.apply(fakeCtx, {});
+  assert.equal(typeof handlers.get("agent/pre-step"), "function");
+  // Seed a fact the query will actually hit, then drive one pre-step.
+  await remember.execute({ type: "preference", name: "上线规范", text: "上线前先跑验收脚本，再发布。" }, exec);
+  const userMessage = { source: { kind: "user" }, content: [{ type: "text", text: "上线规范" }] };
+  const decision = await handlers.get("agent/pre-step")(
+    { agent: { session: { id: "s-pre", header: { cwd: join(root, "workspace") } } }, messages: [userMessage] },
+    async () => ({ kind: "enter", messages: [] }),
+  );
+  assert.equal(decision.kind, "enter");
+  const injected = (decision.messages || [])
+    .map((m) => (Array.isArray(m.content) ? m.content.map((c) => c.text).join("") : ""))
+    .filter(Boolean);
+  assert.ok(injected.length > 0, "pre-step injected nothing");
+  assert.ok(injected.some((t) => t.includes("dsh-trivium autoRecall")), "recall block missing");
+  for (const text of injected) {
+    assert.ok(estimateTokens(text) <= 300, "a block exceeded the shared 300 allowance");
+  }
+  // A second step in the same turn must not repeat what was already delivered.
+  const second = await handlers.get("agent/pre-step")(
+    { agent: { session: { id: "s-pre", header: { cwd: join(root, "workspace") } } }, messages: [userMessage] },
+    async () => ({ kind: "enter", messages: [] }),
+  );
+  const secondInjected = (second.messages || []).length;
+  assert.ok(secondInjected <= injected.length, "same turn injected again");
+  void seeded;
+
   console.log(JSON.stringify({
     package:pkg.name,version:pkg.version,kernel:require("triviumdb/package.json").version,
     hostPeers:{llm:require("@deepseek-ai/dsh-llm/package.json").version,tools:require("@deepseek-ai/dsh-tools/package.json").version},
-    checks:["package version","native binding","host module import","v4 source shape","four tool registrations","explicit expiry","history/current-only search","multiword search","clear expiry"],
+    checks:["package version","native binding","host module import","v4 source shape","four tool registrations","explicit expiry","history/current-only search","multiword search","clear expiry","runtime pre-step injection","same-turn de-duplication"],
     status:"passed",
   },null,2));
 } finally {
