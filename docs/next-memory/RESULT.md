@@ -2,6 +2,78 @@
 
 对应 `IMPLEMENTATION_PLAN.md`、`REVIEW_CHECKLIST.md` 与 `ACCEPTANCE_CASES.json`。日期：2026-10-27。
 
+---
+
+# 评审回执与当前状态（2026-10-28 02:15）
+
+回应 `REVIEW-2026-10-28.md`（针对 `ac588f6`，结论「不建议直接发布 0.5.0」）。
+
+## 1. 结论已受理，两个 P1 我独立复现成立
+
+不是照抄评审结论。我写脚本直接跑规划器与账本，实测如下。
+
+**P1-1 同轮预算不记账 —— 成立**
+
+```
+record.tokens = [undefined, undefined]   plan.tokens = 123
+commit 后: spent = 0, remaining = 300
+```
+
+`selectContextRecords()` 只算块级总量，从不给单条 record 写 `tokens`；`reserve()` 里 `Number(r.tokens) || 0` 全部归零，`spent` 恒为 0。评审指出的「测试夹具手工塞 tokens 掩盖接线缺失」也成立 —— `smoke-p16` 的 CTX-07 正是这么绕过去的。
+
+**P1-2 新 id 配旧正文 —— 成立**
+
+```
+record id = 5
+record l0 = "CookieLegacy 是旧鉴权方案。"
+#5 实际正文 = "HeaderCurrent 是新的唯一鉴权方案。"
+```
+
+换 id 的分支只写 `matchedHistory` 和 `record.id`，`l0/until/stale/path` 仍是旧候选；`makeRevisionResolver()` 也根本没把正文带回来。
+
+**P1-3 导入合并成自环 —— 只做代码路径确认，未跑完整复现**
+
+`importGraph()` 预检按导出 id 验结构，落盘却回退到 `findMergeTarget(allowRevisionLinked:true)` 的文本包含匹配；两条 URI 不同、正文为「后一版包含前一版」的版本节点会映射到同一 id，随后直接 `upsertEdge` 成自环（无 `src === dst` 守卫）；事务失败分支仍返回 `ok:true`。评审的复现结论与我读代码的判断一致，但我没有独立跑出那条 `created:1, merged:1` 的记录，这里如实标注。
+
+## 2. 仓库与发布实际发生了什么（含偏离）
+
+| 项 | 状态 |
+|---|---|
+| `main` | `ac588f6`，已 fast-forward 合并并推送（`b0a5355..ac588f6`），`ls-remote` 交叉验证一致 |
+| 本地分支 | 只剩 `main`；`feat/next-memory` 与 `codex/fix-memory-recall-0.4.22` 确认是 main 祖先后已删除 |
+| tag | `v0.4.22` → `818306b`、`v0.5.0` → `ac588f6`，均已推送 |
+| npm 0.5.0 | **2026-10-27T17:53:09Z 已发布并占 latest** |
+| npm 0.4.22 | 2026-10-27T18:09:44Z 发布，给 `^0.4` 线补 issue #3 修复，**不在任何 dist-tag 上** |
+
+**必须记录的偏离：0.5.0 先于 P1 修复上线了。** 这与评审建议相反。过程是：先决定「按评审先发 0.4.22」，但 0.5.0 在 17:53:09Z 已被发布为 latest（我在 17:52:33Z 查过一次，早了 36 秒没看到，随后误判为「没发出去」，属于我的判断错误）。0.4.22 随后发布时误带 `--tag latest`，一度把 latest 压回 0.4.22，已用 `npm dist-tag add dsh-trivium@0.5.0 latest` 修正，复查 `dist-tags: {latest: '0.5.0'}`。
+
+**所以：latest 现在就是带三个 P1 的 0.5.0。** 这是已知风险，不是意外，也不掩饰。
+
+## 3. 修复计划与验收断言
+
+| P1 | 改哪里 | 怎么改 | 验收断言（必须跑真实规划器/真实导入） |
+|---|---|---|---|
+| 1 | `lib/context-budget.js` `selectContextRecords()` 末尾 | 按前缀边际成本给每条 record 写 `tokens`（`measure(0..i) - measure(0..i-1)`），保证 `Σtokens === plan.tokens`，标题/包装计入 | 3 条长芯片 + 同一轮 3 次 pre-step，累计 ≤ 300；`records.every(r => r.tokens > 0)`；不得手工构造 record |
+| 1b | `lib/turn-ledger.js` `commit()` | 补幂等守卫：已 `committed` 直接返回，避免重复扣费 | 连续 `commit()` 两次，`spent` 只加一次 |
+| 2 | `lib/revisions.js` `makeRevisionResolver()` + `lib/context-budget.js` 换 id 分支 | resolver 返回投影后的 `{currentId,type,l0,until,stale,dirty,path}`；换 id 后用新值覆盖，旧 id 只留在 `matchedHistory`；path 取不到就清空 | 断言**新正文出现**、旧正文不以新 id 出现；自动召回、只读预览、`ctx_find` 共用同一归一 |
+| 3 | `lib/store.js` `importGraph()` | ① URI 身份优先，有 URI 找不到就新建，不走文本合并（文本回退只留给无 URI 的旧导出）② 落盘前校验「映射后 + 现库」完整拓扑 ③ `insertWithId` + `upsertEdge` 放进**一个** `commitTransaction` ④ 失败返回 `ok:false, status:409` | 文本包含、完全相同正文但不同 URI、与现库拼接成环、事务失败四种形态 |
+
+顺序建议：先 1 / 1b / 2（小改，发 0.5.1），再 3（较重，发 0.5.2）。
+
+## 4. 仍未做（与评审一致）
+
+- `queueCorrection()` 仍只在测试里调用，生产写入/归档/替代路径未接入。
+- 390 宽在宿主侧栏约束下不可读 —— 已实测（弹窗 342px = 宿主 NAV 188 + 内容 154，插件卡片 101px），`scrollWidth === innerWidth` 但不可用；不接受把「无横向滚动」当窄屏通过。
+- 逐个 Tab 键盘走查、真实双窗口并发（409 用客户端注入过期 ETag 制造）仍未覆盖。
+
+## 5. 请评审确认
+
+1. P1-3 是否接受「自己分配 id + 一次 `commitTransaction`（`insertWithId` + `upsertEdge`）」的方案？还是要求导入失败时回滚已写入的节点？
+2. 已发布的 0.4.22 是否需要 `npm deprecate` 指向 0.5.0？
+3. 仓库里三个评审文件（`REVIEW-2026-10-28.md`、`review-evidence-*.json`、`review-repro-*.mjs`）是否要一并提交？
+
+---
+
 ## 基线与提交
 
 - 基线 manifest 校验结果：`BASELINE.json` 55 个文件，55/55 内容一致。其中 4 个文件字节数偏大，差异为纯 CRLF（Windows `core.autocrlf`），按 LF 归一后 sha256 全部吻合：`docs/issue-3-reply.md`、`docs/release-0.4.22.md`、`scripts/smoke-p15.mjs`、`scripts/verify-package.mjs`。没有覆盖 issue #3 的改动，也没有回退到远端 0.4.21。
