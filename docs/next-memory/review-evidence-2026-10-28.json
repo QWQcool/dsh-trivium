@@ -1,0 +1,121 @@
+{
+  "reviewedHead": "ac588f6",
+  "date": "2026-10-28",
+  "existingSuite": "21/21 passed",
+  "turnBudget": {
+    "steps": [
+      {
+        "step": 1,
+        "ids": [
+          1
+        ],
+        "actualEstimatedTokens": 217,
+        "ledgerSpent": 0,
+        "remainingNext": 300
+      },
+      {
+        "step": 2,
+        "ids": [
+          2
+        ],
+        "actualEstimatedTokens": 217,
+        "ledgerSpent": 0,
+        "remainingNext": 300
+      },
+      {
+        "step": 3,
+        "ids": [
+          3
+        ],
+        "actualEstimatedTokens": 217,
+        "ledgerSpent": 0,
+        "remainingNext": 300
+      }
+    ],
+    "totalEstimatedTokens": 651,
+    "cap": 300
+  },
+  "versionProjection": {
+    "oldId": 2,
+    "newId": 3,
+    "records": [
+      {
+        "id": 3,
+        "channel": "recall",
+        "channels": [
+          "recall"
+        ],
+        "type": "decision",
+        "l0": "CookieLegacy 是旧鉴权方案。",
+        "historical": false,
+        "matchedHistory": {
+          "from": 2,
+          "current": 3
+        },
+        "tokens": 0
+      }
+    ],
+    "text": {
+      "pins": "",
+      "recall": "dsh-trivium autoRecall (L0 only; use ctx_read for full text):\n- [decision#3 matched_history=#2 → current=#3] CookieLegacy 是旧鉴权方案。 (in_workspace->1(C:\\Users\\Administrator\\A))",
+      "total": 50
+    }
+  },
+  "importContainedText": {
+    "result": {
+      "ok": true,
+      "version": 2,
+      "created": 1,
+      "merged": 1,
+      "linked": 0,
+      "revisionLinked": 1,
+      "revisionConflicts": [],
+      "nodes": 2
+    },
+    "nodes": [
+      {
+        "id": 2,
+        "payload": {
+          "aliases": [],
+          "createdAt": "2026-10-27T16:30:25.036Z",
+          "name": "鉴权约定",
+          "status": "active",
+          "text": "鉴权统一使用请求头携带会话凭据。所有请求还必须校验签名。",
+          "type": "decision",
+          "updatedAt": "2026-10-27T16:30:25.056Z",
+          "uri": "ctx://decision/rev200"
+        }
+      }
+    ],
+    "revisionEdges": [
+      {
+        "from": 2,
+        "to": 2,
+        "label": "supersedes",
+        "weight": 0.8,
+        "metadata": {
+          "reason": "新版取代旧版"
+        }
+      }
+    ],
+    "heads": [
+      {
+        "id": 2,
+        "head": {
+          "ok": false,
+          "reason": "cycle",
+          "id": null,
+          "hops": 1
+        }
+      }
+    ]
+  },
+  "cleanInstall": {
+    "version": "0.5.0",
+    "triviumdb": "0.8.11",
+    "peers": "0.2.1-rc.3",
+    "bypassPeerChecks": false,
+    "verification": "passed"
+  },
+  "scope": "All reproduced against isolated synthetic data. No user memory was opened or changed."
+}
