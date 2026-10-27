@@ -1,7 +1,6 @@
 /**
- * Kernel find: entity-name anchor → unexpired about/decided/broke/fixed
- * neighbors (payload need not repeat the name); business-edge rank; stale
- * `until` hidden unless the query is about the deadline. Does not need DSH.
+ * Kernel find: entity anchors, business-edge rank, and searchable history.
+ * Expired decisions are marked and ranked lower, not silently removed.
  */
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -96,8 +95,8 @@ try {
     "find(AuthGateway) keeps unexpired decided neighbor",
   );
   assert(
-    !byGw.some((h) => h.id === stale),
-    `find(AuthGateway) hides stale until decision (got ${byGw.map((h) => h.id + ":" + h.l0).join("; ")})`,
+    byGw.some((h) => h.id === stale && h.stale),
+    "find(AuthGateway) retains the expired decision with its stale flag",
   );
 
   const byUntil = searchNodes(db, "周五", { topK: 8, expandDepth: 1, now }).map((h) => formatHit(db, h));
@@ -121,8 +120,8 @@ try {
     `entity path includes incoming decided (got ${entityPath || "(none)"})`,
   );
   assert(
-    !entityPath.includes(`<-decided-${stale}`),
-    `entity path hides stale incoming unless query asks until (got ${entityPath || "(none)"})`,
+    entityPath.includes(`<-decided-${stale}`),
+    "explicit search paths retain the expired incoming decision",
   );
 
   const untilEntity = byUntil.find((h) => h.id === entity);
@@ -171,8 +170,8 @@ try {
     "find(AuthGateway 的决策) returns about preference neighbor",
   );
   assert(
-    !byPhrase.some((h) => h.id === stale),
-    `find(AuthGateway 的决策) hides stale until (got ${byPhrase.map((h) => h.id + ":" + h.l0).join("; ")})`,
+    byPhrase.some((h) => h.id === stale && h.stale),
+    "find(AuthGateway 的决策) retains relevant history",
   );
   assert(
     !byPhrase.some((h) => h.id === pnpm),

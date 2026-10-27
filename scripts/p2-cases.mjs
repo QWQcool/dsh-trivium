@@ -92,7 +92,7 @@ try {
   const map = buildShortMapReport(dbA, 400);
   assert(map.tokens <= 400, `short map ${map.tokens} <= 400`);
   assert(/preference:/.test(map.text), "short map lists preferences first");
-  assert(/until/.test(map.text), "short map names an unexpired until decision");
+  assert(!listNodes(dbA).some((n) => n.until), "automatic extraction does not infer expiry from dates in prose");
   dbA.flush();
   closeAll();
 
@@ -151,7 +151,7 @@ try {
     }
     if (c.id === "D1" && hit) {
       const node = dbB.get(hit.id);
-      assert(node?.payload?.until === "下周", `D1 until=下周 (got ${node?.payload?.until})`);
+      assert(!node?.payload?.until, "D1 keeps 下周 in the fact without assigning expiry");
     }
   }
   closeAll();

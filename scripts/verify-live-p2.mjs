@@ -181,7 +181,7 @@ try {
     ok(!!hit, `${c.id} live node ${c.type} ${c.text}`);
   }
   const d1 = nodes.find((n) => n.type === "decision" && /下周/.test(`${n.name} ${n.text}`));
-  ok(!d1 || d1.until === "下周", `D1 until=下周 (got ${d1?.until || "missing"})`);
+  ok(!!d1 && !d1.until, "D1 keeps 下周 in the fact without inferring expiry");
   ok(!nodes.some((n) => n.type === "entity" && n.name === "鉴权"), "N4 no entity 鉴权");
   ok(!nodes.some((n) => n.type === "entity" && n.name === "README"), "no singleton README entity");
   ok(!nodes.some((n) => n.type === "preference" && /天气/.test(`${n.name} ${n.text}`)), "N1 no weather pref");

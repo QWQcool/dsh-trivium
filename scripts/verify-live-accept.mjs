@@ -220,7 +220,7 @@ try {
       "2) ctx_remember type=preference text=本仓库鉴权走 header X ，link_to=刚记下的 AuthGateway id，link_label=about",
       "3) ctx_remember type=preference text=以后都用 pnpm，不要用 npm。 （不要 link）",
       "4) ctx_remember type=decision text=先别动 AuthGateway，下周再改。 link_to=AuthGateway id，link_label=decided",
-      "5) ctx_remember type=decision text=AuthGateway 冻结窗口 until 2020-01-03。 link_to=AuthGateway id，link_label=decided",
+      "5) ctx_remember type=decision text=AuthGateway 冻结窗口。 另传独立参数 until=2020-01-03，link_to=AuthGateway id，link_label=decided",
       "6) ctx_remember type=experience text=mkdir 失败后改用 fs.mkdir。 fail=bash mkdir fix=fs.mkdir ；link_to=AuthGateway id，link_label=fixed",
       "7) ctx_remember type=decision text=旧方案：用 cookie 会话。",
       "8) ctx_remember type=decision text=现方案：用 header 会话。",
@@ -272,11 +272,9 @@ try {
   const gwBlock = findGw.split(/CALL ctx_find/).filter((s) => /AuthGateway/.test(s) && !/的决策/.test(s) && !/周五/.test(s))[0] || findGw;
   const entityLine = (gwBlock.match(/type=entity[\s\S]{0,400}/) || [""])[0];
   ok(/<-about-/.test(entityLine) || /<-decided-/.test(entityLine) || /<-about-/.test(findGw), "9 entity path has incoming about/decided");
-  const staleHiddenDefault =
-    !/2020-01-03/.test(gwBlock) || /stale/.test(findGw);
   ok(
-    !/until=2020-01-03/.test(gwBlock) || /周五[\s\S]*2020-01-03/.test(findGw),
-    "8/9 stale until hidden on AuthGateway find unless 周五 query",
+    /until=2020-01-03[^\n]*stale/.test(findGw),
+    "8/9 explicit expired history is searchable and labeled stale",
   );
   ok(/周五/.test(findGw), "9 ctx_find(周五) was called");
 
@@ -406,8 +404,8 @@ try {
   ok(/下周|先别动/.test(exGw), "8 extract unexpired decided neighbor");
   ok(!/pnpm/.test(exGw.split(/周五/)[0] || exGw), "8 extract find(AuthGateway) does not drag pnpm");
   ok(/<-about-/.test(exGw) || /<-decided-/.test(exGw), "9 extract entity incoming path");
-  const beforeFriday = (exGw.split(/周五/)[0] || exGw);
-  ok(!/2020-01-03/.test(beforeFriday) || /until=2020-01-03/.test(exGw.split(/周五/).slice(1).join("周五")), "8/9 extract stale until hidden until 周五 query");
+  const datedDecisions = exNodes.filter((n) => n.type === "decision" && /2020-01-03/.test(n.text));
+  ok(datedDecisions.length > 0 && datedDecisions.every((n) => !n.until && !n.stale), "8/9 extraction keeps historical dates without assigning expiry");
   if (gwEnt) {
     hist = await promptTurn(
       exB.sessionId,
@@ -432,7 +430,7 @@ try {
   ok(
     (exYesStale.nodes || []).some((n) => n.type === "decision" && n.stale) ||
       (exYesStale.nodes || []).some((n) => /2020-01-03/.test(`${n.until} ${n.text}`)),
-    "14 extract stale=1 shows expired decision",
+    "14 stale=1 also includes decisions mentioning historical dates",
   );
 
   const emptySess = await rpc("session.create", { cwd: EMPTY });

@@ -15,6 +15,7 @@ import {
   listNodes,
   openWorkspaceDb,
   searchNodes,
+  updateNode,
 } from "../lib/store.js";
 import { resolveUntilAt } from "../lib/until.js";
 
@@ -45,6 +46,9 @@ try {
     ],
   });
 
+  const dated = listNodes(db).find((n) => n.type === "decision" && /下周/.test(n.text));
+  assert(dated && !dated.until, "extracted date is not implicitly an expiry");
+  updateNode(db, dated.id, { until: "下周" });
   const listed = listNodes(db);
   assert(
     listed.some((n) => n.type === "decision" && n.until === "下周"),

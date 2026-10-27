@@ -55,6 +55,8 @@ Then restart `dsh web`.
 
 ## Updating
 
+Before upgrading, stop DSH and back up the entire workspace `.dsh/trivium.tdb*` file group. Default mmap storage also uses `.vec`, `.wal`, `.text`, and other sidecars. Git JSONL omits local-only data and is not a complete backup.
+
 ```sh
 dsh plugin --profile web add dsh-trivium
 ```
@@ -138,7 +140,11 @@ Trivium is a memory kernel, not a journal, calendar, or chat companion. It store
 
 Nodes are `entity` / `preference` / `decision` / `experience`. Business edges are `about`, `decided`, `broke`, `fixed`.
 
-`ctx_find` returns L0 summaries plus edge paths (incoming as `<-label-id`). If the query names an existing entity, unexpired `about` / `decided` / `broke` / `fixed` neighbors come along even when the neighbor text does not contain the query. Decisions with `until` stay hidden after they expire, unless the query itself is asking about that deadline (e.g. “Friday”).
+`ctx_find` returns L0 summaries plus edge paths (incoming as `<-label-id`). Entity-name queries also return `about` / `decided` / `broke` / `fixed` neighbors even when their text omits the query. Relevant expired decisions remain searchable as history, labeled `stale` and ranked lower. Set `include_stale: false` to exclude them. Automatic recall and the opening map still exclude expired decisions.
+
+Dates in prose stay in prose. Set expiry in Settings or the separate `ctx_remember.until` field. Supported labels are `YYYY-MM-DD`, weekdays such as `Friday` / `周五`, `周末`, and `下周` (one week), resolved at the end of the UTC day. An unresolvable replacement label cannot retain the old `untilAt`. Clearing the label clears the timestamp; changing a relative deadline anchors it to the edit, while saving an unchanged label does not extend it.
+
+0.4.22 does not bulk-delete existing expiry fields. Find affected entries with `ctx_find` or Settings → **Show expired decisions**, clear `until`, and save. Later edits to dated prose will not recreate the expiry.
 
 ### Chips (memory whitelist)
 
@@ -183,9 +189,9 @@ Injection detail: autoRecall injects at most 3 L0 hits when the step has user te
 
 | Tool | What it does |
 |---|---|
-| `ctx_find` | Search; L0 summaries and graph paths (incoming `<-label-id`). Entity-name queries also return unexpired about/decided/broke/fixed neighbors. Expired `until` decisions stay out unless the query asks about the deadline |
+| `ctx_find` | Text / optional vector / graph search; L0 summaries and paths. Expired history is labeled `stale` and ranked lower; `include_stale: false` excludes it |
 | `ctx_read` | Full text and incoming edges by id |
-| `ctx_remember` | Manual write |
+| `ctx_remember` | Manual write; optional explicit `until` field for real expiry, never inferred from dates in prose |
 | `ctx_link` | Directed edge between two nodes |
 
 The kernel is still these four. Chips / session layer do not add a fifth tool.
@@ -244,6 +250,10 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 ---
 
 ## Changelog
+
+**0.4.22** — Fix [issue #3](https://github.com/QWQcool/dsh-trivium/issues/3): expiry is explicit, clearing it persists, and relevant expired history is searchable with a `stale` label. Preserve native text/vector candidates; add multiword fallback, aliases, and two-character Chinese entity anchors. Upgrade TriviumDB to `0.8.11`. Add focused expiry/recall regressions and keep automatic recall restricted to unexpired memories.
+
+The peer ranges now explicitly admit the supported DSH `0.1.5`, `0.2.0`, and `0.2.1` RC lines; a broad stable-version range alone does not include those prereleases under npm rules.
 
 **0.4.21** — Host adaptation for `@deepseek-ai/dsh@0.2.x`. Session format v4 replaced the shared `kind: "plugin"` message source with producer-owned kinds: a third-party producer must write `kind: "plugin:dsh-trivium"` and drop the `plugin` field, or the whole turn fails with "format v4 message requires a producer-owned source kind". The plugin now picks the shape from the installed `dsh-llm` version, so 0.1.x keeps working. `agent/created` (0.1.6+) is handled next to `agent/session-start`, with a one-shot guard in case a host emits both. Peer range widened to `<0.3.0`. New `smoke-p14` pins both source shapes and the version switch. Four tools / short map / find paths unchanged.
 
@@ -312,7 +322,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.21`](https://www.npmjs.com/package/dsh-trivium)
+- Package version: `0.4.22` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.1.5-rc.1` (also `0.1.1-rc.2` / `0.1.0-rc.8`)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

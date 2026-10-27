@@ -1,10 +1,19 @@
 # dsh-trivium 规划文档
 
 > 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**v0.4.21**。内核仍是四工具 + 短地图。芯片（记忆白名单）与会话层**默认关**；设置里拨开后标题栏立刻出现「芯片(记忆白名单)」，写入 `~/.dsh/trivium.json`。`dsh plugin remove` 清掉已知 `.tdb` 与该配置文件。存储钉 `triviumdb@0.8.9`。  
+> 状态：**v0.4.22 待发布**。内核仍是四工具 + 短地图；芯片与会话层默认关。依赖最低版本为 `triviumdb@0.8.11`，锁文件固定 `0.8.11`。
 > 情节图规划见 [`PLAN-session-map.md`](./PLAN-session-map.md)。不是记忆图谱工作台。  
-> 代码：GitHub `QWQcool/dsh-trivium`。npm：[`dsh-trivium@0.4.21`](https://www.npmjs.com/package/dsh-trivium)。  
+> 代码：GitHub `QWQcool/dsh-trivium`。npm 当前已发布 `0.4.21`；本地准备 `0.4.22`。
 > DSH 目标版本：`@deepseek-ai/dsh@0.2.1-rc.2`（peer 兼容 `0.1.x`：`0.1.0-rc.8` / `0.1.1-rc.2` / `0.1.5-rc.1`，以及 `0.2.x`；不要把 `dsh-llm` exact-pin 嵌进插件 `node_modules`）。
+
+### 0.4.22 行为变更
+
+- 有效期只接受独立字段，不从正文、抽取、芯片或 Markdown 推断；清空与修改期限保持 `until` / `untilAt` 一致。
+- 主动检索可返回带 `stale` 标记的过期历史，`include_stale: false` 排除过期条目；自动召回仍排除过期决策。
+- 保留原生文本与向量候选，使用分词兜底与别名检索；两字中文实体可作为锚点。归档、脏数据和过时的显式关键词仍受过滤。
+- RC peer 范围显式覆盖已支持的 0.1.5、0.2.0、0.2.1 预发布线；增加干净消费项目的安装与工具调用验证。
+- 下文 P2–P4 是历史验收记录，其中“从正文推断 until”和“主动 find 默认隐藏过期”的描述由本节取代。
+- 性能基准暂缓。后续优先讨论记忆来源与诊断、决策修订关系，以及原生事务和索引维护；尚未实施这些新功能。
 
 ---
 

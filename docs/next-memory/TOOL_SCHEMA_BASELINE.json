@@ -1,0 +1,108 @@
+{
+  "scope": "Canonical name/description/parameters projection for relative schema size checks; not the exact host wire format",
+  "estimateMethod": "lib/tokens.js estimateTokens",
+  "estimatedTokens": 529,
+  "tools": [
+    {
+      "name": "ctx_find",
+      "description": "Search local Trivium graph memory by keywords, meaning (when embeddings are enabled), and entity relationships. Relevant expired decisions remain searchable, marked stale and ranked lower; treat them as historical, not current instructions. Set include_stale=false for current facts only. Returns L0 summaries and edge paths. Call ctx_read for full text.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query."
+          },
+          "top_k": {
+            "type": "integer",
+            "description": "Max hits, 1-20."
+          },
+          "include_stale": {
+            "type": "boolean",
+            "description": "Include relevant expired memories (default true). Expired hits are marked stale."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "ctx_read",
+      "description": "Read one memory node by numeric id returned from ctx_find. Includes incoming about/decided/broke/fixed edges.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Node id."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "ctx_remember",
+      "description": "Store a durable fact as an entity, preference, decision, or experience. Do not store secrets or one-off task instructions.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Fact to store."
+          },
+          "type": {
+            "type": "string",
+            "description": "entity | preference | decision | experience"
+          },
+          "name": {
+            "type": "string",
+            "description": "Short name for entities."
+          },
+          "until": {
+            "type": "string",
+            "description": "Optional explicit expiry, only when the user states this fact expires: YYYY-MM-DD, weekday (Friday / 周五), or 下周. A date mentioned in the fact is not an expiry."
+          },
+          "link_to": {
+            "type": "integer",
+            "description": "Optional existing node id to link."
+          },
+          "link_label": {
+            "type": "string",
+            "description": "Edge label when link_to is set."
+          }
+        },
+        "required": [
+          "text"
+        ]
+      }
+    },
+    {
+      "name": "ctx_link",
+      "description": "Create a directed edge between two memory node ids.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "integer",
+            "description": "Source node id."
+          },
+          "to": {
+            "type": "integer",
+            "description": "Target node id."
+          },
+          "label": {
+            "type": "string",
+            "description": "Edge label, default about."
+          }
+        },
+        "required": [
+          "from",
+          "to"
+        ]
+      }
+    }
+  ]
+}

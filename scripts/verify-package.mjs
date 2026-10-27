@@ -1,0 +1,64 @@
+/** Verify an installed release tarball with real DSH peer packages.
+ * Usage: node scripts/verify-package.mjs <isolated-consumer-directory>
+ */
+import assert from "node:assert/strict";
+import { createRequire } from "node:module";
+import { readFileSync, mkdtempSync, rmSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { tmpdir } from "node:os";
+import { pathToFileURL } from "node:url";
+
+if (!process.argv[2]) throw new Error("Pass the isolated consumer directory with the tarball and DSH peers installed.");
+const consumer = resolve(process.argv[2]);
+const require = createRequire(join(consumer,"package.json"));
+const packageRoot = dirname(require.resolve("dsh-trivium/package.json"));
+const load = (file) => import(pathToFileURL(join(packageRoot,"lib",file)).href);
+const root = mkdtempSync(join(tmpdir(),"dsh-trivium-package-check-"));
+process.env.DSH_TRIVIUM_SETTINGS = join(root,"settings.json");
+const store = await load("store.js");
+
+try {
+  const pkg = require("dsh-trivium/package.json");
+  const sourcePkg = JSON.parse(readFileSync(new URL("../package.json",import.meta.url),"utf8"));
+  assert.equal(pkg.version,sourcePkg.version);
+  assert.equal(require("triviumdb/package.json").version,"0.8.11");
+  const plugin = await load("index.js");
+  assert.equal(typeof plugin.apply,"function");
+  assert.equal(plugin.producerSource({form:"snapshot"}).kind,"plugin:dsh-trivium");
+  const registered = new Map();
+  const { registerTools } = await load("tools.js");
+  registerTools({
+    effect: fn => fn(),
+    tools: {register(tool){ registered.set(tool.name,tool); return () => {}; }},
+    on() {},
+  },{});
+  assert.equal(registered.size,4);
+  const remember = registered.get("ctx_remember");
+  const find = registered.get("ctx_find");
+  const exec = {agent:{session:{header:{cwd:join(root,"workspace"),id:"package-test"}}}};
+  assert.equal(find.parameters.properties.include_stale.type,"boolean");
+  assert.equal(remember.parameters.properties.until.type,"string");
+  const historical = await remember.execute({type:"decision",name:"发布历史",text:"采用方案 A；2020-01-01 已完成复盘。"},exec);
+  assert.match(historical,/Remembered id=/);
+  const liveFind = await find.execute({query:"发布历史"},exec);
+  assert.match(liveFind,/采用方案 A/);
+  assert.doesNotMatch(liveFind,/ stale/);
+  const deadline = await remember.execute({type:"decision",name:"冻结记录",text:"旧部署冻结约定。",until:"2020-01-01"},exec);
+  assert.match(deadline,/Remembered id=/);
+  assert.match(await find.execute({query:"冻结记录"},exec),/stale/);
+  assert.equal(await find.execute({query:"冻结记录",include_stale:false},exec),"No memory hits.");
+  const retrieval = await remember.execute({type:"preference",name:"上线规范",text:"发布前先检查测试结果，再执行上线流程。"},exec);
+  assert.match(retrieval,/Remembered id=/);
+  assert.match(await find.execute({query:"发布前 检查"},exec),/发布前先检查测试结果/);
+  await remember.execute({type:"decision",name:"冻结记录",text:"旧部署冻结约定。",until:""},exec);
+  assert.doesNotMatch(await find.execute({query:"冻结记录"},exec),/stale/);
+  console.log(JSON.stringify({
+    package:pkg.name,version:pkg.version,kernel:require("triviumdb/package.json").version,
+    hostPeers:{llm:require("@deepseek-ai/dsh-llm/package.json").version,tools:require("@deepseek-ai/dsh-tools/package.json").version},
+    checks:["package version","native binding","host module import","v4 source shape","four tool registrations","explicit expiry","history/current-only search","multiword search","clear expiry"],
+    status:"passed",
+  },null,2));
+} finally {
+  store.closeAll();
+  rmSync(root,{recursive:true,force:true});
+}

@@ -20,7 +20,7 @@ import {
   sidecarPath,
   syncSidecarOnOpen,
 } from "../lib/sidecar.js";
-import { closeAll, deleteGitSidecars, ensureLink, generateSidecarFromDb, insertNode, listNodes, openWorkspaceDb } from "../lib/store.js";
+import { closeAll, deleteGitSidecars, ensureLink, generateSidecarFromDb, insertNode, listNodes, openWorkspaceDb, updateNode } from "../lib/store.js";
 
 const root = mkdtempSync(join(tmpdir(), "dsh-trivium-p12-"));
 process.env.DSH_TRIVIUM_SETTINGS = join(root, "home-trivium.json");
@@ -131,6 +131,21 @@ try {
   assert(localOnly && localOnly.status === "archived", "node missing from git sidecar is archived");
   assert(listNodes(cloned).some((n) => n.name === "AuthGateway"), "git facts remain after import");
   assert(extra === localOnly.id, "archived row is the local-only node");
+
+  updateNode(cloned, header.id, { until: "2020-01-01" });
+  flushSidecarNow(clone, cloned);
+  const clearedRecords = readFileSync(sidecarPath(clone), "utf8").trim().split("\n").map(JSON.parse);
+  const clearedUri = cloned.get(header.id).payload.uri;
+  for (const row of clearedRecords) {
+    if (row.op === "node" && row.uri === clearedUri) {
+      delete row.until;
+      delete row.untilAt;
+    }
+  }
+  writeFileSync(sidecarPath(clone), clearedRecords.map(row => JSON.stringify(row)).join("\n") + "\n", "utf8");
+  const clearedImport = await syncSidecarOnOpen(clone, cloned);
+  assert(clearedImport.action === "import", "cleared sidecar deadline is re-imported");
+  assert(!cloned.get(header.id).payload.until && !cloned.get(header.id).payload.untilAt, "sidecar reconciliation clears both deadline fields");
 
   writeFileSync(sidecarPath(clone), "{not jsonl\n", "utf8");
   const bad = await syncSidecarOnOpen(clone, cloned);

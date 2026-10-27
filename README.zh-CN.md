@@ -53,6 +53,8 @@ npm test              # 可选：跑全部离线 smoke
 
 ## 更新
 
+升级前先停止 DSH，备份工作区 `.dsh/trivium.tdb*` 整个文件组。默认 mmap 模式还会使用 `.vec`、`.wal`、`.text` 等附属文件；Git JSONL 不含全部本机数据，不能代替完整备份。
+
 ```sh
 dsh plugin --profile web add dsh-trivium
 ```
@@ -134,7 +136,11 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 节点类型是 `entity` / `preference` / `decision` / `experience`。业务边是 `about`、`decided`、`broke`、`fixed`。
 
-`ctx_find` 返回 L0 摘要和图路径（入边写成 `<-label-id`）。查询点到已有实体名时，还会带上未过期的 about/decided/broke/fixed 邻居，即使邻居正文不含查询词。带 `until` 的过期决策默认不出现，除非查询本身在问期限（如「周五」）。
+`ctx_find` 返回 L0 摘要和图路径（入边写成 `<-label-id`）。查询点到已有实体名时，还会带上 about/decided/broke/fixed 邻居，即使邻居正文不含查询词。相关的过期决策仍可作为历史返回，标记 `stale` 并降权；设置 `include_stale: false` 可排除过期条目。自动召回和开场短地图仍排除过期决策。
+
+正文中的日期只属于正文。有效期通过设置页或 `ctx_remember` 的独立 `until` 字段指定，支持 `YYYY-MM-DD`、`Friday` / `周五`、`周末`、`下周`，按 UTC 日末解释。无法解析的新标签不会沿用旧 `untilAt`。清空 `until` 会同时移除时间戳，修改为新的相对期限则从本次编辑时计算；仅保存同一期限不会延长它。
+
+0.4.22 不批量删除旧数据的期限。被误标的记忆可重新通过 `ctx_find` 查到，也可在设置里勾选「显示过期决策」找到，清空 `until` 并保存；之后编辑含日期的正文不会再自动生成期限。
 
 ### 芯片（记忆白名单）
 
@@ -179,9 +185,9 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 | 工具 | 说明 |
 |---|---|
-| `ctx_find` | 检索，返回 L0 摘要和图路径（含入边 `<-label-id`）。查询点到已有实体名时，还会带上未过期的 about/decided/broke/fixed 邻居。带 `until` 的过期决策默认不出现，除非查询本身在问期限（如「周五」） |
+| `ctx_find` | 文本 / 可选向量 / 图关系检索；返回 L0 和路径。过期历史标记 `stale` 并降权；`include_stale: false` 排除过期条目 |
 | `ctx_read` | 按 id 读全文和入边 |
-| `ctx_remember` | 手动写入 |
+| `ctx_remember` | 手动写入；可用独立 `until` 字段指定真实有效期，不从正文日期推断 |
 | `ctx_link` | 两点之间建有向边 |
 
 内核仍是这四个。芯片 / 会话层不加第五个工具。
@@ -240,6 +246,10 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ---
 
 ## 更新说明
+
+**0.4.22** — 修复 [issue #3](https://github.com/QWQcool/dsh-trivium/issues/3)：期限只由显式字段设置，清空后不再重新生成，相关过期记忆可带 `stale` 标记检索。保留数据库原生文本 / 向量候选，增加中英文多词兜底、别名与两字中文实体锚点。TriviumDB 升至 `0.8.11`。新增期限与召回专项回归，自动召回仍排除过期记忆。
+
+peer 范围显式接受已支持的 DSH `0.1.5`、`0.2.0`、`0.2.1` RC 版本线，修复 npm 普通稳定版范围不会自动接受这些预发布版本的问题。
 
 **0.4.21** — 适配 `@deepseek-ai/dsh@0.2.x`。会话格式 v4 把共享的 `kind: "plugin"` 消息来源改成生产者自有的 kind：第三方生产者必须写 `kind: "plugin:dsh-trivium"` 且去掉 `plugin` 字段，否则整轮会以 "format v4 message requires a producer-owned source kind" 失败。插件按已安装的 `dsh-llm` 版本自动选择形状，0.1.x 仍走旧格式。新增对 `agent/created`（0.1.6+）的监听，与 `agent/session-start` 并存并做一次性去重。peer 范围放宽到 `<0.3.0`。新增 `smoke-p14` 钉住两种 source 形状与版本判定。四工具 / 短地图 / find 路径不变。
 
@@ -308,7 +318,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- npm: [`dsh-trivium@0.4.21`](https://www.npmjs.com/package/dsh-trivium)
+- 包版本：`0.4.22` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.1.5-rc.1`（兼 `0.1.1-rc.2` / `0.1.0-rc.8`）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

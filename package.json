@@ -1,6 +1,6 @@
 {
   "name": "dsh-trivium",
-  "version": "0.4.21",
+  "version": "0.4.22",
   "description": "In-process graph memory for DeepSeek Harness, backed by TriviumDB.",
   "license": "MIT",
   "type": "module",
@@ -48,6 +48,7 @@
     "smoke-p12": "node scripts/smoke-p12.mjs",
     "smoke-p13": "node scripts/smoke-p13.mjs",
     "smoke-p14": "node scripts/smoke-p14.mjs",
+    "smoke-p15": "node scripts/smoke-p15.mjs",
     "preuninstall": "node ./lib/purge.js",
     "verify-live-p2": "node scripts/verify-live-p2.mjs"
   },
@@ -55,11 +56,11 @@
     "node": "^22.19.0 || >=24"
   },
   "peerDependencies": {
-    "@deepseek-ai/dsh-llm": ">=0.1.0-rc.8 <0.1.1 || >=0.1.1-rc.2 <0.3.0",
-    "@deepseek-ai/dsh-tools": ">=0.1.0-rc.8 <0.1.1 || >=0.1.1-rc.2 <0.3.0"
+    "@deepseek-ai/dsh-llm": ">=0.1.0-rc.8 <0.1.1 || >=0.1.1-rc.2 <0.3.0 || >=0.1.5-rc.1 <0.1.6 || >=0.2.0-rc.0 <0.2.1 || >=0.2.1-rc.0 <0.3.0",
+    "@deepseek-ai/dsh-tools": ">=0.1.0-rc.8 <0.1.1 || >=0.1.1-rc.2 <0.3.0 || >=0.1.5-rc.1 <0.1.6 || >=0.2.0-rc.0 <0.2.1 || >=0.2.1-rc.0 <0.3.0"
   },
   "dependencies": {
-    "triviumdb": "^0.8.9"
+    "triviumdb": "^0.8.11"
   },
   "keywords": [
     "dsh-plugin",

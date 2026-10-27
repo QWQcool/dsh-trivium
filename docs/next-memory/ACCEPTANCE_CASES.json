@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "status": "acceptance specification, not implementation test results",
+  "baseline": "local dsh-trivium 0.4.22 / triviumdb 0.8.11",
+  "measurement": "estimateTokens from lib/tokens.js; no performance benchmark",
+  "cases": [
+    {
+      "id": "CTX-01",
+      "title": "默认关闭",
+      "setup": "关闭芯片与自动召回；打开来源、历史、诊断面板",
+      "expected": "每会话地图最多一次且≤400估算token；面板操作新增注入/LLM/embedding请求均为0。",
+      "blocking": true
+    },
+    {
+      "id": "CTX-02",
+      "title": "共享预算",
+      "setup": "pins=[A,B]；召回=[A,C]；长摘要足以超过独立预算",
+      "expected": "按A/B优先、C用剩余额度；同轮所有附加文本合计≤300，A只出现一次。",
+      "blocking": true
+    },
+    {
+      "id": "CTX-03",
+      "title": "重复步骤",
+      "setup": "同一session、同一用户事件连续调用pre-step三次",
+      "expected": "首次实际投递记录进入账本；后两次无新内容时不再次注入。",
+      "blocking": true
+    },
+    {
+      "id": "CTX-04",
+      "title": "相同文本新一轮",
+      "setup": "连续两条不同event id的用户消息使用相同文本",
+      "expected": "第二条是新轮，可按当前预算与状态重新选择，不能按字符串错误跳过。",
+      "blocking": true
+    },
+    {
+      "id": "CTX-05",
+      "title": "失败重试",
+      "setup": "首次投递失败，下一次重试同一用户事件",
+      "expected": "失败不标记delivered；重试有内容；成功后不重复。",
+      "blocking": true
+    },
+    {
+      "id": "CTX-06",
+      "title": "压缩与分叉",
+      "setup": "完成注入后compaction；另建fork子会话",
+      "expected": "压缩后可重建必要条目；fork不继承父投递账本或pins；无旧状态串用。",
+      "blocking": true
+    },
+    {
+      "id": "CTX-07",
+      "title": "更正累计预算",
+      "setup": "本轮已发送250估算token后节点被替代",
+      "expected": "更正也计入本轮累计300；预算不够不另开300，UI标明待下一轮生效。",
+      "blocking": true
+    },
+    {
+      "id": "CTX-08",
+      "title": "工具输出投影",
+      "setup": "给同一payload增加大段source/trace/history字段",
+      "expected": "ctx_find≤1200且为完整记录；ctx_read正文读取能力保持，新metadata不扩大默认输出。",
+      "blocking": true
+    },
+    {
+      "id": "CTX-09",
+      "title": "schema基线",
+      "setup": "序列化四个已注册工具的参数和说明",
+      "expected": "工具名称与参数集合不增加；估算schema总量≤BASELINE对应注册结果。",
+      "blocking": true
+    },
+    {
+      "id": "CTX-10",
+      "title": "人工历史pin",
+      "setup": "A被B替代；用户此前pin A；自动召回命中A",
+      "expected": "pin不自动改id，A标历史；自动候选映射B；用户明确选择的历史与当前分别解释且同受300预算。",
+      "blocking": true
+    },
+    {
+      "id": "SRC-01",
+      "title": "已有来源",
+      "setup": "保存kind/session/message/quote后打开来源",
+      "expected": "只请求当前节点证据，quote纯文本且短预览≤240字符；不自动注入。",
+      "blocking": true
+    },
+    {
+      "id": "SRC-02",
+      "title": "缺失或失效来源",
+      "setup": "旧记录无source；另一个记录的会话不存在",
+      "expected": "分别显示未记录/不可访问，不补造来源，不跨工作区扫描。",
+      "blocking": true
+    },
+    {
+      "id": "SRC-03",
+      "title": "不可信来源文本",
+      "setup": "quote/reason含HTML、脚本标签和超长内容",
+      "expected": "按文本显示或拒绝，不执行脚本；现有卫生规则继续适用。",
+      "blocking": true
+    },
+    {
+      "id": "TRACE-01",
+      "title": "真实原因",
+      "setup": "实际经历关键词兜底、实体锚点、原生混合和预算过滤",
+      "expected": "显示真实分支；不把原生总分编成BM25/向量贡献百分比。",
+      "blocking": true
+    },
+    {
+      "id": "TRACE-02",
+      "title": "只读预览",
+      "setup": "无queryVector时运行recall-preview",
+      "expected": "只用本地文本/图，semantic=not_run；不写库、不调LLM/embedding。",
+      "blocking": true
+    },
+    {
+      "id": "TRACE-03",
+      "title": "保留上限",
+      "setup": "产生21次trace、推进TTL、加入超过100候选或64KiB数据",
+      "expected": "最多20次/10分钟/64KiB每条/100摘要每阶段；truncated明确；失效trace返回410。",
+      "blocking": true
+    },
+    {
+      "id": "TRACE-04",
+      "title": "边界隔离",
+      "setup": "其它workspace或session请求已有trace/source id",
+      "expected": "遵循既有隔离边界；不返回其它工作区正文、路径或来源。",
+      "blocking": true
+    },
+    {
+      "id": "REV-01",
+      "title": "正常替代",
+      "setup": "已有active decisions B和A；确认B替代A",
+      "expected": "一条B --supersedes--> A；A正文与until不被改写；自动召回使用当前头B。",
+      "blocking": true
+    },
+    {
+      "id": "REV-02",
+      "title": "旧词命中",
+      "setup": "查询只命中A正文；B已替代A",
+      "expected": "先归一到B并去重；给短历史命中指针；ctx_read(A)仍可读A。",
+      "blocking": true
+    },
+    {
+      "id": "REV-03",
+      "title": "双状态",
+      "setup": "A被B替代；另外一个C仅until过期",
+      "expected": "已替代和已过期分开；include_stale仍只控制期限；UI两个独立筛选。",
+      "blocking": true
+    },
+    {
+      "id": "REV-04",
+      "title": "图约束",
+      "setup": "自环、循环、分叉、非decision、跨workspace或超过32跳",
+      "expected": "拒绝操作且不写半条关系；给可理解的错误，不假装找到完整当前版本。",
+      "blocking": true
+    },
+    {
+      "id": "REV-05",
+      "title": "并发与幂等",
+      "setup": "两个窗口携带旧ETag；相同operationId重试或响应丢失",
+      "expected": "过期ETag返回409；重复操作至多一条边；重读可识别已应用结果。",
+      "blocking": true
+    },
+    {
+      "id": "REV-06",
+      "title": "事务失败",
+      "setup": "在commitTransaction失败点注入错误",
+      "expected": "图关系与必要payload更新全成功或全不发生；UI不显示成功。",
+      "blocking": true
+    },
+    {
+      "id": "REV-07",
+      "title": "衍生数据失败",
+      "setup": "图事务成功后文本索引/JSONL写出失败",
+      "expected": "主图仍权威；显示待重建/待同步，重启可恢复；不宣称跨文件完全原子。",
+      "blocking": true
+    },
+    {
+      "id": "REV-08",
+      "title": "保护历史",
+      "setup": "自动extract、merge、手动编辑或导入试图改链上正文",
+      "expected": "拒绝/报告revision-protected，不能覆盖事实或让整个提取队列永久重试。",
+      "blocking": true
+    },
+    {
+      "id": "REV-09",
+      "title": "撤销",
+      "setup": "确认撤销最近B→A关系；另有A的普通about边",
+      "expected": "只删除指定supersedes边，about保留；A和B重新独立；有后续变更时拒绝拆错。",
+      "blocking": true
+    },
+    {
+      "id": "REV-10",
+      "title": "后继归档或到期",
+      "setup": "B替代A后B被归档或过期",
+      "expected": "不自动复活A；自动召回不注入该链；UI允许查看历史和状态。",
+      "blocking": true
+    },
+    {
+      "id": "REV-11",
+      "title": "删除和合并",
+      "setup": "尝试永久删除或same_as合并链上节点",
+      "expected": "409 REVISION_LINKED，先处理关系；不留下悬空历史或错误当前版本。",
+      "blocking": true
+    },
+    {
+      "id": "IO-01",
+      "title": "旧数据兼容",
+      "setup": "读取现有0.4.22库，缺少所有新字段",
+      "expected": "正常读取，未推断来源/有效期，不进行无差别迁移。",
+      "blocking": true
+    },
+    {
+      "id": "IO-02",
+      "title": "事实交换",
+      "setup": "跨库导出/导入JSON与JSONL v2，数值id变化",
+      "expected": "按稳定URI重映射，保留方向/metadata，先验证后提交；本地来源默认不入Git旁路。",
+      "blocking": true
+    },
+    {
+      "id": "IO-03",
+      "title": "冲突导入",
+      "setup": "文件含循环关系、链上正文覆盖或缺失中间节点",
+      "expected": "整体预检失败或明确冲突，不半提交，不自动复活旧节点。",
+      "blocking": true
+    },
+    {
+      "id": "UI-01",
+      "title": "交互完整",
+      "setup": "列表→来源→历史→替代确认→409→刷新→成功→撤销",
+      "expected": "状态与FRONTEND.html一致，输入保留，提交禁止重复，成功/失败真实。",
+      "blocking": true
+    },
+    {
+      "id": "UI-02",
+      "title": "布局与无障碍",
+      "setup": "1440/900/390宽，浅色/暗色，中英文，纯键盘",
+      "expected": "无横向溢出，焦点可见且弹窗关闭恢复；无缺失字符串、重叠控件或错误成功提示。",
+      "blocking": true
+    },
+    {
+      "id": "BASE-01",
+      "title": "保留修复",
+      "setup": "运行全部现有smoke与verify-package",
+      "expected": "原16组含smoke-p15的48检查点通过；真实DSH peer包安装和工具调用仍通过。",
+      "blocking": true
+    }
+  ]
+}
