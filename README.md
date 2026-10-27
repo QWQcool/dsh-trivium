@@ -154,7 +154,7 @@ Lists unarchived preference / decision / entity (experience stays out). Check to
 
 | Action | When it takes effect |
 |---|---|
-| Check a chip | The **next** message you send in this segment carries it (L0, ≤300 tokens) |
+| Check a chip | The **next** message you send in this segment carries it (L0; chips and recall share 300 tokens) |
 | Uncheck | The turn after that no longer carries it |
 | Add | One click writes one node; a whole paste is still one node |
 | Select → Archive | Soft delete: gone from find / short map / chips; the node remains in `.tdb` |
@@ -173,7 +173,7 @@ Settings → **Trivium memory** manages the store. Check for updates sits at the
 |---|---|---|
 | **Chips (memory whitelist)** | off | Title-bar **Chips** tab next to Conversation / Trajectory. Checked chips are a whitelist for the next turn (L0, ≤300 tokens). |
 | **Session layer** | off (needs Chips on) | Plot canvas on the same tab: Create checkpoint, Update checkpoints, fork from a box. |
-| **Git sidecar** | off | Debounced write of `.dsh/trivium.jsonl`. **Generate** (on) overwrites from the current `.tdb`. **Delete jsonl** (off) removes known files. Clone / pull re-imports. |
+| **Git sidecar** | off | Debounced write of `.dsh/trivium.jsonl` (format v2; relations included, local sources never written). **Generate** (on) overwrites from the current `.tdb`. **Delete jsonl** (off) removes known files. Clone / pull re-imports. |
 | **Plugin language** | follow host | Chinese / English for this plugin's Settings card and Chips tab only. Does not change DSH. |
 | **Injection** | off | Short map only, unless you pick autoRecall or entity-name path. |
 | **Extract** | on | Write from compaction / idle. |
@@ -184,6 +184,30 @@ Injection detail: autoRecall injects at most 3 L0 hits when the step has user te
 - **Entries** — search, filter by type, expand business-edge neighbors, “only nodes hanging on this one”, hide expired decisions by default. Rename / edit body / aliases / until, merge same type, archive or delete.
 - **Export / import** — JSON is a real round-trip. Markdown is a read-only projection (for people). Git sync uses `.dsh/trivium.jsonl` (business facts, auto). One-shot strict import from WorkBuddy `MEMORY.md`, Claude Code `CLAUDE.md`, and Codex `AGENTS.md`. No watch of those files, no session jsonl dumps.
 - **Check for updates** — Settings compares the installed version with npm latest and shows `dsh plugin --profile web add dsh-trivium` when a newer version exists. It does not auto-upgrade.
+
+### Sources, history, and recall check
+
+The card has two tabs, and a node detail has three.
+
+| Surface | What it answers |
+|---|---|
+| **Memory entries** | What is stored. Replaced versions are hidden by default; **Show replaced** is a separate switch from **Show expired**. |
+| **Recall check** | What the last turn actually injected, in estimated tokens, plus a read-only probe: candidates, real filter reasons, and the exact text that would be sent. |
+| **Content / Source / Decision history** | The body, where it came from, and the chain of decisions that replaced it. |
+
+A memory knows where it came from only if the write recorded it (`kind`, session, message, a short quote). A record with no source says so; it never guesses a session or an author. A session this process cannot confirm is reported as unavailable while the stored excerpt is kept. The host exposes no session locator, so there is no deep link — rather than inventing one.
+
+The recall check is read-only: it does not write, does not run a tool, and never requests an embedding. With no query vector it says the semantic channel did not run. Nothing on these tabs injects context or calls a model.
+
+### Replacing a decision
+
+A newer decision does not expire the old one — it supersedes it. **Replace…** on a decision picks another existing decision, shows both side by side, and asks for confirmation. The old body and deadline are kept and nothing is archived; the panel then shows **Current version** / **Replaced** as its own axis, next to **Expired**.
+
+The chain is linear: at most one direct predecessor and one successor, no cycles, at most 32 hops. Writes are validated server-side inside a per-workspace queue with both nodes' ETags, so a second window that confirmed off a stale view gets a 409 instead of overwriting. **Undo replacement** removes only that one relation, and it refuses when a newer version sits above it.
+
+A body inside a chain is confirmed history: automatic extraction, merging, editing the text, deleting or merging the node are all refused (`REVISION_PROTECTED` / `REVISION_LINKED`). Name, aliases, deadline and source notes stay editable. New text becomes a new decision that then supersedes the old one.
+
+Automatic recall still only speaks about the current version: a hit on an old body is mapped forward, de-duplicated, and carries one short `matched_history` pointer. A pin you set on the old version is never rewritten — it is marked historical with an offer to pin the current version. If the current version is archived or expired, the chain is simply not injected; the old version is not revived.
 
 ### Agent tools
 
@@ -245,11 +269,20 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 - Do not merge `.tdb` in git (binary). Track `trivium.jsonl`; ignore `.tdb`. jsonl merge conflicts are ordinary text — resolve, then reopen the workspace.
 - The session layer (when on) projects compaction and fork; it does not split boxes by message count. If the window has not reached DSH’s compact line, **Update checkpoints** will not invent history boxes — use **Create checkpoint**.
 - Plugin setting toggles (chips / session layer / git sidecar / recall / extract) save immediately. Embedding URL still uses Save; restart only if the Settings card itself is missing.
+- **0.5.0 writes JSONL `v: 2` and graph JSON `version: 2`.** Both are additive and a v1 file still reads, but downgrading is not supported in place: an older build ignores the revision relations and will drop them on its next write. To go back, restore the pre-upgrade file group (`.dsh/trivium.tdb` plus `.dsh/trivium.jsonl`) rather than letting the old build rewrite it.
+- A decision chain is linear in this release: one predecessor, one successor. Splitting one version into several, or a fan-in, is refused instead of half-applied.
+- Deleting a replacement relation from the JSONL file is reported as a conflict, not applied. Revoke it in the panel.
 - After the host moved to rc.8, DSH’s own older session store may not open (official SQLite format change). The workspace `.tdb` graph is still there; leftover boxes on unmatched old sessions are plot residue and do not affect `ctx_find`.
 
 ---
 
 ## Changelog
+
+**0.5.0** — Memory you can audit. Chips and recall now share **one** 300-token allowance per user turn instead of clipping to 300 each, the same node can no longer appear twice, and a tool loop no longer re-injects inside one turn. The delivery ledger is keyed by host message ids, so a failed send is retried and compaction rebuilds, while a fork inherits neither the ledger nor the pins. `ctx_find` is capped at ~1200 estimated tokens with whole-record truncation, and `ctx_read` projects a field allowlist so new metadata cannot grow its output.
+
+Settings gains a **Recall check** tab (read-only: it never writes, runs a tool, or requests an embedding) and per-node **Source** / **Decision history** tabs. Provenance is reported only when a write recorded it — no invented sessions, quotes, or deep links. Recall traces name the pipeline branches that actually ran, capped at 20 per workspace+session / 10 minutes / 64 KiB each.
+
+New `supersedes` relation between decisions, confirmed by the user: linear chain, 32-hop limit, per-workspace write queue, both endpoints' ETags, idempotent `operationId`, and a revoke that touches only that edge. Chain bodies are protected from extraction, merges, edits and deletes. JSON export is `version: 2` and the Git JSONL is `v: 2`; both are additive and v1 still reads, but v2 cannot be downgraded in place.
 
 **0.4.22** — Fix [issue #3](https://github.com/QWQcool/dsh-trivium/issues/3): expiry is explicit, clearing it persists, and relevant expired history is searchable with a `stale` label. Preserve native text/vector candidates; add multiword fallback, aliases, and two-character Chinese entity anchors. Upgrade TriviumDB to `0.8.11`. Add focused expiry/recall regressions and keep automatic recall restricted to unexpired memories.
 

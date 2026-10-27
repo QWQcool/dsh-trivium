@@ -112,6 +112,32 @@ try {
     "every budget number is labelled as an estimate",
   );
 
+  /* ------------------------------------------------- revision confirm dialog */
+  check(/role: "dialog"/.test(src) && /"aria-modal": "true"/.test(src), "the confirm dialog is a modal dialog");
+  check(/if \(event\.key === "Escape"\) closeSupersede\(\);/.test(src), "Escape closes the dialog");
+  check(
+    /if \(previous && typeof previous\.focus === "function"\) previous\.focus\(\);/.test(src),
+    "focus returns to the trigger when the dialog closes",
+  );
+  check(
+    /disabled: revisionBusy \|\| !dialog\.successorId/.test(src),
+    "the confirm button is disabled while saving and without a target",
+  );
+  check(
+    /const conflict = result\.status === 409;/.test(src) && /L\.supersedeConflict/.test(src),
+    "a 409 is shown as a conflict, not a generic failure",
+  );
+  check(
+    /setRevisionDialog\(\(prev\) => \(prev \? \{ \.\.\.prev, successorId: event\.target\.value, error: "", conflict: false \} : prev\)\)/.test(src),
+    "a conflict keeps the user's selection",
+  );
+  check(/operationId: dialog\.operationId/.test(src), "a retry reuses the same operationId");
+  check(/L\.supersedeOld/.test(src) && /L\.supersedeNew/.test(src), "the dialog shows both existing decisions");
+  check(/L\.showSuperseded/.test(src) && /L\.showStale/.test(src), "replaced and expired have separate switches");
+  check(/params\.set\("superseded", "1"\)/.test(src), "the replaced switch is a distinct request parameter");
+  check(/L\.revoke/.test(src) && /revokeSupersession\(n\.replacesId, n\.id\)/.test(src), "a current version can undo its replacement");
+  check(/\bL\.noSuccessor\b/.test(src), "no candidate decision has its own message");
+
   console.log(`\nP18 client UI contract passed (${checks} checks)`);
 } catch (err) {
   console.error("FAIL " + (err && err.stack ? err.stack : err));
