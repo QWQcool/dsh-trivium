@@ -230,6 +230,51 @@ const tests = [
     assert.ok(rejected, "409 is a rejection, not a silent success");
     assert.match(p.text(rejected), /REVISION_LINKED/, "server code is preserved");
   }],
+  ["import reports the real counts and explains committed-facts-with-failed-derivation", async () => {
+    const p = await loaded();
+    const fileInput = p.elements().find((el) => el.type === "input" && el.props.type === "file");
+    assert.ok(fileInput, "a file input exists");
+    const file = { name: "export.json", text: async () => JSON.stringify({ nodes: [], edges: [] }) };
+    fileInput.props.onChange({ target: { files: [file] } });
+    await p.flush();
+
+    const imp = p.take("import");
+    assert.ok(JSON.parse(imp.options.body).graph, "the parsed graph is what gets posted");
+    await p.reply(imp, { ok: true, created: 3, merged: 1, linked: 2, revisionLinked: 1 });
+    await p.reply(p.take("status"), { ...status, derived: { sidecar: { ok: false, error: "jsonl locked" } } });
+    await p.reply(p.take("nodes"), { nodes: [row(2, "after import")] });
+    await p.reply(p.take("external"), { files: [] });
+
+    const saved = p.elements().find((el) => el.props["data-receipt-state"] === "saved");
+    assert.ok(saved, "a successful import produces a committed receipt");
+    assert.match(p.text(saved), /created 3/, "counts come from the response, not from a guess");
+    assert.match(p.text(saved), /derived maintenance failed/, "a failed sidecar write is stated next to the committed facts");
+    assert.match(p.text(saved), /Do not re-import/, "the recovery text does not invite a duplicate write");
+  }],
+  ["a rejected import keeps the server code and writes nothing", async () => {
+    const p = await loaded();
+    const fileInput = p.elements().find((el) => el.type === "input" && el.props.type === "file");
+    fileInput.props.onChange({
+      target: { files: [{ name: "bad.json", text: async () => JSON.stringify({ nodes: [{ id: 1 }], edges: [] }) }] },
+    });
+    await p.flush();
+    await p.reply(p.take("import"), { ok: false, code: "REVISION_LINKED", message: "not written" }, false, 409);
+    const rejected = p.elements().find((el) => el.props["data-receipt-state"] === "rejected");
+    assert.ok(rejected, "409 is reported as rejected");
+    assert.match(p.text(rejected), /REVISION_LINKED/, "the import code is preserved for the user");
+  }],
+  ["invalid JSON never reaches the server", async () => {
+    const p = await loaded();
+    const fileInput = p.elements().find((el) => el.type === "input" && el.props.type === "file");
+    fileInput.props.onChange({ target: { files: [{ name: "broken.json", text: async () => "{not json" }] } });
+    await p.flush();
+    assert.ok(!p.pending.some((r) => r.url.pathname.endsWith("/import")), "no import request for unparsable input");
+    // Not a server rejection: nothing was sent. It is a client-side failure
+    // the user can retry with another file.
+    const failed = p.elements().find((el) => el.props["data-receipt-state"] === "failed");
+    assert.ok(failed, "the failure is still reported as a receipt");
+    assert.match(p.text(failed), /BAD_JSON/, "the local parse failure has its own code");
+  }],
   ["permanent deletion confirms the exact object before any request", async () => {
     const p = await loaded();
     p.setConfirm(false);
