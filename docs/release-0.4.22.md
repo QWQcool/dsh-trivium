@@ -25,7 +25,7 @@
 - 消费项目验证：`dist/consumer-check.json`
 - 发布预检：`dist/publish-dry-run.log`
 - 离线回归：`test-0.8.11.log`
-- [Issue 回复草稿](issue-3-reply.md)
+- [当时的 Issue 回复草稿（固定提交存档）](https://github.com/QWQcool/dsh-trivium/blob/818306bd552c47449b418488601aac78827dafc8/docs/issue-3-reply.md)；现行处理方式见本页「用户升级与旧数据」及 [中文 README](../README.zh-CN.md)。
 
 SHA-256：`AF6AC0BB2D0F964700979D82CA9818A9E857C873C78F81860730602DE1BF9062`
 

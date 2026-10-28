@@ -78,7 +78,7 @@ record l0 = "CookieLegacy 是旧鉴权方案。"
 
 ## 基线与提交
 
-- 基线 manifest 校验结果：`BASELINE.json` 55 个文件，55/55 内容一致。其中 4 个文件字节数偏大，差异为纯 CRLF（Windows `core.autocrlf`），按 LF 归一后 sha256 全部吻合：`docs/issue-3-reply.md`、`docs/release-0.4.22.md`、`scripts/smoke-p15.mjs`、`scripts/verify-package.mjs`。没有覆盖 issue #3 的改动，也没有回退到远端 0.4.21。
+- 基线 manifest 校验结果：`BASELINE.json` 55 个文件，55/55 内容一致。其中 4 个文件字节数偏大，差异为纯 CRLF（Windows `core.autocrlf`），按 LF 归一后 sha256 全部吻合：[docs/issue-3-reply.md（原始文件存档）](https://github.com/QWQcool/dsh-trivium/blob/818306bd552c47449b418488601aac78827dafc8/docs/issue-3-reply.md)、`docs/release-0.4.22.md`、`scripts/smoke-p15.mjs`、`scripts/verify-package.mjs`。没有覆盖 issue #3 的改动，也没有回退到远端 0.4.21。
 - 起点：分支 `codex/fix-memory-recall-0.4.22`，HEAD `818306b`（未提交 0.4.22 修复集的检查点提交）。工作分支 `feat/next-memory`。
 - 提交（按里程碑拆分）：
   - `5b00235` M0：`plan one context budget per user turn`

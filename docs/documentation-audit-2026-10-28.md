@@ -6,11 +6,11 @@
 
 主要问题不是文档数量本身，而是多个文件同时声称“当前”“下一轮”，且各自停在 0.4.14、0.4.22、0.5.0、0.5.1 或 0.7.0。接手者可能因此回退内核、重复执行已完成计划、再次准备旧版本发布，或把预览工作树 API 验证当正式包 UI 验收。
 
-已建立一个当前入口：[docs/README.md](README.md)。`PLAN.md` 只保留现行架构与产品约束，发布回执各按版本保留；原始失败证据和截图保留历史身份。旧提示词收成短跳转，暂不物理删除文件，避免破坏已有交接链接。
+已建立一个当前入口：[docs/README.md](README.md)。`PLAN.md` 只保留现行架构与产品约束，发布回执各按版本保留；原始失败证据和截图保留历史身份。初次整理将旧提示词收成短跳转；随后 0.7.1 收尾按用户授权迁移已知引用，再移除三份重复文档，具体映射见文末。
 
 ## 保留、合并与删除候选
 
-表中“删除候选”是后续可以删除的内容，不表示本轮已经删除。
+下表记录初次整理后的保留结论，并更新 0.7.1 收尾已执行的三项删除；原始失败证据、冻结 JSON 和截图均未删除。
 
 | 原文件 | 处理 | 理由与实际修改 |
 |---|---|---|
@@ -19,15 +19,15 @@
 | `PLAN-session-map.md` | 保留，收敛 | 芯片／fork 的专门契约仍有价值；已把“待开发”功能更新成现状，修正独立 300 预算、旧标签名和 fork 隔离误解 |
 | `docs/article-2026-update.md` | 保留，压缩并更新 | 有面向读者的解释用途；改为 0.7.0 介绍稿，去除无对照依据的竞品泛化与 0.4.14 快照，不复制完整配置手册 |
 | `docs/video-script.md` | 保留，校正文案 | 独立录制用途；改正预算、模型代钉选和“分支不影响记忆库”的错误承诺，演示改用隔离工作区；未重录或彩排 |
-| `docs/issue-3-reply.md` | 删除候选，现加历史标识 | 发布前回复草稿已失效；根因与修复由 README、0.4.22 发布说明和审查材料承接。删除前确认没有外部链接依赖 |
+| `docs/issue-3-reply.md` | 已移除，保留固定提交存档 | 发布前回复草稿已失效；现行根因与旧数据处理由 README、0.4.22 发布说明承接。发布页和 RESULT 的历史引用已改为固定提交链接 |
 | `docs/release-checklist.md` | 保留，更新 | 唯一发布操作流程；补当前入口、最终包证据、发布授权与凭据边界，不在每份交接词重复命令 |
 | `docs/release-0.4.22.md` | 保留历史回执，补正 | 改正“未发布”；移除再次发布同版本的执行步骤，保留校验值和当时测试；失效临时产物路径明确标记 |
 | `docs/release-0.5.0.md` | 保留历史问题版本记录 | 改正“未发布”，醒目标记已 deprecated 和三个 P1；不把原完成声明改成正确性证据 |
 | `docs/release-0.5.1.md`、`docs/release-0.6.0.md` | 保留历史回执 | “latest 指向本版”改为“发布时”；保留各自原测试数量、限制与发布时间 |
 | `docs/release-0.7.0.md` | 保留当前发布回执 | 更新时间精度、sent 容量说明；明确桌面是 preview 工作树 API 验证，不是正式包 UI 验收 |
 | `next-memory/START_HERE.md` | 合并，保留导航 | 当前状态迁到 `docs/README.md`；本文件只解释本目录历史材料怎么读 |
-| `next-memory/HANDOFF_PROMPT.md` | 合并，未来可删 | 原 M0–M2 指令已完成；现为短跳转。原规格／结果保留，旧提示词不再重复基线 |
-| `next-memory/FIX_HANDOFF_PROMPT.md` | 合并，未来可删 | 原 0.5.1 指令已完成且锁 0.8.11 的要求过时；现为短跳转 |
+| `next-memory/HANDOFF_PROMPT.md` | 合并后已移除 | 原 M0–M2 指令已完成；HTML 交接导航已迁到保留的现行交接入口，原规格／结果保留 |
+| `next-memory/FIX_HANDOFF_PROMPT.md` | 合并后已移除 | 原 0.5.1 指令已完成且锁 0.8.11 的要求过时；执行计划中的历史依据已改为固定提交链接 |
 | `next-memory/HANDOFF-PROMPT-0.7.0.md` | 合并，保留兼容入口 | 现只保留接手顺序、边界和链接；不复制版本表、测试矩阵或发布命令 |
 | `next-memory/IMPLEMENTATION_PLAN.md` | 保留，历史规格 | 包含上下文契约的设计理由，不能只因旧版本而删；新增醒目历史标记，当前契约由 PLAN 承接 |
 | `next-memory/FIX_PLAN-2026-10-28.md` | 保留，历史修复设计 | 详细失败断言、事务和降级理由有独立价值；顶部说明旧内核要求／待确认项已失效 |
@@ -68,4 +68,16 @@
 
 当前版本与覆盖矩阵只在 `docs/README.md` 维护；架构契约在 PLAN；面向使用者的双语说明在 README；版本变更在各自 release。历史文档加状态说明和后继链接，不改原始测试输出。新增本轮审查报告可以保留，但不要再新增一套内容重复的“START／HANDOFF／NEXT／CURRENT”入口。
 
-本次没有物理删除 Markdown、JSON、截图或原始证据；没有发布或发送 issue 留言。删除候选可在确认历史链接都已迁移后用单独提交移除。
+## 0.7.1 收尾：删除与链接迁移
+
+用户在初次审计后明确要求核查历史链接并单独提交移除。以 `2b21a0a` 保存初次整理结果后，扫描仓库内 Markdown、HTML、JSON、脚本及隐藏文本（排除 `.git`、`.tmp`、`node_modules`、`.dsh`），完成以下迁移并删除三份文件：
+
+| 已移除文件 | 当前内容去向 | 原内容可达位置 |
+|---|---|---|
+| `docs/next-memory/HANDOFF_PROMPT.md` | [现行交接入口](next-memory/HANDOFF-PROMPT-0.7.0.md)、[原实施规格](next-memory/IMPLEMENTATION_PLAN.md)；`FRONTEND.html` 页脚已迁移 | [原 M0–M2 交接词](https://github.com/QWQcool/dsh-trivium/blob/a0ba565ce874a44cd6e62ad42438f775af9ff235/docs/next-memory/HANDOFF_PROMPT.md) |
+| `docs/next-memory/FIX_HANDOFF_PROMPT.md` | [当前基线](README.md)、[原修复设计](next-memory/FIX_PLAN-2026-10-28.md)；执行计划历史引用已迁移 | [原 0.5.1 修复交接词](https://github.com/QWQcool/dsh-trivium/blob/a0ba565ce874a44cd6e62ad42438f775af9ff235/docs/next-memory/FIX_HANDOFF_PROMPT.md) |
+| `docs/issue-3-reply.md` | [0.4.22 旧数据处理](release-0.4.22.md#用户升级与旧数据)、[中文 README](../README.zh-CN.md)；发布页和 RESULT 历史引用已迁移 | [原 Issue 回复稿](https://github.com/QWQcool/dsh-trivium/blob/818306bd552c47449b418488601aac78827dafc8/docs/issue-3-reply.md) |
+
+`BASELINE.json` 的 `path: docs/issue-3-reply.md` 是冻结的校验记录，不是当前文件导航，故原样保留。已用 Git 读取 `818306b` 中的原文件，2456 字节及 SHA-256 `38607efb6ea1948dcd563bdcb8ad02f0b099f29f9e89a6bfe364705977e8d68e` 与该基线完全一致；上表固定提交链接提供恢复路径。
+
+已知仓库内可点击引用均已迁移；GitHub 本仓库 issue 搜索未发现指向该回复稿的引用。无法穷尽私人收藏、聊天或外部站点中未知的 `main` 裸链接，因此不声称全网所有链接都已改写。已发布提交中的原文件仍可通过固定提交 URL 或 Git 历史访问。此次清理不发送 issue 留言，不删除冻结 JSON、截图或失败复现证据。

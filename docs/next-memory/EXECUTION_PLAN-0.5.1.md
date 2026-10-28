@@ -3,7 +3,7 @@
 > **历史执行记录**：R0–R6 及逐轮进展属于 0.5.1 修复过程；后续 0.6.0 / 0.7.0 已发布。各节的 HEAD、latest、测试数量及“下一轮”是当时快照，保留原值；当前基线与未验证项统一见 [文档入口](../README.md)。不再按此文件重新开工。
 
 日期：2026-10-28
-依据：`REVIEW-2026-10-28.md`、`FIX_PLAN-2026-10-28.md`、`RESULT.md`、`FIX_HANDOFF_PROMPT.md`、`ACCEPTANCE_CASES.json` 与当前代码。
+依据：`REVIEW-2026-10-28.md`、`FIX_PLAN-2026-10-28.md`、`RESULT.md`、[当时的 FIX_HANDOFF_PROMPT.md（固定提交存档）](https://github.com/QWQcool/dsh-trivium/blob/a0ba565ce874a44cd6e62ad42438f775af9ff235/docs/next-memory/FIX_HANDOFF_PROMPT.md)、`ACCEPTANCE_CASES.json` 与当时的代码。
 本文件是「怎么干」的执行排期，不替代 FIX_PLAN 的设计约束；两者冲突时以 FIX_PLAN 的验收断言为准。
 
 ## 0. 当前事实基线（已核对）
