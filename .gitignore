@@ -20,3 +20,6 @@ dist/
 
 # Promo article — not part of the plugin
 article/
+
+# Local bench artefacts and temp consumer dirs — not for the public repo
+.tmp/
