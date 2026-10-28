@@ -354,8 +354,8 @@ peer 范围显式接受已支持的 DSH `0.1.5`、`0.2.0`、`0.2.1` RC 版本线
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 包版本：`0.4.22` · [npm](https://www.npmjs.com/package/dsh-trivium)
-- 测试宿主：`@deepseek-ai/dsh@0.1.5-rc.1`（兼 `0.1.1-rc.2` / `0.1.0-rc.8`）
+- 包版本：`0.5.1` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- 测试宿主：`@deepseek-ai/dsh@0.2.1-rc.4`（peer 范围同时接受 0.1.x 各线）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
 ---

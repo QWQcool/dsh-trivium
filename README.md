@@ -358,8 +358,8 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Package version: `0.4.22` · [npm](https://www.npmjs.com/package/dsh-trivium)
-- Tested host: `@deepseek-ai/dsh@0.1.5-rc.1` (also `0.1.1-rc.2` / `0.1.0-rc.8`)
+- Package version: `0.5.1` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Tested host: `@deepseek-ai/dsh@0.2.1-rc.4` (the peer range also admits the 0.1.x lines)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 
 ---
