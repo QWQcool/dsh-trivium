@@ -191,3 +191,11 @@
 - R4：`queueCorrection()` 接生产写入/归档/替代/撤销/导入五条路径；指纹纳入状态。
 - R5：真实宿主多工具循环、双窗口 409、Tab/Escape 焦点走查；最终 tarball 干净安装。
 - R6：版本 0.5.1、`npm pack` + dry-run、发布说明；发布动作等明确指令。
+
+## 10. 第二轮进展（R4 / R5）
+
+- **R4 完成**：账本新增已投递事实表；更新/归档/删除/合并/替代/撤销/导入均会排队更正；指纹纳入状态；更正有独立消息块、投递成功才消费；JSONL 旁路只按 URI 识别；新增只读体检 `lib/integrity.js` + `scripts/check-integrity.mjs`（`accessMode: readOnly`）。
+- **R5 完成（除真实双窗口与 390 范围决策）**：`npm pack` 35 文件 → 干净安装 → `verify-package` 13 项通过；真实宿主验证了多工具轮次、更正注入、过期 ETag 409、键盘与 390 宽度。
+- 详细数据、截图索引与未覆盖项见 `docs/next-memory/R5-VERIFICATION-2026-10-28.md`。
+- 回归：`npm test` 22/22，`smoke-p21` 86 条。
+- 剩余：R6 发布工程；真实双窗口与 390 宽范围确认。

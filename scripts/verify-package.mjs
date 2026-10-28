@@ -139,10 +139,52 @@ try {
   assert.ok(sentTokens > 0, "the long-chip fixture injected nothing");
   assert.ok(sentTokens <= 300, `one user turn exceeded 300 estimated tokens (sent=${sentTokens})`);
 
+  /*
+   * REVIEW P1-2 in the real path: a query that matches the superseded body must
+   * inject the current body under the current id. A unit test that only checks
+   * the id cannot catch the old body being carried over.
+   */
+  const projectionOld = insertNode(seeded, {
+    type: "decision",
+    name: "部署方式",
+    text: "旧部署方式使用单机进程。",
+    uri: "ctx://decision/verify-projection-old",
+  });
+  const projectionNew = insertNode(seeded, {
+    type: "decision",
+    name: "部署方式",
+    text: "新部署方式使用多副本。",
+    uri: "ctx://decision/verify-projection-new",
+  });
+  const { supersede } = await load("revisions.js");
+  assert.equal(
+    supersede(seeded, { oldId: projectionOld, successorId: projectionNew, operationId: "op-verify-projection" }).ok,
+    true,
+    "could not link the projection fixture",
+  );
+  const projectionMessage = {
+    id: "turn-verify-projection",
+    source: { kind: "user" },
+    content: [{ type: "text", text: "旧部署方式" }],
+  };
+  const projectionDecision = await handlers.get("agent/pre-step")(
+    {
+      agent: { session: { id: "s-pre-projection", header: { cwd: join(root, "workspace") } } },
+      messages: [projectionMessage],
+    },
+    async () => ({ kind: "enter", messages: [] }),
+  );
+  const projectionText = (projectionDecision.messages || [])
+    .map((m) => (Array.isArray(m.content) ? m.content.map((c) => c.text).join("") : ""))
+    .filter(Boolean)
+    .join("\n");
+  assert.match(projectionText, /新部署方式使用多副本/, "runtime recall did not inject the current body");
+  assert.doesNotMatch(projectionText, /旧部署方式使用单机进程/, "runtime recall injected the superseded body");
+
   console.log(JSON.stringify({
     package:pkg.name,version:pkg.version,kernel:require("triviumdb/package.json").version,
     hostPeers:{llm:require("@deepseek-ai/dsh-llm/package.json").version,tools:require("@deepseek-ai/dsh-tools/package.json").version},
-    checks:["package version","native binding","host module import","v4 source shape","four tool registrations","explicit expiry","history/current-only search","multiword search","clear expiry","runtime pre-step injection","same-turn de-duplication","cumulative turn budget"],
+    checks:["package version","native binding","host module import","v4 source shape","four tool registrations","explicit expiry","history/current-only search","multiword search","clear expiry","runtime pre-step injection","same-turn de-duplication","cumulative turn budget","current version in runtime recall"],
     status:"passed",
   },null,2));
 } finally {
