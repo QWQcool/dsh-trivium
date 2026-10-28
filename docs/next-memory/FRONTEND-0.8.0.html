@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light" data-width="1280">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dsh-trivium 0.8.0 交互原型（B 批）</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --stage: #eceef2;
+    --panel: #ffffff;
+    --panel-2: #fafbfc;
+    --text: #1c1f24;
+    --text-2: #4a5260;
+    --muted: #78818f;
+    --border: #dfe3e9;
+    --border-strong: #c6ccd6;
+    --accent: #2f6fed;
+    --accent-soft: #e8efff;
+    --danger: #b42318;
+    --danger-soft: #fee4e2;
+    --warn: #8a5a00;
+    --warn-soft: #fff4d6;
+    --ok: #067647;
+    --ok-soft: #e3f6ec;
+    --radius: 10px;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  html[data-theme="dark"] {
+    --bg: #16181c;
+    --stage: #101216;
+    --panel: #1d2027;
+    --panel-2: #23272f;
+    --text: #e8eaee;
+    --text-2: #b9bfca;
+    --muted: #8e96a3;
+    --border: #2e333c;
+    --border-strong: #3d444f;
+    --accent: #6b9bff;
+    --accent-soft: #1e2b45;
+    --danger: #ff8a80;
+    --danger-soft: #3a1f1e;
+    --warn: #f0c169;
+    --warn-soft: #3a2f17;
+    --ok: #6ede9f;
+    --ok-soft: #17301f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--stage);
+    color: var(--text);
+    font: 13px/1.55 system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+    display: flex;
+    min-height: 100vh;
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+  /* ---------- 原型工具（不属于生产 UI） ---------- */
+  .proto-tools {
+    width: 250px;
+    flex: 0 0 250px;
+    background: var(--panel-2);
+    border-right: 1px solid var(--border);
+    padding: 14px 12px 28px;
+    height: 100vh;
+    overflow: auto;
+    position: sticky;
+    top: 0;
+  }
+  .proto-tools h1 { font-size: 13px; margin: 0 0 4px; letter-spacing: .2px; }
+  .proto-tools .sub { color: var(--muted); font-size: 11px; margin: 0 0 12px; }
+  .tools-group { margin-bottom: 14px; }
+  .tools-group > .label { font-size: 11px; color: var(--muted); margin-bottom: 5px; letter-spacing: .4px; }
+  .state-list { display: flex; flex-direction: column; gap: 3px; }
+  .state-btn {
+    text-align: left; font: inherit; font-size: 12px;
+    background: transparent; color: var(--text-2);
+    border: 1px solid transparent; border-radius: 7px;
+    padding: 4px 8px; cursor: pointer;
+  }
+  .state-btn:hover { background: var(--accent-soft); }
+  .state-btn[aria-current="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .seg { display: flex; gap: 4px; flex-wrap: wrap; }
+  .seg button {
+    font: inherit; font-size: 11px; padding: 3px 8px; cursor: pointer;
+    background: var(--panel); color: var(--text-2);
+    border: 1px solid var(--border); border-radius: 999px;
+  }
+  .seg button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .note { font-size: 11px; color: var(--muted); border-top: 1px dashed var(--border); padding-top: 10px; }
+  .note b { color: var(--danger); }
+
+  /* ---------- 舞台 ---------- */
+  .stage { flex: 1; padding: 18px; overflow: auto; min-width: 0; }
+  .host {
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 auto;
+    display: flex;
+    height: 820px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.07);
+  }
+  html[data-width="900"] .host { width: 900px; max-width: 900px; }
+  html[data-width="1280"] .host { width: 1280px; max-width: 1280px; }
+  html[data-width="1440"] .host { width: 1440px; max-width: 1440px; }
+
+  /* 宿主侧栏：真实宿主固定 188px */
+  .host-side {
+    width: 188px; flex: 0 0 188px;
+    background: var(--panel-2);
+    border-right: 1px solid var(--border);
+    padding: 10px 8px;
+    font-size: 12px; color: var(--muted);
+  }
+  .host-side .brand { font-weight: 600; color: var(--text); letter-spacing: .3px; margin-bottom: 12px; }
+  .host-side .item { padding: 4px 6px; border-radius: 6px; }
+  .host-side .item.on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .host-side .grp { margin-top: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+
+  /* 插件内容列 */
+  .plugin { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--bg); }
+  .plugin-head {
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+  }
+  .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .row.between { justify-content: space-between; }
+  h2.title { font-size: 17px; margin: 0; letter-spacing: .2px; }
+  .pill {
+    font-size: 11px; padding: 1px 7px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent); border: 1px solid transparent;
+  }
+  .pill.synthetic { background: var(--warn-soft); color: var(--warn); border-color: currentColor; }
+  .pill.danger { background: var(--danger-soft); color: var(--danger); }
+  .pill.ok { background: var(--ok-soft); color: var(--ok); }
+  .pill.quiet { background: transparent; color: var(--muted); border-color: var(--border); }
+  .muted { color: var(--muted); }
+  .small { font-size: 11px; }
+  .mono { font-family: var(--mono); font-size: 11.5px; }
+  .btn {
+    font: inherit; font-size: 12px; cursor: pointer;
+    background: var(--panel); color: var(--text);
+    border: 1px solid var(--border-strong); border-radius: 7px;
+    padding: 3px 10px;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { filter: brightness(1.06); color: #fff; }
+  .btn.danger { color: var(--danger); border-color: var(--danger); }
+  .btn.ghost { border-color: transparent; background: transparent; color: var(--text-2); }
+  .btn[disabled] { opacity: .45; cursor: not-allowed; }
+  .btn.sm { font-size: 11px; padding: 2px 8px; }
+
+  /* 工作区选择器 */
+  .wsbar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 16px; border-bottom: 1px solid var(--border);
+    background: var(--panel); font-size: 12px;
+  }
+  .wsbar select, select.input, input.input {
+    font: inherit; font-size: 12px; padding: 3px 7px;
+    background: var(--panel); color: var(--text);
+    border: 1px solid var(--border-strong); border-radius: 7px;
+    color-scheme: light dark;
+  }
+  input.input[type="search"] { min-width: 200px; }
+
+  /* 回执 */
+  .receipts { padding: 8px 16px 0; display: flex; flex-direction: column; gap: 6px; }
+  .receipt {
+    display: flex; align-items: flex-start; gap: 8px;
+    border: 1px solid var(--border); border-radius: 9px;
+    background: var(--panel); padding: 7px 10px; font-size: 12px;
+  }
+  .receipt .icon { width: 16px; text-align: center; }
+  .receipt[data-receipt-state="pending"] { border-color: var(--accent); }
+  .receipt[data-receipt-state="saved"] { border-color: var(--ok); }
+  .receipt[data-receipt-state="rejected"] { border-color: var(--danger); background: var(--danger-soft); }
+  .receipt[data-receipt-state="waiting"] { border-color: var(--warn); background: var(--warn-soft); }
+  .receipt[data-receipt-state="failed"] { border-color: var(--danger); }
+  .receipt .body { flex: 1; min-width: 0; }
+  .receipt .body strong { font-weight: 600; }
+  .receipt .code { font-family: var(--mono); font-size: 11px; color: var(--text-2); }
+  .receipt .recovery { color: var(--text-2); font-size: 11.5px; margin-top: 2px; }
+
+  /* tabs */
+  .tabs {
+    display: flex; gap: 4px; padding: 0 16px;
+    border-bottom: 1px solid var(--border); background: var(--panel);
+  }
+  .tab {
+    font: inherit; font-size: 12.5px; cursor: pointer;
+    background: transparent; border: 0; border-bottom: 2px solid transparent;
+    color: var(--muted); padding: 8px 10px 7px;
+  }
+  .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+
+  /* 内容区 */
+  .body { flex: 1; overflow: auto; padding: 12px 16px 26px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 12px 14px; margin-bottom: 10px;
+  }
+  .card > h3 { font-size: 13px; margin: 0 0 2px; }
+  .card > .hint { font-size: 11.5px; color: var(--muted); margin: 0 0 10px; }
+  .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+  label.chk { display: inline-flex; gap: 5px; align-items: center; font-size: 12px; color: var(--text-2); }
+  .entry {
+    border: 1px solid var(--border); border-radius: 9px;
+    padding: 9px 11px; margin-bottom: 8px; background: var(--panel-2);
+  }
+  .entry .head { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .entry .name { font-weight: 600; font-size: 13px; }
+  .entry .text { margin: 4px 0 6px; color: var(--text-2); font-size: 12.5px; }
+  .entry .acts { display: flex; gap: 6px; flex-wrap: wrap; }
+  .kv { display: grid; grid-template-columns: 92px 1fr; gap: 4px 10px; font-size: 12px; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; }
+  .empty {
+    border: 1px dashed var(--border-strong); border-radius: 9px;
+    padding: 22px; text-align: center; color: var(--muted); font-size: 12.5px;
+  }
+  .skel { height: 54px; border-radius: 9px; background: linear-gradient(90deg, var(--panel-2), var(--border), var(--panel-2)); background-size: 200% 100%; animation: sh 1.2s infinite; margin-bottom: 8px; }
+  @keyframes sh { from { background-position: 200% 0; } to { background-position: -40% 0; } }
+  .bar { height: 6px; border-radius: 999px; background: var(--border); overflow: hidden; margin: 7px 0 10px; }
+  .bar > i { display: block; height: 100%; background: var(--accent); }
+  .table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .table th, .table td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--border); }
+  .table th { color: var(--muted); font-weight: 500; font-size: 11px; }
+  .delta-add { color: var(--ok); }
+  .delta-upd { color: var(--accent); }
+  .delta-arc { color: var(--warn); }
+  .confirm {
+    border: 1px solid var(--danger); background: var(--danger-soft);
+    border-radius: 9px; padding: 9px 11px; font-size: 12px;
+  }
+
+  /* 契约表 */
+  .contract { max-width: 1180px; margin: 20px auto 60px; padding: 0 4px; }
+  .contract h2 { font-size: 15px; margin: 0 0 8px; }
+  .contract .card { background: var(--panel); }
+  .contract table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .contract th, .contract td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  .contract code { font-family: var(--mono); font-size: 11px; background: var(--panel-2); padding: 0 3px; border-radius: 4px; }
+  .cov { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<aside class="proto-tools" aria-label="原型工具（非生产界面）">
+  <h1>FRONTEND-0.8.0 原型</h1>
+  <p class="sub">B 批交互契约 · 合成 fixture</p>
+
+  <div class="tools-group">
+    <div class="label">状态</div>
+    <div class="state-list" id="stateList" role="list"></div>
+  </div>
+
+  <div class="tools-group">
+    <div class="label">宽度</div>
+    <div class="seg" id="widthSeg">
+      <button type="button" data-width="900" aria-pressed="false">900</button>
+      <button type="button" data-width="1280" aria-pressed="true">1280</button>
+      <button type="button" data-width="1440" aria-pressed="false">1440</button>
+    </div>
+  </div>
+
+  <div class="tools-group">
+    <div class="label">主题</div>
+    <div class="seg" id="themeSeg">
+      <button type="button" data-theme="light" aria-pressed="true">浅色</button>
+      <button type="button" data-theme="dark" aria-pressed="false">深色</button>
+    </div>
+  </div>
+
+  <div class="tools-group">
+    <div class="label">键盘</div>
+    <div class="small muted">Tab / Shift+Tab 遍历；<br>← → Home End 切 tab；<br>删除确认条 Enter 确认、Esc 取消。</div>
+  </div>
+
+  <p class="note">本页全部数据是 <b>合成 fixture</b>，不是任何真实记忆库。原型工具条不属于生产 UI。真实组件与断言见页尾映射表。</p>
+</aside>
+
+<main class="stage">
+  <div class="host" role="application" aria-label="DSH 宿主中的 dsh-trivium 插件（原型）">
+    <nav class="host-side" aria-label="宿主侧栏（固定 188px）">
+      <div class="brand">deepseek harness</div>
+      <div class="item">＋ 新会话</div>
+      <div class="grp">工作区</div>
+      <div class="item on" id="sideWs">合成工作区 A</div>
+      <div class="item">合成工作区 B</div>
+      <div class="grp">会话</div>
+      <div class="item">鉴权约定梳理</div>
+      <div class="item">导入预检演示</div>
+    </nav>
+
+    <section class="plugin" aria-label="dsh-trivium 设置">
+      <header class="plugin-head">
+        <div class="row between">
+          <div class="row">
+            <h2 class="title">Trivium 记忆</h2>
+            <span class="pill synthetic" title="合成 fixture">合成数据</span>
+            <span class="pill quiet" id="headState">已保存</span>
+          </div>
+          <div class="row">
+            <button class="btn" type="button">刷新</button>
+            <button class="btn" type="button">导出 JSON</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="wsbar">
+        <span class="muted small">当前工作区</span>
+        <select id="wsSelect" aria-label="选择已知工作区">
+          <option>合成工作区 A · 12 条</option>
+          <option>合成工作区 B · 4 条</option>
+        </select>
+        <span class="small muted" id="wsMeta">.dsh/trivium.tdb · 节点 12 · 短地图 0 / 400 估算</span>
+      </div>
+
+      <div class="receipts" id="receipts" aria-live="polite" aria-label="操作回执"></div>
+
+      <div class="tabs" id="tabs" role="tablist" aria-label="记忆视图">
+        <button class="tab" role="tab" id="tab-list" aria-selected="true" aria-controls="panel" tabindex="0" data-tab="list">记忆条目</button>
+        <button class="tab" role="tab" id="tab-recall" aria-selected="false" aria-controls="panel" tabindex="-1" data-tab="recall">这一轮投递</button>
+      </div>
+
+      <div class="body" id="panel" role="tabpanel" aria-labelledby="tab-list" tabindex="0"></div>
+    </section>
+  </div>
+
+  <section class="contract">
+    <div class="card">
+      <h2>原型控件 → 真实组件 / API → 验收断言</h2>
+      <table>
+        <thead><tr><th style="width:22%">原型控件</th><th style="width:38%">真实组件 / API</th><th>验收断言</th></tr></thead>
+        <tbody id="contractRows"></tbody>
+      </table>
+      <div class="cov" id="coverage"></div>
+    </div>
+    <div class="card">
+      <h2>状态覆盖</h2>
+      <p class="hint" id="coverageText"></p>
+      <p class="small muted">预算数字来自 fixture（本轮 spent=126 / budget=300），不复刻生产 planner 算法。</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var STATES = [
+    { id: "normal", label: "正常 · 条目列表", tab: "list" },
+    { id: "empty", label: "空列表", tab: "list" },
+    { id: "loading", label: "加载中", tab: "list" },
+    { id: "no-source", label: "详情 · 无来源", tab: "list" },
+    { id: "source-unavailable", label: "详情 · 来源不可用", tab: "list" },
+    { id: "history-stale", label: "详情 · 历史 / 过期", tab: "list" },
+    { id: "save-failed", label: "保存失败回执", tab: "list" },
+    { id: "etag-conflict", label: "ETag 冲突（409）", tab: "list" },
+    { id: "ws-dirty", label: "切换工作区 · 有草稿", tab: "list" },
+    { id: "import-preview", label: "导入预览 · 正常", tab: "list" },
+    { id: "import-rejected", label: "导入预览 · 拒绝", tab: "list" },
+    { id: "preview-stale", label: "预览已过期", tab: "list" },
+    { id: "derived-failed", label: "已提交 · 派生维护失败", tab: "list" },
+    { id: "turn-delivery", label: "这一轮实际发送", tab: "recall" },
+    { id: "turn-empty", label: "投递记录 · 重启后空态", tab: "recall" },
+    { id: "correction-blocked", label: "更正阻塞（注入关闭）", tab: "recall" }
+  ];
+
+  var ENTRIES = [
+    { id: 12, type: "preference", name: "本仓库鉴权走 header X", text: "鉴权凭证放在 header X，不放在 query 或 body。", uri: "repo:auth/header", state: "" },
+    { id: 11, type: "decision", name: "0.8.0 不新增模型工具", text: "B 批只改交互与回执，四工具与默认开关保持不变。", uri: "plan:0.8.0/tools", state: "current" },
+    { id: 9, type: "entity", name: "合成工作区 A", text: "示例实体，用于展示类型标签与邻接。", uri: "demo:workspace-a", state: "" },
+    { id: 7, type: "decision", name: "旧说法：0.8.0 新增第二个检索工具", text: "已被 #11 替代，仅在打开「显示已替代」时出现。", uri: "plan:0.8.0/tools-old", state: "superseded" },
+    { id: 5, type: "experience", name: "导入失败后重开即可恢复", text: "事务失败不留半条链；恢复原文件或移除失败输入后可重试。", uri: "exp:import/recover", state: "stale" }
+  ];
+
+  var CONTRACT = [
+    ["工作区下拉", "TriviumCard header 的 <code>select</code>；选项来自 <code>GET /status.workspaces</code>，切换后所有请求带 <code>?cwd=</code>", "切换后旧 nodes / detail / traces / preview 全部清空；旧请求响应被序号丢弃"],
+    ["「记忆条目」tab", "<code>tabBar</code>（<code>role=tablist</code>）+ <code>GET /nodes</code>", "←/→/Home/End 可切换，<code>aria-selected</code> 同步，焦点不跳出 tablist"],
+    ["类型 / 搜索 / 过期 / 已替代", "现有 <code>type</code> / <code>q</code> / <code>showStale</code> / <code>showSuperseded</code>", "参数与请求一致；慢响应不覆盖新搜索"],
+    ["回执条", "新增 <code>ReceiptList</code>，状态 <code>pending/saved/rejected/waiting/failed</code>", "每种状态有 <code>data-receipt-state</code>；拒绝沿用服务端 <code>code</code>"],
+    ["删除确认条", "替换 <code>window.confirm</code>，显示 <code>#id · name · type</code>", "取消不发写请求；Enter 确认、Esc 取消并归还焦点"],
+    ["导入预览面板", "<code>POST /import {preview:true}</code> → <code>POST /import {expectFingerprint}</code>", "预览前后库与 sidecar 字节不变；指纹变化返回 <code>STALE_PREVIEW</code>"],
+    ["这一轮实际发送", "新增 <code>GET /turn?cwd=&amp;sessionId=</code>（读 turn-ledger 快照）", "只有成功投递的记录出现；重启后是空态；刷新不触发模型/ embedding"],
+    ["试算一次查询", "现有 <code>POST /recall-preview</code>", "语义通道标注 <code>not_run</code>；不写库、不排 embedding"],
+    ["维护检查", "现有 <code>GET /integrity</code> + <code>GET /corrections</code> + <code>GET /recall-traces</code>", "体检只报告；更正按工作区隔离；阻塞原因可读"]
+  ];
+
+  var current = { state: "normal", theme: "light", width: "1280" };
+
+  function h(html) { return html; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); }
+
+  function entryCard(e, opts) {
+    opts = opts || {};
+    var statePill = e.state === "superseded" ? '<span class="pill quiet">已被替代</span>'
+      : e.state === "stale" ? '<span class="pill danger">已过期</span>'
+      : e.state === "current" ? '<span class="pill ok">当前版本</span>' : "";
+    return h(
+      '<article class="entry" data-fixture="synthetic" data-entry-id="' + e.id + '">' +
+        '<div class="head"><button class="btn ghost sm" type="button" aria-expanded="' + (opts.open ? "true" : "false") + '">▸</button>' +
+          '<span class="mono muted">#' + e.id + '</span><span class="pill">' + esc(e.type) + "</span>" +
+          '<span class="name">' + esc(e.name) + "</span>" + statePill +
+        "</div>" +
+        (opts.open
+          ? '<p class="text">' + esc(e.text) + "</p>" +
+            '<dl class="kv"><dt>URI</dt><dd class="mono">' + esc(e.uri) + "</dd>" +
+            "<dt>来源</dt><dd>" + (opts.source || '<span class="muted">没有可定位的来源</span>') + "</dd>" +
+            "<dt>有效期</dt><dd>" + (opts.until || '<span class="muted">未设置（不以正文日期推断）</span>') + "</dd></dl>"
+          : '<p class="text">' + esc(e.text) + "</p>") +
+        '<div class="acts">' +
+          '<button class="btn sm" type="button">保存</button>' +
+          '<button class="btn sm" type="button">归档</button>' +
+          (opts.deleting
+            ? '<button class="btn sm danger" type="button" aria-expanded="true">删除…</button>'
+            : '<button class="btn sm danger" type="button">删除</button>') +
+          '<button class="btn sm" type="button">合并…</button>' +
+          '<button class="btn sm" type="button">更正…</button>' +
+        "</div>" +
+        (opts.deleting
+          ? '<div class="confirm" style="margin-top:8px" role="group" aria-label="删除确认">' +
+            "将永久删除 <b>#" + e.id + " · " + esc(e.name) + "</b>（" + esc(e.type) + "）。此操作不可恢复；归档请改用「归档」。" +
+            '<div class="row" style="margin-top:6px"><button class="btn sm danger" type="button">确认删除</button>' +
+            '<button class="btn sm" type="button">取消</button></div></div>'
+          : "") +
+      "</article>"
+    );
+  }
+
+  function receipt(r) {
+    var icon = { pending: "◌", saved: "✓", rejected: "✕", waiting: "◷", failed: "↻" }[r.state] || "•";
+    return h(
+      '<div class="receipt" data-receipt-state="' + r.state + '" data-receipt-action="' + r.action + '">' +
+        '<span class="icon" aria-hidden="true">' + icon + "</span>" +
+        '<div class="body"><strong>' + esc(r.title) + "</strong> " +
+          '<span class="muted">· ' + esc(r.target) + "</span>" +
+          (r.code ? ' <span class="code">' + esc(r.code) + "</span>" : "") +
+          (r.detail ? '<div class="small">' + esc(r.detail) + "</div>" : "") +
+          (r.recovery ? '<div class="recovery">' + esc(r.recovery) + "</div>" : "") +
+        "</div>" +
+        (r.state === "failed" ? '<button class="btn sm" type="button">重试</button>' : "") +
+      "</div>"
+    );
+  }
+
+  function listPanel(state) {
+    var head =
+      '<div class="card"><h3>记忆条目</h3><p class="hint">日常入口：先选工作区，再搜索条目；维护动作收在下方「维护」区。</p>' +
+      '<div class="toolbar">' +
+        '<select class="input" aria-label="类型筛选"><option>全部</option><option>偏好</option><option>决策</option><option>实体</option><option>经历</option></select>' +
+        '<input class="input" type="search" placeholder="搜索名称、正文、URI" aria-label="搜索条目">' +
+        '<label class="chk"><input type="checkbox"> 显示过期</label>' +
+        '<label class="chk"><input type="checkbox"> 显示已替代</label>' +
+      "</div>";
+
+    if (state === "loading") {
+      return head + '<div class="skel"></div><div class="skel"></div><div class="skel"></div></div>' +
+        '<div class="card"><h3>维护</h3><p class="hint">加载完成前不显示计数，避免把 0 当成空库。</p></div>';
+    }
+    if (state === "empty") {
+      return head + '<div class="empty" role="status">这个工作区还没有记忆。打开抽取后，压缩或轮次结束会自动写入；也可以手动 <b>ctx_remember</b>。</div></div>' +
+        '<div class="card"><h3>维护</h3><p class="hint">配置设置 / 导入导出 / Git 旁路 / 检查更新收在此处，日常不需要展开。</p></div>';
+    }
+
+    var entries = ENTRIES.map(function (e) {
+      var opts = {};
+      if (state === "normal" && e.id === 11) opts.open = true;
+      if (state === "no-source" && e.id === 12) opts.open = true;
+      if (state === "source-unavailable" && e.id === 12) { opts.open = true; opts.source = '<span class="pill danger">来源不可用</span> <span class="small muted">会话已被删除，无法定位到原始对话</span>'; }
+      if (state === "history-stale" && e.id === 7) { opts.open = true; opts.source = "会话 #a1b2 · 2026-09-14"; }
+      if (state === "history-stale" && e.id === 5) { opts.open = true; opts.until = '<span class="pill danger">2026-10-01 已过期</span>'; }
+      if (state === "etag-conflict" && e.id === 11) opts.open = true;
+      if (state === "derived-failed" && e.id === 11) opts.open = true;
+      return entryCard(e, opts);
+    }).join("");
+
+    var extra = "";
+    if (state === "etag-conflict") {
+      extra = '<div class="card"><h3>更正被拒绝 · 409</h3><p class="hint">另一个窗口先改了同一条链。列表已刷新，弹窗保留你选的目标，但不会自动重提。</p>' +
+        '<dl class="kv"><dt>对象</dt><dd>#11 · 0.8.0 不新增模型工具</dd><dt>code</dt><dd class="mono">etag</dd>' +
+        '<dt>恢复</dt><dd>确认以下内容后重新提交：当前版本已变为 #13。</dd></dl>' +
+        '<div class="row" style="margin-top:8px"><button class="btn primary" type="button">用新版本重试</button><button class="btn" type="button">取消</button></div></div>';
+    }
+    if (state === "ws-dirty") {
+      extra = '<div class="card"><h3>切换工作区 · 有未保存草稿</h3><p class="hint">切换前必须处理 #12 的草稿，不会静默丢弃。</p>' +
+        '<div class="confirm" style="border-color:var(--warn);background:var(--warn-soft)">' +
+        '#12 的名称/正文有未保存修改。<div class="row" style="margin-top:6px">' +
+        '<button class="btn primary sm" type="button">保存后切换</button>' +
+        '<button class="btn sm danger" type="button">放弃修改并切换</button>' +
+        '<button class="btn sm" type="button">取消</button></div></div></div>';
+    }
+    if (state === "import-preview" || state === "import-rejected" || state === "preview-stale") {
+      extra = importPanel(state);
+    }
+    return head + entries + "</div>" + extra + maintainPanel();
+  }
+
+  function importPanel(state) {
+    if (state === "import-preview") {
+      return '<div class="card" data-fixture="synthetic"><h3>导入预览 <span class="pill quiet">只读</span></h3>' +
+        '<p class="hint">预览不会写库、不建索引、不生成 URI、不写 sidecar。确认后才会重新校验并提交。</p>' +
+        '<table class="table"><thead><tr><th>动作</th><th>对象</th><th>依据</th></tr></thead><tbody>' +
+        '<tr><td class="delta-add">新增 3</td><td>#新 · 鉴权走 header Y（preference）</td><td>URI <span class="mono">repo:auth/header-y</span> 不存在</td></tr>' +
+        '<tr><td class="delta-upd">更新 1</td><td>#12 · 本仓库鉴权走 header X</td><td>同 URI，正文变化</td></tr>' +
+        '<tr><td class="delta-arc">归档 0</td><td>—</td><td>JSON 导入不归档未出现的节点</td></tr>' +
+        '<tr><td>关系 +2</td><td>1 条业务边、1 条替代边</td><td>映射后版本链仍为线性</td></tr>' +
+        "</tbody></table>" +
+        '<div class="row" style="margin-top:10px"><button class="btn primary" type="button">确认导入</button><button class="btn" type="button">取消</button>' +
+        '<span class="small muted">预览指纹 <span class="mono">fnv:7c1a…</span> · 库在你确认前发生变化会要求重新预览</span></div></div>';
+    }
+    if (state === "import-rejected") {
+      return '<div class="card" data-fixture="synthetic"><h3>导入预览 <span class="pill danger">预检拒绝</span></h3>' +
+        '<p class="hint">文件本身没通过整图预检，未写入任何内容。</p>' +
+        '<dl class="kv"><dt>code</dt><dd class="mono">REVISION_LINKED</dd>' +
+        "<dt>冲突</dt><dd>分叉：<span class=\"mono\">#13 → #14</span> 与 <span class=\"mono\">#13 → #15</span> 同时存在</dd>" +
+        "<dt>重复 URI</dt><dd>2 个节点声明 <span class=\"mono\">repo:auth/header</span></dd></dl>" +
+        '<div class="row" style="margin-top:8px"><button class="btn" type="button">选择其他文件</button><button class="btn ghost" type="button">查看原始冲突</button></div></div>';
+    }
+    return '<div class="card" data-fixture="synthetic"><h3>预览已过期 <span class="pill danger">需重新预览</span></h3>' +
+      '<p class="hint">你确认前，另一个窗口修改了同一工作区。提交被拒绝（<span class="mono">STALE_PREVIEW</span>），没有写入。</p>' +
+      '<div class="row"><button class="btn primary" type="button">重新预览</button><button class="btn" type="button">取消</button></div></div>';
+  }
+
+  function maintainPanel() {
+    return '<div class="card" data-fixture="synthetic"><h3>维护 <span class="pill quiet">低频</span></h3>' +
+      '<p class="hint">配置设置（语言、注入策略、抽取、芯片、Git 旁路、embedding）、导入导出、检查更新都在这里，日常不展开。</p>' +
+      '<div class="row"><button class="btn" type="button">配置设置</button><button class="btn" type="button">导入 JSON…</button>' +
+      '<button class="btn" type="button">导入外部记忆…</button><button class="btn" type="button">Git 旁路：生成</button>' +
+      '<button class="btn" type="button">检查更新</button></div></div>';
+  }
+
+  function recallPanel(state) {
+    if (state === "turn-empty") {
+      return '<div class="card"><h3>这一轮实际发送</h3><p class="hint">只记录真正投递成功的块。进程重启后账本清空，这里如实显示空态。</p>' +
+        '<div class="empty" role="status">没有本轮投递记录。重启宿主或换会话后，账本会重新开始；短地图每会话最多一次。</div></div>' +
+        '<div class="card"><h3>试算一次查询</h3><div class="row">' +
+        '<input class="input" type="search" placeholder="输入一个问题，看这一轮会注入什么" aria-label="试算查询">' +
+        '<button class="btn" type="button">运行只读试算</button></div>' +
+        '<p class="small muted" style="margin-top:6px">语义通道未运行：只读试算不请求 embedding。</p></div>' + maintainCheck();
+    }
+    if (state === "correction-blocked") {
+      return '<div class="card"><h3>这一轮实际发送</h3>' +
+        '<p class="small muted">轮次 <span class="mono">uid:7f3a…</span> · 预算 126 / 300 估算 token（芯片 / 更正 / 召回共用）</p>' +
+        '<div class="bar" aria-hidden="true"><i style="width:42%"></i></div>' +
+        '<table class="table" style="margin-top:8px"><thead><tr><th>块</th><th>对象</th><th>估算</th></tr></thead><tbody>' +
+        '<tr><td>短地图</td><td>合成工作区 A</td><td>45</td></tr>' +
+        '<tr><td>召回</td><td>#12 本仓库鉴权走 header X</td><td>61</td></tr>' +
+        '<tr><td>更正</td><td>#11 已更新（代替旧说法）</td><td>20</td></tr></tbody></table></div>' +
+        '<div class="card"><h3>更正 <span class="pill danger">阻塞</span></h3>' +
+        '<p class="hint">注入已关闭：更正留在待发队列，不会绕过你的关闭选择；重新打开注入后的下一轮才会投递。</p>' +
+        '<dl class="kv"><dt>待发</dt><dd>1 条 · #11 · 原因 <span class="mono">channels-off</span></dd><dt>已发</dt><dd>0 条</dd></dl></div>' +
+        maintainCheck();
+    }
+    return '<div class="card"><h3>这一轮实际发送</h3>' +
+      '<p class="small muted">轮次 <span class="mono">uid:7f3a…</span> · 预算 126 / 300 估算 token · 剩余 174</p>' +
+      '<div class="bar" aria-hidden="true"><i style="width:42%"></i></div>' +
+      '<table class="table" style="margin-top:8px"><thead><tr><th>块</th><th>对象</th><th>估算</th><th>通道</th></tr></thead><tbody>' +
+      '<tr><td>短地图</td><td>合成工作区 A · 6 个节点</td><td>45</td><td>map</td></tr>' +
+      '<tr><td>召回</td><td>#12 本仓库鉴权走 header X</td><td>61</td><td>recall</td></tr>' +
+      '<tr><td>更正</td><td>#11 已更新（代替旧说法）</td><td>20</td><td>correction</td></tr>' +
+      "</tbody></table>" +
+      '<p class="hint" style="margin-top:8px">候选 ≠ 已发送：被预算、去重、过期挡掉的条目列在下方试算里；这张表只列真正进入上下文的块。</p></div>' +
+      '<div class="card"><h3>试算一次查询</h3><div class="row">' +
+      '<input class="input" type="search" placeholder="输入一个问题，看这一轮会注入什么" aria-label="试算查询">' +
+      '<button class="btn" type="button">运行只读试算</button></div>' +
+      '<table class="table" style="margin-top:8px"><thead><tr><th>结果</th><th>对象</th><th>说明</th></tr></thead><tbody>' +
+      '<tr><td>选中</td><td>#12</td><td>预算内</td></tr>' +
+      '<tr><td>丢弃</td><td>#7</td><td>已替代（映射到 #11 后去重）</td></tr>' +
+      '<tr><td>延后</td><td>#5</td><td>已过期，需 <span class="mono">include_stale</span></td></tr>' +
+      "</tbody></table>" +
+      '<p class="small muted">语义通道：<span class="mono">not_run</span>（只读试算不请求 embedding）</p></div>' + maintainCheck();
+  }
+
+  function maintainCheck() {
+    return '<div class="card"><h3>维护检查</h3>' +
+      '<div class="row"><button class="btn" type="button">检查版本链</button><button class="btn" type="button">刷新诊断</button></div>' +
+      '<dl class="kv" style="margin-top:8px"><dt>版本链</dt><dd>正常 · 已扫描 12 个节点 / 11 条边</dd>' +
+      '<dt>更正</dt><dd>待发 1 · 已发 0（进程内，重启清空）</dd>' +
+      '<dt>最近诊断</dt><dd>2 条，含 1 条试算（<span class="mono">semantic: not_run</span>）</dd></dl></div>';
+  }
+
+  function receiptSet(state) {
+    if (state === "save-failed") {
+      return [receipt({ state: "failed", action: "save", title: "保存失败", target: "#12 · 本仓库鉴权走 header X", code: "network", detail: "请求没有到达服务端，条目未改变。", recovery: "重试不会重复写入：保存是幂等 patch。" })];
+    }
+    if (state === "derived-failed") {
+      return [receipt({ state: "saved", action: "import", title: "事实已提交", target: "3 新增 · 1 更新", detail: "节点与边已在一个事务中写入。", recovery: "派生维护失败：trivium.jsonl 未更新、文本索引待重建。事实不会丢；重开工作区会重新同步旁路，不要重复导入。" })];
+    }
+    if (state === "etag-conflict") {
+      return [receipt({ state: "rejected", action: "supersede", title: "更正被拒绝", target: "#11 · 0.8.0 不新增模型工具", code: "409 etag", detail: "另一个窗口先改了这条链。" })];
+    }
+    if (state === "import-rejected") {
+      return [receipt({ state: "rejected", action: "import-preview", title: "预检拒绝", target: "合成导入文件.json", code: "409 REVISION_LINKED", detail: "未写入任何内容。" })];
+    }
+    if (state === "preview-stale") {
+      return [receipt({ state: "rejected", action: "import", title: "提交被拒绝", target: "合成导入文件.json", code: "409 STALE_PREVIEW", detail: "预览后库已变化，未写入。" })];
+    }
+    if (state === "correction-blocked") {
+      return [receipt({ state: "waiting", action: "correct", title: "更正等待投递", target: "#11 → 看过 #11 旧正文的会话", detail: "注入关闭，队列保留。" })];
+    }
+    if (state === "normal") {
+      return [receipt({ state: "saved", action: "save", title: "已保存", target: "#12 · 本仓库鉴权走 header X", detail: "patch 已提交，条目 #12 变更 1 处。" })];
+    }
+    return [];
+  }
+
+  function render() {
+    var state = current.state;
+    var meta = STATES.filter(function (s) { return s.id === state; })[0] || STATES[0];
+    document.documentElement.setAttribute("data-theme", current.theme);
+    document.documentElement.setAttribute("data-width", current.width);
+
+    document.getElementById("stateList").querySelectorAll("button").forEach(function (b) {
+      b.setAttribute("aria-current", b.dataset.state === state ? "true" : "false");
+    });
+    document.getElementById("widthSeg").querySelectorAll("button").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.dataset.width === current.width ? "true" : "false");
+    });
+    document.getElementById("themeSeg").querySelectorAll("button").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.dataset.theme === current.theme ? "true" : "false");
+    });
+
+    document.getElementById("headState").textContent = state === "save-failed" ? "保存失败" : state === "derived-failed" ? "已提交" : "已保存";
+    document.getElementById("wsMeta").innerHTML = state === "empty"
+      ? ".dsh/trivium.tdb · 节点 0 · 短地图 0 / 400 估算"
+      : ".dsh/trivium.tdb · 节点 12 · 短地图 0 / 400 估算";
+
+    var r = receiptSet(state);
+    document.getElementById("receipts").innerHTML = r.join("");
+
+    var tab = meta.tab;
+    document.querySelectorAll("#tabs .tab").forEach(function (b) {
+      var on = b.dataset.tab === tab;
+      b.setAttribute("aria-selected", on ? "true" : "false");
+      b.tabIndex = on ? 0 : -1;
+    });
+    var panel = document.getElementById("panel");
+    panel.setAttribute("aria-labelledby", "tab-" + tab);
+    panel.innerHTML = tab === "recall" ? recallPanel(state) : listPanel(state);
+  }
+
+  function buildTools() {
+    var list = document.getElementById("stateList");
+    STATES.forEach(function (s) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "state-btn";
+      b.dataset.state = s.id;
+      b.textContent = s.label;
+      b.addEventListener("click", function () { current.state = s.id; render(); });
+      list.appendChild(b);
+    });
+    document.getElementById("widthSeg").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-width]");
+      if (!b) return;
+      current.width = b.dataset.width;
+      render();
+    });
+    document.getElementById("themeSeg").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-theme]");
+      if (!b) return;
+      current.theme = b.dataset.theme;
+      render();
+    });
+
+    var tabs = document.getElementById("tabs");
+    tabs.addEventListener("click", function (e) {
+      var b = e.target.closest(".tab");
+      if (!b) return;
+      current.state = b.dataset.tab === "recall" ? "turn-delivery" : "normal";
+      render();
+      document.getElementById(b.id).focus();
+    });
+    tabs.addEventListener("keydown", function (e) {
+      var keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+      if (keys.indexOf(e.key) < 0) return;
+      e.preventDefault();
+      var items = Array.prototype.slice.call(tabs.querySelectorAll(".tab"));
+      var idx = items.findIndex(function (b) { return b.getAttribute("aria-selected") === "true"; });
+      if (e.key === "Home") idx = 0;
+      else if (e.key === "End") idx = items.length - 1;
+      else idx = (idx + (e.key === "ArrowRight" ? 1 : -1) + items.length) % items.length;
+      items[idx].click();
+    });
+
+    // 删除确认条：Enter 确认 / Esc 取消（原型演示键盘语义）
+    document.getElementById("panel").addEventListener("keydown", function (e) {
+      var box = e.target.closest(".confirm");
+      if (!box) return;
+      if (e.key === "Enter") {
+        e.preventDefault();
+        box.outerHTML = '<div class="receipt" data-receipt-state="saved"><span class="icon">✓</span><div class="body"><strong>已删除</strong> <span class="muted">· #5 · 导入失败后重开即可恢复</span></div></div>';
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        var btn = box.previousElementSibling && box.previousElementSibling.querySelector(".btn.danger");
+        box.remove();
+        if (btn) btn.focus();
+      }
+    });
+  }
+
+  function buildContract() {
+    var tbody = document.getElementById("contractRows");
+    CONTRACT.forEach(function (row) {
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + row[0] + "</td><td>" + row[1] + "</td><td>" + row[2] + "</td>";
+      tbody.appendChild(tr);
+    });
+    var cov = document.getElementById("coverage");
+    STATES.forEach(function (s) {
+      var span = document.createElement("span");
+      span.className = "pill quiet";
+      span.textContent = s.label;
+      cov.appendChild(span);
+    });
+    document.getElementById("coverageText").textContent =
+      "共 " + STATES.length + " 个状态：正常 / 空 / 加载 / 无来源 / 来源不可用 / 历史及过期 / 保存失败 / ETag 冲突 / 工作区有草稿 / 导入预览 / 预检拒绝 / 预览过期 / 事实已提交但派生失败 / 本轮投递 / 重启空态 / 更正阻塞。";
+  }
+
+  buildTools();
+  buildContract();
+  render();
+})();
+</script>
+</body>
+</html>
