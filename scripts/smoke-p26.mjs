@@ -5,9 +5,12 @@
  * browser pass covers the pixels.
  */
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import vm from "node:vm";
+import { closeAll, dbFingerprint, importGraph, nodeCountOf, openWorkspaceDb, planImportGraph } from "../lib/store.js";
 
 const source = readFileSync(process.env.DSH_TRIVIUM_CLIENT_SOURCE || fileURLToPath(new URL("../lib/client.js", import.meta.url)), "utf8");
 const A = "C:\\audit\\workspace-a";
@@ -230,7 +233,7 @@ const tests = [
     assert.ok(rejected, "409 is a rejection, not a silent success");
     assert.match(p.text(rejected), /REVISION_LINKED/, "server code is preserved");
   }],
-  ["import reports the real counts and explains committed-facts-with-failed-derivation", async () => {
+  ["import previews first, commits only on confirm, and reports real counts", async () => {
     const p = await loaded();
     const fileInput = p.elements().find((el) => el.type === "input" && el.props.type === "file");
     assert.ok(fileInput, "a file input exists");
@@ -238,9 +241,31 @@ const tests = [
     fileInput.props.onChange({ target: { files: [file] } });
     await p.flush();
 
-    const imp = p.take("import");
-    assert.ok(JSON.parse(imp.options.body).graph, "the parsed graph is what gets posted");
-    await p.reply(imp, { ok: true, created: 3, merged: 1, linked: 2, revisionLinked: 1 });
+    const preview = p.take("import");
+    const ask = JSON.parse(preview.options.body);
+    assert.equal(ask.preview, true, "the first request is a dry run");
+    assert.ok(ask.graph, "the parsed graph is what gets posted");
+    await p.reply(preview, {
+      ok: true,
+      dryRun: true,
+      preview: { created: [{ id: 9, name: "new fact", type: "preference" }], updated: [], archived: [], relations: { business: 2, revision: 1 } },
+      fingerprint: "fp-1",
+      version: 2,
+    });
+
+    const panel = p.elements().find((el) => el.props["data-import-preview"] === "ready");
+    assert.ok(panel, "a read-only preview panel is rendered");
+    assert.match(p.text(panel), /new fact/, "the preview names what would be created");
+    assert.ok(
+      !p.requests.some((r) => r.url.pathname.endsWith("/import") && JSON.parse(r.options.body).preview !== true),
+      "previewing never commits",
+    );
+
+    p.button("Confirm import").props.onClick();
+    await p.flush();
+    const commit = p.take("import");
+    assert.equal(JSON.parse(commit.options.body).expectFingerprint, "fp-1", "the commit carries the preview fingerprint");
+    await p.reply(commit, { ok: true, created: 3, merged: 1, linked: 2, revisionLinked: 1 });
     await p.reply(p.take("status"), { ...status, derived: { sidecar: { ok: false, error: "jsonl locked" } } });
     await p.reply(p.take("nodes"), { nodes: [row(2, "after import")] });
     await p.reply(p.take("external"), { files: [] });
@@ -250,6 +275,44 @@ const tests = [
     assert.match(p.text(saved), /created 3/, "counts come from the response, not from a guess");
     assert.match(p.text(saved), /derived maintenance failed/, "a failed sidecar write is stated next to the committed facts");
     assert.match(p.text(saved), /Do not re-import/, "the recovery text does not invite a duplicate write");
+    assert.ok(!p.elements().some((el) => el.props["data-import-preview"]), "the panel closes after the commit");
+  }],
+  ["cancelling a preview sends no commit and no write receipt", async () => {
+    const p = await loaded();
+    const fileInput = p.elements().find((el) => el.type === "input" && el.props.type === "file");
+    fileInput.props.onChange({ target: { files: [{ name: "cancel.json", text: async () => "{\"nodes\":[],\"edges\":[]}" }] } });
+    await p.flush();
+    await p.reply(p.take("import"), {
+      ok: true,
+      dryRun: true,
+      preview: { created: [], updated: [], archived: [], relations: { business: 0, revision: 0 } },
+      fingerprint: "fp-2",
+    });
+    assert.ok(p.elements().some((el) => el.props["data-import-preview"] === "ready"), "preview is on screen");
+    assert.match(p.text(), /would not change any node/, "an empty diff is stated instead of an empty table");
+
+    p.button("Cancel").props.onClick();
+    await p.flush();
+    assert.ok(!p.pending.some((r) => r.url.pathname.endsWith("/import")), "cancel issues no commit");
+    assert.ok(!p.elements().some((el) => el.props["data-import-preview"]), "cancel closes the panel");
+    assert.ok(!p.elements().some((el) => el.props["data-receipt-state"] === "waiting"), "the waiting receipt is withdrawn");
+  }],
+  ["a stale preview is refused and asks for a fresh one", async () => {
+    const p = await loaded();
+    const fileInput = p.elements().find((el) => el.type === "input" && el.props.type === "file");
+    fileInput.props.onChange({ target: { files: [{ name: "race.json", text: async () => "{\"nodes\":[],\"edges\":[]}" }] } });
+    await p.flush();
+    await p.reply(p.take("import"), { ok: true, dryRun: true, preview: { created: [], updated: [], archived: [], relations: {} }, fingerprint: "fp-old" });
+    p.button("Confirm import").props.onClick();
+    await p.flush();
+    await p.reply(p.take("import"), { ok: false, code: "STALE_PREVIEW", message: "workspace changed" }, false, 409);
+
+    const rejected = p.elements().find((el) => el.props["data-receipt-state"] === "rejected");
+    assert.ok(rejected, "the refused commit is visible");
+    assert.match(p.text(rejected), /STALE_PREVIEW/, "the code explains why");
+    const stale = p.elements().find((el) => el.props["data-import-preview"] === "stale");
+    assert.ok(stale, "the panel switches to the stale state instead of silently retrying");
+    assert.match(p.text(stale), /Nothing was written/, "the user is told nothing changed");
   }],
   ["a rejected import keeps the server code and writes nothing", async () => {
     const p = await loaded();
@@ -262,6 +325,7 @@ const tests = [
     const rejected = p.elements().find((el) => el.props["data-receipt-state"] === "rejected");
     assert.ok(rejected, "409 is reported as rejected");
     assert.match(p.text(rejected), /REVISION_LINKED/, "the import code is preserved for the user");
+    assert.ok(!p.elements().some((el) => el.props["data-import-preview"]), "a refused pre-check leaves no preview behind");
   }],
   ["invalid JSON never reaches the server", async () => {
     const p = await loaded();
@@ -285,6 +349,60 @@ const tests = [
     assert.ok(!p.elements().some((el) => el.props["data-receipt-action"] === "delete"), "no receipt for a cancelled action");
   }],
 ];
+
+/*
+ * Backend half: the preview must be the same plan the commit runs, and a stale
+ * fingerprint must not write. This asserts the database, not a dryRun flag.
+ */
+{
+  const home = mkdtempSync(join(tmpdir(), "dsh-trivium-p26-"));
+  process.env.DSH_TRIVIUM_SETTINGS = join(home, "settings.json");
+  const cwd = join(home, "ws");
+  mkdirSync(cwd, { recursive: true });
+  const db = await openWorkspaceDb(cwd);
+  const graph = {
+    version: 2,
+    nodes: [
+      { id: 1, payload: { type: "preference", name: "auth", text: "header X", uri: "demo:auth" } },
+      { id: 2, payload: { type: "decision", name: "old", text: "old", uri: "demo:old" } },
+    ],
+    edges: [{ from: 1, to: 2, label: "about" }],
+  };
+  const before = nodeCountOf(db);
+  const fp0 = dbFingerprint(db);
+
+  try {
+    const planned = planImportGraph(db, graph);
+    assert.equal(planned.ok, true, "planning succeeds");
+    assert.equal(planned.summary.created.length, 2, "two new nodes are planned");
+    assert.equal(planned.summary.relations.business, 1, "the business edge is counted");
+    assert.equal(nodeCountOf(db), before, "planning writes no node");
+    assert.equal(dbFingerprint(db), fp0, "planning does not move the fingerprint");
+
+    const committed = importGraph(db, graph, { expectFingerprint: fp0 });
+    assert.equal(committed.ok, true, "the same graph commits");
+    assert.equal(committed.created, 2);
+    const fp1 = dbFingerprint(db);
+    assert.notEqual(fp1, fp0, "committing changes the fingerprint");
+
+    const stale = importGraph(
+      db,
+      { ...graph, nodes: graph.nodes.concat([{ id: 3, payload: { type: "entity", name: "x", text: "x", uri: "demo:x" } }]) },
+      { expectFingerprint: fp0 },
+    );
+    assert.equal(stale.ok, false, "a stale fingerprint is refused");
+    assert.equal(stale.code, "STALE_PREVIEW");
+    assert.equal(nodeCountOf(db), before + 2, "the refused commit left the database alone");
+
+    const again = planImportGraph(db, graph);
+    assert.equal(again.summary.created.length, 0, "re-planning the same file creates nothing new");
+    assert.equal(again.summary.updated.length, 2, "it becomes an update instead");
+    console.log("ok  backend: planImportGraph is a real dry run and a stale fingerprint writes nothing");
+  } finally {
+    closeAll();
+    rmSync(home, { recursive: true, force: true });
+  }
+}
 
 let failed = 0;
 for (const [name, run] of tests) {
