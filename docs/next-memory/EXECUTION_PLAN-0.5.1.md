@@ -199,3 +199,13 @@
 - 详细数据、截图索引与未覆盖项见 `docs/next-memory/R5-VERIFICATION-2026-10-28.md`。
 - 回归：`npm test` 22/22，`smoke-p21` 86 条。
 - 剩余：R6 发布工程；真实双窗口与 390 宽范围确认。
+
+## 11. 第三轮进展（0.6.0）
+
+- 0.5.1 已发布（2026-10-28T04:42:43Z，latest），issue #3 已复验并关闭。
+- A1：`dsh-trivium-check` / `dsh-trivium-clear-until` 进入 `bin` 与 `files`，包内 37 个文件；干净安装后可执行。
+- B1：两个真实标签页完成「A 改 → B 用旧 ETag 得到 409 → 刷新后成功」。
+- B2：真实会话日志确认用户消息带稳定 `id`，轮标识不依赖对象身份。
+- C2：清理工具默认 dry-run，`--apply` 只清「期限也在正文里」的，`--all` 才清显式期限。
+- 回归：`npm test` 23/23，`smoke-p22` 25 条。
+- 证据：`docs/next-memory/R7-VERIFICATION-2026-10-28.md`。

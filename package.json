@@ -1,6 +1,6 @@
 {
   "name": "dsh-trivium",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "In-process graph memory for DeepSeek Harness, backed by TriviumDB.",
   "license": "MIT",
   "type": "module",
@@ -12,11 +12,17 @@
   },
   "files": [
     "lib",
+    "scripts/check-integrity.mjs",
+    "scripts/clear-expired-until.mjs",
     "cordis.patch.yml",
     "README.md",
     "README.zh-CN.md",
     "LICENSE"
   ],
+  "bin": {
+    "dsh-trivium-check": "scripts/check-integrity.mjs",
+    "dsh-trivium-clear-until": "scripts/clear-expired-until.mjs"
+  },
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"

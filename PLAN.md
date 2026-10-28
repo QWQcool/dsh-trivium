@@ -369,7 +369,7 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 14. **Settings 面：** 能展开业务边邻居；AuthGateway 上「只看挂在这上面的」能看到未过期决策/偏好、看不到未连边 pnpm；过期决策默认不在列表，勾选后可见；页上能区分归档 vs 删除。
 15. **短地图：** session-start 仍 ≤400 token，named 里能看到带 `until` 的未过期决策；默认 autoRecall 仍关。
 
-### TDB 引擎（`triviumdb@0.8.9`）
+### TDB 引擎（`triviumdb@0.9.0-beta.3`）
 
 已从全表扫描切到引擎 API（旧绑定仍可回退）：
 
@@ -388,6 +388,8 @@ P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回�
 其余引擎 API（`insert` / `get` / `updatePayload` / `link` / `unlink` / `neighbors` / `getIncomingEdges` / `searchHybrid` / `indexText` / `tql`）签名不变。
 
 0.8.9（0.4.20）是纯内核升级，**JS / napi 接口零变更**：`triviumdb.d.ts` 与 `index.js` 与 0.8.8 逐字节一致（SHA256 相同），差异只在各平台预编译 `.node`。上游改动集中在 QuIVer（SM-L2 成为默认查询路径、支持任意维度）、FIND 规划不再物化被丢弃的候选，以及服务端版的 Web Console。插件侧只需 bump 依赖；14 个离线冒烟脚本原样通过。
+
+0.9.0-beta.3（0.5.1 / 0.6.0）新增的类型面是纯增量：`ResourceRuntime` / `instanceStats` / `createSnapshot` / `restoreSnapshot` / `rebuildTextIndex` / `closeTimeout`，`JsEdge` / `JsIncomingEdge` 带 `metadata`，`TriviumDBOptions.accessMode` 支持 `readOnly` / `immutable`。插件侧只用三处：导入先预分配 id 再 `commitTransaction`（`insertWithId` + `upsertEdge`）、维护脚本以 `readOnly` 打开、边 metadata 的类型声明。数字 id 一律按 JS 安全整数处理，超范围内核直接报参数错误；本轮所有 id 都远小于上限。0.9 稳定版发布后把精确 pin 切到 `^0.9.0`，重跑 23 组离线脚本与真机验收。
 
 ### DSH 宿主（0.1.x → 0.2.x）
 
