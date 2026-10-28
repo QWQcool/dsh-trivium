@@ -179,13 +179,12 @@
 | 打包级运行时 | `verify-package.mjs` 用真实 peer `dsh-llm/dsh-tools 0.2.1-rc.4` + beta.3 驱动 `agent/pre-step`：注入、同轮去重、**同轮累计 ≤300** 全部通过；内核断言改为跟随 `package.json` 固定值 |
 | 真机 | DSH `0.2.1-rc.4` Web（3091）加载本仓库 junction：设置出现「Trivium 记忆」，17 节点库正常列出，只读检查返回 `id=4 / 33 tokens`（修复前该字段恒 0） |
 
-### 真机发现（未修，记为已知边界）
+### 真机发现（已处理 UI 文案，读写并发仍未支持）
 
 - 桌面端与 Web 宿主同时打开**同一个工作区**时，后打开的一方在设置页显示原始
   `TDB_ERROR: 数据库已锁定 ... incompatible access mode`，`/api/dsh-trivium/status` 返回 500。
-  这是「多进程写同一个 `.tdb`」的既有边界（FIX_PLAN 明确本轮不承诺多进程），
-  但 UI 不应把原始错误直接当正文显示。切到另一个工作区后一切正常。
-- 该问题与 0.9 beta 无关：0.8.11 同样使用排他锁。
+- 已修：API 返回 `409 DB_LOCKED` + 一句可读说明（点名「另一个 DeepSeek Harness 实例」并给出关闭/切工作区两条出路），原始错误只放在 `detail` 里；真机已复验，页面不再出现 `TDB_ERROR`。
+- 仍未支持：同一工作区的**多宿主并发写入**。这是内核的单写者契约（排他锁），不是插件能重试解决的；可选方向是 0.9 的 `accessMode: 'readOnly'` 只读查看，或单一宿主代理，均需单独 spike。
 
 ### 下一轮（R4/R5/R6）
 
