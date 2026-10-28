@@ -48,7 +48,7 @@ package/lock 已更新到 0.7.1；更正调度、自然到期、按库诊断和 
 | 可选芯片与会话层的实际契约 | [PLAN-session-map.md](../PLAN-session-map.md) |
 | 当前版本改了什么 | [0.7.1 发布说明](release-0.7.1.md) / [验收记录](verification-0.7.1.md) |
 | 交给其它 AI IDE 的后续范围 | [B1–B5 连续开工提示词与 B–E 依赖](NEXT-IDE-PROMPT-0.7.1.md) |
-| B 批交互契约与原型 | [0.8.0 交互原型（合成 fixture）](next-memory/FRONTEND-0.8.0.html) / [执行计划](next-memory/B-EXECUTION-PLAN.md)；旧的 [FRONTEND.html](next-memory/FRONTEND.html) 保留历史身份 |
+| B 批交互契约与原型 | [0.8.0 交互原型（合成 fixture）](next-memory/FRONTEND-0.8.0.html) / [执行计划](next-memory/B-EXECUTION-PLAN.md) / [B1–B5 结果](next-memory/B-RESULTS.md)；旧的 [FRONTEND.html](next-memory/FRONTEND.html) 保留历史身份 |
 | 发布操作与证据要求 | [发布检查清单](release-checklist.md) |
 | 文档保留、合并、删除候选 | [文档审计](documentation-audit-2026-10-28.md) |
 | 本轮缺陷复现、修复与回归 | [0.7.0 缺陷审查](bug-audit-2026-10-28.md) |
