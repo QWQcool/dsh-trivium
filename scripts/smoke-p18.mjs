@@ -116,7 +116,7 @@ try {
 
   /* ------------------------------------------------- revision confirm dialog */
   check(/role: "dialog"/.test(src) && /"aria-modal": "true"/.test(src), "the confirm dialog is a modal dialog");
-  check(/if \(event\.key === "Escape"\) closeSupersede\(\);/.test(src), "Escape closes the dialog");
+  check(/onKeyDown: revisionKeyDown/.test(src), "the revision dialog handles its own keyboard events (behavior in p24)");
   check(
     /if \(previous && typeof previous\.focus === "function"\) previous\.focus\(\);/.test(src),
     "focus returns to the trigger when the dialog closes",

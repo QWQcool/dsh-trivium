@@ -16,8 +16,9 @@
  *    guard inside rememberWorkspace()/writeSidecarHash(), which writePins()
  *    does not have.
  *
- * No DSH host is needed: these scripts only import from lib/ and never
- * lib/index.js, so they do not depend on the peer junctions link-dsh creates.
+ * No running DSH host is needed. Most scripts exercise lib/ directly; p25
+ * loads lib/index.js with the installed DSH peer packages and a controlled
+ * coordinator to verify the real pre-step wiring without model requests.
  */
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, readdirSync, rmSync } from "node:fs";

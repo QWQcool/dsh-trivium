@@ -106,15 +106,51 @@ async function panel() {
   return { flush, elements, text, take, reply, button, search, pending, requests, get confirmations() { return confirmations; } };
 }
 
-async function loaded() {
+async function loaded(nodes = [row("Displayed workspace A memory")], statusPatch = {}) {
   const p = await panel();
-  await p.reply(p.take("status"), status);
-  await p.reply(p.take("nodes"), { nodes: [row("Displayed workspace A memory")] });
+  await p.reply(p.take("status"), { ...status, ...statusPatch });
+  await p.reply(p.take("nodes"), { nodes });
   await p.reply(p.take("external"), { files: [] });
   return p;
 }
 
 const tests = [
+  ["Escape closes only the inner revision dialog and consumes the event", async () => {
+    const p = await loaded([{id:2,type:"decision",text:"old"},{id:3,type:"decision",text:"new"}]);
+    p.elements().find((el) => el.type === "button" && p.text(el) === "Replace…").props.onClick();
+    await p.flush();
+    const dialog = p.elements().find((el) => el.props.role === "dialog");
+    assert.ok(dialog, "replacement dialog opened");
+    let prevented = false, stopped = false;
+    assert.equal(typeof dialog.props.onKeyDown, "function");
+    dialog.props.onKeyDown({ key: "Escape", preventDefault() { prevented = true; }, stopPropagation() { stopped = true; } });
+    await p.flush();
+    assert.ok(prevented && stopped, "outer host dialog must not receive this Escape");
+    assert.ok(!p.elements().some((el) => el.props.role === "dialog"));
+  }],
+  ["a real revision history does not claim the node has no history", async () => {
+    const p = await loaded([{ id: 2, type: "decision", text: "Decision body" }]);
+    const title = p.elements().find((el) => el.type === "button" && p.text(el).trim() === "#2 decision");
+    title.props.onClick(); await p.flush();
+    await p.reply(p.take("nodes/2/detail"), { ok: true });
+    p.button("Decision history").props.onClick(); await p.flush();
+    await p.reply(p.take("nodes/2/history"), { nodes: [{id:3,type:"decision",isCurrent:true,l0:"Current"},{id:2,type:"decision",isCurrent:false,l0:"Old"}], total: 2 });
+    assert.doesNotMatch(p.text(), /No version history/);
+  }],
+  ["pending corrections explain disabled injection and insufficient budget", async () => {
+    const p = await loaded();
+    p.button("Recall check").props.onClick(); await p.flush();
+    await p.reply(p.take("recall-traces"), { traces: [] });
+    await p.reply(p.take("corrections"), { sessions: [{ sessionId:"test-session", pending:[{id:2,note:"changed",blockedReason:"channels-off"},{id:3,note:"changed again",blockedReason:"budget"}], sent:[] }] });
+    assert.match(p.text(), /Injection is off/);
+    assert.match(p.text(), /Waiting for enough budget/);
+    assert.doesNotMatch(p.text(), /Takes effect on the next message/);
+  }],
+  ["the settings panel surfaces a failed workspace sidecar", async () => {
+    const p = await loaded(undefined, { derived: { sidecar: { ok: false, error: "QA-file-blocked", cwd: A } } });
+    assert.match(p.text(), /QA-file-blocked/);
+    assert.ok(p.elements().some((el) => el.props.role === "alert"));
+  }],
   ["late list response cannot replace the latest search results", async () => {
     const p = await panel();
     await p.reply(p.take("status"), status);
