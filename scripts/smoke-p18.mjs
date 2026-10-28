@@ -118,8 +118,8 @@ try {
   check(/role: "dialog"/.test(src) && /"aria-modal": "true"/.test(src), "the confirm dialog is a modal dialog");
   check(/onKeyDown: revisionKeyDown/.test(src), "the revision dialog handles its own keyboard events (behavior in p24)");
   check(
-    /if \(previous && typeof previous\.focus === "function"\) previous\.focus\(\);/.test(src),
-    "focus returns to the trigger when the dialog closes",
+    /previous\.isConnected !== false/.test(src) && /panelHeadingRef\.current\.focus\(\)/.test(src),
+    "focus can return to the connected trigger or the panel after a filtered trigger disappears",
   );
   check(
     /disabled: revisionBusy \|\| !dialog\.successorId/.test(src),

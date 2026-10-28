@@ -91,8 +91,8 @@ async function panel() {
     assert.ok(i >= 0, "Expected request: " + path + "; pending: " + pending.map((r) => r.url.pathname));
     return pending.splice(i, 1)[0];
   }
-  async function reply(request, data, ok = true) {
-    request.resolve({ ok, status: ok ? 200 : 500, json: async () => data });
+  async function reply(request, data, ok = true, httpStatus = ok ? 200 : 500) {
+    request.resolve({ ok, status: httpStatus, json: async () => data });
     await flush();
   }
   const button = (label) => elements().find((el) => el.type === "button" && text(el) === label);
@@ -115,6 +115,60 @@ async function loaded(nodes = [row("Displayed workspace A memory")], statusPatch
 }
 
 const tests = [
+  ["a conflict preserves a disappeared target as a disabled comparison, not a valid new submission", async () => {
+    const p = await loaded([{id:2,type:"decision",text:"OLD"},{id:4,type:"decision",text:"KEPT TARGET BODY"}]);
+    p.elements().find((el) => el.type === "button" && p.text(el) === "Replace…").props.onClick(); await p.flush();
+    const dialog = () => p.elements().find((el) => el.props.role === "dialog");
+    const select = () => p.elements(dialog()).find((el) => el.type === "select");
+    select().props.onChange({ target: { value: "4" } }); await p.flush();
+    p.button("Confirm replacement").props.onClick(); await p.flush();
+    await p.reply(p.take("nodes/2/detail"), { id: 2, etag: "old" });
+    await p.reply(p.take("nodes/4/detail"), { id: 4, etag: "changed" });
+    await p.reply(p.take("nodes/2/supersede"), { ok:false,code:"archived",message:"Target archived" }, false, 409);
+    await p.reply(p.take("status"), status);
+    await p.reply(p.take("nodes"), { nodes:[{id:2,type:"decision",text:"OLD"}] });
+    await p.reply(p.take("external"), { files:[] });
+    assert.equal(select().props.value, "4");
+    assert.ok(p.elements(select()).some((el) => el.type === "option" && el.props.value === "4" && el.props.disabled));
+    assert.match(p.text(dialog()), /KEPT TARGET BODY/);
+    assert.equal(p.button("Confirm replacement").props.disabled, true);
+  }],
+  ["409 refreshes the filtered list and history without losing the dialog selection or retrying", async () => {
+    const old = { id: 2, type: "decision", text: "OLD FACT", name: "Original decision" };
+    const current = { id: 3, type: "decision", text: "CURRENT FACT" };
+    const alternative = { id: 4, type: "decision", text: "ALTERNATIVE FACT" };
+    const p = await loaded([old, current, alternative]);
+    const nodeTitle = (id) => p.elements().find((el) => el.type === "button" && p.text(el).trim().startsWith(`#${id} decision`));
+    nodeTitle(3).props.onClick(); await p.flush();
+    await p.reply(p.take("nodes/3/detail"), { id: 3, etag: "before" });
+    p.button("Decision history").props.onClick(); await p.flush();
+    const staleHistory = p.take("nodes/3/history");
+    p.elements().find((el) => el.type === "button" && p.text(el) === "Replace…").props.onClick();
+    await p.flush();
+    const dialog = () => p.elements().find((el) => el.props.role === "dialog");
+    const select = () => p.elements(dialog()).find((el) => el.type === "select");
+    select().props.onChange({ target: { value: "4" } }); await p.flush();
+    p.button("Confirm replacement").props.onClick(); await p.flush();
+    await p.reply(p.take("nodes/2/detail"), { id: 2, etag: "new-old", currentId: 3 });
+    await p.reply(p.take("nodes/4/detail"), { id: 4, etag: "new-alternative" });
+    await p.reply(p.take("nodes/2/supersede"), { ok: false, code: "already-superseded", message: "Already replaced" }, false, 409);
+    await p.reply(p.take("status"), status);
+    const list = p.take("nodes");
+    assert.equal(list.url.searchParams.has("superseded"), false, "keep the user's hide-history filter");
+    await p.reply(list, { nodes: [current, alternative] });
+    await p.reply(p.take("external"), { files: [] });
+    await p.reply(staleHistory, { nodes: [current], total: 1 });
+    assert.equal(select().props.value, "4", "preserve the user's chosen target");
+    assert.match(p.text(dialog()), /OLD FACT/, "the filtered old node remains a comparison snapshot in the dialog");
+    assert.doesNotMatch(p.text(dialog()), /#undefined/);
+    assert.equal(p.requests.filter((r) => r.url.pathname.endsWith("/supersede")).length, 1, "refresh must not submit a second write");
+    p.button("Cancel").props.onClick(); await p.flush();
+    assert.doesNotMatch(p.text(), /OLD FACT/, "the main list must no longer present the old decision as current");
+    nodeTitle(3).props.onClick(); await p.flush();
+    await p.reply(p.take("nodes/3/detail"), { id: 3, etag: "after" });
+    p.button("Decision history").props.onClick(); await p.flush();
+    p.take("nodes/3/history"); // A fresh request proves cached history was invalidated.
+  }],
   ["Escape closes only the inner revision dialog and consumes the event", async () => {
     const p = await loaded([{id:2,type:"decision",text:"old"},{id:3,type:"decision",text:"new"}]);
     p.elements().find((el) => el.type === "button" && p.text(el) === "Replace…").props.onClick();
