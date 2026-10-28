@@ -226,7 +226,7 @@ The kernel is still these four. Chips / session layer do not add a fifth tool.
 
 ## Screenshots
 
-Historical screenshots captured inside DSH Web (`0.1.1-rc.2`), illustrating the earlier Chinese UI. They do not establish 0.7.0 acceptance or show every current control. For versioned evidence and current limitations, see the [documentation index](docs/README.md). The plugin follows the host language unless you choose Chinese / English under **Settings**.
+Captured on 2026-10-28 inside DSH Web `0.2.1-rc.4` with `dsh-trivium@0.7.1`, Chinese host UI. They are a UI tour, not acceptance evidence — versioned proof and current limits stay in the [documentation index](docs/README.md). The plugin follows the host language unless you pick Chinese / English under **Settings → Trivium memory → Configuration**.
 
 ### Conversation — `ctx_find("鉴权")`
 
@@ -242,7 +242,7 @@ Session-start injects the short map; the model calls `ctx_find` and hits “auth
 
 <img width="560" alt="Settings config" src="docs/screenshots/04-settings.png">
 
-Check for updates sits above a collapsed **Configuration** fold (plugin language, injection strategy).
+Check for updates sits above a collapsed **Configuration** fold (plugin language, injection strategy). Below it are the **Memory entries** and **Recall check** tabs.
 
 ### Settings — extract, chips, Git sidecar
 
@@ -253,6 +253,14 @@ Nested under chips: **Session layer (plot canvas)**. Git sidecar, Markdown expor
 ### Settings — memory entries
 
 <img width="560" alt="Entry list" src="docs/screenshots/06-settings-list.png">
+
+Type filter, text search, and the **show stale** / **show superseded** toggles sit above the list; each card shows its own archive / delete actions.
+
+### Settings — recall check
+
+<img width="560" alt="Recall check" src="docs/screenshots/08-recall-check.png">
+
+The **Recall check** tab shows this turn's estimated budget, a read-only dry run of one query, the revision-chain check, pending / sent corrections, and the latest recall diagnostics. Opening it or running the dry run does not call the model and does not request embeddings.
 
 ### Chips — optional, next to Conversation / Trajectory
 
