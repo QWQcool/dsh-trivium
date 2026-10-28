@@ -1,0 +1,4 @@
+# Bin scripts are executed through their shebang on Unix; a CRLF shebang
+# breaks `/usr/bin/env node`. Keep .mjs LF even on Windows autocrlf checkouts,
+# and let pnpm validate them when packing.
+*.mjs text eol=lf
