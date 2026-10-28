@@ -16,6 +16,7 @@ import { tmpdir } from "node:os";
 
 import {
   closeAll,
+  describeDbFailure,
   formatHit,
   importGraph,
   insertNode,
@@ -365,6 +366,19 @@ try {
   check(reopened.get(rev100.id), "IO-21-04 an imported node survives a reopen");
   equal(successorOf(reopened, rev100.id), Number(rev200.id), "IO-21-04 the imported chain survives a reopen");
   check(reopened.get(afterImport), "IO-21-04 the later insert survives a reopen");
+
+  /* ------------------------------------------------------------ IO-21-06 */
+  // Two hosts on one workspace is a kernel-level single-writer limit, not a
+  // crash. The UI must not paste the raw TDB error at the user.
+  const locked = describeDbFailure(
+    new Error(
+      "TDB_ERROR: 数据库已锁定 (Database locked): Database '\\\\?\\C:\\work\\.dsh\\trivium.tdb' is already opened with an incompatible access mode",
+    ),
+  );
+  equal(locked?.code, "DB_LOCKED", "IO-21-06 a busy workspace is reported as a lock");
+  check(locked.message.includes("另一个 DeepSeek Harness"), "IO-21-06 the message names the other host");
+  check(!locked.message.includes("TDB_ERROR"), "IO-21-06 the raw TDB error is not the user-facing text");
+  equal(describeDbFailure(new Error("something else")), null, "IO-21-06 other errors keep their own message");
 
   console.log(`\nP21 0.5.1 correctness gate passed (${checks} checks)`);
 } finally {
