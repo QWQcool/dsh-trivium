@@ -264,7 +264,8 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 
 - If the model never calls `ctx_find` and no chips are checked, the window is mostly the opening short map.
 - Extraction misses things; dirty data can be archived / deleted on the chip strip or edited / merged in Settings.
-- Do not open the same `.tdb` from two Node processes at once (one `dsh web` is enough).
+- Do not open the same `.tdb` from two Node processes at once (one `dsh web` is enough). The panel now says so instead of showing the raw TDB error.
+- **Supported window width: 900 px and up.** At 390 px the host keeps a fixed 188 px settings sidebar, leaving ~154 px for the plugin column (~106 px cards); the layout collapses but is not readable. Phone-width support is intentionally not claimed.
 - Markdown export is for humans; it cannot be parsed back. Git-friendly write-back is `trivium.jsonl`, not Markdown. External import (WorkBuddy / Claude Code / Codex) is one-shot, not two-way sync, and does not ingest session jsonl dumps.
 - Do not merge `.tdb` in git (binary). Track `trivium.jsonl`; ignore `.tdb`. jsonl merge conflicts are ordinary text — resolve, then reopen the workspace.
 - The session layer (when on) projects compaction and fork; it does not split boxes by message count. If the window has not reached DSH’s compact line, **Update checkpoints** will not invent history boxes — use **Create checkpoint**.
@@ -277,6 +278,8 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 ---
 
 ## Changelog
+
+**0.5.1** — Correctness release for 0.5.0. A user turn is now booked by the text actually rendered, so three long chips can no longer ship 3 × ~217 tokens against one 300 allowance; commit is idempotent and an explicit zero budget stays zero. Version resolution returns the current node's own body, type, deadline and state instead of only its id, so a query matching a superseded decision no longer shows the old instruction under the new id. Imports plan URI identity and validate the whole resulting graph before one native transaction: two versions are never merged by similar text, no `supersedes` self-loop is written, and a failed transaction leaves no node, body or edge behind. When a delivered fact changes, the session that saw it gets a short correction notice (never the old body), scoped per workspace and consumed only after delivery. Kernel: `triviumdb@0.9.0-beta.3` (pinned prerelease). Windows are supported from 900 px upward; at 390 px the host's 188 px settings sidebar leaves ~154 px for the panel, which is not readable (it does not scroll horizontally). Upgrade note: `until` values written by 0.4.21 from prose dates are not rewritten automatically — clear them with **Show expired decisions** or `ctx_remember` with `until: ""`.
 
 **0.5.0** — Memory you can audit. Chips and recall now share **one** 300-token allowance per user turn instead of clipping to 300 each, the same node can no longer appear twice, and a tool loop no longer re-injects inside one turn. The delivery ledger is keyed by host message ids, so a failed send is retried and compaction rebuilds, while a fork inherits neither the ledger nor the pins. `ctx_find` is capped at ~1200 estimated tokens with whole-record truncation, and `ctx_read` projects a field allowlist so new metadata cannot grow its output.
 
