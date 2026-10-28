@@ -22,11 +22,14 @@ import {
   insertNode,
   nodeCountOf,
   openWorkspaceDb,
+  openWorkspaceDbReadOnly,
   searchNodes,
   successorOf,
 } from "../lib/store.js";
-import { makeRevisionResolver, supersede } from "../lib/revisions.js";
+import { makeRevisionResolver, revokeSupersession, supersede } from "../lib/revisions.js";
+import { checkRevisionIntegrity } from "../lib/integrity.js";
 import {
+  fingerprintOf,
   renderContextRecords,
   selectContextRecords,
   TURN_ADDITIONAL_BUDGET,
@@ -36,9 +39,11 @@ import {
   clearAfterCompaction,
   commit,
   deliveredOf,
+  pendingCorrections,
   remainingOf,
   reserve,
   resetAll,
+  setSessionWorkspace,
   spentOf,
 } from "../lib/turn-ledger.js";
 import { pinCandidates } from "../lib/pins.js";
@@ -53,6 +58,9 @@ const W2 = join(root, "ws-version");
 const W3 = join(root, "ws-import");
 const W4 = join(root, "ws-import-tx");
 const W5 = join(root, "ws-sidecar");
+const W6 = join(root, "ws-correction");
+const W7 = join(root, "ws-integrity");
+const W8 = join(root, "ws-other");
 
 let checks = 0;
 function check(value, message) {
@@ -208,6 +216,126 @@ try {
   equal(pinPlan.records[0].id, oldId, "CTX-21-02 a manual pin keeps its own id");
   check(String(pinPlan.records[0].l0).includes("CookieLegacy"), "CTX-21-02 a manual pin keeps its own body");
   check(pinPlan.records[0].historical === true, "CTX-21-02 a manual pin is marked historical");
+
+  /* ------------------------------------------------------------ CTX-21-03 */
+  // A fact that was delivered and then superseded must produce a short notice,
+  // not a silent stop and not the old body again.
+  const db6 = await openWorkspaceDb(W6);
+  const corOld = insertNode(db6, {
+    type: "decision",
+    name: "部署方式",
+    text: "旧部署方式使用单机进程。",
+    uri: "ctx://decision/cor-old",
+  });
+  const corNew = insertNode(db6, {
+    type: "decision",
+    name: "部署方式",
+    text: "新部署方式使用多副本。",
+    uri: "ctx://decision/cor-new",
+  });
+  const corSession = "sess-correction";
+  const corTurn = "uid:turn-correction";
+  beginTurn(corSession, corTurn);
+  const deliveredPlan = selectContextRecords({
+    recall: [{ id: corOld, type: "decision", l0: "旧部署方式使用单机进程。" }],
+    budget: 300,
+  });
+  const deliveredReservation = reserve(corSession, corTurn, deliveredPlan.records, {
+    totalTokens: deliveredPlan.tokens,
+  });
+  commit(deliveredReservation);
+  equal(deliveredReservation.tokens > 0, true, "CTX-21-03 the old fact was delivered first");
+
+  const corLinked = supersede(db6, {
+    oldId: corOld,
+    successorId: corNew,
+    reason: "改多副本",
+    operationId: "op-p21-03",
+  });
+  check(corLinked.ok, "CTX-21-03 the fixture really linked the two decisions");
+  const corPending = pendingCorrections(corSession);
+  equal(corPending.length, 1, "CTX-21-03 supersession queues one correction");
+  check(String(corPending[0].l0).includes(`#${corNew}`), "CTX-21-03 the notice names the successor");
+  check(
+    !String(corPending[0].l0).includes("旧部署方式"),
+    "CTX-21-03 the notice does not resend the old body",
+  );
+
+  const corPlan = selectContextRecords({ corrections: corPending, budget: 300 });
+  equal(corPlan.records.length, 1, "CTX-21-03 the correction is selected");
+  equal(corPlan.records[0].channel, "correction", "CTX-21-03 it has its own channel");
+  const corRendered = renderContextRecords(corPlan);
+  check(
+    corRendered.corrections.text.includes("memory corrections"),
+    "CTX-21-03 the correction gets a dedicated message block",
+  );
+  check(
+    !corRendered.recall.text.includes("memory corrections"),
+    "CTX-21-03 it is not mixed into the recall block",
+  );
+  check(
+    !corRendered.corrections.text.includes("旧部署方式"),
+    "CTX-21-03 the rendered notice still carries no old body",
+  );
+  const corReservation = reserve(corSession, corTurn, corPlan.records, { totalTokens: corRendered.total });
+  commit(corReservation);
+  equal(pendingCorrections(corSession).length, 0, "CTX-21-03 a delivered correction is consumed");
+
+  // A correction that does not fit stays pending for the next turn.
+  const corRevoked = revokeSupersession(db6, { oldId: corOld, successorId: corNew });
+  check(corRevoked.ok, "CTX-21-03 the fixture could revoke the relation");
+  equal(pendingCorrections(corSession).length, 1, "CTX-21-03 revoke queues a new correction");
+  const zeroCorrection = selectContextRecords({ corrections: pendingCorrections(corSession), budget: 0 });
+  equal(zeroCorrection.records.length, 0, "CTX-21-03 a zero budget defers the correction");
+  equal(
+    pendingCorrections(corSession).length,
+    1,
+    "CTX-21-03 a deferred correction is not consumed",
+  );
+
+  /* ------------------------------------------------------------ CTX-21-04 */
+  const fpBase = fingerprintOf(7, "同一段正文", { type: "decision" });
+  const fpUntil = fingerprintOf(7, "同一段正文", { type: "decision", until: "2099-01-01" });
+  check(fpBase !== fpUntil, "CTX-21-04 a deadline change changes the fingerprint");
+  const statePlan = selectContextRecords({
+    recall: [{ id: 7, type: "decision", l0: "同一段正文", until: "2099-01-01" }],
+    budget: 300,
+    delivered: new Set([fpBase]),
+  });
+  equal(statePlan.records.length, 1, "CTX-21-04 a state change is not a same-turn duplicate");
+
+  /* ------------------------------------------------------------ CTX-21-05 */
+  // Node ids are per database. A change in W6 must not notify a session that
+  // was shown the same numeric id in another workspace.
+  const db8 = await openWorkspaceDb(W8);
+  insertNode(db8, {
+    type: "decision",
+    name: "另一库",
+    text: "另一个库里的同号决策。",
+    uri: "ctx://decision/other-db",
+  });
+  const sessA = "sess-cwd-a";
+  const sessB = "sess-cwd-b";
+  setSessionWorkspace(sessA, W6);
+  setSessionWorkspace(sessB, W8);
+  for (const sid of [sessA, sessB]) {
+    beginTurn(sid, "uid:turn-cwd");
+    const plan = selectContextRecords({
+      recall: [{ id: corOld, type: "decision", l0: "旧部署方式使用单机进程。" }],
+      budget: 300,
+    });
+    commit(reserve(sid, "uid:turn-cwd", plan.records, { totalTokens: plan.tokens }));
+  }
+  // corOld is current again after the revoke above.
+  const relinked = supersede(db6, {
+    oldId: corOld,
+    successorId: corNew,
+    reason: "隔离验证",
+    operationId: "op-p21-05",
+  });
+  check(relinked.ok, "CTX-21-05 the fixture linked again");
+  equal(pendingCorrections(sessA).length, 1, "CTX-21-05 the same-workspace session is notified");
+  equal(pendingCorrections(sessB).length, 0, "CTX-21-05 another workspace with the same id is not");
 
   /* ------------------------------------------------------------ IO-21-01 */
   const db3 = await openWorkspaceDb(W3);
@@ -379,6 +507,82 @@ try {
   check(locked.message.includes("另一个 DeepSeek Harness"), "IO-21-06 the message names the other host");
   check(!locked.message.includes("TDB_ERROR"), "IO-21-06 the raw TDB error is not the user-facing text");
   equal(describeDbFailure(new Error("something else")), null, "IO-21-06 other errors keep their own message");
+
+  /* ------------------------------------------------------------ IO-21-07 */
+  // The checker must find damage without repairing it. The damage is injected
+  // directly into a disposable workspace, not through the public API.
+  const db7 = await openWorkspaceDb(W7);
+  const healthOld = insertNode(db7, {
+    type: "decision",
+    name: "体检旧",
+    text: "体检用的旧决策。",
+    uri: "ctx://decision/health-old",
+  });
+  const healthNew = insertNode(db7, {
+    type: "decision",
+    name: "体检新",
+    text: "体检用的新决策。",
+    uri: "ctx://decision/health-new",
+  });
+  check(
+    supersede(db7, { oldId: healthOld, successorId: healthNew, operationId: "op-p21-07" }).ok,
+    "IO-21-07 a healthy chain was created",
+  );
+  const healthy = checkRevisionIntegrity(db7);
+  equal(healthy.ok, true, "IO-21-07 a healthy chain passes the check");
+  equal(healthy.edges, 1, "IO-21-07 only the revision edge is counted");
+
+  insertNode(db7, { type: "decision", name: "重复一", text: "重复 URI 的第一条。", uri: "ctx://decision/dup" });
+  insertNode(db7, { type: "decision", name: "重复二", text: "重复 URI 的第二条。", uri: "ctx://decision/dup" });
+  const forkOld = insertNode(db7, { type: "decision", name: "分叉旧", text: "分叉的旧决策。", uri: "ctx://decision/fork-old" });
+  const forkOne = insertNode(db7, { type: "decision", name: "分叉一", text: "分叉的第一个新决策。", uri: "ctx://decision/fork-1" });
+  const forkTwo = insertNode(db7, { type: "decision", name: "分叉二", text: "分叉的第二个新决策。", uri: "ctx://decision/fork-2" });
+  db7.link(forkOne, forkOld, "supersedes", 0.8);
+  db7.link(forkTwo, forkOld, "supersedes", 0.8);
+  const cycleA = insertNode(db7, { type: "decision", name: "环一", text: "环里的第一条决策。", uri: "ctx://decision/cycle-a" });
+  const cycleB = insertNode(db7, { type: "decision", name: "环二", text: "环里的第二条决策。", uri: "ctx://decision/cycle-b" });
+  db7.link(cycleA, cycleB, "supersedes", 0.8);
+  db7.link(cycleB, cycleA, "supersedes", 0.8);
+  const selfNode = insertNode(db7, {
+    type: "decision",
+    name: "自环",
+    text: "指向自己的决策。",
+    uri: "ctx://decision/self",
+  });
+  let selfLinked = false;
+  try {
+    // A separate node: a self edge on one of the cycle nodes would turn that
+    // node into a fork and hide the two-node cycle behind it.
+    db7.link(selfNode, selfNode, "supersedes", 0.8);
+    selfLinked = true;
+  } catch {
+    // the kernel may refuse a self edge; the other checks still apply
+  }
+  db7.flush();
+  const beforeCheck = nodeCountOf(db7);
+  const damaged = checkRevisionIntegrity(db7);
+  const codes = new Set(damaged.issues.map((issue) => issue.code));
+  check(!damaged.ok, "IO-21-07 damaged chains are reported");
+  check(codes.has("duplicate-uri"), "IO-21-07 duplicate URIs are reported");
+  check(codes.has("fork-predecessor"), "IO-21-07 a fork on the old node is reported");
+  check(codes.has("cycle"), "IO-21-07 a cycle is reported");
+  if (selfLinked) check(codes.has("self-loop"), "IO-21-07 a self loop is reported");
+  equal(nodeCountOf(db7), beforeCheck, "IO-21-07 the checker does not modify the graph");
+  equal(typeof damaged.nodes, "number", "IO-21-07 the report carries the scanned size");
+
+  closeAll();
+  const readOnlyDb = openWorkspaceDbReadOnly(W7);
+  const readOnlyReport = checkRevisionIntegrity(readOnlyDb);
+  equal(
+    readOnlyReport.issues.length,
+    damaged.issues.length,
+    "IO-21-07 a read-only open sees the same damage",
+  );
+  try {
+    readOnlyDb.close?.();
+  } catch {
+    // closing a read-only handle is best effort
+  }
 
   console.log(`\nP21 0.5.1 correctness gate passed (${checks} checks)`);
 } finally {
