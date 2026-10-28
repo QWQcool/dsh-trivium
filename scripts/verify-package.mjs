@@ -21,7 +21,10 @@ try {
   const pkg = require("dsh-trivium/package.json");
   const sourcePkg = JSON.parse(readFileSync(new URL("../package.json",import.meta.url),"utf8"));
   assert.equal(pkg.version,sourcePkg.version);
-  assert.equal(require("triviumdb/package.json").version,"0.8.11");
+  // The kernel is pinned in package.json; a hard-coded version here silently
+  // rots every time the pin moves (it said 0.8.11 while the pin was 0.9 beta).
+  const expectedKernel = String(sourcePkg.dependencies?.triviumdb || "").trim();
+  assert.equal(require("triviumdb/package.json").version, expectedKernel, "installed kernel matches the pin");
   const plugin = await load("index.js");
   assert.equal(typeof plugin.apply,"function");
   assert.equal(plugin.producerSource({form:"snapshot"}).kind,"plugin:dsh-trivium");
@@ -99,12 +102,47 @@ try {
   );
   const secondInjected = (second.messages || []).length;
   assert.ok(secondInjected <= injected.length, "same turn injected again");
-  void seeded;
+
+  /*
+   * REVIEW P1-1: one user turn must stay within 300 across tool steps. Three
+   * long chips used to book 0 each and ship 3 x ~217. This drives the real
+   * pre-step path with the real ledger, so a record without a token cost fails
+   * here instead of only in a hand-built fixture.
+   */
+  const { insertNode } = await load("store.js");
+  const { writePins } = await load("settings.js");
+  writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ recallMode: "auto", chipsEnabled: true }), "utf8");
+  const longSentence = "鉴权方案统一改为在请求头携带会话凭据，并在网关侧校验签名，旧版登录态在过渡期继续兼容。";
+  const pinnedIds = [];
+  for (let i = 0; i < 3; i += 1) {
+    pinnedIds.push(insertNode(seeded, {
+      type: "decision",
+      name: `预算验收${i + 1}`,
+      text: `${longSentence}${longSentence}${longSentence}${longSentence}批次${i + 1}。`,
+      uri: `ctx://decision/verify-budget-${i + 1}`,
+    }));
+  }
+  writePins("s-pre-budget", pinnedIds);
+  const budgetSession = { id: "s-pre-budget", header: { cwd: join(root, "workspace") } };
+  const budgetMessage = { id: "turn-budget-verify", source: { kind: "user" }, content: [{ type: "text", text: "预算" }] };
+  let sentTokens = 0;
+  for (let step = 0; step < 3; step += 1) {
+    const result = await handlers.get("agent/pre-step")(
+      { agent: { session: budgetSession }, messages: [budgetMessage] },
+      async () => ({ kind: "enter", messages: [] }),
+    );
+    const texts = (result.messages || [])
+      .map((m) => (Array.isArray(m.content) ? m.content.map((c) => c.text).join("") : ""))
+      .filter(Boolean);
+    sentTokens += texts.reduce((sum, text) => sum + estimateTokens(text), 0);
+  }
+  assert.ok(sentTokens > 0, "the long-chip fixture injected nothing");
+  assert.ok(sentTokens <= 300, `one user turn exceeded 300 estimated tokens (sent=${sentTokens})`);
 
   console.log(JSON.stringify({
     package:pkg.name,version:pkg.version,kernel:require("triviumdb/package.json").version,
     hostPeers:{llm:require("@deepseek-ai/dsh-llm/package.json").version,tools:require("@deepseek-ai/dsh-tools/package.json").version},
-    checks:["package version","native binding","host module import","v4 source shape","four tool registrations","explicit expiry","history/current-only search","multiword search","clear expiry","runtime pre-step injection","same-turn de-duplication"],
+    checks:["package version","native binding","host module import","v4 source shape","four tool registrations","explicit expiry","history/current-only search","multiword search","clear expiry","runtime pre-step injection","same-turn de-duplication","cumulative turn budget"],
     status:"passed",
   },null,2));
 } finally {
