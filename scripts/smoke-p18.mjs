@@ -64,6 +64,7 @@ try {
     "/recall-preview",
     "/corrections",
     "/integrity",
+    "/turn",
   ];
   for (const endpoint of endpoints) {
     check(src.includes(endpoint), `the panel uses ${endpoint}`);
@@ -83,8 +84,8 @@ try {
     "detail is fetched on expand, not on list load",
   );
   check(
-    /if \(tab === "recall"\) \{\s*loadTraces\(\);\s*loadCorrections\(\);\s*\}/.test(src),
-    "traces and corrections are fetched only while the recall tab is open",
+    /if \(tab === "recall"\) \{\s*loadTraces\(\);\s*loadCorrections\(\);\s*loadTurn\(\);\s*\}/.test(src),
+    "delivery records, traces and corrections are fetched only while the recall tab is open",
   );
 
   /* ------------------------------------------------------------ accessibility */

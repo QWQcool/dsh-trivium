@@ -339,6 +339,44 @@ const tests = [
     assert.ok(failed, "the failure is still reported as a receipt");
     assert.match(p.text(failed), /BAD_JSON/, "the local parse failure has its own code");
   }],
+  ["this turn shows only delivered blocks and explains its own emptiness", async () => {
+    const p = await loaded();
+    await p.tabs()[1].props.onClick();
+    await p.flush();
+    await p.reply(p.take("recall-traces"), { traces: [] });
+    await p.reply(p.take("corrections"), { sessions: [] });
+    await p.reply(p.take("turn"), {
+      ok: true,
+      budget: 300,
+      sessions: [
+        {
+          sessionId: "s1",
+          turnKey: "uid:7f3a",
+          spent: 126,
+          records: [{ id: 2, type: "preference", channel: "recall", tokens: 61, l0: "delivered body" }],
+          corrections: { pending: [{ id: 9, note: "changed" }], sent: [] },
+        },
+      ],
+    });
+    const live = p.elements().find((el) => el.props["data-turn-section"] === "live");
+    assert.ok(live, "the delivered-turn section renders from the ledger");
+    assert.match(p.text(live), /delivered body/, "only the real delivery is listed");
+    assert.match(p.text(live), /126/, "the budget bar uses the ledger's spent estimate");
+    assert.match(p.text(live), /Corrections waiting/, "pending corrections are surfaced next to the delivery");
+    assert.match(p.text(live), /Candidates are not deliveries/, "the panel keeps candidates and deliveries apart");
+  }],
+  ["an empty ledger says so instead of inventing history", async () => {
+    const p = await loaded();
+    await p.tabs()[1].props.onClick();
+    await p.flush();
+    await p.reply(p.take("recall-traces"), { traces: [] });
+    await p.reply(p.take("corrections"), { sessions: [] });
+    await p.reply(p.take("turn"), { ok: true, budget: 300, sessions: [] });
+    const empty = p.elements().find((el) => el.props["data-turn-section"] === "empty");
+    assert.ok(empty, "the section renders the empty state");
+    assert.match(p.text(empty), /No delivery record/, "a restart is stated, not faked");
+    assert.match(p.text(empty), /process/, "the panel says the ledger is process-local");
+  }],
   ["permanent deletion confirms the exact object before any request", async () => {
     const p = await loaded();
     p.setConfirm(false);
