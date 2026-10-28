@@ -14,7 +14,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。0.7.0 发布验收使用 Web `0.2.1-rc.4`；桌面 `0.2.1-rc.3` 的记录是预览代码的 API 验证，不代表正式 tarball 的完整 UI 验收。当前基线和证据见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`，内核精确锁定 `triviumdb@0.9.0-beta.3`。
+> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前使用 Web `0.2.1-rc.4` 验证；桌面 `0.2.1-rc.3` 的验证层级和局限见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`，内核精确锁定 `triviumdb@0.9.0-beta.3`。
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -177,7 +177,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 | **抽取** | 开 | compaction / 空闲后写入。 |
 | **embedding** | 关 | 要填 URL 并点「保存设置」，改 URL 后重启。 |
 
-注入细节：autoRecall 在本步含用户文本时最多灌 3 条 L0；实体名折中只在话里点到已有实体时灌 1 跳业务边邻居。芯片钉选优先占预算。抽取失败进 pending，下次 session-start 重放（每批正文 ≤3000 字、最多 24 条）。
+注入细节：autoRecall 在本步含用户文本时最多灌 3 条 L0；实体名折中只在话里点到已有实体时灌 1 跳业务边邻居。已送达事实的更正先占共享预算，其次是芯片和召回。注入关闭或同轮预算不足时，更正保留并显示原因，不承诺下一条必定送达。后续 pre-step 会检查已送达决策是否自然到期；没有后台计时器，重启会清空投递账本。抽取失败进 pending，下次 session-start 重放（每批正文 ≤3000 字、最多 24 条）。
 
 - **条目** — 可搜、按类型筛、展开业务边邻居、「只看挂在这上面的」、默认隐藏过期决策。可改名 / 改正文 / 别名 / until，同类型合并，归档或删除。
 - **导出导入** — JSON 是真回写。Markdown 只读投影（给人看）。给 git 用的是 `.dsh/trivium.jsonl`（业务事实，自动写）。WorkBuddy `MEMORY.md`、Claude Code `CLAUDE.md`、Codex `AGENTS.md` 可一次性严导入。不监视那些文件，不导入会话 jsonl。
@@ -277,6 +277,8 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 更新说明
 
+**0.7.1** — 可靠性修复。JSON/JSONL 共用身份映射、整图预检和事实事务，失败输入保留且可恢复；归档版本链可完整往返。修复连续更正、自然到期、过期投影和 32 跳边界，更正优先使用原有共享预算；关闭注入仍保留待发状态。旁路健康和运行诊断按工作区返回，设置页读写固定到所显示的库，修复搜索响应竞态、键盘展开和嵌套弹窗。期限清理 dry-run 真正只读。数据格式、四工具与默认开关保持不变，详情见 [0.7.1 发布说明](docs/release-0.7.1.md)。
+
 **0.7.0** — 可观测性版本。设置 → 召回检查现在按会话列出待发送与最近已发送的更正（按工作区过滤），并新增「检查版本链」按钮，复用 `dsh-trivium-check` 的只读检查。新增只读接口：`GET /api/dsh-trivium/corrections`、`GET /api/dsh-trivium/integrity`。新增故障注入回归：旁路写入失败会被 health 报告，重开时由 `bootstrap-write` 修复；README 补充桌面端 `EPIPE` 的宿主侧说明。记忆格式、默认值与四工具面均未变。
 
 **0.6.0** — 维护版本。只读版本链体检与过期期限清理现在随包分发：`dsh-trivium-check`、`dsh-trivium-clear-until`（默认只列不改；`--apply` 只清「期限同时出现在正文里」的那些，`--all` 清所有过期期限）。此前 0.5.1 的说明让用户运行 `scripts/check-integrity.mjs`，但该脚本并不在 npm 包里。本版同时固化两项验收：轮标识取自宿主自己的用户消息 id（已在真实会话日志中确认），以及真实第二窗口带过期 ETag 会得到 409、刷新后成功。默认值与数据格式均未变。
@@ -366,7 +368,7 @@ peer 范围显式接受已支持的 DSH `0.1.5`、`0.2.0`、`0.2.1` RC 版本线
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 包版本：`0.7.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- 包版本：`0.7.1` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.2.1-rc.4`（peer 范围同时接受 0.1.x 各线）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

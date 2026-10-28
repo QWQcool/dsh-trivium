@@ -16,7 +16,7 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 ## Installation
 
-> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. The 0.7.0 release was exercised on Web `0.2.1-rc.4`; the desktop `0.2.1-rc.3` record covers preview-code APIs, not full UI acceptance of the published tarball. See the [current baseline and evidence index](docs/README.md). Node must satisfy `^22.19.0 || >=24`; `triviumdb` is pinned to `0.9.0-beta.3`.
+> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. Current Web verification uses `0.2.1-rc.4`; see the [baseline and evidence index](docs/README.md) for desktop `0.2.1-rc.3` coverage and limitations. Node must satisfy `^22.19.0 || >=24`; `triviumdb` is pinned to `0.9.0-beta.3`.
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -181,7 +181,7 @@ Settings → **Trivium memory** manages the store. Check for updates sits at the
 | **Extract** | on | Write from compaction / idle. |
 | **Embedding** | off | Needs **Save** plus a URL; restart after changing the URL. |
 
-Injection detail: autoRecall injects at most 3 L0 hits when the step has user text; entity-name path injects 1-hop business neighbors only when the utterance names an existing entity. Checked chips share the budget and win first. Extract runs after `compaction/end` and a short idle; failures go to pending and replay on the next session-start (body ≤3000 chars, at most 24 items).
+Injection detail: autoRecall injects at most 3 L0 hits when the step has user text; entity-name path injects 1-hop business neighbors only when the utterance names an existing entity. Corrections for delivered facts take priority, followed by checked chips and recall, all within the same allowance. Disabled injection or insufficient budget keeps notices pending with a reason; delivery on the next message is not guaranteed. Later pre-steps detect expiry of delivered decisions; there is no background timer and the ledger clears on restart. Extract runs after `compaction/end` and a short idle; failures go to pending and replay on the next session-start (body ≤3000 chars, at most 24 items).
 
 - **Entries** — search, filter by type, expand business-edge neighbors, “only nodes hanging on this one”, hide expired decisions by default. Rename / edit body / aliases / until, merge same type, archive or delete.
 - **Export / import** — JSON is a real round-trip. Markdown is a read-only projection (for people). Git sync uses `.dsh/trivium.jsonl` (business facts, auto). One-shot strict import from WorkBuddy `MEMORY.md`, Claude Code `CLAUDE.md`, and Codex `AGENTS.md`. No watch of those files, no session jsonl dumps.
@@ -281,6 +281,8 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 
 ## Changelog
 
+**0.7.1** — Reliability fixes. JSON/JSONL share URI mapping, final-graph validation and a fact transaction; rejected input is preserved and recoverable, including archived revision history. Fix repeated corrections, clock-only expiry, stale projections and the 32-hop boundary. Corrections take priority within the existing shared budget; disabling injection still retains pending notices. Sidecar health and runtime diagnostics are scoped to the workspace. Settings requests stay bound to the displayed store; search races, keyboard expansion and nested dialogs are fixed. The deadline cleaner's dry run is now truly read-only. Data formats, four tools and defaults are unchanged. See the [release notes](docs/release-0.7.1.md).
+
 **0.7.0** — Observability release. Settings → Recall check now lists pending and recently delivered corrections per session, scoped to the workspace, and adds a **Check version chains** button that runs the same read-only check as `dsh-trivium-check`. New read-only endpoints: `GET /api/dsh-trivium/corrections` and `GET /api/dsh-trivium/integrity`. A fault-injection regression now proves a sidecar write failure is reported by health and repaired by `bootstrap-write` on reopen, and the README documents the host-side desktop `EPIPE`. Memory format, defaults and the four-tool surface are unchanged.
 
 **0.6.0** — Maintenance release. The read-only revision checker and the stale-deadline cleaner now ship with the package as `dsh-trivium-check` and `dsh-trivium-clear-until` (dry run by default; `--apply` clears only deadlines also present in the body, `--all` clears every stale one). The checker previously existed only in the Git checkout even though the 0.5.1 notes told users to run it. This release also pins two verifications: turn identity comes from the host's own user-message id (checked in a real session log), and a genuine second-window attempt with a stale ETag returns 409 and succeeds after refresh. No defaults or data formats changed.
@@ -370,7 +372,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Package version: `0.7.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Package version: `0.7.1` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.1-rc.4` (the peer range also admits the 0.1.x lines)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

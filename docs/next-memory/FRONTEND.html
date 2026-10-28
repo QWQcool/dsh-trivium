@@ -16,6 +16,7 @@ dialog{width:min(710px,calc(100vw - 32px));padding:0;border:1px solid var(--line
 </style>
 </head>
 <body>
+<aside class="scenario-note" role="note" style="padding-top:16px">历史交互原型：预算、compaction、版本长度及宿主宽度演示不代表现行实现。请先读 <a href="../frontend-prototype-review-2026-10-28.md">原型对照报告</a>；下一批 B1 将另建 0.8 原型。</aside>
 <header class="reference-bar">
  <div class="reference-title"><span class="ref-mark">T</span><div><strong>Trivium · 前端实施参考</strong><p>离线交互原型 / 示例数据 / 不读写真实记忆</p></div></div>
  <div class="reference-tools"><label class="small-text muted" for="scenario">演示场景</label><select id="scenario"><option value="both">芯片 + 自动召回</option><option value="off">默认：两者关闭</option><option value="repeat">同一轮的第二个步骤</option><option value="compact">压缩后重建</option><option value="long">超长摘要与预算不足</option><option value="missing">缺少来源</option><option value="unavailable">来源会话已不可用</option><option value="error">数据库暂不可用</option></select><button id="toggle-notes" aria-pressed="false">显示设计标注</button><button id="theme-toggle" aria-pressed="false">暗色预览</button></div>
