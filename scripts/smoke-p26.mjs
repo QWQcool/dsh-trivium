@@ -275,6 +275,10 @@ const tests = [
     assert.match(p.text(saved), /created 3/, "counts come from the response, not from a guess");
     assert.match(p.text(saved), /derived maintenance failed/, "a failed sidecar write is stated next to the committed facts");
     assert.match(p.text(saved), /Do not re-import/, "the recovery text does not invite a duplicate write");
+    assert.ok(
+      !p.elements().some((el) => el.props["data-receipt-state"] === "waiting"),
+      "the preview waiting receipt is withdrawn when the commit starts",
+    );
     assert.ok(!p.elements().some((el) => el.props["data-import-preview"]), "the panel closes after the commit");
   }],
   ["cancelling a preview sends no commit and no write receipt", async () => {
@@ -379,12 +383,45 @@ const tests = [
   }],
   ["permanent deletion confirms the exact object before any request", async () => {
     const p = await loaded();
-    p.setConfirm(false);
     p.button("Delete").props.onClick();
     await p.flush();
-    assert.equal(p.confirmations, 1, "deletion still asks for confirmation");
+    const dialog = p.elements().find((el) => el.props.role === "alertdialog");
+    assert.ok(dialog, "the panel renders its own confirmation instead of a native dialog");
+    assert.match(p.text(dialog), /#2/, "the dialog names the exact object");
+    p.elements().find((el) => el.type === "button" && p.text(el) === "Cancel").props.onClick();
+    await p.flush();
     assert.ok(!p.pending.some((r) => r.url.pathname.endsWith("/delete")), "cancelled deletion sends nothing");
     assert.ok(!p.elements().some((el) => el.props["data-receipt-action"] === "delete"), "no receipt for a cancelled action");
+    assert.ok(!p.elements().some((el) => el.props.role === "alertdialog"), "cancelling closes the confirmation");
+  }],
+  ["an explicit settings save produces its own receipt", async () => {
+    const p = await loaded();
+    const fold = p.elements().find((el) => el.type === "button" && p.text(el).startsWith("Settings"));
+    assert.ok(fold, "the configuration fold exists");
+    fold.props.onClick();
+    await p.flush();
+    // Opening the fold persists configPanelOpen; answer that write before the
+    // explicit save so its button is not in the busy label.
+    await p.reply(p.take("settings"), { ok: true });
+    await p.reply(p.take("status"), { ...status });
+    await p.reply(p.take("nodes"), { nodes: [row(2, "after fold")] });
+    await p.reply(p.take("external"), { files: [] });
+    const save = p.button("Save settings");
+    assert.ok(save, "the save control lives with the settings it writes");
+    save.props.onClick();
+    await p.flush();
+    const pending = p.elements().find(
+      (el) => el.props["data-receipt-action"] === "settings" && el.props["data-receipt-state"] === "pending",
+    );
+    assert.ok(pending, "a settings save is pending before the server answers");
+    await p.reply(p.take("settings"), { ok: true });
+    await p.reply(p.take("status"), { ...status });
+    await p.reply(p.take("nodes"), { nodes: [row(2, "after settings")] });
+    await p.reply(p.take("external"), { files: [] });
+    const saved = p.elements().find(
+      (el) => el.props["data-receipt-action"] === "settings" && el.props["data-receipt-state"] === "saved",
+    );
+    assert.ok(saved, "the settings receipt becomes committed only after the response");
   }],
 ];
 

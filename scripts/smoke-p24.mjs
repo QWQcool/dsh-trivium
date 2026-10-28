@@ -256,7 +256,11 @@ const tests = [
     const p = await loaded();
     p.button("Delete").props.onClick();
     await p.flush();
-    assert.equal(p.confirmations, 1, "settings deletion requests confirmation, like Chips does");
+    const dialog = p.elements().find((el) => el.props.role === "alertdialog");
+    assert.ok(dialog, "settings deletion asks for confirmation in-panel, like Chips does");
+    assert.match(p.text(dialog), /#2/, "the confirmation names the object");
+    p.elements().find((el) => el.type === "button" && p.text(el) === "Cancel").props.onClick();
+    await p.flush();
     assert.ok(!p.requests.some((r) => r.url.pathname.endsWith("/delete")));
   }],
   ["mutation completion refreshes the current search rather than an older closure", async () => {
