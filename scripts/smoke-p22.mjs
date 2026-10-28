@@ -1,5 +1,6 @@
 /**
- * 0.6.0 maintenance gate.
+ * Maintenance gate (packaging, turn identity, corrections UI data, sidecar
+ * recovery, deadline cleanup).
  *
  *   PKG-22   the read-only checker and the deadline cleaner ship in the package
  *   TURN-22  a rebuilt message object with the same id stays the same user turn
@@ -11,13 +12,31 @@
  */
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
-import { closeAll, insertNode, openWorkspaceDb } from "../lib/store.js";
+import { closeAll, insertNode, openWorkspaceDb, searchNodes } from "../lib/store.js";
 import { turnKeyOf } from "../lib/context-budget.js";
+import {
+  beginTurn,
+  commit,
+  correctionSessions,
+  queueCorrection,
+  reserve,
+  resetAll,
+  setSessionWorkspace,
+} from "../lib/turn-ledger.js";
+import {
+  SIDECAR_DEBOUNCE_MS,
+  flushSidecarNow,
+  scheduleSidecarWrite,
+  sidecarHealth,
+  sidecarPath,
+  syncSidecarOnOpen,
+} from "../lib/sidecar.js";
+import { writeUiSettings } from "../lib/settings.js";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const scripts = join(ROOT, "scripts");
@@ -63,6 +82,29 @@ try {
   const anonymous = { source: { kind: "user" } };
   equal(turnKeyOf([anonymous]), turnKeyOf([anonymous]), "TURN-22 the same object stays the same turn");
   check(turnKeyOf([anonymous]) !== turnKeyOf([{ source: { kind: "user" } }]), "TURN-22 two anonymous objects stay separate turns");
+
+  /* ------------------------------------------------------------ CORR-22 */
+  resetAll();
+  setSessionWorkspace("sess-corr", root);
+  beginTurn("sess-corr", "uid:corr-1");
+  queueCorrection("sess-corr", { id: 42, l0: "该事实已被 #43 替代。", type: "decision" });
+  let groups = correctionSessions(root);
+  equal(groups.length, 1, "CORR-22 a pending correction is visible");
+  equal(groups[0].pending.length, 1, "CORR-22 the pending list has the correction");
+  equal(groups[0].pending[0].id, 42, "CORR-22 the pending id is reported");
+  const delivered = reserve(
+    "sess-corr",
+    "uid:corr-1",
+    [{ id: 42, channel: "correction", l0: "该事实已被 #43 替代。", fingerprint: "fp-42", tokens: 12 }],
+    { totalTokens: 12 },
+  );
+  commit(delivered);
+  groups = correctionSessions(root);
+  equal(groups[0].pending.length, 0, "CORR-22 delivery removes the pending entry");
+  equal(groups[0].sent.length, 1, "CORR-22 delivery records a sent entry");
+  equal(groups[0].sent[0].id, 42, "CORR-22 the sent id is reported");
+  equal(correctionSessions(join(root, "another-workspace")).length, 0, "CORR-22 another workspace sees nothing");
+  resetAll();
 
   /* ----------------------------------------------------------- UNTIL-22 */
   const db = await openWorkspaceDb(root);
@@ -116,6 +158,51 @@ try {
   reopened.flush();
   closeAll();
 
+  /* -------------------------------------------------------------- B3-22 */
+  // Derived data may fail after the graph transaction committed. The failure
+  // must be visible, and reopening must repair it without losing facts.
+  const sidecarRoot = join(root, "ws-sidecar-recovery");
+  writeUiSettings({ gitSidecarEnabled: true });
+  let sidecarDb = await openWorkspaceDb(sidecarRoot);
+  insertNode(sidecarDb, {
+    type: "decision",
+    name: "旁路恢复一",
+    text: "旁路恢复测试的第一条决策。",
+    uri: "ctx://decision/b3-1",
+  });
+  flushSidecarNow(sidecarRoot, sidecarDb);
+  const sidecarFile = sidecarPath(sidecarRoot);
+  check(existsSync(sidecarFile), "B3-22 the sidecar is written before the failure");
+
+  rmSync(sidecarFile, { force: true });
+  mkdirSync(sidecarFile);
+  insertNode(sidecarDb, {
+    type: "decision",
+    name: "旁路恢复二",
+    text: "旁路恢复测试的第二条决策。",
+    uri: "ctx://decision/b3-2",
+  });
+  scheduleSidecarWrite(sidecarRoot, sidecarDb);
+  await new Promise((resolve) => setTimeout(resolve, SIDECAR_DEBOUNCE_MS + 600));
+  const broken = sidecarHealth();
+  check(broken.ok === false && Boolean(broken.error), "B3-22 a derived-write failure is visible, not silent");
+
+  rmSync(sidecarFile, { recursive: true, force: true });
+  const repaired = await syncSidecarOnOpen(sidecarRoot, sidecarDb);
+  equal(repaired.action, "bootstrap-write", "B3-22 reopening rebuilds the missing sidecar");
+  check(sidecarHealth().ok === true, "B3-22 health returns to ok after the rebuild");
+  sidecarDb.flush();
+  closeAll();
+
+  sidecarDb = await openWorkspaceDb(sidecarRoot);
+  const recoveredHits = searchNodes(sidecarDb, "旁路恢复", { topK: 5 });
+  check(recoveredHits.length >= 2, "B3-22 the text index is rebuilt on reopen");
+  const sidecarText = readFileSync(sidecarFile, "utf8");
+  check(sidecarText.includes("b3-1") && sidecarText.includes("b3-2"), "B3-22 both facts survive in the rebuilt sidecar");
+  writeUiSettings({ gitSidecarEnabled: false });
+  sidecarDb.flush();
+  closeAll();
+
   /* ------------------------------------------------------------- PKG-23 */
   const integrity = run("check-integrity.mjs", [root, "--json"]);
   equal(integrity.status, 0, "PKG-23 the shipped checker runs from a child process");
@@ -123,7 +210,7 @@ try {
   check(integrityReport.ok === true, "PKG-23 a healthy workspace passes");
   equal(integrityReport.nodes, 5, "PKG-23 the checker sees the workspace root and four decisions");
 
-  console.log(`\nP22 0.6.0 maintenance gate passed (${checks} checks)`);
+  console.log(`\nP22 maintenance gate passed (${checks} checks)`);
 } finally {
   closeAll();
   rmSync(root, { recursive: true, force: true });
