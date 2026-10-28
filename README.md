@@ -279,6 +279,8 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 
 ## Changelog
 
+**0.7.0** — Observability release. Settings → Recall check now lists pending and recently delivered corrections per session, scoped to the workspace, and adds a **Check version chains** button that runs the same read-only check as `dsh-trivium-check`. New read-only endpoints: `GET /api/dsh-trivium/corrections` and `GET /api/dsh-trivium/integrity`. A fault-injection regression now proves a sidecar write failure is reported by health and repaired by `bootstrap-write` on reopen, and the README documents the host-side desktop `EPIPE`. Memory format, defaults and the four-tool surface are unchanged.
+
 **0.6.0** — Maintenance release. The read-only revision checker and the stale-deadline cleaner now ship with the package as `dsh-trivium-check` and `dsh-trivium-clear-until` (dry run by default; `--apply` clears only deadlines also present in the body, `--all` clears every stale one). The checker previously existed only in the Git checkout even though the 0.5.1 notes told users to run it. This release also pins two verifications: turn identity comes from the host's own user-message id (checked in a real session log), and a genuine second-window attempt with a stale ETag returns 409 and succeeds after refresh. No defaults or data formats changed.
 
 **0.5.1** — Correctness release for 0.5.0. A user turn is now booked by the text actually rendered, so three long chips can no longer ship 3 × ~217 tokens against one 300 allowance; commit is idempotent and an explicit zero budget stays zero. Version resolution returns the current node's own body, type, deadline and state instead of only its id, so a query matching a superseded decision no longer shows the old instruction under the new id. Imports plan URI identity and validate the whole resulting graph before one native transaction: two versions are never merged by similar text, no `supersedes` self-loop is written, and a failed transaction leaves no node, body or edge behind. When a delivered fact changes, the session that saw it gets a short correction notice (never the old body), scoped per workspace and consumed only after delivery. Kernel: `triviumdb@0.9.0-beta.3` (pinned prerelease). Windows are supported from 900 px upward; at 390 px the host's 188 px settings sidebar leaves ~154 px for the panel, which is not readable (it does not scroll horizontally). Upgrade note: `until` values written by 0.4.21 from prose dates are not rewritten automatically — clear them with **Show expired decisions** or `ctx_remember` with `until: ""`.
@@ -352,6 +354,7 @@ The peer ranges now explicitly admit the supported DSH `0.1.5`, `0.2.0`, and `0.
 | Memory still there after uninstall | Stop `dsh web` before `dsh plugin remove`. Leftover `.tdb` is a workspace never opened on 0.4.10+; delete `.dsh/trivium.tdb` in that folder. Committed `trivium.jsonl` comes back with `git checkout`. Disable-in-place does not wipe. |
 | Check for updates fails | That request only hits the npm registry for the latest version. Memory is unaffected; try again later. |
 | Old conversations will not open after rc.8 | That is DSH’s own session-store format change, not a broken `.tdb`. Graph memory still works via `ctx_find`; leftover boxes on unmatched old sessions are plot residue. |
+| Desktop shows “A JavaScript error occurred in the main process” with `EPIPE: broken pipe, write` | Host-side, not the plugin: `electron-updater` writes a log line to a console pipe whose parent process has exited (typical when the app was started by a test launcher with `--inspect`). No `dsh-trivium` frame is in that stack. Click OK and start the app from the Start menu; avoid launching it from a terminal or harness that closes. |
 
 **Maintenance commands** (shipped with the package since 0.6.0):
 
@@ -365,7 +368,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Package version: `0.6.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Package version: `0.7.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.1-rc.4` (the peer range also admits the 0.1.x lines)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

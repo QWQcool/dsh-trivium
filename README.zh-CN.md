@@ -275,6 +275,8 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 更新说明
 
+**0.7.0** — 可观测性版本。设置 → 召回检查现在按会话列出待发送与最近已发送的更正（按工作区过滤），并新增「检查版本链」按钮，复用 `dsh-trivium-check` 的只读检查。新增只读接口：`GET /api/dsh-trivium/corrections`、`GET /api/dsh-trivium/integrity`。新增故障注入回归：旁路写入失败会被 health 报告，重开时由 `bootstrap-write` 修复；README 补充桌面端 `EPIPE` 的宿主侧说明。记忆格式、默认值与四工具面均未变。
+
 **0.6.0** — 维护版本。只读版本链体检与过期期限清理现在随包分发：`dsh-trivium-check`、`dsh-trivium-clear-until`（默认只列不改；`--apply` 只清「期限同时出现在正文里」的那些，`--all` 清所有过期期限）。此前 0.5.1 的说明让用户运行 `scripts/check-integrity.mjs`，但该脚本并不在 npm 包里。本版同时固化两项验收：轮标识取自宿主自己的用户消息 id（已在真实会话日志中确认），以及真实第二窗口带过期 ETag 会得到 409、刷新后成功。默认值与数据格式均未变。
 
 **0.5.1** — 0.5.0 的正确性修复版。一轮的预算改为按**实际渲染出的文本**记账，三条长芯片不可能再在同一轮送出 3 × 约 217 token；`commit` 幂等，显式 0 预算保持为 0。版本解析返回当前节点自己的正文、类型、期限与状态，而不是只换 id——查询命中被替代的决策时，不会再把旧指令挂在新 id 下。导入先按 URI 规划身份、校验映射后的完整图，再用一次原生事务提交：两个版本不会因正文相近被合并，不会写出 `supersedes` 自环，事务失败也不留下节点、正文或边。已投递的事实被修改后，看过它的会话会收到一条短更正（不重发旧正文），按工作区隔离，且只有真正送达才消费。内核升到 `triviumdb@0.9.0-beta.3`（精确锁定预发布版）。界面支持宽度为 **≥900px**；390px 时宿主固定 188px 侧栏只给面板留下约 154px，不可读（但不会横向滚动）。升级说明：0.4.21 从正文日期误写的 `until` 不会自动清除，请在「显示过期决策」里清空，或用 `ctx_remember` 传 `until: ""`。
@@ -348,6 +350,7 @@ peer 范围显式接受已支持的 DSH `0.1.5`、`0.2.0`、`0.2.1` RC 版本线
 | 卸载后记忆还在 | 先停 `dsh web` 再 `dsh plugin remove`。剩下的 `.tdb` 是从未用 0.4.10 打开过的工作区，到该文件夹删 `.dsh/trivium.tdb`。已提交的 `trivium.jsonl` 用 `git checkout` 找回。只在配置里 disabled 不会清文件。 |
 | 检查更新失败 | 只请求 npm registry 拿最新版本号，不影响记忆；过一会儿再点即可。 |
 | rc.8 之后旧对话打不开 | 那是 DSH 自己的会话库格式变了，不是 `.tdb` 坏了。图记忆仍可 `ctx_find`；对不上号的旧方框可当情节残留。 |
+| 桌面端弹出「A JavaScript error occurred in the main process / EPIPE: broken pipe, write」 | 宿主侧问题，不是插件：`electron-updater` 往一个已经断开的控制台管道写日志（常见于用 `--inspect` 的测试启动器拉起、父进程随后退出）。栈里没有 `dsh-trivium`。点确定后从开始菜单正常启动；不要从会关闭的终端/测试器拉起。 |
 
 **维护命令**（0.6.0 起随包分发）：
 
@@ -361,7 +364,7 @@ peer 范围显式接受已支持的 DSH `0.1.5`、`0.2.0`、`0.2.1` RC 版本线
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 包版本：`0.6.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- 包版本：`0.7.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.2.1-rc.4`（peer 范围同时接受 0.1.x 各线）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
