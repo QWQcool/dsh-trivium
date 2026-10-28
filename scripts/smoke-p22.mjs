@@ -18,11 +18,12 @@ import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
 import { closeAll, insertNode, openWorkspaceDb, searchNodes } from "../lib/store.js";
-import { turnKeyOf } from "../lib/context-budget.js";
+import { selectContextRecords, turnKeyOf } from "../lib/context-budget.js";
 import {
   beginTurn,
   commit,
   correctionSessions,
+  pendingCorrections,
   queueCorrection,
   reserve,
   resetAll,
@@ -92,11 +93,12 @@ try {
   equal(groups.length, 1, "CORR-22 a pending correction is visible");
   equal(groups[0].pending.length, 1, "CORR-22 the pending list has the correction");
   equal(groups[0].pending[0].id, 42, "CORR-22 the pending id is reported");
+  const correctionPlan = selectContextRecords({ corrections: pendingCorrections("sess-corr") });
   const delivered = reserve(
     "sess-corr",
     "uid:corr-1",
-    [{ id: 42, channel: "correction", l0: "该事实已被 #43 替代。", fingerprint: "fp-42", tokens: 12 }],
-    { totalTokens: 12 },
+    correctionPlan.records,
+    { totalTokens: correctionPlan.tokens },
   );
   commit(delivered);
   groups = correctionSessions(root);

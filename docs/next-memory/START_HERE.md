@@ -1,13 +1,14 @@
-# 下一轮开发交接包
+# 从这里开始
 
-先看 IMPLEMENTATION_PLAN.md，双击 FRONTEND.html 体验目标界面，再阅读 REVIEW_CHECKLIST.md 与 ACCEPTANCE_CASES.json。HANDOFF_PROMPT.md 可以直接发给接手模型。完成后按 RESULT_TEMPLATE.md 回交。
+当前维护入口已合并到 [docs/README.md](../README.md)。先看那里核对版本、验收边界和阅读顺序，再看 [PLAN.md](../../PLAN.md) 的现行设计。
 
-HTML 完全离线，使用示例数据，没有数据库连接。场景切换、详情、历史、替代/撤销、并发冲突和预算预览都只是交互演示；界面截图与 qa-result.json 仅证明原型可用，不证明正式功能已实现。
+本目录是 0.5.0–0.7.0 的历史交付材料：
 
-ZIP 的 baseline-source 是当前0.4.22代码快照，不含node_modules、真实.tdb、个人设置或.git。BASELINE.json给出了源文件校验值；不要拿远端旧0.4.21覆盖。若实际工作区已有更新，先比较差异并保留它们，不自动回滚。
+- `IMPLEMENTATION_PLAN.md`、`ACCEPTANCE_CASES.json`、`FRONTEND.html`：原始规格和离线原型；不是当前完成度证明。
+- `RESULT.md`、`REVIEW-2026-10-28.md`、`review-evidence-2026-10-28.json`、`review-repro-2026-10-28.mjs`：0.5.0 回交、发现三个 P1 的原始证据。
+- `FIX_PLAN-2026-10-28.md`、`EXECUTION_PLAN-0.5.1.md`：正确性修复的历史设计与逐轮记录；不重新执行已完成任务。
+- `R5` / `R7` / `R8` 验收和 `evidence*`：各轮真实覆盖及未覆盖项，不能互相替代或改成新版本测试结果。
+- `BASELINE.json`、`TOOL_SCHEMA_BASELINE.json`：冻结的来源与 schema 基线，不更新成当前源码哈希。
+- [REVIEW_CHECKLIST.md](REVIEW_CHECKLIST.md)、[RESULT_TEMPLATE.md](RESULT_TEMPLATE.md)：仍维护的审查清单和回交模板。
 
-TOOL_SCHEMA_BASELINE.json记录当前四个工具的结构和说明，供上下文开销对比。previews目录是原型截图与浏览器检查结果；不是正式插件的新功能验收结果。
-
-实施分三步：M0共享预算和去重，M1来源与诊断，M2人工决策替代。详情留在UI，模型上下文只保留需要的摘要；这些约束是验收门槛，不是已经完成的产品能力。
-
-每个阶段可独立提交；禁止把演示数据、外框场景控件和原型的固定配色照搬到正式宿主中。性能基准本轮不做。
+`baseline-source/`、交接 ZIP 和某些临时产物只存在于原交付环境时，不代表当前仓库缺少依赖。不要用旧快照覆盖现有工作树。

@@ -1,492 +1,117 @@
-# dsh-trivium 规划文档
+# dsh-trivium 产品与架构
 
-> 以 TriviumDB 为基核的 DeepSeek Harness 本地记忆内核插件。  
-> 状态：**v0.5.0 已完成，待发布**。内核仍是四工具 + 短地图；芯片与会话层默认关。依赖最低版本为 `triviumdb@0.8.11`，锁文件固定 `0.8.11`。
-> 情节图规划见 [`PLAN-session-map.md`](./PLAN-session-map.md)。不是记忆图谱工作台。  
-> 代码：GitHub `QWQcool/dsh-trivium`。npm 当前已发布 `0.4.21`；本地准备 `0.5.0`。
-> DSH 目标版本：`@deepseek-ai/dsh@0.2.1-rc.2`（peer 兼容 `0.1.x`：`0.1.0-rc.8` / `0.1.1-rc.2` / `0.1.5-rc.1`，以及 `0.2.x`；不要把 `dsh-llm` exact-pin 嵌进插件 `node_modules`）。
+更新：2026-10-28；对应发布基线 **0.7.0 / triviumdb 0.9.0-beta.3**。版本、验收覆盖和历史文档入口集中在 [docs/README.md](docs/README.md)。本文维护现行设计，不再重复逐版本发布日志。
 
-### 0.4.22 行为变更
+## 1. 产品定位
 
-- 有效期只接受独立字段，不从正文、抽取、芯片或 Markdown 推断；清空与修改期限保持 `until` / `untilAt` 一致。
-- 主动检索可返回带 `stale` 标记的过期历史，`include_stale: false` 排除过期条目；自动召回仍排除过期决策。
-- 保留原生文本与向量候选，使用分词兜底与别名检索；两字中文实体可作为锚点。归档、脏数据和过时的显式关键词仍受过滤。
-- RC peer 范围显式覆盖已支持的 0.1.5、0.2.0、0.2.1 预发布线；增加干净消费项目的安装与工具调用验证。
-- 下文 P2–P4 是历史验收记录，其中“从正文推断 until”和“主动 find 默认隐藏过期”的描述由本节取代。
-- 性能基准暂缓。
+给 DeepSeek Harness 提供进程内、按工作区隔离的图记忆：把实体、偏好、决策、经验存成节点和边，用四个工具和受限注入供模型读取。插件随宿主加载原生 TriviumDB，不另起数据库服务。
 
-### 0.5.0 已实施
+用户主要在 Settings 管理和纠错；可选芯片用来明确钉选事实，可选会话层投影宿主的压缩检查点与 fork 谱系。会话层不是第二套压缩引擎，详见 [会话层契约](PLAN-session-map.md)。
 
-记忆来源与诊断、统一预算与去重、人工确认的决策替代关系三项均已落地，交付说明见 [`docs/release-0.5.0.md`](./docs/release-0.5.0.md)，逐项回交结果见 [`docs/next-memory/RESULT.md`](./docs/next-memory/RESULT.md)，计划与验收用例见 `docs/next-memory/`。
+对外名称统一为 `dsh-trivium`。不扩展为 Mnemon 式工作台、独立文档 RAG、跨 Agent 云服务或默认开启的全量自动召回。
 
-- 芯片与自动召回共用每用户轮 300 估算 token，同一节点只出现一次；投递账本按宿主消息 id 记账，失败可重试、压缩可重建、fork 不继承。
-- `ctx_find` 默认 1200 估算 token 上限（整条丢弃），`ctx_read` 字段白名单投影；四工具与 schema 估算（529）不变。
-- 设置页分「记忆条目 / 召回检查」，详情分「内容 / 来源 / 决策历史」；来源缺失或会话失效都有明确状态，不补造。
-- 新增 `supersedes` 边（新 → 旧），线性链、32 跳、工作区写队列、双端 ETag、幂等 `operationId`，撤销只动该边；链上正文对抽取、合并、编辑、删除全部受保护。
-- JSON 图 `version: 2`、JSONL `v: 2`；增量格式，v1 可读，不支持原地降级。
-- 唯一未补齐的证据：真实 DSH WebUI 的点击走查与多宽度 / 深色截图（本轮无宿主可用），已在 RESULT 中列为未完成项。
+## 2. 当前契约
 
----
-
-## 1. 一句话
-
-进程内图记忆，一个 `.tdb` 文件：DSH 启动即打开工作区记忆库，按**节点和边**记，按需读，不另起服务。
-
-内核贴近 DSH：默认不另起进程、不加导航。要钉住某些记忆片段再开芯片注入；情节画布是可选的自嗨层，开关加载。
-
-对外标识一律用 **`dsh-trivium`**（仓库名、npm 包名、Cordis `id`、GitHub topic `dsh-plugin`）。内部可简称 TDB 内核，不要用 `TDBM_Dsh` 当对外名。
-
----
-
-## 2. 定位与非目标
-
-### 2.1 是什么
-
-DSH 宿主平面上的**记忆内核**，不是独立上下文数据库，也不是 Mnemon 级记忆工作台。
-
-- 存储：TriviumDB（向量 + JSON payload + 有向带权图，同一 `node_id`）
-- 形态：Cordis 插件，随 DSH 进程加载
-- 文件：`<workspace>/.dsh/trivium.tdb`（可配置）
-- 用户感知：多四个工具 + 启动一张短地图；Settings 里能看见、能删记错的条目
-
-### 2.2 对谁有竞争力
-
-| 对比对象 | 我们赢什么 | 不跟什么 |
-|---|---|---|
-| 原装 DSH | 跨会话实体/偏好/决策 | — |
-| JSON / FTS 记忆插件 | 图扩散、语义+稀疏混合、事务一致 | 功能清单堆工具 |
-| Wiki 双链记忆 | 边是引擎一等公民，不是扫 `[[slug]]` | 9 工具 + Python 向量 |
-| OpenViking / PowerContext | 无额外服务、延迟、少注入 | LoCoMo、解析农场、Skill 生态 |
-| Mnemon | 单文件内核、召回带边路径 | 第一期不比 UI 完整度 |
-
-### 2.3 明确不做（第一期）
-
-- 独立 `trivium://` 文件系统、PDF/Zotero 文档 RAG
-- 另起 Python / HTTP 记忆服务
-- 每步自动召回约 2000 token
-- Mnemon 级侧边栏工作台、跨 Agent 共享、三套存储编排
-- 对标 OpenViking 的 L0/L1/L2 产品形态（分层加载的**原则**要，目录树不必抄）
-
----
-
-## 3. 设计原则
-
-1. **抽取记节点和边**，不把整段对话当长期记忆。
-2. **少注入**：启动短地图；模型用工具下钻；自动召回默认关或极严。
-3. **注入走 `agent.inject()`**，不写 system prompt（避免 `persona.complete: true` 静默丢上下文）。
-4. **失败不挡主循环**：TDB / embedding / 抽取失败只记日志，Agent 继续。
-5. **图是主键**：召回结果必须带路径（从哪个节点、沿哪条边过来）。
-6. **可看见、可改错**：Settings 列表 + forget；人能纠正脏记忆。
-
-这六条里，1–2 决定准和省 token；3–4 抄 OpenViking / GoodMemory 的接法；5 是 TDB 差异化；6 是从 Mnemon 借的「人要能看见」——第一期用一页列表，不借整套工作台。
-
----
-
-## 4. 借鉴清单（机制，不是产品厚度）
-
-| 来源 | 借鉴 | 落地 |
-|---|---|---|
-| OpenViking DSH 插件 | `pre-step` 注入、钉宿主 rc、pending 失败队列 | 宿主插件 + 同生命周期 |
-| GoodMemory | 只在真实用户回合考虑召回；回写不含 tool/reasoning | 抽取过滤规则 |
-| native-memory | 写入可审批、条目带来源、软删除 | `ctx_remember` 审批；payload 含 `source` |
-| Mnemon | 记忆可见、可改、热/冷直觉 | Settings 页；短地图 = 热，`.tdb` = 冷 |
-| U-Illll Wiki 图 | 召回带关系 | 用引擎边，不用 Markdown 双链 |
-| 本仓库 DSH 预设 | skill_search 式按需加载 | 短地图 + `ctx_find` / `ctx_read` |
-
----
-
-## 5. 架构
-
-```
-DSH Agent Loop
-  │  agent/session-start · agent/pre-step · session/event · compaction/end
-  ▼
-┌─────────────────────────────────────────┐
-│  dsh-trivium  (Cordis host plugin)      │
-│  短地图注入 · 四个工具 · 抽取调度 · Settings │
-└─────────────────┬───────────────────────┘
-                  │ insert / search_hybrid / link / get
-                  ▼
-┌─────────────────────────────────────────┐
-│  triviumdb (Node napi，进程内)           │
-│  <workspace>/.dsh/trivium.tdb            │
-└─────────────────────────────────────────┘
-```
-
-不引入第二进程。Embedding 第一期用 DeepSeek 兼容 API（与 DSH 同一 Key）；本地模型作为后续选项，缺 embedding 时允许「只建节点和边、向量为空」，`ctx_find` 退化为 payload 过滤 + 图遍历 + BM25（若 TDB 稀疏层可用）。
-
-### 5.1 挂载位置
-
-- **Host 平面**（`~/.dsh/profiles/web/cordis.patch.yml` insert），所有预设可见。
-- 经现有 `dsh-extra/deploy-extra.cjs` 部署到 `~/.dsh/profiles/web/node_modules/`。
-- 源码建议：`DeepSeek_Harness/dsh-extra/plugins/dsh-trivium/`。
-
-### 5.2 依赖
-
-| 依赖 | 用途 | 约束 |
-|---|---|---|
-| `triviumdb` | 存储内核 | 预编译 napi，与 DSH 同进程 |
-| `@deepseek-ai/dsh-tools` 的 `defineTool` | 注册工具 | peer，走 profile fallback |
-| `@deepseek-ai/dsh-llm` 的 message 构造器 | 注入可见消息 | 同 OV 插件，勿手搓 shape |
-| DSH `0.2.1-rc.2` | 运行时 | peer 兼容 0.1.x（rc.8 / 0.1.1-rc.2 / 0.1.5-rc.1）与 0.2.x；由宿主提供，插件不嵌套安装 |
-
----
-
-## 6. 数据模型（按 TDB 特性）
-
-每个记忆对象是一个节点：`node_id → vector + payload + edges`。
-
-### 6.1 节点类型（payload.type）
-
-| type | 何时写入 | payload 要点 |
-|---|---|---|
-| `entity` | 反复出现的人、仓库、服务、接口 | `name`, `aliases[]` |
-| `preference` | 用户明确说「以后都这样 / 记住」 | `text`, `scope` |
-| `decision` | 有对象、有约束、可能有期限 | `text`, `until?` |
-| `experience` | 工具失败后修正成功 | `fail`, `fix` |
-| `workspace` | 每个库恰好一个，作图根 | `path` |
-
-第一期只这五类。对话原文、tool 结果、reasoning **不入库**。
-
-### 6.2 边（label）
-
-| label | 含义 | 示例 |
-|---|---|---|
-| `in_workspace` | 实体属于本工作区 | Entity → Workspace |
-| `about` | 偏好/决策针对某实体 | Preference → Entity |
-| `decided` | 对某对象做过决策 | Decision → Entity |
-| `broke` / `fixed` | 失败与修复 | Experience → Entity |
-| `same_as` | 去重合并 | 旧节点 → 留存节点 |
-| `from_session` | 抽自哪次会话（溯源，不参与扩散默认路径） | * → 会话标记节点（可选） |
-
-召回：`search` 锚定 → `expand_depth=1..2` 沿业务边扩散。`from_session` 默认不扩，以免整图被会话节点粘成一团。
-
-### 6.3 Payload 公共字段
-
-```json
-{
-  "type": "preference",
-  "text": "鉴权走 header X",
-  "uri": "ctx://pref/12",
-  "source": { "sessionId": "...", "eventId": "...", "quote": "..." },
-  "createdAt": "2026-08-19T00:00:00Z",
-  "updatedAt": "...",
-  "status": "active"
-}
-```
-
-`status: archived` 为软删除（学 native-memory）。`uri` 仅作稳定引用，不是文件系统。
-
----
-
-## 7. 抽取规则（写库）
-
-在 `compaction/end` 或会话空闲时异步跑，**不在每一句上跑**。
-
-### 7.1 写入白名单（宁可漏记）
-
-- 用户说「记住」「以后都」「别再」→ `preference`
-- 同一专有名在本会话出现 ≥2 次，或已在库中 → `entity`（同名合并同一 `node_id`）
-- 「先别动 / 下周再改 / 采用方案 A」且能挂到实体 → `decision`（可带 `until`）
-- 同一步骤内 tool 失败随后成功 → `experience` + `broke`/`fixed`
-- 其余丢弃
-
-### 7.2 禁止写入
-
-- 整段对话、tool 参数/结果、thinking
-- 密钥、token、`.env` 内容（命中则拒绝，学 native-memory）
-- 一次性任务指令（「把这文件改了」）当成永久 preference
-
-### 7.3 去重
-
-新候选先 `search` 同类节点：过高相似 → `merge` 进已有节点并补边，不新插。第一期可用 embedding 阈值 + 同名精确匹配；没有 embedding 则只用精确名/别名。
-
-### 7.4 第一期抽取实现策略
-
-优先**规则 + 一次小 prompt**（只输出 JSON 候选，再由代码决定 merge/insert）。不要上 OV 那套完整 memory schema。抽取用的 LLM 调用失败则跳过本轮，不阻塞。
-
----
-
-## 8. 少注入规则（读库进窗口）
-
-| 时机 | 注入什么 | 预算 |
-|---|---|---|
-| `agent/session-start` | 短地图：实体数、偏好数、决策数 + 最多 8 个实体名 | **≤400 token** |
-| `agent/pre-step` | 默认**不**自动召回 | 配置项 `autoRecall: false` |
-| 模型调用工具 | `ctx_find` 只返回 L0（text 截断 + 边路径）；`ctx_read` 才给全文 | find 单条 ≤200 字 |
-
-若日后打开 `autoRecall`：仅当本步含直接用户文本（GoodMemory 规则），且分数极高时最多 3 条 L0，总预算 ≤300 token。第一期保持关闭，强迫走工具下钻——这既是省 token，也是准（窗口不被近义噪声带偏）。
-
-注入物必须是带 `source: { kind: 'plugin', pluginId: 'dsh-trivium' }` 的 session 事件，Trajectory 可见。
-
----
-
-## 9. 工具（四个，不再加）
-
-| 工具 | 作用 | 审批 |
-|---|---|---|
-| `ctx_find` | hybrid 检索 + 有限深度扩散；返回 id、type、L0、score、**边路径** | 否 |
-| `ctx_read` | 按 id 读全文 payload | 否 |
-| `ctx_remember` | 显式写入（模型或用户）；可带 `linkTo` | **是** |
-| `ctx_link` | 两 id 之间建边 | **是** |
-
-不提供 `ctx_forget` 给模型（避免误删）；删除只在 Settings。模型若认为过时，可 `ctx_remember` 写新决策并 `ctx_link(..., same_as)`，由人在 UI 归档旧节点。
-
-工具 schema 保持短。描述里写清：先 find 再 read；不要把 find 结果全文复述进后续思考。
-
----
-
-## 10. DSH 生命周期
-
-| 钩子 | 行为 |
+| 项目 | 现行规则 |
 |---|---|
-| 插件 `apply` | 打开或创建 `.tdb`；注册工具；挂 Settings 页 |
-| `agent/session-start` | 确保有 `workspace` 根节点；`agent.inject` 短地图 |
-| `session/event` | 缓冲 user/assistant 文本（截断、去图、去 tool） |
-| `turn/end` | 不抽取；只把缓冲标成「待蒸馏」 |
-| `compaction/end` | 触发抽取（主路径） |
-| 进程退出（插件 dispose） | `closeAll()` → 逐库 `flush()` + `close()`；抽取失败进 pending，下次 session-start 重放 |
+| 四个工具 | `ctx_find` / `ctx_read` / `ctx_remember` / `ctx_link`；不增加第五工具 |
+| 默认开关 | 抽取开启；芯片、会话层、自动召回、Git JSONL 写出、远程 embedding 关闭 |
+| 开场地图 | 每会话最多一次，默认 ≤400 **估算** token；不展开完整来源与历史 |
+| 每轮附加上下文 | 芯片、召回、更正共用累计 300 **估算** token，包含标题与包装；不是每个 pre-step 各有 300 |
+| 主动检索 | `ctx_find` 默认 1200 估算 token 上限；丢弃装不下的完整记录并提示，不截成半条 JSON |
+| 主动读取 | `ctx_read(id)` 按字段白名单给正文；显式读旧 id 仍读旧版本 |
+| 期限 | 只接受独立字段，不从正文或模型抽取结果推断；清空 `until` 同时清 `untilAt` |
+| 过期事实 | 主动 find 可返回带 stale 标记的相关历史；自动召回与短地图排除过期决策 |
+| 决策替代 | `new --supersedes--> old`，人工确认，线性链、最多 32 跳；与归档、期限、same_as 分开 |
+| 人工历史 pin | 保留所选旧节点并标历史，不静默改成当前版本；自动召回使用当前节点的 id、正文与状态 |
+| 图导入身份 | 优先稳定 URI；不同 URI 不因正文相同或包含而合并；无 URI 的版本节点不能猜测身份 |
+| 数据格式 | JSON `version: 2` / JSONL `v: 2`；可读 v1，v2 不能让旧版原地重写后安全往返 |
+| 工作区 | 一个工作区一组 `.dsh/trivium.tdb*` 文件；同工作区会话共享事实库，同一库只允许一个读写进程 |
+| 界面范围 | 900px 及以上；中英文、宿主主题；390px 不是支持范围 |
 
-写盘时机是**写后触发**，没有定时器：`insertNode` / `updateNode` / `archiveNode` / `deleteNode` / 情节 upsert 各自在提交后 `flush()`。唯一的定时器是 turn 结束后约 12 秒的抽取 idle timer，它不负责落盘。
+估算预算限制的是本插件的注入与指定工具输出，不是整个会话 token 总量或模型费用。用户消息、模型输出、主动工具调用会继续增长历史。
 
-workspace 切换：打开新路径的 `.tdb`；**旧库保持打开**，不做淘汰。`store.js` 的 `dbs` 按 cwd 缓存，只在插件 dispose 或 `dsh plugin remove` 时 `closeAll()`。记忆默认**按工作区隔离**。
+## 3. 读写流程
 
-> **已知取舍（实测，不是估算）**：库按工作区常驻，内存 ≈ **14 KB/节点**，只与「所有已打开工作区的总节点数」有关，与工作区个数无关。300 节点的小库常驻 4.5 MB；3000 节点 43 MB；3 个工作区 × 3000 节点共 128 MB。几百节点 × 几个工作区的典型场景只有几十 MB，所以**刻意不做 LRU**。
->
-> 将来真要回收，别用 LRU：`sidecar.js` 的 1.5s 防抖闭包持有 db 引用、`runExtract` 在 `await` 之间可能被淘汰、`activeCwd` 必须永不淘汰。正确做法是按引用计数，在 `session/disposed` 时关掉该工作区已无活跃会话的库。也**别指望调小 `payloadCacheMb` 省内存** —— 实测占用主要来自每节点的向量与索引，payload 缓存（默认 64 MiB 上限）根本没被填满。
-
----
-
-## 11. UI（第一期最小）
-
-Settings 一页「Trivium 记忆」：
-
-- 按 type / `q` 筛选；过期决策默认隐藏，可勾选显示
-- 点行展开业务边邻居（入边 `<-about-` / 出边 `about->`）；实体可「只看挂在这上面的」
-- 列表显示 `until`、过期标记、path
-- 改正文 / 改名 / 别名；同类型合并（`same_as` 后归档）
-- 归档（软删，find 不再返回）/ 删除（从 `.tdb` 去掉）；页上写明区别
-- 导出 / 导入 JSON 快照（按 `uri` 去重合进当前库）
-- 开关：注入策略三选一（关 / `autoRecall` / 实体名折中，默认关）、抽取、远程 embedding（默认关，手填 URL）、插件界面语言（跟随宿主 / 中文 / English，兜底与宿主一致为英文）
-- 显示当前 `.tdb` 路径与节点数
-
-不在第一期做：记忆图谱工作台、Mnemon 式编辑器、本地 embedding。能看见、能改、能归档，就满足「人可纠正脏记忆」。  
-情节方框（compaction / fork）是另一面，见 [`PLAN-session-map.md`](./PLAN-session-map.md)，不要和记忆列表揉在一起。
-
----
-
-## 12. 分期
-
-### P0 — 内核可跑（开工目标）
-
-- 插件骨架：`package.json`、`cordis.patch.yml`、`apply(ctx)`
-- 打开/创建 `trivium.tdb`
-- 四个工具接上 TDB
-- session-start 短地图
-- deploy-extra 能装进 web profile
-- 手工：会话 A remember + link，会话 B find 得到并带边
-
-### P1 — 抽取与少注入
-
-- compaction 后规则+小 prompt 抽取
-- 去重 merge、密钥拒绝、pending 重放
-- Settings 列表与归档
-- 注入 token 计数（便于对照 context-doctor）
-
-### P2 — 变准（已完成）
-
-离线 `npm run smoke-p2`：**20/20**。本机 DSH（rc.6 / 3090）pending 重放抽取后，会话 B `ctx_find` 能命中；空库对照（vanilla analogue）无耐久命中。
-
-| 组 | 题 | 结果 |
-|---|---|---|
-| 偏好 P1–P5 | 鉴权 header X / pnpm / README 英文 / 中文回复 / run tests | 命中 |
-| 实体 E1–E5 | TriviumDB / AuthGateway / dsh-trivium / DeepSeek_Harness / X-Request-Id | 命中；`「鉴权」` 不再成实体 |
-| 决策 D1–D4 | 下周改 AuthGateway（`until=下周`）/ 方案 A / 单文件 / until Friday | 命中；有对象的决策带 `decided` 边 |
-| 经验 X1 | bash mkdir 失败后成功 | 离线命中；live 未造 tool 失败（不挡 P2） |
-| 负例 N1–N5 | 天气 / 改这个文件 / sk- 密钥 / 实体「鉴权」 / 嗯好的 | 不入库或 find 不中 |
-
-P2 调过的准头（相对 P1）：
-
-- 专有名：CamelCase / `X-Request-Id` / `DeepSeek_Harness`；`「」` 不再当实体名
-- 先插 entity 再挂 `about`/`decided`；只链**已有**实体，不因单次提及造 README 一类节点
-- 决策/偏好按**正文**合并，不按实体名合并（避免「方案 A」被 Friday 覆盖）
-- 一句一候选；密钥/一次性改文件只丢该句，不连坐整轮
-- `in_workspace` 去重；短地图顺序 preference → decision(`until`) → entity → experience；约 130 token（≤400）
-- 默认 `autoRecall` 仍关；无本地 embedding（关键词 + 边路径够这 20 题）
-
-对照原装 DSH：空 `.tdb` 上同样的 `ctx_find("鉴权")` 无 preference。不在 P2 对标 OpenViking。
-
-### P3 — 体验（已完成）
-
-P2 说明：**抽得准、默认少注入已经够用**。不要开自动召回，也不要上图谱工作台。
-
-已落地：
-
-1. **Settings 搜索/过滤** — `?type=` + `?q=`；列表显示 `until` 与边 path（`about`/`decided`/…）。
-2. **find 噪声** — 只保留 query 出现在 name/text/until 里的主命中，再沿 `about|decided|broke|fixed` 扩 1 跳；不再跟 `in_workspace` 把整图拖进来。`ctx_find` 按 type 分栏。
-3. **方案名弱实体** — 「采用方案 A」会建 `方案 A` 实体并 `decided` 过去。
-4. **空闲抽取** — `turn/end` 后约 12 秒仍 dirty 则再抽一次（compaction 优先；失败仍 pending）。
-5. **Settings 看见边** — 点行展开 `incoming`/`outgoing`；实体「只看挂在这上面的」（`?about=`）；过期决策默认隐藏（`?stale=1` 打开）；归档 vs 删除文案。
-6. **短地图 until** — named 最多 4 条偏好后预留最多 2 条未过期 `until` 决策，总预算仍 ≤400；提示用实体名 `ctx_find`。
-
-仍默认关：`autoRecall`。仍不做：Mnemon 工作台、图谱画布、OV 板、本地 embedding。
-
-### P4 — 内核（已完成）：find 用边和 until
-
-面（图谱 UI / Mnemon / 新工具 / 默认 autoRecall）先不动。这一刀只改召回核：
-
-- 业务边（`about`/`decided`/`broke`/`fixed`）权重大于 `in_workspace`，find 排序上提有业务边的命中
-- 决策写入 `until` 的同时尽量解析 `untilAt`；**过期决策默认不出现在 find 里**，除非查询本身在问这个期限（如 `周五` / `下周`）
-- 边权写入 TDB（`in_workspace=0.15`，业务边≈1）；引擎扩散若还不按 label 过滤，插件层继续只沿业务边扩 1 跳
-- **实体名锚定** — query 精确等于或包含已有 entity 的 `name`/`aliases` 时，将该实体当锚点，只沿 `about`/`decided`/`broke`/`fixed` 扩 1 跳入/出边；邻居正文不必含 query。过期 `until` 仍默认隐藏。不加 `ctx_find` 新参数。离线 `smoke-p4` 已锁。
-
-- **锚点入边 path** — `formatHit` / Settings 列表把入边（仅 `about`/`decided`/`broke`/`fixed`）写成 `<-decided-12(先别动…)`，与出边 `label->id` 并列。入边走 `getIncomingEdges`。`find("AuthGateway")` 的 entity 行 path 含 about/decided 入边。
-- **入边参与排序** — 实体只有出边 `in_workspace` 时，仍按入边业务边给 `rankBoost`，避免锚点排在未连边噪声后面。
-- **过期入边默认不进 path** — 与 find 藏过期决策一致；query 在问期限时，实体 path 仍可出现该入边。
-- **`same_as` 跟随** — 命中旧节点且存在 `same_as`→留存节点时，find 一并返回留存节点（不把 `same_as` 当业务扩散边）。
-- **`ctx_read` 入边** — 返回 `incoming[]`（from/label/type/l0），全文读实体时能看见谁 `about`/`decided`/`broke`/`fixed` 过来。
-- **抽取挂边** — preference 的 `about` 只取 **span 内**专有名，不再因邻句「TriviumDB 是内核」误挂。experience 从 fail/fix（或同 turn 用户句）取 `linkName` 并 `fixed`。
-
-其后仍先核、后面；不要开记忆图谱工作台 / Mnemon / 默认 autoRecall / OV / 本地 embedding / 第五工具。芯片标签与情节画布均默认关，见 [`PLAN-session-map.md`](./PLAN-session-map.md)。v0.4.10：卸载清痕迹。v0.4.9：芯片 / 会话层开关默认关。v0.2.0 已加：Settings 改名/合并/导入导出；注入三选一；可选远程 embedding（手填 URL）。v0.3.0 已加：只读 Markdown 导出、WorkBuddy MEMORY.md 一次性导入、每批限写 3000 字。v0.4.0 已加：会话图、记忆芯片、从检查点 fork。v0.4.1：宿主钉 `@deepseek-ai/dsh@0.1.0-rc.8`。v0.4.2：芯片条新增 / 批量归档删除。v0.4.3：会话图「更新检查点」补旧会话压缩 / 分叉。v0.4.4：接 `triviumdb@0.7.5` 的 `getIncomingEdges` / `neighbors(..., labels)` / `unlink(..., label)`。v0.4.5：peer 放宽到 `0.1.1-rc.2`，去掉嵌套旧 llm/tools。v0.4.6：会话图「生成检查点」手切情节格。v0.4.19：插件界面语言跟随宿主修复（issue #2，见「客户端语言」）。v0.4.20：存储升到 `triviumdb@0.8.9`（napi 接口零变更）。v0.4.21：适配 DSH 0.2.x（会话格式 v4 的 producer-owned source + `agent/created`）。
-
-### 待 live 验收（新面回家再测）
-
-只报缺陷、不加功能。宿主 `@deepseek-ai/dsh@0.1.1-rc.2`（兼 rc.8）。同一 `.tdb` 不要被两个 Node 进程同时打开（验收时不要再跑会 `openWorkspaceDb` 的 smoke）。脚本：`npm run verify-live-p2`（以及 `scripts/verify-live.mjs`）。
-
-1. 插件已挂 web profile；不装 Python、不另开记忆端口。
-2. 短地图 ≤400 token；默认 `autoRecall` 关；Trajectory 能看到 `dsh-trivium` 注入。
-3. TDB / 抽取失败时对话仍可用。
-4. 会话 A 记下「鉴权走 header X」并连实体；会话 B `ctx_find("鉴权")` 命中，path 含该实体。
-5. 闲聊 / 一次性改文件 / 密钥 **不** 变成 preference；`「鉴权」` 不成实体。
-6. Settings 能搜、能归档，归档后 find 不再返回。
-7. P2 抽取 pending 重放后，E/P/D 题能命中；空库对照无耐久命中。X1（tool 失败再成功）live 仍缺，不挡已完成的 P2。
-8. **P4 实体锚定：** 会话 B `ctx_find("AuthGateway")` 给出未过期决策/偏好（邻居正文可无实体名）；过期 `until` 决策默认隐藏；`ctx_find("AuthGateway 的决策")` 仍能锚定；不拖未连边的无关 pref（如 pnpm）。
-9. **入边 path：** `ctx_find("AuthGateway")` 的 entity 行 path 含 `<-about-` / `<-decided-`，**不含**过期决策入边；`ctx_find("周五")` 时实体 path 仍可见该过期入边。
-10. **`ctx_read`：** 读 AuthGateway 的 JSON 含 `incoming`，其中有 about/decided（及有对象的 fixed）。
-11. **`same_as`：** 旧决策 `same_as`→新决策后，用旧决策正文 `ctx_find` 能拿到留存节点。
-12. **抽取挂边：** 「记住，本仓库鉴权走 header X。TriviumDB 是内核。」抽出的鉴权 pref **不** `about`→TriviumDB；「记住，AuthGateway 日志走 header X。」则 `about`→AuthGateway。
-13. **经验扩邻：** 对某实体有 `fixed`/`broke` 的 experience，在该实体上 `ctx_find` 能扩到它，实体 path 含 `<-fixed-` 或 `<-broke-`。
-14. **Settings 面：** 能展开业务边邻居；AuthGateway 上「只看挂在这上面的」能看到未过期决策/偏好、看不到未连边 pnpm；过期决策默认不在列表，勾选后可见；页上能区分归档 vs 删除。
-15. **短地图：** session-start 仍 ≤400 token，named 里能看到带 `until` 的未过期决策；默认 autoRecall 仍关。
-
-### TDB 引擎（`triviumdb@0.9.0-beta.3`）
-
-已从全表扫描切到引擎 API（旧绑定仍可回退）：
-
-1. **入边** — `getIncomingEdges(id, label?)`；find path / `ctx_read` incoming / merge 入边改写不再扫 `allNodeIds`。
-2. **按 label 扩邻** — `neighbors(id, depth, labels)` 只走 `about`/`decided`/`broke`/`fixed`，避开 `in_workspace` 把整库粘在一起。
-3. **按 label 删边** — `unlink(src, dst, label?)`；`dropLink` 只断指定关系。
-4. **`JsSearchConfig.expandLabels` 已有** — find 排序、过期 `until` 仍在插件层（查询在问期限时要放行），暂不把 expand 交给 `searchHybrid`。
-5. **payload 日期** — 引擎有 `$lt` / `$before`；过期过滤仍看我们的 `untilAt` JSON，因为还要配合 `queryMentionsUntil`。
-6. **零向量 hybrid** — 全 0 向量时扩散/余弦几乎无意义，这是我们默认没开 embedding，不是引擎 bug。
-
-0.8.3+ 迁移（0.8.2 → 0.8.8）已适配的两处破坏性变更：
-
-1. **构造函数不再收数字位置参数** — `new TriviumDB(path, dim)` 抛 `TDB_API_MIGRATION_REQUIRED`；改传 `{ dim }`（`dim` / `dtype` / `syncMode` 等都进 options）。`store.js` 是唯一构造点。
-2. **TQL 行 id 变成字符串** — `FIND` / `MATCH` 返回的 `row._.id` 是 `"2"` 而非 `2`；`normalizeTql` 现在统一 `Number()` 归一，否则 `findByType` 全空（短地图 / workspace 根 / 实体锚定一起塌）。
-
-其余引擎 API（`insert` / `get` / `updatePayload` / `link` / `unlink` / `neighbors` / `getIncomingEdges` / `searchHybrid` / `indexText` / `tql`）签名不变。
-
-0.8.9（0.4.20）是纯内核升级，**JS / napi 接口零变更**：`triviumdb.d.ts` 与 `index.js` 与 0.8.8 逐字节一致（SHA256 相同），差异只在各平台预编译 `.node`。上游改动集中在 QuIVer（SM-L2 成为默认查询路径、支持任意维度）、FIND 规划不再物化被丢弃的候选，以及服务端版的 Web Console。插件侧只需 bump 依赖；14 个离线冒烟脚本原样通过。
-
-0.9.0-beta.3（0.5.1 / 0.6.0）新增的类型面是纯增量：`ResourceRuntime` / `instanceStats` / `createSnapshot` / `restoreSnapshot` / `rebuildTextIndex` / `closeTimeout`，`JsEdge` / `JsIncomingEdge` 带 `metadata`，`TriviumDBOptions.accessMode` 支持 `readOnly` / `immutable`。插件侧只用三处：导入先预分配 id 再 `commitTransaction`（`insertWithId` + `upsertEdge`）、维护脚本以 `readOnly` 打开、边 metadata 的类型声明。数字 id 一律按 JS 安全整数处理，超范围内核直接报参数错误；本轮所有 id 都远小于上限。0.9 稳定版发布后把精确 pin 切到 `^0.9.0`，重跑 23 组离线脚本与真机验收。
-
-### DSH 宿主（0.1.x → 0.2.x）
-
-0.1.5 的破坏性变更对本插件只有一处命中：**`session.header.seedLength` 被移除**（header 校验现在直接拒收该字段）。情节层 fork 切点改用会话实例上的 `inheritedEventCount`（`sessionSeedLength()` 兼容回退到旧 header）。客户端面同样优先读 `inheritedEventCount`。
-
-0.2.x 有两处命中：
-
-1. **会话格式 v4** — 消息 `source` 从共享的 `kind: "plugin"` 改为生产者自有 kind：第三方生产者写 `kind: "plugin:dsh-trivium"` 并去掉 `plugin` 字段，否则整轮以 `format v4 message requires a producer-owned source kind` 失败。`lib/host-format.js` 按已安装 `dsh-llm` 版本选择形状（`>=0.2.0` 走 v4；读不到版本时假定 v4），`lib/index.js` 的所有消息源都经 `producerSource()`。
-2. **`agent/created`** — 0.1.6+ 用 `agent/created`（payload `{ agent, source, signal? }`）替代串行的 `agent/session-start`。现在两个事件都监听，并用 `started` 集合按会话去重，防止宿主同时发两个时短地图 / 抽取跑两遍。
-
-peer 范围随之放宽到 `<0.3.0`。`scripts/smoke-p14.mjs` 钉住两种 source 形状与版本判定。
-
-已核不变：`agent/session-start`、`agent/pre-step`（`{agent, messages}` + `next()` → `{kind:'enter', messages}`）、`session/event`、`session/disposed`、`tools/pre-execute`（`{kind:'ask'}`）、`agent.inject(UserMessage)`、`agent.session` / `agent.options`、`ctx.llm.stream`、`ctx.webServer.register`、四个工具注册；客户端 `conversation.view` / `settings.section` 插槽、`slots.inject/register/entries`、`sessions.binding/fork/open`、`locale.getLocale` / `locale/change`、`require("@deepseek-ai/dsh-client-ui-primitives")`（0.1.5 前端静态模块表仍提供）。peer 范围 `>=0.1.1-rc.2 <0.2.0` 已覆盖 `0.1.5-rc.x`，无需放宽。
-
-对标 OpenViking 仍不做。本地 embedding 仍后置。
-
-### 客户端语言（0.4.19，issue #2）
-
-插件自己的 UI 文案（Settings 卡 + 芯片标签）只认 `zh` / `en`。三条约束：
-
-1. **服务读取** — `locale` 由 `@deepseek-ai/dsh-client-locale` 在它自己的 `apply` 里 `ctx.provide("locale", …)`，可能晚于本插件；且未声明 `inject` 的服务读 `ctx.locale` 拿不到值（不是受支持的 `ctx` 读法）。所以改走 `ctx.inject(["locale"], cb)`——cordis 注册表方法会混到 `ctx` 上（`lib/index.js` 早有 `ctx.inject(["webServer"])` 同款用法），依赖可用时回调，但不把 `locale` 升为硬依赖：宿主缺该服务时插件仍要能加载。
-2. **兜底对齐宿主** — 宿主 `FALLBACK_LOCALE = "en"`，插件原先 `zh`。现在 `FALLBACK_UI_LOCALE = "en"`；`normalizeLocale` 对任何非 `zh*` 的已解析语言返回 `en`（`""` 仍表示「未读到」）。浏览器未命名任何注册语言时，宿主自己就会解析成 `en`，插件随之英文。
-3. **可观测** — `lib/client.js` 是 `window.__ModuleLoader__.load({id, factory})` bundle，客户端模块系统只解析包名（相对路径直接抛），语言决策无法拆成可 `require` 的独立文件；改为导出测试探针 `exports.__locale`，由 `scripts/smoke-p13.mjs` 用桩 `__ModuleLoader__` / 桩 `require` 加载**真实 bundle**、驱动 `apply()` 断言（含延迟到达的 locale 服务、`ru` 宿主、服务抛错、`ctx.inject` 抛错四条降级路径）。
-
----
-
-## 13. 验收（P0 + P1）
-
-1. 不装 Python、不另开端口；双击现有 DSH 启动脚本后插件已挂载。
-2. 会话 A 记下「本仓库鉴权走 header X」并连到仓库实体；新会话 B 中 `ctx_find("鉴权")` 命中，且路径含该实体。
-3. 闲聊与一次性改文件指令**不**变成 preference。
-4. session-start 短地图 ≤400 token；默认 pre-step 不再塞记忆全文。
-5. Trajectory 能看到 `dsh-trivium` 注入来源。
-6. TDB 打不开或抽取失败时，对话仍可用。
-7. Settings 能归档错误条目，之后 find 不再返回。
-
----
-
-## 14. 目录与发行
-
-代码**不**放进 `DeepSeek_Harness/dsh-extra/plugins/`。本仓库即插件本体，测试时 junction 到 DSH web profile。
-
-```
-dsh-trivium/                    # GitHub QWQcool/dsh-trivium
-  package.json                  # name: dsh-trivium  version 0.4.21  MIT
-  cordis.patch.yml
-  lib/index.js
-  lib/store.js
-  lib/schema.js
-  lib/embed.js                  # optional remote embedding
-  lib/settings.js               # ~/.dsh/trivium.json
-  lib/tools.js
-  lib/extract.js
-  lib/markdown.js               # MEMORY.md export, WorkBuddy one-shot import
-  lib/client.js                 # Settings
-  lib/server.js
-  scripts/link-dsh.mjs
-  scripts/p2-cases.mjs
-  scripts/smoke-p3.mjs
-  scripts/smoke-p4.mjs
-  scripts/smoke-p5.mjs
-  scripts/smoke-p6.mjs
-  PLAN.md
-  PLAN-session-map.md           # 会话图（情节方框 + 芯片）
-  README.md
-  LICENSE
+```text
+DSH 用户事件 / pre-step / compaction / session lifecycle
+       ↓
+四工具 / 抽取 / 芯片 / 受限召回 / 更正账本 / Settings API
+       ↓
+TriviumDB：节点 payload + 向量（可空）+ 有向带权图
+       ↓
+工作区 .tdb 文件组；可选 JSONL 交换文件
 ```
 
-加载：
+**写入**：显式工具写入、设置编辑、规则与模型抽取、JSON/JSONL 导入都必须经过卫生、身份和版本关系约束。JSON 与 JSONL 保留各自的合并／同步语义。正确性门槛是先完成身份映射和最终图校验，再原子提交事实；索引和 JSONL 属于后续派生维护，不能宣称跨所有文件完全原子。
 
-```sh
-cd dsh-trivium
-npm install
-node scripts/link-dsh.mjs
-```
+**读取**：文本／可选向量召回产生锚点，再有限扩展业务边；解析当前版本后去重、过滤、分配预算并渲染。不能只换 id 而沿用旧正文，也不能为获得更多命中恢复整库无差别扩散。
 
-然后重启本地 DSH web，选工作区即可。记忆文件在 `<workspace>/.dsh/trivium.tdb`。
+**投递**：以稳定用户消息 id / seq 认定一轮；reservation 成功提交后记账和消费更正。compaction 使在途操作失效并允许必要重建，但不为同一用户轮重发 300 额度。fork 使用新会话账本；钉选只在用户勾选继承时复制。
 
----
+**抽取与联网**：`extractEnabled` 默认 true。`lib/extract.js` 先生成规则候选，宿主模型可用时还会请求 `ctx.llm.stream` 做抽取，失败回退并记录 pending。远程 embedding 独立配置，默认关闭；不用向量时仍可使用文本与图检索。不能把“数据库在本机”写成“全部处理不联网”。
 
-## 15. 风险
+## 4. 模块边界
 
-| 风险 | 应对 |
+| 模块 | 职责 |
 |---|---|
-| DSH 预览破 API | peer 范围覆盖 0.1.x（rc.8 / 0.1.1-rc.2 / 0.1.5-rc.1）与 0.2.x；会话消息 source 按宿主版本选形状；注入只用官方构造器 |
-| triviumdb napi 与 Node 版本 | 与 DSH 要求的 Node（`^22.19` 或 `>=24`）对齐并在 Windows 实测 |
-| embedding 成本/失败 | 允许无向量退化；抽取低频（compaction 时） |
-| 脏记忆被稳定召回 | 白名单抽取 + 人可归档 + 默认少注入 |
-| 做成又一个 dsh-memory | 坚持四工具、图路径、短地图；命名不叫 memory |
-| 范围膨胀到 Mnemon UI | P3 门闩：P1 验收未过不做工作台 |
+| `lib/index.js` | 宿主事件、pre-step 接线、抽取调度、运行状态 |
+| `lib/store.js` | 工作区数据库、节点／边、搜索、JSON 导入导出、派生维护 |
+| `lib/context-budget.js` / `lib/turn-ledger.js` | 候选规划与渲染、实际总量预算、投递和更正队列 |
+| `lib/revisions.js` / `lib/revision-graph.js` | 当前版本、ETag、替代／撤销、图约束 |
+| `lib/provenance.js` / `lib/recall-trace.js` / `lib/recall-preview.js` | 来源、真实召回诊断、只读本地预览 |
+| `lib/sidecar.js` / `lib/integrity.js` | JSONL 同步与 health、只读版本链体检 |
+| `lib/episode.js` / `lib/pins.js` | 会话层投影、人工 pin 候选与继承 |
+| `lib/server.js` / `lib/client.js` | `/api/dsh-trivium/*`、Settings、芯片与会话层 UI |
+| `lib/settings.js` | 用户设置与钉选；测试通过 `DSH_TRIVIUM_SETTINGS` 隔离 |
+| `scripts/run-all.mjs` / `scripts/verify-package.mjs` | 离线回归聚合、真实 peers 的打包消费验证 |
 
----
+前端使用宿主 ModuleLoader bundle。拆分 `client.js` 时需要保留宿主模块装载契约，不能直接假设相对 `require()` 可用。不要为了减少文件行数把纯逻辑拆成宿主无法加载的模块。
 
-## 16. 开工顺序（P0）
+## 5. 存储与恢复边界
 
-1. GitHub 建 MIT 仓库 `dsh-trivium`；Desktop 克隆/对应目录存放代码与 `PLAN.md`。
-2. 插件骨架：`package.json`、`cordis.patch.yml`、`apply(ctx)`、四个工具接 TDB。
-3. `agent/session-start` 注入短地图。
-4. **做到工具可调用后**：`node scripts/link-dsh.mjs` 让本机 DeepSeek_Harness 加载，手工「A 记、B 找」。
-5. P0 完成后再写 `extract.js` 与 Settings，不要并行铺 UI。
+- 节点：`entity`、`preference`、`decision`、`experience`、`workspace`；另有可选会话层的 `episode`。
+- 业务关系：`about`、`decided`、`broke`、`fixed`；`in_workspace` 权重较低。`supersedes`、`continues`、`forks_from` 不进入默认业务扩展。
+- 决策链保护正文；自动抽取、合并、编辑、删除、导入均需遵守关系约束。ETag 409 保护过期提交，`operationId` 用于重试幂等。
+- 更正与 trace 是进程内诊断状态，不是持久化审计日志。0.7.0 的 sent 账本最多保留 20 条，API 返回最近 10 条，UI 展示最近 3 条；重启会清空。
+- `.tdb` 是运行时事实库；JSONL 是可提交的交换文件。关闭旁路**写出**不关闭开库时对已有 JSONL 的读取。JSONL 不包含向量、episode、pins 或本地来源引文。
+- 版本链体检只报告，不自动修复。已经覆盖丢失的旧正文不能靠推测重建；恢复需要原始导出或升级前文件组。
+- `dsh-trivium-check` 只读体检；`dsh-trivium-clear-until` 默认 dry-run，`--apply` 只清期限也在正文中的候选，`--all` 才包含其它显式过期期限。
+- 库按打开过的工作区缓存，dispose 时关闭；目前无自动淘汰。旧版本曾测得约 14 KB/节点，但缺少当前 beta.3 的固定环境复测，不能当本版容量保证。若引入回收，必须覆盖异步抽取、sidecar 防抖闭包与活动工作区引用。
+
+## 6. 现行界面
+
+Settings 内保留管理动作与配置折叠，主区域分「记忆条目／召回检查」；条目详情分「内容／来源／决策历史」。来源、历史与 trace 按需读取，展开页面不额外调用模型或 embedding。
+
+- 条目列表区分已过期、已替代、已归档；历史节点可定位当前版本。
+- 替代弹窗展示两条已有决策；冲突保留选择并提示刷新；不能自动批准新决策。
+- 召回检查展示本轮实际选择、估算预算、只读预览、更正待发／已发与版本链体检。
+- 来源缺失和来源不可访问是不同状态；不补造引文、作者、会话链接。
+- 芯片与会话层默认关闭，避免所有用户都承担画布复杂度。
+
+桌面 API 通过、Web 页面截图、桌面客户端视觉／键盘验收是不同层级。详细历史证据与待补口见 [文档入口](docs/README.md#验证覆盖与缺口)。
+
+## 7. 缺陷修复后的开发顺序
+
+以下是下一阶段的选择顺序，不表示已开工或已发布，也不自动扩大当前任务范围。
+
+同类项目机制、具体收益与引入代价见 [记忆插件调研](docs/memory-plugin-landscape-2026-10-28.md)，本轮实际发现与修复见 [缺陷审查](docs/bug-audit-2026-10-28.md)。
+
+1. **先完成 0.7.x 质量闭环**：复现并修复本轮发现的 correctness 问题；补桌面视觉／键盘、两个独立浏览器进程 409、宿主 UI 导入失败恢复。保留修复前失败、修复后通过的同一断言。
+2. **收敛可理解性**：把当前状态、待送达原因、过滤理由和恢复操作说清楚；合并重复配置与展示，不增加默认上下文开销。
+3. **建立质量／性能基线**：先定义事实更新、跨会话召回、负例、长链、导入恢复等固定数据集，再给延迟、内存和召回质量设可接受阈值。没有对照实验，不宣称比其它插件更快或更准。
+4. **内核稳定版升级独立处理**：等 0.9.0 正式发布，评估 API 和文件兼容性，再考虑切 `^0.9.0`；重跑全回归、消费项目与真机，不与功能扩张混在一轮。
+5. **选择有证据支持的增强**：优先延伸图关系解释、决策修订与更正、受限上下文预算；自动修复链、跨工作区共享、移动全屏层等需要单独产品决策。
+
+继续不做：第五工具、默认 autoRecall、默认本地 embedding、Mnemon 级工作台、多进程同时写同一 `.tdb`、为会话层另造压缩引擎。
+
+## 8. 开发与发布门槛
+
+- 测试使用临时设置、临时工作区和合成数据；不删除用户 `.dsh`，不读取或输出 npm token。
+- 先读 package / lock / engines；复用本机 Node 与 npm。0.7.0 发布基线为 23 组脚本，数量以 `scripts/run-all.mjs` 为准。
+- 回归须覆盖真实规划器／账本／原生库，不能仅靠源码字符串或伪造 `record.tokens`。
+- 新 id 必须配新正文；失败导入不得部分改写；同轮实际发送文本累计不得突破预算。
+- 数据／原生依赖变更需最终 tarball + 真实 peers 干净安装；UI 变更需实际宿主交互。
+- 发布按 [检查清单](docs/release-checklist.md) 执行；已发布 tag 不移动，版本号不复用，未授权不发布。
+
+旧 P0–P4 时间线已收敛到 README 的版本记录及 `docs/release-*`；0.5.0 原始规格和审查仍在 `docs/next-memory/`，用于追溯，不作为当前开工指令。

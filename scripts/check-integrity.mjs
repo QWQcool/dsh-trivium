@@ -18,6 +18,11 @@ import { checkRevisionIntegrity } from "../lib/integrity.js";
 import { dbPathFor, openWorkspaceDbReadOnly } from "../lib/store.js";
 
 const args = process.argv.slice(2);
+if (args.includes("--help") || args.includes("-h")) {
+  console.log("Usage: dsh-trivium-check [workspace] [--json]\n" +
+    "Read-only revision-chain check. Exit codes: 0 clean, 2 issues found, 1 cannot open.");
+  process.exit(0);
+}
 const asJson = args.includes("--json");
 const cwd = resolve(args.find((arg) => !arg.startsWith("--")) || process.cwd());
 const file = dbPathFor(cwd);

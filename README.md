@@ -16,7 +16,7 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 ## Installation
 
-> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. Tested host: `@deepseek-ai/dsh@0.1.5-rc.1` (`dsh-llm` / `dsh-tools` peers also accept `0.1.1-rc.2` and `0.1.0-rc.8`).
+> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. The 0.7.0 release was exercised on Web `0.2.1-rc.4`; the desktop `0.2.1-rc.3` record covers preview-code APIs, not full UI acceptance of the published tarball. See the [current baseline and evidence index](docs/README.md). Node must satisfy `^22.19.0 || >=24`; `triviumdb` is pinned to `0.9.0-beta.3`.
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -26,7 +26,7 @@ Restart **dsh web**. Memory lives in the current workspace:
 
 ```
 <workspace>/.dsh/trivium.tdb      # local index (binary; gitignore this)
-<workspace>/.dsh/trivium.jsonl    # git source of truth (business facts)
+<workspace>/.dsh/trivium.jsonl    # optional Git exchange snapshot (business facts)
 ```
 
 Commit `trivium.jsonl`. Ignore the binary store:
@@ -94,8 +94,10 @@ The plugin loads inside the `dsh web` process. It does not open its own port or 
 | Workspace `.dsh/trivium.jsonl` | read/write | Git sidecar (off by default). Business nodes/edges only; no embeddings |
 | `~/.dsh/trivium.json` | read/write | Settings and chip pins; may contain an embedding API key you typed |
 | `.dsh/trivium-pending.json` | read/write | Local queue when extract fails |
-| Network | off | Chat text is not sent out. Embedding outbound happens only if you turn it on and fill a URL. Settings **Check for updates** fetches the npm registry (version only, no transcript) |
-| Transcript | stays local | Extract and search run on this machine; with embedding on, retrieved text is sent to the URL you filled |
+| Model extraction | on | When the host exposes a model service, extraction sends a bounded conversation excerpt to the current session's provider/model through DSH. A remote provider means network traffic and possible model charges. Without that service, extraction uses local rules |
+| Remote embeddings | off | When enabled, node text and search queries are sent to the configured embedding URL. Keyword and graph retrieval work without it |
+| Update check | manual | **Check for updates** fetches npm package metadata, without the conversation |
+| Conversation excerpts | may be sent to the host model | Durable memory is stored locally. This does not make extraction or the DSH model conversation offline. Disable extraction and remote embeddings to stop those plugin-initiated model/embedding calls |
 
 The official DeepSeek chat API has no embeddings endpoint. Keyword + graph walk still work without it. Restart `dsh web` after changing settings or embedding.
 
@@ -224,7 +226,7 @@ The kernel is still these four. Chips / session layer do not add a fifth tool.
 
 ## Screenshots
 
-Captured inside DSH Web (`0.1.1-rc.2`). Screenshots below are from the Chinese UI. The plugin follows the DSH host language unless you pick Chinese / English under **Settings**.
+Historical screenshots captured inside DSH Web (`0.1.1-rc.2`), illustrating the earlier Chinese UI. They do not establish 0.7.0 acceptance or show every current control. For versioned evidence and current limitations, see the [documentation index](docs/README.md). The plugin follows the host language unless you choose Chinese / English under **Settings**.
 
 ### Conversation — `ctx_find("鉴权")`
 

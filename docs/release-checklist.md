@@ -1,11 +1,13 @@
 # 发布检查清单
 
+当前基线见 [文档入口](README.md)。本清单用于已经获用户授权的发布任务；日常文档整理、审查和本地修复不自动授权 npm 发布、推送或 issue 留言。
+
 每次发 npm 包按顺序执行。目的是避免 0.5.1 那次「README 里写着旧版本号、体检脚本没进包」的问题。
 
 ## 1. 冻结范围
 
-- [ ] 本轮该修的 issue / 验收项已关闭，没有「顺手再加一个」。
-- [ ] `git status` 干净；没有把 `.tmp/`、测试库、`*.tdb` 带进提交。
+- [ ] 本轮必须修复的缺陷及验收项已满足交付门槛（issue 的最终关闭在发布验证后处理），没有「顺手再加一个」。
+- [ ] 发布源码已提交、`git status` 干净；没有把 `.tmp/`、测试库、`*.tdb` 带进提交。
 - [ ] `docs/release-<version>.md` 已写清变更、升级方式、旧数据处理、已知限制。
 
 ## 2. 版本与文档（打包前全部完成）
@@ -15,13 +17,13 @@
   - [ ] `## Release info` / `## 发布信息` 的包版本是新版本。
   - [ ] 更新说明（Changelog）顶部有新版本条目。
   - [ ] 新增的命令、参数、支持范围已经写进正文或排障章节。
-- [ ] `PLAN.md` 的内核版本、宿主版本与实际依赖一致。
+- [ ] `docs/README.md` 的当前基线、`PLAN.md` 的内核／宿主与实际依赖一致；历史报告仍保留其原版本。
 - [ ] 确认 `package.json` 的 `files` 覆盖所有**文档承诺随包分发**的文件（尤其 `scripts/` 与 `bin` 目标）。
 - [ ] `bin` 目标带 shebang，`node <script> --help` 能跑。
 
 ## 3. 回归
 
-- [ ] `npm test`：所有脚本通过（当前 23 组）。
+- [ ] `npm test`：所有脚本通过（0.7.0 发布基线为 23 组；以当前 `scripts/run-all.mjs` 为准）。
 - [ ] 发布相关专项：打包脚本/P22、issue 回归（p15）。
 - [ ] `npm pack --dry-run` 文件清单人工过一遍：版本号、文件数、`README`、`LICENSE`、`bin` 目标都在。
 - [ ] 独立消费目录 `npm install <tgz> <真实 peers>` → `node scripts/verify-package.mjs <dir>`；不允许 `--force` / `--legacy-peer-deps`。
@@ -33,14 +35,15 @@
 
 ## 4. 打包与发布
 
-- [ ] `npm whoami` 确认登录（token 只放在用户级 `~/.npmrc`，不进仓库）。
+- [ ] `npm whoami` 确认为预期账号 `QWQcool`；不读取、打印、复制或提交用户级 `~/.npmrc` 中的 token。
 - [ ] `npm publish --dry-run`，核对 tarball 文件名、大小、文件数与 shasum。
 - [ ] `npm publish --access public`（或按需 `--tag next`）。
 - [ ] 等 registry 处理完成后用 **HTTP 直查** 验证（`npm view` 可能被本地缓存拖住）：
 
   ```powershell
-  $meta = Invoke-RestMethod https://registry.npmjs.org/dsh-trivium
+  $meta = Invoke-RestMethod ("https://registry.npmjs.org/dsh-trivium?x=" + [guid]::NewGuid().ToString("N"))
   $meta.'dist-tags'
+  $meta.time.'<x.y.z>'
   $meta.versions.'<x.y.z>'.dist
   ```
 

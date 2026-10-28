@@ -1,5 +1,7 @@
 # R4 / R5 验收记录（2026-10-28）
 
+> **历史验收（R4 / R5，后续随 0.5.1 发布）**：下列版本、命令、输出和未覆盖项按当时记录保留。双标签页冲突在 R7 补充，更正 UI 在 R8 补充；当前覆盖矩阵见 [文档入口](../README.md)。
+
 环境：Windows / Node 24.15.0 / DSH `0.2.1-rc.4`（Web，端口 3092，隔离 `DSH_HOME`）/ 内核 `triviumdb@0.9.0-beta.3` / 插件源码 0.5.0。
 隔离方式：`DSH_HOME=<repo>\.tmp\dsh-home`、`DSH_TRIVIUM_SETTINGS=<repo>\.tmp\trivium.json`、测试工作区 `<repo>\.tmp\r5-ws`。未触碰真实工作区记忆库。
 

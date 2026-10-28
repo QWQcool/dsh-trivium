@@ -22,11 +22,17 @@ import {
   dbPathFor,
   describeDbFailure,
   openWorkspaceDb,
+  openWorkspaceDbReadOnly,
   updateNode,
 } from "../lib/store.js";
 import { isStalePayload } from "../lib/until.js";
 
 const args = process.argv.slice(2);
+if (args.includes("--help") || args.includes("-h")) {
+  console.log("Usage: dsh-trivium-clear-until [workspace] [--json] [--apply [--all]]\n" +
+    "Default: read-only listing. --apply clears stale deadlines also found in the body; --all includes explicit deadlines.");
+  process.exit(0);
+}
 const asJson = args.includes("--json");
 const apply = args.includes("--apply");
 const all = args.includes("--all");
@@ -58,7 +64,9 @@ if (!existsSync(file)) {
 
 let db;
 try {
-  db = await openWorkspaceDb(cwd);
+  // Even opening the normal store can import JSONL and rebuild indexes. A dry
+  // run must inspect the existing file through the read-only kernel handle.
+  db = apply ? await openWorkspaceDb(cwd) : openWorkspaceDbReadOnly(cwd);
 } catch (err) {
   const lock = describeDbFailure(err);
   fail(lock ? lock.message : `Cannot open ${file}: ${err.message || err}`);
@@ -102,7 +110,8 @@ const report = {
   cleared,
   rows,
 };
-closeAll();
+if (apply) closeAll();
+else db.close();
 
 if (asJson) {
   console.log(JSON.stringify(report, null, 2));

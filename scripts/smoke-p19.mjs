@@ -198,11 +198,13 @@ try {
   );
   check(foreignCwd.status === 400, "REV-04 an unregistered workspace is refused by the route");
 
-  // 32-hop cap: build a chain that is longer than the walk limit.
+  // 32-hop cap: build the longest supported chain, then refuse edge 33.
+  // Do not advance the fixture cursor after a refused write: that would test
+  // an unrelated node instead of the chain whose length is being checked.
   let cursor = insertNode(db, { type: "decision", text: "链头 0。" });
-  for (let i = 1; i <= 33; i += 1) {
+  for (let i = 1; i <= 32; i += 1) {
     const next = insertNode(db, { type: "decision", text: `链头 ${i}。` });
-    supersede(db, { oldId: cursor, successorId: next, operationId: `op-hop-${i}` });
+    assert.equal(supersede(db, { oldId: cursor, successorId: next, operationId: `op-hop-${i}` }).ok, true);
     cursor = next;
   }
   check(currentHeadOf(db, cursor).ok === true, "REV-04 the head of the long chain resolves");

@@ -1,4 +1,4 @@
-# R8 未提交改动说明（供审查）
+# R8 改动审查记录（已随 0.7.0 发布）
 
 状态：**已提交并发布为 0.7.0**（版本提交 `4fe638f`，tag `v0.7.0`，npm 2026-10-28T07:33:32Z，shasum `14545bd6…`）。以下保留审查时的改动说明。
 
@@ -73,11 +73,11 @@
 2. `server.js`：两个 GET 都走 `dbForRequest` / `getActiveCwd`，没有新增写入路径。
 3. `client.js`：只读展示；没有新增自动请求；`loadCorrections` 与 `loadTraces` 同一 effect，切走页签不会继续拉。
 4. `smoke-p22` 的 B3：故意把 `.jsonl` 换成同名目录制造失败，验证 health 变红、重开 `bootstrap-write` 恢复、索引重建、两条事实都在。
-5. README 只加了 EPIPE 排障行；**0.7.0 的 Changelog 与 Release info 尚未写**，计划在打包时统一更新。
+5. 审查时 README 仅增加 EPIPE 排障行；之后已在 0.7.0 打包前更新 Changelog 与 Release info。该项不再待办。
 
-## 六、本轮不做 / 后续
+## 六、后续边界（发布状态已更新）
 
-- 版本号、CHANGELOG、Release info、`npm pack`、发布：等审查后做 `0.7.0`。
+- 版本号、Changelog、Release info、打包与发布已完成；结果见 [0.7.0 发布说明](../release-0.7.0.md)。
 - 自动修复损坏的版本链：只提供只读体检与 `clear-until`，不自动改数据。
 - 桌面端设置面板的**可视化**核对：桌面端无调试端口，本轮通过内部 API 验证；如需截图级确认可人工打开面板。
 - 390px 手机宽度、多进程并发写、性能/负载：仍为范围外。

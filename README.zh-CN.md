@@ -14,7 +14,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前测试宿主：`@deepseek-ai/dsh@0.1.5-rc.1`（`dsh-llm` / `dsh-tools` peer 兼容 `0.1.1-rc.2` 与 `0.1.0-rc.8`）。
+> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。0.7.0 发布验收使用 Web `0.2.1-rc.4`；桌面 `0.2.1-rc.3` 的记录是预览代码的 API 验证，不代表正式 tarball 的完整 UI 验收。当前基线和证据见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`，内核精确锁定 `triviumdb@0.9.0-beta.3`。
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -24,7 +24,7 @@ dsh plugin --profile web add dsh-trivium
 
 ```
 <workspace>/.dsh/trivium.tdb      # 本地索引（二进制，建议 gitignore）
-<workspace>/.dsh/trivium.jsonl    # git 源（业务事实）
+<workspace>/.dsh/trivium.jsonl    # 可选 Git 交换快照（业务事实）
 ```
 
 把 `trivium.jsonl` 交给 git。二进制库不要进版本库：
@@ -92,8 +92,10 @@ dsh plugin --profile web remove dsh-trivium
 | 工作区 `.dsh/trivium.jsonl` | 读写 | Git 旁路（默认关）。只含业务节点和边，不含向量 |
 | `~/.dsh/trivium.json` | 读写 | 设置和芯片钉选；可含你手填的 embedding API key |
 | `.dsh/trivium-pending.json` | 读写 | 抽取失败时的本地队列 |
-| 网络 | 关 | 对话不外发。打开 embedding 并填了 URL 才会把被检索文本发到你填的地址。设置页点「检查更新」会请求 npm registry（只拿版本号，不含对话） |
-| 对话原文 | 不外发 | 抽取和检索都在本机；embedding 开启后，被检索的文本会发到你填的地址 |
+| 模型抽取 | 开 | 宿主模型服务可用时，通过 DSH 把限长的对话片段交给当前会话选用的 provider/model；远程模型意味着联网和可能的模型费用。没有模型服务时使用本地规则 |
+| 远程 embedding | 关 | 开启后，节点正文和查询文本会发送到配置的 embedding URL。不开也可使用关键词和图检索 |
+| 检查更新 | 手动触发 | 请求 npm 包元数据，不发送对话 |
+| 对话片段 | 可能交给宿主模型 | 长期记忆存储在本地，不等于抽取或 DSH 对话全程离线。关闭抽取和远程 embedding，可停止插件主动发起的这两类模型／向量调用 |
 
 官方 DeepSeek 对话接口没有 embeddings。不开 embedding 也能用：关键词 + 图遍历。改完设置或 embedding 后需重启 `dsh web`。
 
@@ -220,7 +222,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 界面截图
 
-以下入口在本机 DSH Web（`0.1.1-rc.2`）上仍在。截图为中文界面。插件默认跟随 DSH 宿主语言；也可在 **配置设置** 里锁定中文或英文。
+以下是 DSH Web `0.1.1-rc.2` 上的历史中文截图，用于说明早期界面，不代表 0.7.0 的验收，也未包含所有现行控件。分版本证据及当前边界见[文档入口](docs/README.md)。插件默认跟随 DSH 宿主语言；也可在 **配置设置** 里锁定中文或英文。
 
 ### 会话 — `ctx_find("鉴权")`
 
