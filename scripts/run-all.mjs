@@ -66,6 +66,7 @@ for (const job of jobs) {
       ...process.env,
       // Per-script file so one script cannot seed another's state.
       DSH_TRIVIUM_SETTINGS: join(home, `${job.name}.json`),
+      DSH_HOME: join(home, `${job.name}-home`),
     },
   });
   const ms = Date.now() - started;

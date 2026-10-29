@@ -1,14 +1,4 @@
-/**
- * p28：抽取去重（同一批内容不重复调模型）。
- *
- * p27 只覆盖"什么时候排定时器"，没覆盖 `turnsHash` 的跳过路径。这里补上。
- *
- * 判据用**模型调用次数**：llm 桩一调就抛，于是抽取走 llmFailed → savePending 分支，
- * 既能计数，又留下"确实抽过"的落盘痕迹。
- *   phase1 首次：调 1 次
- *   phase2 同一批内容 + 冷却已过：仍应是 1 次（去重生效）
- *   phase3 改一个字符：应变成 2 次（证明 phase2 的"没调"不是测试恒过）
- */
+/** Failed extraction remains pending and must be retried, never marked as successful dedupe. */
 import assert from "node:assert/strict";
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -80,14 +70,14 @@ const turnEnd = () => onEvent(session, { type: "turn/end", data: {}, seq: 1 });
  * 先开好合成库，将冷启动耗时与这个去重断言分开。
  */
 const wait = (ms) => new Promise((r) => realSetTimeout(r, ms));
-async function settle(expectFailure) {
+async function settle(expectFailure, expectedCalls) {
   const pending = join(cwd, ".dsh", "trivium-pending.json");
   const deadline = realDateNow() + 10_000;
   let observed = false;
   while (realDateNow() < deadline) {
     try {
       const saved = JSON.parse(readFileSync(pending, "utf8"));
-      if (expectFailure ? saved.error === "llm failed" : saved.error === undefined) { observed = true; break; }
+      if (llmCalls.length >= expectedCalls && (expectFailure ? saved.error === "llm failed" : saved.error === undefined)) { observed = true; break; }
     } catch { /* a pending write may not have completed yet */ }
     await wait(10);
   }
@@ -101,29 +91,28 @@ await store.openWorkspaceDb(cwd);
 /* ---- phase 1：首次批量抽取 ---- */
 pushTurns(TEXTS);
 turnEnd();
-await settle(true);
+await settle(true, 1);
 assert.equal(llmCalls.length, 1, `首次抽取应调用模型 1 次，实际 ${llmCalls.length}`);
 assert.ok(existsSync(join(cwd, ".dsh", "trivium-pending.json")), "抽取失败应落盘 pending");
 console.log("ok  首次批量抽取调用模型并落盘");
 
-/* ---- phase 2：内容不变 + 冷却已过，应去重跳过 ---- */
+/* ---- phase 2：失败内容不变 + 冷却已过，必须重试 ---- */
 clock += 10 * 60_000;
-pushTurns(TEXTS);
 turnEnd();
-await settle(false);
-assert.equal(llmCalls.length, 1, `同一批内容不应再调模型，实际 ${llmCalls.length}`);
-console.log("ok  同一批内容被去重跳过");
+await settle(true, 2);
+assert.equal(llmCalls.length, 2, "failed identical batch must retry");
+console.log("ok  失败批次可重试");
 
 /* ---- phase 3：改一个字符，必须重新抽取 ---- */
 clock += 10 * 60_000;
 const changed = TEXTS.map((pair, i) => (i === TEXTS.length - 1 ? { ...pair, user: `${pair.user}（补充一句）` } : pair));
 pushTurns(changed);
 turnEnd();
-await settle(true);
-assert.equal(llmCalls.length, 2, `内容变化后应重新调模型，实际 ${llmCalls.length}`);
-console.log("ok  内容变化后重新抽取（证明 phase2 不是恒过）");
+await settle(true, 3);
+assert.equal(llmCalls.length, 3, "changed batch retries without losing earlier failure");
+console.log("ok  内容变化后重试并保留先前失败消息");
 
-console.log("\nP28 extraction dedupe passed");
+console.log("\nP28 failed extraction retry passed");
 } finally {
   Date.now = realDateNow;
   globalThis.setTimeout = realSetTimeout;

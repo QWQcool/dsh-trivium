@@ -88,7 +88,7 @@ for (let i = 7; i <= 12; i++) {
 }
 onEvent(session2, turnEnd());
 assert.equal(scheduled.length, 1, "冷却期内应重新排 idle 而不是立刻抽");
-assert.equal(scheduled[0].delay, 60_000);
+assert.ok(scheduled[0].delay > 290_000 && scheduled[0].delay <= 300_000, "wake at cooldown end");
 console.log("ok  5 分钟冷却期内不立即抽取，改为排下一次窗口");
 
 globalThis.setTimeout = realSetTimeout;
