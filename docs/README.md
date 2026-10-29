@@ -1,6 +1,6 @@
 # 文档入口与当前基线
 
-**0.8.0 已发布**，见 [发布说明与回执](release-0.8.0.md)。本轮 [判据、公平对照和成本报告](next-memory/COST-QUALITY-RESULTS.md) 包含原始证据；35/35 离线组、13 项干净安装/真实 peers 验证及隔离 Web HTTP 自验通过。C4 留在发布之后。
+**0.8.1 已发布**，见 [发布说明与回执](release-0.8.1.md)。本轮是注入完整性补丁：长事实保留头尾、去掉预算前的 `topK: 3`；同行提交 C4 对手对照、D0 复测、D1/D2 成本与可复核证据账本。36/36 离线组、13 项干净安装/真实 peers 验证通过。
 
 更新：2026-10-29。这里是维护者的当前状态入口；安装和日常使用见 [中文 README](../README.zh-CN.md)。历史报告中的“当前”“待发布”“下一轮”只对报告当时有效，不作为今天的执行指令。
 
@@ -8,14 +8,14 @@
 
 | 项目 | 状态与证据 |
 |---|---|
-| 插件 | `dsh-trivium@0.8.0`；registry 已确认 `latest=0.8.0` |
-| 发布时间 | `2026-10-29T03:55:18.088Z`，即北京时间 2026-10-29 11:55:18 |
-| 发布源码 | `v0.8.0` → `d9bd4d5`；远端 main 已包含该提交，发布回执另行提交 |
-| 发布包 | shasum `ca3950f18ae837396657558feb368bb2cbd01e32`；38 个文件，与最终验收包一致 |
+| 插件 | `dsh-trivium@0.8.1`；registry 已确认 `latest=0.8.1` |
+| 发布时间 | `2026-10-29T09:58:19.709Z`，即北京时间 2026-10-29 17:58:19 |
+| 发布源码 | `v0.8.1` → `b483b07`；远端 main 已包含该提交，发布回执另行提交 |
+| 发布包 | shasum `212eb69937c999c360b5bc8f7edbd222c2161fb3`；38 个文件，与最终验收包一致 |
 | 内核 | `triviumdb@0.9.0-beta.3`，精确锁定；内核 npm tag 本轮未重新核查；未更换内核版本 |
 | 运行时 | ESM；Node `^22.19.0 || >=24`；npm 锁文件；宿主提供 `dsh-llm` / `dsh-tools` peers |
 | 已记录宿主 | Web `@deepseek-ai/dsh@0.2.1-rc.4`；桌面 `0.2.1-rc.3` 的覆盖边界见下表 |
-| 旧问题版本 | 0.5.0 既有 deprecation 保留；当前升级目标为 0.8.0，本轮未另行 deprecate 旧版本 |
+| 旧问题版本 | 0.5.0 既有 deprecation 保留；当前升级目标为 0.8.1，本轮未另行 deprecate 旧版本 |
 
 本页记录发布基线，不代表未发布工作树已进入 npm。当前修改与新增缺陷结论应单独列在本轮审查结果中。
 
@@ -48,7 +48,7 @@ package/lock 已更新到 0.7.1；更正调度、自然到期、按库诊断和 
 | 安装、配置、使用、排障 | [中文 README](../README.zh-CN.md) / [English README](../README.md) |
 | 产品边界、架构、后续方向 | [PLAN.md](../PLAN.md) |
 | 可选芯片与会话层的实际契约 | [PLAN-session-map.md](../PLAN-session-map.md) |
-| 当前版本改了什么 | [0.8.0 发布说明](release-0.8.0.md) / [质量与成本记录](next-memory/COST-QUALITY-RESULTS.md) |
+| 当前版本改了什么 | [0.8.1 发布说明](release-0.8.1.md) / [D0 复测](next-memory/D0-RESULTS.md) / [D1](next-memory/D1-RESULTS.md) / [D2](next-memory/D2-EXTRACT-COST.md) |
 | 交给其它 AI IDE 的后续范围 | [B1–B5 连续开工提示词与 B–E 依赖](NEXT-IDE-PROMPT-0.7.1.md) |
 | B 批交互契约与原型 | [0.8.0 交互原型（合成 fixture）](next-memory/FRONTEND-0.8.0.html) / [执行计划](next-memory/B-EXECUTION-PLAN.md) / [B1–B5 结果](next-memory/B-RESULTS.md)；旧的 [FRONTEND.html](next-memory/FRONTEND.html) 保留历史身份 |
 | C 批质量与负载基线 | [结果汇总](next-memory/C-RESULTS.md) / [执行计划](next-memory/C-EXECUTION-PLAN.md) / [10 个场景](next-memory/C3-SCENARIOS.md) / [对手取舍](next-memory/C4-COUNTERPARTS.md) |
@@ -69,9 +69,9 @@ package/lock 已更新到 0.7.1；更正调度、自然到期、按库诊断和 
 
 | 版本 | 主要变化 |
 |---|---|
-| [0.6.0](release-0.6.0.md) | 两个维护命令随 npm 包分发；补双标签页冲突、稳定消息 id 和期限清理验证 |
-| [0.7.0](release-0.7.0.md) | 设置页可查看更正与版本链体检；增加旁路故障与重开恢复回归 |
 | [0.7.1](release-0.7.1.md) | 原子导入、归档历史、更正与自然到期、按库诊断、只读 CLI、UI 冲突与键盘可靠性 |
+| [0.8.0](release-0.8.0.md) | 设置页工作区切换与统一回执、只读导入预览、每轮投递记录；单批在途抽取与失败恢复 |
+| [0.8.1](release-0.8.1.md) | 长事实注入保留头尾、去掉预算前 `topK: 3`；补 C4 对手对照、D0 复测与 D1/D2 成本 |
 
 ## 验证覆盖与缺口
 

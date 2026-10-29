@@ -1,6 +1,6 @@
 # dsh-trivium 0.8.1
 
-状态：待发布（发布后补回执）。本轮是 0.8.0 的**正确性补丁 + 证据批**：修复长正文尾部在注入里被截掉、
+状态：**已发布**。npm `latest=0.8.1`，`main` 与 `v0.8.1` 已更新。北京时间 **2026-10-29 17:58:19** 发布。本轮是 0.8.0 的**正确性补丁 + 证据批**：修复长正文尾部在注入里被截掉、
 以及一个藏在预算前面的候选条数上限；不改四工具、数据格式、默认开关和内核 pin。
 
 ## 变化
@@ -49,5 +49,12 @@ dsh plugin --profile web add dsh-trivium@0.8.1
 
 ## 发布回执
 
-发布后补：npm 版本与 dist-tag、发布时间、源码提交、tarball 文件数 / shasum / integrity、
-干净消费安装与 `verify-package` 结果。
+- npm：`dsh-trivium@0.8.1`，registry 直查确认 `latest=0.8.1`。
+- 时间：`2026-10-29T09:58:19.709Z`，北京时间 `2026-10-29 17:58:19 +08:00`。
+- 源码：`b483b0728904879522ff8dd11a2171fdfc5cb181`，标签 `v0.8.1` 指向此提交，远端 main 已包含它；本回执随后独立提交。
+- 38 个文件；shasum `212eb69937c999c360b5bc8f7edbd222c2161fb3`；SHA-256 `3e025d501ecc305d4479f966f5fda041ead79e015ed474712e1b5959d49af020`。
+- integrity：`sha512-shSkWJSRDPtPHSj8dmpajqT5WQctuQJ6fUGuzUtCzjRuuLjoNfbPKiTX3AJ49XCFz3LTzryOyb9GXFJs5hy1Vg==`。
+- 从 registry 实际下载 tarball 重新计算 SHA-512/SHA-256，与已干净安装并通过测试的本地包逐字节相同。
+- 离线回归 36/36（日志 `.tmp/release-0.8.1/all-tests.log`）；隔离消费目录安装 tarball + 真实 peers `0.2.1-rc.4`，
+  `verify-package` 13 项通过，安装后 38 个文件，两个 bin 的 `--help` 退出码 0。
+- [机器可读回执](next-memory/evidence-0.8.1/package-check.json)。

@@ -1,0 +1,43 @@
+{
+  "version": "0.8.1",
+  "files": 38,
+  "shasum": "212eb69937c999c360b5bc8f7edbd222c2161fb3",
+  "sha256": "3e025d501ecc305d4479f966f5fda041ead79e015ed474712e1b5959d49af020",
+  "integrity": "sha512-shSkWJSRDPtPHSj8dmpajqT5WQctuQJ6fUGuzUtCzjRuuLjoNfbPKiTX3AJ49XCFz3LTzryOyb9GXFJs5hy1Vg==",
+  "registryTarballMatchesLocal": true,
+  "installedFiles": 38,
+  "binHelpExitCodes": {
+    "dsh-trivium-check": 0,
+    "dsh-trivium-clear-until": 0
+  },
+  "peerChecks": {
+    "package": "dsh-trivium",
+    "version": "0.8.1",
+    "kernel": "0.9.0-beta.3",
+    "hostPeers": {
+      "llm": "0.2.1-rc.4",
+      "tools": "0.2.1-rc.4"
+    },
+    "checks": [
+      "package version",
+      "native binding",
+      "host module import",
+      "v4 source shape",
+      "four tool registrations",
+      "explicit expiry",
+      "history/current-only search",
+      "multiword search",
+      "clear expiry",
+      "runtime pre-step injection",
+      "same-turn de-duplication",
+      "cumulative turn budget",
+      "current version in runtime recall"
+    ],
+    "status": "passed"
+  },
+  "offlineRegression": {
+    "scripts": 36,
+    "passed": 36,
+    "log": ".tmp/release-0.8.1/all-tests.log"
+  }
+}

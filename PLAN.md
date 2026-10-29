@@ -1,6 +1,6 @@
 # dsh-trivium 产品与架构
 
-更新：2026-10-28；对应 **0.7.1 / triviumdb 0.9.0-beta.3**，实际发布状态见 [docs/README.md](docs/README.md)。本文维护现行设计，不再重复逐版本发布日志。
+更新：2026-10-29；对应 **0.8.1 / triviumdb 0.9.0-beta.3**，实际发布状态见 [docs/README.md](docs/README.md)。本文维护现行设计，不再重复逐版本发布日志。
 
 ## 1. 产品定位
 
