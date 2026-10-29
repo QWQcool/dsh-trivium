@@ -10,7 +10,7 @@
  *   phase3 改一个字符：应变成 2 次（证明 phase2 的"没调"不是测试恒过）
  */
 import assert from "node:assert/strict";
-import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -21,6 +21,7 @@ process.env.DSH_TRIVIUM_SETTINGS = join(root, "settings.json");
 const cwd = join(root, "workspace");
 
 const realSetTimeout = globalThis.setTimeout;
+const realClearTimeout = globalThis.clearTimeout;
 const realDateNow = Date.now;
 let clock = realDateNow();
 Date.now = () => clock;
@@ -74,23 +75,33 @@ function pushTurns(texts) {
 const turnEnd = () => onEvent(session, { type: "turn/end", data: {}, seq: 1 });
 /*
  * 抽取是异步的：runExtract 要先 openWorkspaceDb（含文本索引重建），实测可能超过 150 ms。
- * 固定 sleep 会让"缓冲区还没清空"被误判成"去重失效"，所以这里等 pending 落盘出现，
- * 再多给一段让 .then 里的 buf.turns = [] 跑完。
+ * turn/end 自己也会先写 pending，文件存在不等于抽取结束。等待这一阶段的
+ * 明确内容（失败时 error=llm failed），再排空已完成 Promise 的回调。
+ * 先开好合成库，将冷启动耗时与这个去重断言分开。
  */
 const wait = (ms) => new Promise((r) => realSetTimeout(r, ms));
-async function settle() {
+async function settle(expectFailure) {
   const pending = join(cwd, ".dsh", "trivium-pending.json");
-  for (let i = 0; i < 50; i++) {
-    if (existsSync(pending)) break;
-    await wait(100);
+  const deadline = realDateNow() + 10_000;
+  let observed = false;
+  while (realDateNow() < deadline) {
+    try {
+      const saved = JSON.parse(readFileSync(pending, "utf8"));
+      if (expectFailure ? saved.error === "llm failed" : saved.error === undefined) { observed = true; break; }
+    } catch { /* a pending write may not have completed yet */ }
+    await wait(10);
   }
-  await wait(400);
+  assert.ok(observed, "本阶段 pending 写入未完成，不能据此判断去重");
+  await new Promise((resolve) => setImmediate(resolve));
+  await new Promise((resolve) => setImmediate(resolve));
 }
 
+try {
+await store.openWorkspaceDb(cwd);
 /* ---- phase 1：首次批量抽取 ---- */
 pushTurns(TEXTS);
 turnEnd();
-await settle();
+await settle(true);
 assert.equal(llmCalls.length, 1, `首次抽取应调用模型 1 次，实际 ${llmCalls.length}`);
 assert.ok(existsSync(join(cwd, ".dsh", "trivium-pending.json")), "抽取失败应落盘 pending");
 console.log("ok  首次批量抽取调用模型并落盘");
@@ -99,7 +110,7 @@ console.log("ok  首次批量抽取调用模型并落盘");
 clock += 10 * 60_000;
 pushTurns(TEXTS);
 turnEnd();
-await settle();
+await settle(false);
 assert.equal(llmCalls.length, 1, `同一批内容不应再调模型，实际 ${llmCalls.length}`);
 console.log("ok  同一批内容被去重跳过");
 
@@ -108,12 +119,15 @@ clock += 10 * 60_000;
 const changed = TEXTS.map((pair, i) => (i === TEXTS.length - 1 ? { ...pair, user: `${pair.user}（补充一句）` } : pair));
 pushTurns(changed);
 turnEnd();
-await settle();
+await settle(true);
 assert.equal(llmCalls.length, 2, `内容变化后应重新调模型，实际 ${llmCalls.length}`);
 console.log("ok  内容变化后重新抽取（证明 phase2 不是恒过）");
 
-Date.now = realDateNow;
-globalThis.setTimeout = realSetTimeout;
-store.closeAll();
-try { rmSync(root, { recursive: true, force: true }); } catch { /* 句柄可能未释放 */ }
 console.log("\nP28 extraction dedupe passed");
+} finally {
+  Date.now = realDateNow;
+  globalThis.setTimeout = realSetTimeout;
+  globalThis.clearTimeout = realClearTimeout;
+  store.closeAll();
+  rmSync(root, { recursive: true, force: true });
+}

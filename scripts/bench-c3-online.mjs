@@ -18,7 +18,7 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { pathToFileURL } from "node:url";
+import assert from "node:assert/strict";
 
 const args = new Map(
   process.argv.slice(2).map((raw) => {
@@ -31,12 +31,16 @@ const ONLY = args.get("scenarios") ? String(args.get("scenarios")).split(",") : 
 const BUDGET_CNY = Number(args.get("budget") || 2);
 const MAX_ROUNDS = Number(args.get("rounds") || 3);
 const REPEATS = Math.max(1, Number(args.get("repeats") || 1));
-// 保守单价（元/百万 token）：输入按未命中缓存计，输出按标准价。只是预算闸，不是账单。
+const AUDIT_ONLY = args.has("audit-only");
+if (!Number.isFinite(BUDGET_CNY) || BUDGET_CNY <= 0 || BUDGET_CNY > 15) throw new Error("本实验预算必须在 (0, 15] 元内");
+if (ARMS.some((arm) => !["nomem", "default", "plain"].includes(arm))) throw new Error("Unknown experiment arm");
+// 历史假定单价，未实时核验；只用于估算，不是供应商账单。
+// 新付费实验须先核对当前模型价格和每请求上界；本轮只跑 audit-only。
 const PRICE_IN = 2 / 1_000_000;
 const PRICE_OUT = 8 / 1_000_000;
 
 const KEY = process.env.DEEPSEEK_API_KEY;
-if (!KEY) throw new Error("缺少 DEEPSEEK_API_KEY");
+if (!KEY && !AUDIT_ONLY) throw new Error("缺少 DEEPSEEK_API_KEY");
 const MODEL = process.env.C3_MODEL || "deepseek-chat";
 
 const root = mkdtempSync(join(tmpdir(), "c3-online-"));
@@ -44,8 +48,7 @@ process.env.DSH_HOME = join(root, "home");
 process.env.DSH_TRIVIUM_SETTINGS = join(root, "settings.json");
 writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ recallMode: "off" }), "utf8");
 
-const libDir = join(dirname(new URL(import.meta.url).pathname.slice(1)), "..", "lib");
-const lib = (f) => import(pathToFileURL(join(libDir, f)).href);
+const lib = (f) => import(new URL(`../lib/${f}`, import.meta.url).href);
 const store = await lib("store.js");
 const revisions = await lib("revisions.js");
 const { registerTools } = await lib("tools.js");
@@ -79,7 +82,8 @@ const SCENARIOS = {
       const v1 = (await plant(cwd, { type: "decision", name: "视频约定", text: "只推教程类视频。" })).match(/id=(\d+)/)[1];
       const v2 = (await plant(cwd, { type: "decision", name: "视频约定", text: "教程与实际演示都可以推。" })).match(/id=(\d+)/)[1];
       const db = await store.openWorkspaceDb(cwd);
-      revisions.supersede(db, { oldId: Number(v1), successorId: Number(v2), reason: "改主意" });
+      assert.notEqual(v1, v2, "S02 fixture versions must have different ids");
+      assert.equal(revisions.supersede(db, { oldId: Number(v1), successorId: Number(v2), reason: "改主意" }).ok, true);
     },
     question: "现在推荐视频的约定是什么？",
     expect: ["都可以"],
@@ -138,7 +142,7 @@ const SCENARIOS = {
     question: "我们有哪些联调约定？尽量多列。",
     expect: ["基线"],
     forbid: [],
-    plain: "联调约定 1-6：先跑基线再改召回策略，记录版本与种子。",
+    plain: ["环境隔离", "版本固定", "种子记录", "失败样本", "回滚方案", "验收门槛"].map((focus, i) => `第 ${i + 1} 条联调约定：先跑基线再改召回；本条关注${focus}。`).join("\n"),
   },
   S08: {
     name: "归档不复活",
@@ -171,7 +175,9 @@ const SCENARIOS = {
       const a = await plant(cwd, { type: "decision", name: "缓存策略", text: "早期方案：全量刷新缓存。" });
       const b = await plant(cwd, { type: "decision", name: "缓存策略", text: "现在方案：按 key 增量失效。" });
       const db = await store.openWorkspaceDb(cwd);
-      revisions.supersede(db, { oldId: Number(/id=(\d+)/.exec(a)[1]), successorId: Number(/id=(\d+)/.exec(b)[1]), reason: "命中率太低" });
+      const oldId = Number(/id=(\d+)/.exec(a)[1]), successorId = Number(/id=(\d+)/.exec(b)[1]);
+      assert.notEqual(oldId, successorId, "S10 fixture versions must have different ids");
+      assert.equal(revisions.supersede(db, { oldId, successorId, reason: "命中率太低" }).ok, true);
     },
     question: "我们为什么从全量刷新缓存改成增量失效？",
     expect: ["增量"],
@@ -184,8 +190,23 @@ const SCENARIOS = {
 
 let spent = 0;
 const usageLog = [];
+let currentTrial = null;
+function saveUsage(status) {
+  const receipt = { status, budgetCny: BUDGET_CNY, estimatedCny: spent, pricesCnyPerMillion: { uncachedInput: 2, cachedInput: 0.5, output: 8 }, trial: currentTrial, calls: usageLog };
+  if (args.get("out")) {
+    mkdirSync(dirname(args.get("out")), { recursive: true });
+    writeFileSync(`${args.get("out")}.usage.json`, JSON.stringify(receipt, null, 2) + "\n", "utf8");
+  }
+  return receipt;
+}
+function stopForBudget() {
+  console.error(JSON.stringify(saveUsage("budget-exhausted")));
+  throw new Error("实验估算预算已到上限，不再发起模型请求；usage 已保留");
+}
 
 async function callModel(messages, { tools: toolDefs, toolChoice } = {}) {
+  if (AUDIT_ONLY) throw new Error("audit-only mode must never request a model");
+  if (spent >= BUDGET_CNY) stopForBudget();
   const body = { model: MODEL, messages, temperature: 0, stream: false, max_tokens: 500 };
   if (toolDefs?.length) body.tools = toolDefs;
   if (toolChoice) body.tool_choice = toolChoice;
@@ -200,7 +221,9 @@ async function callModel(messages, { tools: toolDefs, toolChoice } = {}) {
   const cached = Number(u.prompt_cache_hit_tokens || 0);
   const miss = Number(u.prompt_tokens || 0) - cached;
   spent += miss * PRICE_IN + cached * PRICE_IN * 0.25 + Number(u.completion_tokens || 0) * PRICE_OUT;
-  usageLog.push({ prompt: u.prompt_tokens || 0, cached, completion: u.completion_tokens || 0 });
+  usageLog.push({ ...currentTrial, model: json.model || MODEL, prompt: u.prompt_tokens || 0, cached, completion: u.completion_tokens || 0 });
+  saveUsage("running");
+  if (spent >= BUDGET_CNY) stopForBudget();
   return json.choices?.[0]?.message || {};
 }
 
@@ -258,9 +281,46 @@ async function runToolLoop(cwd, question) {
 
 /* ---------------- 执行 ---------------- */
 
+const workspaceFor = (rep, id, arm) => join(root, `rep-${rep}`, id, arm);
+
+// A zero-call audit of fixture identity and obvious false positives. This does
+// not replace blind human grading, and does not recalculate historical runs.
+if (AUDIT_ONLY) {
+  try {
+    const paths = [];
+    for (let rep = 0; rep < 2; rep++) for (const id of Object.keys(SCENARIOS)) for (const arm of ["nomem", "default", "plain"]) paths.push(workspaceFor(rep, id, arm));
+    assert.equal(new Set(paths).size, 60, "scenarios, arms and repetitions must not share a store");
+    const fixtures = [];
+    for (const id of ["S01", "S02", "S10"]) {
+      for (const arm of ["default", "plain"]) {
+        const cwd = workspaceFor(0, id, arm);
+        await SCENARIOS[id].setup(cwd);
+        const db = await store.openWorkspaceDb(cwd);
+        assert.equal(store.nodeCountOf(db), 3, `${id}/${arm} must contain only its two facts and workspace root`);
+        fixtures.push({ id, arm, nodeCount: store.nodeCountOf(db) });
+        store.closeAll();
+      }
+    }
+    const adversarial = [
+      ["S02", "教程与实际演示并非都可以推荐，仍然只有教程。"],
+      ["S07", "不知道之前的约定，建议先建立一份基线。"],
+      ["S10", "你提到了增量失效，但我不知道修改原因。"],
+    ].map(([id, answer]) => {
+      const sc = SCENARIOS[id];
+      return { id, answer, legacyPass: sc.expect.every((word) => answer.includes(word)) && !(sc.strictForbid !== false && sc.forbid.some((word) => answer.includes(word))), semanticPass: false };
+    });
+    assert.ok(adversarial.every((row) => row.legacyPass), "the audit must expose the legacy rubric's false positives");
+    const audit = { mode: "audit-only", modelCalls: 0, uniqueWorkspacePaths: new Set(paths).size, fixtures, adversarial, conclusion: "keyword matches are not answer accuracy; old online claims require regrading and a controlled rerun" };
+    if (args.get("out")) { mkdirSync(dirname(args.get("out")), { recursive: true }); writeFileSync(args.get("out"), JSON.stringify(audit, null, 2) + "\n", "utf8"); }
+    console.log(JSON.stringify(audit, null, 2));
+  } finally { store.closeAll(); rmSync(root, { recursive: true, force: true }); }
+  process.exit(0);
+}
+
 const ids = Object.keys(SCENARIOS).filter((id) => !ONLY || ONLY.includes(id));
 const results = [];
 
+try {
 for (let rep = 0; rep < REPEATS; rep += 1) {
 for (const id of ids) {
   const sc = SCENARIOS[id];
@@ -269,8 +329,9 @@ for (const id of ids) {
       results.push({ id, arm, rep, skipped: `预算用尽（已花 ¥${spent.toFixed(3)}）` });
       continue;
     }
-    const cwd = join(root, );
+    const cwd = workspaceFor(rep, id, arm);
     await sc.setup(cwd);
+    currentTrial = { rep, id, arm };
     const before = spent;
     let answer = "";
     let toolCalls = 0;
@@ -302,7 +363,7 @@ for (const id of ids) {
       pass: expectOk && !forbidBlocks,
       forbidNeedsReview: !forbidBlocks && forbidHit.length > 0,
       costCny: +(spent - before).toFixed(4),
-      answer: answer.slice(0, 220),
+      answer,
     });
     process.stderr.write(`[c3] r${rep} ${id} ${arm} pass=${expectOk && !forbidHit.length} ¥${(spent - before).toFixed(4)}\n`);
   }
@@ -331,7 +392,7 @@ const report = {
   model: MODEL,
   node: process.version,
   budgetCny: BUDGET_CNY,
-  measurement: "真实模型调用；token 取 provider usage；判据为字符串断言；temperature=0",
+  measurement: "真实模型调用；token 取 provider usage；人民币为脚本假定单价估算而非账单；字符串 pass 仅是启发式匹配，必须人工复核，不能当答对率；temperature=0",
   totals,
   byArm,
   results,
@@ -342,5 +403,8 @@ if (args.get("out")) {
   writeFileSync(args.get("out"), `${JSON.stringify(report, null, 2)}\n`, "utf8");
 }
 
-store.closeAll();
-try { rmSync(root, { recursive: true, force: true }); } catch { /* 句柄可能未释放 */ }
+saveUsage("completed");
+} finally {
+  store.closeAll();
+  rmSync(root, { recursive: true, force: true });
+}

@@ -134,6 +134,8 @@ const quantile = (arr, p) => {
 
 async function runTier(tier, repeat) {
   const root = mkdtempSync(join(tmpdir(), `bench-tier${tier}-r${repeat}-`));
+  process.env.DSH_HOME = join(root, "home");
+  process.env.DSH_TRIVIUM_SETTINGS = join(root, "settings.json");
   const rand = lcg(seed + tier * 7919 + repeat);
   const row = { tier, repeat, seed: seed + tier * 7919 + repeat };
 

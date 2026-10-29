@@ -13,16 +13,15 @@
 
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
-import { pathToFileURL } from "node:url";
+import { join } from "node:path";
 
 const root = mkdtempSync(join(tmpdir(), "bench-g4-"));
 process.env.DSH_HOME = join(root, "home");
 process.env.DSH_TRIVIUM_SETTINGS = join(root, "settings.json");
 writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ recallMode: "auto" }), "utf8");
 
-const base = join(dirname(new URL(import.meta.url).pathname.slice(1)), "..", "lib");
-const lib = (f) => import(pathToFileURL(join(base, f)).href);
+const base = new URL("../lib/", import.meta.url);
+const lib = (f) => import(new URL(f, base).href);
 
 const store = await lib("store.js");
 const revisions = await lib("revisions.js");
@@ -58,6 +57,7 @@ const textOf = (messages) => (messages || [])
   .join("\n");
 const results = {};
 
+try {
 /* ---------- 1. 合法链：最新版是当前，旧正文不当当前 ---------- */
 const OLD = "旧约定：只推教程类视频。";
 const NEW = "新约定：教程与实际演示都可以。";
@@ -136,15 +136,16 @@ results.hopLimit = {
   headHops: headLong.hops,
   headIdIsLast: headLong.ok ? headLong.id === longChainIds[longChainIds.length - 1] : false,
   // 写入侧拒绝 > 32 跳，属于正确保护；walker 的 too-long 只有损坏库才会遇到
-  pass: refusedAt !== null && linksApplied === refusedAt - 1,
+  pass: linksApplied === 32 && refusedAt === 33 && refusedCode === "too-long" && headLong.ok && headLong.hops === 32,
 };
 
 /* ---------- 6. 绕过 API 直接连边，制造真环（模拟库被损坏） ---------- */
 const c1 = idOf(await remember.execute({ type: "decision", name: "环起点", text: "环起点正文 OLD-CYCLE。" }, exec));
 const c2 = idOf(await remember.execute({ type: "decision", name: "环终点", text: "环终点正文 NEW-CYCLE。" }, exec));
 revisions.supersede(db, { oldId: c1, successorId: c2, reason: "正常替代" });
-// 关键：ensureLink 不做修订校验，等价于有人手工改了库
-const forcedLink = store.ensureLink(db, c2, c1, "supersedes");
+// This is an internal store helper, not the model-facing ctx_link tool. Reverse
+// the existing c2 -> c1 edge; repeating c2 -> c1 only exercises edge deduplication.
+const forcedLink = store.ensureLink(db, c1, c2, "supersedes");
 const headForced = store.currentHeadOf(db, c1);
 const projForced = resolver(c1);
 const findForced = String(await find.execute({ query: "环起点正文" }, exec));
@@ -160,12 +161,23 @@ results.forcedCycle = {
   oldBodyInFind: findForced.includes("OLD-CYCLE"),
   oldBodyInInjection: injectedForced.includes("OLD-CYCLE"),
   newBodyInFind: findForced.includes("NEW-CYCLE"),
-  // ensureLink 对 supersedes 标签本身就拒绝（refuseModelRevisionLabel），
-  // 所以公开 API 造不出环：这一层是“不可构造”，不是“通过”
   constructible: forcedLink !== false,
   linkRefused: forcedLink === false,
-  pass: forcedLink === false ? true : (headForced.ok === false && projForced === null && !injectedForced.includes("OLD-CYCLE")),
+  pass: forcedLink === true && headForced.ok === false && headForced.reason === "cycle" && projForced === null &&
+    !findForced.includes("OLD-CYCLE") && !findForced.includes("NEW-CYCLE") &&
+    !injectedForced.includes("OLD-CYCLE") && !injectedForced.includes("NEW-CYCLE"),
 };
+// Raw native injection models a legacy/damaged store; it is not a supported
+// public write. It lets us actually exercise the fail-closed projection path.
+const overflowId = store.insertNode(db, { type: "decision", name: "损坏超长末端", text: "G4-TOO-LONG-HEAD damaged chain marker." });
+db.link(overflowId, longChainIds.at(-1), "supersedes", 0.8);
+const tooLongViews = [longChainIds[0], longChainIds[16], overflowId].map((id) => ({ id, head: store.currentHeadOf(db, id), projection: resolver(id) }));
+results.forcedTooLong = { views: tooLongViews, pass: tooLongViews.every((row) => !row.head.ok && row.head.reason === "too-long" && row.projection === null) };
+
+const safe = store.insertNode(db, { type: "decision", name: "公开工具守卫", text: "只接受人工确认的版本关系。" });
+const beforeWrite = JSON.stringify(db.allNodeIds().map((id) => db.get(id)));
+const refusedRemember = String(await remember.execute({ type:"decision", text:"这条未经确认的版本不能入库。", link_to:safe, link_label:"supersedes" }, exec));
+results.rememberGuard = { refused: refusedRemember.startsWith("Refused:"), unchanged: beforeWrite === JSON.stringify(db.allNodeIds().map((id) => db.get(id))) };
 /* ---------- 汇总 ---------- */
 const violations = [];
 if (results.validChain.oldBodyInFind) violations.push("合法链把旧正文当当前事实");
@@ -174,6 +186,9 @@ if (!results.bodyProtected.pass) violations.push("链上正文可被原地改写
 if (!results.deleteProtected.pass) violations.push("链上节点可被删除");
 if (!results.cycle.headOk && results.cycle.oldBodyShownAsCurrent) violations.push("环中旧正文被当当前事实");
 if (!results.hopLimit.pass) violations.push("32 跳上限未在写入侧拒绝");
+if (!results.forcedCycle.pass) violations.push("真实循环链投影未通过");
+if (!results.forcedTooLong.pass) violations.push("真实超长链投影未通过");
+if (!results.rememberGuard.refused || !results.rememberGuard.unchanged) violations.push("ctx_remember 绕过版本关系确认");
 
 
 console.log(JSON.stringify({
@@ -185,6 +200,8 @@ console.log(JSON.stringify({
   pass: violations.length === 0,
   results,
 }, null, 2));
-
-store.closeAll();
-try { rmSync(root, { recursive: true, force: true }); } catch { /* 句柄可能未释放 */ }
+if (violations.length) process.exitCode = 1;
+} finally {
+  store.closeAll();
+  rmSync(root, { recursive: true, force: true });
+}
