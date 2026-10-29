@@ -1,0 +1,211 @@
+{
+  "rootSynthetic": true,
+  "modelCalls": 0,
+  "gate": [
+    {
+      "turns": [
+        {
+          "role": "user",
+          "text": "继续，重试次数改为 5 次。"
+        }
+      ],
+      "callCount": 0,
+      "applied": [],
+      "gate": {
+        "skipped": true,
+        "reason": "filler-only"
+      },
+      "llmFailed": false
+    },
+    {
+      "turns": [
+        {
+          "role": "user",
+          "text": "下一步，项目负责人是张三。"
+        }
+      ],
+      "callCount": 0,
+      "applied": [],
+      "gate": {
+        "skipped": true,
+        "reason": "filler-only"
+      },
+      "llmFailed": false
+    },
+    {
+      "turns": [
+        {
+          "role": "user",
+          "text": "先别管性能，当前生产端口是 9443。"
+        }
+      ],
+      "callCount": 0,
+      "applied": [],
+      "gate": {
+        "skipped": true,
+        "reason": "filler-only"
+      },
+      "llmFailed": false
+    },
+    {
+      "turns": [
+        {
+          "role": "user",
+          "text": "继续。"
+        },
+        {
+          "role": "assistant",
+          "text": "采用方案 CedarPlan，发布前需要执行验收。"
+        }
+      ],
+      "callCount": 0,
+      "applied": [],
+      "gate": {
+        "skipped": true,
+        "reason": "filler-only"
+      },
+      "llmFailed": false
+    }
+  ],
+  "c4SharedArm": {
+    "samePath": true,
+    "firstCount": 8,
+    "secondCount": 15,
+    "firstIds": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "secondIds": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ]
+  },
+  "d3Arithmetic": {
+    "threeSessionActualBefore": 0.0053690000000000005,
+    "scriptBefore": 0.016107000000000003,
+    "keptActualCost": 0.00266,
+    "scriptAfter": 0.0010738000000000002,
+    "wholeWindowMeasured": 0.0025806799999999997
+  },
+  "manifest": [
+    {
+      "name": "2026-10-29-c4-arms-6scenario.json",
+      "ok": true
+    },
+    {
+      "name": "2026-10-29-d0-step1-8arms-3reps.json",
+      "ok": true
+    },
+    {
+      "name": "2026-10-29-d0-step2-alias-rerun.json",
+      "ok": true
+    },
+    {
+      "name": "2026-10-29-d0-step2b-v4pro.json",
+      "ok": true
+    },
+    {
+      "name": "2026-10-29-d1-5turn-compaction.json",
+      "ok": true
+    },
+    {
+      "name": "2026-10-29-d1-10turn-compaction.json",
+      "ok": true
+    },
+    {
+      "name": "2026-10-29-d2-extract-cost.json",
+      "ok": true
+    },
+    {
+      "name": "2026-10-29-scale-1k-10k.json",
+      "ok": true
+    },
+    {
+      "name": "2026-10-29-cost-normalized.json",
+      "ok": true
+    }
+  ],
+  "counts": [
+    {
+      "name": "2026-10-29-c4-arms-6scenario.json",
+      "calls": 42,
+      "cells": 42,
+      "errors": 0
+    },
+    {
+      "name": "2026-10-29-d0-step1-8arms-3reps.json",
+      "calls": 147,
+      "cells": 144,
+      "errors": 0
+    },
+    {
+      "name": "2026-10-29-d0-step2-alias-rerun.json",
+      "calls": 31,
+      "cells": 30,
+      "errors": 0
+    },
+    {
+      "name": "2026-10-29-d0-step2b-v4pro.json",
+      "calls": 24,
+      "cells": 24,
+      "errors": 0
+    },
+    {
+      "name": "2026-10-29-d1-5turn-compaction.json",
+      "calls": 120,
+      "cells": 120,
+      "errors": 0
+    },
+    {
+      "name": "2026-10-29-d1-10turn-compaction.json",
+      "calls": 240,
+      "cells": 240,
+      "errors": 0
+    },
+    {
+      "name": "2026-10-29-d2-extract-cost.json",
+      "calls": 18,
+      "cells": 0,
+      "errors": 0
+    }
+  ],
+  "actualRequests": 622,
+  "recordedC4": [
+    {
+      "arm": "trivium-inject",
+      "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-gZeuGq\\rep-0\\S01\\trivium-inject",
+      "ids": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "arm": "trivium-tools",
+      "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-gZeuGq\\rep-0\\S01\\trivium-inject",
+      "ids": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    }
+  ]
+}

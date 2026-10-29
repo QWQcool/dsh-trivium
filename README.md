@@ -189,7 +189,7 @@ Settings → **Trivium memory** manages the store. Check for updates sits at the
 | **Extract** | on | Write from compaction / idle. |
 | **Embedding** | off | Needs **Save** plus a URL; restart after changing the URL. |
 
-Injection detail: autoRecall injects at most 3 L0 hits when the step has user text; entity-name path injects 1-hop business neighbors only when the utterance names an existing entity. Corrections for delivered facts take priority, followed by checked chips and recall, all within the same allowance. Disabled injection or insufficient budget keeps notices pending with a reason; delivery on the next message is not guaranteed. Later pre-steps detect expiry of delivered decisions; there is no background timer and the ledger clears on restart. Extract runs after `compaction/end` and a short idle; failures go to pending and replay on the next session-start (body ≤3000 chars, at most 24 items).
+Injection detail: autoRecall considers up to 8 candidates when the step has user text, then selects L0 records within the remaining shared budget; entity-name path injects 1-hop business neighbors only when the utterance names an existing entity. Corrections for delivered facts take priority, followed by checked chips and recall, all within the same allowance. Disabled injection or insufficient budget keeps notices pending with a reason; delivery on the next message is not guaranteed. Later pre-steps detect expiry of delivered decisions; there is no background timer and the ledger clears on restart. Extract runs after `compaction/end` and a short idle; failures go to pending and replay on the next session-start (body ≤3000 chars, at most 24 items).
 
 - **Entries** — search, filter by type, expand business-edge neighbors, “only nodes hanging on this one”, hide expired decisions by default. Rename / edit body / aliases / until, merge same type, archive or delete.
 - **Export / import** — JSON is a real round-trip. Markdown is a read-only projection (for people). Git sync uses `.dsh/trivium.jsonl` (business facts, auto). One-shot strict import from WorkBuddy `MEMORY.md`, Claude Code `CLAUDE.md`, and Codex `AGENTS.md`. No watch of those files, no session jsonl dumps.
@@ -307,13 +307,15 @@ Costs are quoted at **off-peak** prices (peak is exactly 2× and is recorded alo
 
 | Claim | Status | Where |
 |---|---|---|
-| Recall beats no memory on the same rubric | **supported** 3/18 → 18/18 | [D0](docs/next-memory/D0-RESULTS.md) |
-| Same accuracy as pasting the whole corpus, with 97 vs 360 injected tokens | **supported** (2 models, 3 reps) | [D0](docs/next-memory/D0-RESULTS.md) |
-| Aggressive compaction becomes safe: 0.51× prompt at 10 turns | **supported** | [D1](docs/next-memory/D1-RESULTS.md) |
+| Recall beats no memory on the tested synthetic questions | Observed 3/18 → 18/18; not a general quality claim | [D0](docs/next-memory/D0-RESULTS.md) |
+| 97 vs 360 injected tokens in the old synthetic sample | **Historical observation; not equivalence.** Flash n=3, Pro n=1; reused-arm fixtures require correction | [D0](docs/next-memory/D0-RESULTS.md) |
+| 0.51× prompt at 10 turns in the old simulation | **Not a host-level saving:** injected history and the short map were omitted; rerun pending | [D1](docs/next-memory/D1-RESULTS.md) |
 | Installing it saves money once extraction is counted | **not yet** — retrieval saves ¥0.0004/session, batched extraction costs ¥0.00086 | [D2](docs/next-memory/D2-EXTRACT-COST.md) |
 | Beats the other memory plugins | **not measured** — their tool faces were never given to the model | [C4](docs/next-memory/C4-RESULTS.md) |
 
 ---
+
+Unreleased reliability and experiment corrections: [R1/R2 acceptance](docs/next-memory/R1-R2-RESULTS.md). No new paid scores or release in this batch.
 
 ## Changelog
 

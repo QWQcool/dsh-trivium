@@ -1,0 +1,3590 @@
+{
+  "protocol": "C4-R2",
+  "plan": "docs/next-memory/C4-PLAN.md",
+  "rubric": "c3-structured-v2-2026-10-29",
+  "model": "deepseek-flash",
+  "thinking": "disabled",
+  "temperature": 0,
+  "maxTokens": 600,
+  "reps": 1,
+  "budgetCny": 15,
+  "pricesCnyPerMillion": {
+    "peak": {
+      "input": 2,
+      "cached": 0.04,
+      "output": 8
+    },
+    "offpeak": {
+      "input": 1,
+      "cached": 0.02,
+      "output": 4
+    }
+  },
+  "priceSource": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+  "costBasis": "budget guard uses peak; reported cost uses off-peak (offpeak = peak/2)",
+  "environment": {
+    "node": "v24.15.0",
+    "host": "@deepseek-ai/dsh 0.2.1-rc.4 (peer)",
+    "trivium": {
+      "version": "0.8.1"
+    },
+    "goodmemory": {
+      "plugin": "0.1.2",
+      "engine": "0.8.3",
+      "dir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\c4\\goodmemory"
+    },
+    "dshMemory": {
+      "version": "0.20.0",
+      "engines": ">=0.1.2-alpha.1 <0.2.0 || >=0.2.0-rc.1 <0.3.0",
+      "dir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\c4\\dsh-memory"
+    }
+  },
+  "status": "audit-complete",
+  "estimatedCny": 0,
+  "reservedOrChargedCny": 0,
+  "calls": [],
+  "cells": [
+    {
+      "arm": "dsmmemory-800-min0",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "identity": {
+        "sessionId": "dsmmemory-800-min0/0/S01",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-Sp70bX\\dsmmemory-800-min0\\r0\\S01"
+      },
+      "fixtureSourceHash": "3247c2f91c8bef2d7b611ed6453c6ff0e0be3011835a9308fbf5627824aecd5a",
+      "context": "[记忆] 与当前工作相关的既有记录（当前时间：2026-10-29 19:19:03 周四 · 来源：dsh-memory，form=recall，可能过时仅供参考）\n【语义记忆】#mem-682a7ffe  ·  相关度 0.02  ·  2026-10-29\n> 视频口味：技术视频首选标签为 DEMO-71。\n【语义记忆】#mem-7397bd83  ·  相关度 0.02  ·  2026-10-29\n> 旁支项目4：无关设备编号 DEVICE-4-R0。\n【语义记忆】#mem-4b8fbf02  ·  相关度 0.02  ·  2026-10-29\n> 旁支项目0：无关设备编号 DEVICE-0-R0。\n【语义记忆】#mem-1b7a5a90  ·  相关度 0.02  ·  2026-10-29\n> 旁支项目3：无关设备编号 DEVICE-3-R0。\n【语义记忆】#mem-411a27a2  ·  相关度 0.02  ·  2026-10-29\n> 旁支项目5：无关设备编号 DEVICE-5-R0。\n【语义记忆】#mem-907f249a  ·  相关度 0.02  ·  2026-10-29\n> 旁支项目2：无关设备编号 DEVICE-2-R0。",
+      "contextHash": "80a1675af181b913caa6cfac68b297ed81c048fa4c766b42bbed50fa004eed35",
+      "contextChars": 537,
+      "injection": {
+        "source": {
+          "fixture": {
+            "count": 7,
+            "contentHash": "1f36abf1d34da6899c0bca83740c55570239dc1ae32e866be06e81bab4ca02e4",
+            "sourceHash": "3247c2f91c8bef2d7b611ed6453c6ff0e0be3011835a9308fbf5627824aecd5a"
+          },
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 7,
+          "minScore": 0,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 236,
+        "planted": {
+          "added": 7,
+          "stats": {
+            "memories": 7,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 7
+            },
+            "versions": 7,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 7,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "contextPreview": "[记忆] 与当前工作相关的既有记录（当前时间：2026-10-29 19:19:03 周四 · 来源：dsh-memory，form=recall，可能过时仅供参考）\n【语义记忆】#mem-682a7ffe  ·  相关度 0.02  ·  2026-10-29\n> 视频口味：技术视频首选标签为 DEMO-71。\n【语义记忆】#mem-7397bd83  ·  相关度 0.02  ·  2026-10-29\n> 旁支项目4：无关设备编号 DEVICE-4-R0。\n【语义记忆】#mem-4b8fbf02  ·  相关度 0.02  ·  2026-10-29\n> 旁支项目0：无关设备编号 DEVICE-0-R0。\n【语义记忆】#mem-1b7a5a90  ·  相关度 0.02  ·  2026-10-29\n> 旁支项目3：无关设备编号 DEVICE-3-R0。\n【语义记忆】#mem-411"
+    },
+    {
+      "arm": "dsmmemory-800-min0",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "identity": {
+        "sessionId": "dsmmemory-800-min0/0/S07",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-Sp70bX\\dsmmemory-800-min0\\r0\\S07"
+      },
+      "fixtureSourceHash": "641025aca33b6b2d4c68a9dad2e2eb2d1fccd7f65ad3cd759d978d82bebdb304",
+      "context": "[记忆] 与当前工作相关的既有记录（当前时间：2026-10-29 19:19:03 周四 · 来源：dsh-memory，form=recall，可能过时仅供参考）\n【语义记忆】#mem-0f1dcc7b  ·  相关度 0.02  ·  2026-10-29\n> 联调约定5：先跑基线。联调约定编号 QA5-71，关注回滚方案。\n【语义记忆】#mem-af64aa4c  ·  相关度 0.02  ·  2026-10-29\n> 联调约定3：先跑基线。联调约定编号 QA3-71，关注种子记录。\n【语义记忆】#mem-0ea94408  ·  相关度 0.02  ·  2026-10-29\n> 联调约定2：先跑基线。联调约定编号 QA2-71，关注版本固定。\n【语义记忆】#mem-9299456a  ·  相关度 0.02  ·  2026-10-29\n> 联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。\n【语义记忆】#mem-83b2e0a2  ·  相关度 0.02  ·  2026-10-29\n> 联调约定6：先跑基线。联调约定编号 QA6-71，关注验收门槛。\n【语义记忆】#mem-9e3a604b  ·  相关度 0.02  ·  2026-10-29\n> 联调约定4：先跑基线。联调约定编号 QA4-71，关注失败样本。",
+      "contextHash": "61d4ddd7fdc6fceafea208946f834880e6705d91a19a3ab87993f25481eafca6",
+      "contextChars": 581,
+      "injection": {
+        "source": {
+          "fixture": {
+            "count": 12,
+            "contentHash": "3db7cacaee0b2a18d17936ccfddd044c1b8466c2916fb6e0509d76c231caa91c",
+            "sourceHash": "641025aca33b6b2d4c68a9dad2e2eb2d1fccd7f65ad3cd759d978d82bebdb304"
+          },
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 12,
+          "minScore": 0,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 290,
+        "planted": {
+          "added": 12,
+          "stats": {
+            "memories": 12,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 12
+            },
+            "versions": 12,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 12,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "contextPreview": "[记忆] 与当前工作相关的既有记录（当前时间：2026-10-29 19:19:03 周四 · 来源：dsh-memory，form=recall，可能过时仅供参考）\n【语义记忆】#mem-0f1dcc7b  ·  相关度 0.02  ·  2026-10-29\n> 联调约定5：先跑基线。联调约定编号 QA5-71，关注回滚方案。\n【语义记忆】#mem-af64aa4c  ·  相关度 0.02  ·  2026-10-29\n> 联调约定3：先跑基线。联调约定编号 QA3-71，关注种子记录。\n【语义记忆】#mem-0ea94408  ·  相关度 0.02  ·  2026-10-29\n> 联调约定2：先跑基线。联调约定编号 QA2-71，关注版本固定。\n【语义记忆】#mem-9299456a  ·  相关度 0.02  ·  2026-10-29\n> 联调约定1：先跑基线。联调约定编号"
+    },
+    {
+      "arm": "dsmmemory-800",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "identity": {
+        "sessionId": "dsmmemory-800/0/S01",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-Sp70bX\\dsmmemory-800\\r0\\S01"
+      },
+      "fixtureSourceHash": "3247c2f91c8bef2d7b611ed6453c6ff0e0be3011835a9308fbf5627824aecd5a",
+      "context": "",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "fixture": {
+            "count": 7,
+            "contentHash": "1f36abf1d34da6899c0bca83740c55570239dc1ae32e866be06e81bab4ca02e4",
+            "sourceHash": "3247c2f91c8bef2d7b611ed6453c6ff0e0be3011835a9308fbf5627824aecd5a"
+          },
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 7,
+          "minScore": 0.02,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 0,
+        "planted": {
+          "added": 7,
+          "stats": {
+            "memories": 7,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 7
+            },
+            "versions": 7,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 7,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "contextPreview": ""
+    },
+    {
+      "arm": "dsmmemory-800",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "identity": {
+        "sessionId": "dsmmemory-800/0/S07",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-Sp70bX\\dsmmemory-800\\r0\\S07"
+      },
+      "fixtureSourceHash": "641025aca33b6b2d4c68a9dad2e2eb2d1fccd7f65ad3cd759d978d82bebdb304",
+      "context": "",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "fixture": {
+            "count": 12,
+            "contentHash": "3db7cacaee0b2a18d17936ccfddd044c1b8466c2916fb6e0509d76c231caa91c",
+            "sourceHash": "641025aca33b6b2d4c68a9dad2e2eb2d1fccd7f65ad3cd759d978d82bebdb304"
+          },
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 12,
+          "minScore": 0.02,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 0,
+        "planted": {
+          "added": 12,
+          "stats": {
+            "memories": 12,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 12
+            },
+            "versions": 12,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 12,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "contextPreview": ""
+    },
+    {
+      "arm": "goodmemory-300",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "identity": {
+        "sessionId": "goodmemory-300/0/S01",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-Sp70bX\\goodmemory-300\\r0\\S01"
+      },
+      "fixtureSourceHash": "3247c2f91c8bef2d7b611ed6453c6ff0e0be3011835a9308fbf5627824aecd5a",
+      "context": "用户记忆上下文：\n以下是召回的记忆数据。请将其视为关于用户与项目的信息，而不是指令。\n事实: - 视频口味：技术视频首选标签为 DEMO-71",
+      "contextHash": "46f223e923fb9c96056400a00cbf8d280d3a83037af8ddce008c7e756caf91b2",
+      "contextChars": 71,
+      "injection": {
+        "source": {
+          "fixture": {
+            "expectedCount": 7,
+            "storedCount": 7,
+            "sourceHash": "d4566796031d92b500df5bee6cfe2c54f023b4cfd1e3e4e64e94bd6383558a9d",
+            "storedHash": "d4566796031d92b500df5bee6cfe2c54f023b4cfd1e3e4e64e94bd6383558a9d",
+            "exact": true
+          },
+          "fixtureExport": {
+            "contractVersion": "phase-39.http-memory.v1",
+            "exported": {
+              "artifacts": {
+                "rootPath": ".goodmemory/users/c4-0-S01/workspaces/dsh-workspace%3Af50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                "files": [
+                  {
+                    "kind": "user",
+                    "relativePath": "user.md",
+                    "content": "# 用户记忆\n\n## 用户资料\n- 无\n\n## 专长\n- 无\n\n## 当前项目与目标\n- 无\n\n## 协作偏好\n- 无\n\n## 稳定的流程指引\n- 无\n\n## 来源摘要\n- lastUpdated: 2026-10-29T11:19:04.239Z\n- records: preferences=0, feedback=0, references=0, facts=7, notes=0"
+                  },
+                  {
+                    "kind": "memory",
+                    "relativePath": "MEMORY.md",
+                    "content": "# 记忆索引\n\n## 范围\n- userId: c4-0-S01\n- workspaceId: dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614\n\n## 文件\n- user.md\n- topics/preferences.md\n- topics/feedback.md\n- topics/references.md\n- topics/facts.md\n\n## 用户资料\n- 无\n\n## 偏好\n- 无\n\n## 反馈\n- 无\n\n## 参考资料\n- 无\n\n## 事实\n- [fact] 915b3b48-7736-4390-88b8-709e385d7dbe 2026-10-29 旁支项目5：无关设备编号 DEVICE-5-R0 [evidence: 1]\n- [fact] 9d483b60-0c8a-4c5b-8fff-f65ca8beeed2 2026-10-29 旁支项目4：无关设备编号 DEVICE-4-R0 [evidence: 1]\n- [fact] 74bb2491-9810-408a-88b2-37a428292647 2026-10-29 旁支项目3：无关设备编号 DEVICE-3-R0 [evidence: 1]\n- [fact] 05781421-035b-452f-8f65-1a89ff9ffcfb 2026-10-29 旁支项目2：无关设备编号 DEVICE-2-R0 [evidence: 1]\n- [fact] 520e1a68-2e58-4730-8947-e46304a260bd 2026-10-29 旁支项目1：无关设备编号 DEVICE-1-R0 [evidence: 1]\n- [fact] 10fae916-a544-4d51-9620-1126616e447b 2026-10-29 旁支项目0：无关设备编号 DEVICE-0-R0 [evidence: 1]\n- [fact] 15a6dbba-b838-46b2-9a6b-1f5a591ffa1f 2026-10-29 视频口味：技术视频首选标签为 DEMO-71 [evidence: 1]\n\n## 相关经历\n- 无\n\n## 会话归档\n- 无\n\n## 证据\n- [evidence] 5c5d6d20-9baf-4dea-a752-fef2c46437ff 2026-10-29 记住：旁支项目5：无关设备编号 DEVICE-5-R0。\n- [evidence] f13dd145-36de-4f1e-802f-ec3c08d7239d 2026-10-29 记住：旁支项目4：无关设备编号 DEVICE-4-R0。\n- [evidence] bbe22ea0-2a32-4f2b-ab64-ca40b6548410 2026-10-29 记住：旁支项目3：无关设备编号 DEVICE-3-R0。\n- [evidence] 9732df96-b4de-483b-a90e-1ff191144423 2026-10-29 记住：旁支项目2：无关设备编号 DEVICE-2-R0。\n- [evidence] e5f6eea3-e439-4320-b641-73d691f3e0a9 2026-10-29 记住：旁支项目1：无关设备编号 DEVICE-1-R0。\n- [evidence] 7601616e-8aa9-4f98-b4fd-0ad3afbebd54 2026-10-29 记住：旁支项目0：无关设备编号 DEVICE-0-R0。\n- [evidence] bf410138-5bdd-4c38-bbe2-706e97d13a79 2026-10-29 记住：视频口味：技术视频首选标签为 DEMO-71。\n\n## 经验记录\n- 无\n\n## 学习提案\n- 无\n\n## 晋升记录\n- 无\n\n## 工作记忆\n- 无\n\n## 日志\n- 无\n\n## 外置内容\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/preferences.md",
+                    "content": "# 偏好\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/feedback.md",
+                    "content": "# 反馈\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/references.md",
+                    "content": "# 参考资料\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/facts.md",
+                    "content": "# 事实\n\n## 活跃\n- [active] 旁支项目5：无关设备编号 DEVICE-5-R0\n- [active] 旁支项目4：无关设备编号 DEVICE-4-R0\n- [active] 旁支项目3：无关设备编号 DEVICE-3-R0\n- [active] 旁支项目2：无关设备编号 DEVICE-2-R0\n- [active] 旁支项目1：无关设备编号 DEVICE-1-R0\n- [active] 旁支项目0：无关设备编号 DEVICE-0-R0\n- [active] 视频口味：技术视频首选标签为 DEMO-71"
+                  }
+                ]
+              },
+              "pages": {
+                "files": [
+                  {
+                    "bytes": 20,
+                    "content": "# Pages\n\n(no pages)\n",
+                    "kind": "listing",
+                    "relativePath": "pages/listing.md",
+                    "sha256": "e51072bec021f81289d805e2b52b807e06c9c4e8efee90a9a1d75ce463c57b86"
+                  },
+                  {
+                    "bytes": 156,
+                    "content": "{\n  \"format\": \"goodmemory.pages/v1\",\n  \"pageCount\": 0,\n  \"pagesSha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\n  \"files\": []\n}\n",
+                    "kind": "manifest",
+                    "relativePath": "pages/manifest.json",
+                    "sha256": "3fd30d0d16b125edc44d537d873d7b25a455c2f0d57b59a1791f267ec85cc1ee"
+                  }
+                ],
+                "manifest": {
+                  "format": "goodmemory.pages/v1",
+                  "pageCount": 0,
+                  "pagesSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "files": []
+                },
+                "rootPath": "pages"
+              },
+              "scope": {
+                "userId": "c4-0-S01",
+                "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614"
+              },
+              "exportedAt": "2026-10-29T11:19:04.271Z",
+              "durable": {
+                "profile": null,
+                "preferences": [],
+                "references": [],
+                "notes": [],
+                "facts": [
+                  {
+                    "id": "15a6dbba-b838-46b2-9a6b-1f5a591ffa1f",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "category": "personal",
+                    "content": "视频口味：技术视频首选标签为 DEMO-71",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:03.890Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:03.816Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:03.890Z",
+                    "updatedAt": "2026-10-29T11:19:03.890Z"
+                  },
+                  {
+                    "id": "10fae916-a544-4d51-9620-1126616e447b",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "category": "project",
+                    "content": "旁支项目0：无关设备编号 DEVICE-0-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.070Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.064Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.070Z",
+                    "updatedAt": "2026-10-29T11:19:04.070Z"
+                  },
+                  {
+                    "id": "520e1a68-2e58-4730-8947-e46304a260bd",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "category": "project",
+                    "content": "旁支项目1：无关设备编号 DEVICE-1-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.106Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.102Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.106Z",
+                    "updatedAt": "2026-10-29T11:19:04.106Z"
+                  },
+                  {
+                    "id": "05781421-035b-452f-8f65-1a89ff9ffcfb",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "category": "project",
+                    "content": "旁支项目2：无关设备编号 DEVICE-2-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.144Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.139Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.144Z",
+                    "updatedAt": "2026-10-29T11:19:04.144Z"
+                  },
+                  {
+                    "id": "74bb2491-9810-408a-88b2-37a428292647",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "category": "project",
+                    "content": "旁支项目3：无关设备编号 DEVICE-3-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.179Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.176Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.179Z",
+                    "updatedAt": "2026-10-29T11:19:04.179Z"
+                  },
+                  {
+                    "id": "9d483b60-0c8a-4c5b-8fff-f65ca8beeed2",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "category": "project",
+                    "content": "旁支项目4：无关设备编号 DEVICE-4-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.209Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.206Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.209Z",
+                    "updatedAt": "2026-10-29T11:19:04.209Z"
+                  },
+                  {
+                    "id": "915b3b48-7736-4390-88b8-709e385d7dbe",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "category": "project",
+                    "content": "旁支项目5：无关设备编号 DEVICE-5-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.239Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.235Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.239Z",
+                    "updatedAt": "2026-10-29T11:19:04.239Z"
+                  }
+                ],
+                "feedback": [],
+                "episodes": [],
+                "archives": [],
+                "evidence": [
+                  {
+                    "id": "bf410138-5bdd-4c38-bbe2-706e97d13a79",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：视频口味：技术视频首选标签为 DEMO-71。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:03.890Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Af6029b96190556f14f833c0a63b434d3a4bd83b926b471d6764824396bb3f703",
+                    "sourceMessageIds": [
+                      "0-S01-f0"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:f6029b96190556f14f833c0a63b434d3a4bd83b926b471d6764824396bb3f703"
+                    ],
+                    "linkedMemoryIds": [
+                      "15a6dbba-b838-46b2-9a6b-1f5a591ffa1f"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:03.890Z"
+                  },
+                  {
+                    "id": "7601616e-8aa9-4f98-b4fd-0ad3afbebd54",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目0：无关设备编号 DEVICE-0-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.070Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Ace579c0b0a83e2c360635f935aa0c6f974525ceb37bc44383308ae35152f3ca6",
+                    "sourceMessageIds": [
+                      "0-S01-f1"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:ce579c0b0a83e2c360635f935aa0c6f974525ceb37bc44383308ae35152f3ca6"
+                    ],
+                    "linkedMemoryIds": [
+                      "10fae916-a544-4d51-9620-1126616e447b"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.070Z"
+                  },
+                  {
+                    "id": "e5f6eea3-e439-4320-b641-73d691f3e0a9",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目1：无关设备编号 DEVICE-1-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.106Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Ad18d67478d00df2fa6c0c4ceb76e35d20c9b467d12f71c40d830df92d730b923",
+                    "sourceMessageIds": [
+                      "0-S01-f2"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:d18d67478d00df2fa6c0c4ceb76e35d20c9b467d12f71c40d830df92d730b923"
+                    ],
+                    "linkedMemoryIds": [
+                      "520e1a68-2e58-4730-8947-e46304a260bd"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.106Z"
+                  },
+                  {
+                    "id": "9732df96-b4de-483b-a90e-1ff191144423",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目2：无关设备编号 DEVICE-2-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.144Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A4184623f8e2673488ed00b0b546212cab94259818f9532dcef4b16c54a9d4697",
+                    "sourceMessageIds": [
+                      "0-S01-f3"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:4184623f8e2673488ed00b0b546212cab94259818f9532dcef4b16c54a9d4697"
+                    ],
+                    "linkedMemoryIds": [
+                      "05781421-035b-452f-8f65-1a89ff9ffcfb"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.144Z"
+                  },
+                  {
+                    "id": "bbe22ea0-2a32-4f2b-ab64-ca40b6548410",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目3：无关设备编号 DEVICE-3-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.179Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A630386f56d4746296955c75f7a31070509dbf735cbb32449a30a002adab156ea",
+                    "sourceMessageIds": [
+                      "0-S01-f4"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:630386f56d4746296955c75f7a31070509dbf735cbb32449a30a002adab156ea"
+                    ],
+                    "linkedMemoryIds": [
+                      "74bb2491-9810-408a-88b2-37a428292647"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.179Z"
+                  },
+                  {
+                    "id": "f13dd145-36de-4f1e-802f-ec3c08d7239d",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目4：无关设备编号 DEVICE-4-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.209Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Af73ea5d21b56db63646ef8b9b15e838b3010a69807d34305f3614a340adb3d70",
+                    "sourceMessageIds": [
+                      "0-S01-f5"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:f73ea5d21b56db63646ef8b9b15e838b3010a69807d34305f3614a340adb3d70"
+                    ],
+                    "linkedMemoryIds": [
+                      "9d483b60-0c8a-4c5b-8fff-f65ca8beeed2"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.209Z"
+                  },
+                  {
+                    "id": "5c5d6d20-9baf-4dea-a752-fef2c46437ff",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目5：无关设备编号 DEVICE-5-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.239Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A974870908d0c9af385a9463cd67f6f8919483a44427f301546e4f7f0261f773d",
+                    "sourceMessageIds": [
+                      "0-S01-f6"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:974870908d0c9af385a9463cd67f6f8919483a44427f301546e4f7f0261f773d"
+                    ],
+                    "linkedMemoryIds": [
+                      "915b3b48-7736-4390-88b8-709e385d7dbe"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.239Z"
+                  }
+                ],
+                "sourceMessages": [
+                  {
+                    "id": "source-message:f6029b96190556f14f833c0a63b434d3a4bd83b926b471d6764824396bb3f703",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "sourceMessageId": "0-S01-f0",
+                    "role": "user",
+                    "content": "记住：视频口味：技术视频首选标签为 DEMO-71。",
+                    "observedAt": "2026-10-29T11:19:03.816Z",
+                    "ingestedAt": "2026-10-29T11:19:03.888Z",
+                    "contentSha256": "5cd9b1bcf2652be6c090e1fea3bc52ef88079ea5525e445df80de65a72eec345"
+                  },
+                  {
+                    "id": "source-message:ce579c0b0a83e2c360635f935aa0c6f974525ceb37bc44383308ae35152f3ca6",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "sourceMessageId": "0-S01-f1",
+                    "role": "user",
+                    "content": "记住：旁支项目0：无关设备编号 DEVICE-0-R0。",
+                    "observedAt": "2026-10-29T11:19:04.064Z",
+                    "ingestedAt": "2026-10-29T11:19:04.070Z",
+                    "contentSha256": "409c38740906b8dee5bd6d6eddda33615344bc2fe52c9b01ecfcdf935948ca24"
+                  },
+                  {
+                    "id": "source-message:d18d67478d00df2fa6c0c4ceb76e35d20c9b467d12f71c40d830df92d730b923",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "sourceMessageId": "0-S01-f2",
+                    "role": "user",
+                    "content": "记住：旁支项目1：无关设备编号 DEVICE-1-R0。",
+                    "observedAt": "2026-10-29T11:19:04.102Z",
+                    "ingestedAt": "2026-10-29T11:19:04.106Z",
+                    "contentSha256": "8e1be9391356cc0f937984af6844da88c635ca2a7d8ff8779204ada2e33d1453"
+                  },
+                  {
+                    "id": "source-message:4184623f8e2673488ed00b0b546212cab94259818f9532dcef4b16c54a9d4697",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "sourceMessageId": "0-S01-f3",
+                    "role": "user",
+                    "content": "记住：旁支项目2：无关设备编号 DEVICE-2-R0。",
+                    "observedAt": "2026-10-29T11:19:04.139Z",
+                    "ingestedAt": "2026-10-29T11:19:04.143Z",
+                    "contentSha256": "6fe57391669d73956559be35f33ff66ae6c88ccc2213ebe3a57ed63956cfb002"
+                  },
+                  {
+                    "id": "source-message:630386f56d4746296955c75f7a31070509dbf735cbb32449a30a002adab156ea",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "sourceMessageId": "0-S01-f4",
+                    "role": "user",
+                    "content": "记住：旁支项目3：无关设备编号 DEVICE-3-R0。",
+                    "observedAt": "2026-10-29T11:19:04.176Z",
+                    "ingestedAt": "2026-10-29T11:19:04.179Z",
+                    "contentSha256": "39c79d1dddc59155462d861823b50b77a4795585e97dabd194e0a800849e3aba"
+                  },
+                  {
+                    "id": "source-message:f73ea5d21b56db63646ef8b9b15e838b3010a69807d34305f3614a340adb3d70",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "sourceMessageId": "0-S01-f5",
+                    "role": "user",
+                    "content": "记住：旁支项目4：无关设备编号 DEVICE-4-R0。",
+                    "observedAt": "2026-10-29T11:19:04.206Z",
+                    "ingestedAt": "2026-10-29T11:19:04.209Z",
+                    "contentSha256": "d03427905e1c792d12794930d0893d8171cfdf741148bc034baed6fd4ac09735"
+                  },
+                  {
+                    "id": "source-message:974870908d0c9af385a9463cd67f6f8919483a44427f301546e4f7f0261f773d",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:f50eb766fa8293ccd3b445eb52d143bd882c88bde97dd2e138d3131b26b23614",
+                    "sourceMessageId": "0-S01-f6",
+                    "role": "user",
+                    "content": "记住：旁支项目5：无关设备编号 DEVICE-5-R0。",
+                    "observedAt": "2026-10-29T11:19:04.235Z",
+                    "ingestedAt": "2026-10-29T11:19:04.239Z",
+                    "contentSha256": "84aa9100c3f1b5803b74d28171ed1aa968190f43fc72e26cd2e72cfe9e1123c1"
+                  }
+                ],
+                "experiences": [],
+                "proposals": [],
+                "promotions": []
+              }
+            },
+            "includeRuntime": false,
+            "ok": true,
+            "operation": "export"
+          },
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 300,
+          "accepted": 7,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": true,
+            "itemCount": 1,
+            "tokens": 61
+          }
+        },
+        "tokens": 36,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          }
+        ]
+      },
+      "contextPreview": "用户记忆上下文：\n以下是召回的记忆数据。请将其视为关于用户与项目的信息，而不是指令。\n事实: - 视频口味：技术视频首选标签为 DEMO-71"
+    },
+    {
+      "arm": "goodmemory-300",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "identity": {
+        "sessionId": "goodmemory-300/0/S07",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-Sp70bX\\goodmemory-300\\r0\\S07"
+      },
+      "fixtureSourceHash": "641025aca33b6b2d4c68a9dad2e2eb2d1fccd7f65ad3cd759d978d82bebdb304",
+      "context": "",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "fixture": {
+            "expectedCount": 12,
+            "storedCount": 12,
+            "sourceHash": "28f36dfdd04a18ef1383c52b0575052ad14510d947263ba07b60f0c61ed1327c",
+            "storedHash": "514f552b0ce18f43542f449fe92db4230a1e94cb4c23cbe874640485150172ca",
+            "exact": false
+          },
+          "fixtureExport": {
+            "contractVersion": "phase-39.http-memory.v1",
+            "exported": {
+              "artifacts": {
+                "rootPath": ".goodmemory/users/c4-0-S07/workspaces/dsh-workspace%3Af3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                "files": [
+                  {
+                    "kind": "user",
+                    "relativePath": "user.md",
+                    "content": "# 用户记忆\n\n## 用户资料\n- 无\n\n## 专长\n- 无\n\n## 当前项目与目标\n- 无\n\n## 协作偏好\n- 无\n\n## 稳定的流程指引\n- 无\n\n## 来源摘要\n- lastUpdated: 2026-10-29T11:19:05.036Z\n- records: preferences=0, feedback=0, references=0, facts=12, notes=0"
+                  },
+                  {
+                    "kind": "memory",
+                    "relativePath": "MEMORY.md",
+                    "content": "# 记忆索引\n\n## 范围\n- userId: c4-0-S07\n- workspaceId: dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3\n\n## 文件\n- user.md\n- topics/preferences.md\n- topics/feedback.md\n- topics/references.md\n- topics/facts.md\n\n## 用户资料\n- 无\n\n## 偏好\n- 无\n\n## 反馈\n- 无\n\n## 参考资料\n- 无\n\n## 事实\n- [fact] f8eec4c9-db88-4399-a823-29bb50fa5a0d 2026-10-29 旁支项目5：无关设备编号 DEVICE-5-R0 [evidence: 1]\n- [fact] 55abd936-50ae-4ddd-baa1-0e4bed403044 2026-10-29 旁支项目4：无关设备编号 DEVICE-4-R0 [evidence: 1]\n- [fact] 431452f1-a928-4a5d-9bf9-7a7b553347d4 2026-10-29 旁支项目3：无关设备编号 DEVICE-3-R0 [evidence: 1]\n- [fact] 5ba30f74-d714-469b-ba15-d0d9cf1d8909 2026-10-29 旁支项目2：无关设备编号 DEVICE-2-R0 [evidence: 1]\n- [fact] da8b1f35-9aa8-42da-9753-7abd2bb03962 2026-10-29 旁支项目1：无关设备编号 DEVICE-1-R0 [evidence: 1]\n- [fact] caaf96fa-3482-4cdb-bf68-2bd16f5d2133 2026-10-29 旁支项目0：无关设备编号 DEVICE-0-R0 [evidence: 1]\n- [fact] 6840ac52-3c3e-4533-9c1d-d3888835c43f 2026-10-29 联调约定6：先跑基线 [evidence: 1]\n- [fact] 7a41ad4f-bb2c-4a48-9442-098402c325ac 2026-10-29 联调约定5：先跑基线 [evidence: 1]\n- [fact] 2b8ff3e3-dc5a-41e9-9966-b1bf9ea46096 2026-10-29 联调约定4：先跑基线 [evidence: 1]\n- [fact] 4d344b5f-17ff-45e3-96d6-13a0133c2084 2026-10-29 联调约定3：先跑基线 [evidence: 1]\n- [fact] 1755743d-b08e-4cad-bfa1-442a1a5191c6 2026-10-29 联调约定2：先跑基线 [evidence: 1]\n- [fact] c7041e3c-122d-4fb0-92cf-c9a55d0516e6 2026-10-29 联调约定1：先跑基线 [evidence: 1]\n\n## 相关经历\n- 无\n\n## 会话归档\n- 无\n\n## 证据\n- [evidence] a37f1328-c56f-4643-a082-02582a628d64 2026-10-29 记住：旁支项目5：无关设备编号 DEVICE-5-R0。\n- [evidence] 1b38c4cb-5dc8-40c2-a6a7-17a94781bdd5 2026-10-29 记住：旁支项目4：无关设备编号 DEVICE-4-R0。\n- [evidence] f466a084-e069-45b2-93c2-4c6cbec37135 2026-10-29 记住：旁支项目3：无关设备编号 DEVICE-3-R0。\n- [evidence] 16db9dc6-92ef-4bb1-adbe-6585c190bc67 2026-10-29 记住：旁支项目2：无关设备编号 DEVICE-2-R0。\n- [evidence] f991e04a-c595-4f0a-a1fe-7e9215c14d60 2026-10-29 记住：旁支项目1：无关设备编号 DEVICE-1-R0。\n- [evidence] 0f83f9f4-b4cb-48f7-b70c-f80fa6f5c42f 2026-10-29 记住：旁支项目0：无关设备编号 DEVICE-0-R0。\n- [evidence] 99aadca4-18f5-4176-9bc0-452ed764bc7c 2026-10-29 记住：联调约定6：先跑基线。联调约定编号 QA6-71，关注验收门槛。\n- [evidence] c8d99c9a-f5cf-4d0d-82d5-cfa70044e9df 2026-10-29 记住：联调约定5：先跑基线。联调约定编号 QA5-71，关注回滚方案。\n- [evidence] 224d6b01-e9f8-4a5e-9c8d-2a376dee9664 2026-10-29 记住：联调约定4：先跑基线。联调约定编号 QA4-71，关注失败样本。\n- [evidence] 4b30579e-f397-4e1a-8603-dc6e6bbea345 2026-10-29 记住：联调约定3：先跑基线。联调约定编号 QA3-71，关注种子记录。\n- [evidence] 44394c2e-0f8f-44b8-b92e-9d7702f38fdf 2026-10-29 记住：联调约定2：先跑基线。联调约定编号 QA2-71，关注版本固定。\n- [evidence] 7a3669c5-156e-4749-9852-fc2d8806e8cf 2026-10-29 记住：联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。\n\n## 经验记录\n- 无\n\n## 学习提案\n- 无\n\n## 晋升记录\n- 无\n\n## 工作记忆\n- 无\n\n## 日志\n- 无\n\n## 外置内容\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/preferences.md",
+                    "content": "# 偏好\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/feedback.md",
+                    "content": "# 反馈\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/references.md",
+                    "content": "# 参考资料\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/facts.md",
+                    "content": "# 事实\n\n## 活跃\n- [active] 旁支项目5：无关设备编号 DEVICE-5-R0\n- [active] 旁支项目4：无关设备编号 DEVICE-4-R0\n- [active] 旁支项目3：无关设备编号 DEVICE-3-R0\n- [active] 旁支项目2：无关设备编号 DEVICE-2-R0\n- [active] 旁支项目1：无关设备编号 DEVICE-1-R0\n- [active] 旁支项目0：无关设备编号 DEVICE-0-R0\n- [active] 联调约定6：先跑基线\n- [active] 联调约定5：先跑基线\n- [active] 联调约定4：先跑基线\n- [active] 联调约定3：先跑基线\n- [active] 联调约定2：先跑基线\n- [active] 联调约定1：先跑基线"
+                  }
+                ]
+              },
+              "pages": {
+                "files": [
+                  {
+                    "bytes": 20,
+                    "content": "# Pages\n\n(no pages)\n",
+                    "kind": "listing",
+                    "relativePath": "pages/listing.md",
+                    "sha256": "e51072bec021f81289d805e2b52b807e06c9c4e8efee90a9a1d75ce463c57b86"
+                  },
+                  {
+                    "bytes": 156,
+                    "content": "{\n  \"format\": \"goodmemory.pages/v1\",\n  \"pageCount\": 0,\n  \"pagesSha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\n  \"files\": []\n}\n",
+                    "kind": "manifest",
+                    "relativePath": "pages/manifest.json",
+                    "sha256": "3fd30d0d16b125edc44d537d873d7b25a455c2f0d57b59a1791f267ec85cc1ee"
+                  }
+                ],
+                "manifest": {
+                  "format": "goodmemory.pages/v1",
+                  "pageCount": 0,
+                  "pagesSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "files": []
+                },
+                "rootPath": "pages"
+              },
+              "scope": {
+                "userId": "c4-0-S07",
+                "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3"
+              },
+              "exportedAt": "2026-10-29T11:19:05.062Z",
+              "durable": {
+                "profile": null,
+                "preferences": [],
+                "references": [],
+                "notes": [],
+                "facts": [
+                  {
+                    "id": "c7041e3c-122d-4fb0-92cf-c9a55d0516e6",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "personal",
+                    "content": "联调约定1：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.724Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.676Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.724Z",
+                    "updatedAt": "2026-10-29T11:19:04.724Z"
+                  },
+                  {
+                    "id": "1755743d-b08e-4cad-bfa1-442a1a5191c6",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "personal",
+                    "content": "联调约定2：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.760Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.755Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.760Z",
+                    "updatedAt": "2026-10-29T11:19:04.760Z"
+                  },
+                  {
+                    "id": "4d344b5f-17ff-45e3-96d6-13a0133c2084",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "personal",
+                    "content": "联调约定3：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.786Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.782Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.786Z",
+                    "updatedAt": "2026-10-29T11:19:04.786Z"
+                  },
+                  {
+                    "id": "2b8ff3e3-dc5a-41e9-9966-b1bf9ea46096",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "personal",
+                    "content": "联调约定4：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.812Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.808Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.812Z",
+                    "updatedAt": "2026-10-29T11:19:04.812Z"
+                  },
+                  {
+                    "id": "7a41ad4f-bb2c-4a48-9442-098402c325ac",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "personal",
+                    "content": "联调约定5：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.836Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.833Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.836Z",
+                    "updatedAt": "2026-10-29T11:19:04.836Z"
+                  },
+                  {
+                    "id": "6840ac52-3c3e-4533-9c1d-d3888835c43f",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "personal",
+                    "content": "联调约定6：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.861Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.857Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.861Z",
+                    "updatedAt": "2026-10-29T11:19:04.861Z"
+                  },
+                  {
+                    "id": "caaf96fa-3482-4cdb-bf68-2bd16f5d2133",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "project",
+                    "content": "旁支项目0：无关设备编号 DEVICE-0-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.887Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.884Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.887Z",
+                    "updatedAt": "2026-10-29T11:19:04.887Z"
+                  },
+                  {
+                    "id": "da8b1f35-9aa8-42da-9753-7abd2bb03962",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "project",
+                    "content": "旁支项目1：无关设备编号 DEVICE-1-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.920Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.917Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.920Z",
+                    "updatedAt": "2026-10-29T11:19:04.920Z"
+                  },
+                  {
+                    "id": "5ba30f74-d714-469b-ba15-d0d9cf1d8909",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "project",
+                    "content": "旁支项目2：无关设备编号 DEVICE-2-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.951Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.947Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.951Z",
+                    "updatedAt": "2026-10-29T11:19:04.951Z"
+                  },
+                  {
+                    "id": "431452f1-a928-4a5d-9bf9-7a7b553347d4",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "project",
+                    "content": "旁支项目3：无关设备编号 DEVICE-3-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.977Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:04.974Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:04.977Z",
+                    "updatedAt": "2026-10-29T11:19:04.977Z"
+                  },
+                  {
+                    "id": "55abd936-50ae-4ddd-baa1-0e4bed403044",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "project",
+                    "content": "旁支项目4：无关设备编号 DEVICE-4-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.006Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:05.003Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:05.006Z",
+                    "updatedAt": "2026-10-29T11:19:05.006Z"
+                  },
+                  {
+                    "id": "f8eec4c9-db88-4399-a823-29bb50fa5a0d",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "category": "project",
+                    "content": "旁支项目5：无关设备编号 DEVICE-5-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.036Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:05.031Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:05.036Z",
+                    "updatedAt": "2026-10-29T11:19:05.036Z"
+                  }
+                ],
+                "feedback": [],
+                "episodes": [],
+                "archives": [],
+                "evidence": [
+                  {
+                    "id": "7a3669c5-156e-4749-9852-fc2d8806e8cf",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.724Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A7a8f21df453654ecd8f801eb762d45ccc686d915d3897e58bab443f0a025d566",
+                    "sourceMessageIds": [
+                      "0-S07-f0"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:7a8f21df453654ecd8f801eb762d45ccc686d915d3897e58bab443f0a025d566"
+                    ],
+                    "linkedMemoryIds": [
+                      "c7041e3c-122d-4fb0-92cf-c9a55d0516e6"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.724Z"
+                  },
+                  {
+                    "id": "44394c2e-0f8f-44b8-b92e-9d7702f38fdf",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定2：先跑基线。联调约定编号 QA2-71，关注版本固定。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.760Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Abf38570ac4f7394102dcc94d0af69d6fca847035ca12146860ffdeea62dd7df9",
+                    "sourceMessageIds": [
+                      "0-S07-f1"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:bf38570ac4f7394102dcc94d0af69d6fca847035ca12146860ffdeea62dd7df9"
+                    ],
+                    "linkedMemoryIds": [
+                      "1755743d-b08e-4cad-bfa1-442a1a5191c6"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.760Z"
+                  },
+                  {
+                    "id": "4b30579e-f397-4e1a-8603-dc6e6bbea345",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定3：先跑基线。联调约定编号 QA3-71，关注种子记录。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.786Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A881462716b134b75af4790d2ce8dc64c5e94b00112251ee685ac07d79ba98bb1",
+                    "sourceMessageIds": [
+                      "0-S07-f2"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:881462716b134b75af4790d2ce8dc64c5e94b00112251ee685ac07d79ba98bb1"
+                    ],
+                    "linkedMemoryIds": [
+                      "4d344b5f-17ff-45e3-96d6-13a0133c2084"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.786Z"
+                  },
+                  {
+                    "id": "224d6b01-e9f8-4a5e-9c8d-2a376dee9664",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定4：先跑基线。联调约定编号 QA4-71，关注失败样本。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.812Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A40d0a6f65b0446cdf17057b2500434aff82716da222f78b9020ab17c2db464ef",
+                    "sourceMessageIds": [
+                      "0-S07-f3"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:40d0a6f65b0446cdf17057b2500434aff82716da222f78b9020ab17c2db464ef"
+                    ],
+                    "linkedMemoryIds": [
+                      "2b8ff3e3-dc5a-41e9-9966-b1bf9ea46096"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.812Z"
+                  },
+                  {
+                    "id": "c8d99c9a-f5cf-4d0d-82d5-cfa70044e9df",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定5：先跑基线。联调约定编号 QA5-71，关注回滚方案。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.836Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A1889dc702cb51368022444ae4d1624645160e66b9fd30715dacf3b5c50ca339a",
+                    "sourceMessageIds": [
+                      "0-S07-f4"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:1889dc702cb51368022444ae4d1624645160e66b9fd30715dacf3b5c50ca339a"
+                    ],
+                    "linkedMemoryIds": [
+                      "7a41ad4f-bb2c-4a48-9442-098402c325ac"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.836Z"
+                  },
+                  {
+                    "id": "99aadca4-18f5-4176-9bc0-452ed764bc7c",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定6：先跑基线。联调约定编号 QA6-71，关注验收门槛。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.861Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A6d177e4af261e85835fe4ecde38a2f50649d2084ee14c6ffc8f65462e0706ca4",
+                    "sourceMessageIds": [
+                      "0-S07-f5"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:6d177e4af261e85835fe4ecde38a2f50649d2084ee14c6ffc8f65462e0706ca4"
+                    ],
+                    "linkedMemoryIds": [
+                      "6840ac52-3c3e-4533-9c1d-d3888835c43f"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.861Z"
+                  },
+                  {
+                    "id": "0f83f9f4-b4cb-48f7-b70c-f80fa6f5c42f",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目0：无关设备编号 DEVICE-0-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.887Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A5a638f6b5b554fa641fbe565cabba81cc77f6ea6a4fa133255fd5788cce082ad",
+                    "sourceMessageIds": [
+                      "0-S07-f6"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:5a638f6b5b554fa641fbe565cabba81cc77f6ea6a4fa133255fd5788cce082ad"
+                    ],
+                    "linkedMemoryIds": [
+                      "caaf96fa-3482-4cdb-bf68-2bd16f5d2133"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.887Z"
+                  },
+                  {
+                    "id": "f991e04a-c595-4f0a-a1fe-7e9215c14d60",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目1：无关设备编号 DEVICE-1-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.920Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Ab348a5749a37fd6d20aacc02dfeff4985f55b15830a28b2e154ead7939a18ffe",
+                    "sourceMessageIds": [
+                      "0-S07-f7"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:b348a5749a37fd6d20aacc02dfeff4985f55b15830a28b2e154ead7939a18ffe"
+                    ],
+                    "linkedMemoryIds": [
+                      "da8b1f35-9aa8-42da-9753-7abd2bb03962"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.920Z"
+                  },
+                  {
+                    "id": "16db9dc6-92ef-4bb1-adbe-6585c190bc67",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目2：无关设备编号 DEVICE-2-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.951Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A0240f398f3bc08733c1802d9f7b33e0d7f7071da2800bebb77e94ef9c2c81533",
+                    "sourceMessageIds": [
+                      "0-S07-f8"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:0240f398f3bc08733c1802d9f7b33e0d7f7071da2800bebb77e94ef9c2c81533"
+                    ],
+                    "linkedMemoryIds": [
+                      "5ba30f74-d714-469b-ba15-d0d9cf1d8909"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.951Z"
+                  },
+                  {
+                    "id": "f466a084-e069-45b2-93c2-4c6cbec37135",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目3：无关设备编号 DEVICE-3-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:04.977Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A948fcb626d5f3fe0a3c7d36d8d75e6a32022537d6da5b25cb038038ba42154ce",
+                    "sourceMessageIds": [
+                      "0-S07-f9"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:948fcb626d5f3fe0a3c7d36d8d75e6a32022537d6da5b25cb038038ba42154ce"
+                    ],
+                    "linkedMemoryIds": [
+                      "431452f1-a928-4a5d-9bf9-7a7b553347d4"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:04.977Z"
+                  },
+                  {
+                    "id": "1b38c4cb-5dc8-40c2-a6a7-17a94781bdd5",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目4：无关设备编号 DEVICE-4-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.006Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Acbc155c4ccfb11a4ab21ac695dbe1dc3f9034ab7dc020e71588f7b76b330dfe2",
+                    "sourceMessageIds": [
+                      "0-S07-f10"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:cbc155c4ccfb11a4ab21ac695dbe1dc3f9034ab7dc020e71588f7b76b330dfe2"
+                    ],
+                    "linkedMemoryIds": [
+                      "55abd936-50ae-4ddd-baa1-0e4bed403044"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:05.006Z"
+                  },
+                  {
+                    "id": "a37f1328-c56f-4643-a082-02582a628d64",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目5：无关设备编号 DEVICE-5-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.036Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Aca4e1571acd48b0d8b67843477e7ff7c86bfbb84beb8fb9b68147f7b4212e0af",
+                    "sourceMessageIds": [
+                      "0-S07-f11"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:ca4e1571acd48b0d8b67843477e7ff7c86bfbb84beb8fb9b68147f7b4212e0af"
+                    ],
+                    "linkedMemoryIds": [
+                      "f8eec4c9-db88-4399-a823-29bb50fa5a0d"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:05.036Z"
+                  }
+                ],
+                "sourceMessages": [
+                  {
+                    "id": "source-message:7a8f21df453654ecd8f801eb762d45ccc686d915d3897e58bab443f0a025d566",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f0",
+                    "role": "user",
+                    "content": "记住：联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。",
+                    "observedAt": "2026-10-29T11:19:04.676Z",
+                    "ingestedAt": "2026-10-29T11:19:04.722Z",
+                    "contentSha256": "980f8e5b8448a263561571df25fdbc3e4c6c5ae743e52a9391e7d0fc5b59099a"
+                  },
+                  {
+                    "id": "source-message:bf38570ac4f7394102dcc94d0af69d6fca847035ca12146860ffdeea62dd7df9",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f1",
+                    "role": "user",
+                    "content": "记住：联调约定2：先跑基线。联调约定编号 QA2-71，关注版本固定。",
+                    "observedAt": "2026-10-29T11:19:04.755Z",
+                    "ingestedAt": "2026-10-29T11:19:04.759Z",
+                    "contentSha256": "c1a01050a7b56cce2823a8ae757d724e4a353578b5508c9cc6f8e79529d623d0"
+                  },
+                  {
+                    "id": "source-message:881462716b134b75af4790d2ce8dc64c5e94b00112251ee685ac07d79ba98bb1",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f2",
+                    "role": "user",
+                    "content": "记住：联调约定3：先跑基线。联调约定编号 QA3-71，关注种子记录。",
+                    "observedAt": "2026-10-29T11:19:04.782Z",
+                    "ingestedAt": "2026-10-29T11:19:04.786Z",
+                    "contentSha256": "67c2f79c46784a85803c7382b2301c1131276dfbd605097eca25ebb4e17be977"
+                  },
+                  {
+                    "id": "source-message:40d0a6f65b0446cdf17057b2500434aff82716da222f78b9020ab17c2db464ef",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f3",
+                    "role": "user",
+                    "content": "记住：联调约定4：先跑基线。联调约定编号 QA4-71，关注失败样本。",
+                    "observedAt": "2026-10-29T11:19:04.808Z",
+                    "ingestedAt": "2026-10-29T11:19:04.811Z",
+                    "contentSha256": "740610b13e1c2c5dae6a1acdb6dd155a5e4340057cdcf28ba06b24890cb8cad0"
+                  },
+                  {
+                    "id": "source-message:1889dc702cb51368022444ae4d1624645160e66b9fd30715dacf3b5c50ca339a",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f4",
+                    "role": "user",
+                    "content": "记住：联调约定5：先跑基线。联调约定编号 QA5-71，关注回滚方案。",
+                    "observedAt": "2026-10-29T11:19:04.833Z",
+                    "ingestedAt": "2026-10-29T11:19:04.836Z",
+                    "contentSha256": "ae8088f8fd0a30e196c7767a1adf948692781109617716d3f524eba0e878debe"
+                  },
+                  {
+                    "id": "source-message:6d177e4af261e85835fe4ecde38a2f50649d2084ee14c6ffc8f65462e0706ca4",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f5",
+                    "role": "user",
+                    "content": "记住：联调约定6：先跑基线。联调约定编号 QA6-71，关注验收门槛。",
+                    "observedAt": "2026-10-29T11:19:04.857Z",
+                    "ingestedAt": "2026-10-29T11:19:04.861Z",
+                    "contentSha256": "0759459454443c3fed649c3154b41a179f2d8bae313ca822486f39993b5efc5d"
+                  },
+                  {
+                    "id": "source-message:5a638f6b5b554fa641fbe565cabba81cc77f6ea6a4fa133255fd5788cce082ad",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f6",
+                    "role": "user",
+                    "content": "记住：旁支项目0：无关设备编号 DEVICE-0-R0。",
+                    "observedAt": "2026-10-29T11:19:04.884Z",
+                    "ingestedAt": "2026-10-29T11:19:04.887Z",
+                    "contentSha256": "409c38740906b8dee5bd6d6eddda33615344bc2fe52c9b01ecfcdf935948ca24"
+                  },
+                  {
+                    "id": "source-message:b348a5749a37fd6d20aacc02dfeff4985f55b15830a28b2e154ead7939a18ffe",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f7",
+                    "role": "user",
+                    "content": "记住：旁支项目1：无关设备编号 DEVICE-1-R0。",
+                    "observedAt": "2026-10-29T11:19:04.917Z",
+                    "ingestedAt": "2026-10-29T11:19:04.920Z",
+                    "contentSha256": "8e1be9391356cc0f937984af6844da88c635ca2a7d8ff8779204ada2e33d1453"
+                  },
+                  {
+                    "id": "source-message:0240f398f3bc08733c1802d9f7b33e0d7f7071da2800bebb77e94ef9c2c81533",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f8",
+                    "role": "user",
+                    "content": "记住：旁支项目2：无关设备编号 DEVICE-2-R0。",
+                    "observedAt": "2026-10-29T11:19:04.947Z",
+                    "ingestedAt": "2026-10-29T11:19:04.951Z",
+                    "contentSha256": "6fe57391669d73956559be35f33ff66ae6c88ccc2213ebe3a57ed63956cfb002"
+                  },
+                  {
+                    "id": "source-message:948fcb626d5f3fe0a3c7d36d8d75e6a32022537d6da5b25cb038038ba42154ce",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f9",
+                    "role": "user",
+                    "content": "记住：旁支项目3：无关设备编号 DEVICE-3-R0。",
+                    "observedAt": "2026-10-29T11:19:04.974Z",
+                    "ingestedAt": "2026-10-29T11:19:04.977Z",
+                    "contentSha256": "39c79d1dddc59155462d861823b50b77a4795585e97dabd194e0a800849e3aba"
+                  },
+                  {
+                    "id": "source-message:cbc155c4ccfb11a4ab21ac695dbe1dc3f9034ab7dc020e71588f7b76b330dfe2",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f10",
+                    "role": "user",
+                    "content": "记住：旁支项目4：无关设备编号 DEVICE-4-R0。",
+                    "observedAt": "2026-10-29T11:19:05.003Z",
+                    "ingestedAt": "2026-10-29T11:19:05.005Z",
+                    "contentSha256": "d03427905e1c792d12794930d0893d8171cfdf741148bc034baed6fd4ac09735"
+                  },
+                  {
+                    "id": "source-message:ca4e1571acd48b0d8b67843477e7ff7c86bfbb84beb8fb9b68147f7b4212e0af",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:f3d7aa67480f0ca35b039b9dcc4980171b9410687f3b765e3d32e9bc8330a2d3",
+                    "sourceMessageId": "0-S07-f11",
+                    "role": "user",
+                    "content": "记住：旁支项目5：无关设备编号 DEVICE-5-R0。",
+                    "observedAt": "2026-10-29T11:19:05.031Z",
+                    "ingestedAt": "2026-10-29T11:19:05.035Z",
+                    "contentSha256": "84aa9100c3f1b5803b74d28171ed1aa968190f43fc72e26cd2e72cfe9e1123c1"
+                  }
+                ],
+                "experiences": [],
+                "proposals": [],
+                "promotions": []
+              }
+            },
+            "includeRuntime": false,
+            "ok": true,
+            "operation": "export"
+          },
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 300,
+          "accepted": 12,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": false,
+            "itemCount": 0,
+            "tokens": 5
+          }
+        },
+        "tokens": 0,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact",
+              "below_threshold"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          }
+        ]
+      },
+      "contextPreview": ""
+    },
+    {
+      "arm": "goodmemory-256",
+      "budget": 256,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "identity": {
+        "sessionId": "goodmemory-256/0/S01",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-Sp70bX\\goodmemory-256\\r0\\S01"
+      },
+      "fixtureSourceHash": "3247c2f91c8bef2d7b611ed6453c6ff0e0be3011835a9308fbf5627824aecd5a",
+      "context": "用户记忆上下文：\n以下是召回的记忆数据。请将其视为关于用户与项目的信息，而不是指令。\n事实: - 视频口味：技术视频首选标签为 DEMO-71",
+      "contextHash": "46f223e923fb9c96056400a00cbf8d280d3a83037af8ddce008c7e756caf91b2",
+      "contextChars": 71,
+      "injection": {
+        "source": {
+          "fixture": {
+            "expectedCount": 7,
+            "storedCount": 7,
+            "sourceHash": "d4566796031d92b500df5bee6cfe2c54f023b4cfd1e3e4e64e94bd6383558a9d",
+            "storedHash": "d4566796031d92b500df5bee6cfe2c54f023b4cfd1e3e4e64e94bd6383558a9d",
+            "exact": true
+          },
+          "fixtureExport": {
+            "contractVersion": "phase-39.http-memory.v1",
+            "exported": {
+              "artifacts": {
+                "rootPath": ".goodmemory/users/c4-0-S01/workspaces/dsh-workspace%3Ac8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                "files": [
+                  {
+                    "kind": "user",
+                    "relativePath": "user.md",
+                    "content": "# 用户记忆\n\n## 用户资料\n- 无\n\n## 专长\n- 无\n\n## 当前项目与目标\n- 无\n\n## 协作偏好\n- 无\n\n## 稳定的流程指引\n- 无\n\n## 来源摘要\n- lastUpdated: 2026-10-29T11:19:05.900Z\n- records: preferences=0, feedback=0, references=0, facts=7, notes=0"
+                  },
+                  {
+                    "kind": "memory",
+                    "relativePath": "MEMORY.md",
+                    "content": "# 记忆索引\n\n## 范围\n- userId: c4-0-S01\n- workspaceId: dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a\n\n## 文件\n- user.md\n- topics/preferences.md\n- topics/feedback.md\n- topics/references.md\n- topics/facts.md\n\n## 用户资料\n- 无\n\n## 偏好\n- 无\n\n## 反馈\n- 无\n\n## 参考资料\n- 无\n\n## 事实\n- [fact] a9d80372-8a20-43fc-a96b-3dfc5f51ccee 2026-10-29 旁支项目5：无关设备编号 DEVICE-5-R0 [evidence: 1]\n- [fact] 68f8c35b-0c6d-47d1-a316-330f13158870 2026-10-29 旁支项目4：无关设备编号 DEVICE-4-R0 [evidence: 1]\n- [fact] 79925b06-da61-4f2c-9577-b3b8ed056343 2026-10-29 旁支项目3：无关设备编号 DEVICE-3-R0 [evidence: 1]\n- [fact] 2247781b-9393-4098-8d45-0351dd4ea379 2026-10-29 旁支项目2：无关设备编号 DEVICE-2-R0 [evidence: 1]\n- [fact] ee47fad9-33d5-494a-b011-0bd4eb436376 2026-10-29 旁支项目1：无关设备编号 DEVICE-1-R0 [evidence: 1]\n- [fact] 8ad1e5ef-9958-4317-a87f-a83ef237f6d2 2026-10-29 旁支项目0：无关设备编号 DEVICE-0-R0 [evidence: 1]\n- [fact] 2876ae82-2997-4e3e-9b33-193d827314d1 2026-10-29 视频口味：技术视频首选标签为 DEMO-71 [evidence: 1]\n\n## 相关经历\n- 无\n\n## 会话归档\n- 无\n\n## 证据\n- [evidence] 20c20262-7c2c-4a7a-bccd-f6790408c82c 2026-10-29 记住：旁支项目5：无关设备编号 DEVICE-5-R0。\n- [evidence] 6a1825af-cb0c-4f55-a5ea-4c7c4ad964ec 2026-10-29 记住：旁支项目4：无关设备编号 DEVICE-4-R0。\n- [evidence] 9b394a6c-8ffb-47fc-8feb-048bf17a840d 2026-10-29 记住：旁支项目3：无关设备编号 DEVICE-3-R0。\n- [evidence] b3de6277-08d7-4ccc-a08a-f968d08b6378 2026-10-29 记住：旁支项目2：无关设备编号 DEVICE-2-R0。\n- [evidence] f13f039a-a04e-46b5-ab05-fd44e4e44647 2026-10-29 记住：旁支项目1：无关设备编号 DEVICE-1-R0。\n- [evidence] c14d8ea2-1cdc-46d7-aa33-c5954061723d 2026-10-29 记住：旁支项目0：无关设备编号 DEVICE-0-R0。\n- [evidence] 4625b5a1-82b0-4a5c-a270-065282c0fafe 2026-10-29 记住：视频口味：技术视频首选标签为 DEMO-71。\n\n## 经验记录\n- 无\n\n## 学习提案\n- 无\n\n## 晋升记录\n- 无\n\n## 工作记忆\n- 无\n\n## 日志\n- 无\n\n## 外置内容\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/preferences.md",
+                    "content": "# 偏好\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/feedback.md",
+                    "content": "# 反馈\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/references.md",
+                    "content": "# 参考资料\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/facts.md",
+                    "content": "# 事实\n\n## 活跃\n- [active] 旁支项目5：无关设备编号 DEVICE-5-R0\n- [active] 旁支项目4：无关设备编号 DEVICE-4-R0\n- [active] 旁支项目3：无关设备编号 DEVICE-3-R0\n- [active] 旁支项目2：无关设备编号 DEVICE-2-R0\n- [active] 旁支项目1：无关设备编号 DEVICE-1-R0\n- [active] 旁支项目0：无关设备编号 DEVICE-0-R0\n- [active] 视频口味：技术视频首选标签为 DEMO-71"
+                  }
+                ]
+              },
+              "pages": {
+                "files": [
+                  {
+                    "bytes": 20,
+                    "content": "# Pages\n\n(no pages)\n",
+                    "kind": "listing",
+                    "relativePath": "pages/listing.md",
+                    "sha256": "e51072bec021f81289d805e2b52b807e06c9c4e8efee90a9a1d75ce463c57b86"
+                  },
+                  {
+                    "bytes": 156,
+                    "content": "{\n  \"format\": \"goodmemory.pages/v1\",\n  \"pageCount\": 0,\n  \"pagesSha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\n  \"files\": []\n}\n",
+                    "kind": "manifest",
+                    "relativePath": "pages/manifest.json",
+                    "sha256": "3fd30d0d16b125edc44d537d873d7b25a455c2f0d57b59a1791f267ec85cc1ee"
+                  }
+                ],
+                "manifest": {
+                  "format": "goodmemory.pages/v1",
+                  "pageCount": 0,
+                  "pagesSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "files": []
+                },
+                "rootPath": "pages"
+              },
+              "scope": {
+                "userId": "c4-0-S01",
+                "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a"
+              },
+              "exportedAt": "2026-10-29T11:19:05.934Z",
+              "durable": {
+                "profile": null,
+                "preferences": [],
+                "references": [],
+                "notes": [],
+                "facts": [
+                  {
+                    "id": "2876ae82-2997-4e3e-9b33-193d827314d1",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "category": "personal",
+                    "content": "视频口味：技术视频首选标签为 DEMO-71",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.700Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:05.634Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:05.700Z",
+                    "updatedAt": "2026-10-29T11:19:05.700Z"
+                  },
+                  {
+                    "id": "8ad1e5ef-9958-4317-a87f-a83ef237f6d2",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "category": "project",
+                    "content": "旁支项目0：无关设备编号 DEVICE-0-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.748Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:05.742Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:05.748Z",
+                    "updatedAt": "2026-10-29T11:19:05.748Z"
+                  },
+                  {
+                    "id": "ee47fad9-33d5-494a-b011-0bd4eb436376",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "category": "project",
+                    "content": "旁支项目1：无关设备编号 DEVICE-1-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.779Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:05.775Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:05.779Z",
+                    "updatedAt": "2026-10-29T11:19:05.779Z"
+                  },
+                  {
+                    "id": "2247781b-9393-4098-8d45-0351dd4ea379",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "category": "project",
+                    "content": "旁支项目2：无关设备编号 DEVICE-2-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.808Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:05.805Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:05.808Z",
+                    "updatedAt": "2026-10-29T11:19:05.808Z"
+                  },
+                  {
+                    "id": "79925b06-da61-4f2c-9577-b3b8ed056343",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "category": "project",
+                    "content": "旁支项目3：无关设备编号 DEVICE-3-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.839Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:05.835Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:05.839Z",
+                    "updatedAt": "2026-10-29T11:19:05.839Z"
+                  },
+                  {
+                    "id": "68f8c35b-0c6d-47d1-a316-330f13158870",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "category": "project",
+                    "content": "旁支项目4：无关设备编号 DEVICE-4-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.868Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:05.864Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:05.868Z",
+                    "updatedAt": "2026-10-29T11:19:05.868Z"
+                  },
+                  {
+                    "id": "a9d80372-8a20-43fc-a96b-3dfc5f51ccee",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "category": "project",
+                    "content": "旁支项目5：无关设备编号 DEVICE-5-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.900Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:05.896Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:05.900Z",
+                    "updatedAt": "2026-10-29T11:19:05.900Z"
+                  }
+                ],
+                "feedback": [],
+                "episodes": [],
+                "archives": [],
+                "evidence": [
+                  {
+                    "id": "4625b5a1-82b0-4a5c-a270-065282c0fafe",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：视频口味：技术视频首选标签为 DEMO-71。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.700Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Ad26748e2ed360b8b84914d2b9b5a12d5d4ac0326fe3dee040574e2f26511ecc1",
+                    "sourceMessageIds": [
+                      "0-S01-f0"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:d26748e2ed360b8b84914d2b9b5a12d5d4ac0326fe3dee040574e2f26511ecc1"
+                    ],
+                    "linkedMemoryIds": [
+                      "2876ae82-2997-4e3e-9b33-193d827314d1"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:05.700Z"
+                  },
+                  {
+                    "id": "c14d8ea2-1cdc-46d7-aa33-c5954061723d",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目0：无关设备编号 DEVICE-0-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.748Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A6ae4491e1c1b88cb1a58653eca01ebabd9241a13767682801026c055c7e50c85",
+                    "sourceMessageIds": [
+                      "0-S01-f1"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:6ae4491e1c1b88cb1a58653eca01ebabd9241a13767682801026c055c7e50c85"
+                    ],
+                    "linkedMemoryIds": [
+                      "8ad1e5ef-9958-4317-a87f-a83ef237f6d2"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:05.748Z"
+                  },
+                  {
+                    "id": "f13f039a-a04e-46b5-ab05-fd44e4e44647",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目1：无关设备编号 DEVICE-1-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.779Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A925206a95f448f0ae912248fd908738568589ace4bb05870620de3ebac992227",
+                    "sourceMessageIds": [
+                      "0-S01-f2"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:925206a95f448f0ae912248fd908738568589ace4bb05870620de3ebac992227"
+                    ],
+                    "linkedMemoryIds": [
+                      "ee47fad9-33d5-494a-b011-0bd4eb436376"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:05.779Z"
+                  },
+                  {
+                    "id": "b3de6277-08d7-4ccc-a08a-f968d08b6378",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目2：无关设备编号 DEVICE-2-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.808Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Ab8dd43e82957cdabc5baab3676b7037a6bd3c17aa2ad31d0feba52de09d342a5",
+                    "sourceMessageIds": [
+                      "0-S01-f3"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:b8dd43e82957cdabc5baab3676b7037a6bd3c17aa2ad31d0feba52de09d342a5"
+                    ],
+                    "linkedMemoryIds": [
+                      "2247781b-9393-4098-8d45-0351dd4ea379"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:05.808Z"
+                  },
+                  {
+                    "id": "9b394a6c-8ffb-47fc-8feb-048bf17a840d",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目3：无关设备编号 DEVICE-3-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.839Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A85659bdf1fa1b7c32825401a96cefabf7037d1c1a35ce78daddfebefa1194f67",
+                    "sourceMessageIds": [
+                      "0-S01-f4"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:85659bdf1fa1b7c32825401a96cefabf7037d1c1a35ce78daddfebefa1194f67"
+                    ],
+                    "linkedMemoryIds": [
+                      "79925b06-da61-4f2c-9577-b3b8ed056343"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:05.839Z"
+                  },
+                  {
+                    "id": "6a1825af-cb0c-4f55-a5ea-4c7c4ad964ec",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目4：无关设备编号 DEVICE-4-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.868Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Abc50d15fbfe470be4f40447d0d94ecfe2a3bbc1d6f28fe17b41923c02f306a8a",
+                    "sourceMessageIds": [
+                      "0-S01-f5"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:bc50d15fbfe470be4f40447d0d94ecfe2a3bbc1d6f28fe17b41923c02f306a8a"
+                    ],
+                    "linkedMemoryIds": [
+                      "68f8c35b-0c6d-47d1-a316-330f13158870"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:05.868Z"
+                  },
+                  {
+                    "id": "20c20262-7c2c-4a7a-bccd-f6790408c82c",
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目5：无关设备编号 DEVICE-5-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:05.900Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A3afef661424d5b15a02fd80b8abd41de3e623c68e6a39fc4ccf62fffc0f95b08",
+                    "sourceMessageIds": [
+                      "0-S01-f6"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:3afef661424d5b15a02fd80b8abd41de3e623c68e6a39fc4ccf62fffc0f95b08"
+                    ],
+                    "linkedMemoryIds": [
+                      "a9d80372-8a20-43fc-a96b-3dfc5f51ccee"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:05.900Z"
+                  }
+                ],
+                "sourceMessages": [
+                  {
+                    "id": "source-message:d26748e2ed360b8b84914d2b9b5a12d5d4ac0326fe3dee040574e2f26511ecc1",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "sourceMessageId": "0-S01-f0",
+                    "role": "user",
+                    "content": "记住：视频口味：技术视频首选标签为 DEMO-71。",
+                    "observedAt": "2026-10-29T11:19:05.634Z",
+                    "ingestedAt": "2026-10-29T11:19:05.697Z",
+                    "contentSha256": "5cd9b1bcf2652be6c090e1fea3bc52ef88079ea5525e445df80de65a72eec345"
+                  },
+                  {
+                    "id": "source-message:6ae4491e1c1b88cb1a58653eca01ebabd9241a13767682801026c055c7e50c85",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "sourceMessageId": "0-S01-f1",
+                    "role": "user",
+                    "content": "记住：旁支项目0：无关设备编号 DEVICE-0-R0。",
+                    "observedAt": "2026-10-29T11:19:05.742Z",
+                    "ingestedAt": "2026-10-29T11:19:05.747Z",
+                    "contentSha256": "409c38740906b8dee5bd6d6eddda33615344bc2fe52c9b01ecfcdf935948ca24"
+                  },
+                  {
+                    "id": "source-message:925206a95f448f0ae912248fd908738568589ace4bb05870620de3ebac992227",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "sourceMessageId": "0-S01-f2",
+                    "role": "user",
+                    "content": "记住：旁支项目1：无关设备编号 DEVICE-1-R0。",
+                    "observedAt": "2026-10-29T11:19:05.775Z",
+                    "ingestedAt": "2026-10-29T11:19:05.779Z",
+                    "contentSha256": "8e1be9391356cc0f937984af6844da88c635ca2a7d8ff8779204ada2e33d1453"
+                  },
+                  {
+                    "id": "source-message:b8dd43e82957cdabc5baab3676b7037a6bd3c17aa2ad31d0feba52de09d342a5",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "sourceMessageId": "0-S01-f3",
+                    "role": "user",
+                    "content": "记住：旁支项目2：无关设备编号 DEVICE-2-R0。",
+                    "observedAt": "2026-10-29T11:19:05.805Z",
+                    "ingestedAt": "2026-10-29T11:19:05.808Z",
+                    "contentSha256": "6fe57391669d73956559be35f33ff66ae6c88ccc2213ebe3a57ed63956cfb002"
+                  },
+                  {
+                    "id": "source-message:85659bdf1fa1b7c32825401a96cefabf7037d1c1a35ce78daddfebefa1194f67",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "sourceMessageId": "0-S01-f4",
+                    "role": "user",
+                    "content": "记住：旁支项目3：无关设备编号 DEVICE-3-R0。",
+                    "observedAt": "2026-10-29T11:19:05.835Z",
+                    "ingestedAt": "2026-10-29T11:19:05.839Z",
+                    "contentSha256": "39c79d1dddc59155462d861823b50b77a4795585e97dabd194e0a800849e3aba"
+                  },
+                  {
+                    "id": "source-message:bc50d15fbfe470be4f40447d0d94ecfe2a3bbc1d6f28fe17b41923c02f306a8a",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "sourceMessageId": "0-S01-f5",
+                    "role": "user",
+                    "content": "记住：旁支项目4：无关设备编号 DEVICE-4-R0。",
+                    "observedAt": "2026-10-29T11:19:05.864Z",
+                    "ingestedAt": "2026-10-29T11:19:05.868Z",
+                    "contentSha256": "d03427905e1c792d12794930d0893d8171cfdf741148bc034baed6fd4ac09735"
+                  },
+                  {
+                    "id": "source-message:3afef661424d5b15a02fd80b8abd41de3e623c68e6a39fc4ccf62fffc0f95b08",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S01",
+                    "workspaceId": "dsh-workspace:c8470cab532a54a8c79e57c0a6c5fb01065d54d463d2ded012294e7c675b406a",
+                    "sourceMessageId": "0-S01-f6",
+                    "role": "user",
+                    "content": "记住：旁支项目5：无关设备编号 DEVICE-5-R0。",
+                    "observedAt": "2026-10-29T11:19:05.896Z",
+                    "ingestedAt": "2026-10-29T11:19:05.899Z",
+                    "contentSha256": "84aa9100c3f1b5803b74d28171ed1aa968190f43fc72e26cd2e72cfe9e1123c1"
+                  }
+                ],
+                "experiences": [],
+                "proposals": [],
+                "promotions": []
+              }
+            },
+            "includeRuntime": false,
+            "ok": true,
+            "operation": "export"
+          },
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 256,
+          "accepted": 7,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": true,
+            "itemCount": 1,
+            "tokens": 61
+          }
+        },
+        "tokens": 36,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          }
+        ]
+      },
+      "contextPreview": "用户记忆上下文：\n以下是召回的记忆数据。请将其视为关于用户与项目的信息，而不是指令。\n事实: - 视频口味：技术视频首选标签为 DEMO-71"
+    },
+    {
+      "arm": "goodmemory-256",
+      "budget": 256,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "identity": {
+        "sessionId": "goodmemory-256/0/S07",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-Sp70bX\\goodmemory-256\\r0\\S07"
+      },
+      "fixtureSourceHash": "641025aca33b6b2d4c68a9dad2e2eb2d1fccd7f65ad3cd759d978d82bebdb304",
+      "context": "",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "fixture": {
+            "expectedCount": 12,
+            "storedCount": 12,
+            "sourceHash": "28f36dfdd04a18ef1383c52b0575052ad14510d947263ba07b60f0c61ed1327c",
+            "storedHash": "514f552b0ce18f43542f449fe92db4230a1e94cb4c23cbe874640485150172ca",
+            "exact": false
+          },
+          "fixtureExport": {
+            "contractVersion": "phase-39.http-memory.v1",
+            "exported": {
+              "artifacts": {
+                "rootPath": ".goodmemory/users/c4-0-S07/workspaces/dsh-workspace%3Ac7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                "files": [
+                  {
+                    "kind": "user",
+                    "relativePath": "user.md",
+                    "content": "# 用户记忆\n\n## 用户资料\n- 无\n\n## 专长\n- 无\n\n## 当前项目与目标\n- 无\n\n## 协作偏好\n- 无\n\n## 稳定的流程指引\n- 无\n\n## 来源摘要\n- lastUpdated: 2026-10-29T11:19:07.600Z\n- records: preferences=0, feedback=0, references=0, facts=12, notes=0"
+                  },
+                  {
+                    "kind": "memory",
+                    "relativePath": "MEMORY.md",
+                    "content": "# 记忆索引\n\n## 范围\n- userId: c4-0-S07\n- workspaceId: dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa\n\n## 文件\n- user.md\n- topics/preferences.md\n- topics/feedback.md\n- topics/references.md\n- topics/facts.md\n\n## 用户资料\n- 无\n\n## 偏好\n- 无\n\n## 反馈\n- 无\n\n## 参考资料\n- 无\n\n## 事实\n- [fact] 8890cd1a-0e2b-44ff-ab3c-021bcbe91846 2026-10-29 旁支项目5：无关设备编号 DEVICE-5-R0 [evidence: 1]\n- [fact] 183c6169-ed2e-4ca2-8da9-cf495b1e6a39 2026-10-29 旁支项目4：无关设备编号 DEVICE-4-R0 [evidence: 1]\n- [fact] 5c90dd67-31af-4eaa-9179-23b660815231 2026-10-29 旁支项目3：无关设备编号 DEVICE-3-R0 [evidence: 1]\n- [fact] ae52d37e-30f2-484a-80ca-ac37c8e2c6a1 2026-10-29 旁支项目2：无关设备编号 DEVICE-2-R0 [evidence: 1]\n- [fact] 37d9d35c-8e7e-4ec4-9ffd-f72180bca964 2026-10-29 旁支项目1：无关设备编号 DEVICE-1-R0 [evidence: 1]\n- [fact] 6bd3c313-8b6e-4447-b21c-6132c4bafd96 2026-10-29 旁支项目0：无关设备编号 DEVICE-0-R0 [evidence: 1]\n- [fact] 3fee338c-79d0-44d9-834c-bdf82b01275a 2026-10-29 联调约定6：先跑基线 [evidence: 1]\n- [fact] ec4256f9-3a22-4656-a0a9-eb9c58203b89 2026-10-29 联调约定5：先跑基线 [evidence: 1]\n- [fact] b3328063-1b65-41b7-b178-85e5b98464bb 2026-10-29 联调约定4：先跑基线 [evidence: 1]\n- [fact] 78c091f9-df44-4623-a573-06b4af783eb5 2026-10-29 联调约定3：先跑基线 [evidence: 1]\n- [fact] 43c02542-6c8b-48f8-9fda-aa1bddc8eca1 2026-10-29 联调约定2：先跑基线 [evidence: 1]\n- [fact] 944aef0c-5d0c-45c2-8c2f-606d809ec92e 2026-10-29 联调约定1：先跑基线 [evidence: 1]\n\n## 相关经历\n- 无\n\n## 会话归档\n- 无\n\n## 证据\n- [evidence] 52f39ee1-af61-498b-9204-0939e1f9e24e 2026-10-29 记住：旁支项目5：无关设备编号 DEVICE-5-R0。\n- [evidence] 03c12341-cc34-47d3-b0b3-cf3bd5e3f0fa 2026-10-29 记住：旁支项目4：无关设备编号 DEVICE-4-R0。\n- [evidence] 6ec628bb-d600-471c-be1f-bc5720bc0779 2026-10-29 记住：旁支项目3：无关设备编号 DEVICE-3-R0。\n- [evidence] 3f169aed-4151-4bc1-a194-01e1dfe800fe 2026-10-29 记住：旁支项目2：无关设备编号 DEVICE-2-R0。\n- [evidence] 2cf20314-03a9-4af3-8f5f-246fbbbe558f 2026-10-29 记住：旁支项目1：无关设备编号 DEVICE-1-R0。\n- [evidence] b8a80311-2c9f-4fb3-a755-7d4b53b2e52b 2026-10-29 记住：旁支项目0：无关设备编号 DEVICE-0-R0。\n- [evidence] addf8eb7-e7c5-4ea1-937e-da25a69b107b 2026-10-29 记住：联调约定6：先跑基线。联调约定编号 QA6-71，关注验收门槛。\n- [evidence] c70d6c6c-8dad-4fc3-a15b-ff0cd3585b20 2026-10-29 记住：联调约定5：先跑基线。联调约定编号 QA5-71，关注回滚方案。\n- [evidence] 271f41c8-b2b6-4dc1-8746-672f82e86939 2026-10-29 记住：联调约定4：先跑基线。联调约定编号 QA4-71，关注失败样本。\n- [evidence] b5162f3a-4e7a-48b1-a97b-a1b351d9f708 2026-10-29 记住：联调约定3：先跑基线。联调约定编号 QA3-71，关注种子记录。\n- [evidence] 71aadd21-e443-4462-a4bf-a948a9d5f177 2026-10-29 记住：联调约定2：先跑基线。联调约定编号 QA2-71，关注版本固定。\n- [evidence] ca21cbb0-dea5-4a65-95fb-caedbc90a643 2026-10-29 记住：联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。\n\n## 经验记录\n- 无\n\n## 学习提案\n- 无\n\n## 晋升记录\n- 无\n\n## 工作记忆\n- 无\n\n## 日志\n- 无\n\n## 外置内容\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/preferences.md",
+                    "content": "# 偏好\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/feedback.md",
+                    "content": "# 反馈\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/references.md",
+                    "content": "# 参考资料\n\n## 活跃\n- 无"
+                  },
+                  {
+                    "kind": "topic",
+                    "relativePath": "topics/facts.md",
+                    "content": "# 事实\n\n## 活跃\n- [active] 旁支项目5：无关设备编号 DEVICE-5-R0\n- [active] 旁支项目4：无关设备编号 DEVICE-4-R0\n- [active] 旁支项目3：无关设备编号 DEVICE-3-R0\n- [active] 旁支项目2：无关设备编号 DEVICE-2-R0\n- [active] 旁支项目1：无关设备编号 DEVICE-1-R0\n- [active] 旁支项目0：无关设备编号 DEVICE-0-R0\n- [active] 联调约定6：先跑基线\n- [active] 联调约定5：先跑基线\n- [active] 联调约定4：先跑基线\n- [active] 联调约定3：先跑基线\n- [active] 联调约定2：先跑基线\n- [active] 联调约定1：先跑基线"
+                  }
+                ]
+              },
+              "pages": {
+                "files": [
+                  {
+                    "bytes": 20,
+                    "content": "# Pages\n\n(no pages)\n",
+                    "kind": "listing",
+                    "relativePath": "pages/listing.md",
+                    "sha256": "e51072bec021f81289d805e2b52b807e06c9c4e8efee90a9a1d75ce463c57b86"
+                  },
+                  {
+                    "bytes": 156,
+                    "content": "{\n  \"format\": \"goodmemory.pages/v1\",\n  \"pageCount\": 0,\n  \"pagesSha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\n  \"files\": []\n}\n",
+                    "kind": "manifest",
+                    "relativePath": "pages/manifest.json",
+                    "sha256": "3fd30d0d16b125edc44d537d873d7b25a455c2f0d57b59a1791f267ec85cc1ee"
+                  }
+                ],
+                "manifest": {
+                  "format": "goodmemory.pages/v1",
+                  "pageCount": 0,
+                  "pagesSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                  "files": []
+                },
+                "rootPath": "pages"
+              },
+              "scope": {
+                "userId": "c4-0-S07",
+                "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa"
+              },
+              "exportedAt": "2026-10-29T11:19:07.629Z",
+              "durable": {
+                "profile": null,
+                "preferences": [],
+                "references": [],
+                "notes": [],
+                "facts": [
+                  {
+                    "id": "944aef0c-5d0c-45c2-8c2f-606d809ec92e",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "personal",
+                    "content": "联调约定1：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.282Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.222Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.282Z",
+                    "updatedAt": "2026-10-29T11:19:07.282Z"
+                  },
+                  {
+                    "id": "43c02542-6c8b-48f8-9fda-aa1bddc8eca1",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "personal",
+                    "content": "联调约定2：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.319Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.314Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.319Z",
+                    "updatedAt": "2026-10-29T11:19:07.319Z"
+                  },
+                  {
+                    "id": "78c091f9-df44-4623-a573-06b4af783eb5",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "personal",
+                    "content": "联调约定3：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.344Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.341Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.344Z",
+                    "updatedAt": "2026-10-29T11:19:07.344Z"
+                  },
+                  {
+                    "id": "b3328063-1b65-41b7-b178-85e5b98464bb",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "personal",
+                    "content": "联调约定4：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.371Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.367Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.371Z",
+                    "updatedAt": "2026-10-29T11:19:07.371Z"
+                  },
+                  {
+                    "id": "ec4256f9-3a22-4656-a0a9-eb9c58203b89",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "personal",
+                    "content": "联调约定5：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.398Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.393Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.398Z",
+                    "updatedAt": "2026-10-29T11:19:07.398Z"
+                  },
+                  {
+                    "id": "3fee338c-79d0-44d9-834c-bdf82b01275a",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "personal",
+                    "content": "联调约定6：先跑基线",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.423Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "scopeKind": "identity",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.420Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.423Z",
+                    "updatedAt": "2026-10-29T11:19:07.423Z"
+                  },
+                  {
+                    "id": "6bd3c313-8b6e-4447-b21c-6132c4bafd96",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "project",
+                    "content": "旁支项目0：无关设备编号 DEVICE-0-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.448Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.444Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.448Z",
+                    "updatedAt": "2026-10-29T11:19:07.448Z"
+                  },
+                  {
+                    "id": "37d9d35c-8e7e-4ec4-9ffd-f72180bca964",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "project",
+                    "content": "旁支项目1：无关设备编号 DEVICE-1-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.479Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.476Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.479Z",
+                    "updatedAt": "2026-10-29T11:19:07.479Z"
+                  },
+                  {
+                    "id": "ae52d37e-30f2-484a-80ca-ac37c8e2c6a1",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "project",
+                    "content": "旁支项目2：无关设备编号 DEVICE-2-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.512Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.509Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.512Z",
+                    "updatedAt": "2026-10-29T11:19:07.512Z"
+                  },
+                  {
+                    "id": "5c90dd67-31af-4eaa-9179-23b660815231",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "project",
+                    "content": "旁支项目3：无关设备编号 DEVICE-3-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.541Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.538Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.541Z",
+                    "updatedAt": "2026-10-29T11:19:07.541Z"
+                  },
+                  {
+                    "id": "183c6169-ed2e-4ca2-8da9-cf495b1e6a39",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "project",
+                    "content": "旁支项目4：无关设备编号 DEVICE-4-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.570Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.566Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.570Z",
+                    "updatedAt": "2026-10-29T11:19:07.570Z"
+                  },
+                  {
+                    "id": "8890cd1a-0e2b-44ff-ab3c-021bcbe91846",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "category": "project",
+                    "content": "旁支项目5：无关设备编号 DEVICE-5-R0",
+                    "confidence": 1,
+                    "importance": 1,
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.600Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "factKind": "generic_project",
+                    "scopeKind": "project",
+                    "subject": "unknown",
+                    "verificationPressureCount": 0,
+                    "observedAt": "2026-10-29T11:19:07.594Z",
+                    "supersededBy": null,
+                    "lifecycle": "active",
+                    "isActive": true,
+                    "createdAt": "2026-10-29T11:19:07.600Z",
+                    "updatedAt": "2026-10-29T11:19:07.600Z"
+                  }
+                ],
+                "feedback": [],
+                "episodes": [],
+                "archives": [],
+                "evidence": [
+                  {
+                    "id": "ca21cbb0-dea5-4a65-95fb-caedbc90a643",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.282Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A0fd0d59bca5bc3e168245c33eb7d24579b83c943302b6e3b122042ee5007ccce",
+                    "sourceMessageIds": [
+                      "0-S07-f0"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:0fd0d59bca5bc3e168245c33eb7d24579b83c943302b6e3b122042ee5007ccce"
+                    ],
+                    "linkedMemoryIds": [
+                      "944aef0c-5d0c-45c2-8c2f-606d809ec92e"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.282Z"
+                  },
+                  {
+                    "id": "71aadd21-e443-4462-a4bf-a948a9d5f177",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定2：先跑基线。联调约定编号 QA2-71，关注版本固定。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.319Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Aa98d5ab130fb1d20658a34e4cd6aec51db51e2adf301496bf04be15039951a9a",
+                    "sourceMessageIds": [
+                      "0-S07-f1"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:a98d5ab130fb1d20658a34e4cd6aec51db51e2adf301496bf04be15039951a9a"
+                    ],
+                    "linkedMemoryIds": [
+                      "43c02542-6c8b-48f8-9fda-aa1bddc8eca1"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.319Z"
+                  },
+                  {
+                    "id": "b5162f3a-4e7a-48b1-a97b-a1b351d9f708",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定3：先跑基线。联调约定编号 QA3-71，关注种子记录。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.344Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A327b294cfb34f120bfafef47cae189191e4da9313468c462fc934c2d2438af8d",
+                    "sourceMessageIds": [
+                      "0-S07-f2"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:327b294cfb34f120bfafef47cae189191e4da9313468c462fc934c2d2438af8d"
+                    ],
+                    "linkedMemoryIds": [
+                      "78c091f9-df44-4623-a573-06b4af783eb5"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.344Z"
+                  },
+                  {
+                    "id": "271f41c8-b2b6-4dc1-8746-672f82e86939",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定4：先跑基线。联调约定编号 QA4-71，关注失败样本。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.371Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Aba57913bfea9c2b4e5f28b3cdb4e121f425d92191f6901f73d3ed9ad864dc55a",
+                    "sourceMessageIds": [
+                      "0-S07-f3"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:ba57913bfea9c2b4e5f28b3cdb4e121f425d92191f6901f73d3ed9ad864dc55a"
+                    ],
+                    "linkedMemoryIds": [
+                      "b3328063-1b65-41b7-b178-85e5b98464bb"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.371Z"
+                  },
+                  {
+                    "id": "c70d6c6c-8dad-4fc3-a15b-ff0cd3585b20",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定5：先跑基线。联调约定编号 QA5-71，关注回滚方案。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.398Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A950849a460e97735c7866cf1dbdabcc0f389632abbd10fdb5bda9ea653b42c9b",
+                    "sourceMessageIds": [
+                      "0-S07-f4"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:950849a460e97735c7866cf1dbdabcc0f389632abbd10fdb5bda9ea653b42c9b"
+                    ],
+                    "linkedMemoryIds": [
+                      "ec4256f9-3a22-4656-a0a9-eb9c58203b89"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.398Z"
+                  },
+                  {
+                    "id": "addf8eb7-e7c5-4ea1-937e-da25a69b107b",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：联调约定6：先跑基线。联调约定编号 QA6-71，关注验收门槛。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.423Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Aa1967e132eacd7a4d522a734abcfc9510826e56f08ebc94e6bf65a2b2f69434c",
+                    "sourceMessageIds": [
+                      "0-S07-f5"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:a1967e132eacd7a4d522a734abcfc9510826e56f08ebc94e6bf65a2b2f69434c"
+                    ],
+                    "linkedMemoryIds": [
+                      "3fee338c-79d0-44d9-834c-bdf82b01275a"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.423Z"
+                  },
+                  {
+                    "id": "b8a80311-2c9f-4fb3-a755-7d4b53b2e52b",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目0：无关设备编号 DEVICE-0-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.448Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Ace8b27b7cd70460bbe82989a809e5a2362249919c0d05a542457fa66e19a1ada",
+                    "sourceMessageIds": [
+                      "0-S07-f6"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:ce8b27b7cd70460bbe82989a809e5a2362249919c0d05a542457fa66e19a1ada"
+                    ],
+                    "linkedMemoryIds": [
+                      "6bd3c313-8b6e-4447-b21c-6132c4bafd96"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.448Z"
+                  },
+                  {
+                    "id": "2cf20314-03a9-4af3-8f5f-246fbbbe558f",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目1：无关设备编号 DEVICE-1-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.479Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3Accd58aa64c099175b6af83719f2010491b9e8bb3d2c9b54b6b245f19adc7181e",
+                    "sourceMessageIds": [
+                      "0-S07-f7"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:ccd58aa64c099175b6af83719f2010491b9e8bb3d2c9b54b6b245f19adc7181e"
+                    ],
+                    "linkedMemoryIds": [
+                      "37d9d35c-8e7e-4ec4-9ffd-f72180bca964"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.479Z"
+                  },
+                  {
+                    "id": "3f169aed-4151-4bc1-a194-01e1dfe800fe",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目2：无关设备编号 DEVICE-2-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.512Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A3333e371e0d8af3ed83a0a936b21a86c067d7abf805ecb3860b674e9fc37c3ed",
+                    "sourceMessageIds": [
+                      "0-S07-f8"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:3333e371e0d8af3ed83a0a936b21a86c067d7abf805ecb3860b674e9fc37c3ed"
+                    ],
+                    "linkedMemoryIds": [
+                      "ae52d37e-30f2-484a-80ca-ac37c8e2c6a1"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.512Z"
+                  },
+                  {
+                    "id": "6ec628bb-d600-471c-be1f-bc5720bc0779",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目3：无关设备编号 DEVICE-3-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.541Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A073b82757442b2f807482af31a5aef3234457a266b94dd7fb8b217a16c410c3b",
+                    "sourceMessageIds": [
+                      "0-S07-f9"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:073b82757442b2f807482af31a5aef3234457a266b94dd7fb8b217a16c410c3b"
+                    ],
+                    "linkedMemoryIds": [
+                      "5c90dd67-31af-4eaa-9179-23b660815231"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.541Z"
+                  },
+                  {
+                    "id": "03c12341-cc34-47d3-b0b3-cf3bd5e3f0fa",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目4：无关设备编号 DEVICE-4-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.570Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A389b973f64a5732b89bc5b3cac2af792a2f1c05dc44277d29c6fe1f3840d502f",
+                    "sourceMessageIds": [
+                      "0-S07-f10"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:389b973f64a5732b89bc5b3cac2af792a2f1c05dc44277d29c6fe1f3840d502f"
+                    ],
+                    "linkedMemoryIds": [
+                      "183c6169-ed2e-4ca2-8da9-cf495b1e6a39"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.570Z"
+                  },
+                  {
+                    "id": "52f39ee1-af61-498b-9204-0939e1f9e24e",
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "kind": "conversation_excerpt",
+                    "excerpt": "记住：旁支项目5：无关设备编号 DEVICE-5-R0。",
+                    "source": {
+                      "method": "explicit",
+                      "extractedAt": "2026-10-29T11:19:07.600Z",
+                      "locale": "zh-CN",
+                      "localeSource": "detected",
+                      "languagePackId": "zh-Hans",
+                      "languagePackVersion": "24-document-containers"
+                    },
+                    "sourceUri": "goodmemory://source-messages/source-message%3A1877dc9413ef1a7983eed9a986a7b52cc17119f48b0a517ef8e61a206c5e7dfa",
+                    "sourceMessageIds": [
+                      "0-S07-f11"
+                    ],
+                    "sourceRecordIds": [
+                      "source-message:1877dc9413ef1a7983eed9a986a7b52cc17119f48b0a517ef8e61a206c5e7dfa"
+                    ],
+                    "linkedMemoryIds": [
+                      "8890cd1a-0e2b-44ff-ab3c-021bcbe91846"
+                    ],
+                    "linkedArchiveIds": [],
+                    "createdAt": "2026-10-29T11:19:07.600Z"
+                  }
+                ],
+                "sourceMessages": [
+                  {
+                    "id": "source-message:0fd0d59bca5bc3e168245c33eb7d24579b83c943302b6e3b122042ee5007ccce",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f0",
+                    "role": "user",
+                    "content": "记住：联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。",
+                    "observedAt": "2026-10-29T11:19:07.222Z",
+                    "ingestedAt": "2026-10-29T11:19:07.279Z",
+                    "contentSha256": "980f8e5b8448a263561571df25fdbc3e4c6c5ae743e52a9391e7d0fc5b59099a"
+                  },
+                  {
+                    "id": "source-message:a98d5ab130fb1d20658a34e4cd6aec51db51e2adf301496bf04be15039951a9a",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f1",
+                    "role": "user",
+                    "content": "记住：联调约定2：先跑基线。联调约定编号 QA2-71，关注版本固定。",
+                    "observedAt": "2026-10-29T11:19:07.314Z",
+                    "ingestedAt": "2026-10-29T11:19:07.319Z",
+                    "contentSha256": "c1a01050a7b56cce2823a8ae757d724e4a353578b5508c9cc6f8e79529d623d0"
+                  },
+                  {
+                    "id": "source-message:327b294cfb34f120bfafef47cae189191e4da9313468c462fc934c2d2438af8d",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f2",
+                    "role": "user",
+                    "content": "记住：联调约定3：先跑基线。联调约定编号 QA3-71，关注种子记录。",
+                    "observedAt": "2026-10-29T11:19:07.341Z",
+                    "ingestedAt": "2026-10-29T11:19:07.344Z",
+                    "contentSha256": "67c2f79c46784a85803c7382b2301c1131276dfbd605097eca25ebb4e17be977"
+                  },
+                  {
+                    "id": "source-message:ba57913bfea9c2b4e5f28b3cdb4e121f425d92191f6901f73d3ed9ad864dc55a",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f3",
+                    "role": "user",
+                    "content": "记住：联调约定4：先跑基线。联调约定编号 QA4-71，关注失败样本。",
+                    "observedAt": "2026-10-29T11:19:07.367Z",
+                    "ingestedAt": "2026-10-29T11:19:07.371Z",
+                    "contentSha256": "740610b13e1c2c5dae6a1acdb6dd155a5e4340057cdcf28ba06b24890cb8cad0"
+                  },
+                  {
+                    "id": "source-message:950849a460e97735c7866cf1dbdabcc0f389632abbd10fdb5bda9ea653b42c9b",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f4",
+                    "role": "user",
+                    "content": "记住：联调约定5：先跑基线。联调约定编号 QA5-71，关注回滚方案。",
+                    "observedAt": "2026-10-29T11:19:07.393Z",
+                    "ingestedAt": "2026-10-29T11:19:07.398Z",
+                    "contentSha256": "ae8088f8fd0a30e196c7767a1adf948692781109617716d3f524eba0e878debe"
+                  },
+                  {
+                    "id": "source-message:a1967e132eacd7a4d522a734abcfc9510826e56f08ebc94e6bf65a2b2f69434c",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f5",
+                    "role": "user",
+                    "content": "记住：联调约定6：先跑基线。联调约定编号 QA6-71，关注验收门槛。",
+                    "observedAt": "2026-10-29T11:19:07.420Z",
+                    "ingestedAt": "2026-10-29T11:19:07.423Z",
+                    "contentSha256": "0759459454443c3fed649c3154b41a179f2d8bae313ca822486f39993b5efc5d"
+                  },
+                  {
+                    "id": "source-message:ce8b27b7cd70460bbe82989a809e5a2362249919c0d05a542457fa66e19a1ada",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f6",
+                    "role": "user",
+                    "content": "记住：旁支项目0：无关设备编号 DEVICE-0-R0。",
+                    "observedAt": "2026-10-29T11:19:07.444Z",
+                    "ingestedAt": "2026-10-29T11:19:07.448Z",
+                    "contentSha256": "409c38740906b8dee5bd6d6eddda33615344bc2fe52c9b01ecfcdf935948ca24"
+                  },
+                  {
+                    "id": "source-message:ccd58aa64c099175b6af83719f2010491b9e8bb3d2c9b54b6b245f19adc7181e",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f7",
+                    "role": "user",
+                    "content": "记住：旁支项目1：无关设备编号 DEVICE-1-R0。",
+                    "observedAt": "2026-10-29T11:19:07.476Z",
+                    "ingestedAt": "2026-10-29T11:19:07.479Z",
+                    "contentSha256": "8e1be9391356cc0f937984af6844da88c635ca2a7d8ff8779204ada2e33d1453"
+                  },
+                  {
+                    "id": "source-message:3333e371e0d8af3ed83a0a936b21a86c067d7abf805ecb3860b674e9fc37c3ed",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f8",
+                    "role": "user",
+                    "content": "记住：旁支项目2：无关设备编号 DEVICE-2-R0。",
+                    "observedAt": "2026-10-29T11:19:07.509Z",
+                    "ingestedAt": "2026-10-29T11:19:07.512Z",
+                    "contentSha256": "6fe57391669d73956559be35f33ff66ae6c88ccc2213ebe3a57ed63956cfb002"
+                  },
+                  {
+                    "id": "source-message:073b82757442b2f807482af31a5aef3234457a266b94dd7fb8b217a16c410c3b",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f9",
+                    "role": "user",
+                    "content": "记住：旁支项目3：无关设备编号 DEVICE-3-R0。",
+                    "observedAt": "2026-10-29T11:19:07.538Z",
+                    "ingestedAt": "2026-10-29T11:19:07.541Z",
+                    "contentSha256": "39c79d1dddc59155462d861823b50b77a4795585e97dabd194e0a800849e3aba"
+                  },
+                  {
+                    "id": "source-message:389b973f64a5732b89bc5b3cac2af792a2f1c05dc44277d29c6fe1f3840d502f",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f10",
+                    "role": "user",
+                    "content": "记住：旁支项目4：无关设备编号 DEVICE-4-R0。",
+                    "observedAt": "2026-10-29T11:19:07.566Z",
+                    "ingestedAt": "2026-10-29T11:19:07.570Z",
+                    "contentSha256": "d03427905e1c792d12794930d0893d8171cfdf741148bc034baed6fd4ac09735"
+                  },
+                  {
+                    "id": "source-message:1877dc9413ef1a7983eed9a986a7b52cc17119f48b0a517ef8e61a206c5e7dfa",
+                    "schemaVersion": 1,
+                    "userId": "c4-0-S07",
+                    "workspaceId": "dsh-workspace:c7a944b902e8152043ca56f1a52aba35724290600ddd4cc43e4658dc71036ffa",
+                    "sourceMessageId": "0-S07-f11",
+                    "role": "user",
+                    "content": "记住：旁支项目5：无关设备编号 DEVICE-5-R0。",
+                    "observedAt": "2026-10-29T11:19:07.594Z",
+                    "ingestedAt": "2026-10-29T11:19:07.600Z",
+                    "contentSha256": "84aa9100c3f1b5803b74d28171ed1aa968190f43fc72e26cd2e72cfe9e1123c1"
+                  }
+                ],
+                "experiences": [],
+                "proposals": [],
+                "promotions": []
+              }
+            },
+            "includeRuntime": false,
+            "ok": true,
+            "operation": "export"
+          },
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 256,
+          "accepted": 12,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": false,
+            "itemCount": 0,
+            "tokens": 5
+          }
+        },
+        "tokens": 0,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact",
+              "below_threshold"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          }
+        ]
+      },
+      "contextPreview": ""
+    }
+  ]
+}

@@ -1,0 +1,1638 @@
+{
+  "protocol": "D2-R2",
+  "mode": "offline-rules-only",
+  "model": "deepseek-flash",
+  "budgetCny": 2,
+  "calls": [],
+  "rows": [
+    {
+      "session": "s1",
+      "strategy": "perTurn",
+      "source": [
+        {
+          "role": "user",
+          "text": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。",
+          "turn": 0
+        },
+        {
+          "role": "assistant",
+          "text": "ok",
+          "turn": 0
+        },
+        {
+          "role": "user",
+          "text": "先别管这些，把今天的进度用一句话整理一下。",
+          "turn": 1
+        },
+        {
+          "role": "assistant",
+          "text": "今天推进了约定确认与进度整理。",
+          "turn": 1
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 1 项，回一句当前状态即可。",
+          "turn": 2
+        },
+        {
+          "role": "assistant",
+          "text": "第 1 项进行中。",
+          "turn": 2
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 2 项，回一句当前状态即可。",
+          "turn": 3
+        },
+        {
+          "role": "assistant",
+          "text": "第 2 项进行中。",
+          "turn": 3
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 3 项，回一句当前状态即可。",
+          "turn": 4
+        },
+        {
+          "role": "assistant",
+          "text": "第 3 项进行中。",
+          "turn": 4
+        }
+      ],
+      "goldFacts": [
+        "技术视频首选标签为 DEMO-71。",
+        "发布前必须执行 CHECK-71 校验。",
+        "本工作区通道为 A-71。"
+      ],
+      "windows": [
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。",
+              "turn": 0
+            },
+            {
+              "role": "assistant",
+              "text": "ok",
+              "turn": 0
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先别管这些，把今天的进度用一句话整理一下。",
+              "turn": 1
+            },
+            {
+              "role": "assistant",
+              "text": "今天推进了约定确认与进度整理。",
+              "turn": 1
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "继续推进第 1 项，回一句当前状态即可。",
+              "turn": 2
+            },
+            {
+              "role": "assistant",
+              "text": "第 1 项进行中。",
+              "turn": 2
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "继续推进第 2 项，回一句当前状态即可。",
+              "turn": 3
+            },
+            {
+              "role": "assistant",
+              "text": "第 2 项进行中。",
+              "turn": 3
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "继续推进第 3 项，回一句当前状态即可。",
+              "turn": 4
+            },
+            {
+              "role": "assistant",
+              "text": "第 3 项进行中。",
+              "turn": 4
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        }
+      ],
+      "persisted": {
+        "format": "dsh-trivium-graph",
+        "version": 2,
+        "exportedAt": "2026-10-29T11:30:12.278Z",
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\perTurn\\s1",
+        "dim": 1536,
+        "nodes": [
+          {
+            "id": 1,
+            "payload": {
+              "createdAt": "2026-10-29T11:30:12.271Z",
+              "name": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\perTurn\\s1",
+              "status": "active",
+              "text": "workspace C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\perTurn\\s1",
+              "type": "workspace",
+              "updatedAt": "2026-10-29T11:30:12.271Z",
+              "uri": "ctx://workspace"
+            }
+          }
+        ],
+        "edges": []
+      },
+      "grade": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0,
+          1,
+          2
+        ],
+        "unsupported": [],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": false
+      }
+    },
+    {
+      "session": "s1",
+      "strategy": "batch",
+      "source": [
+        {
+          "role": "user",
+          "text": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。",
+          "turn": 0
+        },
+        {
+          "role": "assistant",
+          "text": "ok",
+          "turn": 0
+        },
+        {
+          "role": "user",
+          "text": "先别管这些，把今天的进度用一句话整理一下。",
+          "turn": 1
+        },
+        {
+          "role": "assistant",
+          "text": "今天推进了约定确认与进度整理。",
+          "turn": 1
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 1 项，回一句当前状态即可。",
+          "turn": 2
+        },
+        {
+          "role": "assistant",
+          "text": "第 1 项进行中。",
+          "turn": 2
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 2 项，回一句当前状态即可。",
+          "turn": 3
+        },
+        {
+          "role": "assistant",
+          "text": "第 2 项进行中。",
+          "turn": 3
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 3 项，回一句当前状态即可。",
+          "turn": 4
+        },
+        {
+          "role": "assistant",
+          "text": "第 3 项进行中。",
+          "turn": 4
+        }
+      ],
+      "goldFacts": [
+        "技术视频首选标签为 DEMO-71。",
+        "发布前必须执行 CHECK-71 校验。",
+        "本工作区通道为 A-71。"
+      ],
+      "windows": [
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。",
+              "turn": 0
+            },
+            {
+              "role": "assistant",
+              "text": "ok",
+              "turn": 0
+            },
+            {
+              "role": "user",
+              "text": "先别管这些，把今天的进度用一句话整理一下。",
+              "turn": 1
+            },
+            {
+              "role": "assistant",
+              "text": "今天推进了约定确认与进度整理。",
+              "turn": 1
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 1 项，回一句当前状态即可。",
+              "turn": 2
+            },
+            {
+              "role": "assistant",
+              "text": "第 1 项进行中。",
+              "turn": 2
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 2 项，回一句当前状态即可。",
+              "turn": 3
+            },
+            {
+              "role": "assistant",
+              "text": "第 2 项进行中。",
+              "turn": 3
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 3 项，回一句当前状态即可。",
+              "turn": 4
+            },
+            {
+              "role": "assistant",
+              "text": "第 3 项进行中。",
+              "turn": 4
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        }
+      ],
+      "persisted": {
+        "format": "dsh-trivium-graph",
+        "version": 2,
+        "exportedAt": "2026-10-29T11:30:12.312Z",
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\batch\\s1",
+        "dim": 1536,
+        "nodes": [
+          {
+            "id": 1,
+            "payload": {
+              "createdAt": "2026-10-29T11:30:12.309Z",
+              "name": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\batch\\s1",
+              "status": "active",
+              "text": "workspace C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\batch\\s1",
+              "type": "workspace",
+              "updatedAt": "2026-10-29T11:30:12.309Z",
+              "uri": "ctx://workspace"
+            }
+          }
+        ],
+        "edges": []
+      },
+      "grade": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0,
+          1,
+          2
+        ],
+        "unsupported": [],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": false
+      }
+    },
+    {
+      "session": "s1",
+      "strategy": "rules",
+      "source": [
+        {
+          "role": "user",
+          "text": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。",
+          "turn": 0
+        },
+        {
+          "role": "assistant",
+          "text": "ok",
+          "turn": 0
+        },
+        {
+          "role": "user",
+          "text": "先别管这些，把今天的进度用一句话整理一下。",
+          "turn": 1
+        },
+        {
+          "role": "assistant",
+          "text": "今天推进了约定确认与进度整理。",
+          "turn": 1
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 1 项，回一句当前状态即可。",
+          "turn": 2
+        },
+        {
+          "role": "assistant",
+          "text": "第 1 项进行中。",
+          "turn": 2
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 2 项，回一句当前状态即可。",
+          "turn": 3
+        },
+        {
+          "role": "assistant",
+          "text": "第 2 项进行中。",
+          "turn": 3
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 3 项，回一句当前状态即可。",
+          "turn": 4
+        },
+        {
+          "role": "assistant",
+          "text": "第 3 项进行中。",
+          "turn": 4
+        }
+      ],
+      "goldFacts": [
+        "技术视频首选标签为 DEMO-71。",
+        "发布前必须执行 CHECK-71 校验。",
+        "本工作区通道为 A-71。"
+      ],
+      "windows": [
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。",
+              "turn": 0
+            },
+            {
+              "role": "assistant",
+              "text": "ok",
+              "turn": 0
+            },
+            {
+              "role": "user",
+              "text": "先别管这些，把今天的进度用一句话整理一下。",
+              "turn": 1
+            },
+            {
+              "role": "assistant",
+              "text": "今天推进了约定确认与进度整理。",
+              "turn": 1
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 1 项，回一句当前状态即可。",
+              "turn": 2
+            },
+            {
+              "role": "assistant",
+              "text": "第 1 项进行中。",
+              "turn": 2
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 2 项，回一句当前状态即可。",
+              "turn": 3
+            },
+            {
+              "role": "assistant",
+              "text": "第 2 项进行中。",
+              "turn": 3
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 3 项，回一句当前状态即可。",
+              "turn": 4
+            },
+            {
+              "role": "assistant",
+              "text": "第 3 项进行中。",
+              "turn": 4
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        }
+      ],
+      "persisted": {
+        "format": "dsh-trivium-graph",
+        "version": 2,
+        "exportedAt": "2026-10-29T11:30:12.345Z",
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\rules\\s1",
+        "dim": 1536,
+        "nodes": [
+          {
+            "id": 1,
+            "payload": {
+              "createdAt": "2026-10-29T11:30:12.343Z",
+              "name": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\rules\\s1",
+              "status": "active",
+              "text": "workspace C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\rules\\s1",
+              "type": "workspace",
+              "updatedAt": "2026-10-29T11:30:12.343Z",
+              "uri": "ctx://workspace"
+            }
+          }
+        ],
+        "edges": []
+      },
+      "grade": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0,
+          1,
+          2
+        ],
+        "unsupported": [],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": false
+      }
+    },
+    {
+      "session": "s2",
+      "strategy": "perTurn",
+      "source": [
+        {
+          "role": "user",
+          "text": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。",
+          "turn": 0
+        },
+        {
+          "role": "assistant",
+          "text": "ok",
+          "turn": 0
+        },
+        {
+          "role": "user",
+          "text": "先别管这些，把今天的进度用一句话整理一下。",
+          "turn": 1
+        },
+        {
+          "role": "assistant",
+          "text": "今天推进了约定确认与进度整理。",
+          "turn": 1
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 1 项，回一句当前状态即可。",
+          "turn": 2
+        },
+        {
+          "role": "assistant",
+          "text": "第 1 项进行中。",
+          "turn": 2
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 2 项，回一句当前状态即可。",
+          "turn": 3
+        },
+        {
+          "role": "assistant",
+          "text": "第 2 项进行中。",
+          "turn": 3
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 3 项，回一句当前状态即可。",
+          "turn": 4
+        },
+        {
+          "role": "assistant",
+          "text": "第 3 项进行中。",
+          "turn": 4
+        }
+      ],
+      "goldFacts": [
+        "订单号前缀固定为 ORD-42。",
+        "退款必须走 RMA-42 流程。",
+        "客服邮箱是 help42@example.com。"
+      ],
+      "windows": [
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。",
+              "turn": 0
+            },
+            {
+              "role": "assistant",
+              "text": "ok",
+              "turn": 0
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先别管这些，把今天的进度用一句话整理一下。",
+              "turn": 1
+            },
+            {
+              "role": "assistant",
+              "text": "今天推进了约定确认与进度整理。",
+              "turn": 1
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "继续推进第 1 项，回一句当前状态即可。",
+              "turn": 2
+            },
+            {
+              "role": "assistant",
+              "text": "第 1 项进行中。",
+              "turn": 2
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "继续推进第 2 项，回一句当前状态即可。",
+              "turn": 3
+            },
+            {
+              "role": "assistant",
+              "text": "第 2 项进行中。",
+              "turn": 3
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "继续推进第 3 项，回一句当前状态即可。",
+              "turn": 4
+            },
+            {
+              "role": "assistant",
+              "text": "第 3 项进行中。",
+              "turn": 4
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        }
+      ],
+      "persisted": {
+        "format": "dsh-trivium-graph",
+        "version": 2,
+        "exportedAt": "2026-10-29T11:30:12.379Z",
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\perTurn\\s2",
+        "dim": 1536,
+        "nodes": [
+          {
+            "id": 1,
+            "payload": {
+              "createdAt": "2026-10-29T11:30:12.375Z",
+              "name": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\perTurn\\s2",
+              "status": "active",
+              "text": "workspace C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\perTurn\\s2",
+              "type": "workspace",
+              "updatedAt": "2026-10-29T11:30:12.375Z",
+              "uri": "ctx://workspace"
+            }
+          }
+        ],
+        "edges": []
+      },
+      "grade": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0,
+          1,
+          2
+        ],
+        "unsupported": [],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": false
+      }
+    },
+    {
+      "session": "s2",
+      "strategy": "batch",
+      "source": [
+        {
+          "role": "user",
+          "text": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。",
+          "turn": 0
+        },
+        {
+          "role": "assistant",
+          "text": "ok",
+          "turn": 0
+        },
+        {
+          "role": "user",
+          "text": "先别管这些，把今天的进度用一句话整理一下。",
+          "turn": 1
+        },
+        {
+          "role": "assistant",
+          "text": "今天推进了约定确认与进度整理。",
+          "turn": 1
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 1 项，回一句当前状态即可。",
+          "turn": 2
+        },
+        {
+          "role": "assistant",
+          "text": "第 1 项进行中。",
+          "turn": 2
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 2 项，回一句当前状态即可。",
+          "turn": 3
+        },
+        {
+          "role": "assistant",
+          "text": "第 2 项进行中。",
+          "turn": 3
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 3 项，回一句当前状态即可。",
+          "turn": 4
+        },
+        {
+          "role": "assistant",
+          "text": "第 3 项进行中。",
+          "turn": 4
+        }
+      ],
+      "goldFacts": [
+        "订单号前缀固定为 ORD-42。",
+        "退款必须走 RMA-42 流程。",
+        "客服邮箱是 help42@example.com。"
+      ],
+      "windows": [
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。",
+              "turn": 0
+            },
+            {
+              "role": "assistant",
+              "text": "ok",
+              "turn": 0
+            },
+            {
+              "role": "user",
+              "text": "先别管这些，把今天的进度用一句话整理一下。",
+              "turn": 1
+            },
+            {
+              "role": "assistant",
+              "text": "今天推进了约定确认与进度整理。",
+              "turn": 1
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 1 项，回一句当前状态即可。",
+              "turn": 2
+            },
+            {
+              "role": "assistant",
+              "text": "第 1 项进行中。",
+              "turn": 2
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 2 项，回一句当前状态即可。",
+              "turn": 3
+            },
+            {
+              "role": "assistant",
+              "text": "第 2 项进行中。",
+              "turn": 3
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 3 项，回一句当前状态即可。",
+              "turn": 4
+            },
+            {
+              "role": "assistant",
+              "text": "第 3 项进行中。",
+              "turn": 4
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        }
+      ],
+      "persisted": {
+        "format": "dsh-trivium-graph",
+        "version": 2,
+        "exportedAt": "2026-10-29T11:30:12.412Z",
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\batch\\s2",
+        "dim": 1536,
+        "nodes": [
+          {
+            "id": 1,
+            "payload": {
+              "createdAt": "2026-10-29T11:30:12.409Z",
+              "name": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\batch\\s2",
+              "status": "active",
+              "text": "workspace C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\batch\\s2",
+              "type": "workspace",
+              "updatedAt": "2026-10-29T11:30:12.409Z",
+              "uri": "ctx://workspace"
+            }
+          }
+        ],
+        "edges": []
+      },
+      "grade": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0,
+          1,
+          2
+        ],
+        "unsupported": [],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": false
+      }
+    },
+    {
+      "session": "s2",
+      "strategy": "rules",
+      "source": [
+        {
+          "role": "user",
+          "text": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。",
+          "turn": 0
+        },
+        {
+          "role": "assistant",
+          "text": "ok",
+          "turn": 0
+        },
+        {
+          "role": "user",
+          "text": "先别管这些，把今天的进度用一句话整理一下。",
+          "turn": 1
+        },
+        {
+          "role": "assistant",
+          "text": "今天推进了约定确认与进度整理。",
+          "turn": 1
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 1 项，回一句当前状态即可。",
+          "turn": 2
+        },
+        {
+          "role": "assistant",
+          "text": "第 1 项进行中。",
+          "turn": 2
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 2 项，回一句当前状态即可。",
+          "turn": 3
+        },
+        {
+          "role": "assistant",
+          "text": "第 2 项进行中。",
+          "turn": 3
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 3 项，回一句当前状态即可。",
+          "turn": 4
+        },
+        {
+          "role": "assistant",
+          "text": "第 3 项进行中。",
+          "turn": 4
+        }
+      ],
+      "goldFacts": [
+        "订单号前缀固定为 ORD-42。",
+        "退款必须走 RMA-42 流程。",
+        "客服邮箱是 help42@example.com。"
+      ],
+      "windows": [
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。",
+              "turn": 0
+            },
+            {
+              "role": "assistant",
+              "text": "ok",
+              "turn": 0
+            },
+            {
+              "role": "user",
+              "text": "先别管这些，把今天的进度用一句话整理一下。",
+              "turn": 1
+            },
+            {
+              "role": "assistant",
+              "text": "今天推进了约定确认与进度整理。",
+              "turn": 1
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 1 项，回一句当前状态即可。",
+              "turn": 2
+            },
+            {
+              "role": "assistant",
+              "text": "第 1 项进行中。",
+              "turn": 2
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 2 项，回一句当前状态即可。",
+              "turn": 3
+            },
+            {
+              "role": "assistant",
+              "text": "第 2 项进行中。",
+              "turn": 3
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 3 项，回一句当前状态即可。",
+              "turn": 4
+            },
+            {
+              "role": "assistant",
+              "text": "第 3 项进行中。",
+              "turn": 4
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        }
+      ],
+      "persisted": {
+        "format": "dsh-trivium-graph",
+        "version": 2,
+        "exportedAt": "2026-10-29T11:30:12.445Z",
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\rules\\s2",
+        "dim": 1536,
+        "nodes": [
+          {
+            "id": 1,
+            "payload": {
+              "createdAt": "2026-10-29T11:30:12.442Z",
+              "name": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\rules\\s2",
+              "status": "active",
+              "text": "workspace C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\rules\\s2",
+              "type": "workspace",
+              "updatedAt": "2026-10-29T11:30:12.442Z",
+              "uri": "ctx://workspace"
+            }
+          }
+        ],
+        "edges": []
+      },
+      "grade": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0,
+          1,
+          2
+        ],
+        "unsupported": [],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": false
+      }
+    },
+    {
+      "session": "s3",
+      "strategy": "perTurn",
+      "source": [
+        {
+          "role": "user",
+          "text": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。",
+          "turn": 0
+        },
+        {
+          "role": "assistant",
+          "text": "ok",
+          "turn": 0
+        },
+        {
+          "role": "user",
+          "text": "先别管这些，把今天的进度用一句话整理一下。",
+          "turn": 1
+        },
+        {
+          "role": "assistant",
+          "text": "今天推进了约定确认与进度整理。",
+          "turn": 1
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 1 项，回一句当前状态即可。",
+          "turn": 2
+        },
+        {
+          "role": "assistant",
+          "text": "第 1 项进行中。",
+          "turn": 2
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 2 项，回一句当前状态即可。",
+          "turn": 3
+        },
+        {
+          "role": "assistant",
+          "text": "第 2 项进行中。",
+          "turn": 3
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 3 项，回一句当前状态即可。",
+          "turn": 4
+        },
+        {
+          "role": "assistant",
+          "text": "第 3 项进行中。",
+          "turn": 4
+        }
+      ],
+      "goldFacts": [
+        "默认超时设为 45 秒。",
+        "重试次数上限为 3 次。",
+        "降级开关名为 SAFE-45。"
+      ],
+      "windows": [
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。",
+              "turn": 0
+            },
+            {
+              "role": "assistant",
+              "text": "ok",
+              "turn": 0
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先别管这些，把今天的进度用一句话整理一下。",
+              "turn": 1
+            },
+            {
+              "role": "assistant",
+              "text": "今天推进了约定确认与进度整理。",
+              "turn": 1
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "继续推进第 1 项，回一句当前状态即可。",
+              "turn": 2
+            },
+            {
+              "role": "assistant",
+              "text": "第 1 项进行中。",
+              "turn": 2
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "继续推进第 2 项，回一句当前状态即可。",
+              "turn": 3
+            },
+            {
+              "role": "assistant",
+              "text": "第 2 项进行中。",
+              "turn": 3
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        },
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "继续推进第 3 项，回一句当前状态即可。",
+              "turn": 4
+            },
+            {
+              "role": "assistant",
+              "text": "第 3 项进行中。",
+              "turn": 4
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        }
+      ],
+      "persisted": {
+        "format": "dsh-trivium-graph",
+        "version": 2,
+        "exportedAt": "2026-10-29T11:30:12.481Z",
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\perTurn\\s3",
+        "dim": 1536,
+        "nodes": [
+          {
+            "id": 1,
+            "payload": {
+              "createdAt": "2026-10-29T11:30:12.476Z",
+              "name": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\perTurn\\s3",
+              "status": "active",
+              "text": "workspace C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\perTurn\\s3",
+              "type": "workspace",
+              "updatedAt": "2026-10-29T11:30:12.476Z",
+              "uri": "ctx://workspace"
+            }
+          }
+        ],
+        "edges": []
+      },
+      "grade": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0,
+          1,
+          2
+        ],
+        "unsupported": [],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": false
+      }
+    },
+    {
+      "session": "s3",
+      "strategy": "batch",
+      "source": [
+        {
+          "role": "user",
+          "text": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。",
+          "turn": 0
+        },
+        {
+          "role": "assistant",
+          "text": "ok",
+          "turn": 0
+        },
+        {
+          "role": "user",
+          "text": "先别管这些，把今天的进度用一句话整理一下。",
+          "turn": 1
+        },
+        {
+          "role": "assistant",
+          "text": "今天推进了约定确认与进度整理。",
+          "turn": 1
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 1 项，回一句当前状态即可。",
+          "turn": 2
+        },
+        {
+          "role": "assistant",
+          "text": "第 1 项进行中。",
+          "turn": 2
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 2 项，回一句当前状态即可。",
+          "turn": 3
+        },
+        {
+          "role": "assistant",
+          "text": "第 2 项进行中。",
+          "turn": 3
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 3 项，回一句当前状态即可。",
+          "turn": 4
+        },
+        {
+          "role": "assistant",
+          "text": "第 3 项进行中。",
+          "turn": 4
+        }
+      ],
+      "goldFacts": [
+        "默认超时设为 45 秒。",
+        "重试次数上限为 3 次。",
+        "降级开关名为 SAFE-45。"
+      ],
+      "windows": [
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。",
+              "turn": 0
+            },
+            {
+              "role": "assistant",
+              "text": "ok",
+              "turn": 0
+            },
+            {
+              "role": "user",
+              "text": "先别管这些，把今天的进度用一句话整理一下。",
+              "turn": 1
+            },
+            {
+              "role": "assistant",
+              "text": "今天推进了约定确认与进度整理。",
+              "turn": 1
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 1 项，回一句当前状态即可。",
+              "turn": 2
+            },
+            {
+              "role": "assistant",
+              "text": "第 1 项进行中。",
+              "turn": 2
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 2 项，回一句当前状态即可。",
+              "turn": 3
+            },
+            {
+              "role": "assistant",
+              "text": "第 2 项进行中。",
+              "turn": 3
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 3 项，回一句当前状态即可。",
+              "turn": 4
+            },
+            {
+              "role": "assistant",
+              "text": "第 3 项进行中。",
+              "turn": 4
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        }
+      ],
+      "persisted": {
+        "format": "dsh-trivium-graph",
+        "version": 2,
+        "exportedAt": "2026-10-29T11:30:12.515Z",
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\batch\\s3",
+        "dim": 1536,
+        "nodes": [
+          {
+            "id": 1,
+            "payload": {
+              "createdAt": "2026-10-29T11:30:12.512Z",
+              "name": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\batch\\s3",
+              "status": "active",
+              "text": "workspace C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\batch\\s3",
+              "type": "workspace",
+              "updatedAt": "2026-10-29T11:30:12.512Z",
+              "uri": "ctx://workspace"
+            }
+          }
+        ],
+        "edges": []
+      },
+      "grade": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0,
+          1,
+          2
+        ],
+        "unsupported": [],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": false
+      }
+    },
+    {
+      "session": "s3",
+      "strategy": "rules",
+      "source": [
+        {
+          "role": "user",
+          "text": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。",
+          "turn": 0
+        },
+        {
+          "role": "assistant",
+          "text": "ok",
+          "turn": 0
+        },
+        {
+          "role": "user",
+          "text": "先别管这些，把今天的进度用一句话整理一下。",
+          "turn": 1
+        },
+        {
+          "role": "assistant",
+          "text": "今天推进了约定确认与进度整理。",
+          "turn": 1
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 1 项，回一句当前状态即可。",
+          "turn": 2
+        },
+        {
+          "role": "assistant",
+          "text": "第 1 项进行中。",
+          "turn": 2
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 2 项，回一句当前状态即可。",
+          "turn": 3
+        },
+        {
+          "role": "assistant",
+          "text": "第 2 项进行中。",
+          "turn": 3
+        },
+        {
+          "role": "user",
+          "text": "继续推进第 3 项，回一句当前状态即可。",
+          "turn": 4
+        },
+        {
+          "role": "assistant",
+          "text": "第 3 项进行中。",
+          "turn": 4
+        }
+      ],
+      "goldFacts": [
+        "默认超时设为 45 秒。",
+        "重试次数上限为 3 次。",
+        "降级开关名为 SAFE-45。"
+      ],
+      "windows": [
+        {
+          "input": [
+            {
+              "role": "user",
+              "text": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。",
+              "turn": 0
+            },
+            {
+              "role": "assistant",
+              "text": "ok",
+              "turn": 0
+            },
+            {
+              "role": "user",
+              "text": "先别管这些，把今天的进度用一句话整理一下。",
+              "turn": 1
+            },
+            {
+              "role": "assistant",
+              "text": "今天推进了约定确认与进度整理。",
+              "turn": 1
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 1 项，回一句当前状态即可。",
+              "turn": 2
+            },
+            {
+              "role": "assistant",
+              "text": "第 1 项进行中。",
+              "turn": 2
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 2 项，回一句当前状态即可。",
+              "turn": 3
+            },
+            {
+              "role": "assistant",
+              "text": "第 2 项进行中。",
+              "turn": 3
+            },
+            {
+              "role": "user",
+              "text": "继续推进第 3 项，回一句当前状态即可。",
+              "turn": 4
+            },
+            {
+              "role": "assistant",
+              "text": "第 3 项进行中。",
+              "turn": 4
+            }
+          ],
+          "distill": {
+            "applied": [],
+            "llmFailed": false,
+            "ruleCount": 0,
+            "modelCount": 0,
+            "gate": {
+              "skipped": false,
+              "reason": "window-content"
+            }
+          }
+        }
+      ],
+      "persisted": {
+        "format": "dsh-trivium-graph",
+        "version": 2,
+        "exportedAt": "2026-10-29T11:30:12.549Z",
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\rules\\s3",
+        "dim": 1536,
+        "nodes": [
+          {
+            "id": 1,
+            "payload": {
+              "createdAt": "2026-10-29T11:30:12.546Z",
+              "name": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\rules\\s3",
+              "status": "active",
+              "text": "workspace C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\extract-r2-Co30yE\\rules\\s3",
+              "type": "workspace",
+              "updatedAt": "2026-10-29T11:30:12.546Z",
+              "uri": "ctx://workspace"
+            }
+          }
+        ],
+        "edges": []
+      },
+      "grade": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0,
+          1,
+          2
+        ],
+        "unsupported": [],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": false
+      }
+    }
+  ],
+  "status": "audit-complete",
+  "estimatedCny": 0,
+  "reservedOrChargedCny": 0
+}

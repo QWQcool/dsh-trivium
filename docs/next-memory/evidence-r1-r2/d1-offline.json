@@ -1,0 +1,4429 @@
+{
+  "protocol": "D1-R2-SIMULATION",
+  "variant": "D1",
+  "plan": "docs/next-memory/D1-PLAN.md",
+  "model": "deepseek-flash",
+  "thinking": "disabled",
+  "temperature": 0,
+  "maxTokens": 600,
+  "sessions": 6,
+  "turns": 5,
+  "budgetCny": 3,
+  "pricesCnyPerMillion": {
+    "input": 2,
+    "cached": 0.04,
+    "output": 8
+  },
+  "status": "audit-complete",
+  "estimatedCny": 0,
+  "reservedOrChargedCny": 0,
+  "calls": [],
+  "cells": [
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 105,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 144,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "技术视频首选标签是什么？返回 {\"tag\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 185,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "技术视频首选标签是什么？返回 {\"tag\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 220,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "技术视频首选标签是什么？返回 {\"tag\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "发布前必须执行哪项校验、本工作区通道是什么？返回 {\"check\":字符串或null,\"channel\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 280,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 103,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 142,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "订单号前缀是什么？返回 {\"prefix\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 180,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "订单号前缀是什么？返回 {\"prefix\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 216,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "订单号前缀是什么？返回 {\"prefix\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "退款必须走哪个流程、客服邮箱是什么？返回 {\"flow\":字符串或null,\"email\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 271,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 99,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 138,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "默认超时是多少秒？返回 {\"timeout\":数字或null}。"
+        }
+      ],
+      "historyTokens": 176,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "默认超时是多少秒？返回 {\"timeout\":数字或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 211,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "默认超时是多少秒？返回 {\"timeout\":数字或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "重试次数上限与降级开关名分别是什么？返回 {\"retries\":数字或null,\"switch\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 266,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 100,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 139,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "测试环境数据库名是什么？返回 {\"db\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 180,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "测试环境数据库名是什么？返回 {\"db\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 215,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "测试环境数据库名是什么？返回 {\"db\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "测试账号与测试入口端口分别是什么？返回 {\"user\":字符串或null,\"port\":数字或null}。"
+        }
+      ],
+      "historyTokens": 268,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 100,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 139,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "素材目录在哪里？返回 {\"dir\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 176,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "素材目录在哪里？返回 {\"dir\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 212,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "素材目录在哪里？返回 {\"dir\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "导出格式与缩略图宽度分别是什么？返回 {\"format\":字符串或null,\"width\":数字或null}。"
+        }
+      ],
+      "historyTokens": 264,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 95,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 134,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "审批人是谁？返回 {\"approver\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 170,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "审批人是谁？返回 {\"approver\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 206,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "审批人是谁？返回 {\"approver\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "审批阈值与超标升级流程分别是什么？返回 {\"threshold\":数字或null,\"escalation\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 261,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 105,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 144,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "技术视频首选标签是什么？返回 {\"tag\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 185,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：技术视频首选标签为 DEMO-71。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "技术视频首选标签是什么？返回 {\"tag\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 168,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：技术视频首选标签为 DEMO-71。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "发布前必须执行哪项校验、本工作区通道是什么？返回 {\"check\":字符串或null,\"channel\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 186,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 103,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 142,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "订单号前缀是什么？返回 {\"prefix\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 180,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：订单号前缀固定为 ORD-42。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "订单号前缀是什么？返回 {\"prefix\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 164,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：订单号前缀固定为 ORD-42。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "退款必须走哪个流程、客服邮箱是什么？返回 {\"flow\":字符串或null,\"email\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 180,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 99,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 138,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "默认超时是多少秒？返回 {\"timeout\":数字或null}。"
+        }
+      ],
+      "historyTokens": 176,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：默认超时设为 45 秒。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "默认超时是多少秒？返回 {\"timeout\":数字或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 162,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：默认超时设为 45 秒。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "重试次数上限与降级开关名分别是什么？返回 {\"retries\":数字或null,\"switch\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 179,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 100,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 139,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "测试环境数据库名是什么？返回 {\"db\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 180,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：测试环境数据库名为 qa_pool。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "测试环境数据库名是什么？返回 {\"db\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 167,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：测试环境数据库名为 qa_pool。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "测试账号与测试入口端口分别是什么？返回 {\"user\":字符串或null,\"port\":数字或null}。"
+        }
+      ],
+      "historyTokens": 179,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 100,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 139,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "素材目录在哪里？返回 {\"dir\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 176,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：素材目录是 assets/raw。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "素材目录在哪里？返回 {\"dir\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 160,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：素材目录是 assets/raw。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "导出格式与缩略图宽度分别是什么？返回 {\"format\":字符串或null,\"width\":数字或null}。"
+        }
+      ],
+      "historyTokens": 176,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 95,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 134,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "审批人是谁？返回 {\"approver\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 170,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：审批人是 Lin。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "审批人是谁？返回 {\"approver\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 157,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：审批人是 Lin。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "审批阈值与超标升级流程分别是什么？返回 {\"threshold\":数字或null,\"escalation\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 176,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s1-fact1; decision:s1-fact2; decision:s1-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 技术视频首选标签为 DEMO-71。\n- [decision#3] 发布前必须执行 CHECK-71 校验。\n- [decision#4] 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 237,
+      "injectedTokens": 60
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s1-fact1; decision:s1-fact2; decision:s1-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 技术视频首选标签为 DEMO-71。\n- [decision#3] 发布前必须执行 CHECK-71 校验。\n- [decision#4] 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 276,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s1-fact1; decision:s1-fact2; decision:s1-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 技术视频首选标签为 DEMO-71。\n- [decision#3] 发布前必须执行 CHECK-71 校验。\n- [decision#4] 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 技术视频首选标签为 DEMO-71。"
+        },
+        {
+          "role": "user",
+          "content": "技术视频首选标签是什么？返回 {\"tag\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 360,
+      "injectedTokens": 31
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：技术视频首选标签为 DEMO-71。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "技术视频首选标签是什么？返回 {\"tag\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s1-fact1; decision:s1-fact2; decision:s1-fact3"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 227,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：技术视频首选标签为 DEMO-71。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s1-fact1; decision:s1-fact2; decision:s1-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#3] 发布前必须执行 CHECK-71 校验。\n- [decision#4] 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "发布前必须执行哪项校验、本工作区通道是什么？返回 {\"check\":字符串或null,\"channel\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 303,
+      "injectedTokens": 44
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s2-fact1; decision:s2-fact2; decision:s2-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 订单号前缀固定为 ORD-42。\n- [decision#4] 客服邮箱是 help42@example.com。\n- [decision#3] 退款必须走 RMA-42 流程。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 233,
+      "injectedTokens": 58
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s2-fact1; decision:s2-fact2; decision:s2-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 订单号前缀固定为 ORD-42。\n- [decision#4] 客服邮箱是 help42@example.com。\n- [decision#3] 退款必须走 RMA-42 流程。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 272,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s2-fact1; decision:s2-fact2; decision:s2-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 订单号前缀固定为 ORD-42。\n- [decision#4] 客服邮箱是 help42@example.com。\n- [decision#3] 退款必须走 RMA-42 流程。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 订单号前缀固定为 ORD-42。"
+        },
+        {
+          "role": "user",
+          "content": "订单号前缀是什么？返回 {\"prefix\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 352,
+      "injectedTokens": 29
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：订单号前缀固定为 ORD-42。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "订单号前缀是什么？返回 {\"prefix\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s2-fact1; decision:s2-fact2; decision:s2-fact3"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 223,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：订单号前缀固定为 ORD-42。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s2-fact1; decision:s2-fact2; decision:s2-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#3] 退款必须走 RMA-42 流程。\n- [decision#4] 客服邮箱是 help42@example.com。"
+        },
+        {
+          "role": "user",
+          "content": "退款必须走哪个流程、客服邮箱是什么？返回 {\"flow\":字符串或null,\"email\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 296,
+      "injectedTokens": 43
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s3-fact1; decision:s3-fact2; decision:s3-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#3] 重试次数上限为 3 次。\n- [decision#2] 默认超时设为 45 秒。\n- [decision#4] 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 225,
+      "injectedTokens": 54
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s3-fact1; decision:s3-fact2; decision:s3-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#3] 重试次数上限为 3 次。\n- [decision#2] 默认超时设为 45 秒。\n- [decision#4] 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 264,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s3-fact1; decision:s3-fact2; decision:s3-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#3] 重试次数上限为 3 次。\n- [decision#2] 默认超时设为 45 秒。\n- [decision#4] 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 默认超时设为 45 秒。"
+        },
+        {
+          "role": "user",
+          "content": "默认超时是多少秒？返回 {\"timeout\":数字或null}。"
+        }
+      ],
+      "historyTokens": 342,
+      "injectedTokens": 28
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：默认超时设为 45 秒。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "默认超时是多少秒？返回 {\"timeout\":数字或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s3-fact1; decision:s3-fact2; decision:s3-fact3"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 221,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：默认超时设为 45 秒。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s3-fact1; decision:s3-fact2; decision:s3-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#3] 重试次数上限为 3 次。\n- [decision#4] 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "重试次数上限与降级开关名分别是什么？返回 {\"retries\":数字或null,\"switch\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 292,
+      "injectedTokens": 41
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s4-fact1; decision:s4-fact2; decision:s4-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 测试环境数据库名为 qa_pool。\n- [decision#4] 测试入口端口是 9443。\n- [decision#3] 测试账号是 qa-bot。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 228,
+      "injectedTokens": 56
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s4-fact1; decision:s4-fact2; decision:s4-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 测试环境数据库名为 qa_pool。\n- [decision#4] 测试入口端口是 9443。\n- [decision#3] 测试账号是 qa-bot。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 267,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s4-fact1; decision:s4-fact2; decision:s4-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 测试环境数据库名为 qa_pool。\n- [decision#4] 测试入口端口是 9443。\n- [decision#3] 测试账号是 qa-bot。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 测试环境数据库名为 qa_pool。\n- [decision#3] 测试账号是 qa-bot。\n- [decision#4] 测试入口端口是 9443。"
+        },
+        {
+          "role": "user",
+          "content": "测试环境数据库名是什么？返回 {\"db\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 376,
+      "injectedTokens": 56
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：测试环境数据库名为 qa_pool。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "测试环境数据库名是什么？返回 {\"db\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s4-fact1; decision:s4-fact2; decision:s4-fact3"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 226,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：测试环境数据库名为 qa_pool。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s4-fact1; decision:s4-fact2; decision:s4-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#4] 测试入口端口是 9443。\n- [decision#3] 测试账号是 qa-bot。\n- [decision#2] 测试环境数据库名为 qa_pool。"
+        },
+        {
+          "role": "user",
+          "content": "测试账号与测试入口端口分别是什么？返回 {\"user\":字符串或null,\"port\":数字或null}。"
+        }
+      ],
+      "historyTokens": 307,
+      "injectedTokens": 56
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s5-fact1; decision:s5-fact2; decision:s5-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#4] 缩略图宽度固定 320 像素。\n- [decision#3] 导出格式统一为 WebP。\n- [decision#2] 素材目录是 assets/raw。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 228,
+      "injectedTokens": 56
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s5-fact1; decision:s5-fact2; decision:s5-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#4] 缩略图宽度固定 320 像素。\n- [decision#3] 导出格式统一为 WebP。\n- [decision#2] 素材目录是 assets/raw。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 267,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s5-fact1; decision:s5-fact2; decision:s5-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#4] 缩略图宽度固定 320 像素。\n- [decision#3] 导出格式统一为 WebP。\n- [decision#2] 素材目录是 assets/raw。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 素材目录是 assets/raw。"
+        },
+        {
+          "role": "user",
+          "content": "素材目录在哪里？返回 {\"dir\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 344,
+      "injectedTokens": 27
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：素材目录是 assets/raw。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "素材目录在哪里？返回 {\"dir\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s5-fact1; decision:s5-fact2; decision:s5-fact3"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 219,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：素材目录是 assets/raw。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s5-fact1; decision:s5-fact2; decision:s5-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#4] 缩略图宽度固定 320 像素。\n- [decision#3] 导出格式统一为 WebP。"
+        },
+        {
+          "role": "user",
+          "content": "导出格式与缩略图宽度分别是什么？返回 {\"format\":字符串或null,\"width\":数字或null}。"
+        }
+      ],
+      "historyTokens": 291,
+      "injectedTokens": 43
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s6-fact1; decision:s6-fact2; decision:s6-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#4] 超标后走 ESC-5000 升级。\n- [decision#3] 审批阈值是 5000 元。\n- [decision#2] 审批人是 Lin。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 218,
+      "injectedTokens": 51
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s6-fact1; decision:s6-fact2; decision:s6-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#4] 超标后走 ESC-5000 升级。\n- [decision#3] 审批阈值是 5000 元。\n- [decision#2] 审批人是 Lin。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 257,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s6-fact1; decision:s6-fact2; decision:s6-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#4] 超标后走 ESC-5000 升级。\n- [decision#3] 审批阈值是 5000 元。\n- [decision#2] 审批人是 Lin。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 审批人是 Lin。\n- [decision#3] 审批阈值是 5000 元。"
+        },
+        {
+          "role": "user",
+          "content": "审批人是谁？返回 {\"approver\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 343,
+      "injectedTokens": 37
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：审批人是 Lin。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "审批人是谁？返回 {\"approver\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s6-fact1; decision:s6-fact2; decision:s6-fact3"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 216,
+      "injectedTokens": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：审批人是 Lin。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=3 experiences=0\nnamed: decision:s6-fact1; decision:s6-fact2; decision:s6-fact3"
+        },
+        {
+          "role": "user",
+          "content": "记忆材料：\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#3] 审批阈值是 5000 元。\n- [decision#4] 超标后走 ESC-5000 升级。\n- [decision#2] 审批人是 Lin。"
+        },
+        {
+          "role": "user",
+          "content": "审批阈值与超标升级流程分别是什么？返回 {\"threshold\":数字或null,\"escalation\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 299,
+      "injectedTokens": 51
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 技术视频首选标签为 DEMO-71。\n- 发布前必须执行 CHECK-71 校验。\n- 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 164,
+      "injectedTokens": 51
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 技术视频首选标签为 DEMO-71。\n- 发布前必须执行 CHECK-71 校验。\n- 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 技术视频首选标签为 DEMO-71。\n- 发布前必须执行 CHECK-71 校验。\n- 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 262,
+      "injectedTokens": 51
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 技术视频首选标签为 DEMO-71。\n- 发布前必须执行 CHECK-71 校验。\n- 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：技术视频首选标签为 DEMO-71。 发布前必须执行 CHECK-71 校验。 本工作区通道为 A-71。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 技术视频首选标签为 DEMO-71。\n- 发布前必须执行 CHECK-71 校验。\n- 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 技术视频首选标签为 DEMO-71。\n- 发布前必须执行 CHECK-71 校验。\n- 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "技术视频首选标签是什么？返回 {\"tag\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 362,
+      "injectedTokens": 51
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：技术视频首选标签为 DEMO-71。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "技术视频首选标签是什么？返回 {\"tag\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 技术视频首选标签为 DEMO-71。\n- 发布前必须执行 CHECK-71 校验。\n- 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 227,
+      "injectedTokens": 51
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：技术视频首选标签为 DEMO-71。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 技术视频首选标签为 DEMO-71。\n- 发布前必须执行 CHECK-71 校验。\n- 本工作区通道为 A-71。"
+        },
+        {
+          "role": "user",
+          "content": "发布前必须执行哪项校验、本工作区通道是什么？返回 {\"check\":字符串或null,\"channel\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 245,
+      "injectedTokens": 51
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 订单号前缀固定为 ORD-42。\n- 退款必须走 RMA-42 流程。\n- 客服邮箱是 help42@example.com。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 159,
+      "injectedTokens": 49
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 订单号前缀固定为 ORD-42。\n- 退款必须走 RMA-42 流程。\n- 客服邮箱是 help42@example.com。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 订单号前缀固定为 ORD-42。\n- 退款必须走 RMA-42 流程。\n- 客服邮箱是 help42@example.com。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 255,
+      "injectedTokens": 49
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 订单号前缀固定为 ORD-42。\n- 退款必须走 RMA-42 流程。\n- 客服邮箱是 help42@example.com。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：订单号前缀固定为 ORD-42。 退款必须走 RMA-42 流程。 客服邮箱是 help42@example.com。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 订单号前缀固定为 ORD-42。\n- 退款必须走 RMA-42 流程。\n- 客服邮箱是 help42@example.com。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 订单号前缀固定为 ORD-42。\n- 退款必须走 RMA-42 流程。\n- 客服邮箱是 help42@example.com。"
+        },
+        {
+          "role": "user",
+          "content": "订单号前缀是什么？返回 {\"prefix\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 350,
+      "injectedTokens": 49
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：订单号前缀固定为 ORD-42。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "订单号前缀是什么？返回 {\"prefix\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 订单号前缀固定为 ORD-42。\n- 退款必须走 RMA-42 流程。\n- 客服邮箱是 help42@example.com。"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 221,
+      "injectedTokens": 49
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：订单号前缀固定为 ORD-42。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 订单号前缀固定为 ORD-42。\n- 退款必须走 RMA-42 流程。\n- 客服邮箱是 help42@example.com。"
+        },
+        {
+          "role": "user",
+          "content": "退款必须走哪个流程、客服邮箱是什么？返回 {\"flow\":字符串或null,\"email\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 237,
+      "injectedTokens": 49
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 默认超时设为 45 秒。\n- 重试次数上限为 3 次。\n- 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 152,
+      "injectedTokens": 45
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 默认超时设为 45 秒。\n- 重试次数上限为 3 次。\n- 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 默认超时设为 45 秒。\n- 重试次数上限为 3 次。\n- 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 244,
+      "injectedTokens": 45
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 默认超时设为 45 秒。\n- 重试次数上限为 3 次。\n- 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：默认超时设为 45 秒。 重试次数上限为 3 次。 降级开关名为 SAFE-45。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 默认超时设为 45 秒。\n- 重试次数上限为 3 次。\n- 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 默认超时设为 45 秒。\n- 重试次数上限为 3 次。\n- 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "默认超时是多少秒？返回 {\"timeout\":数字或null}。"
+        }
+      ],
+      "historyTokens": 335,
+      "injectedTokens": 45
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：默认超时设为 45 秒。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "默认超时是多少秒？返回 {\"timeout\":数字或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 默认超时设为 45 秒。\n- 重试次数上限为 3 次。\n- 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 215,
+      "injectedTokens": 45
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：默认超时设为 45 秒。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 默认超时设为 45 秒。\n- 重试次数上限为 3 次。\n- 降级开关名为 SAFE-45。"
+        },
+        {
+          "role": "user",
+          "content": "重试次数上限与降级开关名分别是什么？返回 {\"retries\":数字或null,\"switch\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 232,
+      "injectedTokens": 45
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 测试环境数据库名为 qa_pool。\n- 测试账号是 qa-bot。\n- 测试入口端口是 9443。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 154,
+      "injectedTokens": 47
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 测试环境数据库名为 qa_pool。\n- 测试账号是 qa-bot。\n- 测试入口端口是 9443。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 测试环境数据库名为 qa_pool。\n- 测试账号是 qa-bot。\n- 测试入口端口是 9443。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 248,
+      "injectedTokens": 47
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 测试环境数据库名为 qa_pool。\n- 测试账号是 qa-bot。\n- 测试入口端口是 9443。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：测试环境数据库名为 qa_pool。 测试账号是 qa-bot。 测试入口端口是 9443。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 测试环境数据库名为 qa_pool。\n- 测试账号是 qa-bot。\n- 测试入口端口是 9443。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 测试环境数据库名为 qa_pool。\n- 测试账号是 qa-bot。\n- 测试入口端口是 9443。"
+        },
+        {
+          "role": "user",
+          "content": "测试环境数据库名是什么？返回 {\"db\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 342,
+      "injectedTokens": 47
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：测试环境数据库名为 qa_pool。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "测试环境数据库名是什么？返回 {\"db\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 测试环境数据库名为 qa_pool。\n- 测试账号是 qa-bot。\n- 测试入口端口是 9443。"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 222,
+      "injectedTokens": 47
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：测试环境数据库名为 qa_pool。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 测试环境数据库名为 qa_pool。\n- 测试账号是 qa-bot。\n- 测试入口端口是 9443。"
+        },
+        {
+          "role": "user",
+          "content": "测试账号与测试入口端口分别是什么？返回 {\"user\":字符串或null,\"port\":数字或null}。"
+        }
+      ],
+      "historyTokens": 234,
+      "injectedTokens": 47
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 素材目录是 assets/raw。\n- 导出格式统一为 WebP。\n- 缩略图宽度固定 320 像素。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 155,
+      "injectedTokens": 47
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 素材目录是 assets/raw。\n- 导出格式统一为 WebP。\n- 缩略图宽度固定 320 像素。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 素材目录是 assets/raw。\n- 导出格式统一为 WebP。\n- 缩略图宽度固定 320 像素。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 248,
+      "injectedTokens": 47
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 素材目录是 assets/raw。\n- 导出格式统一为 WebP。\n- 缩略图宽度固定 320 像素。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：素材目录是 assets/raw。 导出格式统一为 WebP。 缩略图宽度固定 320 像素。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 素材目录是 assets/raw。\n- 导出格式统一为 WebP。\n- 缩略图宽度固定 320 像素。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 素材目录是 assets/raw。\n- 导出格式统一为 WebP。\n- 缩略图宽度固定 320 像素。"
+        },
+        {
+          "role": "user",
+          "content": "素材目录在哪里？返回 {\"dir\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 340,
+      "injectedTokens": 47
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：素材目录是 assets/raw。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "素材目录在哪里？返回 {\"dir\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 素材目录是 assets/raw。\n- 导出格式统一为 WebP。\n- 缩略图宽度固定 320 像素。"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 215,
+      "injectedTokens": 47
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：素材目录是 assets/raw。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 素材目录是 assets/raw。\n- 导出格式统一为 WebP。\n- 缩略图宽度固定 320 像素。"
+        },
+        {
+          "role": "user",
+          "content": "导出格式与缩略图宽度分别是什么？返回 {\"format\":字符串或null,\"width\":数字或null}。"
+        }
+      ],
+      "historyTokens": 230,
+      "injectedTokens": 47
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "turn": 0,
+      "kind": "seed",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 审批人是 Lin。\n- 审批阈值是 5000 元。\n- 超标后走 ESC-5000 升级。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        }
+      ],
+      "historyTokens": 144,
+      "injectedTokens": 42
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "turn": 1,
+      "kind": "noise",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 审批人是 Lin。\n- 审批阈值是 5000 元。\n- 超标后走 ESC-5000 升级。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 审批人是 Lin。\n- 审批阈值是 5000 元。\n- 超标后走 ESC-5000 升级。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        }
+      ],
+      "historyTokens": 233,
+      "injectedTokens": 42
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "turn": 2,
+      "kind": "ask1",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 审批人是 Lin。\n- 审批阈值是 5000 元。\n- 超标后走 ESC-5000 升级。"
+        },
+        {
+          "role": "user",
+          "content": "先记三条约定：审批人是 Lin。 审批阈值是 5000 元。 超标后走 ESC-5000 升级。 收到回 ok 即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 审批人是 Lin。\n- 审批阈值是 5000 元。\n- 超标后走 ESC-5000 升级。"
+        },
+        {
+          "role": "user",
+          "content": "先别管这些，把今天的进度用一句话整理一下。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 审批人是 Lin。\n- 审批阈值是 5000 元。\n- 超标后走 ESC-5000 升级。"
+        },
+        {
+          "role": "user",
+          "content": "审批人是谁？返回 {\"approver\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 318,
+      "injectedTokens": 42
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "turn": 3,
+      "kind": "filler",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：审批人是 Lin。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "审批人是谁？返回 {\"approver\":字符串或null}。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 审批人是 Lin。\n- 审批阈值是 5000 元。\n- 超标后走 ESC-5000 升级。"
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        }
+      ],
+      "historyTokens": 206,
+      "injectedTokens": 42
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "turn": 4,
+      "kind": "ask2",
+      "requestMessages": [
+        {
+          "role": "system",
+          "content": "你是项目助手。只根据对话与记忆材料回答，信息缺失就如实说缺失。需要 JSON 时只输出 JSON。"
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "此前对话已压缩。保留：审批人是 Lin。 其余早期约定（第 2、3 条）未保留。"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "继续推进第 1 项，回一句当前状态即可。"
+        },
+        {
+          "role": "assistant",
+          "content": "(offline)"
+        },
+        {
+          "role": "user",
+          "content": "已确认的约定（同库完整投影）：\n- 审批人是 Lin。\n- 审批阈值是 5000 元。\n- 超标后走 ESC-5000 升级。"
+        },
+        {
+          "role": "user",
+          "content": "审批阈值与超标升级流程分别是什么？返回 {\"threshold\":数字或null,\"escalation\":字符串或null}。"
+        }
+      ],
+      "historyTokens": 225,
+      "injectedTokens": 42
+    }
+  ],
+  "sessionsOut": [
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 0,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 135,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 130,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 123,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 168,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 126,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 139,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 255,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 245,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 225,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 235,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 235,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "injectedTokens": 210,
+      "cost": 0,
+      "passed": 0,
+      "asked": 0
+    }
+  ]
+}

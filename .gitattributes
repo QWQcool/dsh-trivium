@@ -7,3 +7,5 @@
 # file, computed over LF bytes. Without this rule a Windows checkout would rewrite
 # them as CRLF and every checksum would fail on the machine that matters most.
 docs/evidence/*.json text eol=lf
+# R1/R2 evidence manifests hash bytes; keep new evidence stable on Windows too.
+docs/next-memory/evidence-r1-r2/*.json text eol=lf

@@ -1,0 +1,80 @@
+{
+  "baseline": "93faf37",
+  "sourceCommit": "aaa6d6e20b2c04b263a05b933f232db9b0772a0d",
+  "packageVersion": "0.8.1",
+  "published": false,
+  "pushed": false,
+  "realModelCalls": 0,
+  "modelCostCny": 0,
+  "regressions": {
+    "passed": 42,
+    "total": 42,
+    "rows": [
+      "pass  smoke-p0.mjs              469 ms",
+      "pass  smoke-p1.mjs              934 ms",
+      "pass  p2-cases.mjs             2200 ms",
+      "pass  smoke-p3.mjs             1249 ms",
+      "pass  smoke-p4.mjs             1555 ms",
+      "pass  smoke-p5.mjs             1243 ms",
+      "pass  smoke-p6.mjs             1212 ms",
+      "pass  smoke-p7.mjs             3234 ms",
+      "pass  smoke-p8.mjs             2046 ms",
+      "pass  smoke-p9.mjs              773 ms",
+      "pass  smoke-p10.mjs             689 ms",
+      "pass  smoke-p11.mjs             150 ms",
+      "pass  smoke-p12.mjs            1141 ms",
+      "pass  smoke-p13.mjs              84 ms",
+      "pass  smoke-p14.mjs             124 ms",
+      "pass  smoke-p15.mjs            3234 ms",
+      "pass  smoke-p16.mjs            1003 ms",
+      "pass  smoke-p17.mjs             857 ms",
+      "pass  smoke-p18.mjs             111 ms",
+      "pass  smoke-p19.mjs           10606 ms",
+      "pass  smoke-p20.mjs            1278 ms",
+      "pass  smoke-p21.mjs            3417 ms",
+      "pass  smoke-p22.mjs            4225 ms",
+      "pass  smoke-p23.mjs            8652 ms",
+      "pass  smoke-p24.mjs              96 ms",
+      "pass  smoke-p25.mjs            1352 ms",
+      "pass  smoke-p26.mjs             246 ms",
+      "pass  smoke-p27.mjs             848 ms",
+      "pass  smoke-p28.mjs            1448 ms",
+      "pass  smoke-p29.mjs             571 ms",
+      "pass  smoke-p30.mjs            2809 ms",
+      "pass  smoke-p31.mjs            7039 ms",
+      "pass  smoke-p32.mjs              66 ms",
+      "pass  smoke-p33.mjs              72 ms",
+      "pass  smoke-p34.mjs             528 ms",
+      "pass  smoke-p35.mjs            2411 ms",
+      "pass  smoke-p36.mjs             329 ms",
+      "pass  smoke-p37.mjs             783 ms",
+      "pass  smoke-p38.mjs             958 ms",
+      "pass  smoke-p39.mjs             502 ms",
+      "pass  smoke-p40.mjs              67 ms",
+      "pass  smoke-p41.mjs           13672 ms"
+    ]
+  },
+  "r1": {
+    "sameFrozenTestBefore": "8/25",
+    "after": "25/25",
+    "beforeLog": "ok retain 就按那个来\nok inspect entire window tool\nok exact filler may skip\nok successful extraction clears pending\nok middle-only change is tracked\nok deadline edits still notify\nok historical pin keeps original identity\nok historical pin is labelled\nP38: 8/25\nFAIL retain 继续，重试次数改为 5 次。: Expected values to be strictly equal:\n\nfalse !== true\n\nFAIL retain 下一步，项目负责人是张三。: Expected values to be strictly equal:\n\nfalse !== true\n\nFAIL retain 先别管性能，生产端口是 9443。: Expected values to be strictly equal:\n\nfalse !== true\n\nFAIL retain 继续，预算上限改为 5000 元。: Expected values to be strictly equal:\n\nfalse !== true\n\nFAIL retain 继续，不再使用旧方案。: Expected values to be strictly equal:\n\nfalse !== true\n\nFAIL retain 照旧: Expected values to be strictly equal:\n\nfalse !== true\n\nFAIL retain continue, use port 9443: Expected values to be strictly equal:\n\nfalse !== true\n\nFAIL inspect entire window assistant: Expected values to be strictly equal:\n\nfalse !== true\n\nFAIL inspect entire window tool: Expected values to be strictly equal:\n\nfalse !== true\n\nFAIL uncertain fact reaches model: Expected values to be strictly equal:\n\n0 !== 1\n\nFAIL fact persisted before consuming window: The expression evaluated to a falsy value:\n\n  assert.ok(store.nodeCountOf(db)>1)\n\nFAIL failed extraction keeps pending: Expected values to be strictly equal:\n\n0 !== 1\n\nFAIL long pin retains tail: The input did not match the regular expression /verify-QA-71/. Input:\n\n'背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。'\n\nFAIL alias-only edit is not a content correction: Expected values to be strictly equal:\n\n1 !== 0\n\nFAIL distinct middle changes have distinct identity: Expected \"actual\" to be strictly unequal to:\n\n'2:28cyx5:2:内容或期限已更新。'\nFAIL no repeat notice after delivery: Expected values to be strictly equal:\n\n1 !== 0\n\nFAIL historical pin keeps original tail: The input did not match the regular expression /verify-QA-71/. Input:\n\n'背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。'\n\n",
+    "afterLog": "ok retain 继续，重试次数改为 5 次。\r\nok retain 下一步，项目负责人是张三。\r\nok retain 先别管性能，生产端口是 9443。\r\nok retain 继续，预算上限改为 5000 元。\r\nok retain 继续，不再使用旧方案。\r\nok retain 照旧\r\nok retain 就按那个来\r\nok retain continue, use port 9443\r\nok inspect entire window assistant\r\nok inspect entire window tool\r\nok inspect entire window tool\r\nok exact filler may skip\r\nok uncertain fact reaches model\r\nok fact persisted before consuming window\r\nok successful extraction clears pending\r\nok failed extraction keeps pending\r\nok long pin retains tail\r\nok alias-only edit is not a content correction\r\nok middle-only change is tracked\r\nok distinct middle changes have distinct identity\r\nok no repeat notice after delivery\r\nok deadline edits still notify\r\nok historical pin keeps original identity\r\nok historical pin is labelled\r\nok historical pin keeps original tail\r\nP38: 25/25\r\n"
+  },
+  "isolation": {
+    "ownCells": 4,
+    "distinctWorkspaces": 4,
+    "reverseOrderSameContext": true,
+    "counterpartOfflineCells": 16
+  },
+  "historicalNormalized": {
+    "calls": 622,
+    "cnyPeak": 0.35791996,
+    "cnyOffpeak": 0.17895998
+  },
+  "limitations": [
+    "Goodmemory S07 durable content differs: paid controlled retrieval refused",
+    "Source-grounded exact grading requires manual review for paraphrases",
+    "D1 remains simulated, real host closed-loop planned only",
+    "No new paid quality scores or actual billing claims"
+  ]
+}

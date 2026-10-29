@@ -1,0 +1,248 @@
+{
+  "protocol": "C4-R2",
+  "plan": "docs/next-memory/C4-PLAN.md",
+  "rubric": "c3-structured-v2-2026-10-29",
+  "model": "deepseek-flash",
+  "thinking": "disabled",
+  "temperature": 0,
+  "maxTokens": 600,
+  "reps": 1,
+  "budgetCny": 15,
+  "pricesCnyPerMillion": {
+    "peak": {
+      "input": 2,
+      "cached": 0.04,
+      "output": 8
+    },
+    "offpeak": {
+      "input": 1,
+      "cached": 0.02,
+      "output": 4
+    }
+  },
+  "priceSource": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+  "costBasis": "budget guard uses peak; reported cost uses off-peak (offpeak = peak/2)",
+  "environment": {
+    "node": "v24.15.0",
+    "host": "@deepseek-ai/dsh 0.2.1-rc.4 (peer)",
+    "trivium": {
+      "version": "0.8.1"
+    },
+    "goodmemory": {
+      "plugin": "0.1.2",
+      "engine": "0.8.3",
+      "dir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\c4\\goodmemory"
+    },
+    "dshMemory": {
+      "version": "0.20.0",
+      "engines": ">=0.1.2-alpha.1 <0.2.0 || >=0.2.0-rc.1 <0.3.0",
+      "dir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\c4\\dsh-memory"
+    }
+  },
+  "status": "audit-complete",
+  "estimatedCny": 0,
+  "reservedOrChargedCny": 0,
+  "calls": [],
+  "cells": [
+    {
+      "arm": "trivium-inject",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "identity": {
+        "sessionId": "trivium-inject/0/S01",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-n7dMPM\\trivium-inject\\r0\\S01"
+      },
+      "fixtureSourceHash": "3247c2f91c8bef2d7b611ed6453c6ff0e0be3011835a9308fbf5627824aecd5a",
+      "context": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=6 preferences=1 decisions=0 experiences=0\nnamed: preference:视频口味; entity:旁支项目0; entity:旁支项目1; entity:旁支项目2; entity:旁支项目3; entity:旁支项目4; entity:旁支项目5\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [preference#2] 视频口味：技术视频首选标签为 DEMO-71。",
+      "contextHash": "f6981f7f8fd13b3249c844c8f24a351ae44445517eccb81a5b5f3217530e5934",
+      "contextChars": 348,
+      "injection": {
+        "source": {
+          "kind": "trivium-pre-step",
+          "bytes": 434
+        },
+        "tokens": 120,
+        "planted": {
+          "ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        "fixture": {
+          "count": 7,
+          "contentHash": "1f36abf1d34da6899c0bca83740c55570239dc1ae32e866be06e81bab4ca02e4",
+          "sourceHash": "3247c2f91c8bef2d7b611ed6453c6ff0e0be3011835a9308fbf5627824aecd5a"
+        },
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-n7dMPM\\trivium-inject\\r0\\S01\\rep-0\\S01\\trivium-inject"
+      },
+      "contextPreview": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=6 preferences=1 decisions=0 experiences=0\nnamed: preference:视频口味; entity:旁支项目0; entity:旁支项目1; entity:旁支项目2; entity:旁支项目3; entity:旁支项目4; entity:旁支项目5\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [preference#2] 视频口味：技术视频首选标签为 DEMO-71。",
+      "contextHashWithoutTime": "f6981f7f8fd13b3249c844c8f24a351ae44445517eccb81a5b5f3217530e5934"
+    },
+    {
+      "arm": "trivium-inject",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "identity": {
+        "sessionId": "trivium-inject/0/S07",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-n7dMPM\\trivium-inject\\r0\\S07"
+      },
+      "fixtureSourceHash": "641025aca33b6b2d4c68a9dad2e2eb2d1fccd7f65ad3cd759d978d82bebdb304",
+      "context": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=6 preferences=0 decisions=6 experiences=0\nnamed: entity:旁支项目0; entity:旁支项目1; entity:旁支项目2; entity:旁支项目3; entity:旁支项目4; entity:旁支项目5; decision:联调约定1; decision:联调约定2\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。\n- [decision#3] 联调约定2：先跑基线。联调约定编号 QA2-71，关注版本固定。\n- [decision#4] 联调约定3：先跑基线。联调约定编号 QA3-71，关注种子记录。\n- [decision#5] 联调约定4：先跑基线。联调约定编号 QA4-71，关注失败样本。\n- [decision#6] 联调约定5：先跑基线。联调约定编号 QA5-71，关注回滚方案。\n- [decision#7] 联调约定6：先跑基线。联调约定编号 QA6-71，关注验收门槛。\n- [entity#8] 旁支项目0：无关设备编号 DEVICE-0-R0。\n- [entity#9] 旁支项目1：无关设备编号 DEVICE-1-R0。",
+      "contextHash": "b1e72c14b04a3e493fe692f1ebe74ec1097b3018b6c9eee893208c7c6c0bd6c2",
+      "contextChars": 688,
+      "injection": {
+        "source": {
+          "kind": "trivium-pre-step",
+          "bytes": 1088
+        },
+        "tokens": 322,
+        "planted": {
+          "ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ]
+        },
+        "fixture": {
+          "count": 12,
+          "contentHash": "3db7cacaee0b2a18d17936ccfddd044c1b8466c2916fb6e0509d76c231caa91c",
+          "sourceHash": "641025aca33b6b2d4c68a9dad2e2eb2d1fccd7f65ad3cd759d978d82bebdb304"
+        },
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-n7dMPM\\trivium-inject\\r0\\S07\\rep-0\\S07\\trivium-inject"
+      },
+      "contextPreview": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=6 preferences=0 decisions=6 experiences=0\nnamed: entity:旁支项目0; entity:旁支项目1; entity:旁支项目2; entity:旁支项目3; entity:旁支项目4; entity:旁支项目5; decision:联调约定1; decision:联调约定2\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。\n- [decision#3] 联调约定2：先跑基线。联调约",
+      "contextHashWithoutTime": "b1e72c14b04a3e493fe692f1ebe74ec1097b3018b6c9eee893208c7c6c0bd6c2"
+    },
+    {
+      "arm": "trivium-tools",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "identity": {
+        "sessionId": "trivium-tools/0/S01",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-n7dMPM\\trivium-tools\\r0\\S01"
+      },
+      "fixtureSourceHash": "3247c2f91c8bef2d7b611ed6453c6ff0e0be3011835a9308fbf5627824aecd5a",
+      "context": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=6 preferences=1 decisions=0 experiences=0\nnamed: preference:视频口味; entity:旁支项目0; entity:旁支项目1; entity:旁支项目2; entity:旁支项目3; entity:旁支项目4; entity:旁支项目5\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [preference#2] 视频口味：技术视频首选标签为 DEMO-71。",
+      "contextHash": "f6981f7f8fd13b3249c844c8f24a351ae44445517eccb81a5b5f3217530e5934",
+      "contextChars": 348,
+      "injection": {
+        "source": {
+          "kind": "trivium-pre-step",
+          "bytes": 434
+        },
+        "tokens": 120,
+        "planted": {
+          "ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        "fixture": {
+          "count": 7,
+          "contentHash": "1f36abf1d34da6899c0bca83740c55570239dc1ae32e866be06e81bab4ca02e4",
+          "sourceHash": "3247c2f91c8bef2d7b611ed6453c6ff0e0be3011835a9308fbf5627824aecd5a"
+        },
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-n7dMPM\\trivium-tools\\r0\\S01\\rep-0\\S01\\trivium-tools"
+      },
+      "contextPreview": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=6 preferences=1 decisions=0 experiences=0\nnamed: preference:视频口味; entity:旁支项目0; entity:旁支项目1; entity:旁支项目2; entity:旁支项目3; entity:旁支项目4; entity:旁支项目5\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [preference#2] 视频口味：技术视频首选标签为 DEMO-71。",
+      "contextHashWithoutTime": "f6981f7f8fd13b3249c844c8f24a351ae44445517eccb81a5b5f3217530e5934"
+    },
+    {
+      "arm": "trivium-tools",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "identity": {
+        "sessionId": "trivium-tools/0/S07",
+        "cell": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-n7dMPM\\trivium-tools\\r0\\S07"
+      },
+      "fixtureSourceHash": "641025aca33b6b2d4c68a9dad2e2eb2d1fccd7f65ad3cd759d978d82bebdb304",
+      "context": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=6 preferences=0 decisions=6 experiences=0\nnamed: entity:旁支项目0; entity:旁支项目1; entity:旁支项目2; entity:旁支项目3; entity:旁支项目4; entity:旁支项目5; decision:联调约定1; decision:联调约定2\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。\n- [decision#3] 联调约定2：先跑基线。联调约定编号 QA2-71，关注版本固定。\n- [decision#4] 联调约定3：先跑基线。联调约定编号 QA3-71，关注种子记录。\n- [decision#5] 联调约定4：先跑基线。联调约定编号 QA4-71，关注失败样本。\n- [decision#6] 联调约定5：先跑基线。联调约定编号 QA5-71，关注回滚方案。\n- [decision#7] 联调约定6：先跑基线。联调约定编号 QA6-71，关注验收门槛。\n- [entity#8] 旁支项目0：无关设备编号 DEVICE-0-R0。\n- [entity#9] 旁支项目1：无关设备编号 DEVICE-1-R0。",
+      "contextHash": "b1e72c14b04a3e493fe692f1ebe74ec1097b3018b6c9eee893208c7c6c0bd6c2",
+      "contextChars": 688,
+      "injection": {
+        "source": {
+          "kind": "trivium-pre-step",
+          "bytes": 1088
+        },
+        "tokens": 322,
+        "planted": {
+          "ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ]
+        },
+        "fixture": {
+          "count": 12,
+          "contentHash": "3db7cacaee0b2a18d17936ccfddd044c1b8466c2916fb6e0509d76c231caa91c",
+          "sourceHash": "641025aca33b6b2d4c68a9dad2e2eb2d1fccd7f65ad3cd759d978d82bebdb304"
+        },
+        "cwd": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\c4-run-n7dMPM\\trivium-tools\\r0\\S07\\rep-0\\S07\\trivium-tools"
+      },
+      "contextPreview": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=6 preferences=0 decisions=6 experiences=0\nnamed: entity:旁支项目0; entity:旁支项目1; entity:旁支项目2; entity:旁支项目3; entity:旁支项目4; entity:旁支项目5; decision:联调约定1; decision:联调约定2\ndsh-trivium autoRecall (summary; ctx_read for full text):\n- [decision#2] 联调约定1：先跑基线。联调约定编号 QA1-71，关注环境隔离。\n- [decision#3] 联调约定2：先跑基线。联调约",
+      "contextHashWithoutTime": "b1e72c14b04a3e493fe692f1ebe74ec1097b3018b6c9eee893208c7c6c0bd6c2"
+    }
+  ]
+}

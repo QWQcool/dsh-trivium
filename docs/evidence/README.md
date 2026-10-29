@@ -1,4 +1,6 @@
-# 测试数据（可复核的原始账本）
+# 历史测试数据（账本与已知局限）
+
+> R1/R2 审查确认这些文件哈希完整，但部分实验设计/评分不可靠；旧抽取文件也没有完整候选。**完整性不等于结论有效。** 当前结论见 [验收](../next-memory/R1-R2-RESULTS.md)，历史文件不覆盖。
 
 这里是本项目所有对外数字的来源。每一份 JSON 都是一次真实运行的账本：**逐格回答、逐请求 usage、
 判分结果、注入 token**，没有手工填写的汇总表。文档里的每个结论都应能在这里找到对应数据。
@@ -17,16 +19,16 @@
 | `2026-10-29-d0-step2-alias-rerun.json` | `deepseek-chat` 别名重跑 | 31 | 回执 `model=deepseek-flash`：**不是第二模型** |
 | `2026-10-29-d0-step2b-v4pro.json` | 真第二模型 `deepseek-v4-pro` | 24 | 同样 6/6，费用为纯文本 0.43× |
 | `2026-10-29-d1-5turn-compaction.json` | 5 轮压缩会话，4 臂 | 120 | 不省 token（1.01×），但把压缩后正确率从 6/12 拉回 12/12 |
-| `2026-10-29-d1-10turn-compaction.json` | 10 轮压缩会话，4 臂 | 240 | 累计 prompt **0.51×**、费用 0.85×、正确率不降 |
+| `2026-10-29-d1-10turn-compaction.json` | 10 轮压缩会话，4 臂 | 240 | 旧模拟 0.51×；缺少注入历史/短图，不能作宿主收益 |
 | `2026-10-29-d2-extract-cost.json` | 抽取成本：每轮 / 批量 / 规则 | 18 | 每轮 1038 tok、批量 342 tok、规则 0 但抽不到（0/9） |
 | `2026-10-29-scale-1k-10k.json` | 规模基准 1k / 10k | 0 | p95 201 ms / 1240 ms，命中 16/16 |
-| `2026-10-29-cost-normalized.json` | 全部账本的峰价 / 谷价重算 | — | 618 次调用：峰价 ¥0.35794 / 谷价 ¥0.17896 |
+| `2026-10-29-cost-normalized.json` | 全部账本的峰价 / 谷价重算 | — | 旧格数汇总；按请求重算为 622 次，谷价 ¥0.17895998 |
 
 ## 怎么复核
 
 ```bash
 # 1. 校验和（不联网）
-node -e "const m=require('./docs/evidence/manifest.json');for(const f of m.files)console.log(f.name,f.sha256.slice(0,12),f.calls)"
+node scripts/verify-evidence.mjs
 
 # 2. 任意账本按谷价重算
 node scripts/cost-normalize.mjs --out=.tmp/recheck.json docs/evidence/2026-10-29-d1-10turn-compaction.json
@@ -37,7 +39,7 @@ node scripts/bench-d1.mjs --run --budget=3 --turns=10 --out=.tmp/c4/d1-10b.json
 node scripts/bench-extract-cost.mjs --run --budget=2 --out=.tmp/c4/extract.json
 ```
 
-重新生成证据包：`node scripts/pack-evidence.mjs`（只瘦身与改名，不改数字）。
+重新生成证据包：`node scripts/pack-evidence.mjs`（保留请求/回答/候选；遇到已存在且不同的历史文件会拒绝覆盖，使用新的 --out-dir）。
 
 ## 为什么没有用「软链接」
 

@@ -1,0 +1,45 @@
+{
+  "sourceCommit": "aaa6d6e20b2c04b263a05b933f232db9b0772a0d",
+  "files": [
+    {
+      "name": "c4-counterparts-forward.json",
+      "bytes": 186476,
+      "sha256": "82a6e4c96002486da8dc932fb360d2ddd138131fa79ff6da02bf2a198172da9f"
+    },
+    {
+      "name": "c4-counterparts-reverse.json",
+      "bytes": 186476,
+      "sha256": "1dff8d9f422985fe1660f943cb9838970443fa7f29ca1edc49459128dfded461"
+    },
+    {
+      "name": "c4-own-forward.json",
+      "bytes": 12561,
+      "sha256": "cac0e1ad0bd352b156eabaaee17b4a8945ddc13502c7d297e31816f995ca986e"
+    },
+    {
+      "name": "c4-own-reverse.json",
+      "bytes": 12561,
+      "sha256": "f571bd874960bc74df693ff5b954b8a1008ff31f3a0b89fa5da9ba3c530614ca"
+    },
+    {
+      "name": "cost-normalized.json",
+      "bytes": 11745,
+      "sha256": "36d42bea6f1dbda9c4e7f00c96cf1e5e4ec16921721413a48d2bc9e0d8fa3a50"
+    },
+    {
+      "name": "d1-offline.json",
+      "bytes": 146745,
+      "sha256": "4dda40e9bda1d77eeb66dae1b3ad5a9dd05379e0e8b4243a9815f39b386f48eb"
+    },
+    {
+      "name": "extraction-offline.json",
+      "bytes": 45975,
+      "sha256": "a36a9950c2efbae1781589cf90b2d347e3b6e58de3f376e747d64f2bf35a44a5"
+    },
+    {
+      "name": "summary.json",
+      "bytes": 7236,
+      "sha256": "b1bf85c64208027095b6617f50a4084c1a8b3d72fdc9cf4e4bd873b1c32987a0"
+    }
+  ]
+}
