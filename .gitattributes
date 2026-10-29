@@ -2,3 +2,8 @@
 # breaks `/usr/bin/env node`. Keep .mjs LF even on Windows autocrlf checkouts,
 # and let pnpm validate them when packing.
 *.mjs text eol=lf
+
+# The evidence ledgers are byte-verified: manifest.json carries a sha256 of each
+# file, computed over LF bytes. Without this rule a Windows checkout would rewrite
+# them as CRLF and every checksum would fail on the machine that matters most.
+docs/evidence/*.json text eol=lf
