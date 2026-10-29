@@ -24,7 +24,8 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { grade, scenarios, plantScenario, SYSTEM, RUBRIC_VERSION } from "./quality-fixtures.mjs";
-import { PRICING, priceBoth, windowAt } from "./pricing.mjs";
+import { createModelLedger } from "./model-ledger.mjs";
+import { prepareCell, assertInside, fixtureReceipt, digest } from "./experiment-support.mjs";
 
 const args = new Map(process.argv.slice(2).map((s) => { const at = s.indexOf("="); return at < 0 ? [s, true] : [s.slice(0, at), s.slice(at + 1)]; }));
 const RUN = args.has("--run");
@@ -39,11 +40,12 @@ const DM_DIR = resolve(String(args.get("--dsh-memory") || join(REPO, ".tmp/c4/ds
 const out = resolve(String(args.get("--out") || `.tmp/c4/c4-${RUN ? "online" : "audit"}.json`));
 
 assert.ok(BUDGET > 0 && BUDGET <= 15, "预算必须在 (0, 15] 元");
+assert.ok(Number.isInteger(REPS) && REPS > 0, "reps must be a positive integer");
 assert.equal(existsSync(out), false, "输出路径必须是新的；不覆盖已付费证据");
 mkdirSync(dirname(out), { recursive: true });
 if (RUN) assert.ok(process.env.DEEPSEEK_API_KEY, "DEEPSEEK_API_KEY 缺失（值不落盘）");
 
-// 隔离：连 homedir() 也指向临时目录，避免任何插件在默认路径读写真实库
+// Explicit paths are validated before each plugin opens a store; DSH_HOME does not change os.homedir().
 const root = mkdtempSync(join(tmpdir(), "c4-run-"));
 process.env.DSH_HOME = join(root, "dsh-home");
 process.env.DSH_TRIVIUM_SETTINGS = join(root, "trivium-settings.json");
@@ -85,7 +87,7 @@ const dmPkg = existsSync(DM_DIR) ? indexHtml(DM_DIR) : null;
 
 /* ---------- 计费账本（与 bench-quality-v2 同口径） ---------- */
 const report = {
-  protocol: "C4", plan: "docs/next-memory/C4-PLAN.md", rubric: RUBRIC_VERSION,
+  protocol: "C4-R2", plan: "docs/next-memory/C4-PLAN.md", rubric: RUBRIC_VERSION,
   model: MODEL, thinking: "disabled", temperature: 0, maxTokens: 600, reps: REPS,
   budgetCny: BUDGET, pricesCnyPerMillion: { peak: { input: 2, cached: 0.04, output: 8 }, offpeak: { input: 1, cached: 0.02, output: 4 } },
   priceSource: "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
@@ -101,37 +103,8 @@ const report = {
 };
 const save = () => writeFileSync(out, JSON.stringify(report, null, 2) + "\n", "utf8");
 // 预算守卫按峰价（上界），对外报数按谷价；两者都由 scripts/pricing.mjs 唯一决定。
-const price = (u, model = report.model) => priceBoth(u, model).peak;
-async function callRaw(body, label) {
-  assert.ok(RUN, "离线审计不得发请求");
-  const peak = (PRICING[report.model] || PRICING["deepseek-flash"]).peak;
-  const reserve = (Buffer.byteLength(JSON.stringify(body), "utf8") + 16_384) * peak.inputMiss * 1e-6 + 600 * peak.output * 1e-6;
-  assert.ok(report.reservedOrChargedCny + reserve <= BUDGET, "预算不足：未发请求");
-  const receipt = { label, reservedCny: reserve, state: "reserved" };
-  report.calls.push(receipt); report.reservedOrChargedCny += reserve; save();
-  try {
-    const resp = await fetch("https://api.deepseek.com/chat/completions", {
-      method: "POST", signal: AbortSignal.timeout(90_000),
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}` },
-      body: JSON.stringify(body),
-    });
-    if (!resp.ok) throw new Error(`provider HTTP ${resp.status}`);
-    const json = await resp.json();
-    const u = json.usage;
-    if (!u || !Number.isFinite(u.prompt_tokens) || !Number.isFinite(u.completion_tokens)) throw new Error("缺少 usage：保留全额预留并停止");
-    const served = String(json.model || report.model);
-    const both = priceBoth(u, served);
-    const cost = both.peak;
-    receipt.model = json.model; receipt.usage = u; receipt.response = json.choices; receipt.state = "complete";
-    receipt.window = windowAt(); receipt.costPeak = both.peak; receipt.costOffpeak = both.offpeak;
-    receipt.estimatedCny = both.offpeak;
-    report.estimatedCny += both.offpeak; report.reservedOrChargedCny += cost - reserve; save();
-    assert.ok(report.reservedOrChargedCny <= BUDGET && cost <= reserve, "实际费用超出预留：停止");
-    return { message: json.choices?.[0]?.message || {}, usage: u, cost, costOffpeak: both.offpeak };
-  } catch (err) {
-    receipt.error = err.message; receipt.state = "stopped"; save(); throw err;
-  }
-}
+const paidCall = createModelLedger({ report, save, budget: BUDGET, model: MODEL });
+async function callRaw(body, label) { assert.ok(RUN, "offline audit cannot call a model"); return paidCall(body, label); }
 
 /** Convert one of our tool defs (`{name, description, parameters: {x:{type,required}}}`) to OpenAI shape. */
 function openAiTools(defs) {
@@ -174,7 +147,7 @@ async function call(messages, label, { tools, exec } = {}) {
     costOffpeak += res.costOffpeak;
     const msg = res.message;
     const calls = Array.isArray(msg.tool_calls) ? msg.tool_calls : [];
-    if (!calls.length) return { answer: String(msg.content || ""), usage, cost, costOffpeak, toolCalls };
+    if (!calls.length) return { answer: String(msg.content || ""), usage, cost, costOffpeak, toolCalls, trace };
     toolCalls += calls.length;
     msgs.push({ role: "assistant", content: String(msg.content || ""), tool_calls: calls });
     for (const c of calls) {
@@ -184,8 +157,7 @@ async function call(messages, label, { tools, exec } = {}) {
         const args = JSON.parse(c.function?.arguments || "{}");
         out = def ? String(await def.execute(args, exec)) : `unknown tool: ${c.function?.name}`;
       } catch (err) { out = `tool error: ${err.message}`; }
-      out = out.slice(0, 4000);
-      trace.push({ name: c.function?.name, chars: out.length });
+      trace.push({ name: c.function?.name, arguments: c.function?.arguments, output: out });
       msgs.push({ role: "tool", tool_call_id: c.id, content: out });
     }
   }
@@ -194,31 +166,37 @@ async function call(messages, label, { tools, exec } = {}) {
 
 /* ---------- 六个场景：只取不用修订链/归档的三方都能表达的 ------------- */
 const SCENARIO_IDS = ["S01", "S04", "S05", "S06", "S07", "S09"];
-const all = scenarios(0).filter((s) => SCENARIO_IDS.includes(s.id));
+// Every adapter receives the name in the body too; text-only stores must not
+// lose information that our named index gets through separate payload fields.
+const sharedFact = f => ({ ...f, text: `${f.name}：${f.text}` });
+const all = scenarios(0).filter((s) => SCENARIO_IDS.includes(s.id)).map(sc => ({
+  ...sc, facts: sc.facts.map(sharedFact), foreign: sc.foreign ? sharedFact(sc.foreign) : undefined,
+}));
 assert.equal(all.length, SCENARIO_IDS.length, "场景集合必须与预注册一致");
 
 const userMsg = (text) => ({ role: "user", source: { kind: "user" }, content: [{ type: "text", text }] });
-const dirs = (rep, id) => ({
-  cell: join(root, `r${rep}`, id),
-  wsA: join(root, `r${rep}`, id, "ws-a"),
-  wsB: join(root, `r${rep}`, id, "ws-b"),
-});
+let activeCell;
+const dirs = () => activeCell;
 
 /* ---------- arm: none / plain-all（共用 trivium 的种植，保证语料同源） ---------- */
 async function plantTrivium(rep, sc, arm) {
-  return plantScenario({ root, rep, arm, scenario: sc, store: trivium.store, revisions: trivium.revisions, tools: trivium.tools, join });
+  return plantScenario({ root: activeCell.cell, rep, arm, scenario: sc, store: trivium.store, revisions: trivium.revisions, tools: trivium.tools, join });
 }
 
 /* ---------- arm: trivium-inject ---------- */
 async function armTrivium(rep, sc) {
-  const planted = await plantTrivium(rep, sc, "trivium-inject");
+  const planted = await plantTrivium(rep, sc, activeCell.arm);
+  const db = await trivium.store.openWorkspaceDb(planted.cwd);
+  assert.equal(trivium.store.nodeCountOf(db), sc.facts.length + 1);
+  const fixture = fixtureReceipt(sc.facts, planted.ids.map(id => db.get(id).payload.text));
+  const maps = [];
   if (!trivium.preStep) throw new Error("agent/pre-step 未注册");
   const decision = await trivium.preStep(
-    { agent: { session: { id: `${rep}-${sc.id}-tri`, header: { cwd: planted.cwd } } }, signal: new AbortController().signal, messages: [userMsg(sc.question)] },
+    { agent: { inject: (m) => maps.push(m), session: { id: activeCell.sessionId, header: { cwd: planted.cwd } } }, signal: new AbortController().signal, messages: [userMsg(sc.question)] },
     async () => ({ kind: "enter", messages: [] }),
   );
-  const context = textOf(decision?.messages);
-  return { planted, context, source: { kind: "trivium-pre-step", bytes: Buffer.byteLength(context, "utf8") }, tokens: trivium.tokens.estimateTokens(context) };
+  const context = textOf([...maps, ...(decision?.messages || [])]);
+  return { planted, fixture, context, source: { kind: "trivium-pre-step", bytes: Buffer.byteLength(context, "utf8") }, tokens: trivium.tokens.estimateTokens(context) };
 }
 
 /* ---------- arm: goodmemory（每次一桥一库） ---------- */
@@ -230,12 +208,13 @@ async function armGoodmemory(rep, sc, maxTokens) {
   const { cell, wsA, wsB } = dirs(rep, sc.id);
   mkdirSync(cell, { recursive: true });
   const dbPath = join(cell, "goodmemory.sqlite");
-  assert.ok(dbPath.startsWith(root), "拒绝写入非临时库（goodmemory）");
+  assert.ok(assertInside(root, dbPath), "拒绝写入非临时库（goodmemory）");
   const token = `c4-${rep}-${sc.id}-${maxTokens}`;
   const child = spawn(process.execPath, [gmLauncher, "--host", "127.0.0.1", "--port", "0", "--recommended"], {
     env: { ...process.env, GOODMEMORY_HTTP_BRIDGE_TOKEN: token, GOODMEMORY_STORAGE_PROVIDER: "sqlite", GOODMEMORY_STORAGE_URL: dbPath },
     stdio: ["ignore", "pipe", "pipe"],
   });
+  try {
   const errs = [];
   let isReady = false;
   createInterface({ input: child.stderr }).on("line", (l) => errs.push(l.replaceAll(token, "[redacted]")));
@@ -259,6 +238,20 @@ async function armGoodmemory(rep, sc, maxTokens) {
   const planted = [];
   for (const [i, f] of sc.facts.entries()) planted.push(await remember(`记住：${f.text}`, `f${i}`, gmScopeId(wsA)));
   if (sc.foreign) planted.push(await remember(`记住：${sc.foreign.text}`, "foreign", gmScopeId(wsB)));
+  const exportedResponse = await fetch(`${ready.url}/memory/export`, {
+    method: "POST", signal: AbortSignal.timeout(20000),
+    headers: { ...headers, "x-goodmemory-operations": "export", "x-goodmemory-workspace-id": gmScopeId(wsA) },
+    body: JSON.stringify({ scope: { userId: `c4-${rep}-${sc.id}`, workspaceId: gmScopeId(wsA) } }),
+  });
+  assert.equal(exportedResponse.status, 200, "Need durable export to audit ingestion");
+  const fixtureExport = await exportedResponse.json();
+  const durable = fixtureExport.exported?.durable?.facts;
+  assert.ok(Array.isArray(durable), "Unknown durable export schema");
+  const canonical = text => String(text).trim().replace(/[。.!]+$/, "");
+  const expectedFacts = sc.facts.map(f=>canonical(f.text)).sort();
+  const actualFacts = durable.filter(f=>f.isActive !== false).map(f=>canonical(f.content)).sort();
+  const fixture = { expectedCount:expectedFacts.length, storedCount:actualFacts.length, sourceHash:digest(expectedFacts), storedHash:digest(actualFacts), exact:JSON.stringify(expectedFacts)===JSON.stringify(actualFacts) };
+  if (RUN && !fixture.exact) throw Error("goodmemory changed the stored fixture; exclude from controlled retrieval comparison");
   const handlers = new Map();
   const disposers = [];
   const logs = [];
@@ -292,7 +285,8 @@ async function armGoodmemory(rep, sc, maxTokens) {
   } catch (err) { recallProbe = { error: String(err.message || err) }; }
   for (const d of disposers) { try { await d(); } catch { /* ignore */ } }
   child.kill("SIGTERM");
-  return { planted, context, recallProbe, source: { kind: "goodmemory-pre-step", maxTokens, accepted: planted.reduce((n, p) => n + p.accepted, 0), recallProbe }, tokens: Math.ceil(context.length / 2) };
+  return { planted, context, recallProbe, source: { fixture, fixtureExport, kind: "goodmemory-pre-step", maxTokens, accepted: planted.reduce((n, p) => n + p.accepted, 0), recallProbe }, tokens: Math.ceil(context.length / 2) };
+  } finally { child.kill("SIGTERM"); }
 }
 
 /* ---------- arm: dsh-memory（真实 apply + pre-step） ---------- */
@@ -305,7 +299,7 @@ async function armDshMemory(rep, sc, injectMaxTokens, minScoreOverride = null) {
   const { cell, wsA } = dirs(rep, sc.id);
   mkdirSync(cell, { recursive: true });
   const dbFile = join(cell, "dsh-memory.db");
-  assert.ok(dbFile.startsWith(root), "拒绝写入非临时库（dsh-memory）");
+  assert.ok(assertInside(root, dbFile), "拒绝写入非临时库（dsh-memory）");
   const base = dmCompat.plainConfig(dmConfigApi.Config({}).get());
   const config = {
     ...base, dbFile, scope: "global",
@@ -319,9 +313,11 @@ async function armDshMemory(rep, sc, injectMaxTokens, minScoreOverride = null) {
     injectMaxTokens,
     ...(minScoreOverride === null ? {} : { injectMinScore: minScoreOverride }),
   };
+  assertInside(root, config.dbFile); // before apply() can open anything
   const handlers = new Map();
   const disposers = [];
   let memory = null;
+  try {
   await dmModule.apply({
     logger: () => ({ warn: () => {}, info: () => {}, error: () => {}, debug: () => {} }),
     on: (e, fn) => { handlers.set(e, fn); return () => {}; },
@@ -335,7 +331,8 @@ async function armDshMemory(rep, sc, injectMaxTokens, minScoreOverride = null) {
   }, config);
   if (!memory) throw new Error("dsh-memory 未 provide('memory')");
   const store = memory.store;
-  assert.ok(String(store.dbFile).startsWith(root), `拒绝写入非临时库: ${store.dbFile}`);
+  assert.ok(assertInside(root, String(store.dbFile)), `拒绝写入非临时库: ${store.dbFile}`);
+  assert.equal(store.stats().memories, 0, "competitor cell must start empty");
   const scope = basename(wsA);
   const added = [];
   for (const f of sc.facts) added.push(await store.add({ content: f.text, keywords: [], scope, type: "note", layer: "sm" }));
@@ -347,7 +344,9 @@ async function armDshMemory(rep, sc, injectMaxTokens, minScoreOverride = null) {
     async () => ({ kind: "enter", messages: [] }),
   );
   const context = textOf(decision?.messages);
+  const fixture = fixtureReceipt(sc.facts, store.list({scope,limit:sc.facts.length + 1}).map(r=>r.content));
   const stats = store.stats();
+  assert.equal(stats.memories, sc.facts.length + (sc.foreign ? 1 : 0), "competitor fixture cardinality");
   // 诊断（不参与判分）：默认 injectMinScore=0.02 会把"单路 rank1≈0.016"整条滤掉。
   // 记下 minScore=0 时的命中条数，才能区分"检索不到"与"被门槛拦下"。
   let hitsAtZeroThreshold = null;
@@ -355,14 +354,16 @@ async function armDshMemory(rep, sc, injectMaxTokens, minScoreOverride = null) {
     const hits = await store.search(sc.question, { scope: [scope, "global"], limit: 6, minScore: 0 });
     hitsAtZeroThreshold = hits.length;
   } catch { /* 诊断失败不影响主结果 */ }
-  store.close();
-  for (const d of disposers) { try { if (typeof d === "function") await d(); } catch { /* ignore */ } }
   return {
     planted: { added: added.length, stats },
     context,
-    source: { kind: "dsh-memory-pre-step", injectMaxTokens, memories: stats.memories, minScore: config.injectMinScore, hitsAtZeroThreshold },
+    source: { fixture, kind: "dsh-memory-pre-step", injectMaxTokens, memories: stats.memories, minScore: config.injectMinScore, hitsAtZeroThreshold },
     tokens: dmUtil.estimateTokens(context),
   };
+  } finally {
+    try { memory?.store?.close(); } catch {}
+    for (const dispose of disposers) { try { await dispose(); } catch {} }
+  }
 }
 
 /* ---------- 臂表 ---------- */
@@ -381,8 +382,11 @@ const ARMS = [
   { id: "dsmmemory-800-min0", budget: 800, minScore: 0, postHoc: true },
 ];
 
+assert.ok(ONLY_ARMS.every(id => ARMS.some(a => a.id === id)), "Unknown arm");
+assert.ok(ONLY_SCENARIOS.every(id => SCENARIO_IDS.includes(id)), "Unknown scenario");
+const orderedArms = args.has("--reverse") ? [...ARMS].reverse() : ARMS;
 try {
-  for (const arm of ARMS) {
+  for (const arm of orderedArms) {
     if (ONLY_ARMS.length && !ONLY_ARMS.includes(arm.id)) continue;
     if (arm.id.startsWith("goodmemory") && !gmPkg) { report.cells.push({ arm: arm.id, unavailable: "dsh-goodmemory 未安装" }); continue; }
     if (arm.id.startsWith("dsmmemory") && !dmPkg) { report.cells.push({ arm: arm.id, unavailable: "dsh-memory 未安装" }); continue; }
@@ -391,6 +395,9 @@ try {
         if (ONLY_SCENARIOS.length && !ONLY_SCENARIOS.includes(sc.id)) continue;
         const cell = { arm: arm.id, budget: arm.budget, rep, scenario: sc.id, gold: sc.gold, question: sc.question };
         try {
+          activeCell = { ...prepareCell(root, arm.id, rep, sc.id), arm: arm.id };
+          cell.identity = { sessionId: activeCell.sessionId, cell: activeCell.cell };
+          cell.fixtureSourceHash = digest(sc.facts);
           let context = "";
           let meta = null;
           if (arm.id === "none") {
@@ -402,7 +409,7 @@ try {
           } else if (arm.id.startsWith("trivium-")) {
             const r = await armTrivium(rep, sc);
             context = r.context;
-            meta = { source: r.source, tokens: r.tokens, planted: { ids: r.planted.ids }, cwd: r.planted.cwd };
+            meta = { source: r.source, tokens: r.tokens, planted: { ids: r.planted.ids }, fixture: r.fixture, cwd: r.planted.cwd };
           } else if (arm.id.startsWith("goodmemory")) {
             const r = await armGoodmemory(rep, sc, arm.budget); context = r.context; meta = { source: r.source, tokens: r.tokens, planted: r.planted };
           } else {
@@ -411,7 +418,7 @@ try {
           const messages = [{ role: "system", content: SYSTEM }];
           if (context.trim()) messages.push({ role: "user", content: `记忆材料：\n${context}` });
           messages.push({ role: "user", content: sc.question });
-          cell.contextHash = hash(context); cell.contextChars = context.length; cell.injection = meta;
+          cell.context = context; cell.contextHash = hash(context); cell.contextChars = context.length; cell.injection = meta;
           if (RUN) {
             const toolFace = arm.tools
               ? { tools: openAiTools(trivium.toolDefs), exec: { agent: { session: { header: { cwd: meta.cwd } } } } }
@@ -430,8 +437,9 @@ try {
         } catch (err) {
           cell.error = String(err.message || err); report.cells.push(cell); save();
           console.log(`${arm.id} ${sc.id} r${rep}: ERROR ${cell.error}`);
+          throw err; // any failure terminates; do not continue after unknown charges
         } finally {
-          try { trivium.store?.closeAll?.(); } catch { /* ignore */ }
+          try { trivium.handlers.get("session/disposed")?.({ id: activeCell.sessionId, header: { cwd: activeCell.wsA } }); trivium.store?.closeAll?.(); } catch { /* ignore */ }
         }
       }
     }

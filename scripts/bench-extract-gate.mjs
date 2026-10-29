@@ -57,15 +57,17 @@ for (const s of SESSIONS) {
 }
 
 const sum = (k) => rows.reduce((n, r) => n + r[k], 0);
-const perCall = measuredPerTurn / measuredCalls;
-const before = measuredPerTurn * rows.length;
-const afterPerTurn = perCall * sum("perTurnCallsWithGate");
-const afterWindow = perCall * sum("wholeWindowCallsWithGate");
+const before = measuredPerTurn;
+const keptLabels = new Set(SESSIONS.flatMap(s => transcriptOf(s).filter(t => t.role === "user" && extract.shouldExtractBatch([t, { role:"assistant", text:"ack" }]).call).map(t => `perTurn/${s.id}/t${t.turn}`)));
+const retained = evidence.calls.filter(c => keptLabels.has(c.label));
+if (retained.length !== keptLabels.size) throw Error("Missing retained-call receipts");
+const afterPerTurn = retained.reduce((n,c) => n + c.costOffpeak, 0);
+const afterWindow = evidence.summary.batch.costOffpeak; // separately measured, never average per-turn cost
 
 console.log("D3 gate replay (calculated from D2 measured usage, no new model calls)\n");
 for (const r of rows) console.log(`${r.session}  user=${r.userTurns}  filler=${r.fillerTurns}  perTurn ${r.perTurnCallsWithoutGate}->${r.perTurnCallsWithGate}  window->${r.wholeWindowCallsWithGate} (${r.gateReason})`);
 console.log(`\ncalls: perTurn ${sum("perTurnCallsWithoutGate")} -> ${sum("perTurnCallsWithGate")}; window -> ${sum("wholeWindowCallsWithGate")}`);
-console.log(`cost (offpeak, calculated): perTurn ¥${before.toFixed(5)} -> ¥${afterPerTurn.toFixed(5)}; window ¥${afterWindow.toFixed(5)}`);
+console.log(`cost (offpeak, historical receipt selection; NOT new measured savings): perTurn ¥${before.toFixed(5)} -> ¥${afterPerTurn.toFixed(5)}; window ¥${afterWindow.toFixed(5)}`);
 console.log("\nCaveat: D2's per-turn arm is a stress shape. The shipped scheduler already batches by");
 console.log("60 s idle / 12 turns, so the gate's real saving is limited to windows that contain");
 console.log("nothing extractable. This script does not claim a measured end-to-end cost change.");

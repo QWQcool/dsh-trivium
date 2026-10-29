@@ -15,7 +15,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { grade } from "./quality-fixtures.mjs";
-import { PRICING, priceBoth, windowAt } from "./pricing.mjs";
+import { createModelLedger } from "./model-ledger.mjs";
 
 const args = new Map(process.argv.slice(2).map((s) => { const at = s.indexOf("="); return at < 0 ? [s, true] : [s.slice(0, at), s.slice(at + 1)]; }));
 const RUN = args.has("--run");
@@ -117,44 +117,17 @@ const ARMS = [
 
 /* ---------- 计费账本 ---------- */
 const report = {
-  protocol: "D1", variant: TURN_COUNT === 10 ? "D1b" : "D1", plan: "docs/next-memory/D1-PLAN.md", model: MODEL,
+  protocol: "D1-R2-SIMULATION", variant: TURN_COUNT === 10 ? "D1b" : "D1", plan: "docs/next-memory/D1-PLAN.md", model: MODEL,
   thinking: "disabled", temperature: 0, maxTokens: 600, sessions: SESSIONS.length, turns: TURN_COUNT,
   budgetCny: BUDGET, pricesCnyPerMillion: { input: 2, cached: 0.04, output: 8 },
   status: "running", estimatedCny: 0, reservedOrChargedCny: 0, calls: [], cells: [], sessionsOut: [],
 };
 const save = () => writeFileSync(out, JSON.stringify(report, null, 2) + "\n", "utf8");
-const price = (u, model = MODEL) => priceBoth(u, model).peak;
-
-async function call(messages, label) {
-  assert.ok(RUN, "离线自检不得发请求");
-  const body = { model: MODEL, messages, temperature: 0, thinking: { type: "disabled" }, max_tokens: 600, stream: false };
-  const peak = (PRICING[MODEL] || PRICING["deepseek-flash"]).peak;
-  const reserve = (Buffer.byteLength(JSON.stringify(body), "utf8") + 16_384) * peak.inputMiss * 1e-6 + 600 * peak.output * 1e-6;
-  assert.ok(report.reservedOrChargedCny + reserve <= BUDGET, "预算不足：未发请求");
-  const receipt = { label, reservedCny: reserve, state: "reserved" };
-  report.calls.push(receipt); report.reservedOrChargedCny += reserve; save();
-  try {
-    const resp = await fetch("https://api.deepseek.com/chat/completions", {
-      method: "POST", signal: AbortSignal.timeout(90_000),
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}` },
-      body: JSON.stringify(body),
-    });
-    if (!resp.ok) throw new Error(`provider HTTP ${resp.status}: ${(await resp.text()).slice(0, 300)}`);
-    const json = await resp.json();
-    const u = json.usage;
-    if (!u || !Number.isFinite(u.prompt_tokens) || !Number.isFinite(u.completion_tokens)) throw new Error("缺少 usage：保留全额预留并停止");
-    const served = String(json.model || MODEL);
-    const both = priceBoth(u, served);
-    const cost = both.peak;
-    receipt.model = json.model; receipt.usage = u; receipt.state = "complete";
-    receipt.window = windowAt(); receipt.costPeak = both.peak; receipt.costOffpeak = both.offpeak;
-    receipt.response = json.choices;
-    report.estimatedCny += both.offpeak; report.reservedOrChargedCny += cost - reserve; save();
-    assert.ok(report.reservedOrChargedCny <= BUDGET && cost <= reserve, "实际费用超出预留：停止");
-    return { answer: String(json.choices?.[0]?.message?.content || ""), usage: u, cost, costOffpeak: both.offpeak };
-  } catch (err) {
-    receipt.error = err.message; receipt.state = "stopped"; save(); throw err;
-  }
+const paidCall = createModelLedger({report,save,budget:BUDGET,model:MODEL});
+async function call(messages,label) {
+  assert.ok(RUN,"offline audit cannot call a model");
+  const r=await paidCall({model:MODEL,messages,temperature:0,thinking:{type:"disabled"},max_tokens:600,stream:false},label);
+  return {...r,answer:String(r.message.content||"")};
 }
 
 const userMsg = (text, id) => ({ role: "user", id, source: { kind: "user" }, content: [{ type: "text", text }] });
@@ -173,30 +146,37 @@ try {
         : "";
 
       let history = [];
+      const mapInbox = [];
+      const liveSession = { id: `${arm.id}-${session.id}`, header: { cwd: ws } };
+      const agent = { session: liveSession, inject: m => mapInbox.push({role:"user", content:(m.content||[]).map(c=>c.text||"").join("\n")}) };
       const sessionRow = { arm: arm.id, session: session.id, compact: arm.compact, turns: [], promptTokens: 0, completionTokens: 0, injectedTokens: 0, cost: 0, passed: 0, asked: 0 };
       for (const [i, turn] of TURNS(session, TURN_COUNT).entries()) {
         const compacted = arm.compact && i >= 3;
         const base = compacted ? [userMsg(compactSummary(session), `${session.id}-sum`), ...history.slice(-2)] : history;
         const messages = [{ role: "system", content: SYSTEM }, ...base.map((m) => ({ role: m.role, content: m.content }))];
+        const additions=[];
+        if(compacted && arm.memory === "trivium") handlers.get("session/event")?.(liveSession,{type:"compaction/end",data:{},seq:i});
         // ask 轮用的是 q 字段，不是 text；漏掉会让 content=undefined，provider 直接 422
         const promptText = turn.text ?? turn.q;
 
         let injected = "";
         if (arm.memory === "trivium" && preStep) {
           const decision = await preStep(
-            { agent: { session: { id: `${arm.id}-${session.id}`, header: { cwd: ws } } }, messages: [userMsg(promptText, `${session.id}-t${i}`)] },
+            { agent, messages: [userMsg(promptText, `${session.id}-t${i}`)] },
             async () => ({ kind: "enter", messages: [] }),
           );
           injected = (decision.messages || []).flatMap((m) => m.content || []).map((x) => x.text || "").join("\n");
-          if (injected.trim()) messages.push({ role: "user", content: `记忆材料：\n${injected}` });
+          additions.push(...mapInbox.splice(0));
+          if (injected.trim()) additions.push({ role: "user", content: `记忆材料：\n${injected}` });
         } else if (arm.memory === "plain" && corpus) {
           injected = corpus;
-          messages.push({ role: "user", content: corpus });
+          additions.push({ role: "user", content: corpus });
         }
-        messages.push({ role: "user", content: promptText });
+        additions.push({ role: "user", content: promptText });
+        messages.push(...additions);
 
         const historyTokens = estimateTokens(JSON.stringify(messages));
-        const cell = { arm: arm.id, session: session.id, turn: i, kind: turn.kind, historyTokens, injectedTokens: estimateTokens(injected) };
+        const cell = { arm: arm.id, session: session.id, turn: i, kind: turn.kind, requestMessages: messages, historyTokens, injectedTokens: estimateTokens(injected) };
         if (RUN) {
           const res = await call(messages, `${arm.id}/${session.id}/t${i}`);
           cell.answer = res.answer;
@@ -213,16 +193,16 @@ try {
           sessionRow.completionTokens += res.usage.completion_tokens;
           sessionRow.cost += res.costOffpeak;
           console.log(`${arm.id} ${session.id} t${i} (${turn.kind}): hist=${historyTokens} inj=${cell.injectedTokens} ${cell.grade ? (cell.grade.pass ? "pass" : "FAIL") : "-"} CNY=${report.estimatedCny.toFixed(4)}`);
-          history = [...history, { role: "user", content: promptText }, { role: "assistant", content: res.answer }];
+          history = [...base, ...additions, { role: "assistant", content: res.answer }];
         } else {
           console.log(`${arm.id} ${session.id} t${i} (${turn.kind}): hist=${historyTokens} inj=${cell.injectedTokens}`);
-          history = [...history, { role: "user", content: turn.text }, { role: "assistant", content: "(offline)" }];
+          history = [...base, ...additions, { role: "assistant", content: "(offline)" }];
         }
         sessionRow.injectedTokens += cell.injectedTokens;
         report.cells.push(cell); save();
       }
       report.sessionsOut.push(sessionRow); save();
-      if (db) store.closeAll();
+      if (db) { handlers.get("session/disposed")?.(liveSession); store.closeAll(); }
     }
   }
   report.status = RUN ? "complete" : "audit-complete";

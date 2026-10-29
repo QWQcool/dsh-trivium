@@ -9,7 +9,9 @@
  */
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve, basename } from "node:path";
-import { PRICE_CAPTURED_AT, PRICE_SOURCE, priceBoth } from "./pricing.mjs";
+import { PRICE_CAPTURED_AT, PRICE_SOURCE, PRICING, priceBoth } from "./pricing.mjs";
+
+import { validUsage } from "./model-ledger.mjs";
 
 const args = process.argv.slice(2);
 const value = (name, fallback) => {
@@ -41,13 +43,14 @@ for (const file of files) {
     continue;
   }
   // bench-c4: cells[] 带 arm；bench-d1: cells[] 带 arm，sessionsOut[] 带汇总
-  const rows = Array.isArray(ledger.cells) ? ledger.cells : Array.isArray(ledger.calls) ? ledger.calls : [];
+  if (!Array.isArray(ledger.calls)) { report.sets.push({file:basename(file),error:"Missing request ledger; cannot infer requests from cells"}); continue; }
+  const rows = ledger.calls;
   const byArm = {};
   const models = new Set();
   let calls = 0;
   for (const row of rows) {
     const usage = pickUsage(row);
-    if (!usage || !Number.isFinite(usage.prompt_tokens)) continue;
+    if (!validUsage(usage) || !PRICING[modelOf(ledger,row)]) continue;
     const model = modelOf(ledger, row);
     models.add(model);
     const both = priceBoth(usage, model);
@@ -75,18 +78,22 @@ for (const file of files) {
     variant: ledger.variant || null,
     status: ledger.status || null,
     models: [...models],
-    calls,
+    calls: rows.length,
+    pricedCalls: calls,
+    cells: Array.isArray(ledger.cells) ? ledger.cells.length : null,
+    unresolved: rows.filter(r => r.state === "stopped" || r.state === "reserved" || !validUsage(pickUsage(r)) || !PRICING[modelOf(ledger,r)]).length,
     byArm,
     total,
   });
 }
 
 const grand = report.sets.reduce((acc, s) => (s.total ? {
-  calls: acc.calls + s.total.calls,
+  calls: acc.calls + s.calls,
   cnyPeak: acc.cnyPeak + s.total.cnyPeak,
   cnyOffpeak: acc.cnyOffpeak + s.total.cnyOffpeak,
 } : acc), { calls: 0, cnyPeak: 0, cnyOffpeak: 0 });
 report.grandTotal = grand;
+report.complete = report.sets.every(s => !s.error && s.unresolved === 0);
 
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, JSON.stringify(report, null, 2) + "\n", "utf8");

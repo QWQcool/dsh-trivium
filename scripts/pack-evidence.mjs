@@ -2,7 +2,7 @@
 /**
  * 把 .tmp 里的实验账本整理成可提交的证据包（docs/evidence/）。
  *
- * 只做三件事：瘦身（去掉模型原始 response 大字段）、改名（日期 + 协议 + 场景）、算 sha256。
+ * 只做三件事：瘦身（保留原始 response 与候选）、改名（日期 + 协议 + 场景）、算 sha256。
  * 不改任何数字——答案、usage、判分、注入 token 都原样保留，否则就不是证据了。
  *
  *   node scripts/pack-evidence.mjs
@@ -31,8 +31,9 @@ const sha = (buf) => createHash("sha256").update(buf).digest("hex");
 
 function trim(ledger) {
   const clone = structuredClone(ledger);
-  // 模型原始回执体积大且与结论无关；保留 usage 与答案即可复核成本与正确率。
-  if (Array.isArray(clone.calls)) for (const c of clone.calls) delete c.response;
+  // Requests, answers and stored candidates are necessary to audit semantic correctness.
+  // Retain provider answers, requests, tool traces and extraction candidates.
+  // Missing historical output stays missing; never manufacture it.
   if (Array.isArray(clone.cells)) {
     for (const c of clone.cells) {
       if (typeof c.contextPreview === "string" && c.contextPreview.length > 400) c.contextPreview = c.contextPreview.slice(0, 400);
@@ -52,7 +53,9 @@ for (const src of SOURCES) {
   try { parsed = JSON.parse(raw.toString("utf8")); } catch { manifest.files.push({ name: src.name, error: "not-json" }); continue; }
   const body = Buffer.from(JSON.stringify(trim(parsed), null, 2) + "\n", "utf8");
   const outName = `${DATE}-${src.name}`;
-  writeFileSync(join(OUT_DIR, outName), body);
+  const target = join(OUT_DIR, outName);
+  if (existsSync(target) && !readFileSync(target).equals(body)) throw new Error(`Refuse overwrite of historical evidence: ${outName}`);
+  writeFileSync(target, body);
   manifest.files.push({
     name: outName,
     from: src.file,
