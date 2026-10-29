@@ -317,6 +317,8 @@ Costs are quoted at **off-peak** prices (peak is exactly 2× and is recorded alo
 
 ## Changelog
 
+**0.8.1** — Correctness patch. Injected summaries of long facts now keep both ends (head 89 + tail 110 chars) under one rule shared by the search line, the revision projection and the budgeted render; an undocumented `topK: 3` cap sitting in front of the 300-token budget is gone (six parallel facts used to be cut to three while the block spent only 89 tokens). Tools, data format, defaults and the kernel pin are unchanged. Same round adds the C4 counterpart install/comparison, the D0 re-measurement (18/18, 97 injected tokens), D1/D2 cost measurements and a re-checkable evidence ledger; **the 10-turn net still loses money once extraction is priced in** — see the [0.8.1 release note](docs/release-0.8.1.md).
+
 **0.8.0** — Workspace switching, operation receipts, read-only import preview and per-turn delivery records. Fix exact-name recall, revision-confirmation bypass and damaged-chain projection. Extraction is single-flight, retryable after failure and wakes after cooldown; pure acknowledgements skip the model. Trim context/tool overhead without changing defaults or data formats. See [release notes](docs/release-0.8.0.md) for evaluation and cost limits.
 
 **0.7.1** — Reliability fixes. JSON/JSONL share URI mapping, final-graph validation and a fact transaction; rejected input is preserved and recoverable, including archived revision history. Fix repeated corrections, clock-only expiry, stale projections and the 32-hop boundary. Corrections take priority within the existing shared budget; disabling injection still retains pending notices. Sidecar health and runtime diagnostics are scoped to the workspace. Settings requests stay bound to the displayed store; search races, keyboard expansion and nested dialogs are fixed. The deadline cleaner's dry run is now truly read-only. Data formats, four tools and defaults are unchanged. See the [release notes](docs/release-0.7.1.md).
@@ -410,7 +412,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Package version: `0.8.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Package version: `0.8.1` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.1-rc.4` (the peer range also admits the 0.1.x lines)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 
