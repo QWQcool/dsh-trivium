@@ -52,6 +52,8 @@ package/lock 已更新到 0.7.1；更正调度、自然到期、按库诊断和 
 | 交给其它 AI IDE 的后续范围 | [B1–B5 连续开工提示词与 B–E 依赖](NEXT-IDE-PROMPT-0.7.1.md) |
 | B 批交互契约与原型 | [0.8.0 交互原型（合成 fixture）](next-memory/FRONTEND-0.8.0.html) / [执行计划](next-memory/B-EXECUTION-PLAN.md) / [B1–B5 结果](next-memory/B-RESULTS.md)；旧的 [FRONTEND.html](next-memory/FRONTEND.html) 保留历史身份 |
 | C 批质量与负载基线 | [结果汇总](next-memory/C-RESULTS.md) / [执行计划](next-memory/C-EXECUTION-PLAN.md) / [10 个场景](next-memory/C3-SCENARIOS.md) / [对手取舍](next-memory/C4-COUNTERPARTS.md) |
+| C4 对手验装与同语料对照 | [预注册](next-memory/C4-PLAN.md) / [结果](next-memory/C4-RESULTS.md)（7 臂 42 格，¥0.0203） |
+| D0 完整性修复与复测 | [结果](next-memory/D0-RESULTS.md)（尾部保底 + topK 8；我方 4/6 → 18/18，注入 97 tok） |
 | 发布操作与证据要求 | [发布检查清单](release-checklist.md) |
 | 文档保留、合并、删除候选 | [文档审计](documentation-audit-2026-10-28.md) |
 | 本轮缺陷复现、修复与回归 | [0.7.0 缺陷审查](bug-audit-2026-10-28.md) |
