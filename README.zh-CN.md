@@ -285,6 +285,8 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ## 更新说明
 
+**0.8.0** — 工作区切换、统一操作回执、只读导入预览与每轮投递记录；修复精确名称召回、版本边确认绕过及损坏链投影。抽取使用单批在途、失败恢复和冷却唤醒，纯致谢跳过模型；精简注入/工具输出，默认开关与数据格式不变。判据、公平对照和成本的实际边界见 [发布说明](docs/release-0.8.0.md)。
+
 **0.7.1** — 可靠性修复。JSON/JSONL 共用身份映射、整图预检和事实事务，失败输入保留且可恢复；归档版本链可完整往返。修复连续更正、自然到期、过期投影和 32 跳边界，更正优先使用原有共享预算；关闭注入仍保留待发状态。旁路健康和运行诊断按工作区返回，设置页读写固定到所显示的库，修复搜索响应竞态、键盘展开和嵌套弹窗。期限清理 dry-run 真正只读。数据格式、四工具与默认开关保持不变，详情见 [0.7.1 发布说明](docs/release-0.7.1.md)。
 
 **0.7.0** — 可观测性版本。设置 → 召回检查现在按会话列出待发送与最近已发送的更正（按工作区过滤），并新增「检查版本链」按钮，复用 `dsh-trivium-check` 的只读检查。新增只读接口：`GET /api/dsh-trivium/corrections`、`GET /api/dsh-trivium/integrity`。新增故障注入回归：旁路写入失败会被 health 报告，重开时由 `bootstrap-write` 修复；README 补充桌面端 `EPIPE` 的宿主侧说明。记忆格式、默认值与四工具面均未变。
@@ -376,7 +378,7 @@ peer 范围显式接受已支持的 DSH `0.1.5`、`0.2.0`、`0.2.1` RC 版本线
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 包版本：`0.7.1` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- 包版本：`0.8.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.2.1-rc.4`（peer 范围同时接受 0.1.x 各线）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
