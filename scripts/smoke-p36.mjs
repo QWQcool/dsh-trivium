@@ -50,16 +50,16 @@ const D2_TURNS = [
 ];
 
 const FILLER_TURNS = [
-  { role: "user", text: "继续推进第 1 项，回一句当前状态即可。", turn: 0 },
-  { role: "assistant", text: "第 1 项进行中。", turn: 0 },
+  { role: "user", text: "继续。", turn: 0 },
+  { role: "assistant", text: "好的。", turn: 0 },
   { role: "user", text: "下一步。", turn: 1 },
   { role: "assistant", text: "好。", turn: 1 },
 ];
 
 try {
   /* ---------- 单元：填充轮判定 ---------- */
-  check(extract.isFillerTurn("继续推进第 2 项，回一句当前状态即可。"), "UNIT-36 a continuation turn is filler");
-  check(extract.isFillerTurn("先别管这些，把今天的进度用一句话整理一下。"), "UNIT-36 a progress-summary request is filler");
+  check(!extract.isFillerTurn("继续推进第 2 项，回一句当前状态即可。"), "UNIT-36 a nontrivial continuation is uncertain");
+  check(!extract.isFillerTurn("先别管这些，把今天的进度用一句话整理一下。"), "UNIT-36 a progress-summary request is uncertain");
   check(extract.isFillerTurn("下一步。"), "UNIT-36 a bare next-step is filler");
   check(extract.isFillerTurn("   "), "UNIT-36 whitespace is filler");
   check(!extract.isFillerTurn("先记三条约定：技术视频首选标签为 DEMO-71。"), "UNIT-36 the fact-bearing turn is not filler");
@@ -71,7 +71,7 @@ try {
 
   /* ---------- 批次判定 ---------- */
   const d2 = extract.shouldExtractBatch(D2_TURNS);
-  check(d2.call === true && d2.reason === "user-content", "GATE-36 the D2 window is worth one call", d2.reason);
+  check(d2.call === true && d2.reason === "window-content", "GATE-36 the D2 window is worth one call", d2.reason);
   const filler = extract.shouldExtractBatch(FILLER_TURNS);
   check(filler.call === false && filler.reason === "filler-only", "GATE-36 a filler-only window is skipped", filler.reason);
   const toolFail = extract.shouldExtractBatch([
@@ -79,12 +79,12 @@ try {
     { role: "tool", name: "build", ok: false, text: "ENOENT", turn: 0 },
     { role: "tool", name: "build", ok: true, text: "ok", turn: 0 },
   ]);
-  check(toolFail.call === true && toolFail.reason === "tool-failure", "GATE-36 a tool failure still calls the model", toolFail.reason);
+  check(toolFail.call === true && toolFail.reason === "tool-evidence", "GATE-36 a tool failure still calls the model", toolFail.reason);
   const toolOk = extract.shouldExtractBatch([
     { role: "user", text: "继续推进第 1 项。", turn: 0 },
     { role: "tool", name: "build", ok: true, text: "ok", turn: 0 },
   ]);
-  check(toolOk.call === false, "GATE-36 a successful tool call alone is not a reason to call", toolOk.reason);
+  check(toolOk.call === true, "GATE-36 successful tool evidence is retained", toolOk.reason);
 
   /* ---------- 真实 distill：调用次数 ---------- */
   const cwd = join(home, "ws");
