@@ -1,6 +1,6 @@
 # 判据、公平对照与成本收尾
 
-2026-10-29。基线 `490a748`；发布目标 0.8.0。预注册见 [计划](COST-QUALITY-PLAN.md)，原始答案、逐调用 usage、两次抽取探索和摘要均在 [证据目录](evidence-cost-quality-2026-10-29/summary.json)。
+2026-10-29。基线 `490a748`；随 0.8.0 发布。预注册见 [计划](COST-QUALITY-PLAN.md)，原始答案、逐调用 usage、两次抽取探索和摘要均在 [证据目录](evidence-cost-quality-2026-10-29/summary.json)。
 
 ## 评测修正
 
@@ -63,3 +63,14 @@
 - 待独立验收：语义复核、实际长期抽取质量和费用、当前版本桌面/浏览器完整手工交互。HTTP 验证不等于 UI 验收；本轮未操作用户真实工作区。
 - 未覆盖：C4 对手装载/横跑、50k 本机负载、独立桌面制品；旧 S09 默认自动召回的换述不足未通过本次工具重写查询来冒充修复。
 - 发布状态单独见 [0.8.0 发布说明](../release-0.8.0.md)，不以自验代替独立验收。
+
+
+## 文件回交
+
+| 文件组 | 原因 |
+|---|---|
+| lib/extract-scheduler.js、lib/index.js、lib/extract.js | 抽取调度、pending 处理、纯确认跳过和多字母名称边界 |
+| lib/context-budget.js、lib/store.js、lib/tools.js、lib/recall-preview.js | 压缩模型侧说明/存储路径，保留事实与业务关系；预览与实际投递一致 |
+| scripts/run-all.mjs、smoke-p27/p28/p32/p33/p34.mjs | 双环境隔离、修正失败去重的错误断言，覆盖调度、判据和成本边界 |
+| scripts/quality-fixtures.mjs、bench-quality-v2.mjs、bench-cost-v2.mjs | 同源完整材料、可审计付费上限、实际插件钩子与格式化成本对照 |
+| package.json / lock、README、发布说明与本目录证据 | 版本/发布状态一致，保留被否定的试验而非只交成功摘要 |

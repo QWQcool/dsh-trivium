@@ -1,6 +1,6 @@
 # dsh-trivium 0.8.0
 
-状态：待发布。版本提升包含此前未发布的 B 批界面功能，以及 C 批复核和成本修复；最终 npm/Git 回执在发布完成后补充。
+状态：**已发布**。npm `latest=0.8.0`，GitHub `main` 与 `v0.8.0` 已更新。北京时间 **2026-10-29 11:55:18** 发布；包含此前未发布的 B 批界面功能，以及 C 批复核和成本修复。
 
 ## 变化
 
@@ -30,4 +30,10 @@ dsh plugin --profile web add dsh-trivium@0.8.0
 
 ## 发布回执
 
-待 registry、最终包校验与 Git 远端确认后补充。
+- npm：`dsh-trivium@0.8.0`，registry 已确认 `latest=0.8.0`。
+- 时间：`2026-10-29T03:55:18.088Z`，北京时间 `2026-10-29 11:55:18 +08:00`。
+- 源码：`d9bd4d54c60a09d3b5597701922113ad55676689`，标签 `v0.8.0` 指向此提交，远端 main 已包含它；本回执随后独立提交。
+- 38 个文件；shasum `ca3950f18ae837396657558feb368bb2cbd01e32`。
+- integrity：`sha512-ZSxoYh/cquLCzoiJfIRC8U+o8l5czlhTUY6LIT9boT2HHK/3MlfF7KPlh2nedBQmWkr67EMVuhIQp7T7WTzy8A==`。
+- 从 registry 实际下载 tarball 并计算 SHA-512，与已干净安装及测试的最终包完全相同。
+- [机器可读回执](next-memory/evidence-cost-quality-2026-10-29/release-receipt.json) / [安装与真实 peers 检查](next-memory/evidence-cost-quality-2026-10-29/package-check.json)。

@@ -1,21 +1,21 @@
 # 文档入口与当前基线
 
-0.8.0 收尾与待发布状态见 [发布说明](release-0.8.0.md)；本轮 [判据、公平对照和成本报告](next-memory/COST-QUALITY-RESULTS.md) 包含原始证据。下表发布回执会在 npm 与远端验证完成后更新。
+**0.8.0 已发布**，见 [发布说明与回执](release-0.8.0.md)。本轮 [判据、公平对照和成本报告](next-memory/COST-QUALITY-RESULTS.md) 包含原始证据；35/35 离线组、13 项干净安装/真实 peers 验证及隔离 Web HTTP 自验通过。C4 留在发布之后。
 
-更新：2026-10-28。这里是维护者的当前状态入口；安装和日常使用见 [中文 README](../README.zh-CN.md)。历史报告中的“当前”“待发布”“下一轮”只对报告当时有效，不作为今天的执行指令。
+更新：2026-10-29。这里是维护者的当前状态入口；安装和日常使用见 [中文 README](../README.zh-CN.md)。历史报告中的“当前”“待发布”“下一轮”只对报告当时有效，不作为今天的执行指令。
 
 ## 当前发布基线
 
 | 项目 | 状态与证据 |
 |---|---|
-| 插件 | `dsh-trivium@0.7.1`；registry 已确认 `latest=0.7.1` |
-| 发布时间 | `2026-10-28T10:22:01.918Z`，即北京时间 2026-10-28 18:22:01 |
-| 发布源码 | `v0.7.1` → `b560722`；远端 main 已包含该提交，发布回执另行提交 |
-| 发布包 | shasum `bb7fd9186f7ea468072ec5fc696f32ea0514816c`；37 个文件，与最终验收包一致 |
-| 内核 | `triviumdb@0.9.0-beta.3`，精确锁定；本轮 registry 的 `latest` 仍为 0.8.11，`beta` 为 0.9.0-beta.3，尚未切换 0.9.0 稳定版 |
+| 插件 | `dsh-trivium@0.8.0`；registry 已确认 `latest=0.8.0` |
+| 发布时间 | `2026-10-29T03:55:18.088Z`，即北京时间 2026-10-29 11:55:18 |
+| 发布源码 | `v0.8.0` → `d9bd4d5`；远端 main 已包含该提交，发布回执另行提交 |
+| 发布包 | shasum `ca3950f18ae837396657558feb368bb2cbd01e32`；38 个文件，与最终验收包一致 |
+| 内核 | `triviumdb@0.9.0-beta.3`，精确锁定；内核 npm tag 本轮未重新核查；未更换内核版本 |
 | 运行时 | ESM；Node `^22.19.0 || >=24`；npm 锁文件；宿主提供 `dsh-llm` / `dsh-tools` peers |
 | 已记录宿主 | Web `@deepseek-ai/dsh@0.2.1-rc.4`；桌面 `0.2.1-rc.3` 的覆盖边界见下表 |
-| 旧问题版本 | 0.5.0 既有 deprecation 保留；当前升级目标为 0.7.1，本轮未另行 deprecate 旧版本 |
+| 旧问题版本 | 0.5.0 既有 deprecation 保留；当前升级目标为 0.8.0，本轮未另行 deprecate 旧版本 |
 
 本页记录发布基线，不代表未发布工作树已进入 npm。当前修改与新增缺陷结论应单独列在本轮审查结果中。
 
@@ -48,7 +48,7 @@ package/lock 已更新到 0.7.1；更正调度、自然到期、按库诊断和 
 | 安装、配置、使用、排障 | [中文 README](../README.zh-CN.md) / [English README](../README.md) |
 | 产品边界、架构、后续方向 | [PLAN.md](../PLAN.md) |
 | 可选芯片与会话层的实际契约 | [PLAN-session-map.md](../PLAN-session-map.md) |
-| 当前版本改了什么 | [0.7.1 发布说明](release-0.7.1.md) / [验收记录](verification-0.7.1.md) |
+| 当前版本改了什么 | [0.8.0 发布说明](release-0.8.0.md) / [质量与成本记录](next-memory/COST-QUALITY-RESULTS.md) |
 | 交给其它 AI IDE 的后续范围 | [B1–B5 连续开工提示词与 B–E 依赖](NEXT-IDE-PROMPT-0.7.1.md) |
 | B 批交互契约与原型 | [0.8.0 交互原型（合成 fixture）](next-memory/FRONTEND-0.8.0.html) / [执行计划](next-memory/B-EXECUTION-PLAN.md) / [B1–B5 结果](next-memory/B-RESULTS.md)；旧的 [FRONTEND.html](next-memory/FRONTEND.html) 保留历史身份 |
 | C 批质量与负载基线 | [结果汇总](next-memory/C-RESULTS.md) / [执行计划](next-memory/C-EXECUTION-PLAN.md) / [10 个场景](next-memory/C3-SCENARIOS.md) / [对手取舍](next-memory/C4-COUNTERPARTS.md) |
