@@ -1,0 +1,18 @@
+{
+  "version": "0.8.0",
+  "port": 3098,
+  "isolatedWorkspace": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\release-0.8.0\\host-workspace",
+  "checks": [
+    "real host load",
+    "isolated settings",
+    "preview is read-only",
+    "commit creates exactly one",
+    "stale preview returns 409",
+    "stale write does not duplicate",
+    "list refresh returns fact",
+    "turn ledger is process-only"
+  ],
+  "status": "passed",
+  "modelCalls": 0,
+  "uiManual": false
+}

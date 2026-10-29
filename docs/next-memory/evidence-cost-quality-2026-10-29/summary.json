@@ -1,0 +1,41 @@
+{
+  "modelCalls": 152,
+  "estimatedCnyAtPeak": 0.09970888,
+  "budgetCny": 15,
+  "providerModels": [
+    "deepseek-flash"
+  ],
+  "pipeline": {
+    "none": {
+      "passed": 6,
+      "total": 30,
+      "estimatedCny": 0.006827999999999994
+    },
+    "plain-all": {
+      "passed": 30,
+      "total": 30,
+      "estimatedCny": 0.030134239999999996
+    },
+    "graph-tools": {
+      "passed": 29,
+      "total": 30,
+      "estimatedCny": 0.04862664000000001
+    }
+  },
+  "extractionTrials": "Both compact prompt trials were rejected. Shipping keeps the original prompt. Pure acknowledgements bypass the model; scheduler reliability fixes remain.",
+  "strictFalseNegative": {
+    "scenario": "S09",
+    "rep": 2,
+    "arm": "graph-tools",
+    "gold": "CHECK-97",
+    "answer": "CHECK-97 校验",
+    "review": "Correct retrieved fact; fails exact field contract. Do not call this retrieval failure or silently overwrite strict score."
+  },
+  "pending": [
+    "independent semantic review",
+    "C4 install and comparison",
+    "50k load rerun",
+    "current-version desktop/UI manual acceptance",
+    "multi-session single pending file remains last-writer; no persistent per-session queue format introduced"
+  ]
+}

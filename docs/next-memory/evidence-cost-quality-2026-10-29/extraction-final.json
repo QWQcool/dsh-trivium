@@ -1,0 +1,1020 @@
+{
+  "rubric": "c3-structured-v2-2026-10-29",
+  "model": "deepseek-flash",
+  "thinking": "disabled",
+  "temperature": 0,
+  "budgetCny": 1,
+  "pricesCnyPerMillion": {
+    "input": 2,
+    "cached": 0.04,
+    "output": 8
+  },
+  "priceSource": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+  "protocolHash": "ffba1010fe4c75c913afe7e18a65efe2ee4ce5dfbc9f8c00103f36e5fe1c2229",
+  "status": "complete",
+  "estimatedCny": 0.007771999999999999,
+  "reservedOrChargedCny": 0.007771999999999994,
+  "calls": [
+    {
+      "trial": {
+        "scenario": "E01",
+        "arm": "before"
+      },
+      "reservedCny": 0.038004,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 204,
+        "completion_tokens": 91,
+        "total_tokens": 295,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 204
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"AuroraService 发布前先运行 gate-79.mjs\",\"text\":\"发布 AuroraService 前都先运行 gate-79.mjs，不要跳过验收。\",\"linkName\":\"AuroraService\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。\"}]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.0011359999999999999
+    },
+    {
+      "trial": {
+        "scenario": "E01",
+        "arm": "after"
+      },
+      "reservedCny": 0.03767,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 173,
+        "completion_tokens": 72,
+        "total_tokens": 245,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 173
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"preference\",\"text\":\"以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。\",\"name\":\"AuroraService 发布前先运行 gate-79.mjs\",\"quote\":\"记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。\"}]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.0009220000000000001
+    },
+    {
+      "trial": {
+        "scenario": "E02",
+        "arm": "before"
+      },
+      "reservedCny": 0.03799,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 204,
+        "completion_tokens": 82,
+        "total_tokens": 286,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 204
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"BluePlan 方案\",\"text\":\"采用方案 BluePlan，2027-01-12 复盘（该日期不是决策失效日期）。\",\"linkName\":\"BluePlan\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。\"}]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.001064
+    },
+    {
+      "trial": {
+        "scenario": "E02",
+        "arm": "after"
+      },
+      "reservedCny": 0.037656,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 173,
+        "completion_tokens": 74,
+        "total_tokens": 247,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 173
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"decision\",\"text\":\"采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。\",\"name\":\"BluePlan\",\"quote\":\"采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。\",\"linkName\":\"decided\",\"linkLabel\":\"decided\"}]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.000938
+    },
+    {
+      "trial": {
+        "scenario": "E03",
+        "arm": "before"
+      },
+      "reservedCny": 0.037976,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 201,
+        "completion_tokens": 72,
+        "total_tokens": 273,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 201
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"AuroraService\",\"text\":\"AuroraService 的配置已改好，测试也已通过。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"AuroraService 的配置改好了。AuroraService 的测试也好了。\"}]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.000978
+    },
+    {
+      "trial": {
+        "scenario": "E03",
+        "arm": "after"
+      },
+      "reservedCny": 0.037642,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 170,
+        "completion_tokens": 6,
+        "total_tokens": 176,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 170
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.000388
+    },
+    {
+      "trial": {
+        "scenario": "E04",
+        "arm": "before"
+      },
+      "reservedCny": 0.037922,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 194,
+        "completion_tokens": 6,
+        "total_tokens": 200,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 194
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.00043599999999999997
+    },
+    {
+      "trial": {
+        "scenario": "E04",
+        "arm": "after"
+      },
+      "reservedCny": 0.037588,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 163,
+        "completion_tokens": 45,
+        "total_tokens": 208,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 163
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"experience\",\"text\":\"Missing SDK tool: installed SDK and compile succeeded.\",\"quote\":\"tool: missing sdk tool: installed sdk, compile ok\",\"linkLabel\":\"fixed\"}]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.000686
+    },
+    {
+      "trial": {
+        "scenario": "E05",
+        "arm": "before"
+      },
+      "reservedCny": 0.037896,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 190,
+        "completion_tokens": 6,
+        "total_tokens": 196,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 190
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.000428
+    },
+    {
+      "trial": {
+        "scenario": "E05",
+        "arm": "after"
+      },
+      "reservedCny": 0.037562,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 159,
+        "completion_tokens": 6,
+        "total_tokens": 165,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 159
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.000366
+    },
+    {
+      "trial": {
+        "scenario": "E06",
+        "arm": "before"
+      },
+      "reservedCny": 0.037896,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 191,
+        "completion_tokens": 6,
+        "total_tokens": 197,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 191
+      },
+      "response": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"candidates\":[]}"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "estimatedCny": 0.00042999999999999994
+    }
+  ],
+  "results": [
+    {
+      "scenario": "E01",
+      "arm": "before",
+      "turns": [
+        {
+          "role": "user",
+          "text": "记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。"
+        }
+      ],
+      "rubric": "保留 gate-79.mjs 和不能跳过验收，不反转否定",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。"
+          },
+          {
+            "id": 3,
+            "action": "insert",
+            "type": "preference",
+            "text": "发布 AuroraService 前都先运行 gate-79.mjs，不要跳过验收。"
+          }
+        ],
+        "llmFailed": false,
+        "ruleCount": 1,
+        "modelCount": 1
+      },
+      "captures": [
+        {
+          "prompt": "Extract durable memory candidates as JSON only.\nShape: {\"candidates\":[{\"type\":\"preference|entity|decision|experience\",\"name\":\"\",\"text\":\"\",\"linkName\":\"\",\"linkLabel\":\"about|decided|broke|fixed\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"\"}]}\nWhitelist: 记住/以后都/别再 → preference; repeated proper names → entity; decision with an object (先别动/下周再/采用方案) → decision; tool fail then success in the same turn → experience.\nDo not write chitchat or one-off file edits as preference. Do not store secrets, tool dumps, or whole conversations.\nKeep dates in the fact text. Do not infer expiry or emit until/untilAt; expiry is set explicitly through the memory tools or settings.\nIf nothing matches, return {\"candidates\":[]}.\n\nuser: 记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"AuroraService 发布前先运行 gate-79.mjs\",\"text\":\"发布 AuroraService 前都先运行 gate-79.mjs，不要跳过验收。\",\"linkName\":\"AuroraService\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。\"}]}"
+          }
+        }
+      ],
+      "stored": [
+        {
+          "createdAt": "2026-10-29T03:41:39.356Z",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:39.356Z",
+            "kind": "extract",
+            "quote": "记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。",
+          "type": "preference",
+          "updatedAt": "2026-10-29T03:41:39.356Z",
+          "uri": "ctx://preference/1793245299356"
+        },
+        {
+          "createdAt": "2026-10-29T03:41:39.450Z",
+          "name": "AuroraService 发布前先运行 gate-79.mjs",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:39.450Z",
+            "kind": "extract",
+            "quote": "记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "发布 AuroraService 前都先运行 gate-79.mjs，不要跳过验收。",
+          "type": "preference",
+          "updatedAt": "2026-10-29T03:41:39.450Z",
+          "uri": "ctx://preference/1793245299450"
+        }
+      ]
+    },
+    {
+      "scenario": "E01",
+      "arm": "after",
+      "turns": [
+        {
+          "role": "user",
+          "text": "记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。"
+        }
+      ],
+      "rubric": "保留 gate-79.mjs 和不能跳过验收，不反转否定",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。"
+          },
+          {
+            "id": 2,
+            "action": "merge",
+            "type": "preference",
+            "text": "以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。"
+          }
+        ],
+        "llmFailed": false,
+        "ruleCount": 1,
+        "modelCount": 1
+      },
+      "captures": [
+        {
+          "prompt": "Durable memory JSON: {\"candidates\":[{\"type\":\"\",\"text\":\"\",\"name\":\"\",\"quote\":\"\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\"}]}. Include source quote; omit other unused fields. None: {\"candidates\":[]}.\nOnly: preference=记住/以后都/别再; entity=repeated proper names; decision=object + 先别动/下周再/采用方案; experience=same-turn tool failure then success. Links: about|decided|broke|fixed.\nNo chitchat, one-off edit preferences, secrets, tool dumps or whole conversations. Preserve negation and dates in text; never infer expiry or output until/untilAt.\n\nuser: 记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"preference\",\"text\":\"以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。\",\"name\":\"AuroraService 发布前先运行 gate-79.mjs\",\"quote\":\"记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。\"}]}"
+          }
+        }
+      ],
+      "stored": [
+        {
+          "aliases": [],
+          "createdAt": "2026-10-29T03:41:40.616Z",
+          "name": "AuroraService 发布前先运行 gate-79.mjs",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:40.711Z",
+            "kind": "extract",
+            "quote": "记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "记住，以后发布 AuroraService 都先运行 gate-79.mjs，不要跳过验收。",
+          "type": "preference",
+          "updatedAt": "2026-10-29T03:41:40.711Z",
+          "uri": "ctx://preference/1793245300711"
+        }
+      ]
+    },
+    {
+      "scenario": "E02",
+      "arm": "before",
+      "turns": [
+        {
+          "role": "user",
+          "text": "采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。"
+        }
+      ],
+      "rubric": "决策含日期；不生成 until/untilAt",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "entity",
+            "text": "方案 B"
+          },
+          {
+            "id": 3,
+            "action": "insert",
+            "type": "decision",
+            "text": "采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。"
+          },
+          {
+            "id": 4,
+            "action": "insert",
+            "type": "decision",
+            "text": "采用方案 BluePlan，2027-01-12 复盘（该日期不是决策失效日期）。"
+          }
+        ],
+        "llmFailed": false,
+        "ruleCount": 2,
+        "modelCount": 1
+      },
+      "captures": [
+        {
+          "prompt": "Extract durable memory candidates as JSON only.\nShape: {\"candidates\":[{\"type\":\"preference|entity|decision|experience\",\"name\":\"\",\"text\":\"\",\"linkName\":\"\",\"linkLabel\":\"about|decided|broke|fixed\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"\"}]}\nWhitelist: 记住/以后都/别再 → preference; repeated proper names → entity; decision with an object (先别动/下周再/采用方案) → decision; tool fail then success in the same turn → experience.\nDo not write chitchat or one-off file edits as preference. Do not store secrets, tool dumps, or whole conversations.\nKeep dates in the fact text. Do not infer expiry or emit until/untilAt; expiry is set explicitly through the memory tools or settings.\nIf nothing matches, return {\"candidates\":[]}.\n\nuser: 采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"BluePlan 方案\",\"text\":\"采用方案 BluePlan，2027-01-12 复盘（该日期不是决策失效日期）。\",\"linkName\":\"BluePlan\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。\"}]}"
+          }
+        }
+      ],
+      "stored": [
+        {
+          "createdAt": "2026-10-29T03:41:41.504Z",
+          "name": "方案 B",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:41.504Z",
+            "kind": "extract",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "方案 B",
+          "type": "entity",
+          "updatedAt": "2026-10-29T03:41:41.504Z",
+          "uri": "ctx://entity/1793245301504"
+        },
+        {
+          "createdAt": "2026-10-29T03:41:41.620Z",
+          "name": "BluePlan",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:41.620Z",
+            "kind": "extract",
+            "quote": "采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。",
+          "type": "decision",
+          "updatedAt": "2026-10-29T03:41:41.620Z",
+          "uri": "ctx://decision/1793245301620"
+        },
+        {
+          "createdAt": "2026-10-29T03:41:41.770Z",
+          "name": "BluePlan 方案",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:41.770Z",
+            "kind": "extract",
+            "quote": "采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "采用方案 BluePlan，2027-01-12 复盘（该日期不是决策失效日期）。",
+          "type": "decision",
+          "updatedAt": "2026-10-29T03:41:41.770Z",
+          "uri": "ctx://decision/1793245301770"
+        }
+      ]
+    },
+    {
+      "scenario": "E02",
+      "arm": "after",
+      "turns": [
+        {
+          "role": "user",
+          "text": "采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。"
+        }
+      ],
+      "rubric": "决策含日期；不生成 until/untilAt",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "entity",
+            "text": "方案 B"
+          },
+          {
+            "id": 3,
+            "action": "insert",
+            "type": "decision",
+            "text": "采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。"
+          }
+        ],
+        "llmFailed": false,
+        "ruleCount": 2,
+        "modelCount": 1
+      },
+      "captures": [
+        {
+          "prompt": "Durable memory JSON: {\"candidates\":[{\"type\":\"\",\"text\":\"\",\"name\":\"\",\"quote\":\"\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\"}]}. Include source quote; omit other unused fields. None: {\"candidates\":[]}.\nOnly: preference=记住/以后都/别再; entity=repeated proper names; decision=object + 先别动/下周再/采用方案; experience=same-turn tool failure then success. Links: about|decided|broke|fixed.\nNo chitchat, one-off edit preferences, secrets, tool dumps or whole conversations. Preserve negation and dates in text; never infer expiry or output until/untilAt.\n\nuser: 采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"decision\",\"text\":\"采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。\",\"name\":\"BluePlan\",\"quote\":\"采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。\",\"linkName\":\"decided\",\"linkLabel\":\"decided\"}]}"
+          }
+        }
+      ],
+      "stored": [
+        {
+          "createdAt": "2026-10-29T03:41:42.718Z",
+          "name": "方案 B",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:42.718Z",
+            "kind": "extract",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "方案 B",
+          "type": "entity",
+          "updatedAt": "2026-10-29T03:41:42.718Z",
+          "uri": "ctx://entity/1793245302718"
+        },
+        {
+          "createdAt": "2026-10-29T03:41:42.835Z",
+          "name": "BluePlan",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:42.835Z",
+            "kind": "extract",
+            "quote": "采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "采用方案 BluePlan：2027-01-12 复盘，但这不是决策失效日期。",
+          "type": "decision",
+          "updatedAt": "2026-10-29T03:41:42.835Z",
+          "uri": "ctx://decision/1793245302835"
+        }
+      ]
+    },
+    {
+      "scenario": "E03",
+      "arm": "before",
+      "turns": [
+        {
+          "role": "user",
+          "text": "AuroraService 的配置改好了。AuroraService 的测试也好了。"
+        }
+      ],
+      "rubric": "可形成 AuroraService 实体，不虚构偏好",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "entity",
+            "text": "AuroraService"
+          },
+          {
+            "id": 2,
+            "action": "merge",
+            "type": "entity",
+            "text": "AuroraService 的配置已改好，测试也已通过。"
+          }
+        ],
+        "llmFailed": false,
+        "ruleCount": 1,
+        "modelCount": 1
+      },
+      "captures": [
+        {
+          "prompt": "Extract durable memory candidates as JSON only.\nShape: {\"candidates\":[{\"type\":\"preference|entity|decision|experience\",\"name\":\"\",\"text\":\"\",\"linkName\":\"\",\"linkLabel\":\"about|decided|broke|fixed\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"\"}]}\nWhitelist: 记住/以后都/别再 → preference; repeated proper names → entity; decision with an object (先别动/下周再/采用方案) → decision; tool fail then success in the same turn → experience.\nDo not write chitchat or one-off file edits as preference. Do not store secrets, tool dumps, or whole conversations.\nKeep dates in the fact text. Do not infer expiry or emit until/untilAt; expiry is set explicitly through the memory tools or settings.\nIf nothing matches, return {\"candidates\":[]}.\n\nuser: AuroraService 的配置改好了。AuroraService 的测试也好了。",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"AuroraService\",\"text\":\"AuroraService 的配置已改好，测试也已通过。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"AuroraService 的配置改好了。AuroraService 的测试也好了。\"}]}"
+          }
+        }
+      ],
+      "stored": [
+        {
+          "aliases": [],
+          "createdAt": "2026-10-29T03:41:43.841Z",
+          "name": "AuroraService",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:43.957Z",
+            "kind": "extract",
+            "quote": "AuroraService 的配置改好了。AuroraService 的测试也好了。",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "AuroraService 的配置已改好，测试也已通过。",
+          "type": "entity",
+          "updatedAt": "2026-10-29T03:41:43.958Z",
+          "uri": "ctx://entity/1793245303957"
+        }
+      ]
+    },
+    {
+      "scenario": "E03",
+      "arm": "after",
+      "turns": [
+        {
+          "role": "user",
+          "text": "AuroraService 的配置改好了。AuroraService 的测试也好了。"
+        }
+      ],
+      "rubric": "可形成 AuroraService 实体，不虚构偏好",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "entity",
+            "text": "AuroraService"
+          }
+        ],
+        "llmFailed": false,
+        "ruleCount": 1,
+        "modelCount": 0
+      },
+      "captures": [
+        {
+          "prompt": "Durable memory JSON: {\"candidates\":[{\"type\":\"\",\"text\":\"\",\"name\":\"\",\"quote\":\"\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\"}]}. Include source quote; omit other unused fields. None: {\"candidates\":[]}.\nOnly: preference=记住/以后都/别再; entity=repeated proper names; decision=object + 先别动/下周再/采用方案; experience=same-turn tool failure then success. Links: about|decided|broke|fixed.\nNo chitchat, one-off edit preferences, secrets, tool dumps or whole conversations. Preserve negation and dates in text; never infer expiry or output until/untilAt.\n\nuser: AuroraService 的配置改好了。AuroraService 的测试也好了。",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[]}"
+          }
+        }
+      ],
+      "stored": [
+        {
+          "createdAt": "2026-10-29T03:41:44.871Z",
+          "name": "AuroraService",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:44.871Z",
+            "kind": "extract",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "AuroraService",
+          "type": "entity",
+          "updatedAt": "2026-10-29T03:41:44.871Z",
+          "uri": "ctx://entity/1793245304871"
+        }
+      ]
+    },
+    {
+      "scenario": "E04",
+      "arm": "before",
+      "turns": [
+        {
+          "role": "tool",
+          "name": "compile",
+          "turn": 1,
+          "ok": false,
+          "text": "missing sdk"
+        },
+        {
+          "role": "tool",
+          "name": "compile",
+          "turn": 1,
+          "ok": true,
+          "text": "installed sdk, compile ok"
+        }
+      ],
+      "rubric": "经验保留先失败后成功的顺序及修复动作",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "experience",
+            "text": "compile failed then succeeded"
+          }
+        ],
+        "llmFailed": false,
+        "ruleCount": 1,
+        "modelCount": 0
+      },
+      "captures": [
+        {
+          "prompt": "Extract durable memory candidates as JSON only.\nShape: {\"candidates\":[{\"type\":\"preference|entity|decision|experience\",\"name\":\"\",\"text\":\"\",\"linkName\":\"\",\"linkLabel\":\"about|decided|broke|fixed\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"\"}]}\nWhitelist: 记住/以后都/别再 → preference; repeated proper names → entity; decision with an object (先别动/下周再/采用方案) → decision; tool fail then success in the same turn → experience.\nDo not write chitchat or one-off file edits as preference. Do not store secrets, tool dumps, or whole conversations.\nKeep dates in the fact text. Do not infer expiry or emit until/untilAt; expiry is set explicitly through the memory tools or settings.\nIf nothing matches, return {\"candidates\":[]}.\n\ntool: missing sdk tool: installed sdk, compile ok",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[]}"
+          }
+        }
+      ],
+      "stored": [
+        {
+          "createdAt": "2026-10-29T03:41:45.860Z",
+          "fail": "missing sdk",
+          "fix": "installed sdk, compile ok",
+          "name": "compile",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:45.860Z",
+            "kind": "extract",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "compile failed then succeeded",
+          "type": "experience",
+          "updatedAt": "2026-10-29T03:41:45.860Z",
+          "uri": "ctx://experience/1793245305860"
+        }
+      ]
+    },
+    {
+      "scenario": "E04",
+      "arm": "after",
+      "turns": [
+        {
+          "role": "tool",
+          "name": "compile",
+          "turn": 1,
+          "ok": false,
+          "text": "missing sdk"
+        },
+        {
+          "role": "tool",
+          "name": "compile",
+          "turn": 1,
+          "ok": true,
+          "text": "installed sdk, compile ok"
+        }
+      ],
+      "rubric": "经验保留先失败后成功的顺序及修复动作",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "experience",
+            "text": "compile failed then succeeded"
+          },
+          {
+            "id": 3,
+            "action": "insert",
+            "type": "experience",
+            "text": "Missing SDK tool: installed SDK and compile succeeded."
+          }
+        ],
+        "llmFailed": false,
+        "ruleCount": 1,
+        "modelCount": 1
+      },
+      "captures": [
+        {
+          "prompt": "Durable memory JSON: {\"candidates\":[{\"type\":\"\",\"text\":\"\",\"name\":\"\",\"quote\":\"\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\"}]}. Include source quote; omit other unused fields. None: {\"candidates\":[]}.\nOnly: preference=记住/以后都/别再; entity=repeated proper names; decision=object + 先别动/下周再/采用方案; experience=same-turn tool failure then success. Links: about|decided|broke|fixed.\nNo chitchat, one-off edit preferences, secrets, tool dumps or whole conversations. Preserve negation and dates in text; never infer expiry or output until/untilAt.\n\ntool: missing sdk tool: installed sdk, compile ok",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[{\"type\":\"experience\",\"text\":\"Missing SDK tool: installed SDK and compile succeeded.\",\"quote\":\"tool: missing sdk tool: installed sdk, compile ok\",\"linkLabel\":\"fixed\"}]}"
+          }
+        }
+      ],
+      "stored": [
+        {
+          "createdAt": "2026-10-29T03:41:46.806Z",
+          "fail": "missing sdk",
+          "fix": "installed sdk, compile ok",
+          "name": "compile",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:46.806Z",
+            "kind": "extract",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "compile failed then succeeded",
+          "type": "experience",
+          "updatedAt": "2026-10-29T03:41:46.806Z",
+          "uri": "ctx://experience/1793245306806"
+        },
+        {
+          "createdAt": "2026-10-29T03:41:46.926Z",
+          "source": {
+            "capturedAt": "2026-10-29T03:41:46.926Z",
+            "kind": "extract",
+            "quote": "tool: missing sdk tool: installed sdk, compile ok",
+            "sessionId": "synthetic-extraction",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "Missing SDK tool: installed SDK and compile succeeded.",
+          "type": "experience",
+          "updatedAt": "2026-10-29T03:41:46.926Z",
+          "uri": "ctx://experience/1793245306926"
+        }
+      ]
+    },
+    {
+      "scenario": "E05",
+      "arm": "before",
+      "turns": [
+        {
+          "role": "user",
+          "text": "只改这份文件的标题。"
+        }
+      ],
+      "rubric": "不生成持久偏好或决定",
+      "result": {
+        "applied": [],
+        "llmFailed": false,
+        "ruleCount": 0,
+        "modelCount": 0
+      },
+      "captures": [
+        {
+          "prompt": "Extract durable memory candidates as JSON only.\nShape: {\"candidates\":[{\"type\":\"preference|entity|decision|experience\",\"name\":\"\",\"text\":\"\",\"linkName\":\"\",\"linkLabel\":\"about|decided|broke|fixed\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"\"}]}\nWhitelist: 记住/以后都/别再 → preference; repeated proper names → entity; decision with an object (先别动/下周再/采用方案) → decision; tool fail then success in the same turn → experience.\nDo not write chitchat or one-off file edits as preference. Do not store secrets, tool dumps, or whole conversations.\nKeep dates in the fact text. Do not infer expiry or emit until/untilAt; expiry is set explicitly through the memory tools or settings.\nIf nothing matches, return {\"candidates\":[]}.\n\nuser: 只改这份文件的标题。",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[]}"
+          }
+        }
+      ],
+      "stored": []
+    },
+    {
+      "scenario": "E05",
+      "arm": "after",
+      "turns": [
+        {
+          "role": "user",
+          "text": "只改这份文件的标题。"
+        }
+      ],
+      "rubric": "不生成持久偏好或决定",
+      "result": {
+        "applied": [],
+        "llmFailed": false,
+        "ruleCount": 0,
+        "modelCount": 0
+      },
+      "captures": [
+        {
+          "prompt": "Durable memory JSON: {\"candidates\":[{\"type\":\"\",\"text\":\"\",\"name\":\"\",\"quote\":\"\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\"}]}. Include source quote; omit other unused fields. None: {\"candidates\":[]}.\nOnly: preference=记住/以后都/别再; entity=repeated proper names; decision=object + 先别动/下周再/采用方案; experience=same-turn tool failure then success. Links: about|decided|broke|fixed.\nNo chitchat, one-off edit preferences, secrets, tool dumps or whole conversations. Preserve negation and dates in text; never infer expiry or output until/untilAt.\n\nuser: 只改这份文件的标题。",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[]}"
+          }
+        }
+      ],
+      "stored": []
+    },
+    {
+      "scenario": "E06",
+      "arm": "before",
+      "turns": [
+        {
+          "role": "user",
+          "text": "谢谢！"
+        },
+        {
+          "role": "assistant",
+          "text": "好的。"
+        }
+      ],
+      "rubric": "无候选；新版不发模型请求",
+      "result": {
+        "applied": [],
+        "llmFailed": false,
+        "ruleCount": 0,
+        "modelCount": 0
+      },
+      "captures": [
+        {
+          "prompt": "Extract durable memory candidates as JSON only.\nShape: {\"candidates\":[{\"type\":\"preference|entity|decision|experience\",\"name\":\"\",\"text\":\"\",\"linkName\":\"\",\"linkLabel\":\"about|decided|broke|fixed\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"\"}]}\nWhitelist: 记住/以后都/别再 → preference; repeated proper names → entity; decision with an object (先别动/下周再/采用方案) → decision; tool fail then success in the same turn → experience.\nDo not write chitchat or one-off file edits as preference. Do not store secrets, tool dumps, or whole conversations.\nKeep dates in the fact text. Do not infer expiry or emit until/untilAt; expiry is set explicitly through the memory tools or settings.\nIf nothing matches, return {\"candidates\":[]}.\n\nuser: 谢谢！ assistant: 好的。",
+          "response": {
+            "role": "assistant",
+            "content": "{\"candidates\":[]}"
+          }
+        }
+      ],
+      "stored": []
+    },
+    {
+      "scenario": "E06",
+      "arm": "after",
+      "turns": [
+        {
+          "role": "user",
+          "text": "谢谢！"
+        },
+        {
+          "role": "assistant",
+          "text": "好的。"
+        }
+      ],
+      "rubric": "无候选；新版不发模型请求",
+      "result": {
+        "applied": [],
+        "llmFailed": false,
+        "ruleCount": 0,
+        "modelCount": 0
+      },
+      "captures": [],
+      "stored": []
+    }
+  ],
+  "uniqueWorkspaces": 12
+}

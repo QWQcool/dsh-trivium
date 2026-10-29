@@ -1,0 +1,32 @@
+{
+  "version": "0.8.0",
+  "files": 38,
+  "shasum": "ca3950f18ae837396657558feb368bb2cbd01e32",
+  "integrity": "sha512-ZSxoYh/cquLCzoiJfIRC8U+o8l5czlhTUY6LIT9boT2HHK/3MlfF7KPlh2nedBQmWkr67EMVuhIQp7T7WTzy8A==",
+  "normalizedFilesEqual": 38,
+  "peerChecks": {
+    "package": "dsh-trivium",
+    "version": "0.8.0",
+    "kernel": "0.9.0-beta.3",
+    "hostPeers": {
+      "llm": "0.2.1-rc.4",
+      "tools": "0.2.1-rc.4"
+    },
+    "checks": [
+      "package version",
+      "native binding",
+      "host module import",
+      "v4 source shape",
+      "four tool registrations",
+      "explicit expiry",
+      "history/current-only search",
+      "multiword search",
+      "clear expiry",
+      "runtime pre-step injection",
+      "same-turn de-duplication",
+      "cumulative turn budget",
+      "current version in runtime recall"
+    ],
+    "status": "passed"
+  }
+}

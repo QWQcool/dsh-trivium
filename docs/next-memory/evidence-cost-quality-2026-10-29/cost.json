@@ -1,0 +1,78 @@
+{
+  "before": {
+    "modelCalls": 0,
+    "note": "Controlled fake-clock workload through actual plugin hooks; token counts are local estimates, not daily spend",
+    "extraction": {
+      "acknowledgements": {
+        "calls": 8,
+        "promptEstimatedTokens": 1711,
+        "pendingMessages": 4
+      },
+      "substantive": {
+        "calls": 10,
+        "promptEstimatedTokens": 2798,
+        "pendingMessages": 2
+      }
+    },
+    "render": {
+      "map": {
+        "text": "dsh-trivium memory map (use ctx_find naming an entity for unexpired neighbors; ctx_read for full text).\nentities=0 preferences=1 decisions=0 experiences=0\nnamed: preference:验收约定",
+        "estimatedTokens": 48,
+        "bytes": 185
+      },
+      "injection": {
+        "text": "dsh-trivium autoRecall (L0 only; use ctx_read for full text):\n- [preference#2] 发布前先跑全量验收，再检查故障恢复记录。 (in_workspace->1(C:\\Users\\V_CHCH~1\\AppDat))",
+        "estimatedTokens": 51,
+        "bytes": 183
+      },
+      "find": {
+        "text": "[4.000] id=2 type=preference\n发布前先跑全量验收，再检查故障恢复记录。\npath: in_workspace->1(C:\\Users\\V_CHCH~1\\AppDat)",
+        "estimatedTokens": 40,
+        "bytes": 137
+      },
+      "read": {
+        "text": "{\n  \"id\": 2,\n  \"payload\": {\n    \"type\": \"preference\",\n    \"name\": \"验收约定\",\n    \"text\": \"发布前先跑全量验收，再检查故障恢复记录。\",\n    \"status\": \"active\",\n    \"createdAt\": \"2026-10-29T03:44:09.533Z\",\n    \"updatedAt\": \"2026-10-29T03:44:09.533Z\"\n  },\n  \"edges\": [\n    {\n      \"targetId\": 1,\n      \"label\": \"in_workspace\",\n      \"weight\": 0.15,\n      \"metadata\": null\n    }\n  ],\n  \"incoming\": []\n}",
+        "estimatedTokens": 112,
+        "bytes": 421
+      }
+    }
+  },
+  "after": {
+    "modelCalls": 0,
+    "note": "Controlled fake-clock workload through actual plugin hooks; token counts are local estimates, not daily spend",
+    "extraction": {
+      "acknowledgements": {
+        "calls": 0,
+        "promptEstimatedTokens": 0,
+        "pendingMessages": 0
+      },
+      "substantive": {
+        "calls": 13,
+        "promptEstimatedTokens": 3417,
+        "pendingMessages": 0
+      }
+    },
+    "render": {
+      "map": {
+        "text": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=1 decisions=0 experiences=0\nnamed: preference:验收约定",
+        "estimatedTokens": 45,
+        "bytes": 173
+      },
+      "injection": {
+        "text": "dsh-trivium autoRecall (summary; ctx_read for full text):\n- [preference#2] 发布前先跑全量验收，再检查故障恢复记录。",
+        "estimatedTokens": 39,
+        "bytes": 135
+      },
+      "find": {
+        "text": "[4.000] id=2 type=preference\n发布前先跑全量验收，再检查故障恢复记录。",
+        "estimatedTokens": 28,
+        "bytes": 89
+      },
+      "read": {
+        "text": "{\"id\":2,\"payload\":{\"type\":\"preference\",\"name\":\"验收约定\",\"text\":\"发布前先跑全量验收，再检查故障恢复记录。\",\"status\":\"active\",\"createdAt\":\"2026-10-29T03:44:12.358Z\",\"updatedAt\":\"2026-10-29T03:44:12.358Z\"},\"edges\":[{\"targetId\":1,\"label\":\"in_workspace\",\"weight\":0.15,\"metadata\":null}],\"incoming\":[]}",
+        "estimatedTokens": 86,
+        "bytes": 320
+      }
+    }
+  }
+}

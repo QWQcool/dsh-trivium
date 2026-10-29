@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import { grade, scenarios } from "./quality-fixtures.mjs";
+const cases = scenarios();
+for (const sc of cases) assert.equal(grade(JSON.stringify(sc.gold), sc.gold).pass, true, sc.id);
+const s02 = cases.find((sc) => sc.id === "S02"), s07 = cases.find((sc) => sc.id === "S07"), s10 = cases.find((sc) => sc.id === "S10");
+for (const answer of ['教程与实际演示并非都可以，仍然只推教程', JSON.stringify({ ...s02.gold, old_allowed: true }), JSON.stringify({ ...s02.gold, contradiction: "旧标签仍生效" })]) assert.equal(grade(answer, s02.gold).pass, false);
+for (const answer of ['建议先跑基线', '{"codes":["基线"]}', JSON.stringify({ codes: s07.gold.codes.slice(0,5) }), JSON.stringify({ codes: [...s07.gold.codes, s07.gold.codes[0]] })]) assert.equal(grade(answer, s07.gold).pass, false);
+assert.equal(grade('{"reason":"增量失效"}', s10.gold).pass, false);
+assert.equal(grade(JSON.stringify({ codes: s07.gold.codes.toReversed() }), s07.gold).pass, true);
+assert.equal(grade('null', { owner: null }).pass, false);
+assert.equal(grade('{"owner":"不知道"}', { owner: null }).pass, false);
+assert.equal(grade('{"owner":null}', { owner: null }).pass, true);
+console.log("P33 rubric passed: all gold, negation, generic answer, missing/extra/duplicate fields, unknown and order-independent set");
