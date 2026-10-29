@@ -126,6 +126,14 @@ Trivium is a memory kernel, not a journal, calendar, or chat companion. It store
 - **Write hygiene** — `ctx_remember`, chip add, extract, and external import refuse mojibake, stutter loops, JSON envelopes, base64 residue, and secrets. Dirty nodes already in `.tdb` stay visible in Settings so you can archive them; they are hidden from find / short map / chips.
 - **Optional embedding** — off by default. The official DeepSeek chat API has no embeddings endpoint; fill an OpenAI-compatible URL if you want one. Keyword + graph walk still work without it.
 
+### Budget and memory evaluation
+
+The session map is limited to 400 estimated tokens. When chips or automatic recall are enabled, pins, recall and corrections share 300 estimated tokens per turn; tools can fetch full text on demand. Pure acknowledgement batches skip the extraction model. These limits exclude tool schemas and responses, model answers and background extraction; they are not a cap on the total request or bill.
+
+For one fixed synthetic fact, compared with the pre-release 0.8.0 development baseline, automatic injection went from 51 to 39, `ctx_find` from 40 to 28, and `ctx_read` from 112 to 86 **estimated tokens**. This single sample is not a universal saving or a real-world bill. In another controlled 20-turn substantive conversation, extraction calls rose from 10 to 13: the old version left two messages pending and the new version left none. Skipping work is not a cost saving.
+
+An exploratory test used 10 synthetic scenarios, one model and three repetitions per scenario. Strict field scores were 6/30 without memory, 30/30 with complete plain text, and 29/30 with graph read tools. The graph arm's only failure added a word to a field after retrieving the correct fact; its estimated cost was about 1.61 times the plain-text arm. This small comparison of two pipelines is neither a full default DSH session nor a comparison with other plugins, and does not establish lower cost, superior performance or equivalence. See the [evaluation report](docs/next-memory/COST-QUALITY-RESULTS.md) for methods, raw results and limitations.
+
 ### Under the hood
 
 - **In-process, one file** — TriviumDB (vectors + JSON payload + directed weighted graph) opens with the DSH process. No sidecar HTTP/Python service.
