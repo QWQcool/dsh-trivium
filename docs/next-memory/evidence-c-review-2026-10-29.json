@@ -1,0 +1,724 @@
+{
+  "reviewDate": "2026-10-29",
+  "baseCommit": "e4d3e099287841ce0b5754e6a6d37f6adc22abaf",
+  "branch": "codex/c-review-p0",
+  "runtime": {
+    "platform": "win32-x64",
+    "node": "v24.15.0",
+    "npm": "11.12.1",
+    "kernel": "0.9.0-beta.3"
+  },
+  "status": "implemented and self-tested; independent acceptance pending; unpublished",
+  "baseline": "29/30, p28 failed",
+  "regression": "32/32",
+  "targeted": {
+    "p30After": "11/11",
+    "p31Before": "6/18",
+    "p30Before": "6/11",
+    "p31After": "18/18"
+  },
+  "realModelCalls": 0,
+  "newModelCostCny": 0,
+  "originalOnlineAnd50kArtifactsAvailable": false,
+  "scaleBeforeQualityOnly": [
+    {
+      "tier": 1000,
+      "repeat": 0,
+      "seed": 28180028,
+      "openMs": 9,
+      "emptyRssMb": 59,
+      "planMs": 91,
+      "planOk": true,
+      "importMs": 1434,
+      "importOk": true,
+      "importCreated": 1000,
+      "importRssMb": 91,
+      "tdbMb": 6.7,
+      "reopenMs": 153,
+      "reopenRssMb": 89,
+      "reopenNodeCount": 1001,
+      "firstQueryMs": 213,
+      "firstQueryHits": 8,
+      "searchP50Ms": 157.9,
+      "searchP95Ms": 215.5,
+      "searchMaxMs": 215.5,
+      "searchMs": [
+        148,
+        124,
+        130,
+        135,
+        132,
+        132,
+        131,
+        141,
+        215,
+        177,
+        158,
+        209,
+        211,
+        195,
+        187,
+        180,
+        191,
+        158,
+        147
+      ],
+      "positiveTotal": 16,
+      "positiveHit": 15,
+      "negativeTotal": 3,
+      "negativeCorrect": 3,
+      "failedQueries": [
+        {
+          "q": "revision note 2",
+          "expect": "bench://scale/2",
+          "hits": 8,
+          "topUris": [
+            "bench://scale/26",
+            "bench://scale/202",
+            "bench://scale/218"
+          ],
+          "ok": false
+        }
+      ],
+      "reopenAgainMs": 228,
+      "peakRssMb": 174
+    }
+  ],
+  "scaleAfter": [
+    {
+      "tier": 1000,
+      "repeat": 0,
+      "seed": 28180028,
+      "openMs": 39,
+      "emptyRssMb": 61,
+      "planMs": 96,
+      "planOk": true,
+      "importMs": 574,
+      "importOk": true,
+      "importCreated": 1000,
+      "importRssMb": 94,
+      "tdbMb": 6.7,
+      "reopenMs": 112,
+      "reopenRssMb": 94,
+      "reopenNodeCount": 1001,
+      "firstQueryMs": 198,
+      "firstQueryHits": 8,
+      "searchP50Ms": 150.4,
+      "searchP95Ms": 204.2,
+      "searchMaxMs": 204.2,
+      "searchMs": [
+        166,
+        131,
+        140,
+        150,
+        148,
+        145,
+        149,
+        149,
+        150,
+        133,
+        116,
+        151,
+        153,
+        195,
+        197,
+        193,
+        204,
+        163,
+        166
+      ],
+      "positiveTotal": 16,
+      "positiveHit": 16,
+      "negativeTotal": 3,
+      "negativeCorrect": 3,
+      "failedQueries": [],
+      "reopenAgainMs": 200,
+      "peakRssMb": 176
+    },
+    {
+      "tier": 1000,
+      "repeat": 1,
+      "seed": 28180029,
+      "openMs": 9,
+      "emptyRssMb": 60,
+      "planMs": 98,
+      "planOk": true,
+      "importMs": 585,
+      "importOk": true,
+      "importCreated": 1000,
+      "importRssMb": 92,
+      "tdbMb": 6.7,
+      "reopenMs": 118,
+      "reopenRssMb": 91,
+      "reopenNodeCount": 1001,
+      "firstQueryMs": 190,
+      "firstQueryHits": 8,
+      "searchP50Ms": 146.1,
+      "searchP95Ms": 192.3,
+      "searchMaxMs": 192.3,
+      "searchMs": [
+        159,
+        129,
+        138,
+        149,
+        150,
+        146,
+        141,
+        141,
+        143,
+        120,
+        115,
+        143,
+        146,
+        141,
+        181,
+        182,
+        192,
+        159,
+        157
+      ],
+      "positiveTotal": 16,
+      "positiveHit": 16,
+      "negativeTotal": 3,
+      "negativeCorrect": 3,
+      "failedQueries": [],
+      "reopenAgainMs": 189,
+      "peakRssMb": 174
+    },
+    {
+      "tier": 1000,
+      "repeat": 2,
+      "seed": 28180030,
+      "openMs": 9,
+      "emptyRssMb": 61,
+      "planMs": 98,
+      "planOk": true,
+      "importMs": 592,
+      "importOk": true,
+      "importCreated": 1000,
+      "importRssMb": 95,
+      "tdbMb": 6.7,
+      "reopenMs": 113,
+      "reopenRssMb": 94,
+      "reopenNodeCount": 1001,
+      "firstQueryMs": 184,
+      "firstQueryHits": 8,
+      "searchP50Ms": 148.2,
+      "searchP95Ms": 211.3,
+      "searchMaxMs": 211.3,
+      "searchMs": [
+        157,
+        131,
+        146,
+        150,
+        146,
+        147,
+        148,
+        151,
+        145,
+        122,
+        117,
+        140,
+        141,
+        159,
+        183,
+        195,
+        211,
+        158,
+        162
+      ],
+      "positiveTotal": 16,
+      "positiveHit": 16,
+      "negativeTotal": 3,
+      "negativeCorrect": 3,
+      "failedQueries": [],
+      "reopenAgainMs": 589,
+      "peakRssMb": 175
+    }
+  ],
+  "c3Before": {
+    "passed": "9/10",
+    "forbiddenTotal": 0,
+    "maxTokens": 213,
+    "overBudget": []
+  },
+  "c3After": {
+    "passed": "9/10",
+    "forbiddenTotal": 0,
+    "maxTokens": 213,
+    "overBudget": []
+  },
+  "onlineAudit": {
+    "mode": "audit-only",
+    "modelCalls": 0,
+    "uniqueWorkspacePaths": 60,
+    "fixtures": [
+      {
+        "id": "S01",
+        "arm": "default",
+        "nodeCount": 3
+      },
+      {
+        "id": "S01",
+        "arm": "plain",
+        "nodeCount": 3
+      },
+      {
+        "id": "S02",
+        "arm": "default",
+        "nodeCount": 3
+      },
+      {
+        "id": "S02",
+        "arm": "plain",
+        "nodeCount": 3
+      },
+      {
+        "id": "S10",
+        "arm": "default",
+        "nodeCount": 3
+      },
+      {
+        "id": "S10",
+        "arm": "plain",
+        "nodeCount": 3
+      }
+    ],
+    "adversarial": [
+      {
+        "id": "S02",
+        "answer": "教程与实际演示并非都可以推荐，仍然只有教程。",
+        "legacyPass": true,
+        "semanticPass": false
+      },
+      {
+        "id": "S07",
+        "answer": "不知道之前的约定，建议先建立一份基线。",
+        "legacyPass": true,
+        "semanticPass": false
+      },
+      {
+        "id": "S10",
+        "answer": "你提到了增量失效，但我不知道修改原因。",
+        "legacyPass": true,
+        "semanticPass": false
+      }
+    ],
+    "conclusion": "keyword matches are not answer accuracy; old online claims require regrading and a controlled rerun"
+  },
+  "g4": {
+    "generatedAt": "2026-10-29T02:16:09.265Z",
+    "node": "v24.15.0",
+    "measurement": "真实 store/revisions/ctx_find/pre-step，合成库，零模型调用",
+    "gate": "G4 损坏链不得被投影为正常事实",
+    "violations": [],
+    "pass": true,
+    "results": {
+      "validChain": {
+        "linkOk": true,
+        "headIsNewest": true,
+        "resolverCurrentId": 3,
+        "resolverBodyIsNew": true,
+        "oldBodyInFind": false,
+        "newBodyInFind": true
+      },
+      "bodyProtected": {
+        "code": "REVISION_PROTECTED",
+        "pass": true
+      },
+      "deleteProtected": {
+        "code": "REVISION_LINKED",
+        "pass": true
+      },
+      "cycle": {
+        "apiRefused": true,
+        "apiCode": "cycle",
+        "headOk": true,
+        "headReason": null,
+        "resolverNull": false,
+        "oldBodyShownAsCurrent": false,
+        "newBodyShownAsCurrent": true,
+        "note": "API 层已拒绝，属纵深防御"
+      },
+      "hopLimit": {
+        "linksApplied": 32,
+        "refusedAt": 33,
+        "refusedCode": "too-long",
+        "headOk": true,
+        "headHops": 32,
+        "headIdIsLast": true,
+        "pass": true
+      },
+      "forcedCycle": {
+        "headOk": false,
+        "headReason": "cycle",
+        "resolverNull": true,
+        "oldBodyInFind": false,
+        "oldBodyInInjection": false,
+        "newBodyInFind": false,
+        "constructible": true,
+        "linkRefused": false,
+        "pass": true
+      },
+      "forcedTooLong": {
+        "views": [
+          {
+            "id": 4,
+            "head": {
+              "ok": false,
+              "reason": "too-long",
+              "id": null,
+              "hops": 32
+            },
+            "projection": null
+          },
+          {
+            "id": 20,
+            "head": {
+              "ok": false,
+              "reason": "too-long",
+              "id": null,
+              "hops": 32
+            },
+            "projection": null
+          },
+          {
+            "id": 40,
+            "head": {
+              "ok": false,
+              "reason": "too-long",
+              "id": null,
+              "hops": 32
+            },
+            "projection": null
+          }
+        ],
+        "pass": true
+      },
+      "rememberGuard": {
+        "refused": true,
+        "unchanged": true
+      }
+    }
+  },
+  "stageProfile": {
+    "generatedAt": "2026-10-29T02:25:26.204Z",
+    "node": "v24.15.0",
+    "platform": "win32",
+    "size": 1000,
+    "semantic": "off",
+    "modelCalls": 0,
+    "caveat": "One synthetic store, instrumented native call counts; stage timings include observer overhead. Native load bypasses store initialization and is a diagnostic only, not an accepted replacement or speedup claim.",
+    "importProfile": {
+      "ms": 519.46,
+      "calls": {
+        "tql": 1,
+        "allNodeIds": 1002,
+        "get": 2995,
+        "indexText": 1000,
+        "indexKeyword": 1000,
+        "buildTextIndex": 1000
+      }
+    },
+    "reopen": {
+      "ms": 40.66,
+      "calls": {
+        "tql": 1,
+        "allNodeIds": 1,
+        "getPayload": 1001,
+        "indexText": 1001,
+        "indexKeyword": 1001,
+        "buildTextIndex": 1
+      }
+    },
+    "queries": [
+      {
+        "query": "revision note 2",
+        "totalMs": 183.69,
+        "stages": [
+          {
+            "stage": "native-hybrid",
+            "msSincePreviousStage": 37.93,
+            "candidates": 16,
+            "cumulativeCalls": {
+              "searchHybrid": 1
+            }
+          },
+          {
+            "stage": "keyword-fallback",
+            "msSincePreviousStage": 97.15,
+            "candidates": 64,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "get": 1017,
+              "allNodeIds": 1
+            }
+          },
+          {
+            "stage": "entity-anchor",
+            "msSincePreviousStage": 34.78,
+            "candidates": 1,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "get": 1081,
+              "allNodeIds": 1,
+              "tql": 1
+            }
+          },
+          {
+            "stage": "same-as-normalize",
+            "msSincePreviousStage": 7.34,
+            "candidates": 0,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "get": 1161,
+              "allNodeIds": 1,
+              "tql": 1
+            }
+          },
+          {
+            "stage": "business-expand",
+            "msSincePreviousStage": 1.19,
+            "candidates": 5,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "get": 1166,
+              "allNodeIds": 1,
+              "tql": 1,
+              "neighbors": 79,
+              "getIncomingEdges": 79
+            }
+          },
+          {
+            "stage": "final-filter-sort",
+            "msSincePreviousStage": 5.28,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "get": 1214,
+              "allNodeIds": 1,
+              "tql": 1,
+              "neighbors": 79,
+              "getIncomingEdges": 144
+            }
+          }
+        ],
+        "topUris": [
+          "test://stage/2",
+          "test://stage/20",
+          "test://stage/21",
+          "test://stage/22",
+          "test://stage/23",
+          "test://stage/24",
+          "test://stage/25",
+          "test://stage/26"
+        ]
+      },
+      {
+        "query": "marker m999",
+        "totalMs": 135.57,
+        "stages": [
+          {
+            "stage": "native-hybrid",
+            "msSincePreviousStage": 2.93,
+            "candidates": 16,
+            "cumulativeCalls": {
+              "searchHybrid": 1
+            }
+          },
+          {
+            "stage": "keyword-fallback",
+            "msSincePreviousStage": 97.22,
+            "candidates": 64,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "get": 1017,
+              "allNodeIds": 1
+            }
+          },
+          {
+            "stage": "entity-anchor",
+            "msSincePreviousStage": 28.56,
+            "candidates": 0,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "get": 1081,
+              "allNodeIds": 1,
+              "tql": 1
+            }
+          },
+          {
+            "stage": "same-as-normalize",
+            "msSincePreviousStage": 5.61,
+            "candidates": 0,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "get": 1145,
+              "allNodeIds": 1,
+              "tql": 1
+            }
+          },
+          {
+            "stage": "business-expand",
+            "msSincePreviousStage": 0.57,
+            "candidates": 3,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "get": 1148,
+              "allNodeIds": 1,
+              "tql": 1,
+              "neighbors": 64,
+              "getIncomingEdges": 64
+            }
+          },
+          {
+            "stage": "final-filter-sort",
+            "msSincePreviousStage": 0.68,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "get": 1153,
+              "allNodeIds": 1,
+              "tql": 1,
+              "neighbors": 64,
+              "getIncomingEdges": 129
+            }
+          }
+        ],
+        "topUris": [
+          "test://stage/999",
+          "test://stage/3",
+          "test://stage/4",
+          "test://stage/5",
+          "test://stage/6",
+          "test://stage/7",
+          "test://stage/8",
+          "test://stage/9"
+        ]
+      },
+      {
+        "query": "absent-identifier-xyz",
+        "totalMs": 108.51,
+        "stages": [
+          {
+            "stage": "native-hybrid",
+            "msSincePreviousStage": 1.99,
+            "candidates": 0,
+            "cumulativeCalls": {
+              "searchHybrid": 1
+            }
+          },
+          {
+            "stage": "keyword-fallback",
+            "msSincePreviousStage": 93.89,
+            "candidates": 0,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "allNodeIds": 1,
+              "get": 1001
+            }
+          },
+          {
+            "stage": "entity-anchor",
+            "msSincePreviousStage": 12.58,
+            "candidates": 0,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "allNodeIds": 1,
+              "get": 1001,
+              "tql": 1
+            }
+          },
+          {
+            "stage": "same-as-normalize",
+            "msSincePreviousStage": 0.03,
+            "candidates": 0,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "allNodeIds": 1,
+              "get": 1001,
+              "tql": 1
+            }
+          },
+          {
+            "stage": "business-expand",
+            "msSincePreviousStage": 0,
+            "candidates": 0,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "allNodeIds": 1,
+              "get": 1001,
+              "tql": 1
+            }
+          },
+          {
+            "stage": "final-filter-sort",
+            "msSincePreviousStage": 0.01,
+            "cumulativeCalls": {
+              "searchHybrid": 1,
+              "allNodeIds": 1,
+              "get": 1001,
+              "tql": 1
+            }
+          }
+        ],
+        "topUris": []
+      }
+    ],
+    "nativeLoad": {
+      "openMs": 18.35,
+      "callsBeforeQuery": {},
+      "textHits": 8
+    }
+  },
+  "counterpartDecision": {
+    "goodmemory": "not installed or activated in this review",
+    "openViking": "excluded as requested",
+    "crossRun": "not covered; improve rubric before spending",
+    "bunVersion": "1.4.3",
+    "dshMemory": "not installed or activated in this review"
+  },
+  "sourceSha256": {
+    "lib/store.js": "9073730458e3be9e82c661985ad5821603161cb46a83b38e90e84a7fbb660bdd",
+    "lib/tools.js": "aef984312313dc6045a72d36233113ab76d5aa89b7274117ade08b2b2fac962a",
+    "scripts/smoke-p28.mjs": "dc987e66197d84419e7993bf05d552660c0068b9776fd7432eedded235d6bcbe",
+    "scripts/smoke-p30.mjs": "6c7b2f9d68a31287639d3d71da04f03ec1705d9ccffcaf2c7aa1d5436c41165a",
+    "scripts/smoke-p31.mjs": "ce3a645a9702741020ecbec285fab45eb79a6e12ec3b85fdb7fa658e35b2bbe9",
+    "scripts/bench-g4.mjs": "d69dbb1f72a69e649bfbcfe4ff04841a21b73bc1029013afa0e42e7c78cd7df5",
+    "scripts/bench-c3-online.mjs": "6fe465db1a2b41c63e3ff1a29341eb4fcab8864dace8171031d4c88286205c21",
+    "scripts/bench-scale.mjs": "1097e91acc0ee29a569664f4e27e6ccec6a2fde5c773805134b0d641810d9b31",
+    "scripts/bench-retrieval-stages.mjs": "d1e847f8cf2ca409d3f5e8201708054bc584913ced468d012dc0821ae7c9b117"
+  },
+  "publicForkOriginalCode": {
+    "baseline": "e4d3e09",
+    "mutationPath": "public ctx_remember arguments only; no raw edge injection",
+    "writes": [
+      "Remembered id=3 type=decision",
+      "Remembered id=4 type=decision"
+    ],
+    "incomingVersions": 2,
+    "integrity": {
+      "ok": false,
+      "nodes": 4,
+      "edges": 2,
+      "issues": [
+        {
+          "code": "fork-predecessor",
+          "id": 2,
+          "from": [
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "find": "[4.000] id=3 type=decision\n第一条未经人工确认的替代方案。\npath: (none)\nmatched_history=#2 → current=#3"
+  },
+  "reviewCommits": {
+    "correctness": "e548e60a6c13f67252078f95dd9c0f5561b5c17f",
+    "benchmarks": "bcab3b47d34a955c5d5f879732f9d3b18ba82d59"
+  }
+}

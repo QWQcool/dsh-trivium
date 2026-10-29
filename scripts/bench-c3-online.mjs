@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /**
- * C3-online：端到端臂实验（真实模型，计费按 provider usage，不用插件估算值）。
+ * C3-online：探索性工具循环实验，token按provider usage记录。
+ * 历史臂名default只表示两个读工具的受控循环，不是完整DSH默认会话；
+ * 字符串pass不是准确率，CNY是假定价格估算。本轮推荐 --audit-only 零调用复核。
  *
  * 三个臂，回答"记忆到底有没有用"这个问题的最核心三角：
  *   A nomem    —— 无记忆（只有问题）
