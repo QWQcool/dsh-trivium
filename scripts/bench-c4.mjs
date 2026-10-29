@@ -24,6 +24,7 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { grade, scenarios, plantScenario, SYSTEM, RUBRIC_VERSION } from "./quality-fixtures.mjs";
+import { PRICING, priceBoth, windowAt } from "./pricing.mjs";
 
 const args = new Map(process.argv.slice(2).map((s) => { const at = s.indexOf("="); return at < 0 ? [s, true] : [s.slice(0, at), s.slice(at + 1)]; }));
 const RUN = args.has("--run");
@@ -86,8 +87,9 @@ const dmPkg = existsSync(DM_DIR) ? indexHtml(DM_DIR) : null;
 const report = {
   protocol: "C4", plan: "docs/next-memory/C4-PLAN.md", rubric: RUBRIC_VERSION,
   model: MODEL, thinking: "disabled", temperature: 0, maxTokens: 600, reps: REPS,
-  budgetCny: BUDGET, pricesCnyPerMillion: { input: 2, cached: 0.04, output: 8 },
+  budgetCny: BUDGET, pricesCnyPerMillion: { peak: { input: 2, cached: 0.04, output: 8 }, offpeak: { input: 1, cached: 0.02, output: 4 } },
   priceSource: "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+  costBasis: "budget guard uses peak; reported cost uses off-peak (offpeak = peak/2)",
   environment: {
     node: process.version,
     host: "@deepseek-ai/dsh 0.2.1-rc.4 (peer)",
@@ -98,13 +100,12 @@ const report = {
   status: "running", estimatedCny: 0, reservedOrChargedCny: 0, calls: [], cells: [],
 };
 const save = () => writeFileSync(out, JSON.stringify(report, null, 2) + "\n", "utf8");
-const price = (u) => {
-  const cached = Math.min(u.prompt_tokens, Math.max(0, Number(u.prompt_cache_hit_tokens || 0)));
-  return (u.prompt_tokens - cached) * 2e-6 + cached * 0.04e-6 + u.completion_tokens * 8e-6;
-};
+// 预算守卫按峰价（上界），对外报数按谷价；两者都由 scripts/pricing.mjs 唯一决定。
+const price = (u, model = report.model) => priceBoth(u, model).peak;
 async function callRaw(body, label) {
   assert.ok(RUN, "离线审计不得发请求");
-  const reserve = (Buffer.byteLength(JSON.stringify(body), "utf8") + 16_384) * 2e-6 + 600 * 8e-6;
+  const peak = (PRICING[report.model] || PRICING["deepseek-flash"]).peak;
+  const reserve = (Buffer.byteLength(JSON.stringify(body), "utf8") + 16_384) * peak.inputMiss * 1e-6 + 600 * peak.output * 1e-6;
   assert.ok(report.reservedOrChargedCny + reserve <= BUDGET, "预算不足：未发请求");
   const receipt = { label, reservedCny: reserve, state: "reserved" };
   report.calls.push(receipt); report.reservedOrChargedCny += reserve; save();
@@ -118,11 +119,15 @@ async function callRaw(body, label) {
     const json = await resp.json();
     const u = json.usage;
     if (!u || !Number.isFinite(u.prompt_tokens) || !Number.isFinite(u.completion_tokens)) throw new Error("缺少 usage：保留全额预留并停止");
-    const cost = price(u);
-    receipt.model = json.model; receipt.usage = u; receipt.response = json.choices; receipt.estimatedCny = cost; receipt.state = "complete";
-    report.estimatedCny += cost; report.reservedOrChargedCny += cost - reserve; save();
+    const served = String(json.model || report.model);
+    const both = priceBoth(u, served);
+    const cost = both.peak;
+    receipt.model = json.model; receipt.usage = u; receipt.response = json.choices; receipt.state = "complete";
+    receipt.window = windowAt(); receipt.costPeak = both.peak; receipt.costOffpeak = both.offpeak;
+    receipt.estimatedCny = both.offpeak;
+    report.estimatedCny += both.offpeak; report.reservedOrChargedCny += cost - reserve; save();
     assert.ok(report.reservedOrChargedCny <= BUDGET && cost <= reserve, "实际费用超出预留：停止");
-    return { message: json.choices?.[0]?.message || {}, usage: u, cost };
+    return { message: json.choices?.[0]?.message || {}, usage: u, cost, costOffpeak: both.offpeak };
   } catch (err) {
     receipt.error = err.message; receipt.state = "stopped"; save(); throw err;
   }
@@ -153,6 +158,7 @@ async function call(messages, label, { tools, exec } = {}) {
   const msgs = [...messages];
   const usage = { prompt_tokens: 0, completion_tokens: 0, prompt_cache_hit_tokens: 0 };
   let cost = 0;
+  let costOffpeak = 0;
   let toolCalls = 0;
   const trace = [];
   for (let round = 0; round < 6; round += 1) {
@@ -165,9 +171,10 @@ async function call(messages, label, { tools, exec } = {}) {
     usage.completion_tokens += res.usage.completion_tokens;
     usage.prompt_cache_hit_tokens += Number(res.usage.prompt_cache_hit_tokens || 0);
     cost += res.cost;
+    costOffpeak += res.costOffpeak;
     const msg = res.message;
     const calls = Array.isArray(msg.tool_calls) ? msg.tool_calls : [];
-    if (!calls.length) return { answer: String(msg.content || ""), usage, cost, toolCalls };
+    if (!calls.length) return { answer: String(msg.content || ""), usage, cost, costOffpeak, toolCalls };
     toolCalls += calls.length;
     msgs.push({ role: "assistant", content: String(msg.content || ""), tool_calls: calls });
     for (const c of calls) {
@@ -182,7 +189,7 @@ async function call(messages, label, { tools, exec } = {}) {
       msgs.push({ role: "tool", tool_call_id: c.id, content: out });
     }
   }
-  return { answer: "", usage, cost, toolCalls, trace, exhausted: true };
+  return { answer: "", usage, cost, costOffpeak, toolCalls, trace, exhausted: true };
 }
 
 /* ---------- 六个场景：只取不用修订链/归档的三方都能表达的 ------------- */
@@ -410,7 +417,7 @@ try {
               ? { tools: openAiTools(trivium.toolDefs), exec: { agent: { session: { header: { cwd: meta.cwd } } } } }
               : {};
             const res = await call(messages, `${arm.id}/${sc.id}/r${rep}`, toolFace);
-            cell.answer = res.answer; cell.usage = res.usage; cell.estimatedCny = res.cost; cell.grade = grade(res.answer, sc.gold);
+            cell.answer = res.answer; cell.usage = res.usage; cell.estimatedCny = res.costOffpeak; cell.estimatedCnyPeak = res.cost; cell.grade = grade(res.answer, sc.gold);
             if (arm.tools) { cell.toolCalls = res.toolCalls; cell.toolTrace = res.trace || []; }
             console.log(`${arm.id} ${sc.id} r${rep}: ${cell.grade.pass ? "pass" : "FAIL"} ctx~${meta.tokens}tok tools=${res.toolCalls || 0} total=${report.estimatedCny.toFixed(4)}`);
           } else {
