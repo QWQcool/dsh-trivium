@@ -36,4 +36,5 @@ dsh plugin --profile web add dsh-trivium@0.8.0
 - 38 个文件；shasum `ca3950f18ae837396657558feb368bb2cbd01e32`。
 - integrity：`sha512-ZSxoYh/cquLCzoiJfIRC8U+o8l5czlhTUY6LIT9boT2HHK/3MlfF7KPlh2nedBQmWkr67EMVuhIQp7T7WTzy8A==`。
 - 从 registry 实际下载 tarball 并计算 SHA-512，与已干净安装及测试的最终包完全相同。
+- [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.8.0) 已补充 npm tarball 附件；GitHub 记录的 SHA-256 为 `b6a6bb0355de87f649220950a04928be0e3a6338be762509484de9fb3c384359`，与本地已验证的 npm 包一致。GitHub 的 Source code 为源码归档。
 - [机器可读回执](next-memory/evidence-cost-quality-2026-10-29/release-receipt.json) / [安装与真实 peers 检查](next-memory/evidence-cost-quality-2026-10-29/package-check.json)。
