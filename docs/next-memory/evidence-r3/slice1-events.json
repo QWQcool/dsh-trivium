@@ -1,0 +1,94 @@
+{
+  "eventTypes": {
+    "agent/inbox/spliced": 14,
+    "approval/policy": 1,
+    "assistant/attempt": 1,
+    "assistant/message": 5,
+    "compaction/end": 1,
+    "compaction/start": 1,
+    "compaction/summary": 1,
+    "permission/preset": 1,
+    "request/context": 1,
+    "request/header": 4,
+    "sandbox/mode": 1,
+    "session-log-deepseek/delivery-accepted": 10,
+    "session/title": 2,
+    "session/title-llm-request": 1,
+    "step/end": 5,
+    "step/start": 5,
+    "system/message": 1,
+    "tool/call": 1,
+    "tool/result": 1,
+    "turn/end": 3,
+    "turn/start": 3,
+    "user/message": 12
+  },
+  "notable": [
+    {
+      "seq": 9,
+      "at": "2026-10-29T13:05:46.627Z",
+      "type": "turn/start",
+      "data": "[object Object]"
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-29T13:05:46.835Z",
+      "type": "turn/end",
+      "data": "[object Object]"
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-29T13:05:50.091Z",
+      "type": "turn/start",
+      "data": "[object Object]"
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-29T13:05:50.896Z",
+      "type": "turn/end",
+      "data": "[object Object]"
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-29T13:05:54.369Z",
+      "type": "turn/start",
+      "data": "[object Object]"
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-29T13:05:55.142Z",
+      "type": "compaction/start",
+      "data": "[object Object]"
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-29T13:05:55.159Z",
+      "type": "compaction/summary",
+      "data": "[object Object]"
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-29T13:05:55.160Z",
+      "type": "compaction/end",
+      "data": "[object Object]"
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-29T13:05:55.247Z",
+      "type": "tool/call",
+      "data": "[object Object]"
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-29T13:05:55.263Z",
+      "type": "tool/result",
+      "data": "[object Object]"
+    },
+    {
+      "seq": 51,
+      "at": "2026-10-29T13:05:55.334Z",
+      "type": "turn/end",
+      "data": "[object Object]"
+    }
+  ]
+}

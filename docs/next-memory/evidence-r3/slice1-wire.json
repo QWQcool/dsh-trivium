@@ -1,0 +1,137 @@
+{
+  "note": "Authorization/x-api-key headers were redacted by the stub before logging.",
+  "requests": [
+    {
+      "seq": 1,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 1,
+      "tools": 29,
+      "bytes": 78165,
+      "hasMemoryMap": true,
+      "hasExtractPrompt": false,
+      "hasCompactionSummary": true,
+      "stream": true
+    },
+    {
+      "seq": 2,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 1,
+      "tools": 0,
+      "bytes": 47491,
+      "hasMemoryMap": true,
+      "hasExtractPrompt": false,
+      "hasCompactionSummary": true,
+      "stream": true
+    },
+    {
+      "seq": 3,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 1,
+      "tools": 0,
+      "bytes": 10399,
+      "hasMemoryMap": true,
+      "hasExtractPrompt": true,
+      "hasCompactionSummary": true,
+      "stream": true
+    },
+    {
+      "seq": 4,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 3,
+      "tools": 29,
+      "bytes": 62223,
+      "hasMemoryMap": true,
+      "hasExtractPrompt": false,
+      "hasCompactionSummary": true,
+      "stream": true
+    },
+    {
+      "seq": 5,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 1,
+      "tools": 0,
+      "bytes": 10087,
+      "hasMemoryMap": true,
+      "hasExtractPrompt": true,
+      "hasCompactionSummary": true,
+      "stream": true
+    },
+    {
+      "seq": 6,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 5,
+      "tools": 29,
+      "bytes": 62706,
+      "hasMemoryMap": true,
+      "hasExtractPrompt": false,
+      "hasCompactionSummary": true,
+      "stream": true
+    },
+    {
+      "seq": 7,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 5,
+      "tools": 29,
+      "bytes": 65012,
+      "hasMemoryMap": true,
+      "hasExtractPrompt": false,
+      "hasCompactionSummary": true,
+      "stream": true
+    },
+    {
+      "seq": 8,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 1,
+      "tools": 0,
+      "bytes": 33452,
+      "hasMemoryMap": false,
+      "hasExtractPrompt": true,
+      "hasCompactionSummary": true,
+      "stream": true
+    },
+    {
+      "seq": 9,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 1,
+      "tools": 29,
+      "bytes": 59514,
+      "hasMemoryMap": false,
+      "hasExtractPrompt": false,
+      "hasCompactionSummary": true,
+      "stream": true
+    },
+    {
+      "seq": 10,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 3,
+      "tools": 29,
+      "bytes": 50361,
+      "hasMemoryMap": true,
+      "hasExtractPrompt": false,
+      "hasCompactionSummary": true,
+      "stream": true
+    },
+    {
+      "seq": 11,
+      "url": "/v1/messages",
+      "model": "deepseek-flash",
+      "messages": 5,
+      "tools": 29,
+      "bytes": 40749,
+      "hasMemoryMap": true,
+      "hasExtractPrompt": false,
+      "hasCompactionSummary": true,
+      "stream": true
+    }
+  ]
+}

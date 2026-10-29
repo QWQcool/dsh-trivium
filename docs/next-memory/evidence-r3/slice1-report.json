@@ -1,0 +1,260 @@
+{
+  "slice": "r3-slice1-preflight",
+  "date": "2026-10-29T13:05:55.611Z",
+  "host": {
+    "bin": "C:/Users/v_chchsli/.dsh/profiles/node_modules/@deepseek-ai/dsh/lib/bin.js",
+    "dshVersion": "0.2.1-rc.4",
+    "node": "v24.15.0"
+  },
+  "modelEndpoint": "http://127.0.0.1:8792 (local stub, zero paid calls)",
+  "isolated": {
+    "DSH_HOME": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\home",
+    "workspace": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws"
+  },
+  "runs": [
+    {
+      "task": "记住：生产端口是 9443，负责人张三。",
+      "sessionId": "session-53a53016-35e1-401e-bb58-3cd8d12d8d86",
+      "exit": 0,
+      "turnEnd": {
+        "kind": "completed"
+      },
+      "lines": 6
+    },
+    {
+      "task": "下一步，项目负责人是张三。",
+      "sessionId": "session-53a53016-35e1-401e-bb58-3cd8d12d8d86",
+      "exit": 0,
+      "turnEnd": {
+        "kind": "completed"
+      },
+      "lines": 6
+    },
+    {
+      "task": "触发压缩：调用 ctx_find 查一下端口。",
+      "sessionId": "session-53a53016-35e1-401e-bb58-3cd8d12d8d86",
+      "exit": 0,
+      "turnEnd": {
+        "kind": "completed"
+      },
+      "lines": 12
+    }
+  ],
+  "wireRequests": [
+    {
+      "seq": 1,
+      "url": "/v1/messages",
+      "messages": 1,
+      "tools": 29,
+      "bytes": 78165,
+      "hasExtractPrompt": false
+    },
+    {
+      "seq": 2,
+      "url": "/v1/messages",
+      "messages": 1,
+      "tools": 0,
+      "bytes": 47491,
+      "hasExtractPrompt": false
+    },
+    {
+      "seq": 3,
+      "url": "/v1/messages",
+      "messages": 1,
+      "tools": 0,
+      "bytes": 10399,
+      "hasExtractPrompt": true
+    },
+    {
+      "seq": 4,
+      "url": "/v1/messages",
+      "messages": 3,
+      "tools": 29,
+      "bytes": 62223,
+      "hasExtractPrompt": false
+    },
+    {
+      "seq": 5,
+      "url": "/v1/messages",
+      "messages": 1,
+      "tools": 0,
+      "bytes": 10087,
+      "hasExtractPrompt": true
+    },
+    {
+      "seq": 6,
+      "url": "/v1/messages",
+      "messages": 5,
+      "tools": 29,
+      "bytes": 62706,
+      "hasExtractPrompt": false
+    },
+    {
+      "seq": 7,
+      "url": "/v1/messages",
+      "messages": 5,
+      "tools": 29,
+      "bytes": 65012,
+      "hasExtractPrompt": false
+    },
+    {
+      "seq": 8,
+      "url": "/v1/messages",
+      "messages": 1,
+      "tools": 0,
+      "bytes": 33452,
+      "hasExtractPrompt": true
+    },
+    {
+      "seq": 9,
+      "url": "/v1/messages",
+      "messages": 1,
+      "tools": 29,
+      "bytes": 59514,
+      "hasExtractPrompt": false
+    },
+    {
+      "seq": 10,
+      "url": "/v1/messages",
+      "messages": 3,
+      "tools": 29,
+      "bytes": 50361,
+      "hasExtractPrompt": false
+    },
+    {
+      "seq": 11,
+      "url": "/v1/messages",
+      "messages": 5,
+      "tools": 29,
+      "bytes": 40749,
+      "hasExtractPrompt": false
+    }
+  ],
+  "eventTypes": {
+    "agent/inbox/spliced": 14,
+    "approval/policy": 1,
+    "assistant/attempt": 1,
+    "assistant/message": 5,
+    "compaction/end": 1,
+    "compaction/start": 1,
+    "compaction/summary": 1,
+    "permission/preset": 1,
+    "request/context": 1,
+    "request/header": 4,
+    "sandbox/mode": 1,
+    "session-log-deepseek/delivery-accepted": 10,
+    "session/title": 2,
+    "session/title-llm-request": 1,
+    "step/end": 5,
+    "step/start": 5,
+    "system/message": 1,
+    "tool/call": 1,
+    "tool/result": 1,
+    "turn/end": 3,
+    "turn/start": 3,
+    "user/message": 12
+  },
+  "nodes": [
+    {
+      "id": 1,
+      "type": "workspace",
+      "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws",
+      "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws"
+    },
+    {
+      "id": 2,
+      "type": "preference",
+      "text": "记住：生产端口是 9443，负责人张三。"
+    },
+    {
+      "id": 3,
+      "type": "decision",
+      "name": "发布端口",
+      "text": "生产端口是 9443。"
+    }
+  ],
+  "checks": [
+    {
+      "name": "host booted and created a session",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "real tool definitions captured on the wire",
+      "ok": true,
+      "detail": "max tools=29"
+    },
+    {
+      "name": "memory map injected by the plugin pre-step",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "runtime context snapshot captured",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "user message reached the provider",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "extraction prompt observed",
+      "ok": true,
+      "detail": "requests=3"
+    },
+    {
+      "name": "assistant message event captured",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "turn boundaries captured",
+      "ok": true,
+      "detail": "turn/end=3"
+    },
+    {
+      "name": "compaction lifecycle captured",
+      "ok": true,
+      "detail": "start=1 end=1"
+    },
+    {
+      "name": "tool call and result captured",
+      "ok": true,
+      "detail": "call=1 result=1"
+    },
+    {
+      "name": "provider usage reported per step",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "session persisted inside the isolated home",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "facts persisted to the workspace TriviumDB",
+      "ok": true,
+      "detail": "nodes=3"
+    },
+    {
+      "name": "extracted decision landed in the DB",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "pending buffer consumed or retained explicitly",
+      "ok": true,
+      "detail": "pending retained"
+    },
+    {
+      "name": "nothing points at the live ~/.dsh",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "passed": 16,
+  "total": 16
+}

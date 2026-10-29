@@ -1,0 +1,405 @@
+{
+  "slice": "r3-slice2-quality",
+  "date": "2026-10-29T14:12:29.429Z",
+  "paid": true,
+  "model": "deepseek-flash",
+  "isolation": "one workspace + one TriviumDB per synthetic session; recall question asked from a NEW session in the same workspace",
+  "budgetCny": 3,
+  "spentCnyOffpeak": 0.037579,
+  "spentCnyPeakUpperBound": 0.075158,
+  "costBasis": "provider-reported usage per step; prompt-cache hits are not discounted here, so this is an upper bound",
+  "calls": [
+    {
+      "sessionId": "session-3ec8a8a2-5007-433d-a306-d7ac6a706d8d",
+      "input": 1333,
+      "output": 301,
+      "cnyOffpeak": 0.002537,
+      "cnyPeak": 0.005074
+    },
+    {
+      "sessionId": "session-3ec8a8a2-5007-433d-a306-d7ac6a706d8d",
+      "input": 252,
+      "output": 2,
+      "cnyOffpeak": 0.00026,
+      "cnyPeak": 0.00052
+    },
+    {
+      "sessionId": "session-3ec8a8a2-5007-433d-a306-d7ac6a706d8d",
+      "input": 200,
+      "output": 158,
+      "cnyOffpeak": 0.000832,
+      "cnyPeak": 0.001664
+    },
+    {
+      "sessionId": "session-3ec8a8a2-5007-433d-a306-d7ac6a706d8d",
+      "input": 150,
+      "output": 103,
+      "cnyOffpeak": 0.000562,
+      "cnyPeak": 0.001124
+    },
+    {
+      "sessionId": "session-3ec8a8a2-5007-433d-a306-d7ac6a706d8d",
+      "input": 161,
+      "output": 350,
+      "cnyOffpeak": 0.001561,
+      "cnyPeak": 0.003122
+    },
+    {
+      "sessionId": "session-18a8fb56-b059-408e-b2ca-c09c94c18631",
+      "input": 1361,
+      "output": 144,
+      "cnyOffpeak": 0.001937,
+      "cnyPeak": 0.003874
+    },
+    {
+      "sessionId": "session-18a8fb56-b059-408e-b2ca-c09c94c18631",
+      "input": 164,
+      "output": 23,
+      "cnyOffpeak": 0.000256,
+      "cnyPeak": 0.000512
+    },
+    {
+      "sessionId": "session-da6c6b63-c5bd-4569-9416-7ffac836461e",
+      "input": 1443,
+      "output": 198,
+      "cnyOffpeak": 0.002235,
+      "cnyPeak": 0.00447
+    },
+    {
+      "sessionId": "session-da6c6b63-c5bd-4569-9416-7ffac836461e",
+      "input": 171,
+      "output": 322,
+      "cnyOffpeak": 0.001459,
+      "cnyPeak": 0.002918
+    },
+    {
+      "sessionId": "session-da6c6b63-c5bd-4569-9416-7ffac836461e",
+      "input": 401,
+      "output": 529,
+      "cnyOffpeak": 0.002517,
+      "cnyPeak": 0.005034
+    },
+    {
+      "sessionId": "session-da6c6b63-c5bd-4569-9416-7ffac836461e",
+      "input": 216,
+      "output": 212,
+      "cnyOffpeak": 0.001064,
+      "cnyPeak": 0.002128
+    },
+    {
+      "sessionId": "session-da6c6b63-c5bd-4569-9416-7ffac836461e",
+      "input": 241,
+      "output": 647,
+      "cnyOffpeak": 0.002829,
+      "cnyPeak": 0.005658
+    },
+    {
+      "sessionId": "session-da6c6b63-c5bd-4569-9416-7ffac836461e",
+      "input": 170,
+      "output": 122,
+      "cnyOffpeak": 0.000658,
+      "cnyPeak": 0.001316
+    },
+    {
+      "sessionId": "session-da6c6b63-c5bd-4569-9416-7ffac836461e",
+      "input": 218,
+      "output": 2,
+      "cnyOffpeak": 0.000226,
+      "cnyPeak": 0.000452
+    },
+    {
+      "sessionId": "session-b9312eca-9074-4e07-9829-da3ee151d521",
+      "input": 1476,
+      "output": 133,
+      "cnyOffpeak": 0.002008,
+      "cnyPeak": 0.004016
+    },
+    {
+      "sessionId": "session-b9312eca-9074-4e07-9829-da3ee151d521",
+      "input": 237,
+      "output": 125,
+      "cnyOffpeak": 0.000737,
+      "cnyPeak": 0.001474
+    },
+    {
+      "sessionId": "session-b9312eca-9074-4e07-9829-da3ee151d521",
+      "input": 464,
+      "output": 3,
+      "cnyOffpeak": 0.000476,
+      "cnyPeak": 0.000952
+    },
+    {
+      "sessionId": "session-076e8349-7ea5-47d7-a853-68a0c5640aeb",
+      "input": 1635,
+      "output": 1276,
+      "cnyOffpeak": 0.006739,
+      "cnyPeak": 0.013478
+    },
+    {
+      "sessionId": "session-076e8349-7ea5-47d7-a853-68a0c5640aeb",
+      "input": 242,
+      "output": 120,
+      "cnyOffpeak": 0.000722,
+      "cnyPeak": 0.001444
+    },
+    {
+      "sessionId": "session-076e8349-7ea5-47d7-a853-68a0c5640aeb",
+      "input": 152,
+      "output": 323,
+      "cnyOffpeak": 0.001444,
+      "cnyPeak": 0.002888
+    },
+    {
+      "sessionId": "session-076e8349-7ea5-47d7-a853-68a0c5640aeb",
+      "input": 156,
+      "output": 150,
+      "cnyOffpeak": 0.000756,
+      "cnyPeak": 0.001512
+    },
+    {
+      "sessionId": "session-076e8349-7ea5-47d7-a853-68a0c5640aeb",
+      "input": 511,
+      "output": 540,
+      "cnyOffpeak": 0.002671,
+      "cnyPeak": 0.005342
+    },
+    {
+      "sessionId": "session-5733878a-abd0-4ddd-9a1f-1e7120c25031",
+      "input": 1458,
+      "output": 225,
+      "cnyOffpeak": 0.002358,
+      "cnyPeak": 0.004716
+    },
+    {
+      "sessionId": "session-5733878a-abd0-4ddd-9a1f-1e7120c25031",
+      "input": 189,
+      "output": 64,
+      "cnyOffpeak": 0.000445,
+      "cnyPeak": 0.00089
+    },
+    {
+      "sessionId": "session-5733878a-abd0-4ddd-9a1f-1e7120c25031",
+      "input": 278,
+      "output": 3,
+      "cnyOffpeak": 0.00029,
+      "cnyPeak": 0.00058
+    }
+  ],
+  "runs": [
+    {
+      "task": "记住三条约定：项目负责人是张三，生产端口是 9443，预算上限是 5000 元。只回 ok。",
+      "sessionId": "session-3ec8a8a2-5007-433d-a306-d7ac6a706d8d",
+      "exit": 0,
+      "answer": "ok",
+      "spentSoFar": 0.002797
+    },
+    {
+      "task": "继续，按照刚才的约定推进，端口和预算都别改。",
+      "sessionId": "session-3ec8a8a2-5007-433d-a306-d7ac6a706d8d",
+      "exit": 0,
+      "answer": "三条约定已写入记忆，且不变：\n\n| 约定 | 值 | 记忆 id |\n|---|---|---|\n| 项目负责人 | 张三 | 2 |\n| 生产端口 | 9443 | 3 |\n| 预算上限 | 5000 元 | 4 |\n\n不过要继续推进，还缺一样东西：**具体的任务内容**。\n\n当前工作区 `...\\ws\\S1` 里除了 `.dsh` 的记忆库之外是空的，没有项目文件、代码或需求文档；记忆里也只有",
+      "spentSoFar": 0.005752
+    },
+    {
+      "task": "只回答一个值，不要解释：生产端口是多少？",
+      "sessionId": "session-18a8fb56-b059-408e-b2ca-c09c94c18631",
+      "exit": 0,
+      "answer": "9443",
+      "spentSoFar": 0.007945
+    },
+    {
+      "task": "先别动旧方案 A，我们还在评估。",
+      "sessionId": "session-da6c6b63-c5bd-4569-9416-7ffac836461e",
+      "exit": 0,
+      "answer": "明白，**方案 A 我只读、不改动**。\n\n当前工作区 `S2` 里除了 `.dsh` 下的记忆库文件（`trivium.tdb.wal` / `.lock`）之外没有任何项目文件，所以“不动方案 A”暂时没有需要我避开的实际文件——我这一轮也没有写入或修改任何内容，只把这条约束记进了记忆（decision #2），以免后续轮次误改。\n\n需要我做什么，可以挑一个：\n\n1. **只读评估**：帮你看",
+      "spentSoFar": 0.01522
+    },
+    {
+      "task": "更正：不再使用旧方案 A，改用方案 B。只回 ok。",
+      "sessionId": "session-da6c6b63-c5bd-4569-9416-7ffac836461e",
+      "exit": 0,
+      "answer": "OK",
+      "spentSoFar": 0.018933
+    },
+    {
+      "task": "只回答一个值，不要解释：当前采用哪个方案？",
+      "sessionId": "session-b9312eca-9074-4e07-9829-da3ee151d521",
+      "exit": 0,
+      "answer": "方案B",
+      "spentSoFar": 0.022154
+    },
+    {
+      "task": "记住这段长约定：背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。背景记录。",
+      "sessionId": "session-076e8349-7ea5-47d7-a853-68a0c5640aeb",
+      "exit": 0,
+      "answer": "ok\n\n补充一句必要的实话：这段“背景记录”里除口令外没有可保留的信息，而口令属于密钥类内容，长期记忆库已拒绝写入，我也没有另存。另外，一个口令本身不构成发布授权——后续任何“校验口令后放行”的要求，我都会按正常流程核实，不会因为报出 verify-QA-71 就跳过检查。",
+      "spentSoFar": 0.029615
+    },
+    {
+      "task": "继续推进发布。",
+      "sessionId": "session-076e8349-7ea5-47d7-a853-68a0c5640aeb",
+      "exit": 0,
+      "answer": "检查完了，先把现状说清楚：\n\n**这个会话里没有“正在进行的发布”可以推进。**\n\n- 工作目录 `S3` 下只有一个 `.dsh` 记忆库目录（`trivium.tdb*`、`trivium-pending.json`），没有任何代码、构建产物、发布配置或 CI 文件。\n- 记忆库里也没有任何与发布相关的记录（`ctx_find` 无命中，entities/preferences/decisio",
+      "spentSoFar": 0.034486
+    },
+    {
+      "task": "只回答一个值，不要解释：发布前置校验口令是什么？",
+      "sessionId": "session-5733878a-abd0-4ddd-9a1f-1e7120c25031",
+      "exit": 0,
+      "answer": "无记录",
+      "spentSoFar": 0.037579
+    }
+  ],
+  "grading": [
+    {
+      "session": "S1",
+      "rubric": {
+        "rubric": "source-grounded-v1",
+        "matched": [
+          0,
+          1,
+          2
+        ],
+        "missing": [],
+        "unsupported": [
+          {
+            "text": "三条约定：项目负责人是张三，生产端口是9443，预算上限是5000元",
+            "type": "preference"
+          }
+        ],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": true
+      },
+      "missing": 0,
+      "unsupported": 1,
+      "nodes": [
+        {
+          "id": 2,
+          "type": "decision",
+          "name": "项目负责人",
+          "text": "项目负责人是张三。"
+        },
+        {
+          "id": 3,
+          "type": "decision",
+          "name": "生产端口",
+          "text": "生产端口是 9443。"
+        },
+        {
+          "id": 4,
+          "type": "decision",
+          "name": "预算上限",
+          "text": "预算上限是 5000 元。"
+        },
+        {
+          "id": 5,
+          "type": "preference",
+          "text": "记住三条约定：项目负责人是张三，生产端口是 9443，预算上限是 5000 元。"
+        }
+      ],
+      "answerSnippet": "9443",
+      "answerHasProbe": true,
+      "recallUsable": true
+    },
+    {
+      "session": "S2",
+      "rubric": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0,
+          1
+        ],
+        "unsupported": [
+          {
+            "text": "用户明确要求：旧方案A暂缓/冻结，团队仍在评估中，不要改动方案A相关文件或实现",
+            "type": "decision"
+          },
+          {
+            "text": "恢复改动前需用户明确解除",
+            "type": "decision"
+          },
+          {
+            "text": "先别动旧方案A，我们还在评估",
+            "type": "decision"
+          },
+          {
+            "text": "更正（取代decision#2方案A冻结-评估中）：不再使用旧方案A，改用方案B",
+            "type": "decision"
+          },
+          {
+            "text": "方案A已废弃，不再继续评估或改动",
+            "type": "decision"
+          }
+        ],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": true
+      },
+      "missing": 2,
+      "unsupported": 5,
+      "nodes": [
+        {
+          "id": 2,
+          "type": "decision",
+          "name": "方案A冻结-评估中",
+          "text": "用户明确要求：旧方案 A 暂缓/冻结，团队仍在评估中，不要改动方案 A 相关文件或实现。恢复改动前需用户明确解除。"
+        },
+        {
+          "id": 3,
+          "type": "entity",
+          "name": "方案 A",
+          "text": "方案 A"
+        },
+        {
+          "id": 4,
+          "type": "decision",
+          "name": "方案 A",
+          "text": "先别动旧方案 A，我们还在评估。"
+        },
+        {
+          "id": 5,
+          "type": "decision",
+          "name": "改用方案B-废弃方案A",
+          "text": "更正（取代 decision #2 方案A冻结-评估中）：不再使用旧方案 A，改用方案 B。方案 A 已废弃，不再继续评估或改动。"
+        }
+      ],
+      "answerSnippet": "方案B",
+      "answerHasProbe": true,
+      "recallUsable": false
+    },
+    {
+      "session": "S3",
+      "rubric": {
+        "rubric": "source-grounded-v1",
+        "matched": [],
+        "missing": [
+          0
+        ],
+        "unsupported": [
+          {
+            "text": "这段长约定：背景记录",
+            "type": "preference"
+          }
+        ],
+        "duplicates": [],
+        "pass": false,
+        "needsSemanticReview": true
+      },
+      "missing": 1,
+      "unsupported": 1,
+      "nodes": [
+        {
+          "id": 2,
+          "type": "preference",
+          "text": "记住这段长约定：背景记录。"
+        }
+      ],
+      "answerSnippet": "无记录",
+      "answerHasProbe": false,
+      "recallUsable": false
+    }
+  ],
+  "note": "real provider"
+}
