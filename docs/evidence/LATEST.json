@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-29",
+  "manifest": "manifest.json",
+  "datasets": [
+    "2026-10-29-c4-arms-6scenario.json",
+    "2026-10-29-d0-step1-8arms-3reps.json",
+    "2026-10-29-d0-step2-alias-rerun.json",
+    "2026-10-29-d0-step2b-v4pro.json",
+    "2026-10-29-d1-5turn-compaction.json",
+    "2026-10-29-d1-10turn-compaction.json",
+    "2026-10-29-d2-extract-cost.json",
+    "2026-10-29-scale-1k-10k.json",
+    "2026-10-29-cost-normalized.json"
+  ]
+}

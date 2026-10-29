@@ -1,0 +1,3600 @@
+{
+  "protocol": "C4",
+  "plan": "docs/next-memory/C4-PLAN.md",
+  "rubric": "c3-structured-v2-2026-10-29",
+  "model": "deepseek-flash",
+  "thinking": "disabled",
+  "temperature": 0,
+  "maxTokens": 600,
+  "reps": 1,
+  "budgetCny": 15,
+  "pricesCnyPerMillion": {
+    "input": 2,
+    "cached": 0.04,
+    "output": 8
+  },
+  "priceSource": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+  "environment": {
+    "node": "v24.15.0",
+    "host": "@deepseek-ai/dsh 0.2.1-rc.4 (peer)",
+    "trivium": {
+      "version": "0.8.0"
+    },
+    "goodmemory": {
+      "plugin": "0.1.2",
+      "engine": "0.8.3",
+      "dir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\c4\\goodmemory"
+    },
+    "dshMemory": {
+      "version": "0.20.0",
+      "engines": ">=0.1.2-alpha.1 <0.2.0 || >=0.2.0-rc.1 <0.3.0",
+      "dir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\c4\\dsh-memory"
+    }
+  },
+  "status": "complete",
+  "estimatedCny": 0.020286,
+  "reservedOrChargedCny": 0.02028599999999997,
+  "calls": [
+    {
+      "label": "none/S01/r0",
+      "reservedCny": 0.038695999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "none/S04/r0",
+      "reservedCny": 0.038686,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "none/S05/r0",
+      "reservedCny": 0.038686,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 85,
+        "completion_tokens": 5,
+        "total_tokens": 90,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 85
+      },
+      "estimatedCny": 0.00020999999999999998
+    },
+    {
+      "label": "none/S06/r0",
+      "reservedCny": 0.038694,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "none/S07/r0",
+      "reservedCny": 0.038678,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "none/S09/r0",
+      "reservedCny": 0.038717999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 89,
+        "completion_tokens": 5,
+        "total_tokens": 94,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 89
+      },
+      "estimatedCny": 0.00021799999999999999
+    },
+    {
+      "label": "plain-all/S01/r0",
+      "reservedCny": 0.041186,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 399,
+        "completion_tokens": 8,
+        "total_tokens": 407,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 399
+      },
+      "estimatedCny": 0.000862
+    },
+    {
+      "label": "plain-all/S04/r0",
+      "reservedCny": 0.041153999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 397,
+        "completion_tokens": 7,
+        "total_tokens": 404,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 397
+      },
+      "estimatedCny": 0.00085
+    },
+    {
+      "label": "plain-all/S05/r0",
+      "reservedCny": 0.042831999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 564,
+        "completion_tokens": 11,
+        "total_tokens": 575,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 564
+      },
+      "estimatedCny": 0.0012159999999999999
+    },
+    {
+      "label": "plain-all/S06/r0",
+      "reservedCny": 0.040827999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 356,
+        "completion_tokens": 5,
+        "total_tokens": 361,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 356
+      },
+      "estimatedCny": 0.000752
+    },
+    {
+      "label": "plain-all/S07/r0",
+      "reservedCny": 0.043255999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 663,
+        "completion_tokens": 35,
+        "total_tokens": 698,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 663
+      },
+      "estimatedCny": 0.0016059999999999998
+    },
+    {
+      "label": "plain-all/S09/r0",
+      "reservedCny": 0.041207999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 401,
+        "completion_tokens": 7,
+        "total_tokens": 408,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 401
+      },
+      "estimatedCny": 0.0008579999999999999
+    },
+    {
+      "label": "trivium-inject/S01/r0",
+      "reservedCny": 0.039015999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 123,
+        "completion_tokens": 8,
+        "total_tokens": 131,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 123
+      },
+      "estimatedCny": 0.00030999999999999995
+    },
+    {
+      "label": "trivium-inject/S04/r0",
+      "reservedCny": 0.038984,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 121,
+        "completion_tokens": 7,
+        "total_tokens": 128,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 121
+      },
+      "estimatedCny": 0.000298
+    },
+    {
+      "label": "trivium-inject/S05/r0",
+      "reservedCny": 0.04013,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 231,
+        "completion_tokens": 5,
+        "total_tokens": 236,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 231
+      },
+      "estimatedCny": 0.000502
+    },
+    {
+      "label": "trivium-inject/S06/r0",
+      "reservedCny": 0.039188,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 156,
+        "completion_tokens": 5,
+        "total_tokens": 161,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 156
+      },
+      "estimatedCny": 0.000352
+    },
+    {
+      "label": "trivium-inject/S07/r0",
+      "reservedCny": 0.039369999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 177,
+        "completion_tokens": 20,
+        "total_tokens": 197,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 177
+      },
+      "estimatedCny": 0.0005139999999999999
+    },
+    {
+      "label": "trivium-inject/S09/r0",
+      "reservedCny": 0.039037999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 125,
+        "completion_tokens": 7,
+        "total_tokens": 132,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 125
+      },
+      "estimatedCny": 0.000306
+    },
+    {
+      "label": "goodmemory-256/S01/r0",
+      "reservedCny": 0.039132,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 124,
+        "completion_tokens": 8,
+        "total_tokens": 132,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 124
+      },
+      "estimatedCny": 0.000312
+    },
+    {
+      "label": "goodmemory-256/S04/r0",
+      "reservedCny": 0.039161999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 129,
+        "completion_tokens": 7,
+        "total_tokens": 136,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 129
+      },
+      "estimatedCny": 0.000314
+    },
+    {
+      "label": "goodmemory-256/S05/r0",
+      "reservedCny": 0.038686,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 85,
+        "completion_tokens": 5,
+        "total_tokens": 90,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 85
+      },
+      "estimatedCny": 0.00020999999999999998
+    },
+    {
+      "label": "goodmemory-256/S06/r0",
+      "reservedCny": 0.038694,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "goodmemory-256/S07/r0",
+      "reservedCny": 0.038678,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "goodmemory-256/S09/r0",
+      "reservedCny": 0.039158,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 127,
+        "completion_tokens": 7,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 127
+      },
+      "estimatedCny": 0.00031
+    },
+    {
+      "label": "goodmemory-300/S01/r0",
+      "reservedCny": 0.039132,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 124,
+        "completion_tokens": 8,
+        "total_tokens": 132,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 124
+      },
+      "estimatedCny": 0.000312
+    },
+    {
+      "label": "goodmemory-300/S04/r0",
+      "reservedCny": 0.039161999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 129,
+        "completion_tokens": 7,
+        "total_tokens": 136,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 129
+      },
+      "estimatedCny": 0.000314
+    },
+    {
+      "label": "goodmemory-300/S05/r0",
+      "reservedCny": 0.038686,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 85,
+        "completion_tokens": 5,
+        "total_tokens": 90,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 85
+      },
+      "estimatedCny": 0.00020999999999999998
+    },
+    {
+      "label": "goodmemory-300/S06/r0",
+      "reservedCny": 0.038694,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "goodmemory-300/S07/r0",
+      "reservedCny": 0.038678,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "goodmemory-300/S09/r0",
+      "reservedCny": 0.039158,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 127,
+        "completion_tokens": 7,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 127
+      },
+      "estimatedCny": 0.00031
+    },
+    {
+      "label": "dsmmemory-800/S01/r0",
+      "reservedCny": 0.038695999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "dsmmemory-800/S04/r0",
+      "reservedCny": 0.038686,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "dsmmemory-800/S05/r0",
+      "reservedCny": 0.038686,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 85,
+        "completion_tokens": 5,
+        "total_tokens": 90,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 85
+      },
+      "estimatedCny": 0.00020999999999999998
+    },
+    {
+      "label": "dsmmemory-800/S06/r0",
+      "reservedCny": 0.038694,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "dsmmemory-800/S07/r0",
+      "reservedCny": 0.038678,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998
+    },
+    {
+      "label": "dsmmemory-800/S09/r0",
+      "reservedCny": 0.039347999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 182,
+        "completion_tokens": 7,
+        "total_tokens": 189,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 182
+      },
+      "estimatedCny": 0.00041999999999999996
+    },
+    {
+      "label": "dsmmemory-800-min0/S01/r0",
+      "reservedCny": 0.040392,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 391,
+        "completion_tokens": 8,
+        "total_tokens": 399,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 391
+      },
+      "estimatedCny": 0.000846
+    },
+    {
+      "label": "dsmmemory-800-min0/S04/r0",
+      "reservedCny": 0.040346,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 387,
+        "completion_tokens": 7,
+        "total_tokens": 394,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 387
+      },
+      "estimatedCny": 0.0008299999999999999
+    },
+    {
+      "label": "dsmmemory-800-min0/S05/r0",
+      "reservedCny": 0.043694,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 729,
+        "completion_tokens": 11,
+        "total_tokens": 740,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 729
+      },
+      "estimatedCny": 0.0015459999999999998
+    },
+    {
+      "label": "dsmmemory-800-min0/S06/r0",
+      "reservedCny": 0.040369999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 392,
+        "completion_tokens": 5,
+        "total_tokens": 397,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 392
+      },
+      "estimatedCny": 0.000824
+    },
+    {
+      "label": "dsmmemory-800-min0/S07/r0",
+      "reservedCny": 0.040726,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 439,
+        "completion_tokens": 25,
+        "total_tokens": 464,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 439
+      },
+      "estimatedCny": 0.001078
+    },
+    {
+      "label": "dsmmemory-800-min0/S09/r0",
+      "reservedCny": 0.040422,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 393,
+        "completion_tokens": 7,
+        "total_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 393
+      },
+      "estimatedCny": 0.0008419999999999999
+    }
+  ],
+  "cells": [
+    {
+      "arm": "none",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "none"
+        },
+        "tokens": 0
+      },
+      "answer": "{\"tag\":null}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "tag": null
+        }
+      }
+    },
+    {
+      "arm": "none",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S04",
+      "gold": {
+        "channel": "A-71"
+      },
+      "question": "本工作区“上线规范”的通道是什么？返回 {\"channel\":字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "none"
+        },
+        "tokens": 0
+      },
+      "answer": "{\"channel\":null}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "channel": null
+        }
+      }
+    },
+    {
+      "arm": "none",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S05",
+      "gold": {
+        "command": "verify-QA-71.mjs"
+      },
+      "question": "“发布流程”的最终验收命令是什么？返回 {\"command\":字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "none"
+        },
+        "tokens": 0
+      },
+      "answer": "{\"command\": null}",
+      "usage": {
+        "prompt_tokens": 85,
+        "completion_tokens": 5,
+        "total_tokens": 90,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 85
+      },
+      "estimatedCny": 0.00020999999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "command": null
+        }
+      }
+    },
+    {
+      "arm": "none",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S06",
+      "gold": {
+        "owner": null
+      },
+      "question": "此前是否记录了“月球项目负责人”？返回 {\"owner\":姓名字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "none"
+        },
+        "tokens": 0
+      },
+      "answer": "{\"owner\":null}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "owner": null
+        }
+      }
+    },
+    {
+      "arm": "none",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "none"
+        },
+        "tokens": 0
+      },
+      "answer": "{\"codes\":[]}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "codes": []
+        }
+      }
+    },
+    {
+      "arm": "none",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S09",
+      "gold": {
+        "check": "CHECK-71"
+      },
+      "question": "软件准备交付上线之前，按约定必须执行哪项校验？返回 {\"check\":字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "none"
+        },
+        "tokens": 0
+      },
+      "answer": "{\"check\":null}",
+      "usage": {
+        "prompt_tokens": 89,
+        "completion_tokens": 5,
+        "total_tokens": 94,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 89
+      },
+      "estimatedCny": 0.00021799999999999999,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "check": null
+        }
+      }
+    },
+    {
+      "arm": "plain-all",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "contextHash": "9c6f2f6a287c4da52df8ce5850419f647b9fa29833fedf0926b430e66b17cc02",
+      "contextChars": 871,
+      "injection": {
+        "source": {
+          "kind": "plain-corpus",
+          "corpusHash": "9c6f2f6a287c4da52df8ce5850419f647b9fa29833fedf0926b430e66b17cc02"
+        },
+        "tokens": 278
+      },
+      "answer": "{\"tag\":\"DEMO-71\"}",
+      "usage": {
+        "prompt_tokens": 399,
+        "completion_tokens": 8,
+        "total_tokens": 407,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 399
+      },
+      "estimatedCny": 0.000862,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "tag": "DEMO-71"
+        }
+      }
+    },
+    {
+      "arm": "plain-all",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S04",
+      "gold": {
+        "channel": "A-71"
+      },
+      "question": "本工作区“上线规范”的通道是什么？返回 {\"channel\":字符串或null}。",
+      "contextHash": "9ab9aa59e69924ac71f8fa50a84393f9421f3fb5fc9b7f6074b4c7111ce25ef5",
+      "contextChars": 864,
+      "injection": {
+        "source": {
+          "kind": "plain-corpus",
+          "corpusHash": "9ab9aa59e69924ac71f8fa50a84393f9421f3fb5fc9b7f6074b4c7111ce25ef5"
+        },
+        "tokens": 275
+      },
+      "answer": "{\"channel\":\"A-71\"}",
+      "usage": {
+        "prompt_tokens": 397,
+        "completion_tokens": 7,
+        "total_tokens": 404,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 397
+      },
+      "estimatedCny": 0.00085,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "channel": "A-71"
+        }
+      }
+    },
+    {
+      "arm": "plain-all",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S05",
+      "gold": {
+        "command": "verify-QA-71.mjs"
+      },
+      "question": "“发布流程”的最终验收命令是什么？返回 {\"command\":字符串或null}。",
+      "contextHash": "b2fbee1e2f0af7b7d15425ed83b6205b43bcc5069c2aad381c05c9395d1af12b",
+      "contextChars": 1153,
+      "injection": {
+        "source": {
+          "kind": "plain-corpus",
+          "corpusHash": "b2fbee1e2f0af7b7d15425ed83b6205b43bcc5069c2aad381c05c9395d1af12b"
+        },
+        "tokens": 553
+      },
+      "answer": "{\"command\":\"verify-QA-71.mjs\"}",
+      "usage": {
+        "prompt_tokens": 564,
+        "completion_tokens": 11,
+        "total_tokens": 575,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 564
+      },
+      "estimatedCny": 0.0012159999999999999,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "command": "verify-QA-71.mjs"
+        }
+      }
+    },
+    {
+      "arm": "plain-all",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S06",
+      "gold": {
+        "owner": null
+      },
+      "question": "此前是否记录了“月球项目负责人”？返回 {\"owner\":姓名字符串或null}。",
+      "contextHash": "3de5ff6821a4121bee2023879394f555e0296b0d889c6fad15b1d0b3b570b84c",
+      "contextChars": 745,
+      "injection": {
+        "source": {
+          "kind": "plain-corpus",
+          "corpusHash": "3de5ff6821a4121bee2023879394f555e0296b0d889c6fad15b1d0b3b570b84c"
+        },
+        "tokens": 236
+      },
+      "answer": "{\"owner\":null}",
+      "usage": {
+        "prompt_tokens": 356,
+        "completion_tokens": 5,
+        "total_tokens": 361,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 356
+      },
+      "estimatedCny": 0.000752,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "owner": null
+        }
+      }
+    },
+    {
+      "arm": "plain-all",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "contextHash": "845831ee889cb9a397a46d98375043a334aba021191887c10cabc99abc50f9df",
+      "contextChars": 1547,
+      "injection": {
+        "source": {
+          "kind": "plain-corpus",
+          "corpusHash": "845831ee889cb9a397a46d98375043a334aba021191887c10cabc99abc50f9df"
+        },
+        "tokens": 540
+      },
+      "answer": "{\"codes\":[\"QA1-71\",\"QA2-71\",\"QA3-71\",\"QA4-71\",\"QA5-71\",\"QA6-71\"]}",
+      "usage": {
+        "prompt_tokens": 663,
+        "completion_tokens": 35,
+        "total_tokens": 698,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 663
+      },
+      "estimatedCny": 0.0016059999999999998,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "codes": [
+            "QA1-71",
+            "QA2-71",
+            "QA3-71",
+            "QA4-71",
+            "QA5-71",
+            "QA6-71"
+          ]
+        }
+      }
+    },
+    {
+      "arm": "plain-all",
+      "budget": 0,
+      "rep": 0,
+      "scenario": "S09",
+      "gold": {
+        "check": "CHECK-71"
+      },
+      "question": "软件准备交付上线之前，按约定必须执行哪项校验？返回 {\"check\":字符串或null}。",
+      "contextHash": "bf09a87d56c6537caf7940c9534cec32e97a630017ac270a76fd487458cc0d06",
+      "contextChars": 871,
+      "injection": {
+        "source": {
+          "kind": "plain-corpus",
+          "corpusHash": "bf09a87d56c6537caf7940c9534cec32e97a630017ac270a76fd487458cc0d06"
+        },
+        "tokens": 278
+      },
+      "answer": "{\"check\":\"CHECK-71\"}",
+      "usage": {
+        "prompt_tokens": 401,
+        "completion_tokens": 7,
+        "total_tokens": 408,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 401
+      },
+      "estimatedCny": 0.0008579999999999999,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "check": "CHECK-71"
+        }
+      }
+    },
+    {
+      "arm": "trivium-inject",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "contextHash": "ccaad696e5002eb07a626fd78f6892fdee4e46d7c92de4a7aeef8f59c06b48b1",
+      "contextChars": 93,
+      "injection": {
+        "source": {
+          "kind": "trivium-pre-step",
+          "bytes": 113
+        },
+        "tokens": 31,
+        "planted": {
+          "ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        }
+      },
+      "answer": "{\"tag\":\"DEMO-71\"}",
+      "usage": {
+        "prompt_tokens": 123,
+        "completion_tokens": 8,
+        "total_tokens": 131,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 123
+      },
+      "estimatedCny": 0.00030999999999999995,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "tag": "DEMO-71"
+        }
+      },
+      "contextHashWithoutTime": "ccaad696e5002eb07a626fd78f6892fdee4e46d7c92de4a7aeef8f59c06b48b1"
+    },
+    {
+      "arm": "trivium-inject",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S04",
+      "gold": {
+        "channel": "A-71"
+      },
+      "question": "本工作区“上线规范”的通道是什么？返回 {\"channel\":字符串或null}。",
+      "contextHash": "9ee51a3fd4e3514d02f11e92b4fbd11a6b8369de0c9d368cd7bfc1de103f5349",
+      "contextChars": 86,
+      "injection": {
+        "source": {
+          "kind": "trivium-pre-step",
+          "bytes": 102
+        },
+        "tokens": 28,
+        "planted": {
+          "ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        }
+      },
+      "answer": "{\"channel\":\"A-71\"}",
+      "usage": {
+        "prompt_tokens": 121,
+        "completion_tokens": 7,
+        "total_tokens": 128,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 121
+      },
+      "estimatedCny": 0.000298,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "channel": "A-71"
+        }
+      },
+      "contextHashWithoutTime": "9ee51a3fd4e3514d02f11e92b4fbd11a6b8369de0c9d368cd7bfc1de103f5349"
+    },
+    {
+      "arm": "trivium-inject",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S05",
+      "gold": {
+        "command": "verify-QA-71.mjs"
+      },
+      "question": "“发布流程”的最终验收命令是什么？返回 {\"command\":字符串或null}。",
+      "contextHash": "ce1082c011e4fcc01f0e78a3a6917079050fdb0b4b9de5f8d4382ff7d0bdd6fb",
+      "contextChars": 275,
+      "injection": {
+        "source": {
+          "kind": "trivium-pre-step",
+          "bytes": 675
+        },
+        "tokens": 219,
+        "planted": {
+          "ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        }
+      },
+      "answer": "{\"command\":null}",
+      "usage": {
+        "prompt_tokens": 231,
+        "completion_tokens": 5,
+        "total_tokens": 236,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 231
+      },
+      "estimatedCny": 0.000502,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "command": null
+        }
+      },
+      "contextHashWithoutTime": "ce1082c011e4fcc01f0e78a3a6917079050fdb0b4b9de5f8d4382ff7d0bdd6fb"
+    },
+    {
+      "arm": "trivium-inject",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S06",
+      "gold": {
+        "owner": null
+      },
+      "question": "此前是否记录了“月球项目负责人”？返回 {\"owner\":姓名字符串或null}。",
+      "contextHash": "3d65d916f0bda807821c15ea78a0c125b78c263ccc557e77783ceade5d37c912",
+      "contextChars": 156,
+      "injection": {
+        "source": {
+          "kind": "trivium-pre-step",
+          "bytes": 198
+        },
+        "tokens": 55,
+        "planted": {
+          "ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        }
+      },
+      "answer": "{\"owner\":null}",
+      "usage": {
+        "prompt_tokens": 156,
+        "completion_tokens": 5,
+        "total_tokens": 161,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 156
+      },
+      "estimatedCny": 0.000352,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "owner": null
+        }
+      },
+      "contextHashWithoutTime": "3d65d916f0bda807821c15ea78a0c125b78c263ccc557e77783ceade5d37c912"
+    },
+    {
+      "arm": "trivium-inject",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "contextHash": "075975c7cd1fe30c0cf4570f2beb92786bb8780feddd3f5a8c2dae870a08eef6",
+      "contextChars": 183,
+      "injection": {
+        "source": {
+          "kind": "trivium-pre-step",
+          "bytes": 297
+        },
+        "tokens": 89,
+        "planted": {
+          "ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ]
+        }
+      },
+      "answer": "{\"codes\":[\"QA1-71\",\"QA2-71\",\"QA3-71\"]}",
+      "usage": {
+        "prompt_tokens": 177,
+        "completion_tokens": 20,
+        "total_tokens": 197,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 177
+      },
+      "estimatedCny": 0.0005139999999999999,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "codes": [
+            "QA1-71",
+            "QA2-71",
+            "QA3-71"
+          ]
+        }
+      },
+      "contextHashWithoutTime": "075975c7cd1fe30c0cf4570f2beb92786bb8780feddd3f5a8c2dae870a08eef6"
+    },
+    {
+      "arm": "trivium-inject",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S09",
+      "gold": {
+        "check": "CHECK-71"
+      },
+      "question": "软件准备交付上线之前，按约定必须执行哪项校验？返回 {\"check\":字符串或null}。",
+      "contextHash": "ce0aec2d459ca696bfe8f0144d284ac5f5421c8d8ef63e567e908caff3c707b5",
+      "contextChars": 93,
+      "injection": {
+        "source": {
+          "kind": "trivium-pre-step",
+          "bytes": 113
+        },
+        "tokens": 31,
+        "planted": {
+          "ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        }
+      },
+      "answer": "{\"check\":\"CHECK-71\"}",
+      "usage": {
+        "prompt_tokens": 125,
+        "completion_tokens": 7,
+        "total_tokens": 132,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 125
+      },
+      "estimatedCny": 0.000306,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "check": "CHECK-71"
+        }
+      },
+      "contextHashWithoutTime": "ce0aec2d459ca696bfe8f0144d284ac5f5421c8d8ef63e567e908caff3c707b5"
+    },
+    {
+      "arm": "goodmemory-256",
+      "budget": 256,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "contextHash": "f765ad0b40ac74b43775162d16f8ae256533a81b16f11826c3e485b974f98032",
+      "contextChars": 66,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 256,
+          "accepted": 7,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": true,
+            "itemCount": 1,
+            "tokens": 56
+          }
+        },
+        "tokens": 33,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"tag\":\"DEMO-71\"}",
+      "usage": {
+        "prompt_tokens": 124,
+        "completion_tokens": 8,
+        "total_tokens": 132,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 124
+      },
+      "estimatedCny": 0.000312,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "tag": "DEMO-71"
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-256",
+      "budget": 256,
+      "rep": 0,
+      "scenario": "S04",
+      "gold": {
+        "channel": "A-71"
+      },
+      "question": "本工作区“上线规范”的通道是什么？返回 {\"channel\":字符串或null}。",
+      "contextHash": "712473176e5214f8d60c6004c4d110d39cf18a0861966763759c0e441ddb72db",
+      "contextChars": 72,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 256,
+          "accepted": 8,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": true,
+            "itemCount": 1,
+            "tokens": 63
+          }
+        },
+        "tokens": 36,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"channel\":\"A-71\"}",
+      "usage": {
+        "prompt_tokens": 129,
+        "completion_tokens": 7,
+        "total_tokens": 136,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 129
+      },
+      "estimatedCny": 0.000314,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "channel": "A-71"
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-256",
+      "budget": 256,
+      "rep": 0,
+      "scenario": "S05",
+      "gold": {
+        "command": "verify-QA-71.mjs"
+      },
+      "question": "“发布流程”的最终验收命令是什么？返回 {\"command\":字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 256,
+          "accepted": 7,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": false,
+            "itemCount": 0,
+            "tokens": 8
+          }
+        },
+        "tokens": 0,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"command\": null}",
+      "usage": {
+        "prompt_tokens": 85,
+        "completion_tokens": 5,
+        "total_tokens": 90,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 85
+      },
+      "estimatedCny": 0.00020999999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "command": null
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-256",
+      "budget": 256,
+      "rep": 0,
+      "scenario": "S06",
+      "gold": {
+        "owner": null
+      },
+      "question": "此前是否记录了“月球项目负责人”？返回 {\"owner\":姓名字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 256,
+          "accepted": 6,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": false,
+            "itemCount": 0,
+            "tokens": 8
+          }
+        },
+        "tokens": 0,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"owner\":null}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "owner": null
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-256",
+      "budget": 256,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 256,
+          "accepted": 12,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": false,
+            "itemCount": 0,
+            "tokens": 5
+          }
+        },
+        "tokens": 0,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact",
+              "below_threshold"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"codes\":[]}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "codes": []
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-256",
+      "budget": 256,
+      "rep": 0,
+      "scenario": "S09",
+      "gold": {
+        "check": "CHECK-71"
+      },
+      "question": "软件准备交付上线之前，按约定必须执行哪项校验？返回 {\"check\":字符串或null}。",
+      "contextHash": "2d600d5a6bf8385f06222527fa7d8946c50534e4758eb12b69878abb0721865a",
+      "contextChars": 68,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 256,
+          "accepted": 7,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": true,
+            "itemCount": 1,
+            "tokens": 56
+          }
+        },
+        "tokens": 34,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "explicit_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"check\":\"CHECK-71\"}",
+      "usage": {
+        "prompt_tokens": 127,
+        "completion_tokens": 7,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 127
+      },
+      "estimatedCny": 0.00031,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "check": "CHECK-71"
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-300",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "contextHash": "f765ad0b40ac74b43775162d16f8ae256533a81b16f11826c3e485b974f98032",
+      "contextChars": 66,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 300,
+          "accepted": 7,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": true,
+            "itemCount": 1,
+            "tokens": 56
+          }
+        },
+        "tokens": 33,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"tag\":\"DEMO-71\"}",
+      "usage": {
+        "prompt_tokens": 124,
+        "completion_tokens": 8,
+        "total_tokens": 132,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 124
+      },
+      "estimatedCny": 0.000312,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "tag": "DEMO-71"
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-300",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S04",
+      "gold": {
+        "channel": "A-71"
+      },
+      "question": "本工作区“上线规范”的通道是什么？返回 {\"channel\":字符串或null}。",
+      "contextHash": "712473176e5214f8d60c6004c4d110d39cf18a0861966763759c0e441ddb72db",
+      "contextChars": 72,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 300,
+          "accepted": 8,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": true,
+            "itemCount": 1,
+            "tokens": 63
+          }
+        },
+        "tokens": 36,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"channel\":\"A-71\"}",
+      "usage": {
+        "prompt_tokens": 129,
+        "completion_tokens": 7,
+        "total_tokens": 136,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 129
+      },
+      "estimatedCny": 0.000314,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "channel": "A-71"
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-300",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S05",
+      "gold": {
+        "command": "verify-QA-71.mjs"
+      },
+      "question": "“发布流程”的最终验收命令是什么？返回 {\"command\":字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 300,
+          "accepted": 7,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": false,
+            "itemCount": 0,
+            "tokens": 8
+          }
+        },
+        "tokens": 0,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"command\": null}",
+      "usage": {
+        "prompt_tokens": 85,
+        "completion_tokens": 5,
+        "total_tokens": 90,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 85
+      },
+      "estimatedCny": 0.00020999999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "command": null
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-300",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S06",
+      "gold": {
+        "owner": null
+      },
+      "question": "此前是否记录了“月球项目负责人”？返回 {\"owner\":姓名字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 300,
+          "accepted": 6,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": false,
+            "itemCount": 0,
+            "tokens": 8
+          }
+        },
+        "tokens": 0,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"owner\":null}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "owner": null
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-300",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 300,
+          "accepted": 12,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": false,
+            "itemCount": 0,
+            "tokens": 5
+          }
+        },
+        "tokens": 0,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact",
+              "below_threshold"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"codes\":[]}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "codes": []
+        }
+      }
+    },
+    {
+      "arm": "goodmemory-300",
+      "budget": 300,
+      "rep": 0,
+      "scenario": "S09",
+      "gold": {
+        "check": "CHECK-71"
+      },
+      "question": "软件准备交付上线之前，按约定必须执行哪项校验？返回 {\"check\":字符串或null}。",
+      "contextHash": "2d600d5a6bf8385f06222527fa7d8946c50534e4758eb12b69878abb0721865a",
+      "contextChars": 68,
+      "injection": {
+        "source": {
+          "kind": "goodmemory-pre-step",
+          "maxTokens": 300,
+          "accepted": 7,
+          "recallProbe": {
+            "status": 200,
+            "hasContext": true,
+            "itemCount": 1,
+            "tokens": 56
+          }
+        },
+        "tokens": 34,
+        "planted": [
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          },
+          {
+            "status": 200,
+            "accepted": 1,
+            "reasons": [
+              "duplicate_fact"
+            ]
+          }
+        ]
+      },
+      "answer": "{\"check\":\"CHECK-71\"}",
+      "usage": {
+        "prompt_tokens": 127,
+        "completion_tokens": 7,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 127
+      },
+      "estimatedCny": 0.00031,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "check": "CHECK-71"
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 7,
+          "minScore": 0.02,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 0,
+        "planted": {
+          "added": 7,
+          "stats": {
+            "memories": 7,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 7
+            },
+            "versions": 7,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 7,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"tag\":null}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "tag": null
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S04",
+      "gold": {
+        "channel": "A-71"
+      },
+      "question": "本工作区“上线规范”的通道是什么？返回 {\"channel\":字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 8,
+          "minScore": 0.02,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 0,
+        "planted": {
+          "added": 7,
+          "stats": {
+            "memories": 8,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 8
+            },
+            "versions": 8,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 8,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"channel\":null}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "channel": null
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S05",
+      "gold": {
+        "command": "verify-QA-71.mjs"
+      },
+      "question": "“发布流程”的最终验收命令是什么？返回 {\"command\":字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 7,
+          "minScore": 0.02,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 0,
+        "planted": {
+          "added": 7,
+          "stats": {
+            "memories": 7,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 7
+            },
+            "versions": 7,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 7,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"command\":null}",
+      "usage": {
+        "prompt_tokens": 85,
+        "completion_tokens": 5,
+        "total_tokens": 90,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 85
+      },
+      "estimatedCny": 0.00020999999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "command": null
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S06",
+      "gold": {
+        "owner": null
+      },
+      "question": "此前是否记录了“月球项目负责人”？返回 {\"owner\":姓名字符串或null}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 6,
+          "minScore": 0.02,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 0,
+        "planted": {
+          "added": 6,
+          "stats": {
+            "memories": 6,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 6
+            },
+            "versions": 6,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 6,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"owner\":null}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "owner": null
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "contextHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contextChars": 0,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 12,
+          "minScore": 0.02,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 0,
+        "planted": {
+          "added": 12,
+          "stats": {
+            "memories": 12,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 12
+            },
+            "versions": 12,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 12,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"codes\":[]}",
+      "usage": {
+        "prompt_tokens": 86,
+        "completion_tokens": 5,
+        "total_tokens": 91,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 86
+      },
+      "estimatedCny": 0.00021199999999999998,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "codes": []
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S09",
+      "gold": {
+        "check": "CHECK-71"
+      },
+      "question": "软件准备交付上线之前，按约定必须执行哪项校验？返回 {\"check\":字符串或null}。",
+      "contextHash": "f8054b656945ed1d0e8b36e714301a8aebcf2c6536b61fa626db62a0900beaa0",
+      "contextChars": 154,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 7,
+          "minScore": 0.02,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 73,
+        "planted": {
+          "added": 7,
+          "stats": {
+            "memories": 7,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 7
+            },
+            "versions": 7,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 7,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"check\":\"CHECK-71\"}",
+      "usage": {
+        "prompt_tokens": 182,
+        "completion_tokens": 7,
+        "total_tokens": 189,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 182
+      },
+      "estimatedCny": 0.00041999999999999996,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "check": "CHECK-71"
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800-min0",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S01",
+      "gold": {
+        "tag": "DEMO-71"
+      },
+      "question": "按“视频口味”，技术视频首选标签是什么？返回 {\"tag\":字符串或null}。",
+      "contextHash": "7c83ea20f25aa7c2306db4ea0921ea3f32e7c8af8bd19b8767567f47959b533a",
+      "contextChars": 501,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 14,
+          "minScore": 0,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 211,
+        "planted": {
+          "added": 7,
+          "stats": {
+            "memories": 14,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 14
+            },
+            "versions": 14,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 14,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"tag\":\"DEMO-71\"}",
+      "usage": {
+        "prompt_tokens": 391,
+        "completion_tokens": 8,
+        "total_tokens": 399,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 391
+      },
+      "estimatedCny": 0.000846,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "tag": "DEMO-71"
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800-min0",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S04",
+      "gold": {
+        "channel": "A-71"
+      },
+      "question": "本工作区“上线规范”的通道是什么？返回 {\"channel\":字符串或null}。",
+      "contextHash": "0dd3ae2aa36e644ee23fa0396df3afdcbbd7ae7c5d17c85e7996e285ac585b72",
+      "contextChars": 491,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 16,
+          "minScore": 0,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 206,
+        "planted": {
+          "added": 7,
+          "stats": {
+            "memories": 16,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 16
+            },
+            "versions": 16,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 16,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"channel\":\"A-71\"}",
+      "usage": {
+        "prompt_tokens": 387,
+        "completion_tokens": 7,
+        "total_tokens": 394,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 387
+      },
+      "estimatedCny": 0.0008299999999999999,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "channel": "A-71"
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800-min0",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S05",
+      "gold": {
+        "command": "verify-QA-71.mjs"
+      },
+      "question": "“发布流程”的最终验收命令是什么？返回 {\"command\":字符串或null}。",
+      "contextHash": "539f678f84e6e2cbf4e63279b0e54a96e619eaadba61974c5669ad7780982fdb",
+      "contextChars": 1065,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 14,
+          "minScore": 0,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 679,
+        "planted": {
+          "added": 7,
+          "stats": {
+            "memories": 14,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 14
+            },
+            "versions": 14,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 14,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"command\":\"verify-QA-71.mjs\"}",
+      "usage": {
+        "prompt_tokens": 729,
+        "completion_tokens": 11,
+        "total_tokens": 740,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 729
+      },
+      "estimatedCny": 0.0015459999999999998,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "command": "verify-QA-71.mjs"
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800-min0",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S06",
+      "gold": {
+        "owner": null
+      },
+      "question": "此前是否记录了“月球项目负责人”？返回 {\"owner\":姓名字符串或null}。",
+      "contextHash": "82f5c73cb0abbff7ef3c70b47eae11dd0bf215431e4b4942ee4fb06ba0dfdcb3",
+      "contextChars": 503,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 12,
+          "minScore": 0,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 207,
+        "planted": {
+          "added": 6,
+          "stats": {
+            "memories": 12,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 12
+            },
+            "versions": 12,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 12,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"owner\":null}",
+      "usage": {
+        "prompt_tokens": 392,
+        "completion_tokens": 5,
+        "total_tokens": 397,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 392
+      },
+      "estimatedCny": 0.000824,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "owner": null
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800-min0",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S07",
+      "gold": {
+        "codes": [
+          "QA1-71",
+          "QA2-71",
+          "QA3-71",
+          "QA4-71",
+          "QA5-71",
+          "QA6-71"
+        ]
+      },
+      "question": "列出全部六条“联调约定”的编号。返回 {\"codes\":[编号字符串]}。",
+      "contextHash": "47422fae58d8951a123bcedb6107a6f3efb23836343c878c912ccb398d73e558",
+      "contextChars": 545,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 24,
+          "minScore": 0,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 263,
+        "planted": {
+          "added": 12,
+          "stats": {
+            "memories": 24,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 24
+            },
+            "versions": 24,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 24,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"codes\":[\"QA5-71\",\"QA3-71\",\"QA2-71\",\"QA1-71\"]}",
+      "usage": {
+        "prompt_tokens": 439,
+        "completion_tokens": 25,
+        "total_tokens": 464,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 439
+      },
+      "estimatedCny": 0.001078,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "codes": [
+            "QA5-71",
+            "QA3-71",
+            "QA2-71",
+            "QA1-71"
+          ]
+        }
+      }
+    },
+    {
+      "arm": "dsmmemory-800-min0",
+      "budget": 800,
+      "rep": 0,
+      "scenario": "S09",
+      "gold": {
+        "check": "CHECK-71"
+      },
+      "question": "软件准备交付上线之前，按约定必须执行哪项校验？返回 {\"check\":字符串或null}。",
+      "contextHash": "d36af4ce36f84d861ac23d9280de957288512a14bc2b477587403ca825ced1a9",
+      "contextChars": 505,
+      "injection": {
+        "source": {
+          "kind": "dsh-memory-pre-step",
+          "injectMaxTokens": 800,
+          "memories": 14,
+          "minScore": 0,
+          "hitsAtZeroThreshold": 6
+        },
+        "tokens": 212,
+        "planted": {
+          "added": 7,
+          "stats": {
+            "memories": 14,
+            "archived": 0,
+            "layers": {
+              "ep": 0,
+              "sm": 14
+            },
+            "versions": 14,
+            "nodes": 0,
+            "edges": 0,
+            "timeDimension": true,
+            "vector": true,
+            "vecDim": 256,
+            "vecRows": 14,
+            "embedder": "rule",
+            "degraded": false,
+            "rerank": false
+          }
+        }
+      },
+      "answer": "{\"check\":\"CHECK-71\"}",
+      "usage": {
+        "prompt_tokens": 393,
+        "completion_tokens": 7,
+        "total_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 393
+      },
+      "estimatedCny": 0.0008419999999999999,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "check": "CHECK-71"
+        }
+      }
+    }
+  ],
+  "summary": {
+    "none": {
+      "cells": 6,
+      "passed": 1,
+      "errors": 0,
+      "meanInjectedTokens": 0,
+      "meanPromptTokens": 86,
+      "estimatedCny": 0.0012759999999999998
+    },
+    "plain-all": {
+      "cells": 6,
+      "passed": 6,
+      "errors": 0,
+      "meanInjectedTokens": 360,
+      "meanPromptTokens": 463,
+      "estimatedCny": 0.006144
+    },
+    "trivium-inject": {
+      "cells": 6,
+      "passed": 4,
+      "errors": 0,
+      "meanInjectedTokens": 76,
+      "meanPromptTokens": 156,
+      "estimatedCny": 0.0022819999999999993
+    },
+    "goodmemory-256": {
+      "cells": 6,
+      "passed": 4,
+      "errors": 0,
+      "meanInjectedTokens": 17,
+      "meanPromptTokens": 106,
+      "estimatedCny": 0.00157
+    },
+    "goodmemory-300": {
+      "cells": 6,
+      "passed": 4,
+      "errors": 0,
+      "meanInjectedTokens": 17,
+      "meanPromptTokens": 106,
+      "estimatedCny": 0.00157
+    },
+    "dsmmemory-800": {
+      "cells": 6,
+      "passed": 2,
+      "errors": 0,
+      "meanInjectedTokens": 12,
+      "meanPromptTokens": 102,
+      "estimatedCny": 0.001478
+    },
+    "dsmmemory-800-min0": {
+      "cells": 6,
+      "passed": 5,
+      "errors": 0,
+      "meanInjectedTokens": 296,
+      "meanPromptTokens": 455,
+      "estimatedCny": 0.005966
+    }
+  }
+}

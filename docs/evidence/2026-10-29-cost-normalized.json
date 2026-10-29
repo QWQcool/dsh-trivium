@@ -1,0 +1,418 @@
+{
+  "priceSource": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+  "capturedAt": "2026-10-29",
+  "costBasis": "offpeak (peak/2). Peak is reported alongside; never mix the two in one table.",
+  "note": "Computed from stored token usage only — no guessing of the wall-clock window each call ran in.",
+  "sets": [
+    {
+      "file": "online-full.json",
+      "protocol": "C4",
+      "variant": null,
+      "status": "complete",
+      "models": [
+        "deepseek-flash"
+      ],
+      "calls": 42,
+      "byArm": {
+        "none": {
+          "calls": 6,
+          "promptTokens": 518,
+          "cachedTokens": 0,
+          "completionTokens": 30,
+          "cnyPeak": 0.001276,
+          "cnyOffpeak": 0.000638
+        },
+        "plain-all": {
+          "calls": 6,
+          "promptTokens": 2780,
+          "cachedTokens": 0,
+          "completionTokens": 73,
+          "cnyPeak": 0.006144,
+          "cnyOffpeak": 0.003072
+        },
+        "trivium-inject": {
+          "calls": 6,
+          "promptTokens": 933,
+          "cachedTokens": 0,
+          "completionTokens": 52,
+          "cnyPeak": 0.0022819999999999997,
+          "cnyOffpeak": 0.0011409999999999999
+        },
+        "goodmemory-256": {
+          "calls": 6,
+          "promptTokens": 637,
+          "cachedTokens": 0,
+          "completionTokens": 37,
+          "cnyPeak": 0.00157,
+          "cnyOffpeak": 0.000785
+        },
+        "goodmemory-300": {
+          "calls": 6,
+          "promptTokens": 637,
+          "cachedTokens": 0,
+          "completionTokens": 37,
+          "cnyPeak": 0.00157,
+          "cnyOffpeak": 0.000785
+        },
+        "dsmmemory-800": {
+          "calls": 6,
+          "promptTokens": 611,
+          "cachedTokens": 0,
+          "completionTokens": 32,
+          "cnyPeak": 0.001478,
+          "cnyOffpeak": 0.000739
+        },
+        "dsmmemory-800-min0": {
+          "calls": 6,
+          "promptTokens": 2731,
+          "cachedTokens": 0,
+          "completionTokens": 63,
+          "cnyPeak": 0.005966,
+          "cnyOffpeak": 0.002983
+        }
+      },
+      "total": {
+        "calls": 42,
+        "promptTokens": 8847,
+        "completionTokens": 324,
+        "cnyPeak": 0.020286000000000002,
+        "cnyOffpeak": 0.010143000000000001
+      }
+    },
+    {
+      "file": "step1.json",
+      "protocol": "C4",
+      "variant": null,
+      "status": "complete",
+      "models": [
+        "deepseek-flash"
+      ],
+      "calls": 144,
+      "byArm": {
+        "none": {
+          "calls": 18,
+          "promptTokens": 1554,
+          "cachedTokens": 0,
+          "completionTokens": 90,
+          "cnyPeak": 0.0038279999999999994,
+          "cnyOffpeak": 0.0019139999999999997
+        },
+        "plain-all": {
+          "calls": 18,
+          "promptTokens": 8340,
+          "cachedTokens": 5376,
+          "completionTokens": 219,
+          "cnyPeak": 0.007895039999999999,
+          "cnyOffpeak": 0.0039475199999999995
+        },
+        "trivium-inject": {
+          "calls": 18,
+          "promptTokens": 3264,
+          "cachedTokens": 384,
+          "completionTokens": 219,
+          "cnyPeak": 0.007527359999999999,
+          "cnyOffpeak": 0.0037636799999999997
+        },
+        "trivium-tools": {
+          "calls": 18,
+          "promptTokens": 20424,
+          "cachedTokens": 15355,
+          "completionTokens": 391,
+          "cnyPeak": 0.013880199999999997,
+          "cnyOffpeak": 0.0069400999999999985
+        },
+        "goodmemory-256": {
+          "calls": 18,
+          "promptTokens": 1911,
+          "cachedTokens": 0,
+          "completionTokens": 111,
+          "cnyPeak": 0.0047100000000000015,
+          "cnyOffpeak": 0.0023550000000000008
+        },
+        "goodmemory-300": {
+          "calls": 18,
+          "promptTokens": 1911,
+          "cachedTokens": 0,
+          "completionTokens": 111,
+          "cnyPeak": 0.0047100000000000015,
+          "cnyOffpeak": 0.0023550000000000008
+        },
+        "dsmmemory-800": {
+          "calls": 18,
+          "promptTokens": 1831,
+          "cachedTokens": 0,
+          "completionTokens": 96,
+          "cnyPeak": 0.00443,
+          "cnyOffpeak": 0.002215
+        },
+        "dsmmemory-800-min0": {
+          "calls": 18,
+          "promptTokens": 8168,
+          "cachedTokens": 0,
+          "completionTokens": 209,
+          "cnyPeak": 0.018008,
+          "cnyOffpeak": 0.009004
+        }
+      },
+      "total": {
+        "calls": 144,
+        "promptTokens": 47403,
+        "completionTokens": 1446,
+        "cnyPeak": 0.0649886,
+        "cnyOffpeak": 0.0324943
+      }
+    },
+    {
+      "file": "step2-deepseek-chat.json",
+      "protocol": "C4",
+      "variant": null,
+      "status": "complete",
+      "models": [
+        "deepseek-chat"
+      ],
+      "calls": 30,
+      "byArm": {
+        "plain-all": {
+          "calls": 6,
+          "promptTokens": 2780,
+          "cachedTokens": 1792,
+          "completionTokens": 73,
+          "cnyPeak": 0.0026316799999999995,
+          "cnyOffpeak": 0.0013158399999999998
+        },
+        "trivium-inject": {
+          "calls": 6,
+          "promptTokens": 1088,
+          "cachedTokens": 128,
+          "completionTokens": 73,
+          "cnyPeak": 0.00250912,
+          "cnyOffpeak": 0.00125456
+        },
+        "trivium-tools": {
+          "calls": 6,
+          "promptTokens": 6796,
+          "cachedTokens": 5504,
+          "completionTokens": 119,
+          "cnyPeak": 0.00375616,
+          "cnyOffpeak": 0.00187808
+        },
+        "goodmemory-256": {
+          "calls": 6,
+          "promptTokens": 637,
+          "cachedTokens": 0,
+          "completionTokens": 37,
+          "cnyPeak": 0.00157,
+          "cnyOffpeak": 0.000785
+        },
+        "dsmmemory-800-min0": {
+          "calls": 6,
+          "promptTokens": 2564,
+          "cachedTokens": 0,
+          "completionTokens": 73,
+          "cnyPeak": 0.005712,
+          "cnyOffpeak": 0.002856
+        }
+      },
+      "total": {
+        "calls": 30,
+        "promptTokens": 13865,
+        "completionTokens": 375,
+        "cnyPeak": 0.01617896,
+        "cnyOffpeak": 0.00808948
+      }
+    },
+    {
+      "file": "step2b-v4pro.json",
+      "protocol": "C4",
+      "variant": null,
+      "status": "complete",
+      "models": [
+        "deepseek-v4-pro"
+      ],
+      "calls": 24,
+      "byArm": {
+        "plain-all": {
+          "calls": 6,
+          "promptTokens": 2774,
+          "cachedTokens": 0,
+          "completionTokens": 73,
+          "cnyPeak": 0.026937,
+          "cnyOffpeak": 0.0134685
+        },
+        "trivium-inject": {
+          "calls": 6,
+          "promptTokens": 1082,
+          "cachedTokens": 0,
+          "completionTokens": 73,
+          "cnyPeak": 0.011709,
+          "cnyOffpeak": 0.0058545
+        },
+        "goodmemory-256": {
+          "calls": 6,
+          "promptTokens": 631,
+          "cachedTokens": 0,
+          "completionTokens": 49,
+          "cnyPeak": 0.0070019999999999995,
+          "cnyOffpeak": 0.0035009999999999998
+        },
+        "dsmmemory-800-min0": {
+          "calls": 6,
+          "promptTokens": 2549,
+          "cachedTokens": 0,
+          "completionTokens": 73,
+          "cnyPeak": 0.024912,
+          "cnyOffpeak": 0.012456
+        }
+      },
+      "total": {
+        "calls": 24,
+        "promptTokens": 7036,
+        "completionTokens": 268,
+        "cnyPeak": 0.07056,
+        "cnyOffpeak": 0.03528
+      }
+    },
+    {
+      "file": "d1-5b.json",
+      "protocol": "D1",
+      "variant": "D1",
+      "status": "complete",
+      "models": [
+        "deepseek-flash"
+      ],
+      "calls": 120,
+      "byArm": {
+        "none-full": {
+          "calls": 30,
+          "promptTokens": 4317,
+          "cachedTokens": 0,
+          "completionTokens": 543,
+          "cnyPeak": 0.012978000000000002,
+          "cnyOffpeak": 0.006489000000000001
+        },
+        "none-compact": {
+          "calls": 30,
+          "promptTokens": 3373,
+          "cachedTokens": 0,
+          "completionTokens": 589,
+          "cnyPeak": 0.011458000000000001,
+          "cnyOffpeak": 0.005729000000000001
+        },
+        "trivium-compact": {
+          "calls": 30,
+          "promptTokens": 4373,
+          "cachedTokens": 0,
+          "completionTokens": 628,
+          "cnyPeak": 0.013770000000000003,
+          "cnyOffpeak": 0.006885000000000001
+        },
+        "plain-compact": {
+          "calls": 30,
+          "promptTokens": 4582,
+          "cachedTokens": 0,
+          "completionTokens": 520,
+          "cnyPeak": 0.013324,
+          "cnyOffpeak": 0.006662
+        }
+      },
+      "total": {
+        "calls": 120,
+        "promptTokens": 16645,
+        "completionTokens": 2280,
+        "cnyPeak": 0.051530000000000006,
+        "cnyOffpeak": 0.025765000000000003
+      }
+    },
+    {
+      "file": "d1-10b.json",
+      "protocol": "D1",
+      "variant": "D1b",
+      "status": "complete",
+      "models": [
+        "deepseek-flash"
+      ],
+      "calls": 240,
+      "byArm": {
+        "none-full": {
+          "calls": 60,
+          "promptTokens": 15660,
+          "cachedTokens": 5376,
+          "completionTokens": 1469,
+          "cnyPeak": 0.032535039999999994,
+          "cnyOffpeak": 0.016267519999999997
+        },
+        "none-compact": {
+          "calls": 60,
+          "promptTokens": 7126,
+          "cachedTokens": 0,
+          "completionTokens": 1487,
+          "cnyPeak": 0.026147999999999998,
+          "cnyOffpeak": 0.013073999999999999
+        },
+        "trivium-compact": {
+          "calls": 60,
+          "promptTokens": 8052,
+          "cachedTokens": 0,
+          "completionTokens": 1452,
+          "cnyPeak": 0.027720000000000005,
+          "cnyOffpeak": 0.013860000000000003
+        },
+        "plain-compact": {
+          "calls": 60,
+          "promptTokens": 9781,
+          "cachedTokens": 0,
+          "completionTokens": 1564,
+          "cnyPeak": 0.032074,
+          "cnyOffpeak": 0.016037
+        }
+      },
+      "total": {
+        "calls": 240,
+        "promptTokens": 40619,
+        "completionTokens": 5972,
+        "cnyPeak": 0.11847704,
+        "cnyOffpeak": 0.05923852
+      }
+    },
+    {
+      "file": "extract-online2.json",
+      "protocol": "EXTRACT",
+      "variant": null,
+      "status": "complete",
+      "models": [
+        "deepseek-flash"
+      ],
+      "calls": 18,
+      "byArm": {
+        "perTurn": {
+          "calls": 15,
+          "promptTokens": 3113,
+          "cachedTokens": 0,
+          "completionTokens": 564,
+          "cnyPeak": 0.010738,
+          "cnyOffpeak": 0.005369
+        },
+        "batch": {
+          "calls": 3,
+          "promptTokens": 1025,
+          "cachedTokens": 384,
+          "completionTokens": 483,
+          "cnyPeak": 0.005161359999999999,
+          "cnyOffpeak": 0.0025806799999999997
+        }
+      },
+      "total": {
+        "calls": 18,
+        "promptTokens": 4138,
+        "completionTokens": 1047,
+        "cnyPeak": 0.015899359999999998,
+        "cnyOffpeak": 0.007949679999999999
+      }
+    }
+  ],
+  "grandTotal": {
+    "calls": 618,
+    "cnyPeak": 0.35791996,
+    "cnyOffpeak": 0.17895998
+  }
+}

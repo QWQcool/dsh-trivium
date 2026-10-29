@@ -54,6 +54,10 @@ package/lock 已更新到 0.7.1；更正调度、自然到期、按库诊断和 
 | C 批质量与负载基线 | [结果汇总](next-memory/C-RESULTS.md) / [执行计划](next-memory/C-EXECUTION-PLAN.md) / [10 个场景](next-memory/C3-SCENARIOS.md) / [对手取舍](next-memory/C4-COUNTERPARTS.md) |
 | C4 对手验装与同语料对照 | [预注册](next-memory/C4-PLAN.md) / [结果](next-memory/C4-RESULTS.md)（7 臂 42 格，¥0.0203） |
 | D0 完整性修复与复测 | [结果](next-memory/D0-RESULTS.md)（尾部保底 + topK 8；我方 4/6 → 18/18，注入 97 tok） |
+| D1 压缩下的会话成本 | [预注册](next-memory/D1-PLAN.md) / [结果](next-memory/D1-RESULTS.md)（10 轮：prompt 0.51×、费用 0.85×、正确率不降；5 轮不省） |
+| D2 抽取成本专项 | [结果](next-memory/D2-EXTRACT-COST.md)（每轮 1038 tok / 批量 342 tok；含抽取后净账仍为负） |
+| 成本口径（峰谷） | [口径](next-memory/COST-MODEL.md)（对外一律谷价，峰价作上界；618 次调用 ¥0.17896） |
+| 测试数据（可复核账本） | [证据包](evidence/README.md)（逐格回答 + usage + 判分 + sha256） |
 | 发布操作与证据要求 | [发布检查清单](release-checklist.md) |
 | 文档保留、合并、删除候选 | [文档审计](documentation-audit-2026-10-28.md) |
 | 本轮缺陷复现、修复与回归 | [0.7.0 缺陷审查](bug-audit-2026-10-28.md) |

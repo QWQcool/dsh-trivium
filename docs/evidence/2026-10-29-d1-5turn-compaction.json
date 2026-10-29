@@ -1,0 +1,5152 @@
+{
+  "protocol": "D1",
+  "variant": "D1",
+  "plan": "docs/next-memory/D1-PLAN.md",
+  "model": "deepseek-flash",
+  "thinking": "disabled",
+  "temperature": 0,
+  "maxTokens": 600,
+  "sessions": 6,
+  "turns": 5,
+  "budgetCny": 3,
+  "pricesCnyPerMillion": {
+    "input": 2,
+    "cached": 0.04,
+    "output": 8
+  },
+  "status": "complete",
+  "estimatedCny": 0.05153000000000002,
+  "reservedOrChargedCny": 0.051530000000000006,
+  "calls": [
+    {
+      "label": "none-full/s1/t0",
+      "reservedCny": 0.03848,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 75,
+        "completion_tokens": 1,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 75
+      },
+      "estimatedCny": 0.000158
+    },
+    {
+      "label": "none-full/s1/t1",
+      "reservedCny": 0.038736,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 16,
+        "total_tokens": 109,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "estimatedCny": 0.000314
+    },
+    {
+      "label": "none-full/s1/t2",
+      "reservedCny": 0.039174,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 128,
+        "completion_tokens": 8,
+        "total_tokens": 136,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 128
+      },
+      "estimatedCny": 0.00031999999999999997
+    },
+    {
+      "label": "none-full/s1/t3",
+      "reservedCny": 0.03945,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 154,
+        "completion_tokens": 24,
+        "total_tokens": 178,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 154
+      },
+      "estimatedCny": 0.0005
+    },
+    {
+      "label": "none-full/s1/t4",
+      "reservedCny": 0.040026,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 211,
+        "completion_tokens": 13,
+        "total_tokens": 224,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 211
+      },
+      "estimatedCny": 0.000526
+    },
+    {
+      "label": "none-full/s2/t0",
+      "reservedCny": 0.038472,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 75,
+        "completion_tokens": 1,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 75
+      },
+      "estimatedCny": 0.000158
+    },
+    {
+      "label": "none-full/s2/t1",
+      "reservedCny": 0.038728,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 49,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "estimatedCny": 0.000578
+    },
+    {
+      "label": "none-full/s2/t2",
+      "reservedCny": 0.039414,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 160,
+        "completion_tokens": 7,
+        "total_tokens": 167,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 160
+      },
+      "estimatedCny": 0.000376
+    },
+    {
+      "label": "none-full/s2/t3",
+      "reservedCny": 0.039694,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 185,
+        "completion_tokens": 29,
+        "total_tokens": 214,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 185
+      },
+      "estimatedCny": 0.000602
+    },
+    {
+      "label": "none-full/s2/t4",
+      "reservedCny": 0.040262,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 243,
+        "completion_tokens": 16,
+        "total_tokens": 259,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 243
+      },
+      "estimatedCny": 0.000614
+    },
+    {
+      "label": "none-full/s3/t0",
+      "reservedCny": 0.038439999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 1,
+        "total_tokens": 75,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 74
+      },
+      "estimatedCny": 0.000156
+    },
+    {
+      "label": "none-full/s3/t1",
+      "reservedCny": 0.038695999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 48,
+        "total_tokens": 140,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 92
+      },
+      "estimatedCny": 0.000568
+    },
+    {
+      "label": "none-full/s3/t2",
+      "reservedCny": 0.03934,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 160,
+        "completion_tokens": 6,
+        "total_tokens": 166,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 160
+      },
+      "estimatedCny": 0.00036799999999999995
+    },
+    {
+      "label": "none-full/s3/t3",
+      "reservedCny": 0.039605999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 184,
+        "completion_tokens": 35,
+        "total_tokens": 219,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 184
+      },
+      "estimatedCny": 0.0006479999999999999
+    },
+    {
+      "label": "none-full/s3/t4",
+      "reservedCny": 0.040232,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 251,
+        "completion_tokens": 13,
+        "total_tokens": 264,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 251
+      },
+      "estimatedCny": 0.000606
+    },
+    {
+      "label": "none-full/s4/t0",
+      "reservedCny": 0.03845,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 71,
+        "completion_tokens": 1,
+        "total_tokens": 72,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 71
+      },
+      "estimatedCny": 0.00015
+    },
+    {
+      "label": "none-full/s4/t1",
+      "reservedCny": 0.038706,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 89,
+        "completion_tokens": 45,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 89
+      },
+      "estimatedCny": 0.000538
+    },
+    {
+      "label": "none-full/s4/t2",
+      "reservedCny": 0.039374,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 153,
+        "completion_tokens": 7,
+        "total_tokens": 160,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 153
+      },
+      "estimatedCny": 0.000362
+    },
+    {
+      "label": "none-full/s4/t3",
+      "reservedCny": 0.039647999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 178,
+        "completion_tokens": 28,
+        "total_tokens": 206,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 178
+      },
+      "estimatedCny": 0.00058
+    },
+    {
+      "label": "none-full/s4/t4",
+      "reservedCny": 0.040223999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 234,
+        "completion_tokens": 12,
+        "total_tokens": 246,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 234
+      },
+      "estimatedCny": 0.000564
+    },
+    {
+      "label": "none-full/s5/t0",
+      "reservedCny": 0.038452,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 70,
+        "completion_tokens": 1,
+        "total_tokens": 71,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 70
+      },
+      "estimatedCny": 0.000148
+    },
+    {
+      "label": "none-full/s5/t1",
+      "reservedCny": 0.038708,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 88,
+        "completion_tokens": 42,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 88
+      },
+      "estimatedCny": 0.000512
+    },
+    {
+      "label": "none-full/s5/t2",
+      "reservedCny": 0.039349999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 147,
+        "completion_tokens": 7,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 147
+      },
+      "estimatedCny": 0.00035
+    },
+    {
+      "label": "none-full/s5/t3",
+      "reservedCny": 0.039632,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 172,
+        "completion_tokens": 34,
+        "total_tokens": 206,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 172
+      },
+      "estimatedCny": 0.000616
+    },
+    {
+      "label": "none-full/s5/t4",
+      "reservedCny": 0.04029,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 235,
+        "completion_tokens": 10,
+        "total_tokens": 245,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 235
+      },
+      "estimatedCny": 0.0005499999999999999
+    },
+    {
+      "label": "none-full/s6/t0",
+      "reservedCny": 0.038419999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 69,
+        "completion_tokens": 1,
+        "total_tokens": 70,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 69
+      },
+      "estimatedCny": 0.000146
+    },
+    {
+      "label": "none-full/s6/t1",
+      "reservedCny": 0.038675999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 87,
+        "completion_tokens": 43,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 87
+      },
+      "estimatedCny": 0.000518
+    },
+    {
+      "label": "none-full/s6/t2",
+      "reservedCny": 0.039296,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 148,
+        "completion_tokens": 6,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 148
+      },
+      "estimatedCny": 0.000344
+    },
+    {
+      "label": "none-full/s6/t3",
+      "reservedCny": 0.039574,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 172,
+        "completion_tokens": 24,
+        "total_tokens": 196,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 172
+      },
+      "estimatedCny": 0.000536
+    },
+    {
+      "label": "none-full/s6/t4",
+      "reservedCny": 0.040114,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 226,
+        "completion_tokens": 15,
+        "total_tokens": 241,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 226
+      },
+      "estimatedCny": 0.000572
+    },
+    {
+      "label": "none-compact/s1/t0",
+      "reservedCny": 0.03848,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 75,
+        "completion_tokens": 1,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 75
+      },
+      "estimatedCny": 0.000158
+    },
+    {
+      "label": "none-compact/s1/t1",
+      "reservedCny": 0.038736,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 49,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "estimatedCny": 0.000578
+    },
+    {
+      "label": "none-compact/s1/t2",
+      "reservedCny": 0.039442,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 161,
+        "completion_tokens": 8,
+        "total_tokens": 169,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 161
+      },
+      "estimatedCny": 0.00038599999999999995
+    },
+    {
+      "label": "none-compact/s1/t3",
+      "reservedCny": 0.038944,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 106,
+        "completion_tokens": 37,
+        "total_tokens": 143,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 106
+      },
+      "estimatedCny": 0.000508
+    },
+    {
+      "label": "none-compact/s1/t4",
+      "reservedCny": 0.039324,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 149,
+        "completion_tokens": 9,
+        "total_tokens": 158,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 149
+      },
+      "estimatedCny": 0.00037
+    },
+    {
+      "label": "none-compact/s2/t0",
+      "reservedCny": 0.038472,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 75,
+        "completion_tokens": 1,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 75
+      },
+      "estimatedCny": 0.000158
+    },
+    {
+      "label": "none-compact/s2/t1",
+      "reservedCny": 0.038728,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 49,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "estimatedCny": 0.000578
+    },
+    {
+      "label": "none-compact/s2/t2",
+      "reservedCny": 0.039414,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 160,
+        "completion_tokens": 7,
+        "total_tokens": 167,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 160
+      },
+      "estimatedCny": 0.000376
+    },
+    {
+      "label": "none-compact/s2/t3",
+      "reservedCny": 0.038928,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 42,
+        "total_tokens": 146,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "estimatedCny": 0.000544
+    },
+    {
+      "label": "none-compact/s2/t4",
+      "reservedCny": 0.03929,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 150,
+        "completion_tokens": 9,
+        "total_tokens": 159,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 150
+      },
+      "estimatedCny": 0.000372
+    },
+    {
+      "label": "none-compact/s3/t0",
+      "reservedCny": 0.038439999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 1,
+        "total_tokens": 75,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 74
+      },
+      "estimatedCny": 0.000156
+    },
+    {
+      "label": "none-compact/s3/t1",
+      "reservedCny": 0.038695999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 50,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 92
+      },
+      "estimatedCny": 0.000584
+    },
+    {
+      "label": "none-compact/s3/t2",
+      "reservedCny": 0.039369999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 162,
+        "completion_tokens": 6,
+        "total_tokens": 168,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 162
+      },
+      "estimatedCny": 0.00037199999999999993
+    },
+    {
+      "label": "none-compact/s3/t3",
+      "reservedCny": 0.038897999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 37,
+        "total_tokens": 141,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "estimatedCny": 0.000504
+    },
+    {
+      "label": "none-compact/s3/t4",
+      "reservedCny": 0.039282,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 147,
+        "completion_tokens": 10,
+        "total_tokens": 157,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 147
+      },
+      "estimatedCny": 0.000374
+    },
+    {
+      "label": "none-compact/s4/t0",
+      "reservedCny": 0.03845,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 71,
+        "completion_tokens": 1,
+        "total_tokens": 72,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 71
+      },
+      "estimatedCny": 0.00015
+    },
+    {
+      "label": "none-compact/s4/t1",
+      "reservedCny": 0.038706,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 89,
+        "completion_tokens": 45,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 89
+      },
+      "estimatedCny": 0.000538
+    },
+    {
+      "label": "none-compact/s4/t2",
+      "reservedCny": 0.039374,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 153,
+        "completion_tokens": 7,
+        "total_tokens": 160,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 153
+      },
+      "estimatedCny": 0.000362
+    },
+    {
+      "label": "none-compact/s4/t3",
+      "reservedCny": 0.038939999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 30,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "estimatedCny": 0.00044799999999999994
+    },
+    {
+      "label": "none-compact/s4/t4",
+      "reservedCny": 0.039229999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 136,
+        "completion_tokens": 9,
+        "total_tokens": 145,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 136
+      },
+      "estimatedCny": 0.000344
+    },
+    {
+      "label": "none-compact/s5/t0",
+      "reservedCny": 0.038452,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 70,
+        "completion_tokens": 1,
+        "total_tokens": 71,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 70
+      },
+      "estimatedCny": 0.000148
+    },
+    {
+      "label": "none-compact/s5/t1",
+      "reservedCny": 0.038708,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 88,
+        "completion_tokens": 42,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 88
+      },
+      "estimatedCny": 0.000512
+    },
+    {
+      "label": "none-compact/s5/t2",
+      "reservedCny": 0.039349999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 147,
+        "completion_tokens": 7,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 147
+      },
+      "estimatedCny": 0.00035
+    },
+    {
+      "label": "none-compact/s5/t3",
+      "reservedCny": 0.038908,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 34,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 100
+      },
+      "estimatedCny": 0.000472
+    },
+    {
+      "label": "none-compact/s5/t4",
+      "reservedCny": 0.039231999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 139,
+        "completion_tokens": 9,
+        "total_tokens": 148,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 139
+      },
+      "estimatedCny": 0.00035
+    },
+    {
+      "label": "none-compact/s6/t0",
+      "reservedCny": 0.038419999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 69,
+        "completion_tokens": 1,
+        "total_tokens": 70,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 69
+      },
+      "estimatedCny": 0.000146
+    },
+    {
+      "label": "none-compact/s6/t1",
+      "reservedCny": 0.038675999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 87,
+        "completion_tokens": 43,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 87
+      },
+      "estimatedCny": 0.000518
+    },
+    {
+      "label": "none-compact/s6/t2",
+      "reservedCny": 0.039296,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 148,
+        "completion_tokens": 6,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 148
+      },
+      "estimatedCny": 0.000344
+    },
+    {
+      "label": "none-compact/s6/t3",
+      "reservedCny": 0.038882,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 97,
+        "completion_tokens": 27,
+        "total_tokens": 124,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 97
+      },
+      "estimatedCny": 0.00041
+    },
+    {
+      "label": "none-compact/s6/t4",
+      "reservedCny": 0.039174,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 130,
+        "completion_tokens": 11,
+        "total_tokens": 141,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 130
+      },
+      "estimatedCny": 0.000348
+    },
+    {
+      "label": "trivium-compact/s1/t0",
+      "reservedCny": 0.039001999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 144,
+        "completion_tokens": 1,
+        "total_tokens": 145,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 144
+      },
+      "estimatedCny": 0.000296
+    },
+    {
+      "label": "trivium-compact/s1/t1",
+      "reservedCny": 0.038736,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 49,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "estimatedCny": 0.000578
+    },
+    {
+      "label": "trivium-compact/s1/t2",
+      "reservedCny": 0.039763999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 197,
+        "completion_tokens": 8,
+        "total_tokens": 205,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 197
+      },
+      "estimatedCny": 0.00045799999999999997
+    },
+    {
+      "label": "trivium-compact/s1/t3",
+      "reservedCny": 0.038944,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 106,
+        "completion_tokens": 37,
+        "total_tokens": 143,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 106
+      },
+      "estimatedCny": 0.000508
+    },
+    {
+      "label": "trivium-compact/s1/t4",
+      "reservedCny": 0.039736,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 201,
+        "completion_tokens": 13,
+        "total_tokens": 214,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 201
+      },
+      "estimatedCny": 0.0005059999999999999
+    },
+    {
+      "label": "trivium-compact/s2/t0",
+      "reservedCny": 0.038986,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 144,
+        "completion_tokens": 1,
+        "total_tokens": 145,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 144
+      },
+      "estimatedCny": 0.000296
+    },
+    {
+      "label": "trivium-compact/s2/t1",
+      "reservedCny": 0.038728,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 49,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "estimatedCny": 0.000578
+    },
+    {
+      "label": "trivium-compact/s2/t2",
+      "reservedCny": 0.039722,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 196,
+        "completion_tokens": 7,
+        "total_tokens": 203,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 196
+      },
+      "estimatedCny": 0.000448
+    },
+    {
+      "label": "trivium-compact/s2/t3",
+      "reservedCny": 0.038928,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 42,
+        "total_tokens": 146,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "estimatedCny": 0.000544
+    },
+    {
+      "label": "trivium-compact/s2/t4",
+      "reservedCny": 0.039701999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 16,
+        "total_tokens": 218,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 202
+      },
+      "estimatedCny": 0.000532
+    },
+    {
+      "label": "trivium-compact/s3/t0",
+      "reservedCny": 0.038922,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 142,
+        "completion_tokens": 1,
+        "total_tokens": 143,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 142
+      },
+      "estimatedCny": 0.00029199999999999994
+    },
+    {
+      "label": "trivium-compact/s3/t1",
+      "reservedCny": 0.038695999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 49,
+        "total_tokens": 141,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 92
+      },
+      "estimatedCny": 0.000576
+    },
+    {
+      "label": "trivium-compact/s3/t2",
+      "reservedCny": 0.039653999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 196,
+        "completion_tokens": 6,
+        "total_tokens": 202,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 196
+      },
+      "estimatedCny": 0.00043999999999999996
+    },
+    {
+      "label": "trivium-compact/s3/t3",
+      "reservedCny": 0.038897999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 37,
+        "total_tokens": 141,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "estimatedCny": 0.000504
+    },
+    {
+      "label": "trivium-compact/s3/t4",
+      "reservedCny": 0.039673999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 199,
+        "completion_tokens": 13,
+        "total_tokens": 212,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 199
+      },
+      "estimatedCny": 0.000502
+    },
+    {
+      "label": "trivium-compact/s4/t0",
+      "reservedCny": 0.038942,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 136,
+        "completion_tokens": 1,
+        "total_tokens": 137,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 136
+      },
+      "estimatedCny": 0.00028
+    },
+    {
+      "label": "trivium-compact/s4/t1",
+      "reservedCny": 0.038706,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 89,
+        "completion_tokens": 44,
+        "total_tokens": 133,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 89
+      },
+      "estimatedCny": 0.00053
+    },
+    {
+      "label": "trivium-compact/s4/t2",
+      "reservedCny": 0.03986,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 217,
+        "completion_tokens": 7,
+        "total_tokens": 224,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 217
+      },
+      "estimatedCny": 0.00049
+    },
+    {
+      "label": "trivium-compact/s4/t3",
+      "reservedCny": 0.038939999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 25,
+        "total_tokens": 129,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "estimatedCny": 0.00040799999999999994
+    },
+    {
+      "label": "trivium-compact/s4/t4",
+      "reservedCny": 0.0397,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 196,
+        "completion_tokens": 12,
+        "total_tokens": 208,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 196
+      },
+      "estimatedCny": 0.000488
+    },
+    {
+      "label": "trivium-compact/s5/t0",
+      "reservedCny": 0.038945999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 134,
+        "completion_tokens": 1,
+        "total_tokens": 135,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 134
+      },
+      "estimatedCny": 0.000276
+    },
+    {
+      "label": "trivium-compact/s5/t1",
+      "reservedCny": 0.038708,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 88,
+        "completion_tokens": 42,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 88
+      },
+      "estimatedCny": 0.000512
+    },
+    {
+      "label": "trivium-compact/s5/t2",
+      "reservedCny": 0.039647999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 180,
+        "completion_tokens": 7,
+        "total_tokens": 187,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 180
+      },
+      "estimatedCny": 0.000416
+    },
+    {
+      "label": "trivium-compact/s5/t3",
+      "reservedCny": 0.038908,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 50,
+        "total_tokens": 150,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 100
+      },
+      "estimatedCny": 0.0006
+    },
+    {
+      "label": "trivium-compact/s5/t4",
+      "reservedCny": 0.039746,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 205,
+        "completion_tokens": 10,
+        "total_tokens": 215,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 205
+      },
+      "estimatedCny": 0.00049
+    },
+    {
+      "label": "trivium-compact/s6/t0",
+      "reservedCny": 0.038882,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 132,
+        "completion_tokens": 1,
+        "total_tokens": 133,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 132
+      },
+      "estimatedCny": 0.00027199999999999994
+    },
+    {
+      "label": "trivium-compact/s6/t1",
+      "reservedCny": 0.038675999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 87,
+        "completion_tokens": 43,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 87
+      },
+      "estimatedCny": 0.000518
+    },
+    {
+      "label": "trivium-compact/s6/t2",
+      "reservedCny": 0.039661999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 194,
+        "completion_tokens": 6,
+        "total_tokens": 200,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 194
+      },
+      "estimatedCny": 0.00043599999999999997
+    },
+    {
+      "label": "trivium-compact/s6/t3",
+      "reservedCny": 0.038882,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 97,
+        "completion_tokens": 35,
+        "total_tokens": 132,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 97
+      },
+      "estimatedCny": 0.000474
+    },
+    {
+      "label": "trivium-compact/s6/t4",
+      "reservedCny": 0.039708,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 201,
+        "completion_tokens": 15,
+        "total_tokens": 216,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 201
+      },
+      "estimatedCny": 0.0005219999999999999
+    },
+    {
+      "label": "plain-compact/s1/t0",
+      "reservedCny": 0.038866,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 121,
+        "completion_tokens": 1,
+        "total_tokens": 122,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 121
+      },
+      "estimatedCny": 0.00025
+    },
+    {
+      "label": "plain-compact/s1/t1",
+      "reservedCny": 0.039122,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 139,
+        "completion_tokens": 15,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 139
+      },
+      "estimatedCny": 0.00039799999999999997
+    },
+    {
+      "label": "plain-compact/s1/t2",
+      "reservedCny": 0.039548,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 173,
+        "completion_tokens": 8,
+        "total_tokens": 181,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 173
+      },
+      "estimatedCny": 0.00041
+    },
+    {
+      "label": "plain-compact/s1/t3",
+      "reservedCny": 0.03933,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 152,
+        "completion_tokens": 25,
+        "total_tokens": 177,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 152
+      },
+      "estimatedCny": 0.0005039999999999999
+    },
+    {
+      "label": "plain-compact/s1/t4",
+      "reservedCny": 0.039582,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 183,
+        "completion_tokens": 13,
+        "total_tokens": 196,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 183
+      },
+      "estimatedCny": 0.00047
+    },
+    {
+      "label": "plain-compact/s2/t0",
+      "reservedCny": 0.038849999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 121,
+        "completion_tokens": 1,
+        "total_tokens": 122,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 121
+      },
+      "estimatedCny": 0.00025
+    },
+    {
+      "label": "plain-compact/s2/t1",
+      "reservedCny": 0.039105999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 139,
+        "completion_tokens": 48,
+        "total_tokens": 187,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 139
+      },
+      "estimatedCny": 0.000662
+    },
+    {
+      "label": "plain-compact/s2/t2",
+      "reservedCny": 0.039774,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 205,
+        "completion_tokens": 7,
+        "total_tokens": 212,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 205
+      },
+      "estimatedCny": 0.000466
+    },
+    {
+      "label": "plain-compact/s2/t3",
+      "reservedCny": 0.039305999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 150,
+        "completion_tokens": 29,
+        "total_tokens": 179,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 150
+      },
+      "estimatedCny": 0.0005319999999999999
+    },
+    {
+      "label": "plain-compact/s2/t4",
+      "reservedCny": 0.039569999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 183,
+        "completion_tokens": 16,
+        "total_tokens": 199,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 183
+      },
+      "estimatedCny": 0.000494
+    },
+    {
+      "label": "plain-compact/s3/t0",
+      "reservedCny": 0.038785999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 119,
+        "completion_tokens": 1,
+        "total_tokens": 120,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 119
+      },
+      "estimatedCny": 0.00024599999999999996
+    },
+    {
+      "label": "plain-compact/s3/t1",
+      "reservedCny": 0.039042,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 137,
+        "completion_tokens": 47,
+        "total_tokens": 184,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 137
+      },
+      "estimatedCny": 0.00065
+    },
+    {
+      "label": "plain-compact/s3/t2",
+      "reservedCny": 0.039667999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 204,
+        "completion_tokens": 6,
+        "total_tokens": 210,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 204
+      },
+      "estimatedCny": 0.000456
+    },
+    {
+      "label": "plain-compact/s3/t3",
+      "reservedCny": 0.039243999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 149,
+        "completion_tokens": 21,
+        "total_tokens": 170,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 149
+      },
+      "estimatedCny": 0.00046599999999999994
+    },
+    {
+      "label": "plain-compact/s3/t4",
+      "reservedCny": 0.039456,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 176,
+        "completion_tokens": 13,
+        "total_tokens": 189,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 176
+      },
+      "estimatedCny": 0.00045599999999999997
+    },
+    {
+      "label": "plain-compact/s4/t0",
+      "reservedCny": 0.038806,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 113,
+        "completion_tokens": 1,
+        "total_tokens": 114,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 113
+      },
+      "estimatedCny": 0.000234
+    },
+    {
+      "label": "plain-compact/s4/t1",
+      "reservedCny": 0.039062,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 131,
+        "completion_tokens": 43,
+        "total_tokens": 174,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 131
+      },
+      "estimatedCny": 0.000606
+    },
+    {
+      "label": "plain-compact/s4/t2",
+      "reservedCny": 0.039706,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 193,
+        "completion_tokens": 7,
+        "total_tokens": 200,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 193
+      },
+      "estimatedCny": 0.000442
+    },
+    {
+      "label": "plain-compact/s4/t3",
+      "reservedCny": 0.039296,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 146,
+        "completion_tokens": 22,
+        "total_tokens": 168,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 146
+      },
+      "estimatedCny": 0.000468
+    },
+    {
+      "label": "plain-compact/s4/t4",
+      "reservedCny": 0.0395,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 170,
+        "completion_tokens": 12,
+        "total_tokens": 182,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 170
+      },
+      "estimatedCny": 0.00043599999999999997
+    },
+    {
+      "label": "plain-compact/s5/t0",
+      "reservedCny": 0.03881,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 111,
+        "completion_tokens": 1,
+        "total_tokens": 112,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 111
+      },
+      "estimatedCny": 0.00023
+    },
+    {
+      "label": "plain-compact/s5/t1",
+      "reservedCny": 0.039066,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 129,
+        "completion_tokens": 43,
+        "total_tokens": 172,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 129
+      },
+      "estimatedCny": 0.0006019999999999999
+    },
+    {
+      "label": "plain-compact/s5/t2",
+      "reservedCny": 0.039701999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 189,
+        "completion_tokens": 7,
+        "total_tokens": 196,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 189
+      },
+      "estimatedCny": 0.000434
+    },
+    {
+      "label": "plain-compact/s5/t3",
+      "reservedCny": 0.039265999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 141,
+        "completion_tokens": 16,
+        "total_tokens": 157,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 141
+      },
+      "estimatedCny": 0.00041
+    },
+    {
+      "label": "plain-compact/s5/t4",
+      "reservedCny": 0.039423999999999994,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 162,
+        "completion_tokens": 10,
+        "total_tokens": 172,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 162
+      },
+      "estimatedCny": 0.00040399999999999995
+    },
+    {
+      "label": "plain-compact/s6/t0",
+      "reservedCny": 0.038745999999999996,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 109,
+        "completion_tokens": 1,
+        "total_tokens": 110,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 109
+      },
+      "estimatedCny": 0.000226
+    },
+    {
+      "label": "plain-compact/s6/t1",
+      "reservedCny": 0.039001999999999995,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 127,
+        "completion_tokens": 44,
+        "total_tokens": 171,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 127
+      },
+      "estimatedCny": 0.000606
+    },
+    {
+      "label": "plain-compact/s6/t2",
+      "reservedCny": 0.03961,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 189,
+        "completion_tokens": 6,
+        "total_tokens": 195,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 189
+      },
+      "estimatedCny": 0.00042599999999999995
+    },
+    {
+      "label": "plain-compact/s6/t3",
+      "reservedCny": 0.039208,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 137,
+        "completion_tokens": 41,
+        "total_tokens": 178,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 137
+      },
+      "estimatedCny": 0.000602
+    },
+    {
+      "label": "plain-compact/s6/t4",
+      "reservedCny": 0.039588,
+      "state": "complete",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 184,
+        "completion_tokens": 15,
+        "total_tokens": 199,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 184
+      },
+      "estimatedCny": 0.000488
+    }
+  ],
+  "cells": [
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 105,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 75,
+        "completion_tokens": 1,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 75
+      },
+      "cost": 0.000158
+    },
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 142,
+      "injectedTokens": 0,
+      "answer": "今天进度：对话中尚未提供任何具体工作内容，无法整理进度。",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 16,
+        "total_tokens": 109,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "cost": 0.000314
+    },
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 209,
+      "injectedTokens": 0,
+      "answer": "{\"tag\":\"DEMO-71\"}",
+      "usage": {
+        "prompt_tokens": 128,
+        "completion_tokens": 8,
+        "total_tokens": 136,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 128
+      },
+      "cost": 0.00031999999999999997,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "tag": "DEMO-71"
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 247,
+      "injectedTokens": 0,
+      "answer": "第 1 项（技术视频首选标签 DEMO-71）已记录，当前无进一步执行动作。",
+      "usage": {
+        "prompt_tokens": 154,
+        "completion_tokens": 24,
+        "total_tokens": 178,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 154
+      },
+      "cost": 0.0005
+    },
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 334,
+      "injectedTokens": 0,
+      "answer": "{\"check\":\"CHECK-71\",\"channel\":\"A-71\"}",
+      "usage": {
+        "prompt_tokens": 211,
+        "completion_tokens": 13,
+        "total_tokens": 224,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 211
+      },
+      "cost": 0.000526,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "check": "CHECK-71",
+          "channel": "A-71"
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 103,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 75,
+        "completion_tokens": 1,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 75
+      },
+      "cost": 0.000158
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 140,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定的内容（订单号前缀 ORD-42、退款走 RMA-42 流程、客服邮箱 help42@example.com），未涉及任何实际工作进展。",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 49,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "cost": 0.000578
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 245,
+      "injectedTokens": 0,
+      "answer": "{\"prefix\":\"ORD-42\"}",
+      "usage": {
+        "prompt_tokens": 160,
+        "completion_tokens": 7,
+        "total_tokens": 167,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 160
+      },
+      "cost": 0.000376,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "prefix": "ORD-42"
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 284,
+      "injectedTokens": 0,
+      "answer": "第 1 项（订单号前缀 ORD-42）已确认记录，无待推进动作；当前状态：已生效。",
+      "usage": {
+        "prompt_tokens": 185,
+        "completion_tokens": 29,
+        "total_tokens": 214,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 185
+      },
+      "cost": 0.000602
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 370,
+      "injectedTokens": 0,
+      "answer": "{\"flow\":\"RMA-42\",\"email\":\"help42@example.com\"}",
+      "usage": {
+        "prompt_tokens": 243,
+        "completion_tokens": 16,
+        "total_tokens": 259,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 243
+      },
+      "cost": 0.000614,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "flow": "RMA-42",
+          "email": "help42@example.com"
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 99,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 1,
+        "total_tokens": 75,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 74
+      },
+      "cost": 0.000156
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 136,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定的设置（默认超时 45 秒、重试上限 3 次、降级开关 SAFE-45），未涉及任何项目进展内容。",
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 48,
+        "total_tokens": 140,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 92
+      },
+      "cost": 0.000568
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 235,
+      "injectedTokens": 0,
+      "answer": "{\"timeout\":45}",
+      "usage": {
+        "prompt_tokens": 160,
+        "completion_tokens": 6,
+        "total_tokens": 166,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 160
+      },
+      "cost": 0.00036799999999999995,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "timeout": 45
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 273,
+      "injectedTokens": 0,
+      "answer": "第 1 项（默认超时设为 45 秒）当前状态：已记录为约定，值为 45 秒；除此之外没有更多推进信息。",
+      "usage": {
+        "prompt_tokens": 184,
+        "completion_tokens": 35,
+        "total_tokens": 219,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 184
+      },
+      "cost": 0.0006479999999999999
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 368,
+      "injectedTokens": 0,
+      "answer": "{\"retries\":3,\"switch\":\"SAFE-45\"}",
+      "usage": {
+        "prompt_tokens": 251,
+        "completion_tokens": 13,
+        "total_tokens": 264,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 251
+      },
+      "cost": 0.000606,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "retries": 3,
+          "switch": "SAFE-45"
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 100,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 71,
+        "completion_tokens": 1,
+        "total_tokens": 72,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 71
+      },
+      "cost": 0.00015
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 137,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的实际进度记录：对话中只记录了三条约定的测试环境信息（数据库名 qa_pool、测试账号 qa-bot、入口端口 9443），未提及任何工作进展。",
+      "usage": {
+        "prompt_tokens": 89,
+        "completion_tokens": 45,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 89
+      },
+      "cost": 0.000538
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 241,
+      "injectedTokens": 0,
+      "answer": "{\"db\":\"qa_pool\"}",
+      "usage": {
+        "prompt_tokens": 153,
+        "completion_tokens": 7,
+        "total_tokens": 160,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 153
+      },
+      "cost": 0.000362,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "db": "qa_pool"
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 279,
+      "injectedTokens": 0,
+      "answer": "当前状态：第 1 项尚未开始推进，对话中没有关于“第 1 项”具体内容或进展的信息。",
+      "usage": {
+        "prompt_tokens": 178,
+        "completion_tokens": 28,
+        "total_tokens": 206,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 178
+      },
+      "cost": 0.00058
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 367,
+      "injectedTokens": 0,
+      "answer": "{\"user\":\"qa-bot\",\"port\":9443}",
+      "usage": {
+        "prompt_tokens": 234,
+        "completion_tokens": 12,
+        "total_tokens": 246,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 234
+      },
+      "cost": 0.000564,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "user": "qa-bot",
+          "port": 9443
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 100,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 70,
+        "completion_tokens": 1,
+        "total_tokens": 71,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 70
+      },
+      "cost": 0.000148
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 138,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定（素材目录 assets/raw、导出格式 WebP、缩略图宽度 320 像素），未提及今天完成了哪些工作。",
+      "usage": {
+        "prompt_tokens": 88,
+        "completion_tokens": 42,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 88
+      },
+      "cost": 0.000512
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 236,
+      "injectedTokens": 0,
+      "answer": "{\"dir\":\"assets/raw\"}",
+      "usage": {
+        "prompt_tokens": 147,
+        "completion_tokens": 7,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 147
+      },
+      "cost": 0.00035,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "dir": "assets/raw"
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 276,
+      "injectedTokens": 0,
+      "answer": "第 1 项（素材目录 assets/raw）目前只是已记录的约定，尚未有实际推进动作；当前状态：待确认目录是否存在及内容。",
+      "usage": {
+        "prompt_tokens": 172,
+        "completion_tokens": 34,
+        "total_tokens": 206,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 172
+      },
+      "cost": 0.000616
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 376,
+      "injectedTokens": 0,
+      "answer": "{\"format\":\"WebP\",\"width\":320}",
+      "usage": {
+        "prompt_tokens": 235,
+        "completion_tokens": 10,
+        "total_tokens": 245,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 235
+      },
+      "cost": 0.0005499999999999999,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "format": "WebP",
+          "width": 320
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 95,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 69,
+        "completion_tokens": 1,
+        "total_tokens": 70,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 69
+      },
+      "cost": 0.000146
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 132,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定（审批人 Lin、审批阈值 5000 元、超标走 ESC-5000 升级），未提供今日工作进展内容。",
+      "usage": {
+        "prompt_tokens": 87,
+        "completion_tokens": 43,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 87
+      },
+      "cost": 0.000518
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 227,
+      "injectedTokens": 0,
+      "answer": "{\"approver\":\"Lin\"}",
+      "usage": {
+        "prompt_tokens": 148,
+        "completion_tokens": 6,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 148
+      },
+      "cost": 0.000344,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "approver": "Lin"
+        }
+      }
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 266,
+      "injectedTokens": 0,
+      "answer": "第 1 项（审批人 Lin）已记录，当前状态：已确认，无待办动作。",
+      "usage": {
+        "prompt_tokens": 172,
+        "completion_tokens": 24,
+        "total_tokens": 196,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 172
+      },
+      "cost": 0.000536
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 347,
+      "injectedTokens": 0,
+      "answer": "{\"threshold\":5000,\"escalation\":\"ESC-5000\"}",
+      "usage": {
+        "prompt_tokens": 226,
+        "completion_tokens": 15,
+        "total_tokens": 241,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 226
+      },
+      "cost": 0.000572,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "threshold": 5000,
+          "escalation": "ESC-5000"
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 105,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 75,
+        "completion_tokens": 1,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 75
+      },
+      "cost": 0.000158
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 142,
+      "injectedTokens": 0,
+      "answer": "今天进度：对话中尚未提供任何具体工作内容，无法整理出实际进度；仅记录了三条约定（技术视频首选标签 DEMO-71、发布前执行 CHECK-71 校验、本工作区通道 A-71）。",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 49,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "cost": 0.000578
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 251,
+      "injectedTokens": 0,
+      "answer": "{\"tag\":\"DEMO-71\"}",
+      "usage": {
+        "prompt_tokens": 161,
+        "completion_tokens": 8,
+        "total_tokens": 169,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 161
+      },
+      "cost": 0.00038599999999999995,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "tag": "DEMO-71"
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 171,
+      "injectedTokens": 0,
+      "answer": "当前状态：第 1 项的具体内容在压缩后的对话中未保留，无法确认其指代，因此无法推进；请补充第 1 项的说明。",
+      "usage": {
+        "prompt_tokens": 106,
+        "completion_tokens": 37,
+        "total_tokens": 143,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 106
+      },
+      "cost": 0.000508
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 234,
+      "injectedTokens": 0,
+      "answer": "{\"check\":null,\"channel\":null}",
+      "usage": {
+        "prompt_tokens": 149,
+        "completion_tokens": 9,
+        "total_tokens": 158,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 149
+      },
+      "cost": 0.00037,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "check": null,
+          "channel": null
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 103,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 75,
+        "completion_tokens": 1,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 75
+      },
+      "cost": 0.000158
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 140,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定的内容（订单号前缀 ORD-42、退款走 RMA-42 流程、客服邮箱 help42@example.com），未提及任何实际工作进展。",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 49,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "cost": 0.000578
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 245,
+      "injectedTokens": 0,
+      "answer": "{\"prefix\":\"ORD-42\"}",
+      "usage": {
+        "prompt_tokens": 160,
+        "completion_tokens": 7,
+        "total_tokens": 167,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 160
+      },
+      "cost": 0.000376,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "prefix": "ORD-42"
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 168,
+      "injectedTokens": 0,
+      "answer": "当前状态：第 1 项可确认的只有订单号前缀为 ORD-42；其余早期约定（第 2、3 条）未保留，无法据此推进具体内容。",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 42,
+        "total_tokens": 146,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "cost": 0.000544
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 228,
+      "injectedTokens": 0,
+      "answer": "{\"flow\":null,\"email\":null}",
+      "usage": {
+        "prompt_tokens": 150,
+        "completion_tokens": 9,
+        "total_tokens": 159,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 150
+      },
+      "cost": 0.000372,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "flow": null,
+          "email": null
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 99,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 74,
+        "completion_tokens": 1,
+        "total_tokens": 75,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 74
+      },
+      "cost": 0.000156
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 136,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了你先前设定的三条约定（默认超时 45 秒、重试上限 3 次、降级开关 SAFE-45），未提供任何实际工作进展内容。",
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 50,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 92
+      },
+      "cost": 0.000584
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 240,
+      "injectedTokens": 0,
+      "answer": "{\"timeout\":45}",
+      "usage": {
+        "prompt_tokens": 162,
+        "completion_tokens": 6,
+        "total_tokens": 168,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 162
+      },
+      "cost": 0.00037199999999999993,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "timeout": 45
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 163,
+      "injectedTokens": 0,
+      "answer": "第 1 项的具体内容在压缩后的对话中未保留，我无法确认它指什么，因此无法给出当前状态。请补充第 1 项的说明。",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 37,
+        "total_tokens": 141,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "cost": 0.000504
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 227,
+      "injectedTokens": 0,
+      "answer": "{\"retries\":null,\"switch\":null}",
+      "usage": {
+        "prompt_tokens": 147,
+        "completion_tokens": 10,
+        "total_tokens": 157,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 147
+      },
+      "cost": 0.000374,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "retries": null,
+          "switch": null
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 100,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 71,
+        "completion_tokens": 1,
+        "total_tokens": 72,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 71
+      },
+      "cost": 0.00015
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 137,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的实际进度记录：对话中只记录了三条约定的测试环境信息（数据库名 qa_pool、测试账号 qa-bot、入口端口 9443），未提及任何工作进展。",
+      "usage": {
+        "prompt_tokens": 89,
+        "completion_tokens": 45,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 89
+      },
+      "cost": 0.000538
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 241,
+      "injectedTokens": 0,
+      "answer": "{\"db\":\"qa_pool\"}",
+      "usage": {
+        "prompt_tokens": 153,
+        "completion_tokens": 7,
+        "total_tokens": 160,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 153
+      },
+      "cost": 0.000362,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "db": "qa_pool"
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 170,
+      "injectedTokens": 0,
+      "answer": "第 1 项的具体内容在压缩后未保留，无法确认其状态；目前仅保留测试环境数据库名为 qa_pool。",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 30,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "cost": 0.00044799999999999994
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 218,
+      "injectedTokens": 0,
+      "answer": "{\"user\":null,\"port\":null}",
+      "usage": {
+        "prompt_tokens": 136,
+        "completion_tokens": 9,
+        "total_tokens": 145,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 136
+      },
+      "cost": 0.000344,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "user": null,
+          "port": null
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 100,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 70,
+        "completion_tokens": 1,
+        "total_tokens": 71,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 70
+      },
+      "cost": 0.000148
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 138,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定（素材目录 assets/raw、导出格式 WebP、缩略图宽度 320 像素），未提及今天完成了哪些工作。",
+      "usage": {
+        "prompt_tokens": 88,
+        "completion_tokens": 42,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 88
+      },
+      "cost": 0.000512
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 236,
+      "injectedTokens": 0,
+      "answer": "{\"dir\":\"assets/raw\"}",
+      "usage": {
+        "prompt_tokens": 147,
+        "completion_tokens": 7,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 147
+      },
+      "cost": 0.00035,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "dir": "assets/raw"
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 164,
+      "injectedTokens": 0,
+      "answer": "第 1 项的具体内容在压缩时未保留，我无法确认它指什么，因此无法给出状态。请补充第 1 项的说明。",
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 34,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 100
+      },
+      "cost": 0.000472
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 218,
+      "injectedTokens": 0,
+      "answer": "{\"format\":null,\"width\":null}",
+      "usage": {
+        "prompt_tokens": 139,
+        "completion_tokens": 9,
+        "total_tokens": 148,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 139
+      },
+      "cost": 0.00035,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "format": null,
+          "width": null
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 95,
+      "injectedTokens": 0,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 69,
+        "completion_tokens": 1,
+        "total_tokens": 70,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 69
+      },
+      "cost": 0.000146
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 132,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定（审批人 Lin、审批阈值 5000 元、超标走 ESC-5000 升级），未提供今日工作进展内容。",
+      "usage": {
+        "prompt_tokens": 87,
+        "completion_tokens": 43,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 87
+      },
+      "cost": 0.000518
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 227,
+      "injectedTokens": 0,
+      "answer": "{\"approver\":\"Lin\"}",
+      "usage": {
+        "prompt_tokens": 148,
+        "completion_tokens": 6,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 148
+      },
+      "cost": 0.000344,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "approver": "Lin"
+        }
+      }
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 160,
+      "injectedTokens": 0,
+      "answer": "第 1 项的具体内容未保留，无法确认其状态；请补充第 1 项的定义或相关材料。",
+      "usage": {
+        "prompt_tokens": 97,
+        "completion_tokens": 27,
+        "total_tokens": 124,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 97
+      },
+      "cost": 0.00041
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 208,
+      "injectedTokens": 0,
+      "answer": "{\"threshold\":null,\"escalation\":null}",
+      "usage": {
+        "prompt_tokens": 130,
+        "completion_tokens": 11,
+        "total_tokens": 141,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 130
+      },
+      "cost": 0.000348,
+      "grade": {
+        "pass": false,
+        "reason": "missing-wrong-or-extra-field",
+        "value": {
+          "threshold": null,
+          "escalation": null
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 178,
+      "injectedTokens": 60,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 144,
+        "completion_tokens": 1,
+        "total_tokens": 145,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 144
+      },
+      "cost": 0.000296
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 142,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定（技术视频首选标签 DEMO-71、发布前执行 CHECK-71 校验、本工作区通道 A-71），未提供任何今日工作进展内容。",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 49,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "cost": 0.000578
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 296,
+      "injectedTokens": 31,
+      "answer": "{\"tag\":\"DEMO-71\"}",
+      "usage": {
+        "prompt_tokens": 197,
+        "completion_tokens": 8,
+        "total_tokens": 205,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 197
+      },
+      "cost": 0.00045799999999999997,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "tag": "DEMO-71"
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 171,
+      "injectedTokens": 0,
+      "answer": "当前状态：第 1 项的具体内容在压缩后的对话中未保留，无法确认其指代，因此无法推进；请补充第 1 项的说明。",
+      "usage": {
+        "prompt_tokens": 106,
+        "completion_tokens": 37,
+        "total_tokens": 143,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 106
+      },
+      "cost": 0.000508
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 291,
+      "injectedTokens": 44,
+      "answer": "{\"check\":\"CHECK-71\",\"channel\":\"A-71\"}",
+      "usage": {
+        "prompt_tokens": 201,
+        "completion_tokens": 13,
+        "total_tokens": 214,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 201
+      },
+      "cost": 0.0005059999999999999,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "check": "CHECK-71",
+          "channel": "A-71"
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 174,
+      "injectedTokens": 58,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 144,
+        "completion_tokens": 1,
+        "total_tokens": 145,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 144
+      },
+      "cost": 0.000296
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 140,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定的内容（订单号前缀 ORD-42、退款走 RMA-42 流程、客服邮箱 help42@example.com），未提及任何实际工作进展。",
+      "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 49,
+        "total_tokens": 142,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+      },
+      "cost": 0.000578
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 287,
+      "injectedTokens": 29,
+      "answer": "{\"prefix\":\"ORD-42\"}",
+      "usage": {
+        "prompt_tokens": 196,
+        "completion_tokens": 7,
+        "total_tokens": 203,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 196
+      },
+      "cost": 0.000448,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "prefix": "ORD-42"
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 168,
+      "injectedTokens": 0,
+      "answer": "当前状态：第 1 项可确认的只有订单号前缀为 ORD-42；其余早期约定（第 2、3 条）未保留，无法据此推进具体内容。",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 42,
+        "total_tokens": 146,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "cost": 0.000544
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 284,
+      "injectedTokens": 43,
+      "answer": "{\"flow\":\"RMA-42\",\"email\":\"help42@example.com\"}",
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 16,
+        "total_tokens": 218,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 202
+      },
+      "cost": 0.000532,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "flow": "RMA-42",
+          "email": "help42@example.com"
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 166,
+      "injectedTokens": 54,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 142,
+        "completion_tokens": 1,
+        "total_tokens": 143,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 142
+      },
+      "cost": 0.00029199999999999994
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 136,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了你先前设定的三条约定（默认超时 45 秒、重试上限 3 次、降级开关 SAFE-45），未提供任何项目进展内容。",
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 49,
+        "total_tokens": 141,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 92
+      },
+      "cost": 0.000576
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 279,
+      "injectedTokens": 28,
+      "answer": "{\"timeout\":45}",
+      "usage": {
+        "prompt_tokens": 196,
+        "completion_tokens": 6,
+        "total_tokens": 202,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 196
+      },
+      "cost": 0.00043999999999999996,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "timeout": 45
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 163,
+      "injectedTokens": 0,
+      "answer": "第 1 项的具体内容在压缩后的对话中未保留，我无法确认它指什么，因此无法给出当前状态。请补充第 1 项的说明。",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 37,
+        "total_tokens": 141,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "cost": 0.000504
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 281,
+      "injectedTokens": 41,
+      "answer": "{\"retries\":3,\"switch\":\"SAFE-45\"}",
+      "usage": {
+        "prompt_tokens": 199,
+        "completion_tokens": 13,
+        "total_tokens": 212,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 199
+      },
+      "cost": 0.000502,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "retries": 3,
+          "switch": "SAFE-45"
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 169,
+      "injectedTokens": 56,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 136,
+        "completion_tokens": 1,
+        "total_tokens": 137,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 136
+      },
+      "cost": 0.00028
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 137,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的实际进度：目前对话里只有你先前让我记住的三条测试环境约定（数据库 qa_pool、账号 qa-bot、端口 9443），尚未发生其他工作内容。",
+      "usage": {
+        "prompt_tokens": 89,
+        "completion_tokens": 44,
+        "total_tokens": 133,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 89
+      },
+      "cost": 0.00053
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 308,
+      "injectedTokens": 56,
+      "answer": "{\"db\":\"qa_pool\"}",
+      "usage": {
+        "prompt_tokens": 217,
+        "completion_tokens": 7,
+        "total_tokens": 224,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 217
+      },
+      "cost": 0.00049,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "db": "qa_pool"
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 170,
+      "injectedTokens": 0,
+      "answer": "第 1 项的具体内容在已保留的对话与记忆材料中没有记录，因此无法确认其当前状态。",
+      "usage": {
+        "prompt_tokens": 104,
+        "completion_tokens": 25,
+        "total_tokens": 129,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 104
+      },
+      "cost": 0.00040799999999999994
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 284,
+      "injectedTokens": 56,
+      "answer": "{\"user\":\"qa-bot\",\"port\":9443}",
+      "usage": {
+        "prompt_tokens": 196,
+        "completion_tokens": 12,
+        "total_tokens": 208,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 196
+      },
+      "cost": 0.000488,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "user": "qa-bot",
+          "port": 9443
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 169,
+      "injectedTokens": 56,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 134,
+        "completion_tokens": 1,
+        "total_tokens": 135,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 134
+      },
+      "cost": 0.000276
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 138,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定（素材目录 assets/raw、导出格式 WebP、缩略图宽度 320 像素），未提及今天完成了哪些工作。",
+      "usage": {
+        "prompt_tokens": 88,
+        "completion_tokens": 42,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 88
+      },
+      "cost": 0.000512
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 276,
+      "injectedTokens": 27,
+      "answer": "{\"dir\":\"assets/raw\"}",
+      "usage": {
+        "prompt_tokens": 180,
+        "completion_tokens": 7,
+        "total_tokens": 187,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 180
+      },
+      "cost": 0.000416,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "dir": "assets/raw"
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 164,
+      "injectedTokens": 0,
+      "answer": "第 1 项当前状态：素材目录已确认为 assets/raw；但第 1 项的具体内容在压缩后未保留，无法判断推进到哪一步，需要你补充第 1 项的定义或目标。",
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 50,
+        "total_tokens": 150,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 100
+      },
+      "cost": 0.0006
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 292,
+      "injectedTokens": 43,
+      "answer": "{\"format\":\"WebP\",\"width\":320}",
+      "usage": {
+        "prompt_tokens": 205,
+        "completion_tokens": 10,
+        "total_tokens": 215,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 205
+      },
+      "cost": 0.00049,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "format": "WebP",
+          "width": 320
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 159,
+      "injectedTokens": 51,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 132,
+        "completion_tokens": 1,
+        "total_tokens": 133,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 132
+      },
+      "cost": 0.00027199999999999994
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 132,
+      "injectedTokens": 0,
+      "answer": "今天没有可整理的具体进度信息：对话中只记录了三条约定（审批人 Lin、审批阈值 5000 元、超标走 ESC-5000 升级），未提供今日工作进展内容。",
+      "usage": {
+        "prompt_tokens": 87,
+        "completion_tokens": 43,
+        "total_tokens": 130,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 87
+      },
+      "cost": 0.000518
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 277,
+      "injectedTokens": 37,
+      "answer": "{\"approver\":\"Lin\"}",
+      "usage": {
+        "prompt_tokens": 194,
+        "completion_tokens": 6,
+        "total_tokens": 200,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 194
+      },
+      "cost": 0.00043599999999999997,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "approver": "Lin"
+        }
+      }
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 160,
+      "injectedTokens": 0,
+      "answer": "第 1 项的具体内容在压缩后未保留，我无法确认它指什么，因此无法给出当前状态。请补充第 1 项的说明。",
+      "usage": {
+        "prompt_tokens": 97,
+        "completion_tokens": 35,
+        "total_tokens": 132,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 97
+      },
+      "cost": 0.000474
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 284,
+      "injectedTokens": 51,
+      "answer": "{\"threshold\":5000,\"escalation\":\"ESC-5000\"}",
+      "usage": {
+        "prompt_tokens": 201,
+        "completion_tokens": 15,
+        "total_tokens": 216,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 201
+      },
+      "cost": 0.0005219999999999999,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "threshold": 5000,
+          "escalation": "ESC-5000"
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 164,
+      "injectedTokens": 51,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 121,
+        "completion_tokens": 1,
+        "total_tokens": 122,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 121
+      },
+      "cost": 0.00025
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 201,
+      "injectedTokens": 51,
+      "answer": "今天的具体进度信息在对话与记忆材料中缺失，无法整理。",
+      "usage": {
+        "prompt_tokens": 139,
+        "completion_tokens": 15,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 139
+      },
+      "cost": 0.00039799999999999997
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 266,
+      "injectedTokens": 51,
+      "answer": "{\"tag\":\"DEMO-71\"}",
+      "usage": {
+        "prompt_tokens": 173,
+        "completion_tokens": 8,
+        "total_tokens": 181,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 173
+      },
+      "cost": 0.00041,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "tag": "DEMO-71"
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 230,
+      "injectedTokens": 51,
+      "answer": "第 1 项（技术视频首选标签 DEMO-71）当前状态：已确认，无待办。",
+      "usage": {
+        "prompt_tokens": 152,
+        "completion_tokens": 25,
+        "total_tokens": 177,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 152
+      },
+      "cost": 0.0005039999999999999
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 271,
+      "injectedTokens": 51,
+      "answer": "{\"check\":\"CHECK-71\",\"channel\":\"A-71\"}",
+      "usage": {
+        "prompt_tokens": 183,
+        "completion_tokens": 13,
+        "total_tokens": 196,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 183
+      },
+      "cost": 0.00047,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "check": "CHECK-71",
+          "channel": "A-71"
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 159,
+      "injectedTokens": 49,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 121,
+        "completion_tokens": 1,
+        "total_tokens": 122,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 121
+      },
+      "cost": 0.00025
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 197,
+      "injectedTokens": 49,
+      "answer": "今天没有可整理的具体进度信息：对话中只确认了三条约定（订单号前缀 ORD-42、退款走 RMA-42 流程、客服邮箱 help42@example.com），未提及任何实际工作进展。",
+      "usage": {
+        "prompt_tokens": 139,
+        "completion_tokens": 48,
+        "total_tokens": 187,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 139
+      },
+      "cost": 0.000662
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 298,
+      "injectedTokens": 49,
+      "answer": "{\"prefix\":\"ORD-42\"}",
+      "usage": {
+        "prompt_tokens": 205,
+        "completion_tokens": 7,
+        "total_tokens": 212,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 205
+      },
+      "cost": 0.000466,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "prefix": "ORD-42"
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 224,
+      "injectedTokens": 49,
+      "answer": "第 1 项（订单号前缀固定为 ORD-42）当前已确认，状态为已确定、无需再变更。",
+      "usage": {
+        "prompt_tokens": 150,
+        "completion_tokens": 29,
+        "total_tokens": 179,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 150
+      },
+      "cost": 0.0005319999999999999
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 268,
+      "injectedTokens": 49,
+      "answer": "{\"flow\":\"RMA-42\",\"email\":\"help42@example.com\"}",
+      "usage": {
+        "prompt_tokens": 183,
+        "completion_tokens": 16,
+        "total_tokens": 199,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 183
+      },
+      "cost": 0.000494,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "flow": "RMA-42",
+          "email": "help42@example.com"
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 152,
+      "injectedTokens": 45,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 119,
+        "completion_tokens": 1,
+        "total_tokens": 120,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 119
+      },
+      "cost": 0.00024599999999999996
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 189,
+      "injectedTokens": 45,
+      "answer": "今天没有可整理的具体进度信息：对话中只确认了三条约定（默认超时 45 秒、重试上限 3 次、降级开关 SAFE-45），未提及任何实际工作进展。",
+      "usage": {
+        "prompt_tokens": 137,
+        "completion_tokens": 47,
+        "total_tokens": 184,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 137
+      },
+      "cost": 0.00065
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 285,
+      "injectedTokens": 45,
+      "answer": "{\"timeout\":45}",
+      "usage": {
+        "prompt_tokens": 204,
+        "completion_tokens": 6,
+        "total_tokens": 210,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 204
+      },
+      "cost": 0.000456,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "timeout": 45
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 216,
+      "injectedTokens": 45,
+      "answer": "第 1 项（默认超时 45 秒）已确认，状态为已完成。",
+      "usage": {
+        "prompt_tokens": 149,
+        "completion_tokens": 21,
+        "total_tokens": 170,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 149
+      },
+      "cost": 0.00046599999999999994
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 251,
+      "injectedTokens": 45,
+      "answer": "{\"retries\":3,\"switch\":\"SAFE-45\"}",
+      "usage": {
+        "prompt_tokens": 176,
+        "completion_tokens": 13,
+        "total_tokens": 189,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 176
+      },
+      "cost": 0.00045599999999999997,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "retries": 3,
+          "switch": "SAFE-45"
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 154,
+      "injectedTokens": 47,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 113,
+        "completion_tokens": 1,
+        "total_tokens": 114,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 113
+      },
+      "cost": 0.000234
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 192,
+      "injectedTokens": 47,
+      "answer": "今天没有可整理的实际进度信息：对话中只确认了三条测试环境约定（数据库 qa_pool、账号 qa-bot、端口 9443），未提供任何今日工作进展内容。",
+      "usage": {
+        "prompt_tokens": 131,
+        "completion_tokens": 43,
+        "total_tokens": 174,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 131
+      },
+      "cost": 0.000606
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 291,
+      "injectedTokens": 47,
+      "answer": "{\"db\":\"qa_pool\"}",
+      "usage": {
+        "prompt_tokens": 193,
+        "completion_tokens": 7,
+        "total_tokens": 200,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 193
+      },
+      "cost": 0.000442,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "db": "qa_pool"
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 224,
+      "injectedTokens": 47,
+      "answer": "第 1 项（测试环境数据库名）已确认：qa_pool，状态为已完成。",
+      "usage": {
+        "prompt_tokens": 146,
+        "completion_tokens": 22,
+        "total_tokens": 168,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 146
+      },
+      "cost": 0.000468
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 258,
+      "injectedTokens": 47,
+      "answer": "{\"user\":\"qa-bot\",\"port\":9443}",
+      "usage": {
+        "prompt_tokens": 170,
+        "completion_tokens": 12,
+        "total_tokens": 182,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 170
+      },
+      "cost": 0.00043599999999999997,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "user": "qa-bot",
+          "port": 9443
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 155,
+      "injectedTokens": 47,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 111,
+        "completion_tokens": 1,
+        "total_tokens": 112,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 111
+      },
+      "cost": 0.00023
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 192,
+      "injectedTokens": 47,
+      "answer": "今天没有可整理的具体进度信息：对话中只确认了三条约定（素材目录 assets/raw、导出格式 WebP、缩略图宽度 320 像素），未提及任何实际工作进展。",
+      "usage": {
+        "prompt_tokens": 129,
+        "completion_tokens": 43,
+        "total_tokens": 172,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 129
+      },
+      "cost": 0.0006019999999999999
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 290,
+      "injectedTokens": 47,
+      "answer": "{\"dir\":\"assets/raw\"}",
+      "usage": {
+        "prompt_tokens": 189,
+        "completion_tokens": 7,
+        "total_tokens": 196,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 189
+      },
+      "cost": 0.000434,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "dir": "assets/raw"
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 219,
+      "injectedTokens": 47,
+      "answer": "第 1 项（素材目录）已确认：assets/raw。",
+      "usage": {
+        "prompt_tokens": 141,
+        "completion_tokens": 16,
+        "total_tokens": 157,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 141
+      },
+      "cost": 0.00041
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 244,
+      "injectedTokens": 47,
+      "answer": "{\"format\":\"WebP\",\"width\":320}",
+      "usage": {
+        "prompt_tokens": 162,
+        "completion_tokens": 10,
+        "total_tokens": 172,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 162
+      },
+      "cost": 0.00040399999999999995,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "format": "WebP",
+          "width": 320
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "turn": 0,
+      "kind": "seed",
+      "historyTokens": 144,
+      "injectedTokens": 42,
+      "answer": "ok",
+      "usage": {
+        "prompt_tokens": 109,
+        "completion_tokens": 1,
+        "total_tokens": 110,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 109
+      },
+      "cost": 0.000226
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "turn": 1,
+      "kind": "noise",
+      "historyTokens": 182,
+      "injectedTokens": 42,
+      "answer": "今天没有可整理的具体进度信息：对话中只确认了审批人 Lin、审批阈值 5000 元、超标走 ESC-5000 这三条约定，未提供今日任务或进展内容。",
+      "usage": {
+        "prompt_tokens": 127,
+        "completion_tokens": 44,
+        "total_tokens": 171,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 127
+      },
+      "cost": 0.000606
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "turn": 2,
+      "kind": "ask1",
+      "historyTokens": 274,
+      "injectedTokens": 42,
+      "answer": "{\"approver\":\"Lin\"}",
+      "usage": {
+        "prompt_tokens": 189,
+        "completion_tokens": 6,
+        "total_tokens": 195,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 189
+      },
+      "cost": 0.00042599999999999995,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "approver": "Lin"
+        }
+      }
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "turn": 3,
+      "kind": "filler",
+      "historyTokens": 209,
+      "injectedTokens": 42,
+      "answer": "第 1 项当前状态：审批人已确认为 Lin；审批阈值 5000 元及超标后走 ESC-5000 升级的约定也已确认。可以继续推进。",
+      "usage": {
+        "prompt_tokens": 137,
+        "completion_tokens": 41,
+        "total_tokens": 178,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 137
+      },
+      "cost": 0.000602
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "turn": 4,
+      "kind": "ask2",
+      "historyTokens": 271,
+      "injectedTokens": 42,
+      "answer": "{\"threshold\":5000,\"escalation\":\"ESC-5000\"}",
+      "usage": {
+        "prompt_tokens": 184,
+        "completion_tokens": 15,
+        "total_tokens": 199,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 184
+      },
+      "cost": 0.000488,
+      "grade": {
+        "pass": true,
+        "reason": "exact-fields",
+        "value": {
+          "threshold": 5000,
+          "escalation": "ESC-5000"
+        }
+      }
+    }
+  ],
+  "sessionsOut": [
+    {
+      "arm": "none-full",
+      "session": "s1",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 661,
+      "completionTokens": 62,
+      "injectedTokens": 0,
+      "cost": 0.001818,
+      "passed": 2,
+      "asked": 1
+    },
+    {
+      "arm": "none-full",
+      "session": "s2",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 756,
+      "completionTokens": 102,
+      "injectedTokens": 0,
+      "cost": 0.0023279999999999998,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s3",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 761,
+      "completionTokens": 103,
+      "injectedTokens": 0,
+      "cost": 0.002346,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s4",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 725,
+      "completionTokens": 93,
+      "injectedTokens": 0,
+      "cost": 0.0021939999999999998,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s5",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 712,
+      "completionTokens": 94,
+      "injectedTokens": 0,
+      "cost": 0.002176,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "none-full",
+      "session": "s6",
+      "compact": false,
+      "turns": [],
+      "promptTokens": 702,
+      "completionTokens": 89,
+      "injectedTokens": 0,
+      "cost": 0.002116,
+      "passed": 2,
+      "asked": 1
+    },
+    {
+      "arm": "none-compact",
+      "session": "s1",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 584,
+      "completionTokens": 104,
+      "injectedTokens": 0,
+      "cost": 0.0019999999999999996,
+      "passed": 1,
+      "asked": 1
+    },
+    {
+      "arm": "none-compact",
+      "session": "s2",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 582,
+      "completionTokens": 108,
+      "injectedTokens": 0,
+      "cost": 0.002028,
+      "passed": 1,
+      "asked": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s3",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 579,
+      "completionTokens": 104,
+      "injectedTokens": 0,
+      "cost": 0.0019899999999999996,
+      "passed": 1,
+      "asked": 1
+    },
+    {
+      "arm": "none-compact",
+      "session": "s4",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 553,
+      "completionTokens": 92,
+      "injectedTokens": 0,
+      "cost": 0.0018419999999999999,
+      "passed": 1,
+      "asked": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s5",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 544,
+      "completionTokens": 93,
+      "injectedTokens": 0,
+      "cost": 0.001832,
+      "passed": 1,
+      "asked": 0
+    },
+    {
+      "arm": "none-compact",
+      "session": "s6",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 531,
+      "completionTokens": 88,
+      "injectedTokens": 0,
+      "cost": 0.001766,
+      "passed": 1,
+      "asked": 1
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s1",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 741,
+      "completionTokens": 108,
+      "injectedTokens": 135,
+      "cost": 0.002346,
+      "passed": 2,
+      "asked": 1
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s2",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 739,
+      "completionTokens": 115,
+      "injectedTokens": 130,
+      "cost": 0.002398,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s3",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 733,
+      "completionTokens": 106,
+      "injectedTokens": 123,
+      "cost": 0.0023139999999999997,
+      "passed": 2,
+      "asked": 1
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s4",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 742,
+      "completionTokens": 89,
+      "injectedTokens": 168,
+      "cost": 0.002196,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s5",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 707,
+      "completionTokens": 110,
+      "injectedTokens": 126,
+      "cost": 0.002294,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "trivium-compact",
+      "session": "s6",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 711,
+      "completionTokens": 100,
+      "injectedTokens": 139,
+      "cost": 0.002222,
+      "passed": 2,
+      "asked": 1
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s1",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 768,
+      "completionTokens": 62,
+      "injectedTokens": 255,
+      "cost": 0.002032,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s2",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 798,
+      "completionTokens": 101,
+      "injectedTokens": 245,
+      "cost": 0.002404,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s3",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 785,
+      "completionTokens": 88,
+      "injectedTokens": 225,
+      "cost": 0.0022739999999999995,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s4",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 753,
+      "completionTokens": 85,
+      "injectedTokens": 235,
+      "cost": 0.0021860000000000004,
+      "passed": 2,
+      "asked": 1
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s5",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 732,
+      "completionTokens": 77,
+      "injectedTokens": 235,
+      "cost": 0.00208,
+      "passed": 2,
+      "asked": 0
+    },
+    {
+      "arm": "plain-compact",
+      "session": "s6",
+      "compact": true,
+      "turns": [],
+      "promptTokens": 746,
+      "completionTokens": 107,
+      "injectedTokens": 210,
+      "cost": 0.0023480000000000003,
+      "passed": 2,
+      "asked": 1
+    }
+  ],
+  "summary": {
+    "none-full": {
+      "sessions": 6,
+      "promptTokens": 4317,
+      "completionTokens": 543,
+      "injectedTokens": 0,
+      "cost": 0.012978,
+      "passed": 12,
+      "asked": 2
+    },
+    "none-compact": {
+      "sessions": 6,
+      "promptTokens": 3373,
+      "completionTokens": 589,
+      "injectedTokens": 0,
+      "cost": 0.011458,
+      "passed": 6,
+      "asked": 3
+    },
+    "trivium-compact": {
+      "sessions": 6,
+      "promptTokens": 4373,
+      "completionTokens": 628,
+      "injectedTokens": 821,
+      "cost": 0.01377,
+      "passed": 12,
+      "asked": 3
+    },
+    "plain-compact": {
+      "sessions": 6,
+      "promptTokens": 4582,
+      "completionTokens": 520,
+      "injectedTokens": 1405,
+      "cost": 0.013323999999999999,
+      "passed": 12,
+      "asked": 2
+    }
+  }
+}

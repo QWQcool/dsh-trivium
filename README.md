@@ -295,6 +295,26 @@ Off by default. After you turn **Chips (memory whitelist)** on in Settings, the 
 
 ---
 
+## Test data and measurements
+
+Every number we quote (quality, token overhead, cost, scale) comes from a ledger in [`docs/evidence/`](docs/evidence/README.md) —
+per-cell answers, per-request `usage`, grades and injected-token counts, with `sha256` in `manifest.json`.
+The path is stable by design; [`docs/evidence/LATEST.json`](docs/evidence/LATEST.json) names the current datasets
+(a git symlink would break on Windows clones without developer mode).
+
+Costs are quoted at **off-peak** prices (peak is exactly 2× and is recorded alongside), see
+[COST-MODEL.md](docs/next-memory/COST-MODEL.md). What the data currently supports, and what it does not:
+
+| Claim | Status | Where |
+|---|---|---|
+| Recall beats no memory on the same rubric | **supported** 3/18 → 18/18 | [D0](docs/next-memory/D0-RESULTS.md) |
+| Same accuracy as pasting the whole corpus, with 97 vs 360 injected tokens | **supported** (2 models, 3 reps) | [D0](docs/next-memory/D0-RESULTS.md) |
+| Aggressive compaction becomes safe: 0.51× prompt at 10 turns | **supported** | [D1](docs/next-memory/D1-RESULTS.md) |
+| Installing it saves money once extraction is counted | **not yet** — retrieval saves ¥0.0004/session, batched extraction costs ¥0.00086 | [D2](docs/next-memory/D2-EXTRACT-COST.md) |
+| Beats the other memory plugins | **not measured** — their tool faces were never given to the model | [C4](docs/next-memory/C4-RESULTS.md) |
+
+---
+
 ## Changelog
 
 **0.8.0** — Workspace switching, operation receipts, read-only import preview and per-turn delivery records. Fix exact-name recall, revision-confirmation bypass and damaged-chain projection. Extraction is single-flight, retryable after failure and wakes after cooldown; pure acknowledgements skip the model. Trim context/tool overhead without changing defaults or data formats. See [release notes](docs/release-0.8.0.md) for evaluation and cost limits.

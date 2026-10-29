@@ -1,0 +1,115 @@
+{
+  "date": "2026-10-29",
+  "priceSource": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+  "costBasis": "offpeak",
+  "files": [
+    {
+      "name": "2026-10-29-c4-arms-6scenario.json",
+      "from": ".tmp/c4/online-full.json",
+      "what": "C4：两个对手 + 我方 + 纯文本，7 臂 × 6 场景（修复前）",
+      "bytes": 91445,
+      "sha256": "1370b20bb796bd12ac7c0e3b82cbc35af530adf25afef8967cc97767c4fa82bf",
+      "protocol": "C4",
+      "variant": null,
+      "status": "complete",
+      "calls": 42,
+      "model": "deepseek-flash"
+    },
+    {
+      "name": "2026-10-29-d0-step1-8arms-3reps.json",
+      "from": ".tmp/c4/step1.json",
+      "what": "D0：修完后 8 臂 × 6 场景 × 3 重复",
+      "bytes": 288504,
+      "sha256": "1fd228a7b72614b18f02bb7a2ad057f2d425aa9c3c0b22140e7cda2bf414318d",
+      "protocol": "C4",
+      "variant": null,
+      "status": "complete",
+      "calls": 147,
+      "model": "deepseek-flash"
+    },
+    {
+      "name": "2026-10-29-d0-step2-alias-rerun.json",
+      "from": ".tmp/c4/step2-deepseek-chat.json",
+      "what": "D0：deepseek-chat 别名重跑（实为 flash，非第二模型）",
+      "bytes": 61131,
+      "sha256": "46ede964c4f3173d28ebee5851912a0c85b7d8c43a336c494d2c4a322927f2d2",
+      "protocol": "C4",
+      "variant": null,
+      "status": "complete",
+      "calls": 31,
+      "model": "deepseek-chat"
+    },
+    {
+      "name": "2026-10-29-d0-step2b-v4pro.json",
+      "from": ".tmp/c4/step2b-v4pro.json",
+      "what": "D0：真第二模型 deepseek-v4-pro",
+      "bytes": 52448,
+      "sha256": "0c686463c659e6868cc1ad475593d60991b4ff771ed36e9ac788882cce124c3b",
+      "protocol": "C4",
+      "variant": null,
+      "status": "complete",
+      "calls": 24,
+      "model": "deepseek-v4-pro"
+    },
+    {
+      "name": "2026-10-29-d1-5turn-compaction.json",
+      "from": ".tmp/c4/d1-5b.json",
+      "what": "D1：5 轮压缩会话，4 臂",
+      "bytes": 134909,
+      "sha256": "cf2ff00f9fdd4f751fce0e70ca9c1af546e3dad0498b0cdcee210796f90f91b3",
+      "protocol": "D1",
+      "variant": "D1",
+      "status": "complete",
+      "calls": 120,
+      "model": "deepseek-flash"
+    },
+    {
+      "name": "2026-10-29-d1-10turn-compaction.json",
+      "from": ".tmp/c4/d1-10b.json",
+      "what": "D1b：10 轮压缩会话，4 臂",
+      "bytes": 261318,
+      "sha256": "5be5f9e71c4fddedb700899f99cfbdf465ef8281462b910311b73366bf1cfd9e",
+      "protocol": "D1",
+      "variant": "D1b",
+      "status": "complete",
+      "calls": 240,
+      "model": "deepseek-flash"
+    },
+    {
+      "name": "2026-10-29-d2-extract-cost.json",
+      "from": ".tmp/c4/extract-online2.json",
+      "what": "D2：抽取成本（每轮 / 批量 / 规则）",
+      "bytes": 11385,
+      "sha256": "f378238de3d25b83f3367204dcc7c3004f8f65844196e40cf95406cfe0933317",
+      "protocol": "EXTRACT",
+      "variant": null,
+      "status": "complete",
+      "calls": 18,
+      "model": "deepseek-flash"
+    },
+    {
+      "name": "2026-10-29-scale-1k-10k.json",
+      "from": ".tmp/c4/scale-1k-10k.json",
+      "what": "规模基准：1k / 10k 档",
+      "bytes": 2484,
+      "sha256": "23731b205f87dccdafac634d5c45751b832d52ef8a082da591ae54139e7fabf0",
+      "protocol": null,
+      "variant": null,
+      "status": null,
+      "calls": null,
+      "model": null
+    },
+    {
+      "name": "2026-10-29-cost-normalized.json",
+      "from": ".tmp/c4/cost-normalized.json",
+      "what": "全部账本的峰价/谷价重算",
+      "bytes": 11117,
+      "sha256": "fc24d8cd6639ea7e7c417a5a83f05491d0d1e3a57ed136cf5289840fa5eeda3b",
+      "protocol": null,
+      "variant": null,
+      "status": null,
+      "calls": null,
+      "model": null
+    }
+  ]
+}
