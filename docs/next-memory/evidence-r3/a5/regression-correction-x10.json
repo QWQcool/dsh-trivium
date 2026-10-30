@@ -1,0 +1,511 @@
+{
+  "at": "2026-10-30T06:59:10.085Z",
+  "complete": true,
+  "repeat": 10,
+  "budgetCny": 1,
+  "spentCnyOffpeak": 0.07664,
+  "host": {
+    "dsh": "0.2.1-rc.4",
+    "node": "v24.15.0",
+    "triviumdb": "0.9.0-beta.3"
+  },
+  "fixtureNote": "gold facts are non-secret; answers are graded by an explicit regex, not substring luck",
+  "byScenario": {
+    "CORRECTION": {
+      "runs": 10,
+      "extractionHit": 10,
+      "dbHasFact": 10,
+      "answerCorrect": 10,
+      "agentRemembered": 6,
+      "extractCalls": 20,
+      "truncatedExtractCalls": 0,
+      "costCny": 0.07663999999999999,
+      "runsWithCap": 0,
+      "questionCapped": 0
+    }
+  },
+  "runs": [
+    {
+      "scenario": "CORRECTION",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T06-54-53-859Z\\CORRECTION-r1",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"先别动旧方案A\",\"text\":\"用户要求先别动旧方案 A，团队仍在评估。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "先别动旧方案A",
+              "text": "用户要求先别动旧方案 A，团队仍在评估。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"改用方案 B\",\"text\":\"更正：不再使用旧方案 A，改用方案 B。\",\"linkName\":\"方案 A\",\"linkLabel\":\"broke\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"更正：不再使用旧方案 A，改用方案 B。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "改用方案 B",
+              "text": "更正：不再使用旧方案 A，改用方案 B。",
+              "linkName": "方案 A",
+              "linkLabel": "broke",
+              "fail": "",
+              "fix": "",
+              "quote": "更正：不再使用旧方案 A，改用方案 B。"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n用户要求：暂不改动「旧方案 A」，该方案仍在评估中。在用户明确解除前，不对旧方案 A 做任何修改、重构或删除；如需触及，先征得确认。\n方案 A\n先别动旧方案 A，我们还在评估。\n用户要求先别动旧方案 A，团队仍在评估。\n更正（推翻前述冻结决定）：不再使用旧方案 A，改用方案 B。旧方案 A 的冻结/保留要求作废，方案 A 不再是工作基线；后续工作以方案 B 为准。\n更正：不再使用旧方案 A，改用方案 B。",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.009205,
+      "aborted": [],
+      "retired": 4,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=1 preferences=0 decisions=1 experiences=0\nnamed: entity:方案 A; decision:改用方案 B"
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T06-54-53-859Z\\CORRECTION-r2",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Plan A freeze (pending evaluation)\",\"text\":\"User decided on 2026-10-30 (per workspace timestamps) that old Plan A (方案 A) is frozen while still under evaluation: do not modify, migrate, delete, restructure, or clean up Plan A artifacts until explicitly instructed.\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Plan A freeze (pending evaluation)",
+              "text": "User decided on 2026-10-30 (per workspace timestamps) that old Plan A (方案 A) is frozen while still under evaluation: do not modify, migrate, delete, restructure, or clean up Plan A artifacts until explicitly instructed.",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案B采用\",\"text\":\"自更正起不再使用旧方案A，改用方案B。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"更正：不再使用旧方案 A，改用方案 B。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "方案B采用",
+              "text": "自更正起不再使用旧方案A，改用方案B。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "更正：不再使用旧方案 A，改用方案 B。"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A（旧方案）暂时冻结：用户仍在评估中，未获明确指令前不得修改、迁移、删除或重构方案 A 相关的文件、配置与分支。\n方案 A\n先别动旧方案 A，我们还在评估。\nUser decided on 2026-10-30 (per workspace timestamps) that old Plan A (方案 A) is frozen while still under evaluation: do not modify, migrate, delete, restructure, or clean up Plan A artifacts until explicitly instructed.\n方案 A 已弃用，改用方案 B（用户 2026-10-30 更正）。旧冻结决定作废；后续工作以方案 B 为准。\n自更正起不再使用旧方案A，改用方案B。",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.009875,
+      "aborted": [],
+      "retired": 4,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=1 preferences=0 decisions=1 experiences=0\nnamed: entity:方案 A; decision:方案B采用"
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T06-54-53-859Z\\CORRECTION-r3",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"旧方案 A 暂不动\",\"text\":\"先别动旧方案 A，仍在评估中。\",\"linkName\":\"旧方案 A\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "旧方案 A 暂不动",
+              "text": "先别动旧方案 A，仍在评估中。",
+              "linkName": "旧方案 A",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案选择\",\"text\":\"2026-01-16 更正：不再使用旧方案 A，改用方案 B。\",\"linkName\":\"旧方案 A\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"不再使用旧方案 A，改用方案 B\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "方案选择",
+              "text": "2026-01-16 更正：不再使用旧方案 A，改用方案 B。",
+              "linkName": "旧方案 A",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "不再使用旧方案 A，改用方案 B"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A\n先别动旧方案 A，我们还在评估。\n先别动旧方案 A，仍在评估中。\n更正：不再使用旧方案 A，改用方案 B。",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.005716,
+      "aborted": [],
+      "retired": 2,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=1 preferences=0 decisions=1 experiences=0\nnamed: entity:方案 A; decision:方案选择"
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 4,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T06-54-53-859Z\\CORRECTION-r4",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"旧方案A暂缓改动\",\"text\":\"先别动旧方案 A，仍在评估中（2026/10/30）。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "旧方案A暂缓改动",
+              "text": "先别动旧方案 A，仍在评估中（2026/10/30）。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"改用方案B\",\"text\":\"不再使用旧方案A，改用方案B\",\"linkName\":\"旧方案A\",\"linkLabel\":\"decided\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "改用方案B",
+              "text": "不再使用旧方案A，改用方案B",
+              "linkName": "旧方案A",
+              "linkLabel": "decided"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A\n先别动旧方案 A，我们还在评估。\n先别动旧方案 A，仍在评估中（2026/10/30）。\n不再使用旧方案A，改用方案B",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.00583,
+      "aborted": [],
+      "retired": 0,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=1 preferences=0 decisions=3 experiences=0\nnamed: entity:方案 A; decision:方案 A; decision:旧方案A暂缓改动; decision:改用方案B"
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 5,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T06-54-53-859Z\\CORRECTION-r5",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"旧方案 A 保持不动\",\"text\":\"先别动旧方案 A，用户还在评估；在用户明确解除前不要修改、重构或迁移旧方案 A。\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "旧方案 A 保持不动",
+              "text": "先别动旧方案 A，用户还在评估；在用户明确解除前不要修改、重构或迁移旧方案 A。",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"改用方案 B，弃用旧方案 A\",\"text\":\"不再使用旧方案 A，改用方案 B。（2026-01-29 更正）\",\"linkName\":\"方案 A\",\"linkLabel\":\"broke\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "改用方案 B，弃用旧方案 A",
+              "text": "不再使用旧方案 A，改用方案 B。（2026-01-29 更正）",
+              "linkName": "方案 A",
+              "linkLabel": "broke"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n用户要求：评估期间不要改动「旧方案 A」（冻结，不重构、不改文件、不迁移）。如需变更须等用户明确解除冻结。可做只读分析、对比与证据收集。\n方案 A\n先别动旧方案 A，我们还在评估。\n先别动旧方案 A，用户还在评估；在用户明确解除前不要修改、重构或迁移旧方案 A。\n用户更正：不再使用旧方案 A，改用方案 B。此前「旧方案 A 冻结/保持不动」的约束失效，方案 A 不再是当前方案，方案 B 为唯一在用方案。\n不再使用旧方案 A，改用方案 B。（更正）",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.010276,
+      "aborted": [],
+      "retired": 3,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=1 preferences=1 decisions=1 experiences=0\nnamed: preference:方案A冻结; entity:方案 A; decision:改用方案 B，弃用旧方案 A"
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 6,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T06-54-53-859Z\\CORRECTION-r6",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\n  \"candidates\": [\n    {\n      \"type\": \"decision\",\n      \"name\": \"冻结旧方案A\",\n      \"text\": \"用户于 2026/10/30 要求先别动旧方案 A，因为仍在评估中。\",\n      \"linkName\": \"旧方案A\",\n      \"linkLabel\": \"decided\",\n      \"quote\": \"先别动旧方案 A，我们还在评估。\"\n    }\n  ]\n}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "冻结旧方案A",
+              "text": "用户于 2026/10/30 要求先别动旧方案 A，因为仍在评估中。",
+              "linkName": "旧方案A",
+              "linkLabel": "decided",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案选择\",\"text\":\"不再使用旧方案 A，改用方案 B\",\"linkName\":\"方案 A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"不再使用旧方案 A，改用方案 B\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "方案选择",
+              "text": "不再使用旧方案 A，改用方案 B",
+              "linkName": "方案 A",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "不再使用旧方案 A，改用方案 B"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A\n先别动旧方案 A，我们还在评估。\n用户于 2026/10/30 要求先别动旧方案 A，因为仍在评估中。\n不再使用旧方案 A，改用方案 B",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.008551,
+      "aborted": [],
+      "retired": 2,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=1 preferences=0 decisions=1 experiences=0\nnamed: entity:方案 A; decision:方案选择"
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 7,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T06-54-53-859Z\\CORRECTION-r7",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"旧方案 A 保持冻结\",\"text\":\"用户要求先别动旧方案 A（不编辑、重构、删除、迁移），因为仍在评估中；待用户明确说可以动 A 时再修改。\",\"linkName\":\"旧方案 A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "旧方案 A 保持冻结",
+              "text": "用户要求先别动旧方案 A（不编辑、重构、删除、迁移），因为仍在评估中；待用户明确说可以动 A 时再修改。",
+              "linkName": "旧方案 A",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案选择：停用旧方案A，改用方案B\",\"text\":\"更正：不再使用旧方案 A，改用方案 B。\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"不再使用旧方案 A，改用方案 B\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "方案选择：停用旧方案A，改用方案B",
+              "text": "更正：不再使用旧方案 A，改用方案 B。",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "不再使用旧方案 A，改用方案 B"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n用户要求：暂不要改动「旧方案 A」，因为它还在评估中。在用户明确解除之前，旧方案 A 视为冻结：不编辑其文件、不重构、不删除、不迁移；如需对比或试新方案，另开独立目录/分支，不能顺手改到 A。\n方案 A\n先别动旧方案 A，我们还在评估。\n用户要求先别动旧方案 A（不编辑、重构、删除、迁移），因为仍在评估中；待用户明确说可以动 A 时再修改。\n用户更正（取代此前「旧方案 A 冻结、继续评估」的决定）：不再使用旧方案 A，改用方案 B。后续实现、讨论、文档一律以方案 B 为准；旧方案 A 不再作为候选，仅在需要交代历史时提及，不投入工作。\n更正：不再使用旧方案 A，改用方案 B。",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.007183,
+      "aborted": [],
+      "retired": 4,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=1 preferences=0 decisions=1 experiences=0\nnamed: entity:方案 A; decision:方案选择：停用旧方案A，改用方案B"
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 8,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T06-54-53-859Z\\CORRECTION-r8",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"旧方案 A 保持不动\",\"text\":\"先别动旧方案 A，仍在评估中\",\"linkName\":\"旧方案 A\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "旧方案 A 保持不动",
+              "text": "先别动旧方案 A，仍在评估中",
+              "linkName": "旧方案 A",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案选择\",\"text\":\"不再使用旧方案 A，改用方案 B\",\"linkName\":\"方案 A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"不再使用旧方案 A，改用方案 B\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "方案选择",
+              "text": "不再使用旧方案 A，改用方案 B",
+              "linkName": "方案 A",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "不再使用旧方案 A，改用方案 B"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A\n先别动旧方案 A，我们还在评估。\n先别动旧方案 A，仍在评估中\n用户更正:不再使用旧方案 A,改用方案 B。此前\"旧方案 A 保持不动\"的决定作废。\n不再使用旧方案 A，改用方案 B",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.006205,
+      "aborted": [],
+      "retired": 3,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=1 preferences=0 decisions=1 experiences=0\nnamed: entity:方案 A; decision:方案选择"
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 9,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T06-54-53-859Z\\CORRECTION-r9",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"旧方案 A 暂不修改\",\"text\":\"2026-10-30 用户指示先别动旧方案 A，仍在评估中。\",\"linkName\":\"旧方案 A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "旧方案 A 暂不修改",
+              "text": "2026-10-30 用户指示先别动旧方案 A，仍在评估中。",
+              "linkName": "旧方案 A",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"采用方案 B\",\"text\":\"更正：不再使用旧方案 A，改用方案 B。\",\"linkName\":\"方案 B\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"更正：不再使用旧方案 A，改用方案 B。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "采用方案 B",
+              "text": "更正：不再使用旧方案 A，改用方案 B。",
+              "linkName": "方案 B",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "更正：不再使用旧方案 A，改用方案 B。"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A\n先别动旧方案 A，我们还在评估。\n2026-10-30 用户指示先别动旧方案 A，仍在评估中。\n更正：不再使用旧方案 A，改用方案 B。",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.007615,
+      "aborted": [],
+      "retired": 2,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=1 preferences=0 decisions=1 experiences=0\nnamed: entity:方案 A; decision:采用方案 B"
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 10,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T06-54-53-859Z\\CORRECTION-r10",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Plan A on hold during evaluation\",\"text\":\"Old Plan A is frozen while being evaluated: do not modify, migrate, delete, or refactor it, and do not use it as a base for restructuring until the user explicitly allows touching Plan A.\",\"linkName\":\"Plan A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Plan A on hold during evaluation",
+              "text": "Old Plan A is frozen while being evaluated: do not modify, migrate, delete, or refactor it, and do not use it as a base for restructuring until the user explicitly allows touching Plan A.",
+              "linkName": "Plan A",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案选择\",\"text\":\"不再使用旧方案 A，改用方案 B\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"不再使用旧方案 A，改用方案 B\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "方案选择",
+              "text": "不再使用旧方案 A，改用方案 B",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "不再使用旧方案 A，改用方案 B"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n用户要求：先不要改动「旧方案 A」，该方案仍处于评估中。在用户明确解除前，不对方案 A 做任何修改、迁移或删除。\n方案 A\n先别动旧方案 A，我们还在评估。\nOld Plan A is frozen while being evaluated: do not modify, migrate, delete, or refactor it, and do not use it as a base for restructuring until the user explicitly allows touching Plan A.\n不再使用旧方案 A，改用方案 B",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.006184,
+      "aborted": [],
+      "retired": 2,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=1 preferences=0 decisions=2 experiences=0\nnamed: entity:方案 A; decision:Plan A on hold during evaluation; decision:方案选择"
+    }
+  ]
+}
