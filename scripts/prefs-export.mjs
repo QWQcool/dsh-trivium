@@ -7,6 +7,7 @@
  *   node scripts/prefs-export.mjs export --workspace <dir> [--task <id>] [--ttl-hours 24] [--persona <file>]
  *   node scripts/prefs-export.mjs revoke --workspace <dir> [--persona <file>]
  *   node scripts/prefs-export.mjs status --workspace <dir>
+ *   node scripts/prefs-export.mjs verify --workspace <dir> [--persona <file>] [--allow-expired]
  *
  * Reads the workspace database read-only. It never writes facts and never talks to
  * a platform; the only outputs are the binding, the snapshot and the persona copy.
@@ -26,6 +27,7 @@ import {
   readJsonFile,
   revokeFiles,
   validateBinding,
+  verifyFiles,
   writeSnapshotFiles,
 } from "../lib/consumer-preferences.js";
 
@@ -78,6 +80,9 @@ if (cmd === "help" || args.help) {
   node scripts/prefs-export.mjs export --workspace <目录> [--task <id>] [--ttl-hours 24] [--persona <人设文件>]
   node scripts/prefs-export.mjs revoke --workspace <目录> [--persona <人设文件>]
   node scripts/prefs-export.mjs status --workspace <目录>
+  node scripts/prefs-export.mjs verify --workspace <目录> [--persona <人设文件>] [--allow-expired]
+
+verify 只读：重算 digest、检查绑定状态/消费者、检查是否过期、检查模型块与消费方文件是否仍含已批准的每一条；数据库在用时跳过“内容未变”那项并标注。
 
 最多 ${PREF_MAX_FACTS} 条、模型侧偏好块 ≤300 估算 token；超限报错而不是截断。`);
   process.exit(0);
@@ -124,6 +129,32 @@ if (cmd === "revoke") {
   const files = revokeFiles(workspace, { personaFile });
   console.log(JSON.stringify({ ok: true, revoked: Boolean(binding), ...files }, null, 2));
   process.exit(0);
+}
+
+if (cmd === "verify") {
+  const personaFile = args.persona ? resolve(args.persona) : "";
+  let db = null;
+  try {
+    db = openWorkspaceDbReadOnly(workspace);
+  } catch {
+    // A live writer is not a verification failure; the file-level checks still run.
+    db = null;
+  }
+  let result;
+  try {
+    result = verifyFiles(workspace, { personaFile, allowExpired: Boolean(args["allow-expired"]), db });
+  } finally {
+    try { closeAll(); } catch { /* read-only handle */ }
+  }
+  console.log(JSON.stringify({
+    ok: result.ok,
+    snapshotId: result.snapshot?.snapshotId || null,
+    consumer: result.snapshot?.consumer || null,
+    expiresAt: result.snapshot?.expiresAt || null,
+    checks: result.checks,
+    databaseChecked: Boolean(db),
+  }, null, 2));
+  process.exit(result.ok ? 0 : 3);
 }
 
 if (cmd === "export") {

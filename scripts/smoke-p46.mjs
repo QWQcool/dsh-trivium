@@ -50,8 +50,23 @@ for (const [label, value] of [
   ['password topic without a value', '密码学很难，团队还在补课。'],
   ['budget', '预算上限是 5000 元。'],
   ['hash in prose', '清单的 sha256 已核对过。'],
+  // A bare English noun is a topic, not a value.
+  ['token budget', 'token 预算上限是 500，别超。'],
+  ['password policy', 'The password policy requires 12 characters and a symbol.'],
+  ['api key location', 'api key 存在环境变量里，不要写进仓库。'],
 ]) {
   check(() => assert.equal(looksSecret(value), false), 'keeps ' + label);
+}
+
+// 2b. the same words DO count once a value follows them
+for (const [label, value] of [
+  ['token assignment', 'token=abcd1234efgh'],
+  ['password is', 'the password is hunter2'],
+  ['api key colon', 'api_key: AIzaSyD-abcdefghijklmnopqrstuvwxyz012345'],
+  ['sk prefix alone', 'use sk-abcdefghijklmnopqrstuvwxyz012345'],
+  ['bearer header', 'Authorization: bearer abcdef1234567890'],
+]) {
+  check(() => assert.equal(looksSecret(value), true), 'still refuses ' + label);
 }
 
 // 3. the extraction path refuses the candidate and reports it
