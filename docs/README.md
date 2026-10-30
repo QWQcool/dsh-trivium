@@ -10,7 +10,7 @@
 | 当前 main 源码 | 在 `v0.8.2` 后包含写入来源、决策/日期保护、变更记录和抽取单写者改动；包版本字段仍为 0.8.2，**不表示这些后续改动已进入 npm 包**。以 `git log v0.8.2..HEAD` 和 [W1–W5 结果](next-memory/WRITE-PROVENANCE-RESULTS.md)、[W6 证据](next-memory/evidence-write-provenance/W6/README.md) 核对 |
 | 依赖与运行时 | `triviumdb@0.9.0-beta.3` 精确锁定；Node `^22.19.0 || >=24`；实际依赖以 package、lock 和安装环境为准 |
 
-当前源码的 W1–W5 报告记录离线和隔离宿主桩自验；HTTP 变更路由与 UI 视觉/键盘尚未实测，未做本批真实模型验证。W6 只保护抽取写入；工具写入和导入的并发未覆盖。历史结果中的“未发布、未合并”只描述当时：这些后续提交现在已在 `main`，但不在 `v0.8.2` 标签中。
+当前源码已补变更路由的回环 HTTP、工具及导入的多进程竞争、恢复队列和浏览器组件检查；范围与边界见 [F-W04 / F-W05 结果](next-memory/F-W04-F-W05-RESULTS-2026-10-30.md)。DSH 宿主完整视觉、键盘和真实模型质量验收仍未完成。历史结果中的“未发布、未合并”只描述当时；标签后的源码不在 `v0.8.2` 发布包中。
 
 ## 按目的查找
 
@@ -20,7 +20,7 @@
 | 可复现的跨会话记忆示例 | [离线演示与运行说明](guide-example.md) |
 | 产品边界和会话层契约 | [PLAN.md](../PLAN.md) / [PLAN-session-map.md](../PLAN-session-map.md) |
 | 发布内容与逐版回执 | [0.8.2](release-0.8.2.md)、[0.8.1](release-0.8.1.md)、[0.8.0](release-0.8.0.md)、[0.7.1](release-0.7.1.md)；[发布检查清单](release-checklist.md) |
-| 当前源码变更和待验边界 | [W1–W5 结果](next-memory/WRITE-PROVENANCE-RESULTS.md) / [W6 单写者](next-memory/evidence-write-provenance/W6/README.md) |
+| 当前源码变更和待验边界 | [F-W04 / F-W05 结果](next-memory/F-W04-F-W05-RESULTS-2026-10-30.md) / [历史 W1–W5](next-memory/WRITE-PROVENANCE-RESULTS.md) / [W6 单写者](next-memory/evidence-write-provenance/W6/README.md) |
 | 真实模型合成测试 | [5 场景基线 A5](next-memory/A5-WIDER-BASELINE-2026-10-30.md) / [改口、否定 A10](next-memory/A10-REGRESSION-N10-2026-10-30.md) / [工作报告及 A1–A10 索引](next-memory/WORK-REPORT-2026-10-30.md) |
 | 旧成本和对照实验的纠正 | [独立审查](next-memory/POST-081-REVIEW.md) / [R1–R2 修复](next-memory/R1-R2-RESULTS.md) / [历史证据清单](evidence/README.md) |
 | 审查与回交 | [审查清单](next-memory/REVIEW_CHECKLIST.md) / [回交模板](next-memory/RESULT_TEMPLATE.md) |

@@ -118,6 +118,15 @@ try {
   src.appendSourceTurn(appended, twice[0]);
   src.appendSourceTurn(appended, twice[0]);
   check(() => assert.equal(appended.length, 1), 'a retried event is not registered twice');
+  src.appendSourceTurn(appended, { ...twice[0], text: '同一定位符但内容不同。' });
+  src.appendSourceTurn(appended, { ...twice[0], role: 'tool', name: 'test', ok: false });
+  src.appendSourceTurn(appended, { ...twice[0], role: 'tool', name: 'test', ok: true });
+  check(() => assert.equal(appended.length, 4), 'reused locator keeps changed text, role, and tool outcome');
+  const seqOnly = [];
+  src.appendSourceTurn(seqOnly, { role: 'user', seq: 7, text: '第一条' });
+  src.appendSourceTurn(seqOnly, { role: 'user', seq: 7, text: '第二条' });
+  src.appendSourceTurn(seqOnly, { role: 'user', seq: 7, text: '第二条' });
+  check(() => assert.equal(seqOnly.length, 2), 'reused sequence keeps changed text while exact retry deduplicates');
 
   // 11. the write path stores the source on the node
   const store = await import('../lib/store.js');

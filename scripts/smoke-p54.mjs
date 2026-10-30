@@ -55,6 +55,9 @@ try {
   writeFileSync(lockMod.lockPath(ws), JSON.stringify({ pid: process.pid, nonce: 'fresh' }), 'utf8');
   const notStale = lockMod.acquireWorkspaceLock(ws, { ttlMs: lockMod.LOCK_TTL_MS });
   check(() => assert.equal(notStale.ok, false), 'a fresh lock is respected');
+  utimesSync(lockMod.lockPath(ws), old, old);
+  const longRunning = lockMod.acquireWorkspaceLock(ws, { ttlMs: lockMod.LOCK_TTL_MS });
+  check(() => assert.equal(longRunning.ok, false), 'an old lock owned by a live process is not stolen');
   rmSync(lockMod.lockPath(ws), { force: true });
 
   // 5. releasing must not delete somebody else's lock
@@ -73,7 +76,7 @@ try {
   check(() => assert.equal(rows.entries[0].reason, 'lock-busy'), 'a busy outcome is recorded, not dropped');
 
   // 7. a lock file left behind does not block a later run forever
-  writeFileSync(lockMod.lockPath(ws), JSON.stringify({ pid: 1, nonce: 'x' }), 'utf8');
+  writeFileSync(lockMod.lockPath(ws), JSON.stringify({ pid: 2147483647, nonce: 'x' }), 'utf8');
   utimesSync(lockMod.lockPath(ws), old, old);
   const later = lockMod.acquireWorkspaceLock(ws);
   check(() => assert.equal(later.ok, true), 'a leftover lock is eventually reclaimed');

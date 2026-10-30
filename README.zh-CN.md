@@ -35,7 +35,7 @@ dsh plugin --profile web add dsh-trivium
 .dsh/trivium.tdb*
 .dsh/trivium-pending.json
 .dsh/consumer-preferences/
-.dsh/trivium-changes.jsonl
+.dsh/trivium-changes.jsonl*
 ```
 
 clone / `git pull` 后若 jsonl 变了会自动导回。设置里 **Git 旁路** 默认关（和芯片一样）。在「检查更新」下面的 **配置设置** 里打开。开关只控制是否自动写出。开着时 **生成** 用当前 `.tdb` 覆盖写出同一路径的 jsonl；关掉后 **删除 jsonl** 会清掉已知工作区的 jsonl（`.tdb` 不动）。情节、向量、芯片钉选仍只留在本机。
@@ -72,7 +72,7 @@ dsh plugin --profile web add dsh-trivium
 dsh plugin --profile web remove dsh-trivium
 ```
 
-`remove` 会删掉 `~/.dsh/trivium.json`，以及它打开过的每个工作区里的 `.dsh/trivium.tdb*`、`trivium.jsonl*` 和 `trivium-pending.json`。**偏好导出的 `.dsh/consumer-preferences/` 会保留**；源码中尚未发布的变更记录 `.dsh/trivium-changes.jsonl` 也不会由卸载程序删除。如果不再需要，应自行检查并清理这些文件，连同导出到其他位置的人设副本。用 `dsh plugin add dsh-trivium` 升级**不会**清记忆。若 `trivium.jsonl` 已提交，`git checkout` 可以找回。
+`remove` 会删掉 `~/.dsh/trivium.json`，以及它打开过的每个工作区里的 `.dsh/trivium.tdb*`、`trivium.jsonl*` 和 `trivium-pending.json`。**偏好导出的 `.dsh/consumer-preferences/` 会保留**；源码中尚未发布的变更记录 `.dsh/trivium-changes.jsonl` 及其历史不完整标记也不会由卸载程序删除。如果不再需要，应自行检查并清理这些文件，连同导出到其他位置的人设副本。用 `dsh plugin add dsh-trivium` 升级**不会**清记忆。若 `trivium.jsonl` 已提交，`git checkout` 可以找回。
 
 然后再重启 **dsh web**：设置里不再有「Trivium 记忆」，标题栏不再有「芯片」，四个工具不再注册。
 
@@ -312,8 +312,8 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 | 验证 | 结果与范围 |
 |---|---|
-| 离线回归 | 当前源码在隔离设置下运行 `node scripts/run-all.mjs`，**56/56 组通过**；见 [W6 证据](docs/next-memory/evidence-write-provenance/W6/README.md)。这是脚本组数，不是模型准确率或 npm 包验收。 |
-| 真实宿主 + 可控模型桩 | 发布后的 W5 对来源、审计、重放和工作区隔离做了宿主闭环；其中一项记为发现。HTTP 变更接口及 UI 视觉、键盘仍未完整验收，见 [结果](docs/next-memory/WRITE-PROVENANCE-RESULTS.md)。 |
+| 离线回归 | 当前源码 **63/63 脚本组通过**，命令与范围见 [F-W04 / F-W05 结果](docs/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md)。这是源码回归，不是模型准确率或 npm 包验收。 |
+| 变更记录与恢复 | 已验证回环 HTTP、真实子进程竞争和浏览器组件；DSH 宿主完整视觉、键盘验收仍待补。范围与限制见[结果](docs/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md)。 |
 | 小样本真实模型 | [A5 基线](docs/next-memory/A5-WIDER-BASELINE-2026-10-30.md)使用单一模型、5 类合成场景各 5 次：候选和入库各 25/25，新会话答对 21/25；这是修复前的历史基线。后续 [A10](docs/next-memory/A10-REGRESSION-N10-2026-10-30.md) 两个固定场景各 10 次新会话回答均为 10/10，但否定场景有 3/10 次准备阶段触发请求上限，部分运行由 agent 主动写入。不同批次不能合并当作通用准确率。 |
 | 历史证据清单 | `node scripts/verify-evidence.mjs` 校验历史 manifest 中 9 个文件的大小与哈希；它不验证实验设计，也不覆盖全部新证据。 |
 

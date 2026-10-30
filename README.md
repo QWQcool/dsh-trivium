@@ -38,7 +38,7 @@ Commit `trivium.jsonl`. Ignore the binary store:
 .dsh/trivium.tdb*
 .dsh/trivium-pending.json
 .dsh/consumer-preferences/
-.dsh/trivium-changes.jsonl
+.dsh/trivium-changes.jsonl*
 ```
 
 Clone / `git pull` re-imports when the jsonl changed. Settings → **Git sidecar** is **off** by default (same as chips). Turn it on under **Settings** (the fold below Check for updates). The switch only starts or stops auto-write. **Generate** (while on) overwrites `.dsh/trivium.jsonl` from the current `.tdb` at the same path. **Delete jsonl** (while off) removes known workspace jsonl files (`.tdb` stays). Episodes, embeddings, and chip pins stay local.
@@ -75,7 +75,7 @@ Stop **dsh web** first so the `.tdb` is not locked, then:
 dsh plugin --profile web remove dsh-trivium
 ```
 
-`remove` deletes `~/.dsh/trivium.json` and the known `.dsh/trivium.tdb*`, `trivium.jsonl*`, and `trivium-pending.json` files in workspaces the plugin has opened. **It does not remove** the 0.8.2 preference-export directory `.dsh/consumer-preferences/`; the post-0.8.2 source also leaves `.dsh/trivium-changes.jsonl`. These can contain memory-derived information. Inspect and remove them manually if desired. Other files under `.dsh/` stay. Updating with `dsh plugin add dsh-trivium` does **not** wipe memory. If `trivium.jsonl` was committed, `git checkout` brings it back.
+`remove` deletes `~/.dsh/trivium.json` and the known `.dsh/trivium.tdb*`, `trivium.jsonl*`, and `trivium-pending.json` files in workspaces the plugin has opened. **It does not remove** the 0.8.2 preference-export directory `.dsh/consumer-preferences/`; the post-0.8.2 source also leaves `.dsh/trivium-changes.jsonl` and its incomplete-history marker. These can contain memory-derived information. Inspect and remove them manually if desired. Other files under `.dsh/` stay. Updating with `dsh plugin add dsh-trivium` does **not** wipe memory. If `trivium.jsonl` was committed, `git checkout` brings it back.
 
 Restart **dsh web** afterward: Settings no longer shows **Trivium memory**, the title bar no longer shows **Chips**, and the four tools are unregistered.
 
@@ -309,11 +309,11 @@ These results describe distinct test layers; they are not one overall accuracy s
 
 | Evidence | Result and boundary |
 |---|---|
-| Current source offline regression | `node scripts/run-all.mjs`: **56/56 script groups** passed on 2026-10-30. This includes post-0.8.2 source changes and is not a fresh acceptance of the published npm package. See [W6](docs/next-memory/evidence-write-provenance/W6/README.md). |
+| Current source offline regression | **63/63 script groups** passed on 2026-10-30; see the [F-W04 / F-W05 results](docs/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md). These tests include post-0.8.2 source changes and are not fresh acceptance of the published npm package. |
 | Published 0.8.2 regression | **50/50 script groups** reported in the [release record](docs/release-0.8.2.md); separate from the current-source run. |
 | Extraction baseline, one real model | Five synthetic scenarios × five repetitions: **25/25** facts matched and entered the store; **21/25** subsequent-session answers passed in that earlier baseline. See [A5](docs/next-memory/A5-WIDER-BASELINE-2026-10-30.md). |
 | Correction and negation, one real model | Two fixed synthetic scenarios each produced **10/10** correct new-session answers after fixes. Three negation setup runs hit a request cap, and some runs used agent-initiated writes; these are not a general automatic-extraction success rate. See [A10](docs/next-memory/A10-REGRESSION-N10-2026-10-30.md). |
-| Change record and provenance, current source | Controlled-stub host checks were reported, but HTTP route and UI visual/keyboard acceptance remain incomplete. See [W1–W5](docs/next-memory/WRITE-PROVENANCE-RESULTS.md). |
+| Change record and recovery, current source | Loopback HTTP, real subprocess contention and browser component fixtures were tested; full visual and keyboard acceptance in the DSH host remains open. See [results and limits](docs/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md). |
 
 The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/next-memory/POST-081-REVIEW.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 

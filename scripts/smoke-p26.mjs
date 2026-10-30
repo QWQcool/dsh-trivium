@@ -140,6 +140,102 @@ const expandEntry = async (p, id) => {
 };
 
 const tests = [
+  ["recovery status is truthful for running, timeout, failure and success and can be refreshed", async () => {
+    const p = await loaded([], { recovery: { state: "running-timed-out" } });
+    await p.tabs()[1].props.onClick(); await p.flush();
+    assert.match(p.text(), /wait timed out; recovery is still running/);
+    assert.doesNotMatch(p.text(), /latest recovery completed/);
+    const refresh = p.button("Refresh recovery status");
+    assert.ok(refresh, "recovery refresh is a native button");
+    refresh.props.onClick(); await p.flush();
+    const request = p.take("status");
+    assert.equal(request.url.searchParams.get("cwd"), A);
+    await p.reply(request, { ...status, recovery: { state: "failed" } });
+    assert.match(p.text(), /latest recovery did not complete/);
+    refresh.props.onClick(); await p.flush();
+    await p.reply(p.take("status"), { ...status, recovery: { state: "succeeded" } });
+    assert.match(p.text(), /latest recovery completed/);
+    refresh.props.onClick(); await p.flush();
+    await p.reply(p.take("status"), { ...status, recovery: { state: "running" } });
+    assert.match(p.text(), /Recovering pending memory/);
+    refresh.props.onClick(); await p.flush();
+    await p.reply(p.take("status"), { ...status, recovery: { state: "pending" }, pendingPersistence: { incomplete: true } });
+    assert.match(p.text(), /Some content is still awaiting recovery/);
+    assert.match(p.text(), /some content may not be safely saved/);
+    assert.doesNotMatch(p.text(), /latest recovery completed/);
+    refresh.props.onClick(); await p.flush();
+    await p.reply(p.take("status"), { ...status, recovery: null });
+    assert.match(p.text(), /No recovery status has been recorded in this process/);
+  }],
+  ["the changes panel shows record details, retention, empty and failed states", async () => {
+    const p = await loaded(undefined, { audit: { incomplete: true, scope: "process" } });
+    await p.tabs()[1].props.onClick();
+    await p.flush();
+    assert.match(p.text(), /Loading change records/);
+    const req = p.take("changes");
+    assert.equal(req.url.searchParams.get("cwd"), A);
+    await p.reply(req, { entries: [{ reason: "created", at: "2026-10-30T10:11:12Z", source: { role: "user", seq: 42, messageId: "abcdefgh1234" }, preview: "synthetic memory" }], trimmed: 2, labels: { created: { en: "Created", zh: "已写入" } } });
+    assert.match(p.text(), /Memory changes/);
+    assert.match(p.text(), /Some changes could not be recorded/);
+    assert.match(p.text(), /Created/);
+    assert.match(p.text(), /2026-10-30 10:11:12/);
+    assert.match(p.text(), /user · #42 · abcdefgh/);
+    assert.match(p.text(), /synthetic memory/);
+    assert.match(p.text(), /Older records are beyond retention/);
+    await p.tabs()[0].props.onClick(); await p.flush();
+    await p.tabs()[1].props.onClick(); await p.flush();
+    await p.reply(p.take("changes"), { entries: [], trimmed: 0 });
+    assert.match(p.text(), /Nothing written yet/);
+    await p.tabs()[0].props.onClick(); await p.flush();
+    await p.tabs()[1].props.onClick(); await p.flush();
+    await p.reply(p.take("changes"), { message: "offline" }, false);
+    assert.match(p.text(), /Could not read the change record/);
+    await p.tabs()[0].props.onClick(); await p.flush();
+    await p.tabs()[1].props.onClick(); await p.flush();
+    assert.match(p.text(), /Loading change records/);
+    assert.doesNotMatch(p.text(), /Could not read the change record/);
+    await p.reply(p.take("changes"), { entries: [{ reason: "created", preview: "recovered entry" }] });
+    assert.match(p.text(), /recovered entry/);
+  }],
+  ["a persisted audit gap stays visible after a process restart and later successful write", async () => {
+    const p = await loaded(undefined, { audit: { incomplete: false, scope: "process" } });
+    await p.tabs()[1].props.onClick(); await p.flush();
+    await p.reply(p.take("changes"), { incomplete: true, entries: [{ reason: "written", preview: "older entry" }] });
+    assert.match(p.text(), /Some changes could not be recorded/);
+    await p.tabs()[0].props.onClick(); await p.flush();
+    await p.tabs()[1].props.onClick(); await p.flush();
+    await p.reply(p.take("changes"), { incomplete: true, entries: [{ reason: "written", preview: "later successful entry" }] });
+    assert.match(p.text(), /later successful entry/);
+    assert.match(p.text(), /Some changes could not be recorded/, "new successful entries do not erase the historical gap warning");
+  }],
+  ["switching workspaces clears changes and ignores delayed responses and errors", async () => {
+    const p = await loaded();
+    await p.tabs()[1].props.onClick(); await p.flush();
+    const first = p.take("changes");
+    await p.reply(first, { entries: [{ reason: "created", preview: "only workspace A" }] });
+    assert.match(p.text(), /only workspace A/);
+    await p.tabs()[0].props.onClick(); await p.flush();
+    await p.tabs()[1].props.onClick(); await p.flush();
+    const delayedA = p.take("changes");
+    await changeWorkspace(p, B);
+    assert.doesNotMatch(p.text(), /only workspace A/, "old records must disappear immediately on switch");
+    await p.reply(p.take("status"), { ...status, cwd: B });
+    const requestB = p.take("changes");
+    assert.equal(requestB.url.searchParams.get("cwd"), B);
+    await p.reply(requestB, { entries: [{ reason: "created", preview: "only workspace B" }] });
+    await p.reply(delayedA, { entries: [{ reason: "created", preview: "late workspace A" }] });
+    assert.match(p.text(), /only workspace B/);
+    assert.doesNotMatch(p.text(), /late workspace A/);
+    await p.tabs()[0].props.onClick(); await p.flush();
+    await p.tabs()[1].props.onClick(); await p.flush();
+    const outdatedB = p.take("changes");
+    await changeWorkspace(p, A);
+    await p.reply(p.take("status"), status);
+    await p.reply(p.take("changes"), { entries: [{ reason: "created", preview: "new workspace A" }] });
+    await p.reply(outdatedB, { message: "obsolete failure" }, false);
+    assert.match(p.text(), /new workspace A/);
+    assert.doesNotMatch(p.text(), /Could not read the change record/);
+  }],
   ["the workspace picker lists every known workspace and switching rebinds every request", async () => {
     const p = await loaded();
     const select = workspaceSelect(p);
