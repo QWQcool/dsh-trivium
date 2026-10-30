@@ -14,6 +14,7 @@
     "lib",
     "scripts/check-integrity.mjs",
     "scripts/clear-expired-until.mjs",
+    "scripts/prefs-export.mjs",
     "cordis.patch.yml",
     "README.md",
     "README.zh-CN.md",
@@ -21,7 +22,8 @@
   ],
   "bin": {
     "dsh-trivium-check": "scripts/check-integrity.mjs",
-    "dsh-trivium-clear-until": "scripts/clear-expired-until.mjs"
+    "dsh-trivium-clear-until": "scripts/clear-expired-until.mjs",
+    "dsh-trivium-prefs": "scripts/prefs-export.mjs"
   },
   "dsh": {
     "bundle": {
