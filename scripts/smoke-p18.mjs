@@ -84,7 +84,7 @@ try {
     "detail is fetched on expand, not on list load",
   );
   check(
-    /if \(tab === "recall"\) \{\s*loadTraces\(\);\s*loadCorrections\(\);\s*loadTurn\(\);\s*\}/.test(src),
+    /if \(tab === "recall"\) \{\s*loadTraces\(\);\s*loadCorrections\(\);\s*loadTurn\(\);\s*loadChanges\(\);\s*\}/.test(src),
     "delivery records, traces and corrections are fetched only while the recall tab is open",
   );
 
@@ -92,6 +92,12 @@ try {
   check(/role: "tab"/.test(src) && /aria-selected/.test(src), "tabs expose role and selection state");
   check(/"aria-valuenow": pct/.test(src), "the budget bar exposes its value");
   check(/type: "button"/.test(src), "tab buttons are real buttons, keyboard reachable");
+
+  /* ------------------------------------------------------- memory changes (W4) */
+  check(src.includes("/api/dsh-trivium/changes"), "the changes block reads the bounded audit endpoint");
+  check(/L\.changesTitle/.test(src) && /L\.changesEmpty/.test(src), "the changes block has bilingual labels");
+  check(/changes\.trimmed/.test(src) && /L\.changesTrimmed/.test(src), "trimmed history is reported, not hidden");
+  check(/row\.source/.test(src), "each change row shows its source when present");
 
   /* --------------------------------------------------------------- states */
   const states = [

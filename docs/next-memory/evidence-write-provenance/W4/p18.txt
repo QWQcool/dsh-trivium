@@ -1,0 +1,50 @@
+ok  the bundle keeps two locale blocks
+ok  the zh dictionary is parsed (308 keys)
+ok  every zh key exists in en (missing: none)
+ok  every en key exists in zh (missing: none)
+ok  no surface reads an undefined key (bad: none)
+ok  the panel splits into memory entries and recall check
+ok  a node detail splits into content, source and decision history
+ok  the panel uses /detail
+ok  the panel uses /provenance
+ok  the panel uses /history
+ok  the panel uses /recall-traces
+ok  the panel uses /recall-preview
+ok  the panel uses /corrections
+ok  the panel uses /integrity
+ok  the panel uses /turn
+ok  the source pane is fetched only when the source tab is opened
+ok  the history pane is fetched only when the history tab is opened
+ok  detail is fetched on expand, not on list load
+ok  delivery records, traces and corrections are fetched only while the recall tab is open
+ok  tabs expose role and selection state
+ok  the budget bar exposes its value
+ok  tab buttons are real buttons, keyboard reachable
+ok  the changes block reads the bounded audit endpoint
+ok  the changes block has bilingual labels
+ok  trimmed history is reported, not hidden
+ok  each change row shows its source when present
+ok  a missing source has its own message
+ok  a dead session has its own message
+ok  an empty history has its own message
+ok  no diagnostics has its own message
+ok  an empty turn has its own message
+ok  deferred content is surfaced for the next turn
+ok  a failed read has its own message
+ok  no prototype demo toolbar leaked into the bundle
+ok  the shipped bundle does not reference the prototype file
+ok  every budget number is labelled as an estimate
+ok  the confirm dialog is a modal dialog
+ok  the revision dialog handles its own keyboard events (behavior in p24)
+ok  focus can return to the connected trigger or the panel after a filtered trigger disappears
+ok  the confirm button is disabled while saving and without a target
+ok  a 409 is shown as a conflict, not a generic failure
+ok  a conflict keeps the user's selection
+ok  a retry reuses the same operationId
+ok  the dialog shows both existing decisions
+ok  replaced and expired have separate switches
+ok  the replaced switch is a distinct request parameter
+ok  a current version can undo its replacement
+ok  no candidate decision has its own message
+
+P18 client UI contract passed (48 checks)

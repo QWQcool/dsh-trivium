@@ -1,0 +1,31 @@
+ok both entries are stored
+ok the newest entry comes first
+ok the source locator is kept
+ok the reason code is preserved
+ok label exists for written
+ok label exists for merged
+ok label exists for superseded
+ok label exists for rejected
+ok label exists for date-adjusted
+ok label exists for pending-review
+ok label exists for supersede-failed
+ok label exists for replay-timeout
+ok the secret is redacted before the file is written
+ok the redaction marker is stored
+ok a repeated opId does not create a second entry
+ok the read limit is honoured
+ok trimming is reported, not hidden
+ok the log stays inside its cap
+ok the newest entry survives trimming
+ok the other workspace has its own log
+ok entries do not leak across workspaces
+ok a failed audit write is reported
+ok an insert maps to written
+ok a merge maps to merged
+ok a retirement maps to superseded
+ok an unconfirmed replacement maps to pending-review
+ok a refusal maps to rejected
+ok a date removal maps to date-adjusted
+ok the applied row carries the stored source
+ok every row has a distinct opId
+P53: 30/30
