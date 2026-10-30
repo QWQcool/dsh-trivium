@@ -1,0 +1,9 @@
+ok the first process exits cleanly: 
+ok the second process exits cleanly: 
+ok exactly one process writes
+ok the other reports locked instead of writing
+ok the fact is readable after the race
+ok a later process is not blocked by a leaked lock
+ok a later run still writes (lock is not sticky)
+ok no lock file is left behind
+P55: 8/8

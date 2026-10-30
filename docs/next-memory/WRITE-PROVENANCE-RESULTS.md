@@ -66,8 +66,8 @@
 | F-W02 | 已修（待独立验收） | 锚点改为来源事件时间；宽区间放行删除。**未覆盖**：`N 天后`、`下月 N 号`、时区可配置 |
 | F-W03 | 已修（待独立验收） | 来源贯穿到节点与审计；`hostText` 恒为 unavailable（宿无回读接口，不伪造跳转） |
 | F-W04 | 部分完成 | 审计与 UI 块已实现（模块/源码层自验）；**HTTP 路由未实测，UI 未做视觉与键盘验收**；"恢复中/恢复失败"只落一条记录，无专门图标 |
-| F-W05 | **未解决（新证据）** | 同一工作区两个宿主进程同时重放同一 pending 时**各写一份事实**（实测 copies=2），其中一个进程 exit=1。无跨进程锁；本批不引入常驻服务，故不修 |
-| F-W06 | 未修 | `package.json` 0.8.2 与 `package-lock.json` 根 0.8.1 仍不一致；本批规定不改版本，留作单独整理 |
+| F-W05 | **已修（方案 A）/ 归因已更正** | 原判断"两个进程各写一份"是错的：引擎本来拒绝第二个写者（`already opened with an incompatible access mode`），W5 里的 `copies=2` 其实是规则层与模型各写一份。真实问题是第二个进程直接崩掉。现在锁在**开库之前**获取，失败方不打开库、保留 pending、记 `lock-busy`。见 [W6 证据](evidence-write-provenance/W6/README.md)。仍限：只覆盖抽取写入，`ctx_remember` 与导入未纳入 |
+| F-W06 | **已修** | 锁文件根版本同步到 0.8.2（`npm version 0.8.2 --allow-same-version --no-git-tag-version`），提交 `c9b6e23` |
 
 ## 6. 状态口径
 

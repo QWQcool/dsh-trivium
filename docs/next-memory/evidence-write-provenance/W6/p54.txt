@@ -1,0 +1,18 @@
+ok the first process takes the lock
+ok the lock file exists while held
+ok the second process does not get the lock
+ok the second process is told it is busy
+ok taking the lock never waits
+ok the holder is described without failing
+ok release removes the lock file
+ok a second release is harmless
+ok a lock older than the TTL is taken over
+ok a fresh lock is respected
+ok release refuses a lock it no longer owns
+ok the other holder keeps its lock
+ok the reason code exists
+ok the reason has bilingual labels
+ok a busy outcome is recorded, not dropped
+ok a leftover lock is eventually reclaimed
+ok the new holder owns the file
+P54: 17/17
