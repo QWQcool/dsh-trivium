@@ -74,10 +74,23 @@
 
 | 已移除文件 | 当前内容去向 | 原内容可达位置 |
 |---|---|---|
-| `docs/next-memory/HANDOFF_PROMPT.md` | [现行交接入口](next-memory/HANDOFF-PROMPT-0.7.0.md)、[原实施规格](next-memory/IMPLEMENTATION_PLAN.md)；`FRONTEND.html` 页脚已迁移 | [原 M0–M2 交接词](https://github.com/QWQcool/dsh-trivium/blob/a0ba565ce874a44cd6e62ad42438f775af9ff235/docs/next-memory/HANDOFF_PROMPT.md) |
+| `docs/next-memory/HANDOFF_PROMPT.md` | [文档入口](README.md)、[原实施规格](next-memory/IMPLEMENTATION_PLAN.md)；`FRONTEND.html` 页脚已迁移 | [原 M0–M2 交接词](https://github.com/QWQcool/dsh-trivium/blob/a0ba565ce874a44cd6e62ad42438f775af9ff235/docs/next-memory/HANDOFF_PROMPT.md) |
 | `docs/next-memory/FIX_HANDOFF_PROMPT.md` | [当前基线](README.md)、[原修复设计](next-memory/FIX_PLAN-2026-10-28.md)；执行计划历史引用已迁移 | [原 0.5.1 修复交接词](https://github.com/QWQcool/dsh-trivium/blob/a0ba565ce874a44cd6e62ad42438f775af9ff235/docs/next-memory/FIX_HANDOFF_PROMPT.md) |
 | `docs/issue-3-reply.md` | [0.4.22 旧数据处理](release-0.4.22.md#用户升级与旧数据)、[中文 README](../README.zh-CN.md)；发布页和 RESULT 历史引用已迁移 | [原 Issue 回复稿](https://github.com/QWQcool/dsh-trivium/blob/818306bd552c47449b418488601aac78827dafc8/docs/issue-3-reply.md) |
 
 `BASELINE.json` 的 `path: docs/issue-3-reply.md` 是冻结的校验记录，不是当前文件导航，故原样保留。已用 Git 读取 `818306b` 中的原文件，2456 字节及 SHA-256 `38607efb6ea1948dcd563bdcb8ad02f0b099f29f9e89a6bfe364705977e8d68e` 与该基线完全一致；上表固定提交链接提供恢复路径。
 
 已知仓库内可点击引用均已迁移；GitHub 本仓库 issue 搜索未发现指向该回复稿的引用。无法穷尽私人收藏、聊天或外部站点中未知的 `main` 裸链接，因此不声称全网所有链接都已改写。已发布提交中的原文件仍可通过固定提交 URL 或 Git 历史访问。此次清理不发送 issue 留言，不删除冻结 JSON、截图或失败复现证据。
+
+## 2026-10-30 文档整理结果
+
+- 将中英文 README 和文档入口更新到 npm 0.8.2，并将标签后的当前源码改动与发布包分开；补充偏好导出、数据留存、过滤限制、分层测试数据和[可复现示例](guide-example.md)。压缩 README 中的版本流水，保留独立发布回执。
+- 合并并移除 `next-memory/START_HERE.md` 和 `next-memory/HANDOFF-PROMPT-0.7.0.md` 两个重复导航；迁移本地引用并保留固定提交的历史链接。原始证据、预注册、失败报告和版本回执未删除。旧计划只增加历史提示，不作为当前执行指令。
+- 对历史实验账本补上覆盖范围和实验限制；超出本机单次预算的旧命令保留为历史原文并明确禁止直接运行。实验脚本注释中的示例预算修正，运行逻辑未变。
+- 本轮验证：`node scripts/run-all.mjs` → **56/56 组通过**；`node scripts/run-all.mjs smoke-p0` → **1/1 组**；`smoke-p51` → **14/14 断言**；`smoke-p52` → **20/20 断言**。以上为隔离离线回归，后两项使用模型桩，不代表真实模型准确率。`node scripts/verify-evidence.mjs` → **9/9 文件**，只验证历史清单的字节和哈希。
+- 链接检查：全仓 Markdown 检查 252 个本地文件目标，缺失 0；未检查锚点与全部 HTML 链接。已删除两个导航的仓库内引用已迁移；历史审计中的文件名和固定提交链接保留。
+- 模型调用 **0 次，费用 ¥0**；没有重新执行真实宿主、模型或 npm 包验收。当前源码的 F-W04 HTTP/UI 验收仍未完成，F-W05 的并发保护尚未覆盖工具写入和导入。旧计划中的机器路径仍是既有历史内容，本轮未声称清除历史。
+
+## 2026-10-30 后续整理
+
+`START_HERE.md` 与 `HANDOFF-PROMPT-0.7.0.md` 的现行导航已合并至 [文档入口](README.md)，为减少重复入口而移除；它们当时的原文分别可在[固定提交的 START_HERE](https://github.com/QWQcool/dsh-trivium/blob/65ea4e613c12ce0cd1b5029de01b6f0f8ce9085d/docs/next-memory/START_HERE.md) 和 [HANDOFF](https://github.com/QWQcool/dsh-trivium/blob/65ea4e613c12ce0cd1b5029de01b6f0f8ce9085d/docs/next-memory/HANDOFF-PROMPT-0.7.0.md) 查看。上述旧表描述的是 2026-10-28 的处理状态。历史规格、回交、失败证据及冻结文件保留。

@@ -9,7 +9,8 @@
  *
  * 用法：
  *   node scripts/bench-c4.mjs                       # 离线审计（0 元）
- *   node scripts/bench-c4.mjs --run --budget=15     # 真实模型（≤15 元）
+ *   node scripts/bench-c4.mjs --run --budget=3      # 真实模型（≤3 元；仍需核对当日累计）
+ * 付费运行须显式传 --budget；历史默认值为 15，不适用于本机的单次预授权。
  *
  * 对手装在仓库外（gitignored）：.tmp/c4/goodmemory、.tmp/c4/dsh-memory。
  * 装法与版本见 C4-RESULTS.md；缺目录时该臂记为 unavailable，不静默跳过。
