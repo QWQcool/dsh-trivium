@@ -1,0 +1,10 @@
+{
+  "source": {
+    "capturedAt": "2026-10-30T08:47:48.132Z",
+    "kind": "extract",
+    "quote": "记住：生产端口是 9443。",
+    "sessionId": "s1",
+    "via": "extract"
+  },
+  "hasLocator": false
+}

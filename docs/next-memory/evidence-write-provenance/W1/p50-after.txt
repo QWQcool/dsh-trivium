@@ -1,0 +1,48 @@
+ok user event becomes a user turn
+ok event sequence is kept
+ok message id is kept
+ok source time is kept as an absolute timestamp
+ok a turn with a locator reports itself as recorded
+ok plugin-injected message is not buffered
+ok assistant event keeps its role
+ok tool event keeps its role
+ok tool result keeps its ok flag
+ok missing sequence is null
+ok missing message id is null
+ok missing time is null
+ok a turn without locators reports itself as not recorded
+ok an exact quote is recognised as exact
+ok the source role is user
+ok the source carries the matched message id
+ok the source carries the matched sequence
+ok a matched user quote counts as user evidence
+ok assistant wording keeps the assistant role
+ok assistant wording is not user evidence
+ok an unmatched quote is reported as none
+ok an unmatched quote has an unknown role
+ok the quote is still displayed
+ok an unmatched quote is not user evidence
+ok pending keeps the message id
+ok pending keeps the original source time
+ok pending keeps the sequence
+ok legacy pending still loads
+ok legacy turn reports an unknown locator
+ok two identical sentences stay two turns
+ok identical text does not collapse two events
+ok a retried event is not registered twice
+ok the written node keeps the source message id
+ok the written node keeps the source sequence
+ok the written node keeps the source role
+ok the written node keeps the quote match result
+ok replay keeps the original source time
+ok replay keeps the original message id
+ok replay time and source time are separate fields
+ok a fresh node reports a known locator
+ok the projection reports the source role
+ok the projection reports the quote match
+ok the projection admits the host text cannot be re-read
+ok a node without a source reports missing
+ok a missing source is null, not fabricated
+ok a source without a locator says so
+ok the quote is still displayed
+P50: 47/47
