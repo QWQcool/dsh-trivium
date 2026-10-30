@@ -1,0 +1,113 @@
+{
+  "note": "Every extraction call observed on the wire, with its stop reason and answer text.",
+  "calls": [
+    {
+      "run": "2026-10-30T03-26-58-606Z-real",
+      "extract": 1,
+      "status": 404,
+      "promptHasFact": true,
+      "thinkingChunks": 0,
+      "stopReason": null,
+      "answerText": ""
+    },
+    {
+      "run": "2026-10-30T03-26-58-606Z-real",
+      "extract": 2,
+      "status": 404,
+      "promptHasFact": true,
+      "thinkingChunks": 0,
+      "stopReason": null,
+      "answerText": ""
+    },
+    {
+      "run": "2026-10-30T03-27-29-183Z-real",
+      "extract": 1,
+      "status": 200,
+      "promptHasFact": true,
+      "thinkingChunks": 0,
+      "stopReason": null,
+      "answerText": ""
+    },
+    {
+      "run": "2026-10-30T03-27-29-183Z-real",
+      "extract": 2,
+      "status": 200,
+      "promptHasFact": true,
+      "thinkingChunks": 0,
+      "stopReason": null,
+      "answerText": ""
+    },
+    {
+      "run": "2026-10-30T03-28-53-194Z-real",
+      "extract": 1,
+      "status": 200,
+      "promptHasFact": true,
+      "thinkingChunks": 309,
+      "stopReason": "end_turn",
+      "answerText": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"背景约定记录\",\"text\":\"用户要求记住一段以“背景记录”重复构成的长约定；该约定仅作背景记录保存，不含发布授权含义。\",\"linkName\":\"背景约定\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"记住这段长约定：背景记录。\"}]}"
+    },
+    {
+      "run": "2026-10-30T03-28-53-194Z-real",
+      "extract": 2,
+      "status": 200,
+      "promptHasFact": true,
+      "thinkingChunks": 401,
+      "stopReason": "max_tokens",
+      "answerText": ""
+    },
+    {
+      "run": "2026-10-30T03-29-45-956Z-real",
+      "extract": 1,
+      "status": 200,
+      "promptHasFact": true,
+      "thinkingChunks": 267,
+      "stopReason": "end_turn",
+      "answerText": "{\"candidates\":[]}"
+    },
+    {
+      "run": "2026-10-30T03-29-45-956Z-real",
+      "extract": 2,
+      "status": 200,
+      "promptHasFact": true,
+      "thinkingChunks": 401,
+      "stopReason": "max_tokens",
+      "answerText": ""
+    },
+    {
+      "run": "2026-10-30T03-30-32-576Z-real",
+      "extract": 1,
+      "status": 200,
+      "promptHasFact": true,
+      "thinkingChunks": 157,
+      "stopReason": "end_turn",
+      "answerText": "{\"candidates\":[]}"
+    },
+    {
+      "run": "2026-10-30T03-30-32-576Z-real",
+      "extract": 2,
+      "status": 200,
+      "promptHasFact": true,
+      "thinkingChunks": 401,
+      "stopReason": "max_tokens",
+      "answerText": ""
+    },
+    {
+      "run": "2026-10-30T03-35-13-979Z-real",
+      "extract": 1,
+      "status": 200,
+      "promptHasFact": true,
+      "thinkingChunks": 556,
+      "stopReason": "end_turn",
+      "answerText": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"发布前置校验约定\",\"text\":\"用户要求记住一条发布前置校验约定（原文其余部分为重复的\\\"背景记录\\\"占位内容）；其中含校验口令，按不落库敏感信息处理，口令内容已隐去。\",\"linkName\":\"\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"记住这段长约定：…另外关键一条是发布前置校验口令 [已隐去]。只回 ok。\"}]}"
+    },
+    {
+      "run": "2026-10-30T03-35-13-979Z-real",
+      "extract": 2,
+      "status": 200,
+      "promptHasFact": true,
+      "thinkingChunks": 215,
+      "stopReason": "end_turn",
+      "answerText": "{\"candidates\":[]}"
+    }
+  ]
+}

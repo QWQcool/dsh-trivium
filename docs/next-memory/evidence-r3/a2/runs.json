@@ -1,0 +1,201 @@
+{
+  "note": "Real-model A-2 runs on the credential-shaped long-text fixture.",
+  "runs": [
+    {
+      "run": "2026-10-30T03-26-58-606Z-real",
+      "inputLength": 343,
+      "buffered": {
+        "found": true,
+        "length": 343,
+        "inputLength": 343,
+        "truncated": false,
+        "factPresent": true,
+        "factTailDistance": 19
+      },
+      "extractRequest": {
+        "found": true,
+        "requestBytes": 52755,
+        "transcriptLength": 1143,
+        "factPresent": true,
+        "noisePresent": true,
+        "messageCount": 1
+      },
+      "dbHasFact": false,
+      "answer": "",
+      "nodes": [
+        {
+          "type": "preference",
+          "text": "记住这段长约定：背景记录。"
+        }
+      ]
+    },
+    {
+      "run": "2026-10-30T03-27-29-183Z-real",
+      "inputLength": 343,
+      "buffered": {
+        "found": true,
+        "length": 343,
+        "inputLength": 343,
+        "truncated": false,
+        "factPresent": true,
+        "factTailDistance": 19
+      },
+      "extractRequest": {
+        "found": true,
+        "requestBytes": 11316,
+        "transcriptLength": 1692,
+        "factPresent": true,
+        "noisePresent": true,
+        "messageCount": 1
+      },
+      "dbHasFact": true,
+      "answer": "verify-QA-71",
+      "nodes": [
+        {
+          "type": "decision",
+          "text": "长期约定（背景记录）：发布前必须做前置校验，校验口令为 verify-QA-71；发布前须用该口令完成前置校验。"
+        },
+        {
+          "type": "preference",
+          "text": "记住这段长约定：背景记录。"
+        }
+      ]
+    },
+    {
+      "run": "2026-10-30T03-28-53-194Z-real",
+      "inputLength": 343,
+      "buffered": {
+        "found": true,
+        "length": 343,
+        "inputLength": 343,
+        "truncated": false,
+        "factPresent": true,
+        "factTailDistance": 19
+      },
+      "extractRequest": {
+        "found": true,
+        "requestBytes": 11876,
+        "transcriptLength": 1763,
+        "factPresent": true,
+        "noisePresent": true,
+        "messageCount": 1
+      },
+      "dbHasFact": false,
+      "answer": "未记录",
+      "nodes": [
+        {
+          "type": "preference",
+          "text": "用户给出一条很长的“背景记录”约定（大量重复填充文本），其唯一实质内容是附带一个“发布前置校验口令”。处理口径：重复填充部分视为无信息量的背景噪声；口令/校验码类内容不写入长期记忆，也不作为任何动作的预授权；对外发布（npm publish、Release、版本号 bump 等）仍需用户当次显式确认。"
+        },
+        {
+          "type": "preference",
+          "text": "记住这段长约定：背景记录。"
+        },
+        {
+          "type": "preference",
+          "text": "用户要求记住一段以“背景记录”重复构成的长约定；该约定仅作背景记录保存，不含发布授权含义。"
+        }
+      ]
+    },
+    {
+      "run": "2026-10-30T03-29-45-956Z-real",
+      "inputLength": 343,
+      "buffered": {
+        "found": true,
+        "length": 343,
+        "inputLength": 343,
+        "truncated": false,
+        "factPresent": true,
+        "factTailDistance": 19
+      },
+      "extractRequest": {
+        "found": true,
+        "requestBytes": 11312,
+        "transcriptLength": 1690,
+        "factPresent": true,
+        "noisePresent": true,
+        "messageCount": 1
+      },
+      "dbHasFact": true,
+      "answer": "verify-QA-71",
+      "nodes": [
+        {
+          "type": "preference",
+          "text": "用户约定的背景记录（长约定，内容以“背景记录。”重复填充为占位不加改动）。其中关键一条：发布前置校验口令为 verify-QA-71。"
+        },
+        {
+          "type": "preference",
+          "text": "记住这段长约定：背景记录。"
+        }
+      ]
+    },
+    {
+      "run": "2026-10-30T03-30-32-576Z-real",
+      "inputLength": 343,
+      "buffered": {
+        "found": true,
+        "length": 343,
+        "inputLength": 343,
+        "truncated": false,
+        "factPresent": true,
+        "factTailDistance": 19
+      },
+      "extractRequest": {
+        "found": true,
+        "requestBytes": 11336,
+        "transcriptLength": 1696,
+        "factPresent": true,
+        "noisePresent": true,
+        "messageCount": 1
+      },
+      "dbHasFact": true,
+      "answer": "verify-QA-71",
+      "nodes": [
+        {
+          "type": "preference",
+          "text": "用户声明了一段「长约定」：主体为大量重复的「背景记录。」填充内容，无其他实质条款；其中唯一关键条款是——发布前置校验口令为 verify-QA-71。备注：该口令仅为校验标识，不构成对外发布动作（npm publish、GitHub Release、版本号 bump 等）的授权，此类动作仍须人工确认。"
+        },
+        {
+          "type": "preference",
+          "text": "记住这段长约定：背景记录。"
+        }
+      ]
+    },
+    {
+      "run": "2026-10-30T03-35-13-979Z-real",
+      "inputLength": 343,
+      "buffered": {
+        "found": true,
+        "length": 343,
+        "inputLength": 343,
+        "truncated": false,
+        "factPresent": true,
+        "factTailDistance": 19
+      },
+      "extractRequest": {
+        "found": true,
+        "requestBytes": 11318,
+        "transcriptLength": 1690,
+        "factPresent": true,
+        "noisePresent": true,
+        "messageCount": 1
+      },
+      "dbHasFact": true,
+      "answer": "verify-QA-71",
+      "nodes": [
+        {
+          "type": "preference",
+          "text": "用户的长约定：正文以大量「背景记录。」填充为主（属背景噪声，无需逐字保留），其中唯一关键条款是——发布前置校验口令为 verify-QA-71。该口令仅用于校验流程；对外发布（npm publish、GitHub Release、版本号 bump 等）仍按 AGENTS.md 第二节要求先停下来问人，口令本身不构成发布"
+        },
+        {
+          "type": "preference",
+          "text": "记住这段长约定：背景记录。"
+        },
+        {
+          "type": "preference",
+          "text": "用户要求记住一条发布前置校验约定（原文其余部分为重复的\"背景记录\"占位内容）；其中含校验口令，按不落库敏感信息处理，口令内容已隐去。"
+        }
+      ]
+    }
+  ]
+}
