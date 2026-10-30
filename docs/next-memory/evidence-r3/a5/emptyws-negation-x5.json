@@ -1,0 +1,230 @@
+{
+  "at": "2026-10-30T07:14:48.507Z",
+  "complete": true,
+  "repeat": 5,
+  "budgetCny": 1,
+  "spentCnyOffpeak": 0.019626,
+  "host": {
+    "dsh": "0.2.1-rc.4",
+    "node": "v24.15.0",
+    "triviumdb": "0.9.0-beta.3"
+  },
+  "fixtureNote": "gold facts are non-secret; answers are graded by an explicit regex, not substring luck",
+  "byScenario": {
+    "NEGATION": {
+      "runs": 5,
+      "extractionHit": 5,
+      "dbHasFact": 5,
+      "answerCorrect": 5,
+      "agentRemembered": 5,
+      "extractCalls": 10,
+      "truncatedExtractCalls": 0,
+      "costCny": 0.019625999999999998,
+      "runsWithCap": 0,
+      "questionCapped": 0
+    }
+  },
+  "runs": [
+    {
+      "scenario": "NEGATION",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T07-13-16-477Z\\NEGATION-r1",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"Auto-publish requires manual confirmation\",\"text\":\"Never auto-publish; publishing must be manually confirmed by the user first.\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"以后不要自动发布，必须我人工确认后才能发\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "Auto-publish requires manual confirmation",
+              "text": "Never auto-publish; publishing must be manually confirmed by the user first.",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "以后不要自动发布，必须我人工确认后才能发"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-sFQ4sb\nNever auto-publish anything; publishing requires explicit human/manual confirmation first.",
+      "dbHasFact": true,
+      "answer": "不可以。",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.003824,
+      "aborted": [],
+      "retired": 0,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=1 decisions=0 experiences=0\nnamed: preference:Never auto-publish anything; publishing "
+    },
+    {
+      "scenario": "NEGATION",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T07-13-16-477Z\\NEGATION-r2",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"Publishing requires manual confirmation\",\"text\":\"以后不要自动发布，必须我人工确认后才能发。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"以后不要自动发布，必须我人工确认后才能发。\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "Publishing requires manual confirmation",
+              "text": "以后不要自动发布，必须我人工确认后才能发。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "以后不要自动发布，必须我人工确认后才能发。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"别自动发布\",\"text\":\"用户偏好：不要自动发布，只回复 ok。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"user asked not to auto-publish, only reply ok\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "别自动发布",
+              "text": "用户偏好：不要自动发布，只回复 ok。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "user asked not to auto-publish, only reply ok"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-QhmU7A\n用户要求：以后不要自动发布任何内容，必须经过用户人工确认后才能发布。",
+      "dbHasFact": true,
+      "answer": "不能。",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.004478,
+      "aborted": [],
+      "retired": 0,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=1 decisions=0 experiences=0\nnamed: preference:发布需人工确认"
+    },
+    {
+      "scenario": "NEGATION",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T07-13-16-477Z\\NEGATION-r3",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"manual publish confirmation\",\"text\":\"User requires manual confirmation before publishing; do not auto-publish.\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"以后不要自动发布，必须我人工确认后才能发\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "manual publish confirmation",
+              "text": "User requires manual confirmation before publishing; do not auto-publish.",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "以后不要自动发布，必须我人工确认后才能发"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-5jFbai\nUser requires manual confirmation before any publishing action; never auto-publish. Always ask the user for explicit human confirmation before posting/publishing anything.",
+      "dbHasFact": true,
+      "answer": "不能。",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.003474,
+      "aborted": [],
+      "retired": 0,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=1 decisions=0 experiences=0\nnamed: preference:no-auto-publish-manual-confirm"
+    },
+    {
+      "scenario": "NEGATION",
+      "rep": 4,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T07-13-16-477Z\\NEGATION-r4",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"manual-publish-confirmation\",\"text\":\"Never auto-publish; require the user's manual confirmation before publishing.\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"以后不要自动发布，必须我人工确认后才能发。\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "manual-publish-confirmation",
+              "text": "Never auto-publish; require the user's manual confirmation before publishing.",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "以后不要自动发布，必须我人工确认后才能发。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-3hHTBs\n用户要求：不要自动发布任何内容，必须先由用户人工确认后才能发布（publish）。适用于所有发布类操作。",
+      "dbHasFact": true,
+      "answer": "不可以。",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.003767,
+      "aborted": [],
+      "retired": 0,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=1 decisions=0 experiences=0\nnamed: preference:No auto-publish; require manual confirma"
+    },
+    {
+      "scenario": "NEGATION",
+      "rep": 5,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T07-13-16-477Z\\NEGATION-r5",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"人工确认后发布\",\"text\":\"以后不要自动发布，必须人工确认后才能发\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"以后不要自动发布，必须我人工确认后才能发。\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "人工确认后发布",
+              "text": "以后不要自动发布，必须人工确认后才能发",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "以后不要自动发布，必须我人工确认后才能发。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-RQldQc\n发布操作必须先经用户人工确认，禁止自动发布。",
+      "dbHasFact": true,
+      "answer": "不能。",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.004083,
+      "aborted": [],
+      "retired": 0,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=1 decisions=0 experiences=0\nnamed: preference:发布需人工确认"
+    }
+  ]
+}
