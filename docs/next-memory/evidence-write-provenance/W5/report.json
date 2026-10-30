@@ -1,0 +1,78 @@
+{
+  "at": "2026-10-30T09:19:15.997Z",
+  "modelCalls": 0,
+  "paid": false,
+  "checks": [
+    {
+      "name": "the fact is written in the workspace database",
+      "ok": true,
+      "detail": "id=2"
+    },
+    {
+      "name": "the written node keeps a source locator",
+      "ok": true,
+      "detail": "{\"at\":\"2026-10-30T09:19:18.465Z\",\"capturedAt\":\"2026-10-30T09:19:20.764Z\",\"hostText\":\"unavailable\",\"kind\":\"extract\",\"messageId\":\"3cecf227-a852-4a63-93a5-4d847c139158\",\"quote\":\"记住：生产端口是 9443。\",\"quoteMatch\":\"exact\",\"recorded\":true,\"role\":\"user\",\"seq\":11,\"sessionId\":\"session-01a9abe9-3e60-432c-8763-bba88a99c443\",\"via\":\"extract\"}"
+    },
+    {
+      "name": "the source role is user",
+      "ok": true,
+      "detail": "user"
+    },
+    {
+      "name": "the change log recorded the write",
+      "ok": true,
+      "detail": "entries=2"
+    },
+    {
+      "name": "the change entry carries the same locator",
+      "ok": true,
+      "detail": "{\"role\":\"user\",\"messageId\":\"3cecf227-a852-4a63-93a5-4d847c139158\",\"seq\":11,\"quoteMatch\":\"exact\"}"
+    },
+    {
+      "name": "the new session was sent a memory map with the fact count",
+      "ok": true,
+      "detail": "2 requests"
+    },
+    {
+      "name": "the new session request carries the injected record",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "a stuck replay is recorded as a timeout",
+      "ok": true,
+      "detail": "entries=4"
+    },
+    {
+      "name": "the turn still finished while the replay was stuck",
+      "ok": true,
+      "detail": "exit=0 in 14271ms"
+    },
+    {
+      "name": "a second workspace has no inherited audit records",
+      "ok": true,
+      "detail": "entries=0"
+    },
+    {
+      "name": "a second workspace has no inherited facts",
+      "ok": true,
+      "detail": "nodes=1"
+    }
+  ],
+  "notes": [],
+  "findings": [
+    {
+      "id": "F-W05",
+      "observation": "concurrent sessions on one workspace",
+      "copies": 2,
+      "exits": [
+        1,
+        0
+      ],
+      "expected": 1,
+      "note": "two processes replaying the same pending snapshot both wrote the fact"
+    }
+  ],
+  "passed": 11,
+  "total": 11
+}
