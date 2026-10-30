@@ -78,6 +78,8 @@ On 2026-04-06 (per conversation context), user corrected: no longer use old Plan
 
 已花费 ¥0.079235，证据：[compact-attempt-requests.json](evidence-r3/a5/compact-attempt-requests.json)。
 
+**2026-10-30 补跑**：加了「每任务 10 请求 / 120 秒」闸门后重跑 3 次，3/3 都完成了「溢出 → 压缩 → 重试 → 新会话答对」。见 [A-9](A9-COMPACTION-RECALL-2026-10-30.md)。
+
 下一轮重跑前必须先加两道闸：**每轮超时**、**单轮请求数上限**（例如 12 个请求或 15 分钟就中止并记录），否则单次实验可能无声地烧掉几块钱。
 
 ## 4. 成本

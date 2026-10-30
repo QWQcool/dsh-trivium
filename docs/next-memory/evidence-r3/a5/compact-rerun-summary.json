@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-30T06:38:38.365Z",
+  "complete": true,
+  "repeat": 3,
+  "spentCnyOffpeak": 0.059295,
+  "rows": [
+    {
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5b\\2026-10-30T06-34-05-664Z\\COMPACT-r1",
+      "overflowInjected": true,
+      "compactionCalls": 16,
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "costCny": 0.02539,
+      "aborted": "request-cap"
+    },
+    {
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5b\\2026-10-30T06-34-05-664Z\\COMPACT-r2",
+      "overflowInjected": true,
+      "compactionCalls": 14,
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "costCny": 0.009164,
+      "aborted": "time-cap"
+    },
+    {
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5b\\2026-10-30T06-34-05-664Z\\COMPACT-r3",
+      "overflowInjected": true,
+      "compactionCalls": 15,
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "costCny": 0.024742,
+      "aborted": "request-cap"
+    }
+  ]
+}
