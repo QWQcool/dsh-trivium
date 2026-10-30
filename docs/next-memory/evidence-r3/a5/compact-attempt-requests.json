@@ -1,0 +1,392 @@
+{
+  "note": "First agent request injected a context overflow; the host summarised and retried, then the turn entered a long tool loop and the run was abandoned.",
+  "requests": [
+    {
+      "seq": 1,
+      "status": 400,
+      "injected": "context_length_exceeded",
+      "requestBytes": 83678,
+      "tools": 29,
+      "stopReason": null,
+      "isExtract": false
+    },
+    {
+      "seq": 2,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 50695,
+      "tools": 0,
+      "stopReason": "end_turn",
+      "isExtract": false
+    },
+    {
+      "seq": 3,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 81336,
+      "tools": 29,
+      "stopReason": "end_turn",
+      "isExtract": false
+    },
+    {
+      "seq": 4,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 43875,
+      "tools": 0,
+      "stopReason": "end_turn",
+      "isExtract": true
+    },
+    {
+      "seq": 5,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 76443,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 6,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 53591,
+      "tools": 29,
+      "stopReason": "end_turn",
+      "isExtract": false
+    },
+    {
+      "seq": 7,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 46580,
+      "tools": 29,
+      "stopReason": "end_turn",
+      "isExtract": false
+    },
+    {
+      "seq": 8,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 21115,
+      "tools": 0,
+      "stopReason": "end_turn",
+      "isExtract": true
+    },
+    {
+      "seq": 9,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 83981,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 10,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 60568,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 11,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 58787,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 12,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 81325,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 13,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 85442,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 14,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 163099,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 15,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 155611,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 16,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 160150,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 17,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 168468,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 18,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 163618,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 19,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 169160,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 20,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 160253,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 21,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 175208,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 22,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 166784,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 23,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 182632,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 24,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 185764,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 25,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 180725,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 26,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 221764,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 27,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 218213,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 28,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 224106,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 29,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 222759,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 30,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 247098,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 31,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 224199,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 32,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 232968,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 33,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 227161,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 34,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 232085,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 35,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 247172,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 36,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 240277,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 37,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 244349,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 38,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 242268,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 39,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 243595,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 40,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 257057,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 41,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 267275,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 42,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 273725,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    },
+    {
+      "seq": 43,
+      "status": 200,
+      "injected": null,
+      "requestBytes": 266987,
+      "tools": 29,
+      "stopReason": "tool_use",
+      "isExtract": false
+    }
+  ]
+}

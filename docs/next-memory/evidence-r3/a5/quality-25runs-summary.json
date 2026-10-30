@@ -1,0 +1,1259 @@
+{
+  "at": "2026-10-30T05:05:45.944Z",
+  "complete": true,
+  "repeat": 5,
+  "budgetCny": 2,
+  "spentCnyOffpeak": 0.304406,
+  "host": {
+    "dsh": "0.2.1-rc.4",
+    "node": "v24.15.0",
+    "triviumdb": "0.9.0-beta.3"
+  },
+  "fixtureNote": "gold facts are non-secret; answers are graded by an explicit regex, not substring luck",
+  "byScenario": {
+    "LONG-TAIL": {
+      "runs": 5,
+      "extractionHit": 5,
+      "dbHasFact": 5,
+      "answerCorrect": 5,
+      "agentRemembered": 5,
+      "extractCalls": 41,
+      "truncatedExtractCalls": 0,
+      "costCny": 0.176216
+    },
+    "NAME-AMOUNT": {
+      "runs": 5,
+      "extractionHit": 5,
+      "dbHasFact": 5,
+      "answerCorrect": 5,
+      "agentRemembered": 4,
+      "extractCalls": 10,
+      "truncatedExtractCalls": 0,
+      "costCny": 0.036463
+    },
+    "CORRECTION": {
+      "runs": 5,
+      "extractionHit": 5,
+      "dbHasFact": 5,
+      "answerCorrect": 3,
+      "agentRemembered": 2,
+      "extractCalls": 11,
+      "truncatedExtractCalls": 0,
+      "costCny": 0.032426
+    },
+    "NEGATION": {
+      "runs": 5,
+      "extractionHit": 5,
+      "dbHasFact": 5,
+      "answerCorrect": 4,
+      "agentRemembered": 5,
+      "extractCalls": 10,
+      "truncatedExtractCalls": 0,
+      "costCny": 0.036035
+    },
+    "REFERENCE": {
+      "runs": 5,
+      "extractionHit": 5,
+      "dbHasFact": 5,
+      "answerCorrect": 4,
+      "agentRemembered": 2,
+      "extractCalls": 10,
+      "truncatedExtractCalls": 0,
+      "costCny": 0.023267
+    }
+  },
+  "runs": [
+    {
+      "scenario": "LONG-TAIL",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\LONG-TAIL-r1",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"发布代号 BlueHeron\",\"text\":\"本次发布代号是 BlueHeron（记录于背景记录约定中）。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"另外关键一条是，本次发布代号是 BlueHeron。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "发布代号 BlueHeron",
+              "text": "本次发布代号是 BlueHeron（记录于背景记录约定中）。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "另外关键一条是，本次发布代号是 BlueHeron。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"BlueHeron release codename\",\"text\":\"发布代号约定：本次发布代号为 BlueHeron。\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"发布代号约定：本次发布代号为 BlueHeron\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "BlueHeron release codename",
+              "text": "发布代号约定：本次发布代号为 BlueHeron。",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "发布代号约定：本次发布代号为 BlueHeron"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n发布代号约定：本次发布代号为 BlueHeron（关键一条）。用户同时要求记住一段以\"背景记录\"重复作为填充的长约定，实质内容即背景记录 + 发布代号 BlueHeron。回复口径：仅回 ok。\n记住这段长约定：背景记录。\n本次发布代号是 BlueHeron（记录于背景记录约定中）。\n发布代号约定：本次发布代号为 BlueHeron。",
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.03284
+    },
+    {
+      "scenario": "LONG-TAIL",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\LONG-TAIL-r2",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"release codename BlueHeron\",\"text\":\"本次发布代号是 BlueHeron。\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"另外关键一条是，本次发布代号是 BlueHeron。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "release codename BlueHeron",
+              "text": "本次发布代号是 BlueHeron。",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "另外关键一条是，本次发布代号是 BlueHeron。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Release codename BlueHeron\",\"text\":\"本次发布代号是 BlueHeron。\",\"linkName\":\"BlueHeron\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"本次发布代号是 BlueHeron\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Release codename BlueHeron",
+              "text": "本次发布代号是 BlueHeron。",
+              "linkName": "BlueHeron",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "本次发布代号是 BlueHeron"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n用户约定的「背景记录」长文本（内容为大量重复的「背景记录。」填充），其中唯一关键事实：本次发布代号为 BlueHeron（发布代号 = BlueHeron）。其余为背景噪声/占位，不承载额外约束。\n记住这段长约定：背景记录。\n本次发布代号是 BlueHeron。",
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.047916
+    },
+    {
+      "scenario": "LONG-TAIL",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\LONG-TAIL-r3",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Release codename BlueHeron\",\"text\":\"本次发布代号是 BlueHeron。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"另外关键一条是，本次发布代号是 BlueHeron。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Release codename BlueHeron",
+              "text": "本次发布代号是 BlueHeron。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "另外关键一条是，本次发布代号是 BlueHeron。"
+            }
+          ]
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": null,
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "tool_use",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "end_turn",
+          "text": "**BlueHeron（0.8.2）已经推进到正式发布之前的那道必须人工授权的门槛。** 以下是实测状态。\n\n## 已完成（只读可验证部分）\n\n| 项 | 结果 |\n|---|---|\n| 分支/工作树 | `codex/r1-r2-reliability` @ `56d5869`，比 `origin/main` 多 5 个提交，工作树干净 |\n| 全量回归 | 48 个脚本，**44/48 通过**；4 个失败全部是子进程 `spawnSync` 被沙箱的命名管道限制拦截（`status=null`），不是产品回归——今天 12:40 仓库内同一套用例记录为 **48/48** |\n| 打包 | `dsh-trivium-0.8.1.tgz` 可生成，**39 个文件**（新增 `lib/consumer-preferences.js`、`scripts/prefs-export.mjs",
+          "candidates": null
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n本次发布代号是 BlueHeron。\n记住这段长约定：背景记录。\ndsh-trivium 0.8.2（代号 BlueHeron）发布准备状态（2026-10-30）：分支 codex/r1-r2-reliability，HEAD 56d5869，领先 origin/main 5 个提交，工作树干净。未 bump 版本、未打 tag、未 npm 发布。包内容 39 个文件（新增 lib/consumer-preferences.js 与 scripts/prefs-export.mjs），verify-package 13 项通过。全量回归 48 脚本：仓库内记录 48/48；本次沙箱会话 44/48，4 个失败均为子进程 spawnSync 被沙箱命名管道限制拦截（status=null），非产品回归。发布说明草稿在 .tmp/r3/ws/release-0.8.2-draft.md。\npwsh failed then succeeded\nwrite failed then succeeded",
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.079332
+    },
+    {
+      "scenario": "LONG-TAIL",
+      "rep": 4,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\LONG-TAIL-r4",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"BlueHeron release codename\",\"text\":\"本次发布代号是 BlueHeron。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"另外关键一条是，本次发布代号是 BlueHeron。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "BlueHeron release codename",
+              "text": "本次发布代号是 BlueHeron。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "另外关键一条是，本次发布代号是 BlueHeron。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n本次发布的代号是 BlueHeron（长约定正文为大量「背景记录」填充，无其他实质信息）。\n记住这段长约定：背景记录。\n本次发布代号是 BlueHeron。",
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.010441
+    },
+    {
+      "scenario": "LONG-TAIL",
+      "rep": 5,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\LONG-TAIL-r5",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"发布代号 BlueHeron\",\"text\":\"本次发布代号是 BlueHeron。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"另外关键一条是，本次发布代号是 BlueHeron。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "发布代号 BlueHeron",
+              "text": "本次发布代号是 BlueHeron。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "另外关键一条是，本次发布代号是 BlueHeron。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n本次发布代号是 BlueHeron（用户以“背景记录”长约定形式给出的关键一条；其余为无实质内容的填充文本）。\n记住这段长约定：背景记录。\n本次发布代号是 BlueHeron。",
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.005687
+    },
+    {
+      "scenario": "NAME-AMOUNT",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\NAME-AMOUNT-r1",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"项目负责人\",\"text\":\"项目负责人是张三\",\"linkName\":\"张三\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"项目负责人是张三\"},{\"type\":\"decision\",\"name\":\"预算上限\",\"text\":\"预算上限 5000 元\",\"linkName\":\"预算上限\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"预算上限 5000 元\"}]}",
+          "candidates": [
+            {
+              "type": "entity",
+              "name": "项目负责人",
+              "text": "项目负责人是张三",
+              "linkName": "张三",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "项目负责人是张三"
+            },
+            {
+              "type": "decision",
+              "name": "预算上限",
+              "text": "预算上限 5000 元",
+              "linkName": "预算上限",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "预算上限 5000 元"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"项目负责人\",\"text\":\"项目负责人为张三\",\"linkName\":\"张三\",\"linkLabel\":\"about\"},{\"type\":\"decision\",\"name\":\"预算上限\",\"text\":\"预算上限 5000 元。\",\"linkName\":\"预算上限\",\"linkLabel\":\"decided\"}]}",
+          "candidates": [
+            {
+              "type": "entity",
+              "name": "项目负责人",
+              "text": "项目负责人为张三",
+              "linkName": "张三",
+              "linkLabel": "about"
+            },
+            {
+              "type": "decision",
+              "name": "预算上限",
+              "text": "预算上限 5000 元。",
+              "linkName": "预算上限",
+              "linkLabel": "decided"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n项目负责人为张三，预算上限 5000 元。\n项目负责人为张三",
+      "dbHasFact": true,
+      "answer": "张三",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.005849
+    },
+    {
+      "scenario": "NAME-AMOUNT",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\NAME-AMOUNT-r2",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"项目负责人与预算上限\",\"text\":\"项目负责人是张三，预算上限 5000 元。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"项目负责人是张三，预算上限 5000 元\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "项目负责人与预算上限",
+              "text": "项目负责人是张三，预算上限 5000 元。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "项目负责人是张三，预算上限 5000 元"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n项目负责人是张三，预算上限 5000 元。",
+      "dbHasFact": true,
+      "answer": "张三",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.006371
+    },
+    {
+      "scenario": "NAME-AMOUNT",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\NAME-AMOUNT-r3",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"张三\",\"text\":\"项目负责人是张三，预算上限 5000 元。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"项目负责人是张三，预算上限 5000 元。\"}]}",
+          "candidates": [
+            {
+              "type": "entity",
+              "name": "张三",
+              "text": "项目负责人是张三，预算上限 5000 元。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "项目负责人是张三，预算上限 5000 元。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n项目负责人是张三，预算上限 5000 元。",
+      "dbHasFact": true,
+      "answer": "张三",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.007334
+    },
+    {
+      "scenario": "NAME-AMOUNT",
+      "rep": 4,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\NAME-AMOUNT-r4",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"项目负责人与预算\",\"text\":\"项目负责人是张三，预算上限 5000 元。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"项目负责人是张三，预算上限 5000 元。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "项目负责人与预算",
+              "text": "项目负责人是张三，预算上限 5000 元。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "项目负责人是张三，预算上限 5000 元。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"项目负责人与预算决策\",\"text\":\"项目负责人是张三，预算上限 5000 元。\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "项目负责人与预算决策",
+              "text": "项目负责人是张三，预算上限 5000 元。",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": ""
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n项目负责人是张三，预算上限 5000 元。",
+      "dbHasFact": true,
+      "answer": "张三",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.005802
+    },
+    {
+      "scenario": "NAME-AMOUNT",
+      "rep": 5,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\NAME-AMOUNT-r5",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"张三\",\"text\":\"项目负责人是张三；预算上限 5000 元。\",\"linkName\":\"项目\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"下一步，项目负责人是张三，预算上限 5000 元。\"}]}",
+          "candidates": [
+            {
+              "type": "entity",
+              "name": "张三",
+              "text": "项目负责人是张三；预算上限 5000 元。",
+              "linkName": "项目",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "下一步，项目负责人是张三，预算上限 5000 元。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n项目负责人是张三，预算上限 5000 元。\n项目负责人是张三；预算上限 5000 元。",
+      "dbHasFact": true,
+      "answer": "张三",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.011107
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\CORRECTION-r1",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Plan A hold\",\"text\":\"Do not touch old Plan A for now; it is still being evaluated.\",\"linkName\":\"Plan A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Plan A hold",
+              "text": "Do not touch old Plan A for now; it is still being evaluated.",
+              "linkName": "Plan A",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Plan B over Plan A\",\"text\":\"On 2026-06-18 (approx) the user corrected course: stop using old Plan A and switch to Plan B.\",\"linkName\":\"Plan B\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"不再使用旧方案 A，改用方案 B\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Plan B over Plan A",
+              "text": "On 2026-06-18 (approx) the user corrected course: stop using old Plan A and switch to Plan B.",
+              "linkName": "Plan B",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "不再使用旧方案 A，改用方案 B"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A\n先别动旧方案 A，我们还在评估。\nOn 2026-06-18 (approx) the user corrected course: stop using old Plan A and switch to Plan B.",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.006682
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\CORRECTION-r2",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"旧方案 A 状态\",\"text\":\"用户表示先别动旧方案 A，团队还在评估中（2026/10/30）。\",\"linkName\":\"旧方案 A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "旧方案 A 状态",
+              "text": "用户表示先别动旧方案 A，团队还在评估中（2026/10/30）。",
+              "linkName": "旧方案 A",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案选择\",\"text\":\"不再使用旧方案 A，改用方案 B（2026-06-13 更正）\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"更正：不再使用旧方案 A，改用方案 B\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "方案选择",
+              "text": "不再使用旧方案 A，改用方案 B（2026-06-13 更正）",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "更正：不再使用旧方案 A，改用方案 B"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A\n先别动旧方案 A，我们还在评估。\n用户表示先别动旧方案 A，团队还在评估中（2026/10/30）。\n旧方案 A 已弃用，后续改用方案 B（用户更正，取代此前“暂缓、评估中”的状态）。\n不再使用旧方案 A，改用方案 B（2026-06-13 更正）",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.006171
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\CORRECTION-r3",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"Do not touch old plan A\",\"text\":\"Keep old plan A untouched; it is still under evaluation — no changes, migrations, or deletions until the user explicitly lifts this constraint.\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "Do not touch old plan A",
+              "text": "Keep old plan A untouched; it is still under evaluation — no changes, migrations, or deletions until the user explicitly lifts this constraint.",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案切换：弃用A改用B\",\"text\":\"不再使用旧方案 A，改用方案 B。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"不再使用旧方案 A，改用方案 B。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "方案切换：弃用A改用B",
+              "text": "不再使用旧方案 A，改用方案 B。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "不再使用旧方案 A，改用方案 B。"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n用户明确要求：暂时不要改动/推进旧方案 A（plan A），团队仍在评估中。任何涉及方案 A 的修改、删除或迁移都应先暂停，等用户明确解除限制后再动。\n方案 A\n先别动旧方案 A，我们还在评估。\n更正（取代先前的\"暂不动方案 A\"约束）：旧方案 A 已废弃、不再使用；后续工作一律改用方案 B。方案 A 不再需要保留或维护。\n不再使用旧方案 A，改用方案 B。",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.006569
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 4,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\CORRECTION-r4",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Hold old plan A\",\"text\":\"On 2026/10/30, user directed to not touch old plan A yet while still evaluating it.\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Hold old plan A",
+              "text": "On 2026/10/30, user directed to not touch old plan A yet while still evaluating it.",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Adopt Plan B over Plan A\",\"text\":\"On 2026-04-06 (per conversation context), user corrected: no longer use old Plan A, switch to Plan B.\",\"linkName\":\"Plan A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"更正：不再使用旧方案 A，改用方案 B。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Adopt Plan B over Plan A",
+              "text": "On 2026-04-06 (per conversation context), user corrected: no longer use old Plan A, switch to Plan B.",
+              "linkName": "Plan A",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "更正：不再使用旧方案 A，改用方案 B。"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A\n先别动旧方案 A，我们还在评估。\nOn 2026/10/30, user directed to not touch old plan A yet while still evaluating it.\nOn 2026-04-06 (per conversation context), user corrected: no longer use old Plan A, switch to Plan B.",
+      "dbHasFact": true,
+      "answer": "A",
+      "answerCorrect": false,
+      "extractionHit": true,
+      "costCny": 0.006719
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 5,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\CORRECTION-r5",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Hold Plan A\",\"text\":\"先别动旧方案 A，还在评估；未经明确许可不修改 A 的代码、配置或文档，也不切换到新方案。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Hold Plan A",
+              "text": "先别动旧方案 A，还在评估；未经明确许可不修改 A 的代码、配置或文档，也不切换到新方案。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Hold plan A during evaluation\",\"text\":\"用户要求暂时不要改动旧方案 A，因为团队仍在评估中。\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Hold plan A during evaluation",
+              "text": "用户要求暂时不要改动旧方案 A，因为团队仍在评估中。",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案选择\",\"text\":\"不再使用旧方案 A，改用方案 B。\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"不再使用旧方案 A，改用方案 B\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "方案选择",
+              "text": "不再使用旧方案 A，改用方案 B。",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "不再使用旧方案 A，改用方案 B"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A\n先别动旧方案 A，我们还在评估。\n用户要求暂时不要改动旧方案 A，因为团队仍在评估中。\n不再使用旧方案 A，改用方案 B。",
+      "dbHasFact": true,
+      "answer": "A",
+      "answerCorrect": false,
+      "extractionHit": true,
+      "costCny": 0.006285
+    },
+    {
+      "scenario": "NEGATION",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\NEGATION-r1",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"manual publish confirmation\",\"text\":\"User requires manual confirmation before publishing; auto-publish must not happen.\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"以后不要自动发布，必须我人工确认后才能发\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "manual publish confirmation",
+              "text": "User requires manual confirmation before publishing; auto-publish must not happen.",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "以后不要自动发布，必须我人工确认后才能发"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n发布类动作（npm publish、GitHub Release、版本号 bump、对外推送等）一律不得自动执行，必须先由用户人工确认后才可发布。",
+      "dbHasFact": true,
+      "answer": "不能。",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.015234
+    },
+    {
+      "scenario": "NEGATION",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\NEGATION-r2",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"Auto-publish requires manual confirmation\",\"text\":\"以后不要自动发布，必须我人工确认后才能发。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"以后不要自动发布，必须我人工确认后才能发。\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "Auto-publish requires manual confirmation",
+              "text": "以后不要自动发布，必须我人工确认后才能发。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "以后不要自动发布，必须我人工确认后才能发。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n发布类对外动作（npm publish、GitHub Release、版本号 bump、推送对外发布等）一律不得自动执行，必须先由用户人工确认后才能发。",
+      "dbHasFact": true,
+      "answer": "不能",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.004832
+    },
+    {
+      "scenario": "NEGATION",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\NEGATION-r3",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"publish_manual_confirmation\",\"text\":\"以后不要自动发布，必须我人工确认后才能发。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"以后不要自动发布，必须我人工确认后才能发。\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "publish_manual_confirmation",
+              "text": "以后不要自动发布，必须我人工确认后才能发。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "以后不要自动发布，必须我人工确认后才能发。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n对外发布（npm publish、GitHub Release、版本号 bump 等）一律不得自动执行，必须先经用户人工确认后才能发布。",
+      "dbHasFact": true,
+      "answer": "不能。",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.00306
+    },
+    {
+      "scenario": "NEGATION",
+      "rep": 4,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\NEGATION-r4",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"Manual confirmation before publishing\",\"text\":\"User requires manual confirmation before any publishing; never auto-publish.\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"以后不要自动发布，必须我人工确认后才能发\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "Manual confirmation before publishing",
+              "text": "User requires manual confirmation before any publishing; never auto-publish.",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "以后不要自动发布，必须我人工确认后才能发"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n任何对外发布动作（npm publish、GitHub Release、版本号 bump、推送发布分支等）都不得自动执行，必须先经用户人工确认后才能发布。",
+      "dbHasFact": true,
+      "answer": "不能。",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.009829
+    },
+    {
+      "scenario": "NEGATION",
+      "rep": 5,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\NEGATION-r5",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"preference\",\"name\":\"publishing-requires-manual-confirmation\",\"text\":\"Never auto-publish; manual confirmation from the user is required before publishing.\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"以后不要自动发布，必须我人工确认后才能发\"}]}",
+          "candidates": [
+            {
+              "type": "preference",
+              "name": "publishing-requires-manual-confirmation",
+              "text": "Never auto-publish; manual confirmation from the user is required before publishing.",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "以后不要自动发布，必须我人工确认后才能发"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n任何\"对外发布\"动作（npm publish、GitHub Release、版本号 bump、推送发布等）一律不得自动执行，必须先经用户人工确认才能发布。",
+      "dbHasFact": true,
+      "answer": "",
+      "answerCorrect": false,
+      "extractionHit": true,
+      "costCny": 0.00308
+    },
+    {
+      "scenario": "REFERENCE",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\REFERENCE-r1",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"端口固定为9443\",\"text\":\"端口沿用之前提到的 9443 生产端口，不再改动。\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"就按刚才说的端口来，别再改了\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "端口固定为9443",
+              "text": "端口沿用之前提到的 9443 生产端口，不再改动。",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "就按刚才说的端口来，别再改了"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n就按刚才说的端口来，别再改了。\n端口沿用之前提到的 9443 生产端口，不再改动。",
+      "dbHasFact": true,
+      "answer": "9443",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.003372
+    },
+    {
+      "scenario": "REFERENCE",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\REFERENCE-r2",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"Keep configured port unchanged\",\"text\":\"User decided to keep using the port just agreed on and not change it again (port 9443 in the pre-release environment).\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"就按刚才说的端口来，别再改了。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "Keep configured port unchanged",
+              "text": "User decided to keep using the port just agreed on and not change it again (port 9443 in the pre-release environment).",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "就按刚才说的端口来，别再改了。"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n就按刚才说的端口来，别再改了。\nUser decided to keep using the port just agreed on and not change it again (port 9443 in the pre-release environment).",
+      "dbHasFact": true,
+      "answer": "没有记录生产端口，无法给出数字；记忆里只有预发布环境的 9443。",
+      "answerCorrect": false,
+      "extractionHit": true,
+      "costCny": 0.009716
+    },
+    {
+      "scenario": "REFERENCE",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\REFERENCE-r3",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"生产端口\",\"text\":\"生产端口是 9443，部署在预发环境。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"生产端口是 9443，部署在预发环境。\"}]}",
+          "candidates": [
+            {
+              "type": "entity",
+              "name": "生产端口",
+              "text": "生产端口是 9443，部署在预发环境。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "生产端口是 9443，部署在预发环境。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"端口固定为 9443\",\"text\":\"端口固定为 9443，不再改动。\",\"linkName\":\"9443\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"就按刚才说的端口来，别再改了\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "端口固定为 9443",
+              "text": "端口固定为 9443，不再改动。",
+              "linkName": "9443",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "就按刚才说的端口来，别再改了"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n生产端口是 9443，部署在预发环境。\n生产端口是 9443，部署在预发环境。\n确定按 9443 端口执行，不再变更端口号。\n就按刚才说的端口来，别再改了。\n端口固定为 9443，不再改动。",
+      "dbHasFact": true,
+      "answer": "9443",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.003929
+    },
+    {
+      "scenario": "REFERENCE",
+      "rep": 4,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\REFERENCE-r4",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"生产端口\",\"text\":\"生产端口是 9443，部署在预发环境。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"生产端口是 9443，部署在预发环境。\"}]}",
+          "candidates": [
+            {
+              "type": "entity",
+              "name": "生产端口",
+              "text": "生产端口是 9443，部署在预发环境。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "生产端口是 9443，部署在预发环境。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"production port 9443\",\"text\":\"Production port is 9443 and should not be changed.\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"就按刚才说的端口来，别再改了\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "production port 9443",
+              "text": "Production port is 9443 and should not be changed.",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "就按刚才说的端口来，别再改了"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n生产端口是 9443，部署在预发环境。\n生产端口固定为 9443，部署在预发环境；已确认不再变更。\n就按刚才说的端口来，别再改了。\nProduction port is 9443 and should not be changed.",
+      "dbHasFact": true,
+      "answer": "9443",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.002643
+    },
+    {
+      "scenario": "REFERENCE",
+      "rep": 5,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-10-30T04-50-16-124Z\\REFERENCE-r5",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"生产端口 9443（预发环境）\",\"text\":\"生产端口是 9443，部署在预发环境。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"生产端口是 9443，部署在预发环境。\"}]}",
+          "candidates": [
+            {
+              "type": "entity",
+              "name": "生产端口 9443（预发环境）",
+              "text": "生产端口是 9443，部署在预发环境。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "生产端口是 9443，部署在预发环境。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"生产端口9443锁定\",\"text\":\"生产/预发环境端口锁定为 9443，不再改动。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"就按刚才说的端口来，别再改了。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "生产端口9443锁定",
+              "text": "生产/预发环境端口锁定为 9443，不再改动。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "就按刚才说的端口来，别再改了。"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n生产端口是 9443，部署在预发环境。\n生产端口固定为 9443（预发环境部署）。用户明确要求：就按该端口来，不要再改动。\n就按刚才说的端口来，别再改了。\n生产/预发环境端口锁定为 9443，不再改动。",
+      "dbHasFact": true,
+      "answer": "9443",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.003607
+    }
+  ]
+}
