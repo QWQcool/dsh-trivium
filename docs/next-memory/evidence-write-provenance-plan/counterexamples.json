@@ -1,0 +1,54 @@
+{
+  "baseline": "db35034",
+  "modelCalls": 0,
+  "cases": [
+    {
+      "id": "F-W01a",
+      "source": "我们只是讨论是否替换方案 A，尚未决定。",
+      "expected": "no supersession for discussion",
+      "oldHasSuccessor": true,
+      "events": [
+        {
+          "from": 3,
+          "to": 2,
+          "label": "方案 A",
+          "chained": 1
+        }
+      ]
+    },
+    {
+      "id": "F-W01b",
+      "source": "不再使用方案 A；方案 B 保持原样。",
+      "expected": "B remains current",
+      "aHasSuccessor": true,
+      "bHasSuccessor": true,
+      "events": [
+        {
+          "from": 3,
+          "to": 2,
+          "label": "方案 A"
+        },
+        {
+          "from": 4,
+          "to": 3,
+          "label": "方案 B",
+          "chained": 2
+        }
+      ]
+    },
+    {
+      "id": "F-W02",
+      "source": "明天复盘工作。",
+      "referenceDate": "2026-10-30 Asia/Shanghai",
+      "candidateDate": "2027-03-01",
+      "expectedDate": "2026-10-31",
+      "accepted": [
+        {
+          "type": "decision",
+          "text": "我们定于 2027-03-01 复盘工作。"
+        }
+      ],
+      "adjusted": []
+    }
+  ]
+}
