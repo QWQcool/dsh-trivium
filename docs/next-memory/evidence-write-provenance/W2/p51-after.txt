@@ -1,0 +1,15 @@
+ok an explicit replacement still retires the old decision
+ok discussion does not retire the decision
+ok discussion reports no supersession
+ok a decision that stays as is is not retired
+ok negated replacement does not retire the decision
+ok hypothesis does not retire the decision
+ok quoted document does not retire the decision
+ok question does not retire the decision
+ok a model-invented quote cannot retire a decision
+ok ambiguous targets are not retired
+ok no node id is chained for ambiguous targets
+ok the ambiguous intent is reported as pending
+ok the unconfirmed new decision is not offered as current
+ok repeating the same correction does not fork the chain
+P51: 14/14

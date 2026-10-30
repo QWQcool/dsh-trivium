@@ -35,7 +35,7 @@ try {
     db,
     turns: [{ role: 'user', text: '先别动旧方案 A，我们还在评估。' }],
     sessionId: 'p48',
-    llmCall: one({ type: 'decision', name: '方案 A', text: '先别动旧方案 A，我们还在评估。' }),
+    llmCall: one({ type: 'decision', name: '方案 A', text: '先别动旧方案 A，我们还在评估。', quote: '先别动旧方案 A，我们还在评估。' }),
   });
   // The rule layer may write its own node for the same sentence, so locate the
   // model-written decision by text instead of trusting applied[0].
@@ -47,7 +47,7 @@ try {
     db,
     turns: [{ role: 'user', text: '更正：不再使用旧方案 A，改用方案 B。' }],
     sessionId: 'p48',
-    llmCall: one({ type: 'decision', name: '方案 B', text: '更正：不再使用旧方案 A，改用方案 B。' }),
+    llmCall: one({ type: 'decision', name: '方案 B', text: '更正：不再使用旧方案 A，改用方案 B。', quote: '更正：不再使用旧方案 A，改用方案 B。' }),
   });
   const newId = idOf('不再使用旧方案 A');
   check(() => assert.ok(newId), 'the replacement decision is written');
@@ -74,30 +74,34 @@ try {
     db,
     turns: [{ role: 'user', text: '方案 D 暂时保留。' }],
     sessionId: 'p48',
-    llmCall: one({ type: 'decision', name: '方案 D', text: '方案 D 暂时保留。' }),
+    llmCall: one({ type: 'decision', name: '方案 D', text: '方案 D 暂时保留。', quote: '方案 D 暂时保留。' }),
   });
   await extract.distill({
     db,
     turns: [{ role: 'user', text: '方案 D 还有另一种用法。' }],
     sessionId: 'p48',
-    llmCall: one({ type: 'decision', name: '方案 D', text: '方案 D 还有另一种用法。' }),
+    llmCall: one({ type: 'decision', name: '方案 D', text: '方案 D 还有另一种用法。', quote: '方案 D 还有另一种用法。' }),
   });
-  const chained = await extract.distill({
+  const ambiguous = await extract.distill({
     db,
     turns: [{ role: 'user', text: '更正：不再使用方案 D。' }],
     sessionId: 'p48',
-    llmCall: one({ type: 'decision', name: '方案 E', text: '更正：不再使用方案 D。' }),
+    llmCall: one({ type: 'decision', name: '方案 E', text: '更正：不再使用方案 D。', quote: '更正：不再使用方案 D。' }),
   });
   const dIds = db.allNodeIds().filter((id) => {
     const payload = db.get(id)?.payload || {};
     const text = String(payload.text || '');
     return payload.type === 'decision' && text.includes('方案 D') && !text.includes('更正');
   });
-  check(() => assert.ok(chained.superseded.length >= 2), 'two live labels for the same subject are all reported');
-  check(() => assert.equal(chained.superseded.at(-1).chained >= 2, true), 'the chain length is reported');
-  check(() => assert.equal(dIds.every((id) => store.supersedesIn(db, id).length === 1), true), 'each retired decision has exactly one successor');
-  const headOfD = rev.currentHeadOf(db, dIds[0]);
-  check(() => assert.equal(headOfD.ok !== false && headOfD.reason !== 'fork', true), 'the chain does not look like a fork');
+  /*
+   * Contract correction (W2): the old assertion required every same-label node to
+   * be chained. Chaining could hide a fact that was never replaced, so ambiguity
+   * is now reported and left for review instead.
+   */
+  check(() => assert.equal(ambiguous.superseded.some((row) => row.pending === true), true), 'an ambiguous replacement is reported as pending');
+  check(() => assert.equal(dIds.some((id) => store.supersedesIn(db, id).length > 0), false), 'ambiguous targets keep their current status');
+  const mapWithAmbiguity = store.buildShortMapReport(db, 400).text;
+  check(() => assert.doesNotMatch(mapWithAmbiguity, /decision:方案 E/), 'the unconfirmed decision is not offered as current');
 
   store.closeAll();
 } finally {

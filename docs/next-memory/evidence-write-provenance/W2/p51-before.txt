@@ -1,0 +1,62 @@
+ok an explicit replacement still retires the old decision
+FAIL discussion does not retire the decision: Expected values to be strictly equal:
+
+true !== false
+
+FAIL discussion reports no supersession: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     chained: 1,
++     from: 4,
++     label: '方案 A',
++     to: 3
++   }
++ ]
+- []
+
+FAIL a decision that stays as is is not retired: Expected values to be strictly equal:
+
+true !== false
+
+FAIL negated replacement does not retire the decision: Expected values to be strictly equal:
+
+true !== false
+
+FAIL hypothesis does not retire the decision: Expected values to be strictly equal:
+
+true !== false
+
+FAIL quoted document does not retire the decision: Expected values to be strictly equal:
+
+true !== false
+
+FAIL question does not retire the decision: Expected values to be strictly equal:
+
+true !== false
+
+FAIL a model-invented quote cannot retire a decision: Expected values to be strictly equal:
+
+true !== false
+
+FAIL ambiguous targets are not retired: Expected values to be strictly equal:
+
+true !== false
+
+FAIL no node id is chained for ambiguous targets: Expected values to be strictly equal:
+
+false !== true
+
+FAIL the ambiguous intent is reported as pending: Expected values to be strictly equal:
+
+false !== true
+
+FAIL the unconfirmed new decision is not offered as current: The input was expected to not match the regular expression /decision:方案 E/. Input:
+
+'dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\n' +
+  'entities=0 preferences=0 decisions=1 experiences=0\n' +
+  'named: decision:方案 E'
+
+ok repeating the same correction does not fork the chain
+P51: 2/14
