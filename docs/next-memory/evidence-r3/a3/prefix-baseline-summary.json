@@ -1,0 +1,473 @@
+{
+  "at": "2026-10-30T04:11:36.327Z",
+  "repeat": 3,
+  "budgetCny": 1,
+  "spentCnyOffpeak": 0.166165,
+  "fixtureNote": "all gold facts are non-secret (BlueHeron / 张三 / 方案 B)",
+  "byScenario": {
+    "LONG-TAIL": {
+      "runs": 3,
+      "extractionHit": 2,
+      "dbHasFact": 3,
+      "answerCorrect": 3,
+      "agentRemembered": 3,
+      "extractCalls": 6,
+      "truncatedExtractCalls": 4
+    },
+    "NAME-AMOUNT": {
+      "runs": 3,
+      "extractionHit": 2,
+      "dbHasFact": 3,
+      "answerCorrect": 3,
+      "agentRemembered": 3,
+      "extractCalls": 6,
+      "truncatedExtractCalls": 4
+    },
+    "CORRECTION": {
+      "runs": 3,
+      "extractionHit": 1,
+      "dbHasFact": 2,
+      "answerCorrect": 3,
+      "agentRemembered": 1,
+      "extractCalls": 6,
+      "truncatedExtractCalls": 4
+    }
+  },
+  "runs": [
+    {
+      "scenario": "LONG-TAIL",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a3\\2026-10-30T04-05-17-147Z\\LONG-TAIL-r1",
+      "turns": [
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-72e99b8d-c739-4b54-b48e-e31c67b9c98b"
+        },
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-72e99b8d-c739-4b54-b48e-e31c67b9c98b"
+        },
+        {
+          "kind": "question",
+          "exit": 0,
+          "sid": "session-4e572658-3891-41d5-9858-901ee3549098"
+        }
+      ],
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"BlueHeron\",\"text\":\"本次发布的代号是 BlueHeron。\",\"linkName\":\"BlueHeron\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"另外关键一条是，本次发布代号是 BlueHeron。\"}]}",
+          "candidates": [
+            {
+              "type": "entity",
+              "name": "BlueHeron",
+              "text": "本次发布的代号是 BlueHeron。",
+              "linkName": "BlueHeron",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "另外关键一条是，本次发布代号是 BlueHeron。"
+            }
+          ]
+        },
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n本次发布代号：BlueHeron（用户以\"长约定\"形式给出，正文为大量重复的\"背景记录。\"填充内容，无实质条款；唯一有效信息是发布代号 BlueHeron）。\n本次发布的代号是 BlueHeron。\n记住这段长约定：背景记录。",
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "costCny": 0.011515,
+      "extractionHit": true
+    },
+    {
+      "scenario": "LONG-TAIL",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a3\\2026-10-30T04-05-17-147Z\\LONG-TAIL-r2",
+      "turns": [
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-227c6dfd-22d3-4b47-867d-8507a9ef887c"
+        },
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-227c6dfd-22d3-4b47-867d-8507a9ef887c"
+        },
+        {
+          "kind": "question",
+          "exit": 0,
+          "sid": "session-5a0c929c-d0af-4e54-8e7e-057feac4e478"
+        }
+      ],
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"BlueHeron\",\"text\":\"本次发布代号是 BlueHeron。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"另外关键一条是，本次发布代号是 BlueHeron。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "BlueHeron",
+              "text": "本次发布代号是 BlueHeron。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "另外关键一条是，本次发布代号是 BlueHeron。"
+            }
+          ]
+        },
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n背景记录（长约定，重复占位若干次）：本次发布代号为 BlueHeron。该代号为关键约定，后续涉及发布的记录均以此为代号。\n记住这段长约定：背景记录。\n本次发布代号是 BlueHeron。",
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "costCny": 0.061364,
+      "extractionHit": true
+    },
+    {
+      "scenario": "LONG-TAIL",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a3\\2026-10-30T04-05-17-147Z\\LONG-TAIL-r3",
+      "turns": [
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-cdb2858f-005d-4fcd-8e61-740779c68935"
+        },
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-cdb2858f-005d-4fcd-8e61-740779c68935"
+        },
+        {
+          "kind": "question",
+          "exit": 0,
+          "sid": "session-8b4359bc-96c9-49d0-a100-c687cf2c5663"
+        }
+      ],
+      "extract": [
+        {
+          "stop": "max_tokens",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"BlueHeron\",\"text\":\"本次",
+          "candidates": null
+        },
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n本次发布代号是 BlueHeron（release codename = BlueHeron）。用户同时给了一段「背景记录」重复填充式的长约定，无其他实质约束。\n记住这段长约定：背景记录。",
+      "dbHasFact": true,
+      "answer": "BlueHeron",
+      "answerCorrect": true,
+      "costCny": 0.016045,
+      "extractionHit": false
+    },
+    {
+      "scenario": "NAME-AMOUNT",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a3\\2026-10-30T04-05-17-147Z\\NAME-AMOUNT-r1",
+      "turns": [
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-cf8d8e1e-aa32-47d7-bf5c-308c4127c6cd"
+        },
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-cf8d8e1e-aa32-47d7-bf5c-308c4127c6cd"
+        },
+        {
+          "kind": "question",
+          "exit": 0,
+          "sid": "session-1031e1c1-7a10-45fe-907a-94b23f0e23f1"
+        }
+      ],
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"entity\",\"name\":\"张三\",\"text\":\"项目负责人是张三，预算上限 5000 元。\",\"linkName\":\"\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"下一步，项目负责人是张三，预算上限 5000 元。\"}]}",
+          "candidates": [
+            {
+              "type": "entity",
+              "name": "张三",
+              "text": "项目负责人是张三，预算上限 5000 元。",
+              "linkName": "",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "下一步，项目负责人是张三，预算上限 5000 元。"
+            }
+          ]
+        },
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n项目负责人是张三，预算上限 5000 元。\n项目预算上限为 5000 元。",
+      "dbHasFact": true,
+      "answer": "张三",
+      "answerCorrect": true,
+      "costCny": 0.009036,
+      "extractionHit": true
+    },
+    {
+      "scenario": "NAME-AMOUNT",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a3\\2026-10-30T04-05-17-147Z\\NAME-AMOUNT-r2",
+      "turns": [
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-39434e97-5252-4f76-b5ab-b02cf9a24567"
+        },
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-39434e97-5252-4f76-b5ab-b02cf9a24567"
+        },
+        {
+          "kind": "question",
+          "exit": 0,
+          "sid": "session-136f2588-782d-4228-891a-5d4e317b96b6"
+        }
+      ],
+      "extract": [
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"项目负责人与预算\",\"text\":\"项目负责人是张三；项目预算上限 5000 元。\",\"linkName\":\"项目负责人与预算\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"下一步，项目负责人是张三，预算上限 5000 元。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "项目负责人与预算",
+              "text": "项目负责人是张三；项目预算上限 5000 元。",
+              "linkName": "项目负责人与预算",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "下一步，项目负责人是张三，预算上限 5000 元。"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n项目负责人是张三；项目预算上限 5000 元。",
+      "dbHasFact": true,
+      "answer": "张三",
+      "answerCorrect": true,
+      "costCny": 0.008993,
+      "extractionHit": true
+    },
+    {
+      "scenario": "NAME-AMOUNT",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a3\\2026-10-30T04-05-17-147Z\\NAME-AMOUNT-r3",
+      "turns": [
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-a44d8b2f-52f1-4cf5-afa4-183860c846e1"
+        },
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-a44d8b2f-52f1-4cf5-afa4-183860c846e1"
+        },
+        {
+          "kind": "question",
+          "exit": 0,
+          "sid": "session-11c5afeb-0ef6-4b83-9bbc-7c0552178e4c"
+        }
+      ],
+      "extract": [
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n项目负责人是张三，预算上限 5000 元。\n张三，项目负责人（owner）。",
+      "dbHasFact": true,
+      "answer": "张三",
+      "answerCorrect": true,
+      "costCny": 0.014248,
+      "extractionHit": false
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a3\\2026-10-30T04-05-17-147Z\\CORRECTION-r1",
+      "turns": [
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-bf1b28e5-a7b9-4d1e-b81e-956565dfff42"
+        },
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-bf1b28e5-a7b9-4d1e-b81e-956565dfff42"
+        },
+        {
+          "kind": "question",
+          "exit": 0,
+          "sid": "session-f8ced224-fbe6-49da-af98-feefa7ef46ad"
+        }
+      ],
+      "extract": [
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws",
+      "dbHasFact": false,
+      "answer": "没有可供选择的方案：记忆库为空（entities/preferences/decisions/experiences 均为 0），工作区也没有任何方案记录。硬猜一个字母就是编造，所以我不给字母——请把 A/B/C 各自的内容或编号来源贴出来",
+      "answerCorrect": true,
+      "costCny": 0.0148,
+      "extractionHit": false
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a3\\2026-10-30T04-05-17-147Z\\CORRECTION-r2",
+      "turns": [
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-6e791f04-28ac-4039-989a-0edb15c4a297"
+        },
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-6e791f04-28ac-4039-989a-0edb15c4a297"
+        },
+        {
+          "kind": "question",
+          "exit": 0,
+          "sid": "session-c9588b03-52da-4eea-9c92-61cdb309f763"
+        }
+      ],
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"旧方案 A 暂缓变动\",\"text\":\"先别动旧方案 A，仍在评估中。\",\"linkName\":\"方案 A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"先别动旧方案 A，我们还在评估。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "旧方案 A 暂缓变动",
+              "text": "先别动旧方案 A，仍在评估中。",
+              "linkName": "方案 A",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "先别动旧方案 A，我们还在评估。"
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案切换\",\"text\":\"不再使用旧方案 A，改用方案 B。\",\"linkName\":\"方案 B\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"更正：不再使用旧方案 A，改用方案 B。\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "方案切换",
+              "text": "不再使用旧方案 A，改用方案 B。",
+              "linkName": "方案 B",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "更正：不再使用旧方案 A，改用方案 B。"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n方案 A\n先别动旧方案 A，我们还在评估。\n不再使用旧方案 A，改用方案 B。",
+      "dbHasFact": true,
+      "answer": "无法给出字母：当前记忆为空（entities=0、preferences=0、decisions=0），工作区里也没有任何方案文档或 A、B、C 选项，因此“当前方案”没有可依据的记录。请把方案选项贴出来，我再回答。\n\n我不想随便挑一个字母",
+      "answerCorrect": true,
+      "costCny": 0.015333,
+      "extractionHit": true
+    },
+    {
+      "scenario": "CORRECTION",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a3\\2026-10-30T04-05-17-147Z\\CORRECTION-r3",
+      "turns": [
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-3a25bfee-e349-4c2b-b19c-def9a13b6eeb"
+        },
+        {
+          "kind": "setup",
+          "exit": 0,
+          "sid": "session-3a25bfee-e349-4c2b-b19c-def9a13b6eeb"
+        },
+        {
+          "kind": "question",
+          "exit": 0,
+          "sid": "session-1a40d81c-e8f9-4fd9-888a-a025beac542b"
+        }
+      ],
+      "extract": [
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        },
+        {
+          "stop": "max_tokens",
+          "text": "",
+          "candidates": null
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\n用户要求：暂不改动「旧方案 A」（不修改、不删除、不替换其文件与实现），因为仍在评估中。在用户明确放行前，只做只读分析/评估或其他方案的工作。\n更正（覆盖此前「暂缓改动方案 A」）：旧方案 A 不再使用，改用方案 B。后续实现与评估均以方案 B 为准，不要再基于方案 A 推进。",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "costCny": 0.014829,
+      "extractionHit": false
+    }
+  ]
+}
