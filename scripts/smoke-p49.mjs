@@ -83,14 +83,16 @@ try {
   check(() => assert.doesNotMatch(String(inlineDate.applied[0]?.text || ''), /2025-01-01/), 'an inline invented date is removed');
   check(() => assert.match(String(inlineDate.applied[0]?.text || ''), /李四/), 'the fact body still survives');
 
-  // 6. a relative expression the model resolved correctly keeps its date
+  // 6. a relative expression the model resolved correctly keeps its date.
+  // W3: the anchor is the source turn's own timestamp, not "now".
   const NOW = new Date('2026-10-30T00:00:00Z');
+  const anchored = { role: 'user', text: '下周五之前必须提交。', seq: 21, messageId: 'm-21', at: '2026-10-30T09:00:00+08:00' };
   const resolved = await extract.distill({
     db,
-    turns: [{ role: 'user', text: '下周五之前必须提交。' }],
+    turns: [anchored],
     sessionId: 'p49',
     now: NOW,
-    llmCall: one({ type: 'decision', name: '提交期限', text: '2026-11-06 之前必须提交。' }),
+    llmCall: one({ type: 'decision', name: '提交期限', text: '2026-11-06 之前必须提交。', quote: anchored.text }),
   });
   check(() => assert.match(String(resolved.applied[0]?.text || ''), /2026-11-06/), 'a correctly resolved relative date is kept');
   check(() => assert.equal(resolved.adjusted.length, 0), 'the resolved date is not reported as invented');
@@ -98,10 +100,10 @@ try {
   // 7. the allowance does not cover a date far outside the plausible window
   const farOff = await extract.distill({
     db,
-    turns: [{ role: 'user', text: '下周五之前必须提交。' }],
+    turns: [anchored],
     sessionId: 'p49',
     now: NOW,
-    llmCall: one({ type: 'decision', name: '提交期限', text: '2020-01-01 之前必须提交。' }),
+    llmCall: one({ type: 'decision', name: '提交期限', text: '2020-01-01 之前必须提交。', quote: anchored.text }),
   });
   check(() => assert.doesNotMatch(String(farOff.applied[0]?.text || ''), /2020-01-01/), 'a far-off date is still removed');
   check(() => assert.equal(farOff.adjusted.length, 1), 'the far-off removal is reported');

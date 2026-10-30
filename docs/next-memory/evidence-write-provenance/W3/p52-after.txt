@@ -1,0 +1,21 @@
+ok F-W02: 明天 no longer authorises a date seven months away
+ok F-W02: the removal is reported with a reason
+ok 明天 resolves to the next calendar day
+ok a correctly resolved date is not reported
+ok 下周五 resolves to 2026-11-06
+ok a neighbouring date is not accepted for 下周五
+ok 明天 crosses the month boundary correctly
+ok 明天 lands on the leap day
+ok an impossible date is removed
+ok invalid dates get their own reason
+ok two expressions in one sentence do not authorise a date
+ok a date written in the window is kept
+ok replay resolves 明天 from the source time
+ok 以后 does not authorise a concrete date
+ok resolver: 明天
+ok resolver: 下周一 is Monday of next week
+ok resolver: 本周一 is Monday of this week
+ok resolver: 月底前 is not made precise
+ok resolver: 2026-02-30 is not a date
+ok resolver: 2024-02-29 is a date
+P52: 20/20
