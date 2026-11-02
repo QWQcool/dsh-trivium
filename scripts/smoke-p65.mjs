@@ -122,7 +122,45 @@ try {
     store.closeAll();
   }
 
-  // 6. a target that is already replaced is not retired twice
+  // 6. a deictic phrase ("上一个方案") resolves when exactly one decision is live
+  {
+    const db = await store.openWorkspaceDb(join(root, 'ws-6a'));
+    const oldId = await seed(db);
+    const sentence = '上一个方案不要了，走新的';
+    const out = await extract.distill({
+      db,
+      turns: [turn(sentence, 2)],
+      sessionId: 's',
+      llmCall: one({ type: 'decision', name: '上线方案', text: '上线改走方案 B', quote: sentence, supersedes: '上一个方案' }),
+    });
+    check(() => assert.deepEqual(edgesOf(db), [`${out.applied[0].id}->${oldId}`]), 'a deictic target resolves when it is the only live decision');
+    check(() => assert.equal(out.superseded.some((row) => row.deictic === true), true), 'the deictic resolution is marked in the report');
+    store.closeAll();
+  }
+
+  // 7. the same phrase is refused when two decisions are live
+  {
+    const db = await store.openWorkspaceDb(join(root, 'ws-6b'));
+    await seed(db);
+    await extract.distill({
+      db,
+      turns: [turn('再记一个：回滚方案先不动。', 2)],
+      sessionId: 's',
+      llmCall: one({ type: 'decision', name: '回滚方案', text: '回滚方案先不动', quote: '再记一个：回滚方案先不动。' }),
+    });
+    const before = edgesOf(db).length;
+    const out = await extract.distill({
+      db,
+      turns: [turn('上一个方案不要了', 3)],
+      sessionId: 's',
+      llmCall: one({ type: 'decision', name: '上线方案', text: '改走方案 B', quote: '上一个方案不要了', supersedes: '上一个方案' }),
+    });
+    check(() => assert.equal(edgesOf(db).length, before), 'a deictic target retires nothing when several decisions are live');
+    check(() => assert.equal(out.superseded.some((row) => row.skipped === 'supersedes-ambiguous'), true), 'the ambiguity is reported');
+    store.closeAll();
+  }
+
+  // 8. a target that is already replaced is not retired twice
   {
     const db = await store.openWorkspaceDb(join(root, 'ws-6'));
     const oldId = await seed(db);

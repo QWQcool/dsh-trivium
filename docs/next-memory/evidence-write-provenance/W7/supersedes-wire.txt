@@ -1,0 +1,18 @@
+
+=== SPOKEN r1: 2 extraction call(s)
+  answer: "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案A\",\"text\":\"这次上线按方案 A 走。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"这次上线按方案 A 走\",\"supersedes\":\"\"}]}"
+  supersedes field: ""
+  answer: "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案B\",\"text\":\"这次上线改走方案 B，方案 A 作废。\",\"linkName\":\"上线方案A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"上一个方案不要了，走新的，用方案 B。\",\"supersedes\":\"方案 A\"}]}"
+  supersedes field: "方案 A"
+
+=== SPOKEN r2: 2 extraction call(s)
+  answer: "{\"candidates\":[]}"
+  supersedes field: (absent)
+  answer: "{\"candidates\":[{\"type\":\"decision\",\"name\":\"方案 B\",\"text\":\"2026-07-13 起采用方案 B，放弃上一个方案\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"上一个方案不要了，走新的，用方案 B\",\"supersedes\":\"上一个方案\"}]}"
+  supersedes field: "上一个方案"
+
+=== SPOKEN r3: 2 extraction call(s)
+  answer: "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线采用方案 A\",\"text\":\"这次上线按方案 A 走。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"这次上线按方案 A 走。\",\"supersedes\":\"\"}]}"
+  supersedes field: ""
+  answer: "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线采用方案 B\",\"text\":\"上一个方案不再使用，这次上线改用方案 B。\",\"linkName\":\"上线采用方案 A\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"上一个方案不要了，走新的，用方案 B。\",\"supersedes\":\"方案 A\"}]}"
+  supersedes field: "方案 A"
