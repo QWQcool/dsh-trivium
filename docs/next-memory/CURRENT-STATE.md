@@ -12,7 +12,7 @@
 | npm 发布包 | **`latest = 0.8.3`**（tag `v0.8.3` → `b3f73da`，2026-11-02；shasum `7406c13…`） |
 | 当前 main | `0.8.3` 之后只有文档提交（方向、契约、发布说明），**没有未发布的代码** |
 | 依赖 pin | `package.json` 要 `triviumdb@0.9.0-beta.3` |
-| 本机实际内核 | `node_modules/triviumdb` = **0.9.0-beta.3**，与 pin 一致（2026-11-02 复核；早前"0.8.11"的说法已过期） |
+| 本机实际内核 | `node_modules/triviumdb` 按机器不同：办公机 `0.9.0-beta.3`（与 pin 一致）；Administrator 机仍为 **0.8.11**（2026-11-02 复核）。跑测前先自己查一次，别信这行 |
 
 自查命令：`git rev-list --count v0.8.3..HEAD`、`node -e "console.log(require('triviumdb/package.json').version)"`。
 
@@ -47,7 +47,7 @@
 2. **R3 第三片（同质量净费用）** 前置未满足：第二片要在真实宿主复跑通过（S3 长尾已于 11-01 复测通过，但需补 S2 的边级验证）。
 3. **B站 E1-B**：依赖对方扩展点，我们单方面交付不了。
 4. **REFERENCE 判分通道**：A5 剩 4/5，判分对"先否定后纠正"过严，缺人工语义复核。
-5. ~~本机内核版本对齐~~ **已对齐**：2026-11-02 复核 `node_modules/triviumdb` = 0.9.0-beta.3，与 pin 一致。
+5. **内核版本按机器核对**：办公机已对齐（`0.9.0-beta.3`）；**Administrator 机仍是 0.8.11**，在那台机器上跑出的结论要标"旧内核"。
 6. **后续方向与 Super-agent 适配计划**：见 `ROADMAP-AND-SUPERAGENT.md`（B1–B6 工单 + 四阶段适配）。
 
 ## 5. 别再重复做的实验
