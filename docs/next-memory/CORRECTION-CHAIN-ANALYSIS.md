@@ -226,6 +226,21 @@ prompt 增加字段：{"supersedes": "<旧事实原话或标签>", "quote": "...
 
 回归：`p63` 11/11；既有反例 `p51` 15/15（讨论/疑问/引用/保持原样仍不退休）、`p48` 12/12；全量 `run-all` **64/64**。
 
+### 6.2 方案 3 的实现（本轮已落地）
+
+抽取 prompt 增加字段 `supersedes`（"这条决策替代了哪一条"，可为空、不许猜）。写入侧 `resolveExplicitSupersede()` 把它当**提议**而不是事实：
+
+| 校验 | 不通过时 |
+|---|---|
+| 必须有 `quote` 且命中真实用户轮 | `no-quote` / `quote-not-in-source` |
+| 用户句不能是讨论/疑问/假设/引用 | `discussion-or-question` |
+| 目标必须**唯一**命中一个活决策（按标签/id/包含） | `supersedes-not-found` / `supersedes-not-live` / `supersedes-ambiguous` |
+| 通过 | 强制 insert（不合并）+ 建边，`via:"model"` 记入 `superseded` |
+
+这覆盖了既有规则覆盖不到的口语："上一个方案不要了，走新的"——既没有替换词，也没有标签。
+
+回归 `p65` **12/12**（含"讨论即使点名也不退休""点名已替代的目标 → not-live""显式替代同样绕过合并"）。
+
 ## 7. 建议
 
 **先做方案 1，把方案 3 记为下一步。**

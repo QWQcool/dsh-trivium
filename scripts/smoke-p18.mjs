@@ -99,6 +99,11 @@ try {
   check(/changes\.trimmed/.test(src) && /L\.changesTrimmed/.test(src), "trimmed history is reported, not hidden");
   check(/row\.source/.test(src), "each change row shows its source when present");
 
+  /* ------------------------------------------- merged-body history (p64) */
+  check(/L\.historyPrevious/.test(src), "the node row has a label for the body it replaced");
+  check(/n\.history/.test(src), "the node row renders merged history");
+  check(/L\.historyTrimmed/.test(src), "the cap is disclosed instead of pretending completeness");
+
   /* --------------------------------------------------------------- states */
   const states = [
     ["sourceMissing", "a missing source has its own message"],
