@@ -1,0 +1,158 @@
+{
+  "at": "2026-11-02T06:08:39.118Z",
+  "complete": true,
+  "repeat": 3,
+  "budgetCny": 1,
+  "spentCnyOffpeak": 0.013971,
+  "host": {
+    "dsh": "0.2.1-rc.4",
+    "node": "v24.15.0",
+    "triviumdb": "0.9.0-beta.3"
+  },
+  "fixtureNote": "gold facts are non-secret; answers are graded by an explicit regex, not substring luck",
+  "byScenario": {
+    "SPOKEN": {
+      "runs": 3,
+      "extractionHit": 2,
+      "dbHasFact": 2,
+      "answerCorrect": 2,
+      "agentRemembered": 0,
+      "extractCalls": 6,
+      "truncatedExtractCalls": 0,
+      "costCny": 0.013971,
+      "runsWithCap": 0,
+      "questionCapped": 0
+    }
+  },
+  "runs": [
+    {
+      "scenario": "SPOKEN",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-11-02T06-07-42-265Z\\SPOKEN-r1",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-6FsYl0",
+      "dbHasFact": false,
+      "answer": "无法用一个字母回答：本会话没有提供任何方案选项，记忆库也是空的（0 条记录），所以我无法判断“当前方案”是哪个。请给出选项（如 A/B/C）或相关上下文。",
+      "answerCorrect": false,
+      "extractionHit": false,
+      "costCny": 0.004654,
+      "aborted": [],
+      "retired": 0,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=0 experiences=0"
+    },
+    {
+      "scenario": "SPOKEN",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-11-02T06-07-42-265Z\\SPOKEN-r2",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案A\",\"text\":\"这次上线按方案 A 走。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"这次上线按方案 A 走。\",\"supersedes\":\"\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "上线方案A",
+              "text": "这次上线按方案 A 走。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "这次上线按方案 A 走。",
+              "supersedes": ""
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案B\",\"text\":\"采用方案 B 替代原上线方案 A（此前方案 A 不再使用）。\",\"linkName\":\"上线方案A\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"上一个方案不要了，走新的，用方案 B。\",\"supersedes\":\"上线方案A\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "上线方案B",
+              "text": "采用方案 B 替代原上线方案 A（此前方案 A 不再使用）。",
+              "linkName": "上线方案A",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "上一个方案不要了，走新的，用方案 B。",
+              "supersedes": "上线方案A"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-VxnhqQ\n这次上线按方案 A 走。\n采用方案 B 替代原上线方案 A（此前方案 A 不再使用）。",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.004666,
+      "aborted": [],
+      "retired": 1,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=1 experiences=0\nnamed: decision:上线方案B"
+    },
+    {
+      "scenario": "SPOKEN",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-11-02T06-07-42-265Z\\SPOKEN-r3",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案 A\",\"text\":\"这次上线按方案 A 走。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"这次上线按方案 A 走。\",\"supersedes\":\"\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "上线方案 A",
+              "text": "这次上线按方案 A 走。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "这次上线按方案 A 走。",
+              "supersedes": ""
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案 B\",\"text\":\"采用方案 B 作为上线方案，之前的方案 A 不再使用。\",\"linkName\":\"上线方案 A\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"\",\"supersedes\":\"上线方案 A\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "上线方案 B",
+              "text": "采用方案 B 作为上线方案，之前的方案 A 不再使用。",
+              "linkName": "上线方案 A",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "",
+              "supersedes": "上线方案 A"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-nDe0IT\n这次上线按方案 A 走。\n采用方案 B 作为上线方案，之前的方案 A 不再使用。",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.004651,
+      "aborted": [],
+      "retired": 0,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:上线方案 A; decision:上线方案 B"
+    }
+  ]
+}

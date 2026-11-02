@@ -69,6 +69,21 @@ try {
     store.closeAll();
   }
 
+  // 1b. the same window is processed twice (replay, then turn end): one node
+  {
+    const db = await store.openWorkspaceDb(join(root, 'ws-1b'));
+    const oldId = await seed(db);
+    const sentence = '算了，不用 A 了，改 B';
+    const cand = { type: 'decision', name: '上线方案', text: '按方案 A 走，随后改 B', quote: sentence };
+    await extract.distill({ db, turns: [turn(sentence, 2)], sessionId: 's', llmCall: one(cand) });
+    await extract.distill({ db, turns: [turn(sentence, 2)], sessionId: 's', llmCall: one(cand) });
+    const copies = db.allNodeIds().filter((id) => String(db.get(id)?.payload?.text || '') === '按方案 A 走，随后改 B');
+    check(() => assert.equal(copies.length, 1), 'a repeated replacement write is idempotent');
+    check(() => assert.equal(edgesOf(db).length, 1), 'and does not fork the chain');
+    check(() => assert.equal(edgesOf(db)[0], `${copies[0]}->${oldId}`), 'the single edge still points at the old decision');
+    store.closeAll();
+  }
+
   // 2. the bare letter is only accepted next to the replacement word
   {
     const db = await store.openWorkspaceDb(join(root, 'ws-2'));

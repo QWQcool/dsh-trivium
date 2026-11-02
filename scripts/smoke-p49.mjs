@@ -42,6 +42,18 @@ try {
   check(() => assert.equal(invented.adjusted.length, 1), 'the removal is reported');
   check(() => assert.deepEqual(invented.adjusted[0].removed, ['2026-04-06']), 'the removed date is named');
 
+  // 1b. removing a prefix date must not leave its connector behind
+  const residue = await extract.distill({
+    db,
+    turns: [{ role: 'user', text: '把发布日期记一下。' }],
+    sessionId: 'p49',
+    llmCall: one({ type: 'decision', name: '发布安排', text: '2026-07-13 起采用方案 B' }),
+  });
+  const residueText = String(residue.applied[0]?.text || '');
+  check(() => assert.doesNotMatch(residueText, /2026-07-13/), 'the date is gone');
+  check(() => assert.doesNotMatch(residueText, /^起/), 'the connector that belonged to the date is gone too');
+  check(() => assert.equal(residueText, '采用方案 B'), 'what remains is the fact itself');
+
   // 2. a date that really appeared in the window is kept as-is
   const real = await extract.distill({
     db,
