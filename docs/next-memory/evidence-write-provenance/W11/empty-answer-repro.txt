@@ -1,0 +1,6 @@
+setup exit=0 sid=session-d287a4cb-dcd5-4f64-b887-b445d6511756 final="收到。"
+before question: nodes=0 []
+question exit=0 requests=4 final=""
+stdout tail: "pData\\\\Local\\\\Temp\\\\trivium-empty-TggW4d\"}\n{\"type\":\"status\",\"phase\":\"turn_start\",\"turn\":1}\n{\"type\":\"status\",\"phase\":\"step_start\",\"turn\":1,\"step\":1}\n{\"type\":\"text\",\"text\":\"\"}\n{\"type\":\"status\",\"phase\":\"step_end\",\"turn\":1,\"step\":1,\"usage\":{\"inputTokens\":24407,\"outputTokens\":11,\"totalTokens\":24418}}\n{\"type\":\"status\",\"phase\":\"turn_end\",\"turn\":1,\"reason\":{\"kind\":\"completed\"}}\n{\"type\":\"final\",\"text\":\"\"}\n"
+stderr tail: ""
+question request carried map: false | bytes= 7574
