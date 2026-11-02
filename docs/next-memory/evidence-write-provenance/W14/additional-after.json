@@ -1,0 +1,188 @@
+[
+  {
+    "name": "candidate-self-authorizes",
+    "sentence": "发布负责人是张三。",
+    "expectedRetirement": false,
+    "actualRetirement": false,
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "oldBody": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "发布负责人改为张三。"
+      }
+    ],
+    "superseded": [
+      {
+        "from": 3,
+        "to": null,
+        "skipped": "no-replacement-wording",
+        "sentence": ""
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 A; decision:负责人"
+  },
+  {
+    "name": "deictic-candidate-self-authorizes",
+    "sentence": "发布负责人是张三。",
+    "expectedRetirement": false,
+    "actualRetirement": false,
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "oldBody": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "发布负责人改为张三。"
+      }
+    ],
+    "superseded": [
+      {
+        "from": 3,
+        "to": null,
+        "skipped": "no-replacement-wording",
+        "sentence": ""
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 A; decision:负责人"
+  },
+  {
+    "name": "dont-use-positive",
+    "sentence": "别用方案 A，改用方案 B。",
+    "expectedRetirement": true,
+    "actualRetirement": true,
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "oldBody": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "superseded": [
+      {
+        "from": 3,
+        "to": 2,
+        "label": "方案 A",
+        "via": "model"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=1 experiences=0\nnamed: decision:方案 B"
+  },
+  {
+    "name": "do-not-use-positive",
+    "sentence": "不要用方案 A，改用方案 B。",
+    "expectedRetirement": true,
+    "actualRetirement": true,
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "oldBody": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "superseded": [
+      {
+        "from": 3,
+        "to": 2,
+        "label": "方案 A",
+        "via": "model"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=1 experiences=0\nnamed: decision:方案 B"
+  },
+  {
+    "name": "unrelated-keep-clause",
+    "sentence": "不再使用方案 A，改用方案 B；日志格式沿用原样。",
+    "expectedRetirement": true,
+    "actualRetirement": true,
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "oldBody": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "superseded": [
+      {
+        "from": 3,
+        "to": 2,
+        "label": "方案 A",
+        "via": "model"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=1 experiences=0\nnamed: decision:方案 B"
+  },
+  {
+    "name": "two-facts-plan-label",
+    "sentence": "不再使用方案 A，改用方案 B；方案 B 的预算为 5000 元，必须由人工核验之后执行。",
+    "expectedRetirement": true,
+    "actualRetirement": true,
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "oldBody": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      },
+      {
+        "id": 4,
+        "action": "insert",
+        "type": "decision",
+        "text": "方案 B 的预算为 5000 元，必须由人工核验之后执行。"
+      }
+    ],
+    "superseded": [
+      {
+        "from": 3,
+        "to": 2,
+        "label": "方案 A",
+        "via": "model"
+      },
+      {
+        "from": 4,
+        "to": null,
+        "skipped": "no-target",
+        "sentence": "不再使用方案 A，改用方案 B；方案 B 的预算为 5000 元，必须由人工核验之后执行。"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 B; decision:预算"
+  }
+]
