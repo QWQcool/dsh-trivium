@@ -1,0 +1,404 @@
+[
+  {
+    "label": "positive-chain",
+    "oldBodyPreserved": true,
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "按方案 A 走，随后改 B"
+      }
+    ],
+    "shortMap": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=1 experiences=0\nnamed: decision:方案 B",
+    "oldReadableViaCtxRead": true
+  },
+  {
+    "label": "explicit-no-intent",
+    "sentence": "发布负责人是张三。",
+    "oldText": "本次上线按方案 A 执行",
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "out": {
+      "applied": [
+        {
+          "id": 3,
+          "action": "insert",
+          "type": "decision",
+          "text": "发布负责人是张三。"
+        }
+      ],
+      "skipped": [],
+      "superseded": [
+        {
+          "from": 3,
+          "to": null,
+          "skipped": "no-replacement-wording",
+          "sentence": ""
+        }
+      ],
+      "adjusted": [],
+      "llmFailed": false,
+      "emptySuspicious": false,
+      "ruleCount": 0,
+      "modelCount": 1,
+      "gate": {
+        "skipped": false,
+        "reason": "window-content"
+      }
+    }
+  },
+  {
+    "label": "deictic-no-intent",
+    "sentence": "发布负责人是张三。",
+    "oldText": "本次上线按方案 A 执行",
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "out": {
+      "applied": [
+        {
+          "id": 3,
+          "action": "insert",
+          "type": "decision",
+          "text": "发布负责人是张三。"
+        }
+      ],
+      "skipped": [],
+      "superseded": [
+        {
+          "from": 3,
+          "to": null,
+          "skipped": "no-replacement-wording",
+          "sentence": ""
+        }
+      ],
+      "adjusted": [],
+      "llmFailed": false,
+      "emptySuspicious": false,
+      "ruleCount": 0,
+      "modelCount": 1,
+      "gate": {
+        "skipped": false,
+        "reason": "window-content"
+      }
+    }
+  },
+  {
+    "label": "negative-cue",
+    "sentence": "不要换掉方案 A，继续沿用。",
+    "oldText": "本次上线按方案 A 执行",
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "out": {
+      "applied": [
+        {
+          "id": 3,
+          "action": "insert",
+          "type": "decision",
+          "text": "本次上线改用方案 B 执行并完成完整验证"
+        }
+      ],
+      "skipped": [],
+      "superseded": [
+        {
+          "from": 3,
+          "to": null,
+          "skipped": "discussion-or-question",
+          "sentence": "不要换掉方案 A，继续沿用。"
+        }
+      ],
+      "adjusted": [],
+      "llmFailed": false,
+      "emptySuspicious": false,
+      "ruleCount": 0,
+      "modelCount": 1,
+      "gate": {
+        "skipped": false,
+        "reason": "window-content"
+      }
+    }
+  },
+  {
+    "label": "quoted-cue",
+    "sentence": "请把“换掉方案 A”这句话翻译成英文。",
+    "oldText": "本次上线按方案 A 执行",
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "out": {
+      "applied": [
+        {
+          "id": 3,
+          "action": "insert",
+          "type": "decision",
+          "text": "本次上线改用方案 B 执行并完成完整验证"
+        }
+      ],
+      "skipped": [],
+      "superseded": [
+        {
+          "from": 3,
+          "to": null,
+          "skipped": "discussion-or-question",
+          "sentence": "请把“换掉方案 A”这句话翻译成英文。"
+        }
+      ],
+      "adjusted": [],
+      "llmFailed": false,
+      "emptySuspicious": false,
+      "ruleCount": 0,
+      "modelCount": 1,
+      "gate": {
+        "skipped": false,
+        "reason": "window-content"
+      }
+    }
+  },
+  {
+    "label": "cross-session-seq",
+    "sentence": "算了，不用 A 了，改 B",
+    "oldText": "本次上线按方案 A 执行",
+    "oldSource": {
+      "kind": "extract",
+      "messageId": null,
+      "quoteMatch": "exact",
+      "role": "user",
+      "seq": 1,
+      "sessionId": "other-session"
+    },
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "out": {
+      "applied": [
+        {
+          "id": 3,
+          "action": "insert",
+          "type": "decision",
+          "text": "本次上线改用方案 B 执行并完成完整验证"
+        }
+      ],
+      "skipped": [],
+      "superseded": [
+        {
+          "from": 3,
+          "to": 2,
+          "label": "方案 A"
+        }
+      ],
+      "adjusted": [],
+      "llmFailed": false,
+      "emptySuspicious": false,
+      "ruleCount": 0,
+      "modelCount": 1,
+      "gate": {
+        "skipped": false,
+        "reason": "window-content"
+      }
+    }
+  },
+  {
+    "label": "two-facts",
+    "out": {
+      "applied": [
+        {
+          "id": 3,
+          "action": "insert",
+          "type": "decision",
+          "text": "改用方案 B"
+        },
+        {
+          "id": 4,
+          "action": "insert",
+          "type": "decision",
+          "text": "发布预算为 5000 元，必须由人工核验之后执行。"
+        }
+      ],
+      "skipped": [],
+      "superseded": [
+        {
+          "from": 3,
+          "to": 2,
+          "label": "上线方案",
+          "via": "model"
+        },
+        {
+          "from": 4,
+          "to": null,
+          "skipped": "no-target",
+          "sentence": "不再使用方案 A，改用方案 B；发布预算为 5000 元，必须由人工核验之后执行。"
+        }
+      ],
+      "adjusted": [],
+      "llmFailed": false,
+      "emptySuspicious": false,
+      "ruleCount": 0,
+      "modelCount": 2,
+      "gate": {
+        "skipped": false,
+        "reason": "window-content"
+      }
+    },
+    "nodes": [
+      {
+        "id": 1,
+        "payload": {
+          "createdAt": "2026-11-02T08:56:56.146Z",
+          "name": "C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\independent-083-DG0GOO\\two-facts",
+          "status": "active",
+          "text": "workspace C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\independent-083-DG0GOO\\two-facts",
+          "type": "workspace",
+          "updatedAt": "2026-11-02T08:56:56.146Z",
+          "uri": "ctx://workspace"
+        }
+      },
+      {
+        "id": 2,
+        "payload": {
+          "createdAt": "2026-11-02T08:56:56.149Z",
+          "name": "上线方案",
+          "status": "active",
+          "text": "本次上线按方案 A 执行",
+          "type": "decision",
+          "updatedAt": "2026-11-02T08:56:56.149Z"
+        }
+      },
+      {
+        "id": 3,
+        "payload": {
+          "createdAt": "2026-11-02T08:56:56.235Z",
+          "name": "上线方案 B",
+          "source": {
+            "at": "2026-11-02T01:00:00Z",
+            "capturedAt": "2026-11-02T08:56:56.234Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "m-2",
+            "quote": "不再使用方案 A，改用方案 B；发布预算为 5000 元，必须由人工核验之后执行。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 2,
+            "sessionId": "two-facts",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "改用方案 B",
+          "type": "decision",
+          "updatedAt": "2026-11-02T08:56:56.235Z",
+          "uri": "ctx://decision/1793609816235"
+        }
+      },
+      {
+        "id": 4,
+        "payload": {
+          "createdAt": "2026-11-02T08:56:56.392Z",
+          "name": "发布预算",
+          "source": {
+            "at": "2026-11-02T01:00:00Z",
+            "capturedAt": "2026-11-02T08:56:56.391Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "m-2",
+            "quote": "不再使用方案 A，改用方案 B；发布预算为 5000 元，必须由人工核验之后执行。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 2,
+            "sessionId": "two-facts",
+            "via": "extract"
+          },
+          "status": "active",
+          "text": "发布预算为 5000 元，必须由人工核验之后执行。",
+          "type": "decision",
+          "updatedAt": "2026-11-02T08:56:56.392Z",
+          "uri": "ctx://decision/1793609816392"
+        }
+      }
+    ],
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    }
+  },
+  {
+    "label": "repeat-linked",
+    "calls": [
+      {
+        "applied": [
+          {
+            "id": 3,
+            "action": "insert",
+            "type": "decision",
+            "text": "改用方案 B"
+          }
+        ],
+        "skipped": [],
+        "superseded": [
+          {
+            "from": 3,
+            "to": 2,
+            "label": "上线方案",
+            "via": "model"
+          }
+        ],
+        "adjusted": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 0,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      {
+        "applied": [
+          {
+            "id": 4,
+            "action": "insert",
+            "type": "decision",
+            "text": "改用方案 B，部署前必须经过人工验证并完成备份"
+          }
+        ],
+        "skipped": [],
+        "superseded": [
+          {
+            "from": 4,
+            "to": null,
+            "skipped": "supersedes-not-live",
+            "sentence": ""
+          }
+        ],
+        "adjusted": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 0,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      }
+    ]
+  }
+]
