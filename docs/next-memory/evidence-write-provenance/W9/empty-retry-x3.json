@@ -1,0 +1,187 @@
+{
+  "at": "2026-11-02T06:41:27.403Z",
+  "complete": true,
+  "repeat": 3,
+  "budgetCny": 1,
+  "spentCnyOffpeak": 0.014993,
+  "host": {
+    "dsh": "0.2.1-rc.4",
+    "node": "v24.15.0",
+    "triviumdb": "0.9.0-beta.3"
+  },
+  "fixtureNote": "gold facts are non-secret; answers are graded by an explicit regex, not substring luck",
+  "byScenario": {
+    "SPOKEN": {
+      "runs": 3,
+      "extractionHit": 3,
+      "dbHasFact": 3,
+      "answerCorrect": 2,
+      "agentRemembered": 2,
+      "extractCalls": 7,
+      "truncatedExtractCalls": 0,
+      "costCny": 0.014993,
+      "runsWithCap": 0,
+      "questionCapped": 0
+    }
+  },
+  "runs": [
+    {
+      "scenario": "SPOKEN",
+      "rep": 1,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-11-02T06-40-26-886Z\\SPOKEN-r1",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案A\",\"text\":\"这次上线按方案 A 走\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"这次上线按方案 A 走\",\"supersedes\":\"\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "上线方案A",
+              "text": "这次上线按方案 A 走",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "这次上线按方案 A 走",
+              "supersedes": ""
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案B\",\"text\":\"这次上线改按方案 B 走，上一个方案（方案 A）已弃用\",\"linkName\":\"上线方案A\",\"linkLabel\":\"broke\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"上一个方案不要了，走新的，用方案 B。\",\"supersedes\":\"方案 A\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "上线方案B",
+              "text": "这次上线改按方案 B 走，上一个方案（方案 A）已弃用",
+              "linkName": "上线方案A",
+              "linkLabel": "broke",
+              "fail": "",
+              "fix": "",
+              "quote": "上一个方案不要了，走新的，用方案 B。",
+              "supersedes": "方案 A"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-TTch9x\n这次上线按方案 A 走\n这次上线改走方案 B；之前定的方案 A 已废弃，不再沿用。\n这次上线改按方案 B 走，上一个方案（方案 A）已弃用",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.005182,
+      "aborted": [],
+      "retired": 1,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:这次上线改走方案 B；之前定的方案 A 已废弃，不再沿用。; decision:上线方案B"
+    },
+    {
+      "scenario": "SPOKEN",
+      "rep": 2,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-11-02T06-40-26-886Z\\SPOKEN-r2",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[]}",
+          "candidates": []
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案 A\",\"text\":\"这次上线按方案 A 走。\",\"linkName\":\"\",\"linkLabel\":\"decided\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"这次上线按方案 A 走。\",\"supersedes\":\"\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "上线方案 A",
+              "text": "这次上线按方案 A 走。",
+              "linkName": "",
+              "linkLabel": "decided",
+              "fail": "",
+              "fix": "",
+              "quote": "这次上线按方案 A 走。",
+              "supersedes": ""
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案 B\",\"text\":\"采用上线方案 B，取代此前的上线方案 A。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"上一个方案不要了，走新的，用方案 B。\",\"supersedes\":\"上线方案 A\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "上线方案 B",
+              "text": "采用上线方案 B，取代此前的上线方案 A。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "上一个方案不要了，走新的，用方案 B。",
+              "supersedes": "上线方案 A"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": false,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-DvlUA2\n这次上线按方案 A 走。\n采用上线方案 B，取代此前的上线方案 A。",
+      "dbHasFact": true,
+      "answer": "",
+      "answerCorrect": false,
+      "extractionHit": true,
+      "costCny": 0.003604,
+      "aborted": [],
+      "retired": 1,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=1 experiences=0\nnamed: decision:上线方案 B"
+    },
+    {
+      "scenario": "SPOKEN",
+      "rep": 3,
+      "runDir": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\r3\\runs-a5\\2026-11-02T06-40-26-886Z\\SPOKEN-r3",
+      "extract": [
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案A\",\"text\":\"这次上线按方案 A 走。\",\"linkName\":\"\",\"linkLabel\":\"\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"这次上线按方案 A 走。\",\"supersedes\":\"\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "上线方案A",
+              "text": "这次上线按方案 A 走。",
+              "linkName": "",
+              "linkLabel": "",
+              "fail": "",
+              "fix": "",
+              "quote": "这次上线按方案 A 走。",
+              "supersedes": ""
+            }
+          ]
+        },
+        {
+          "stop": "end_turn",
+          "text": "{\"candidates\":[{\"type\":\"decision\",\"name\":\"上线方案B\",\"text\":\"这次上线按方案 B 走。\",\"linkName\":\"上线方案A\",\"linkLabel\":\"about\",\"fail\":\"\",\"fix\":\"\",\"quote\":\"上一个方案不要了，走新的，用方案 B。\",\"supersedes\":\"上线方案A\"}]}",
+          "candidates": [
+            {
+              "type": "decision",
+              "name": "上线方案B",
+              "text": "这次上线按方案 B 走。",
+              "linkName": "上线方案A",
+              "linkLabel": "about",
+              "fail": "",
+              "fix": "",
+              "quote": "上一个方案不要了，走新的，用方案 B。",
+              "supersedes": "上线方案A"
+            }
+          ]
+        }
+      ],
+      "agentRemembered": true,
+      "dbText": "workspace C:\\Users\\v_chchsli\\AppData\\Local\\Temp\\trivium-a5-ws-2rJvzx\n这次上线按方案 A 走。\n这次上线改为按方案 B 走；方案 A 已废弃。\n这次上线按方案 B 走。",
+      "dbHasFact": true,
+      "answer": "B",
+      "answerCorrect": true,
+      "extractionHit": true,
+      "costCny": 0.006207,
+      "aborted": [],
+      "retired": 1,
+      "mapText": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:这次上线改为按方案 B 走；方案 A 已废弃。; decision:上线方案B"
+    }
+  ]
+}
