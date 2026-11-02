@@ -83,7 +83,16 @@ try {
       sessionId: 's',
       llmCall: one({ type: 'decision', name: '上线方案', text: '本次上线改按方案 B 执行；方案 A 已废弃。', quote: sentence, supersedes: '方案 A' }),
     });
-    check(() => assert.equal(count(db, '方案 B'), 1), 'a renamed paraphrase from the same event is one write');
+    /*
+     * A renamed paraphrase is NOT folded any more: folding on "same event + the
+     * stored node already replaced something" merged an unrelated budget fact
+     * into the chain and threw REVISION_PROTECTED (review R-04). Without a name
+     * match there is no proof it is the same fact, so the safer outcome is two
+     * nodes and no exception.
+     */
+    check(() => assert.equal(count(db, '方案 B'), 2), 'a renamed paraphrase is kept separately, not merged');
+    const names = db.allNodeIds().map((id) => db.get(id)?.payload?.name).filter(Boolean);
+    check(() => assert.equal(names.includes('上线方案'), true), 'the renamed node is stored under its own name');
     store.closeAll();
   }
 

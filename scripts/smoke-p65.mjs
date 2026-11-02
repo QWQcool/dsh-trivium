@@ -172,9 +172,11 @@ try {
     });
     const out = await extract.distill({
       db,
-      turns: [turn('还是回到最早的方案吧', 3)],
+      // The sentence has to carry replacement wording, otherwise the reason would
+      // be "no-replacement-wording" and this would stop testing the liveness rule.
+      turns: [turn('更正：改回方案 A 吧', 3)],
       sessionId: 's',
-      llmCall: one({ type: 'decision', name: '上线方案', text: '改回方案 A', quote: '还是回到最早的方案吧', supersedes: '方案 A' }),
+      llmCall: one({ type: 'decision', name: '上线方案', text: '更正：改回方案 A', quote: '更正：改回方案 A 吧', supersedes: '方案 A' }),
     });
     check(() => assert.equal(out.superseded.some((row) => row.skipped === 'supersedes-not-live'), true), 'an already replaced target is reported');
     check(() => assert.equal(edgesOf(db).filter((row) => row.endsWith(`->${oldId}`)).length, 1), 'the old decision still has exactly one successor');

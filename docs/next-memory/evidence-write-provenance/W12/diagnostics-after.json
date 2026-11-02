@@ -1,0 +1,25 @@
+{
+  "secret": {
+    "applied": 0,
+    "rejected": [
+      {
+        "reason": "secret",
+        "type": "decision",
+        "length": 54,
+        "preview": "<redacted>"
+      }
+    ],
+    "adjustedLeaksSyntheticSecret": false,
+    "actualHttpStatusLeaksSyntheticSecret": false
+  },
+  "emptyAnswer": {
+    "status": 200,
+    "hasEmptyAnswer": true,
+    "emptyAnswer": {
+      "at": "2026-11-02T08:39:08.150Z",
+      "sessionId": "blank-test",
+      "seq": 3,
+      "count": 1
+    }
+  }
+}
