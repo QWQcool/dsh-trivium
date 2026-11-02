@@ -1,0 +1,383 @@
+[
+  {
+    "name": "mid-question-implicit",
+    "sentence": "方案 A 换成方案 B 吗，请确认。",
+    "expectedRetired": false,
+    "actualRetired": false,
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "headName": "方案 A",
+    "headText": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": null,
+        "skipped": "discussion-or-question",
+        "sentence": "方案 A 换成方案 B 吗，请确认。"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 A; decision:新上线决策"
+  },
+  {
+    "name": "reported-speech-implicit",
+    "sentence": "他说别用方案 A 改用方案 B",
+    "expectedRetired": false,
+    "actualRetired": false,
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "headName": "方案 A",
+    "headText": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": null,
+        "skipped": "reported-speech",
+        "sentence": "他说别用方案 A 改用方案 B"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 A; decision:新上线决策"
+  },
+  {
+    "name": "reported-unapproved-implicit",
+    "sentence": "他说别用方案 A 改用方案 B，但我还没有批准。",
+    "expectedRetired": false,
+    "actualRetired": false,
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "headName": "方案 A",
+    "headText": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": null,
+        "skipped": "reported-speech",
+        "sentence": "他说别用方案 A 改用方案 B，但我还没有批准。"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 A; decision:新上线决策"
+  },
+  {
+    "name": "negated-keep-implicit",
+    "sentence": "别用方案 A，改用方案 B，A 不再继续使用。",
+    "expectedRetired": true,
+    "actualRetired": true,
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "headName": "新上线决策",
+    "headText": "改用方案 B",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": 2,
+        "label": "方案 A"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=1 experiences=0\nnamed: decision:新上线决策"
+  },
+  {
+    "name": "real-retraction-implicit",
+    "sentence": "别用方案 A，刚才说错了，方案 A 继续使用。",
+    "expectedRetired": false,
+    "actualRetired": false,
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "headName": "方案 A",
+    "headText": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "方案 A 继续使用"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": null,
+        "skipped": "no-target",
+        "sentence": "别用方案 A，刚才说错了，方案 A 继续使用。"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 A; decision:新上线决策"
+  },
+  {
+    "name": "mid-question-explicit",
+    "sentence": "方案 A 换成方案 B 吗，请确认。",
+    "expectedRetired": false,
+    "actualRetired": false,
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "headName": "方案 A",
+    "headText": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": null,
+        "skipped": "discussion-or-question",
+        "sentence": ""
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 A; decision:新上线决策"
+  },
+  {
+    "name": "reported-speech-explicit",
+    "sentence": "他说别用方案 A 改用方案 B",
+    "expectedRetired": false,
+    "actualRetired": false,
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "headName": "方案 A",
+    "headText": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": null,
+        "skipped": "no-replacement-wording",
+        "sentence": ""
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 A; decision:新上线决策"
+  },
+  {
+    "name": "reported-unapproved-explicit",
+    "sentence": "他说别用方案 A 改用方案 B，但我还没有批准。",
+    "expectedRetired": false,
+    "actualRetired": false,
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "headName": "方案 A",
+    "headText": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": null,
+        "skipped": "no-replacement-wording",
+        "sentence": ""
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 A; decision:新上线决策"
+  },
+  {
+    "name": "negated-keep-explicit",
+    "sentence": "别用方案 A，改用方案 B，A 不再继续使用。",
+    "expectedRetired": true,
+    "actualRetired": true,
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "headName": "新上线决策",
+    "headText": "改用方案 B",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": 2,
+        "label": "方案 A",
+        "via": "model"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=1 experiences=0\nnamed: decision:新上线决策"
+  },
+  {
+    "name": "real-retraction-explicit",
+    "sentence": "别用方案 A，刚才说错了，方案 A 继续使用。",
+    "expectedRetired": false,
+    "actualRetired": false,
+    "head": {
+      "ok": true,
+      "id": 2,
+      "hops": 0
+    },
+    "headName": "方案 A",
+    "headText": "本次上线按方案 A 执行",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "方案 A 继续使用"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": null,
+        "skipped": "supersedes-retracted",
+        "sentence": ""
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 A; decision:新上线决策"
+  },
+  {
+    "name": "budget-first",
+    "sentence": "不再使用方案 A，改用方案 B；方案 B 的预算为 5000 元，必须由人工核验之后执行。",
+    "expectedRetired": true,
+    "actualRetired": true,
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "headName": "方案 B",
+    "headText": "改用方案 B",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      },
+      {
+        "id": 4,
+        "action": "insert",
+        "type": "decision",
+        "text": "方案 B 的预算为 5000 元，必须由人工核验之后执行。"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": 2,
+        "label": "方案 A"
+      },
+      {
+        "from": 4,
+        "to": null,
+        "skipped": "no-target",
+        "sentence": "不再使用方案 A，改用方案 B；方案 B 的预算为 5000 元，必须由人工核验之后执行。"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 B; decision:预算"
+  },
+  {
+    "name": "plan-first",
+    "sentence": "不再使用方案 A，改用方案 B；方案 B 的预算为 5000 元，必须由人工核验之后执行。",
+    "expectedRetired": true,
+    "actualRetired": true,
+    "head": {
+      "ok": true,
+      "id": 3,
+      "hops": 1
+    },
+    "headName": "方案 B",
+    "headText": "改用方案 B",
+    "applied": [
+      {
+        "id": 3,
+        "action": "insert",
+        "type": "decision",
+        "text": "改用方案 B"
+      },
+      {
+        "id": 4,
+        "action": "insert",
+        "type": "decision",
+        "text": "方案 B 的预算为 5000 元，必须由人工核验之后执行。"
+      }
+    ],
+    "links": [
+      {
+        "from": 3,
+        "to": 2,
+        "label": "方案 A"
+      },
+      {
+        "from": 4,
+        "to": null,
+        "skipped": "no-target",
+        "sentence": "不再使用方案 A，改用方案 B；方案 B 的预算为 5000 元，必须由人工核验之后执行。"
+      }
+    ],
+    "map": "dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.\nentities=0 preferences=0 decisions=2 experiences=0\nnamed: decision:方案 B; decision:预算"
+  }
+]

@@ -21,9 +21,17 @@ const extract = await import('../lib/extract.js');
 
 let checks = 0;
 let failures = 0;
-function check(fn, label) {
+async function check(fn, label) {
   checks += 1;
-  try { fn(); console.log('ok ' + label); } catch (e) { failures += 1; console.error('FAIL ' + label + ': ' + e.message); }
+  try {
+    // Must await: several cases run a whole distill + write sequence, and an
+    // un-awaited promise printed "ok" before the assertion ran (P2 in review).
+    await fn();
+    console.log('ok ' + label);
+  } catch (e) {
+    failures += 1;
+    console.error('FAIL ' + label + ': ' + e.message);
+  }
 }
 const turn = (text) => ({ role: 'user', text, seq: 2, messageId: 'm2', at: '2026-11-02T09:00:00.000Z', recorded: true });
 const one = (candidate) => async () => JSON.stringify({ candidates: [candidate] });
