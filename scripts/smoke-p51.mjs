@@ -70,7 +70,9 @@ try {
       llmCall: one({ type: 'decision', name: '方案 A 讨论', text: '讨论是否替换方案 A。', quote: sentence }),
     });
     check(() => assert.equal(hasSuccessor(db2, aId), false), 'discussion does not retire the decision');
-    check(() => assert.deepEqual(out.superseded, []), 'discussion reports no supersession');
+    // W2+ : a rejected attempt is reported on its own field, not silently dropped.
+    check(() => assert.equal(out.superseded.every((row) => !row.to && !row.pending), true), 'discussion creates no link');
+    check(() => assert.equal(out.superseded.some((row) => row.skipped === 'discussion-or-question'), true), 'discussion is reported as the reason');
     store.closeAll();
   }
 
