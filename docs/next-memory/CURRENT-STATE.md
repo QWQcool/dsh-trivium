@@ -49,7 +49,8 @@
 3. **B站 E1-B**：依赖对方扩展点，我们单方面交付不了。
 4. **REFERENCE 判分通道**：A5 剩 4/5，判分对"先否定后纠正"过严，缺人工语义复核。
 5. **内核版本按机器核对**：办公机已对齐（`0.9.0-beta.3`）；**Administrator 机仍是 0.8.11**，在那台机器上跑出的结论要标"旧内核"。
-6. ~~后续方向与 Super-agent 适配计划~~ **阶段 0 已落地 5/6**（B1/B2/B3/B5 + 作用域），只剩 B4；见 §8 与 `ROADMAP-AND-SUPERAGENT.md`。
+6. ~~后续方向与 Super-agent 适配计划~~ **阶段 0 已落地 6/6**（B1/B2/B3/B4/B5 + 作用域）；见 §8 与 `ROADMAP-AND-SUPERAGENT.md`。
+   下一步是阶段 1 的前置：`inherit` 最小实现 + 并发测量（两者都能在本地做，不需要原型跑起来）。
 7. ~~发布 0.8.4 需要先决策~~ **已发布**：走"只发前端"，分支 `release/0.8.4`，记录见 §9。
 8. **阶段 0 没有真机/真实模型验证**：B1/B2/B3/B5 只有离线夹具。下一步要么先在宿主里跑一轮会话
    （看 `lastMapInjection`、`screenedOut`、`stuck` 是否按预期出现），要么先做 B4；两者都不要跳过。
@@ -106,7 +107,11 @@
 `screenedCounts`，以及"0 分 + 工具证据被升到 1 分"的现场。**未观测到**：`screen` 整窗口丢弃、
 `stuck`/`recovered`、B2 热度写盘。
 
-**没有做的事**：B4（`MemoryWriter` 解耦）未做；`stuck`/`recovered` 仍无真机值。
+**B4（`MemoryWriter` 解耦）已完成**（`lib/memory-writer.js`）：抽取的四处写调用改走 `sink.insert/merge/link/update`，
+纯桩 writer 下库不动而 `applied` 仍有值；p63/p65/p69 与 p79 全过（80/80）。**仍未做**：Router 实现、`index.js` 注入点、
+导入/芯片/替代/编辑等其它写路径（它们不在抽取管线里）。证据：`evidence-write-provenance/S0/S0-B4/README.md`。
+
+**没有做的事**：`stuck`/`recovered` 仍无真机值。
 
 ### 8.2 设置页四页化（`d0c7eb5` → `feb315e` → `9ee7a3c`）
 
