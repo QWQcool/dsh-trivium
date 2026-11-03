@@ -129,34 +129,38 @@ try {
   mkdirSync(join(lockDir, '.dsh'), { recursive: true });
   const lockFile = locks.lockPath(lockDir);
   const now = Date.parse('2026-11-02T13:00:00.000Z');
+  /* Write first, then stamp the mtime: writeFileSync resets it to the wall clock,
+     which would make "old" depend on the day the suite happens to run. */
+  const stampLock = (body, mtime) => {
+    writeFileSync(lockFile, body);
+    utimesSync(lockFile, new Date(mtime), new Date(mtime));
+  };
   await check(() => assert.equal(plugin.staleLockInfo(lockDir, { now }), null), 'no lock file means nothing to say');
-  writeFileSync(lockFile, JSON.stringify({ pid: process.pid, nonce: 'n', at: 'x' }));
+  stampLock(JSON.stringify({ pid: process.pid, nonce: 'n', at: 'x' }), Date.now());
   await check(() => assert.equal(plugin.staleLockInfo(lockDir, { now: Date.now() }).stale, false), 'a fresh lock is never stale');
   const old = now - locks.LOCK_TTL_MS - 1000;
+  stampLock(JSON.stringify({ pid: process.pid, nonce: 'n', at: 'x' }), old);
   await check(() => {
     const info = plugin.staleLockInfo(lockDir, { now: now + 120_000 });
     assert.equal(info.stale, false, 'the live owner (this process) keeps the lock valid');
     assert.equal(info.alive, true);
   }, 'an old lock held by a live process is not stale');
   await check(() => {
-    utimesSync(lockFile, new Date(old), new Date(old));
-    writeFileSync(lockFile, JSON.stringify({ pid: 999_999, nonce: 'n', at: 'x' }));
+    stampLock(JSON.stringify({ pid: 999_999, nonce: 'n', at: 'x' }), old);
     const info = plugin.staleLockInfo(lockDir, { now });
     assert.equal(info.stale, true);
     assert.equal(info.pid, 999_999);
     assert.equal(info.alive, false);
   }, 'an old lock whose owner is gone is stale');
   await check(() => {
-    writeFileSync(lockFile, '{not json');
-    utimesSync(lockFile, new Date(old), new Date(old));
+    stampLock('{not json', old);
     assert.equal(plugin.staleLockInfo(lockDir, { now }).stale, true);
   }, 'an unreadable lock file counts as a dead owner');
   await check(() => assert.equal(locks.LOCK_TTL_MS, 30_000), 'the lock TTL default is untouched');
   await check(async () => {
     const info = plugin.staleLockInfo(lockDir, { now });
     const { acquireWorkspaceLock } = locks;
-    writeFileSync(lockFile, JSON.stringify({ pid: 999_999, nonce: 'old', at: 'x' }));
-    utimesSync(lockFile, new Date(old), new Date(old));
+    stampLock(JSON.stringify({ pid: 999_999, nonce: 'old', at: 'x' }), old);
     const taken = acquireWorkspaceLock(lockDir, { now });
     assert.equal(taken.ok, true);
     taken.release();
