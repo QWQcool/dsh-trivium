@@ -138,11 +138,24 @@ const expandEntry = async (p, id) => {
   header.props.onClick();
   await p.flush();
 };
+/**
+ * The panel used to have two tabs (memory / recall). It has four pages now, and
+ * the audit, recovery and correction cards live on "Activity" while the read-only
+ * probe lives on "Context". Re-entering a page still re-runs its on-demand load,
+ * which is what these tests use to force a refetch.
+ */
+const PAGE_INDEX = { memory: 0, context: 1, runs: 2, settings: 3 };
+const openPage = async (p, key) => {
+  const tab = p.tabs()[PAGE_INDEX[key]];
+  assert.ok(tab, "no tab for page " + key);
+  tab.props.onClick();
+  await p.flush();
+};
 
 const tests = [
   ["recovery status is truthful for running, timeout, failure and success and can be refreshed", async () => {
     const p = await loaded([], { recovery: { state: "running-timed-out" } });
-    await p.tabs()[1].props.onClick(); await p.flush();
+    await openPage(p, "runs");
     assert.match(p.text(), /wait timed out; recovery is still running/);
     assert.doesNotMatch(p.text(), /latest recovery completed/);
     const refresh = p.button("Refresh recovery status");
@@ -169,7 +182,7 @@ const tests = [
   }],
   ["the changes panel shows record details, retention, empty and failed states", async () => {
     const p = await loaded(undefined, { audit: { incomplete: true, scope: "process" } });
-    await p.tabs()[1].props.onClick();
+    await openPage(p, "runs");
     await p.flush();
     assert.match(p.text(), /Loading change records/);
     const req = p.take("changes");
@@ -182,16 +195,16 @@ const tests = [
     assert.match(p.text(), /user · #42 · abcdefgh/);
     assert.match(p.text(), /synthetic memory/);
     assert.match(p.text(), /Older records are beyond retention/);
-    await p.tabs()[0].props.onClick(); await p.flush();
-    await p.tabs()[1].props.onClick(); await p.flush();
+    await openPage(p, "memory");
+    await openPage(p, "runs");
     await p.reply(p.take("changes"), { entries: [], trimmed: 0 });
     assert.match(p.text(), /Nothing written yet/);
-    await p.tabs()[0].props.onClick(); await p.flush();
-    await p.tabs()[1].props.onClick(); await p.flush();
+    await openPage(p, "memory");
+    await openPage(p, "runs");
     await p.reply(p.take("changes"), { message: "offline" }, false);
     assert.match(p.text(), /Could not read the change record/);
-    await p.tabs()[0].props.onClick(); await p.flush();
-    await p.tabs()[1].props.onClick(); await p.flush();
+    await openPage(p, "memory");
+    await openPage(p, "runs");
     assert.match(p.text(), /Loading change records/);
     assert.doesNotMatch(p.text(), /Could not read the change record/);
     await p.reply(p.take("changes"), { entries: [{ reason: "created", preview: "recovered entry" }] });
@@ -199,23 +212,23 @@ const tests = [
   }],
   ["a persisted audit gap stays visible after a process restart and later successful write", async () => {
     const p = await loaded(undefined, { audit: { incomplete: false, scope: "process" } });
-    await p.tabs()[1].props.onClick(); await p.flush();
+    await openPage(p, "runs");
     await p.reply(p.take("changes"), { incomplete: true, entries: [{ reason: "written", preview: "older entry" }] });
     assert.match(p.text(), /Some changes could not be recorded/);
-    await p.tabs()[0].props.onClick(); await p.flush();
-    await p.tabs()[1].props.onClick(); await p.flush();
+    await openPage(p, "memory");
+    await openPage(p, "runs");
     await p.reply(p.take("changes"), { incomplete: true, entries: [{ reason: "written", preview: "later successful entry" }] });
     assert.match(p.text(), /later successful entry/);
     assert.match(p.text(), /Some changes could not be recorded/, "new successful entries do not erase the historical gap warning");
   }],
   ["switching workspaces clears changes and ignores delayed responses and errors", async () => {
     const p = await loaded();
-    await p.tabs()[1].props.onClick(); await p.flush();
+    await openPage(p, "runs");
     const first = p.take("changes");
     await p.reply(first, { entries: [{ reason: "created", preview: "only workspace A" }] });
     assert.match(p.text(), /only workspace A/);
-    await p.tabs()[0].props.onClick(); await p.flush();
-    await p.tabs()[1].props.onClick(); await p.flush();
+    await openPage(p, "memory");
+    await openPage(p, "runs");
     const delayedA = p.take("changes");
     await changeWorkspace(p, B);
     assert.doesNotMatch(p.text(), /only workspace A/, "old records must disappear immediately on switch");
@@ -226,8 +239,8 @@ const tests = [
     await p.reply(delayedA, { entries: [{ reason: "created", preview: "late workspace A" }] });
     assert.match(p.text(), /only workspace B/);
     assert.doesNotMatch(p.text(), /late workspace A/);
-    await p.tabs()[0].props.onClick(); await p.flush();
-    await p.tabs()[1].props.onClick(); await p.flush();
+    await openPage(p, "memory");
+    await openPage(p, "runs");
     const outdatedB = p.take("changes");
     await changeWorkspace(p, A);
     await p.reply(p.take("status"), status);
@@ -441,7 +454,8 @@ const tests = [
   }],
   ["this turn shows only delivered blocks and explains its own emptiness", async () => {
     const p = await loaded();
-    await p.tabs()[1].props.onClick();
+    // Delivery records belong to "Context" (what will be sent), not to the activity log.
+    await openPage(p, "context");
     await p.flush();
     await p.reply(p.take("recall-traces"), { traces: [] });
     await p.reply(p.take("corrections"), { sessions: [] });
@@ -467,7 +481,7 @@ const tests = [
   }],
   ["an empty ledger says so instead of inventing history", async () => {
     const p = await loaded();
-    await p.tabs()[1].props.onClick();
+    await openPage(p, "context");
     await p.flush();
     await p.reply(p.take("recall-traces"), { traces: [] });
     await p.reply(p.take("corrections"), { sessions: [] });
@@ -492,7 +506,10 @@ const tests = [
   }],
   ["an explicit settings save produces its own receipt", async () => {
     const p = await loaded();
-    const fold = p.elements().find((el) => el.type === "button" && p.text(el).startsWith("Settings"));
+    await openPage(p, "settings");
+    // The page tab is also a button labelled "Settings"; the fold is the one
+    // inside the page, so exclude the tab role explicitly.
+    const fold = p.elements().find((el) => el.type === "button" && !el.props.role && p.text(el).startsWith("Settings"));
     assert.ok(fold, "the configuration fold exists");
     fold.props.onClick();
     await p.flush();

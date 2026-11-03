@@ -193,7 +193,8 @@ const tests = [
   }],
   ["pending corrections explain disabled injection and insufficient budget", async () => {
     const p = await loaded();
-    p.button("Recall check").props.onClick(); await p.flush();
+    // Corrections are diagnostics, so they live on the activity page now.
+    p.button("Activity").props.onClick(); await p.flush();
     await p.reply(p.take("recall-traces"), { traces: [] });
     await p.reply(p.take("corrections"), { sessions: [{ sessionId:"test-session", pending:[{id:2,note:"changed",blockedReason:"channels-off"},{id:3,note:"changed again",blockedReason:"budget"}], sent:[] }] });
     assert.match(p.text(), /Injection is off/);

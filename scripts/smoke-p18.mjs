@@ -53,7 +53,12 @@ try {
   check(badKeys.length === 0, `no surface reads an undefined key (bad: ${badKeys.join(", ") || "none"})`);
 
   /* --------------------------------------------------------------- surfaces */
-  check(/tabList/.test(src) && /tabRecall/.test(src), "the panel splits into memory entries and recall check");
+  // Settings redesign: one card, four pages. The split still exists; only the
+  // navigation names changed (memory / context / activity / settings).
+  check(
+    /pageMemory/.test(src) && /pageContext/.test(src) && /pageRuns/.test(src) && /pageSettings/.test(src),
+    "the panel splits into memory, context, activity and settings pages",
+  );
   check(/nodeTabContent/.test(src) && /nodeTabSource/.test(src) && /nodeTabHistory/.test(src),
     "a node detail splits into content, source and decision history");
   const endpoints = [
@@ -84,8 +89,8 @@ try {
     "detail is fetched on expand, not on list load",
   );
   check(
-    /if \(tab === "recall"\) \{\s*loadTraces\(\);\s*loadCorrections\(\);\s*loadTurn\(\);\s*loadChanges\(\);\s*\}/.test(src),
-    "delivery records, traces and corrections are fetched only while the recall tab is open",
+    /if \(page === "context" \|\| page === "runs"\) \{\s*loadTraces\(\);\s*loadCorrections\(\);\s*loadTurn\(\);\s*loadChanges\(\);\s*\}/.test(src),
+    "delivery records, traces and corrections are fetched only while the context or activity page is open",
   );
 
   /* ------------------------------------------------------------ accessibility */
