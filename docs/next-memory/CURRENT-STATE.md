@@ -101,8 +101,12 @@
 | `fd99a7d` | S0-4 / B5 卡住检测 | `stuck`/`recovered` 事件、30 s 抽取预算、stale 锁探针 | p76 33/33（假计时器，未真等 30 s） |
 | `693c505` | S0-5 作用域 | `resolveScope`：workspace 实现，parent/inherit 明确抛错 | p77 20/20；默认落库位置零变化 |
 
-**没有做的事**：B4（`MemoryWriter` 解耦）未做；阶段 0 代码没有任何真机/真实模型验证
-（真宿主只在 0.8.4 的 UI 验收里读到过 `lastMapInjection` 的真实值；`stuck`/`recovered` 仍无真机值）。
+**真机观测（2026-11-03）**：见 `evidence-write-provenance/S0/HOST-2026-11-03/README.md`。
+已观测到 `full`（启动 131 token）→ `diff`×2 → `skip`×5、`version` 带条数与预算、抽取的
+`screenedCounts`，以及"0 分 + 工具证据被升到 1 分"的现场。**未观测到**：`screen` 整窗口丢弃、
+`stuck`/`recovered`、B2 热度写盘。
+
+**没有做的事**：B4（`MemoryWriter` 解耦）未做；`stuck`/`recovered` 仍无真机值。
 
 ### 8.2 设置页四页化（`d0c7eb5` → `feb315e` → `9ee7a3c`）
 
