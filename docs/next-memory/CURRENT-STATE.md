@@ -3,14 +3,15 @@
 > **动手前先读这一页。** 历史文档里的"当前 / 未发布 / 下一步"以它自己的日期为准，不是今天的指令。
 > 本页只写"现在是什么状态、什么已经验过、什么别再重复"，细节仍在各自文档里。
 
-更新：2026-11-03。基线 `d0c7eb5`。
+更新：2026-11-03。发布基线 `release/0.8.4` @ `d83450c`（tag `v0.8.4`）；main 最新 `9ee7a3c`。
 
 ## 1. 发布包与源码
 
 | 范围 | 状态 |
 |---|---|
-| npm 发布包 | **`latest = 0.8.3`**（tag `v0.8.3` → `b3f73da`，2026-11-02；shasum `7406c13…`） |
-| 当前 main | `0.8.3` 之后有 **7 个未发布提交**：5 个阶段 0 代码（B1/B2/B3/B5/作用域）+ 1 个说明文档 + 1 个设置页四页化。见 §8 |
+| npm 发布包 | **`latest = 0.8.4`**（tag `v0.8.4` → `d83450c`，2026-11-03；shasum `7fe8265…`；GitHub Release 见 §9） |
+| 发布分支 | `release/0.8.4` 从 `a0ffde9` 起，**只含设置页重构**（前端 + p78 + 文档/截图）；不含阶段 0 代码 |
+| 当前 main | `0.8.3` 之后 **14 个提交**：5 个阶段 0 代码 + 3 个设置页重构 + 6 个文档。阶段 0 那 5 个**不在 0.8.4 包里**，见 §8 |
 | 依赖 pin | `package.json` 要 `triviumdb@0.9.0-beta.3` |
 | 本机实际内核 | `node_modules/triviumdb` 按机器不同：办公机 `0.9.0-beta.3`（与 pin 一致）；Administrator 机仍为 **0.8.11**（2026-11-02 复核）。跑测前先自己查一次，别信这行 |
 
@@ -49,7 +50,9 @@
 4. **REFERENCE 判分通道**：A5 剩 4/5，判分对"先否定后纠正"过严，缺人工语义复核。
 5. **内核版本按机器核对**：办公机已对齐（`0.9.0-beta.3`）；**Administrator 机仍是 0.8.11**，在那台机器上跑出的结论要标"旧内核"。
 6. ~~后续方向与 Super-agent 适配计划~~ **阶段 0 已落地 5/6**（B1/B2/B3/B5 + 作用域），只剩 B4；见 §8 与 `ROADMAP-AND-SUPERAGENT.md`。
-7. **发布 0.8.4 需要先决策**：阶段 0 的改动与前端重构在同一分支上，若"只发前端"需要单独拉发布分支（见 §8 末）。
+7. ~~发布 0.8.4 需要先决策~~ **已发布**：走"只发前端"，分支 `release/0.8.4`，记录见 §9。
+8. **阶段 0 没有真机/真实模型验证**：B1/B2/B3/B5 只有离线夹具。下一步要么先在宿主里跑一轮会话
+   （看 `lastMapInjection`、`screenedOut`、`stuck` 是否按预期出现），要么先做 B4；两者都不要跳过。
 
 ## 5. 别再重复做的实验
 
@@ -62,6 +65,7 @@
 | 用 Trivium 面板工作区下拉做隔离 | 实测**只切视图**：默认库 13→14，面板选的库 1→1 |
 | 用会话「选择工作区」做隔离 | 实测未改变写入目标，会话 cwd 固定 `Documents/deepseek-harness/default-workspace` |
 | 重做 B1/B2/B3/B5 或"作用域抽象" | 阶段 0 已完成（§8.1）；要改就改证据里写明的已知边界，不要从头再来 |
+| 重做设置页四页化/命令面板 | 已在 0.8.4 发布（`release/0.8.4`）；只修实机缺陷，不要重新排版 |
 | 按"每个会话都重发全量地图"估算 B3 收益 | 0.8.3 本来就只注入一次；B3 的对手是假想的每轮全量，对真实基线是"多几十 token 换新鲜度" |
 
 ## 6. 真机实验的环境与方法（省下重新摸索的时间）
@@ -76,7 +80,7 @@
 
 | 需要 | 看哪里 |
 |---|---|
-| 发布内容 | `docs/release-0.8.2.md`（及 0.8.0 / 0.8.1） |
+| 发布内容 | `docs/release-0.8.4.md`（中）/ `release-0.8.4.en.md`（英）；历史见 0.8.3 / 0.8.2 / 0.8.1 / 0.8.0 |
 | 真实宿主闭环 | `docs/next-memory/R3-HOST-RESULTS.md`、`R3-HOST-PLAN.md` |
 | 写入来源 / 审计 / 单写者 | `WRITE-PROVENANCE-RESULTS.md`、`F-W04-F-W05-RESULTS-2026-10-30.md` |
 | 质量与成本 | `A5-WIDER-BASELINE`、`A10-REGRESSION-N10`、`COST-QUALITY-RESULTS`、`COST-MODEL` |
@@ -97,17 +101,33 @@
 | `fd99a7d` | S0-4 / B5 卡住检测 | `stuck`/`recovered` 事件、30 s 抽取预算、stale 锁探针 | p76 33/33（假计时器，未真等 30 s） |
 | `693c505` | S0-5 作用域 | `resolveScope`：workspace 实现，parent/inherit 明确抛错 | p77 20/20；默认落库位置零变化 |
 
-**没有做的事**：B4（`MemoryWriter` 解耦）未做；没有任何真机验证；`/status` 新增的 `stuck`/`recovered`/`lastMapInjection`
-只有前端读取，未经宿主实跑。
+**没有做的事**：B4（`MemoryWriter` 解耦）未做；阶段 0 代码没有任何真机/真实模型验证
+（真宿主只在 0.8.4 的 UI 验收里读到过 `lastMapInjection` 的真实值；`stuck`/`recovered` 仍无真机值）。
 
-### 8.2 设置页四页化（`d0c7eb5`）
+### 8.2 设置页四页化（`d0c7eb5` → `feb315e` → `9ee7a3c`）
 
-一个宿主入口内拆成 记忆库 / 上下文 / 运行记录 / 设置；新增运行诊断卡；四类按需拉取改挂到
-上下文与运行记录页。p78 35/35 结构级验证，**未在真宿主渲染过**。设计与实施边界见
-`docs/design/SETTINGS-PAGE-SPLIT-2026-11-03.md`。
+一个宿主入口内拆成 记忆库 / 上下文 / 运行记录 / 设置；新增运行诊断卡与 Ctrl/Cmd+K 命令面板；
+详情按卡片宽度分三档（≥1000 右栏 / 720–999 弹窗 / 更窄行内）；设计稿配色以 CSS 变量挂在卡片根节点。
+p78 **54/54**，并在本机 DSH 宿主实跑（四页可切、命令面板可用、420px 行内展开、撑到 1120px 出现右栏）。
+边界见 `docs/design/SETTINGS-PAGE-SPLIT-2026-11-03.md`。
 
-### 8.3 发布 0.8.4 的前置
+### 8.3 发布 0.8.4（已完成）
 
-阶段 0 与前端重构在同一分支。若要"只发前端"，需要从 `a0ffde9`（阶段 0 之前）拉发布分支，
-把前端提交挑过去——但设置页的运行诊断卡读取的 `status.stuck/recovered/lastMapInjection`
-正是阶段 0 加的字段（无值时显示"没有记录"）。**先决策再打包**，不要在同一条 main 上直接 bump。
+从 `a0ffde9` 拉 `release/0.8.4`，只放前端三件套 + 文档/截图，bump 到 0.8.4 后发布。
+代价：包内的运行诊断卡读不到 `stuck`/`recovered`/`lastMapInjection`（服务端字段在 main 上），
+三行显示"没有记录"。**main 没有 bump 版本**，仍是 0.8.4 的源码 + 阶段 0，等下一版再发。
+
+## 9. 0.8.4 发布记录（2026-11-03）
+
+| 项 | 值 |
+|---|---|
+| npm | `dsh-trivium@0.8.4`，`latest`；44 个文件 / 222.9 kB；shasum `7fe82656dbbf99eeab87090ab64c28b88f8a0d85` |
+| Git | 分支 `release/0.8.4`（tag `v0.8.4` → `d83450c`；其后只有 `0a75b84` 补英文说明） |
+| GitHub Release | https://github.com/QWQcool/dsh-trivium/releases/tag/v0.8.4（正文中英并列） |
+| 发布说明 | `docs/release-0.8.4.md`（中）/ `docs/release-0.8.4.en.md`（英） |
+| README | 中英同步：版本行、四页说明、Changelog（补 0.8.3/0.8.4）、截图换成 0.8.4 实拍五张（`docs/screenshots/10..14`） |
+| 反查 | 从 npm 拉回 tarball 校验：`package.json` 0.8.4，`lib/client.js` 含四页键/命令面板/`data-layout` |
+
+**注意**：`npm publish` 后注册表边缘缓存约几十秒才刷新；期间 `npm view` 仍返回 0.8.3、重复发布报
+`409 Cannot publish over previously staged version`，这两条都**不代表发布失败**，以
+`https://registry.npmjs.org/dsh-trivium/latest` 为准。
