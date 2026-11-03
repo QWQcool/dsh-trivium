@@ -86,6 +86,16 @@ try {
   await check(() => assert.equal(facts.length, 25), `all 25 facts landed exactly once (got ${facts.length})`);
   await check(() => assert.deepEqual(facts.map((row) => row.id).sort((x, y) => x - y), ids.concat(seqA).sort((x, y) => x - y)), 'the applied ids are exactly the ones the callers were told');
 
+  // 3b) Queue depth is observable: the burst had to queue, and it drained.
+  await check(async () => {
+    await sleep(200);
+    const stats = router.stats();
+    assert.equal(stats.queued, 0, 'the queue drains');
+    assert.ok(stats.maxQueued >= 1, `a burst was queued (max ${stats.maxQueued})`);
+    assert.ok(stats.applied >= 25, `every write is counted as applied (${stats.applied})`);
+    assert.equal(stats.failed, 0, 'no failures were counted');
+  }, 'the router reports its queue depth and applied count');
+
   /*
    * 4) The error channel, tested where it is deterministic. The store's own
    * refusals (a missing id, a dangling link) are lenient by design — it returns

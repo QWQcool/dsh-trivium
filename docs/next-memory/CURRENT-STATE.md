@@ -150,6 +150,7 @@ p78 **54/54**，并在本机 DSH 宿主实跑（四页可切、命令面板可�
 | 只读继承 | `inherit` 从"抛错"变成"读父库、写自己"：`resolveScope` 返回 `mode:"read-parent"`，新增 `lib/inherit.js` 的 `inheritedParent` / `readInheritedMap`（只读打开、预算内建图、读完即关、失败降级不抛） | `S1/INHERIT-READ-2026-11-03/README.md` |
 | Router 原型 | 新增 `lib/router.js`：每工作区一个端点（命名管道/套接字），持有唯一句柄，按到达顺序执行 insert/merge/link/update；`createRouterClient` 返回满足 `MemoryWriter` 端口的 writer，连不上就 `ROUTER_UNAVAILABLE` **不静默回退** | `S1/ROUTER-2026-11-03/README.md` |
 | Router 效果 | 同样 3×10、800ms 轮间隔：锁模式落库 29/17/**8**（50/400/1500ms），Router 三档都是 **30/30**；墙钟更慢是因为把活干完了 | `scripts/bench-lock-contention.mjs --router` |
+| 队列延迟 | 2/5/10 Worker × 50 写：落库全对，p50 8.4 / 24.1 / 50.4 s，**p95 最高 75.3 s**；根因是**每次写都 flush**（直写 188 ms/条、flush 91 ms/次），吞吐上限 ≈5 次/秒，队列本身不是瓶颈 | `S1/QUEUE-2026-11-03/README.md`，`scripts/bench-router-queue.mjs` |
 | 回归 | `smoke-p80` 22/22、`smoke-p81` 12/12、`smoke-p77` 21/21（3 条按新语义更新）、`run-all` **82/82** | — |
 
 **为什么写回没做**：实测下 78% 的抽取会推迟，而 work item 目录是短命的——推迟到没人再开库就是静默丢事实。
