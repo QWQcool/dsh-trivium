@@ -12,7 +12,7 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.8.2** ([release notes](docs/release-0.8.2.md)). This repository's current `main` also contains changes after the `v0.8.2` tag; those changes are **not in the 0.8.2 package** despite the same version field. See the [documentation index](docs/README.md) for their verification status.
+The published npm package is **0.8.4** ([release notes](docs/release-0.8.4.md)): a settings-surface rebuild with no server behaviour change. `main` additionally carries context-management work (map heat, incremental injection, event screening, stuck detection, a scope parameter) that is **not in the 0.8.4 package**. See the [documentation index](docs/README.md) for verification status.
 
 ---
 
@@ -181,7 +181,18 @@ Chips are per session. New sessions and forked children start unchecked. Inherit
 
 ### Settings (Trivium memory)
 
-Settings → **Trivium memory** manages the store. Check for updates sits at the top; **memory entries** stay visible. Everything else is inside a **Settings** fold (collapsed by default): injection, extract, chips, Git sidecar, plugin language, import, embedding. Toggles write `~/.dsh/trivium.json` as soon as you flip them.
+Settings → **Trivium memory** manages the store. The host gives a plugin exactly one section, so the panel is split into four pages inside it — plus **Ctrl/Cmd+K** to jump to a page or a section by name:
+
+| Page | Answers | Was |
+|---|---|---|
+| **Memory** (default) | What is stored; search, filter, edit, archive, delete, merge, replace | the list tab |
+| **Context** | What was actually sent last turn, and a read-only probe of what would be sent | the first half of the recall tab |
+| **Activity** | What the plugin has been doing: last extraction, stuck/recovered, map injection, revision check, pending corrections, recovery, change log, recall traces | the second half of the recall tab + the old diagnostics block |
+| **Settings** | Memory behaviour, display, data, vector, about | the always-visible tail of the old page |
+
+Toggles still write `~/.dsh/trivium.json` as soon as you flip them; only the embedding fields use **Save**. The command palette navigates and focuses — it never writes a setting. When the panel is wide enough (≥1000 px of card width) a node's detail opens beside the list; at 720–999 px it opens as a dialog; below that it expands inline as before.
+
+At the top of **Activity**, four rows say what the last run did. An unobserved value reads **no record** — it is never rendered as `0` or as success.
 
 | Switch | Default | What it does |
 |---|---|---|
@@ -203,14 +214,15 @@ Injection detail: autoRecall considers up to 8 candidates when the step has user
 
 `dsh-trivium-prefs` can create a workspace-, consumer- and purpose-scoped binding for explicitly approved entries, export a bounded snapshot, revoke it, and verify the files. It produces a separate persona copy rather than modifying the original. Verification is optional and must be called by the consumer; it does not happen automatically. Use `npm exec --package=dsh-trivium -- dsh-trivium-prefs --help` for arguments and see the [0.8.2 release notes](docs/release-0.8.2.md) for limits and known issues.
 
-### Sources, history, and recall check
+### Sources, history, and the read-only probe
 
-The card has two tabs, and a node detail has three.
+The card has four pages, and a node detail has three tabs.
 
 | Surface | What it answers |
 |---|---|
-| **Memory entries** | What is stored. Replaced versions are hidden by default; **Show replaced** is a separate switch from **Show expired**. |
-| **Recall check** | What the last turn actually injected, in estimated tokens, plus a read-only probe: candidates, real filter reasons, and the exact text that would be sent. |
+| **Memory** | What is stored. Replaced versions are hidden by default; **Show replaced** is a separate switch from **Show expired**. |
+| **Context** | What the last turn actually injected, in estimated tokens, plus a read-only probe: candidates, real filter reasons, and the exact text that would be sent. |
+| **Activity** | Last extraction, stuck / recovered, last map injection, revision check, pending corrections, recovery state, change log, recall traces. |
 | **Content / Source / Decision history** | The body, where it came from, and the chain of decisions that replaced it. |
 
 A memory knows where it came from only if the write recorded it (`kind`, session, message, a short quote). A record with no source says so; it never guesses a session or an author. A session this process cannot confirm is reported as unavailable while the stored excerpt is kept. The host exposes no session locator, so there is no deep link — rather than inventing one.
@@ -242,7 +254,7 @@ The kernel is still these four. Chips / session layer do not add a fifth tool.
 
 ## Screenshots
 
-Captured on 2026-10-28 inside DSH Web `0.2.1-rc.4` with `dsh-trivium@0.7.1`, Chinese host UI. They are a UI tour, not acceptance evidence — versioned proof and current limits stay in the [documentation index](docs/README.md). The plugin follows the host language unless you pick Chinese / English under **Settings → Trivium memory → Configuration**.
+The settings screenshots were captured on 2026-11-03 inside DSH Web with `dsh-trivium@0.8.4` (Chinese host UI); the conversation, trajectory and chips shots are older (0.7.1) and still show the same surfaces. They are a UI tour, not acceptance evidence — versioned proof and current limits stay in the [documentation index](docs/README.md). The plugin follows the host language unless you pick Chinese / English under **Settings → Trivium memory → Settings → Display**.
 
 ### Conversation — `ctx_find("鉴权")`
 
@@ -254,29 +266,35 @@ Session-start injects the short map; the model calls `ctx_find` and hits “auth
 
 <img width="560" alt="Trajectory" src="docs/screenshots/03-trajectory.png">
 
-### Settings — updates, language, injection
+### Settings — memory (default page)
 
-<img width="560" alt="Settings config" src="docs/screenshots/04-settings.png">
+<img width="560" alt="Memory page" src="docs/screenshots/10-settings-memory.png">
 
-Check for updates sits above a collapsed **Configuration** fold (plugin language, injection strategy). Below it are the **Memory entries** and **Recall check** tabs.
+Worktree picker, type filter, search, and the two independent switches **show expired** / **show replaced** above the list. Each entry expands in place: name, body, aliases, deadline, business neighbours, and its own archive / delete actions. Replaced versions stay hidden until you ask for them.
 
-### Settings — extract, chips, Git sidecar
+### Settings — context
 
-<img width="560" alt="Settings options" src="docs/screenshots/05-settings-options.png">
+<img width="560" alt="Context page" src="docs/screenshots/11-settings-context.png">
 
-Nested under chips: **Session layer (plot canvas)**. Git sidecar, Markdown export, one-shot external import, and remote embedding are on the same page.
+The **Context** page separates "what was actually delivered last turn" from "what would be sent for this question". The upper card is the real ledger (estimated tokens, process-local, cleared on restart); the lower card is a read-only probe that never calls the model and never requests an embedding.
 
-### Settings — memory entries
+### Settings — activity
 
-<img width="560" alt="Entry list" src="docs/screenshots/06-settings-list.png">
+<img width="560" alt="Activity page" src="docs/screenshots/12-settings-activity.png">
 
-Type filter, text search, and the **show stale** / **show superseded** toggles sit above the list; each card shows its own archive / delete actions.
+The **Activity** page opens with four diagnostic rows — last extraction, stuck, recovered, last map injection — and then the revision-chain check, pending corrections, recovery state, change log and recall traces. A row with no observation reads **no record** instead of `0`.
 
-### Settings — recall check
+### Settings — settings
 
-<img width="560" alt="Recall check" src="docs/screenshots/08-recall-check.png">
+<img width="560" alt="Settings page" src="docs/screenshots/13-settings-page.png">
 
-The **Recall check** tab shows this turn's estimated budget, a read-only dry run of one query, the revision-chain check, pending / sent corrections, and the latest recall diagnostics. Opening it or running the dry run does not call the model and does not request embeddings.
+Grouped as **memory behaviour → display → data → vector → about**: injection strategy and the advanced **Configuration** fold first, then plugin language, exports and imports, embedding, and the update check last.
+
+### Command palette — `Ctrl/Cmd+K`
+
+<img width="560" alt="Command palette" src="docs/screenshots/14-command-palette.png">
+
+Type a word you know — **恢复**, **导入**, **芯片** — and the palette lists matching pages and sections; ↑↓ selects, Enter jumps, Esc closes. It only navigates: no setting is written and no destructive action runs from here.
 
 ### Chips — optional, next to Conversation / Trajectory
 
@@ -319,6 +337,8 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 
 ## Changelog
 
+- [0.8.4](docs/release-0.8.4.md): settings card rebuilt as four pages (memory / context / activity / settings), Ctrl/Cmd+K palette, split detail at wide widths, prototype visual language, grouped settings. No server behaviour change.
+- [0.8.3](docs/release-0.8.3.md): supersede rewrites as a new decision plus a revision edge; long-body tails, date guard and compaction recall fixes.
 - [0.8.2](docs/release-0.8.2.md): extraction and decision-correction fixes; optional approved-preference export and consumer verification.
 - [0.8.1](docs/release-0.8.1.md): long-fact injection and candidate-budget fixes.
 - [0.8.0](docs/release-0.8.0.md): workspace switching, import preview and delivery diagnostics.
@@ -353,7 +373,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Published package: `0.8.2` · [npm](https://www.npmjs.com/package/dsh-trivium); current source also contains post-release changes
+- Published package: `0.8.4` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.1-rc.4` (the peer range also admits the 0.1.x lines)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

@@ -7,6 +7,8 @@
 DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注入，设置页可改可归档。内核贴近 DSH：不另起进程、默认不加导航。要钉住某些记忆片段，再在设置里打开 **芯片** 注入；情节画布是可选的自嗨层，嵌在芯片开关下。每个工作区一个 `.dsh/trivium.tdb`，不另起服务。
 
 > **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
+>
+> 当前 npm 发布版是 **0.8.4**（[发布说明](docs/release-0.8.4.md)）：只含设置页重构。`main` 上另有上下文管理改动（地图热度、增量注入、事件快筛、卡住检测、作用域参数），**不在 0.8.4 包里**。
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -176,7 +178,18 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ### 设置页（Trivium 记忆）
 
-设置里的「Trivium 记忆」管库。「检查更新」在最上，**记忆条目**保持可见。其余选项收在 **配置设置** 折叠里（默认收起）：注入、抽取、芯片、Git 旁路、界面语言、导入、embedding。开关拨一下就写入 `~/.dsh/trivium.json`。
+设置里的「Trivium 记忆」管库。宿主只给插件一个入口，所以卡内分成四页，另配 **Ctrl/Cmd+K** 按名字跳转：
+
+| 页面 | 回答什么 | 原来在哪 |
+|---|---|---|
+| **记忆库**（默认） | 存了什么；搜、筛、编辑、归档、删除、合并、更正 | 列表标签 |
+| **上下文** | 上一轮实际送达了什么，以及一次只读试算会送什么 | 召回标签前半 |
+| **运行记录** | 上次抽取、卡住 / 已自愈、上次地图注入、版本链检查、待处理更正、恢复状态、记忆变化、召回轨迹 | 召回标签后半 + 原来无处安放的诊断 |
+| **设置** | 记忆行为、显示、数据、向量、关于 | 长页面底部常驻卡片 |
+
+开关拨一下就写入 `~/.dsh/trivium.json`，只有 embedding 字段要按「保存设置」。命令面板只做导航与聚焦，不写任何设置。卡片宽度 ≥1000px 时节点详情在列表右侧；720–999px 弹窗；更窄仍是行内展开。
+
+「运行记录」顶部四行写上一轮实际做了什么；没有观测到的值显示「没有记录」，不渲染成 `0`，也不当成成功。
 
 | 开关 | 默认 | 作用 |
 |---|---|---|
@@ -194,14 +207,15 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 - **导出导入** — JSON 是真回写。Markdown 只读投影（给人看）。给 git 用的是 `.dsh/trivium.jsonl`（业务事实，自动写）。WorkBuddy `MEMORY.md`、Claude Code `CLAUDE.md`、Codex `AGENTS.md` 可一次性严导入。不监视那些文件，不导入会话 jsonl。
 - **检查更新** — 设置页对比已装版本和 npm latest，有新版时给出 `dsh plugin --profile web add dsh-trivium`。不会在后台自动升级。
 
-### 来源、历史与召回检查
+### 来源、历史与只读试算
 
-面板分两个页签，条目详情分三个。
+面板分四个页面，条目详情分三个页签。
 
 | 位置 | 回答什么 |
 |---|---|
-| **记忆条目** | 存了什么。已替代的版本默认收起；**显示已替代**与**显示过期**是两个独立开关。 |
-| **召回检查** | 上一轮实际注入了什么（按估算 token），外加一次只读检查：候选、真实过滤原因、以及将要发送的原文。 |
+| **记忆库** | 存了什么。已替代的版本默认收起；**显示已替代**与**显示过期**是两个独立开关。 |
+| **上下文** | 上一轮实际注入了什么（按估算 token），外加一次只读试算：候选、真实过滤原因、以及将要发送的原文。 |
+| **运行记录** | 上次抽取、卡住 / 已自愈、上次地图注入、版本链检查、待处理更正、恢复状态、记忆变化、召回轨迹。 |
 | **内容 / 来源 / 决策历史** | 正文、它从哪来、以及替代它的决策链。 |
 
 只有写入时确实记录了来源（`kind`、会话、消息、短引文），条目才知道自己从哪来。没有来源就直说没有，不猜会话也不猜作者；本进程无法确认的会话报「已不可用」，但保留已存的摘录。宿主没有会话定位接口，所以不提供跳转，也不拼一个假的 deep link。
@@ -247,7 +261,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 ## 界面截图
 
-以下截图于 2026-10-28 在 DSH Web `0.2.1-rc.4` 与 `dsh-trivium@0.7.1` 上实拍，宿主为中文界面。它们只是界面导览，不是验收证据；分版本证据及当前边界见[文档入口](docs/README.md)。插件默认跟随 DSH 宿主语言；也可在 **设置 → Trivium 记忆 → 配置设置** 里锁定中文或英文。
+设置页截图于 2026-11-03 在 DSH Web 与 `dsh-trivium@0.8.4` 上实拍（宿主中文界面）；会话、轨迹与芯片三张是 0.7.1 时期的旧图，界面未变。它们只是界面导览，不是验收证据；分版本证据及当前边界见[文档入口](docs/README.md)。插件默认跟随 DSH 宿主语言；也可在 **设置 → Trivium 记忆 → 设置 → 显示** 里锁定中文或英文。
 
 ### 会话 — `ctx_find("鉴权")`
 
@@ -259,29 +273,35 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 <img width="560" alt="轨迹" src="docs/screenshots/03-trajectory.png">
 
-### 设置 — 检查更新、语言、注入策略
+### 设置 — 记忆库（默认页）
 
-<img width="560" alt="设置配置" src="docs/screenshots/04-settings.png">
+<img width="560" alt="记忆库" src="docs/screenshots/10-settings-memory.png">
 
-「检查更新」下面是可折叠的 **配置设置**（本插件语言、注入策略）；再下面分 **记忆条目 / 召回检查** 两个标签。
+工作区、类型筛选、搜索，以及**显示过期 / 显示已替代**两个独立开关；条目在原位展开：名称、正文、别名、期限、业务邻居，以及各自的归档 / 删除。已替代的版本默认收起。
 
-### 设置 — 抽取、芯片、Git 旁路
+### 设置 — 上下文
 
-<img width="560" alt="设置开关" src="docs/screenshots/05-settings-options.png">
+<img width="560" alt="上下文" src="docs/screenshots/11-settings-context.png">
 
-芯片开关下嵌 **会话层（情节画布）**。同一页还有 Git 旁路、Markdown 导出、外部记忆一次性导入、远程 embedding。
+上半是**真实送达账本**（估算 token、进程内、重启清空），下半是一次**只读试算**：候选、被丢弃的真实原因、将要发送的原文。试算不调用模型，也不请求 embedding。
 
-### 设置 — 记忆条目
+### 设置 — 运行记录
 
-<img width="560" alt="条目列表" src="docs/screenshots/06-settings-list.png">
+<img width="560" alt="运行记录" src="docs/screenshots/12-settings-activity.png">
 
-列表上方是类型筛选、文本搜索和「显示过期决策 / 显示已替代」两个开关；每张卡片自带归档、删除动作。
+顶部四行诊断：上次抽取、卡住、已自愈、上次地图注入；随后是版本链体检、待处理更正、恢复状态、记忆变化与召回轨迹。没有观测到的行显示「没有记录」，不是 `0`。
 
-### 设置 — 召回检查
+### 设置 — 设置
 
-<img width="560" alt="召回检查" src="docs/screenshots/08-recall-check.png">
+<img width="560" alt="设置页" src="docs/screenshots/13-settings-page.png">
 
-**召回检查** 标签显示本轮估算预算、一次查询的只读试算、版本链体检、待发 / 已发更正与最近召回诊断。打开该标签或运行只读试算都不调用模型，也不请求 embedding。
+按**记忆行为 → 显示 → 数据 → 向量 → 关于**分组：注入策略与高级「配置设置」在前，界面语言、导出导入、embedding 居中，检查更新在最后。
+
+### 命令面板 — `Ctrl/Cmd+K`
+
+<img width="560" alt="命令面板" src="docs/screenshots/14-command-palette.png">
+
+输入你记得的词（「恢复」「导入」「芯片」），面板列出匹配的页面与分区；↑↓ 选择、Enter 跳转、Esc 关闭。它只导航：不写任何设置，也不执行破坏性操作。
 
 ### 芯片 — 可选，在对话 / 轨迹旁
 
@@ -321,10 +341,12 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 ## 更新说明
 
+- [0.8.4](docs/release-0.8.4.md)：设置卡重构为四页（记忆库 / 上下文 / 运行记录 / 设置），新增 Ctrl/Cmd+K 命令面板、宽屏并列详情、设计稿配色与设置分组。服务端行为未变。
+- [0.8.3](docs/release-0.8.3.md)：更正改为「新增决策 + 修订边」，长正文尾部、日期守卫与压缩后召回修复。
 - [0.8.2](docs/release-0.8.2.md)：修复抽取与决策正确性问题，增加逐条授权的偏好导出与校验。
 - [0.8.1](docs/release-0.8.1.md)：改进长事实注入与预算前候选选择。
 - [0.8.0](docs/release-0.8.0.md)：增加工作区切换、导入预览和投递记录。
-- 更早版本的发布说明见[文档入口](docs/README.md)。当前源码另有发布后的来源、变更记录和抽取并发保护；它们尚未包含在 npm 0.8.2 中，验证边界见 [W1–W5](docs/next-memory/WRITE-PROVENANCE-RESULTS.md) 与 [W6](docs/next-memory/evidence-write-provenance/W6/README.md)。
+- 更早版本的发布说明见[文档入口](docs/README.md)。
 
 ## 排障
 
@@ -355,7 +377,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 已发布包：`0.8.2` · [npm](https://www.npmjs.com/package/dsh-trivium)；当前源码包含发布后修改，详见[文档入口](docs/README.md)
+- 已发布包：`0.8.4` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.2.1-rc.4`（peer 范围同时接受 0.1.x 各线）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
