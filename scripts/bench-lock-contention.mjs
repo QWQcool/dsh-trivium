@@ -36,9 +36,17 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
  * happens on the next event (a user turn, seconds or minutes later). A tight
  * retry loop would measure starvation instead of contention.
  */
-async function runWorker(cwd, rounds, workMs, label, gapMs) {
+async function runWorker(cwd, rounds, workMs, label, gapMs, mode = "lock") {
   const store = await import("../lib/store.js");
   const { withWorkspaceLock } = await import("../lib/workspace-lock.js");
+  /*
+   * Router mode models the design the lock cannot reach: the model call happens
+   * *outside* any critical section, and only the write goes to the single owner.
+   * The comparable number is therefore not "busy" (there is nothing to be busy
+   * on) but how many facts actually land.
+   */
+  const client = mode === "router" ? (await import("../lib/router.js")).createRouterClient({ cwd }) : null;
+  if (client) await client.ready;
   /*
    * Break the lockstep. Three processes started together and given the same
    * fixed gap attempt at the same instants forever, which reports 2/3 busy no
@@ -50,6 +58,23 @@ async function runWorker(cwd, rounds, workMs, label, gapMs) {
   for (let round = 0; round < rounds; round += 1) {
     const started = Date.now();
     let row;
+    if (client) {
+      // Think first, then write: the router only serializes the write itself.
+      await sleep(workMs);
+      try {
+        const id = await client.writer.insert({
+          type: "preference",
+          name: `${label}-${round}`,
+          text: `${label} round ${round} wrote this fact`,
+        });
+        row = { label, round, ok: true, reason: null, id, ms: Date.now() - started };
+      } catch (err) {
+        row = { label, round, ok: false, reason: err?.code || "error", error: String(err?.message || err).slice(0, 120), ms: Date.now() - started };
+      }
+      process.stdout.write(`${JSON.stringify(row)}\n`);
+      await sleep(gapMs * (0.6 + Math.random() * 0.8));
+      continue;
+    }
     try {
       const outcome = await withWorkspaceLock(cwd, async () => {
         const db = await store.openWorkspaceDb(cwd);
@@ -83,12 +108,13 @@ async function runWorker(cwd, rounds, workMs, label, gapMs) {
     process.stdout.write(`${JSON.stringify(row)}\n`);
     await sleep(gapMs * (0.6 + Math.random() * 0.8));
   }
+  if (client) await client.close();
   store.closeAll();
 }
 
-function spawnWorker(cwd, rounds, workMs, label, gapMs) {
+function spawnWorker(cwd, rounds, workMs, label, gapMs, mode) {
   return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, [import.meta.filename, WORKER_FLAG, cwd, String(rounds), String(workMs), label, String(gapMs)], {
+    const child = spawn(process.execPath, [import.meta.filename, WORKER_FLAG, cwd, String(rounds), String(workMs), label, String(gapMs), mode], {
       stdio: ["ignore", "pipe", "pipe"],
       env: { ...process.env, DSH_TRIVIUM_SETTINGS: join(cwd, "settings.json") },
     });
@@ -107,15 +133,25 @@ function spawnWorker(cwd, rounds, workMs, label, gapMs) {
   });
 }
 
-async function scenario({ workers, rounds, workMs, gapMs }) {
+async function scenario({ workers, rounds, workMs, gapMs, mode = "lock" }) {
   const root = mkdtempSync(join(tmpdir(), "trivium-lock-bench-"));
   const cwd = join(root, "ws");
   const started = Date.now();
   let rows;
+  let router = null;
   try {
+    if (mode === "router") router = await (await import("../lib/router.js")).startRouter({ cwd });
     const runs = [];
-    for (let i = 0; i < workers; i += 1) runs.push(spawnWorker(cwd, rounds, workMs, `w${i}`, gapMs));
+    for (let i = 0; i < workers; i += 1) runs.push(spawnWorker(cwd, rounds, workMs, `w${i}`, gapMs, mode));
     rows = (await Promise.all(runs)).flat();
+    // The router owns the handle; release it before the count opens its own.
+    // `store.closeAll()` is required as well: the router reached the database
+    // through the same module cache, and a closed handle still sits there.
+    if (router) {
+      await router.close();
+      router = null;
+      (await import("../lib/store.js")).closeAll();
+    }
     const store = await import("../lib/store.js");
     const db = await store.openWorkspaceDb(cwd);
     // Only the facts this benchmark wrote: the store also holds a workspace root.
@@ -137,27 +173,31 @@ async function scenario({ workers, rounds, workMs, gapMs }) {
       wallMs: Date.now() - started,
     };
   } finally {
+    if (router) await router.close();
     rmSync(root, { recursive: true, force: true });
   }
 }
 
 if (process.argv[2] === WORKER_FLAG) {
-  const [, , , cwd, rounds, workMs, label, gapMs] = process.argv;
-  await runWorker(cwd, Number(rounds), Number(workMs), label, Number(gapMs));
+  const [, , , cwd, rounds, workMs, label, gapMs, mode] = process.argv;
+  await runWorker(cwd, Number(rounds), Number(workMs), label, Number(gapMs), mode || "lock");
   process.exit(0);
 }
 
-const workers = Number(process.argv[2] || 3);
-const rounds = Number(process.argv[3] || 10);
-const workMsArg = process.argv[4];
-const gapMsArg = Number(process.argv[5] || 800);
+const routerMode = process.argv[2] === "--router";
+const argOffset = routerMode ? 1 : 0;
+const workers = Number(process.argv[2 + argOffset] || 3);
+const rounds = Number(process.argv[3 + argOffset] || 10);
+const workMsArg = process.argv[4 + argOffset];
+const gapMsArg = Number(process.argv[5 + argOffset] || 800);
+const mode = routerMode ? "router" : "lock";
 
 const scenarios = workMsArg
-  ? [{ workers, rounds, workMs: Number(workMsArg), gapMs: gapMsArg }]
+  ? [{ workers, rounds, workMs: Number(workMsArg), gapMs: gapMsArg, mode }]
   : [
-      { workers, rounds, workMs: 50, gapMs: gapMsArg, label: "fast extraction (stub model)" },
-      { workers, rounds, workMs: 400, gapMs: gapMsArg, label: "medium extraction" },
-      { workers, rounds, workMs: 1500, gapMs: gapMsArg, label: "slow extraction (real model call)" },
+      { workers, rounds, workMs: 50, gapMs: gapMsArg, mode, label: `${mode}: fast extraction (stub model)` },
+      { workers, rounds, workMs: 400, gapMs: gapMsArg, mode, label: `${mode}: medium extraction` },
+      { workers, rounds, workMs: 1500, gapMs: gapMsArg, mode, label: `${mode}: slow extraction (real model call)` },
     ];
 
 const results = [];
