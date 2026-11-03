@@ -135,10 +135,25 @@ function element(type, props, key) {
   return { type, props: props || {}, key };
 }
 
-function loadBundle() {
+function loadBundle(width = 0) {
   let registration = null;
+  const listeners = new Map();
+  const win = {
+    __ModuleLoader__: { load(def) { registration = def; } },
+    innerWidth: width,
+    addEventListener(name, fn) {
+      if (!listeners.has(name)) listeners.set(name, []);
+      listeners.get(name).push(fn);
+    },
+    removeEventListener(name, fn) {
+      listeners.set(name, (listeners.get(name) || []).filter((item) => item !== fn));
+    },
+    dispatch(name, event) {
+      for (const fn of listeners.get(name) || []) fn(event);
+    },
+  };
   const sandbox = {
-    window: { __ModuleLoader__: { load(def) { registration = def; } } },
+    window: win,
     fetch: async (url) => ({ ok: true, status: 200, json: async () => fixtureFetch(url) }),
     setTimeout,
     clearTimeout,
@@ -151,14 +166,14 @@ function loadBundle() {
   vm.createContext(sandbox);
   vm.runInContext(SOURCE, sandbox, { filename: 'lib/client.js' });
   if (!registration) throw new Error('bundle did not register');
-  return registration;
+  return { registration, win };
 }
 
 async function settle() {
   for (let i = 0; i < 8; i += 1) await new Promise((resolve) => setImmediate(resolve));
 }
 
-async function mount() {
+async function mount(width = 0) {
   const runtime = createRuntime();
   const table = {
     react: runtime.react,
@@ -167,7 +182,7 @@ async function mount() {
       Button: function Button(props) { return element('button', props); },
     },
   };
-  const registration = loadBundle();
+  const { registration, win } = loadBundle(width);
   const loaded = registration.factory((spec) => {
     if (Object.prototype.hasOwnProperty.call(table, spec)) return table[spec];
     throw new Error('unexpected require(' + spec + ')');
@@ -203,7 +218,7 @@ async function mount() {
     await settle();
     tree = render();
   }
-  return { render, tree: () => tree };
+  return { render, tree: () => tree, win };
 }
 
 function walk(node, out = { nodes: [], text: [] }) {
@@ -303,6 +318,99 @@ try {
   const memory = clickPage('memory');
   await check(() => assert(textOf(memory).includes('发布窗口')), 'returning to memory did not restore the list');
   await check(() => assert(pageTabs(memory).length === 4), 'the tab strip lost a tab');
+
+  /*
+   * Layout bands. The suite above runs with no window width (narrow, inline).
+   * These three mounts pin the other two containers: the detail must be the
+   * same element in all three, only its container changes.
+   */
+  const clickNode = (app) => {
+    const header = walk(app.tree()).nodes.find((n) => n.type === 'button' && textOf(n).startsWith('#1 '));
+    assert(!!header, 'node header not found');
+    header.props.onClick();
+    return app.render();
+  };
+
+  const wide = await mount(1440);
+  const wideTree = clickNode(wide);
+  const pane = walk(wideTree).nodes.find((n) => n.props && n.props['data-detail-pane'] === 'wide');
+  await check(() => assert(!!pane, 'wide layout did not render the detail pane'), '1440px: the detail renders beside the list');
+  await check(() => assert(textOf(pane).includes('内容') && textOf(pane).includes('来源')), 'the wide pane keeps the detail tabs');
+  await check(
+    () => assert(!walk(wideTree).nodes.some((n) => n.props && n.props.role === 'dialog' && String(n.props['aria-label'] || '').startsWith('#1 '))),
+    'the wide layout does not open the dialog',
+  );
+
+  const medium = await mount(1000);
+  const mediumTree = clickNode(medium);
+  const dialog = walk(mediumTree).nodes.find((n) => n.props && n.props.role === 'dialog' && String(n.props['aria-label'] || '').startsWith('#1 '));
+  await check(() => assert(!!dialog, 'medium layout did not open the detail dialog'), '1000px: the detail opens as a dialog');
+  await check(() => assert(textOf(dialog).includes('内容')), 'the dialog keeps the detail tabs');
+  await check(
+    () => assert(!walk(mediumTree).nodes.some((n) => n.props && n.props['data-detail-pane'] === 'wide')),
+    'the medium layout does not render the side pane',
+  );
+  dialog.props.onKeyDown({ key: 'Escape', preventDefault() {}, stopPropagation() {} });
+  const closed = medium.render();
+  await check(
+    () => assert(!walk(closed).nodes.some((n) => n.props && n.props.role === 'dialog' && String(n.props['aria-label'] || '').startsWith('#1 '))),
+    'Escape closes the detail dialog',
+  );
+
+  const narrow = await mount(800);
+  const narrowTree = clickNode(narrow);
+  await check(
+    () => assert(!walk(narrowTree).nodes.some((n) => n.props && n.props.role === 'dialog' && String(n.props['aria-label'] || '').startsWith('#1 '))),
+    'the narrow layout expands inline',
+  );
+  await check(() => assert(textOf(narrowTree).includes('内容')), 'the narrow layout keeps the inline detail');
+
+  /*
+   * Ctrl/Cmd+K: opens on the window shortcut, filters by a word the user knows
+   * ("恢复"), navigates on Enter, and closes on Escape.
+   */
+  const paletteApp = await mount(0);
+  paletteApp.win.dispatch('keydown', { key: 'k', ctrlKey: true, metaKey: false, preventDefault() {} });
+  const paletteTree = paletteApp.render();
+  const palette = walk(paletteTree).nodes.find(
+    (n) => n.props && n.props.role === 'dialog' && n.props['aria-label'] === '查找设置或操作',
+  );
+  await check(() => assert(!!palette, 'Ctrl+K did not open the palette'), 'Ctrl+K opens the palette');
+  const paletteText = textOf(palette);
+  await check(() => assert(['记忆库', '上下文', '运行记录', '设置'].every((l) => paletteText.includes(l))), 'the palette lists all four pages');
+  await check(() => assert(paletteText.includes('恢复') && paletteText.includes('导入')), 'the palette lists section entries');
+
+  const paletteInput = walk(palette).nodes.find((n) => n.type === 'input');
+  paletteInput.props.onChange({ target: { value: '恢复' } });
+  const filtered = paletteApp.render();
+  const filteredDialog = walk(filtered).nodes.find(
+    (n) => n.props && n.props.role === 'dialog' && n.props['aria-label'] === '查找设置或操作',
+  );
+  const filteredText = textOf(filteredDialog);
+  await check(() => assert(filteredText.includes('恢复')), 'the filtered palette finds 恢复');
+  await check(() => assert(!filteredText.includes('导入')), 'the filtered palette drops unrelated entries');
+
+  const rows = walk(filteredDialog).nodes.filter((n) => n.props && n.props.role === 'option');
+  await check(() => assert(rows.length >= 1, 'the filtered palette has selectable rows'), 'the filtered palette keeps selectable rows');
+  filteredDialog.props.onKeyDown({ key: 'Enter', preventDefault() {} });
+  const navigated = paletteApp.render();
+  const runsTab = pageTabs(navigated).find((n) => labelOf(n) === LABELS.runs);
+  await check(() => assert(runsTab.props['aria-selected'] === 'true', 'Enter on a section entry did not switch page'), 'Enter navigates to the section page');
+  await check(
+    () => assert(!walk(navigated).nodes.some((n) => n.props && n.props['aria-label'] === '查找设置或操作')),
+    'the palette closes after choosing a row',
+  );
+
+  paletteApp.win.dispatch('keydown', { key: 'k', ctrlKey: true, preventDefault() {} });
+  const reopened = paletteApp.render();
+  const reopenedDialog = walk(reopened).nodes.find((n) => n.props && n.props['aria-label'] === '查找设置或操作');
+  await check(() => assert(!!reopenedDialog, 'the palette did not reopen'), 'the palette reopens after a navigation');
+  reopenedDialog.props.onKeyDown({ key: 'Escape', preventDefault() {} });
+  const escaped = paletteApp.render();
+  await check(
+    () => assert(!walk(escaped).nodes.some((n) => n.props && n.props['aria-label'] === '查找设置或操作')),
+    'Escape closes the palette',
+  );
 } catch (err) {
   failures += 1;
   console.error('FAIL unexpected throw: ' + (err && err.stack ? err.stack : err));
