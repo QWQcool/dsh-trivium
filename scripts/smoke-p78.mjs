@@ -80,6 +80,18 @@ function fixtureFetch(url) {
   if (body.includes('/api/dsh-trivium/recall-traces')) return { ok: true, entries: [] };
   if (body.includes('/api/dsh-trivium/corrections')) return { ok: true, sessions: [] };
   if (body.includes('/api/dsh-trivium/turn')) return { ok: true, sessions: [] };
+  if (body.includes('/api/dsh-trivium/pending')) {
+    return {
+      ok: true,
+      windows: [
+        { sessionId: 'session-aaaa1111', turns: 2, preview: '记住：部署窗口是每周四。' },
+        { sessionId: 'session-bbbb2222', turns: 3, preview: '记住：令牌每 90 天轮换。' },
+      ],
+      turns: 5,
+      acknowledged: 1,
+      updatedAt: '2026-11-03T05:00:00.000Z',
+    };
+  }
   return { ok: true };
 }
 
@@ -307,6 +319,30 @@ try {
       'arrow right moves forward one page',
     );
   }
+
+  /*
+   * Pending windows: the deferral queue has to be visible on the activity page,
+   * and only there. The loader is async, so the tree is re-read after a tick.
+   */
+  await check(async () => {
+    const runsTree = clickPage('runs');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const withPending = app.render();
+    const card = walk(withPending).nodes.find((n) => n.props && n.props['data-page-card'] === 'pending');
+    assert(!!card, 'the pending card is missing from the activity page');
+    const text = textOf(card);
+    assert(text.includes('2 个窗口'), `expected the window count, got ${JSON.stringify(text.slice(0, 120))}`);
+    assert(text.includes('5 条事件'), 'expected the event count');
+    assert(text.includes('部署窗口'), 'expected the per-window preview');
+    assert(text.includes('已确认'), 'expected the acknowledged count');
+  }, 'the activity page shows the deferred windows that are on disk');
+  await check(async () => {
+    const memoryTree = clickPage('memory');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const fresh = app.render();
+    const card = walk(fresh).nodes.find((n) => n.props && n.props['data-page-card'] === 'pending');
+    assert(!card, 'the pending card leaked onto the memory page');
+  }, 'the pending card stays on the activity page');
 
   // Nothing was dropped: every card from the single long page is still reachable.
   const pages = ['memory', 'context', 'runs', 'settings'];
