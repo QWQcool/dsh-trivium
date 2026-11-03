@@ -3,7 +3,7 @@
 > **动手前先读这一页。** 历史文档里的"当前 / 未发布 / 下一步"以它自己的日期为准，不是今天的指令。
 > 本页只写"现在是什么状态、什么已经验过、什么别再重复"，细节仍在各自文档里。
 
-更新：2026-11-03。发布基线 `release/0.8.4` @ `d83450c`（tag `v0.8.4`）；main 最新 `9ee7a3c`。
+更新：2026-11-03。发布基线 `release/0.8.4` @ `d83450c`（tag `v0.8.4`）；main 在 0.8.3 之后有 20+ 个提交（阶段 0 五项 + 前端三件套 + 阶段 1 七项），见 §8/§10。
 
 ## 1. 发布包与源码
 
@@ -153,8 +153,12 @@ p78 **54/54**，并在本机 DSH 宿主实跑（四页可切、命令面板可�
 | 队列延迟 | 2/5/10 Worker × 50 写：落库全对，p50 8.4 / 24.1 / 50.4 s，**p95 最高 75.3 s**；根因是**每次写都 flush**（直写 188 ms/条、flush 91 ms/次），吞吐上限 ≈5 次/秒，队列本身不是瓶颈 | `S1/QUEUE-2026-11-03/README.md`，`scripts/bench-router-queue.mjs` |
 | 批处理 | `runDeferredWrites` + `flushWorkspaceDb`：Router 每 tick 一批、flush 后才回包；同基准 p95 从 8.4/24.1/75.3 s 降到 **126/165/206 ms**，吞吐 11.8/10.3/6.6 → **518/1025/1462 次/秒**，落库仍全对 | 同上文末「修复后」 |
 | 待补写可见 | `pendingSummary` + `GET /api/dsh-trivium/pending` + 运行记录页「待补写」卡片（窗口数/事件数/已确认/文件时间/每窗口 80 字预览），坏文件降级、读不写盘 | `S1/PENDING-VISIBILITY-2026-11-03/README.md` |
+| 批量导入 | `importExternal` / `addChipsFromText` 包进 `runDeferredWrites` + finally flush：22 条从 2020ms/47 次 flush 降到 **110ms/2 次**（18.4×） | `S1/IMPORT-BATCH-2026-11-03/README.md` |
 | 真机会话复测 | 两种结局都出现：0 分 + 工具证据 → 升 1 分、内容门 `tool-evidence`（「继续。」没被丢）；0 分 + 无工具 → 整窗丢弃 `skippedBy:"screen"`、`screenedOut:2`、**没有发生抽取调用**。一轮 `full/147 token` 原因未定位（未记 `reason`） | `S1/REAL-SESSION-2026-11-03/README.md` |
-| 回归 | `smoke-p80` 22/22、`smoke-p81` 13/13、`smoke-p82` 13/13、`smoke-p78` 56/56、`smoke-p77` 21/21（3 条按新语义更新）、`run-all` **83/83** | — |
+| **三 Worker 验收** | 3 个子进程各在 `repo/item-N`：三条相同的「发布窗口」只存 **1 条**（另两次 `merge`），4 条不同事实全落库，父库种子不重复，三个 item 目录**都没有**自己的库 | `S1/THREE-WORKERS-2026-11-03/README.md` |
+| 继承的读路径 | 实测：Router 持有句柄时，Worker 的只读打开**必然 `unreadable`**（引擎拒绝第二个句柄）→ `readInheritedMap` 改为回退到 Router 的 `map` 操作，返回值新增 `via: "file"｜"router"`；无 Router 时仍返回原来的失败 | 同上 |
+| Router 新操作 | `apply(candidates)`（去重/合并必须在持有数据库的进程里做）与 `map(budget)`（Worker 不必开第二个句柄） | 同上 |
+| 回归 | `smoke-p80` 22/22、`smoke-p81` 16/16、`smoke-p82` 13/13、`smoke-p83` 12/12、`smoke-p84` 14/14、`smoke-p78` 56/56、`smoke-p77` 21/21、`run-all` **85/85** | — |
 
 **为什么写回没做**：实测下 78% 的抽取会推迟，而 work item 目录是短命的——推迟到没人再开库就是静默丢事实。
 写回上级必须由 Router 承担，这是后半（B）的内容。`inherit` 目前**没有任何调用方**，默认路径零变化。
