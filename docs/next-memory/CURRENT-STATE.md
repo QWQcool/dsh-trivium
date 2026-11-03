@@ -151,6 +151,7 @@ p78 **54/54**，并在本机 DSH 宿主实跑（四页可切、命令面板可�
 | Router 原型 | 新增 `lib/router.js`：每工作区一个端点（命名管道/套接字），持有唯一句柄，按到达顺序执行 insert/merge/link/update；`createRouterClient` 返回满足 `MemoryWriter` 端口的 writer，连不上就 `ROUTER_UNAVAILABLE` **不静默回退** | `S1/ROUTER-2026-11-03/README.md` |
 | Router 效果 | 同样 3×10、800ms 轮间隔：锁模式落库 29/17/**8**（50/400/1500ms），Router 三档都是 **30/30**；墙钟更慢是因为把活干完了 | `scripts/bench-lock-contention.mjs --router` |
 | 队列延迟 | 2/5/10 Worker × 50 写：落库全对，p50 8.4 / 24.1 / 50.4 s，**p95 最高 75.3 s**；根因是**每次写都 flush**（直写 188 ms/条、flush 91 ms/次），吞吐上限 ≈5 次/秒，队列本身不是瓶颈 | `S1/QUEUE-2026-11-03/README.md`，`scripts/bench-router-queue.mjs` |
+| 批处理 | `runDeferredWrites` + `flushWorkspaceDb`：Router 每 tick 一批、flush 后才回包；同基准 p95 从 8.4/24.1/75.3 s 降到 **126/165/206 ms**，吞吐 11.8/10.3/6.6 → **518/1025/1462 次/秒**，落库仍全对 | 同上文末「修复后」 |
 | 待补写可见 | `pendingSummary` + `GET /api/dsh-trivium/pending` + 运行记录页「待补写」卡片（窗口数/事件数/已确认/文件时间/每窗口 80 字预览），坏文件降级、读不写盘 | `S1/PENDING-VISIBILITY-2026-11-03/README.md` |
 | 真机会话复测 | 两种结局都出现：0 分 + 工具证据 → 升 1 分、内容门 `tool-evidence`（「继续。」没被丢）；0 分 + 无工具 → 整窗丢弃 `skippedBy:"screen"`、`screenedOut:2`、**没有发生抽取调用**。一轮 `full/147 token` 原因未定位（未记 `reason`） | `S1/REAL-SESSION-2026-11-03/README.md` |
 | 回归 | `smoke-p80` 22/22、`smoke-p81` 13/13、`smoke-p82` 13/13、`smoke-p78` 56/56、`smoke-p77` 21/21（3 条按新语义更新）、`run-all` **83/83** | — |

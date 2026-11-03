@@ -130,6 +130,26 @@ try {
 
   await a.close();
   await b.close();
+
+  /*
+   * 7) Batching: a burst must cost far fewer flushes than writes. One flush is
+   * ~91 ms here, so this is the difference between the queue being usable and
+   * being a 75-second tail.
+   */
+  const ws2 = join(root, 'batched');
+  const handle = await store.openWorkspaceDb(ws2);
+  let flushes = 0;
+  const rawFlush = handle.flush.bind(handle);
+  handle.flush = () => { flushes += 1; return rawFlush(); };
+  const batched = await startRouter({ cwd: ws2, db: handle });
+  const c = createRouterClient({ cwd: ws2 });
+  await c.ready;
+  await Promise.all(Array.from({ length: 20 }, (_, i) => c.writer.insert({ type: 'preference', name: `b-${i}`, text: `b-${i}` })));
+  await check(() => assert.ok(flushes >= 1, 'the batch is flushed at least once'), 'a batch is durable');
+  await check(() => assert.ok(flushes <= 5, `20 writes cost ${flushes} flush(es), not 20`), '20 writes are batched into a few flushes');
+  await check(() => assert.equal(store.findByType(handle, 'preference').length, 20), 'every batched write is present');
+  await c.close();
+  await batched.close();
 } finally {
   await router.close();
   store.closeAll();
