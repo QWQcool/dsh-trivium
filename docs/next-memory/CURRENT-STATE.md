@@ -50,7 +50,7 @@
 4. **REFERENCE 判分通道**：A5 剩 4/5，判分对"先否定后纠正"过严，缺人工语义复核。
 5. **内核版本按机器核对**：办公机已对齐（`0.9.0-beta.3`）；**Administrator 机仍是 0.8.11**，在那台机器上跑出的结论要标"旧内核"。
 6. ~~后续方向与 Super-agent 适配计划~~ **阶段 0 已落地 6/6**（B1/B2/B3/B4/B5 + 作用域）；见 §8 与 `ROADMAP-AND-SUPERAGENT.md`。
-   下一步是阶段 1 的前置：`inherit` 最小实现 + 并发测量（两者都能在本地做，不需要原型跑起来）。
+   阶段 1 前半（A）也已完成：并发实测 + `inherit` 只读继承，见 §10。**下一步是后半（B）：Router 单点写**。
 7. ~~发布 0.8.4 需要先决策~~ **已发布**：走"只发前端"，分支 `release/0.8.4`，记录见 §9。
 8. **阶段 0 没有真机/真实模型验证**：B1/B2/B3/B5 只有离线夹具。下一步要么先在宿主里跑一轮会话
    （看 `lastMapInjection`、`screenedOut`、`stuck` 是否按预期出现），要么先做 B4；两者都不要跳过。
@@ -140,3 +140,15 @@ p78 **54/54**，并在本机 DSH 宿主实跑（四页可切、命令面板可�
 **注意**：`npm publish` 后注册表边缘缓存约几十秒才刷新；期间 `npm view` 仍返回 0.8.3、重复发布报
 `409 Cannot publish over previously staged version`，这两条都**不代表发布失败**，以
 `https://registry.npmjs.org/dsh-trivium/latest` 为准。
+
+## 10. 阶段 1 前半（A）：并发实测 + 只读继承（2026-11-03）
+
+| 项 | 结果 | 证据 |
+|---|---|---|
+| 锁竞争实测 | 3 进程、800ms 轮间隔：抽取 50/400/1500ms 时撞锁率 **19.4% / 52.8% / 77.8%**，三档 **丢写 0**（落库数=成功数） | `S1/CONCURRENCY-2026-11-03/README.md`，`scripts/bench-lock-contention.mjs` |
+| 更硬的限制 | 进程内**缓存读写句柄**，第二个进程直接 `TDB_ERROR: Database locked`；30s TTL 的文件锁在那之后形同虚设 | 同上；真机另见 §8 的 `locked by another DSH instance` |
+| 只读继承 | `inherit` 从"抛错"变成"读父库、写自己"：`resolveScope` 返回 `mode:"read-parent"`，新增 `lib/inherit.js` 的 `inheritedParent` / `readInheritedMap`（只读打开、预算内建图、读完即关、失败降级不抛） | `S1/INHERIT-READ-2026-11-03/README.md` |
+| 回归 | `smoke-p80` 22/22、`smoke-p77` 21/21（3 条按新语义更新）、`run-all` **81/81** | — |
+
+**为什么写回没做**：实测下 78% 的抽取会推迟，而 work item 目录是短命的——推迟到没人再开库就是静默丢事实。
+写回上级必须由 Router 承担，这是后半（B）的内容。`inherit` 目前**没有任何调用方**，默认路径零变化。

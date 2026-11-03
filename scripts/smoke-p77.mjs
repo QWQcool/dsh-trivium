@@ -50,10 +50,13 @@ try {
   await check(() => {
     const r = store.resolveScope(cwd, 'inherit');
     assert.equal(r.scope, 'inherit');
-    assert.equal(r.implemented, false);
-    assert.equal(r.path, null);
+    // Stage 1 part A: inherit is implemented as read-parent, write-local.
+    assert.equal(r.implemented, true);
+    assert.equal(r.mode, 'read-parent');
+    assert.equal(r.path, join(resolve(cwd), '.dsh', 'trivium.tdb'), 'writes stay in the child');
+    assert.equal(r.parentPath, join(dirname(resolve(cwd)), '.dsh', 'trivium.tdb'));
     assert.equal(r.parentCwd, dirname(resolve(cwd)));
-  }, 'inherit resolves but is not implemented');
+  }, 'inherit resolves to read-parent with a local write path');
   await check(() => assert.equal(store.resolveScope(cwd, 'PARENT').scope, 'parent'), 'the scope name is case-insensitive');
   await check(() => assert.equal(store.resolveScope(cwd, '').scope, 'workspace'), 'an empty scope falls back to workspace');
   await check(() => {
@@ -88,17 +91,27 @@ try {
     );
     assert.equal(existsSync(join(cwd, '.dsh')), false, 'a refused scope created nothing');
   }, 'openWorkspaceDb refuses parent scope before creating anything');
+  /*
+   * Stage 1 part A made `inherit` real (read the parent, write locally), so the
+   * "refused" examples here are `parent` — the one scope that still needs the
+   * router. `inherit` is asserted to resolve, below.
+   */
   await check(async () => {
-    await assert.rejects(() => store.openWorkspaceDb(cwd, 'inherit'), (err) => err.code === 'SCOPE_NOT_IMPLEMENTED');
+    await assert.rejects(() => store.openWorkspaceDb(cwd, 'parent'), (err) => err.code === 'SCOPE_NOT_IMPLEMENTED');
   }, 'the bare-string scope form is refused the same way');
   await check(() => {
     try {
-      store.openWorkspaceDbReadOnly(cwd, { scope: 'inherit' });
+      store.openWorkspaceDbReadOnly(cwd, { scope: 'parent' });
       assert.fail('should have thrown');
     } catch (err) {
       assert.equal(err.code, 'SCOPE_NOT_IMPLEMENTED');
     }
   }, 'the read-only opener refuses an unimplemented scope too');
+  await check(async () => {
+    await store.openWorkspaceDb(cwd, 'inherit');
+    assert.equal(store.dbPathFor(cwd, 'inherit'), join(cwd, '.dsh', 'trivium.tdb'));
+    store.closeAll();
+  }, 'inherit opens the local store instead of throwing');
 
   // 4) The default path is the 0.8.3 path, and it is where facts land.
   const db = await store.openWorkspaceDb(cwd);
