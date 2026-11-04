@@ -29,6 +29,16 @@ import { fileURLToPath } from "node:url";
 const SCRIPTS_DIR = dirname(fileURLToPath(import.meta.url));
 const filter = String(process.argv[2] || "").trim().toLowerCase();
 
+// `npm install` prunes the DSH peer packages (the public registry only has a
+// version the peer range rejects), which breaks every script that loads
+// lib/index.js. Repair them before anything runs.
+const { ensurePeers } = await import("./link-peers.mjs");
+const peers = ensurePeers({ root: dirname(SCRIPTS_DIR) });
+const brokenPeers = Object.entries(peers).filter(([, value]) => value === "missing" || String(value).startsWith("failed"));
+if (brokenPeers.length) {
+  console.warn(`peer packages unavailable: ${brokenPeers.map(([name, value]) => `${name}=${value}`).join(", ")}`);
+}
+
 /** smoke-pN.mjs sort by N; p2-cases.mjs sits where a smoke-p2 would. */
 function discover() {
   const rows = [];
