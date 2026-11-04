@@ -12,7 +12,7 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.8.4** ([release notes](docs/release-0.8.4.md)): a settings-surface rebuild with no server behaviour change. `main` additionally carries context-management work (map heat, incremental injection, event screening, stuck detection, a scope parameter) that is **not in the 0.8.4 package**. See the [documentation index](docs/README.md) for verification status.
+The published npm package is **0.8.5** ([release notes](docs/release-0.8.5.md)): the context pipeline (event screening, map heat, incremental map injection, stuck recovery, a visible deferred-write queue), batched writes, and `triviumdb@0.9.0`. Inheritance and the single-writer router ship behind a switch that is off. See the [documentation index](docs/README.md) for verification status.
 
 ---
 
@@ -337,6 +337,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 
 ## Changelog
 
+- [0.8.5](docs/release-0.8.5.md): event screening before the model call, map heat, incremental map injection, stuck/recovered diagnostics, a visible deferred-write queue, batched imports, `triviumdb@0.9.0`. Inheritance and the router ship behind an off switch.
 - [0.8.4](docs/release-0.8.4.md): settings card rebuilt as four pages (memory / context / activity / settings), Ctrl/Cmd+K palette, split detail at wide widths, prototype visual language, grouped settings. No server behaviour change.
 - [0.8.3](docs/release-0.8.3.md): supersede rewrites as a new decision plus a revision edge; long-body tails, date guard and compaction recall fixes.
 - [0.8.2](docs/release-0.8.2.md): extraction and decision-correction fixes; optional approved-preference export and consumer verification.
@@ -373,7 +374,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Published package: `0.8.4` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Published package: `0.8.5` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.1-rc.4` (the peer range also admits the 0.1.x lines)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 
