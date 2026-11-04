@@ -53,9 +53,10 @@
    **阶段 1 也已跑通**：并发实测、只读继承、Router 原型、批处理、待补写可见、三 Worker 验收（见 §10）。
    剩下的都不是"再写代码"能解锁的：Router 常驻化要宿主形态，B6 要你拍板。
 7. ~~发布 0.8.4 需要先决策~~ **已发布**：走"只发前端"，分支 `release/0.8.4`，记录见 §9。
-8. **发 0.8.5 前要补两次真机验证**（阶段 0 的 B1/B3 已在 11-03 真机跑过一次，`stuck`/`recovered` 至今没有真机事件）：
-   ① 抓 `lastMapInjection.reason` 定位那次未解释的 `full/147 token`；② 人为制造一次 stale 锁或 30s 卡顿，
-   确认 `stuck.kind` 与随后的 `recovered` 成对出现。
+8. ~~发 0.8.5 前要补两次真机验证~~ **已补**（`S1/PRE-0.8.5-2026-11-04`）：
+   ① `stuck{kind:"lock-stale"} → recovered{afterMs:35154}` 在真机成对出现，且是**跨会话**配对（靠变更记录 seed）；
+   ② `full/147` 查明是**工作区级诊断 + 多会话覆盖**造成的读法歧义，不是缺陷；但 `lastMapInjection` 不带 session 仍是口径缺陷。
+   仍未验证：`extract-timeout`（30 秒真实挂起）与 `replay-timeout` 两条分支。
 9. **阶段 1 的开关已落地**（`scopeInheritance`，默认关，见 §10）：关掉时 `readInheritedMap` 返回 `disabled`、
    `startRouter` 抛 `SCOPE_DISABLED`，且**在打开句柄之前**就拒绝。开它需要改 `~/.dsh/trivium.json`。
 
