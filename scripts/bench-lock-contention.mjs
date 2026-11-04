@@ -21,11 +21,16 @@
  *   node scripts/bench-lock-contention.mjs 5 10 300     # workers rounds workMs
  */
 import { spawn } from "node:child_process";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const WORKER_FLAG = "--worker";
+
+// Router mode needs the stage 1 switch; child workers inherit this file.
+const benchRoot = mkdtempSync(join(tmpdir(), "trivium-bench-switch-"));
+process.env.DSH_TRIVIUM_SETTINGS = join(benchRoot, "settings.json");
+writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ scopeInheritance: true }), "utf8");
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**

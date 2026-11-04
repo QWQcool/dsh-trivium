@@ -14,11 +14,19 @@
  *   node scripts/bench-router-queue.mjs 10 100     # workers writes
  */
 import { spawn } from "node:child_process";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const CLIENT_FLAG = "--client";
+
+/*
+ * The router is a second writer, so the stage 1 switch gates it (p85). A bench
+ * is exactly the caller that has to opt in; children inherit the same file.
+ */
+const benchRoot = mkdtempSync(join(tmpdir(), "trivium-bench-switch-"));
+process.env.DSH_TRIVIUM_SETTINGS = join(benchRoot, "settings.json");
+writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ scopeInheritance: true }), "utf8");
 
 async function runClient(cwd, writes, label) {
   const { createRouterClient } = await import("../lib/router.js");

@@ -48,7 +48,8 @@
 2. **R3 第三片（同质量净费用）** 前置未满足：第二片要在真实宿主复跑通过（S3 长尾已于 11-01 复测通过，但需补 S2 的边级验证）。
 3. **B站 E1-B**：依赖对方扩展点，我们单方面交付不了。
 4. **REFERENCE 判分通道**：A5 剩 4/5，判分对"先否定后纠正"过严，缺人工语义复核。
-5. **内核版本按机器核对**：办公机已对齐（`0.9.0-beta.3`）；**Administrator 机仍是 0.8.11**，在那台机器上跑出的结论要标"旧内核"。
+5. **内核版本按机器核对**：办公机已升到 **`0.9.0` 正式版**（2026-11-04，见 §11）；**Administrator 机仍是 0.8.11**，
+   在那台机器上跑出的结论要标"旧内核"。
 6. ~~后续方向与 Super-agent 适配计划~~ **阶段 0 已落地 6/6**（B1/B2/B3/B4/B5 + 作用域）；见 §8 与 `ROADMAP-AND-SUPERAGENT.md`。
    **阶段 1 也已跑通**：并发实测、只读继承、Router 原型、批处理、待补写可见、三 Worker 验收（见 §10）。
    剩下的都不是"再写代码"能解锁的：Router 常驻化要宿主形态，B6 要你拍板。
@@ -168,3 +169,18 @@ p78 **54/54**，并在本机 DSH 宿主实跑（四页可切、命令面板可�
 
 **为什么写回没做**：实测下 78% 的抽取会推迟，而 work item 目录是短命的——推迟到没人再开库就是静默丢事实。
 写回上级必须由 Router 承担，这是后半（B）的内容。`inherit` 目前**没有任何调用方**，默认路径零变化。
+
+## 11. 内核 0.9.0 适配（2026-11-04）
+
+| 项 | 结果 |
+|---|---|
+| pin | `triviumdb` 从 `0.9.0-beta.3` 升到 **`0.9.0`** 正式版 |
+| 通过数 | 0.9.0 下改前 **30/86** → 现在 **86/86** |
+| 根因 | 0.9.0 的类型化存储**拒绝 `undefined`**（beta.3 静默丢弃）；我们的 payload 全是展开可选字段造的 |
+| 改法 | `hardenEngine` 在引擎边界统一 prune，写面取自 `triviumdb.d.ts`：`insert / insertWithId / updatePayload / updateEdge / commitTransaction` |
+| 导入 | `commitTransaction` 是第五条写路，p5 的第二次导入曾报 `TRANSACTION_FAILED` |
+| peer | `npm install` 会删掉 `@deepseek-ai/dsh-llm`、`dsh-tools`（registry 只有 0.0.1-rc.1，不满足 peer 范围），`scripts/link-peers.mjs` 在 run-all 启动时自愈 |
+| 性能 | 单写更快（188→155.5 ms/条，flush 91→73.7 ms）；**批量路径更慢**（队列 p95 206→483 ms，吞吐 1462→559 次/秒），仍 0 丢写 |
+| 只读并发 | 0.9.0 **没有**解锁"另一个进程只读打开"：p84 三个 Worker 仍 `via:"router"`，`readInheritedMap` 的回退必须保留 |
+
+证据：`evidence-write-provenance/INFRA/TDB-0.9.0-2026-11-04/README.md`。
