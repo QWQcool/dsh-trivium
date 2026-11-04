@@ -50,10 +50,14 @@
 4. **REFERENCE 判分通道**：A5 剩 4/5，判分对"先否定后纠正"过严，缺人工语义复核。
 5. **内核版本按机器核对**：办公机已对齐（`0.9.0-beta.3`）；**Administrator 机仍是 0.8.11**，在那台机器上跑出的结论要标"旧内核"。
 6. ~~后续方向与 Super-agent 适配计划~~ **阶段 0 已落地 6/6**（B1/B2/B3/B4/B5 + 作用域）；见 §8 与 `ROADMAP-AND-SUPERAGENT.md`。
-   阶段 1 前半（A）也已完成：并发实测 + `inherit` 只读继承，见 §10。**下一步是后半（B）：Router 单点写**。
+   **阶段 1 也已跑通**：并发实测、只读继承、Router 原型、批处理、待补写可见、三 Worker 验收（见 §10）。
+   剩下的都不是"再写代码"能解锁的：Router 常驻化要宿主形态，B6 要你拍板。
 7. ~~发布 0.8.4 需要先决策~~ **已发布**：走"只发前端"，分支 `release/0.8.4`，记录见 §9。
-8. **阶段 0 没有真机/真实模型验证**：B1/B2/B3/B5 只有离线夹具。下一步要么先在宿主里跑一轮会话
-   （看 `lastMapInjection`、`screenedOut`、`stuck` 是否按预期出现），要么先做 B4；两者都不要跳过。
+8. **发 0.8.5 前要补两次真机验证**（阶段 0 的 B1/B3 已在 11-03 真机跑过一次，`stuck`/`recovered` 至今没有真机事件）：
+   ① 抓 `lastMapInjection.reason` 定位那次未解释的 `full/147 token`；② 人为制造一次 stale 锁或 30s 卡顿，
+   确认 `stuck.kind` 与随后的 `recovered` 成对出现。
+9. **阶段 1 的开关已落地**（`scopeInheritance`，默认关，见 §10）：关掉时 `readInheritedMap` 返回 `disabled`、
+   `startRouter` 抛 `SCOPE_DISABLED`，且**在打开句柄之前**就拒绝。开它需要改 `~/.dsh/trivium.json`。
 
 ## 5. 别再重复做的实验
 
@@ -158,7 +162,8 @@ p78 **54/54**，并在本机 DSH 宿主实跑（四页可切、命令面板可�
 | **三 Worker 验收** | 3 个子进程各在 `repo/item-N`：三条相同的「发布窗口」只存 **1 条**（另两次 `merge`），4 条不同事实全落库，父库种子不重复，三个 item 目录**都没有**自己的库 | `S1/THREE-WORKERS-2026-11-03/README.md` |
 | 继承的读路径 | 实测：Router 持有句柄时，Worker 的只读打开**必然 `unreadable`**（引擎拒绝第二个句柄）→ `readInheritedMap` 改为回退到 Router 的 `map` 操作，返回值新增 `via: "file"｜"router"`；无 Router 时仍返回原来的失败 | 同上 |
 | Router 新操作 | `apply(candidates)`（去重/合并必须在持有数据库的进程里做）与 `map(budget)`（Worker 不必开第二个句柄） | 同上 |
-| 回归 | `smoke-p80` 22/22、`smoke-p81` 16/16、`smoke-p82` 13/13、`smoke-p83` 12/12、`smoke-p84` 14/14、`smoke-p78` 56/56、`smoke-p77` 21/21、`run-all` **85/85** | — |
+| 回滚开关 | `scopeInheritance`（默认关）：关掉时 `readInheritedMap` → `reason:"disabled"`、`startRouter`/`createRouterClient` → `SCOPE_DISABLED`，都在**开句柄/连管道之前**；`allow` 参数可显式覆盖文件（两个方向都测了）；默认写路径与 0.8.3 逐字节一致 | `smoke-p85` 17/17 |
+| 回归 | `smoke-p80` 22/22、`smoke-p81` 16/16、`smoke-p82` 13/13、`smoke-p83` 12/12、`smoke-p84` 14/14、`smoke-p85` 17/17、`smoke-p78` 56/56、`smoke-p77` 21/21、`run-all` **86/86** | — |
 
 **为什么写回没做**：实测下 78% 的抽取会推迟，而 work item 目录是短命的——推迟到没人再开库就是静默丢事实。
 写回上级必须由 Router 承担，这是后半（B）的内容。`inherit` 目前**没有任何调用方**，默认路径零变化。

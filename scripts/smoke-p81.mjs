@@ -14,7 +14,7 @@
  *   6. after `close()` the endpoint is gone, and a later client fails the same way.
  */
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { connect as connectRaw } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -22,6 +22,8 @@ import { join } from 'node:path';
 const root = mkdtempSync(join(tmpdir(), 'trivium-p81-'));
 process.env.DSH_HOME = join(root, 'home');
 process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
+// The router is a second writer, so it is gated by the stage 1 switch (p85).
+writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ scopeInheritance: true }), 'utf8');
 
 const store = await import('../lib/store.js');
 const { createRouterClient, routerEndpoint, startRouter } = await import('../lib/router.js');

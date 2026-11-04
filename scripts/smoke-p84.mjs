@@ -20,7 +20,7 @@
  */
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -98,6 +98,10 @@ if (process.argv[2] === WORKER_FLAG) {
 const root = mkdtempSync(join(tmpdir(), 'trivium-p84-'));
 process.env.DSH_HOME = join(root, 'home');
 process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
+// Both the router and the inherited read sit behind the stage 1 switch; the
+// children inherit this env var and therefore the same setting (p85 pins the off
+// default).
+writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ scopeInheritance: true }), 'utf8');
 
 const store = await import('../lib/store.js');
 const { startRouter } = await import('../lib/router.js');

@@ -16,13 +16,15 @@
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const root = mkdtempSync(join(tmpdir(), 'trivium-p80-'));
 process.env.DSH_HOME = join(root, 'home');
 process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
+// Stage 1 is behind a switch that defaults to off (p85 pins the default).
+writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ scopeInheritance: true }), 'utf8');
 
 const store = await import('../lib/store.js');
 const inherit = await import('../lib/inherit.js');
