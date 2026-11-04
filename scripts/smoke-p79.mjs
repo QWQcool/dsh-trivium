@@ -101,7 +101,7 @@ try {
   await check(() => {
     extract.applyCandidates(
       db,
-      [{ type: 'preference', text: `${stored.text} 另外别再改。`, name: stored.name || '部署窗口' }],
+      [{ type: 'preference', text: `${stored.text} 目前仍然如此。`, name: stored.name || '部署窗口' }],
       { sessionId: 'p79', writer: mergeRecorder },
     );
     assert.ok(mergeRecorder.calls.includes('merge'), `calls: ${mergeRecorder.calls.join(',')}`);

@@ -94,9 +94,62 @@ try {
     assert.equal(same, true);
   }, 'latin bodies work too');
 
-  // The merger is wired into the store, not just exported.
+  /*
+   * The four regressions an external audit found on 2026-11-04 (F1). Each one used
+   * to merge and would have retired a fact without a revision chain.
+   */
+  await check(() => {
+    const { same, reason } = identity.sameFact(fact('记住：重试间隔固定为 1.5 秒。'), fact('记住：重试间隔固定为 5.1 秒。'));
+    assert.equal(same, false, `decimals must not collapse (${reason})`);
+    assert.equal(reason, 'value-conflict');
+  }, 'a decimal change is a different fact');
+  await check(() => {
+    // Names that share only a generic word ("环境") are not the same subject.
+    const { same } = identity.sameFact(
+      { type: 'preference', name: '生产环境依赖管理', text: '记住：生产环境统一使用 npm 管理依赖。' },
+      { type: 'preference', name: '测试环境依赖管理', text: '记住：测试环境统一使用 pnpm 管理依赖。' },
+    );
+    assert.equal(same, false, 'a different environment is a different fact');
+  }, 'a generic name token ("环境") does not make two subjects the same');
+  await check(() => {
+    const { same, reason } = identity.sameFact(
+      fact('记住：项目日志文件固定保留十六天后自动删除。'),
+      fact('记住：项目日志文件固定保留六十天后自动删除。'),
+    );
+    assert.equal(same, false, `CJK numerals must be read as numbers (${reason})`);
+    assert.equal(reason, 'value-conflict');
+  }, '十六 and 六十 are different numbers, not the same characters');
+  await check(() => {
+    assert.equal(identity.isNegated("The build don't cache the artefacts."), true);
+    assert.equal(identity.isNegated('The build caches the artefacts.'), false);
+  }, "an apostrophe negation is recognised before normalisation");
+  await check(() => {
+    assert.equal(identity.cjkNumber('十六'), 16);
+    assert.equal(identity.cjkNumber('六十'), 60);
+    assert.equal(identity.cjkNumber('一百二十'), 120);
+  }, 'CJK numerals are read as one number');
+
+  /*
+   * Fuzzy merging ships **off** (external audit F1: a threshold tuned on hand-written
+   * samples cannot separate a rewrite from a correction, and a merge retires the
+   * old fact). The default path must therefore behave exactly like 0.8.4.
+   */
   const db = await store.openWorkspaceDb(join(root, 'ws'));
   try {
+    await check(() => {
+      const applied = extract.applyCandidates(
+        db,
+        [{ type: 'preference', name: '部署窗口', text: '记住：发布窗口固定在每周四晚上。' }],
+        { sessionId: 'p87' },
+      );
+      assert.equal(applied[0].action, 'insert');
+      const second = extract.applyCandidates(
+        db,
+        [{ type: 'preference', name: '部署窗口', text: '记住：每周四晚上是发布窗口。' }],
+        { sessionId: 'p87' },
+      );
+      assert.equal(second[0].action, 'insert', 'fuzzy merging must be off by default');
+    }, 'by default a paraphrase is stored separately, like 0.8.4');
     // Candidate texts carry an explicit cue, because the write filter drops lines
     // without one — that rule is unrelated to identity and would mask it here.
     const first = extract.applyCandidates(
