@@ -32,9 +32,19 @@ async function check(fn, label) {
 const turn = (text, role = 'user', extra = {}) => ({ role, text, seq: 1, messageId: 'm1', at: '2026-11-02T09:00:00.000Z', recorded: true, ...extra });
 
 try {
-  // 1) Whitelist zeroes: the whole utterance has to match.
-  for (const text of ['继续。', '好的', 'ok', '/compact', 'git status', 'npm test', 'C:\\proj\\readme.md', '~/proj', '/tmp/build.sh', 'https://example.com/a?b=1']) {
+  /*
+   * 1) Only empty input and the two filler lists may be zero now.
+   *
+   * Audit F2 (2026-11-04): a command name followed by words is still a sentence
+   * ("npm is the package manager for this project" used to score 0), a single
+   * character can confirm the previous decision, and a path or URL can be the fact
+   * itself. A false zero loses a fact; a false 1 only costs a call we already paid.
+   */
+  for (const text of ['继续。', '好的', 'ok']) {
     await check(() => assert.equal(extract.screenEvent(text), 0), `0: ${text}`);
+  }
+  for (const text of ['/compact', 'git status', 'npm test', 'C:\\proj\\readme.md', '~/proj', '/tmp/build.sh', 'https://example.com/a?b=1']) {
+    await check(() => assert.equal(extract.screenEvent(text), 1), `1: ${text}`);
   }
   // Stated facts score 2 so they go to the front of the batch.
   for (const text of ['记住，以后都用 pnpm。', '采用方案 A 做登录。', '从现在起回复用中文。']) {
@@ -94,11 +104,16 @@ try {
   );
   await check(() => assert.equal(screened.turns[screened.turns.length - 1].role, 'tool'), 'the 0-with-tool group moves behind the 2s');
   await check(() => {
+    /*
+     * Audit F2 (2026-11-04): a zero group is only dropped when the **whole** window
+     * is zero. In a mixed window it travels with the rest, because dropping it is
+     * how a fact sitting in a short reply got lost.
+     */
     const only = extract.screenTurns([turn('git status'), turn('exit 0', 'tool', { text: 'exit 0' }), turn('继续。')]);
-    assert.equal(only.turns.length, 2);
-    assert.equal(only.dropped.length, 1);
-    assert.equal(only.dropped[0].text, '继续。');
-  }, 'a pure greeting with no tool evidence is dropped');
+    assert.equal(only.turns.length, 3, 'the zero group stays in a mixed window');
+    assert.equal(only.dropped.length, 0);
+    assert.equal(only.audit.length, 1, 'the zero is still recorded');
+  }, 'a mixed window keeps its greeting instead of deleting it');
   await check(() => {
     const empty = extract.screenTurns([turn('好的'), turn('收到')]);
     assert.equal(empty.turns.length, 0);
@@ -134,10 +149,19 @@ try {
   const baseline = await runCorpus('baseline', false);
   const treated = await runCorpus('screened', true);
   const drop = baseline.calls ? (baseline.calls - treated.calls) / baseline.calls : 0;
-  await check(
-    () => assert.ok(drop >= 0.2),
-    `model calls drop by >= 20% (${baseline.calls} -> ${treated.calls}, ${(drop * 100).toFixed(1)}%)`,
-  );
+  /*
+   * Audit F2 (2026-11-04) removed the command/path/URL zeros, so this corpus — which
+   * is mostly shell commands — no longer saves calls. That is the accepted trade:
+   * a false zero loses a fact, a false 1 costs a call the plugin already paid.
+   * Screening now only pays off on windows that are pure filler.
+   */
+  await check(() => assert.ok(treated.calls <= baseline.calls), 'screening never adds a model call');
+  console.log(`   corpus calls: ${baseline.calls} -> ${treated.calls} (${(drop * 100).toFixed(1)}% saved on a command-heavy corpus)`);
+  await check(() => {
+    const filler = extract.screenTurns([turn('继续。'), turn('好的'), turn('收到')]);
+    assert.equal(filler.turns.length, 0);
+    assert.equal(filler.counts.scored0, 3);
+  }, 'a filler-only window still costs nothing');
   await check(() => assert.deepEqual(treated.applied, baseline.applied), 'the extracted facts are identical');
   await check(() => assert.ok(treated.applied.length >= 10), `the corpus really produced hits (${treated.applied.length})`);
   await check(() => assert.ok(treated.calls <= baseline.calls), 'screening never adds a model call');
