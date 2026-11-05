@@ -28,6 +28,15 @@ if (!source || !existsSync(source)) {
   process.exit(2);
 }
 const groupFiles = readdirSync(source).filter((name) => name.startsWith("trivium.tdb"));
+/*
+ * Second audit (2026-11-05): an empty directory produced `groupFiles: 0` and then
+ * `ok: true` — the script created a fresh library and called it an upgrade drill.
+ * A drill has to refuse a source that is not a library.
+ */
+if (!groupFiles.includes("trivium.tdb")) {
+  console.error(JSON.stringify({ ok: false, error: "source is not a library: trivium.tdb is missing", source, groupFiles }, null, 2));
+  process.exit(2);
+}
 
 const root = mkdtempSync(join(tmpdir(), "trivium-upgrade-"));
 process.env.DSH_HOME = join(root, "home");
@@ -47,12 +56,28 @@ const step = (name, value) => {
   return value;
 };
 
+/** Content fingerprint: ids, type/name/text of every node, plus the edge count. */
 const snapshot = (db) => {
   const graph = store.exportGraph(db);
-  return { nodes: graph.nodes.length, edges: graph.edges.length };
+  const rows = (graph.nodes || [])
+    .map((node) => {
+      const p = node.payload || {};
+      return `${node.id}|${p.type || ""}|${p.name || ""}|${String(p.text || "").slice(0, 60)}`;
+    })
+    .sort();
+  return { nodes: graph.nodes.length, edges: graph.edges.length, rows, digest: rows.join("\n") };
 };
 
 try {
+  /*
+   * Backup the **pre-upgrade** group first (second audit: the old script backed up
+   * after 0.9.0 had already opened and written, which proves nothing about
+   * restoring what the user had before the upgrade).
+   */
+  const original = join(root, "original");
+  mkdirSync(original, { recursive: true });
+  for (const name of groupFiles) copyFileSync(join(source, name), join(original, name));
+
   // 1) Open the historical file as-is.
   const first = await store.openWorkspaceDb(ws);
   const before = step("open-historic", snapshot(first));
@@ -71,21 +96,22 @@ try {
     step("written-node-readable", Boolean(second.get(Number(id))));
     step("kept-historic-nodes", after.nodes >= before.nodes + 1);
 
-    // 3) Backup / restore drill: copy the **whole group**, never one file.
-    const backup = join(root, "backup");
-    mkdirSync(backup, { recursive: true });
-    for (const name of readdirSync(join(ws, ".dsh"))) {
-      if (name.startsWith("trivium.tdb")) copyFileSync(join(ws, ".dsh", name), join(backup, name));
-    }
-    store.insertNode(second, { type: "preference", name: "f5-after-backup", text: "记住：备份之后写入的一条事实。" });
+    /*
+     * 3) Restore the **pre-upgrade** backup and check the content, not the count.
+     *
+     * This is the path a user actually needs: "I upgraded, something went wrong, put
+     * back what I had". Whether the *old kernel* can then read it is the remaining
+     * gap — it is reported separately and is not claimed here.
+     */
     store.closeAll();
     for (const name of readdirSync(join(ws, ".dsh"))) {
-      if (name.startsWith("trivium.tdb") && !existsSync(join(backup, name))) rmSync(join(ws, ".dsh", name), { force: true });
+      if (name.startsWith("trivium.tdb")) rmSync(join(ws, ".dsh", name), { force: true });
     }
-    for (const name of readdirSync(backup)) copyFileSync(join(backup, name), join(ws, ".dsh", name));
+    for (const name of readdirSync(original)) copyFileSync(join(original, name), join(ws, ".dsh", name));
     const third = await store.openWorkspaceDb(ws);
-    const restored = step("restore", snapshot(third));
-    step("restore-dropped-the-later-write", restored.nodes === after.nodes);
+    const restored = step("restore-original", snapshot(third));
+    step("restore-matches-original-content", restored.digest === before.digest);
+    step("restored-after-upgrade-write", after.nodes === before.nodes + 1);
     store.closeAll();
   } else {
     store.closeAll();

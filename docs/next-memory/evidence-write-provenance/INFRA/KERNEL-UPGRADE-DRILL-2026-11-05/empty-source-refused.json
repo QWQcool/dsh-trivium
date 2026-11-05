@@ -1,0 +1,6 @@
+{
+  "ok": false,
+  "error": "source is not a library: trivium.tdb is missing",
+  "source": ".tmp/empty-src",
+  "groupFiles": []
+}

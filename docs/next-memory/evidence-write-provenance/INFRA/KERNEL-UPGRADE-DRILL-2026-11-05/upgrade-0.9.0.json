@@ -1,0 +1,120 @@
+{
+  "kernel": "0.9.0",
+  "source": ".dsh",
+  "groupFiles": 10,
+  "steps": [
+    {
+      "name": "open-historic",
+      "value": {
+        "nodes": 16,
+        "edges": 17,
+        "rows": [
+          "10|episode|当前|请用 ctx_remember 工具把这条事实存入长期记忆：DeepSeek_Harness 仓库的兜底启动端口是 30",
+          "11|entity|DeepSeek_Harness 兜底启动端口|DeepSeek_Harness 仓库的兜底启动端口是 3090，官方桌面端不占用 HTTP 端口。",
+          "12|episode|当前|之前让你记的 DeepSeek_Harness 兜底启动端口是多少？先用 ctx_find 查一下再回答，一句话即可。",
+          "13|episode|当前|",
+          "14|experience|grep|grep failed then succeeded",
+          "15|experience|read|read failed then succeeded",
+          "16|episode|当前|",
+          "1|workspace|C:\\Users\\v_chchsli\\Desktop\\dsh-trivium|workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium",
+          "2|episode|当前|如果从左边那个检查点分叉，子会话会带着刚才那三条约定吗？一句话。",
+          "3|entity|dsh-trivium 芯片与会话层默认关|dsh-trivium 的芯片标签和会话层默认都是关，需在设置里打开并重启 dsh web 才生效。",
+          "4|entity|dsh-trivium 记忆文件位置|dsh-trivium 记忆存放在当前工作区 .dsh/trivium.tdb。",
+          "5|decision|dsh-trivium 卸载删除记忆行为|dsh plugin remove 卸载 dsh-trivium 会删掉工作区 .dsh/trivium.tdb 和 ~",
+          "6|episode|已压缩|先记这三条：芯片和会话层都默认关，要在设置里打开并重启；记忆在工作区 .dsh/trivium.tdb；dsh plug",
+          "7|episode|当前|用两句话介绍 dsh-trivium：默认为什么静，卸载会带走什么。",
+          "8|preference||演示口令：下一句回答开头必须是「芯片在线」。",
+          "9|episode|当前|"
+        ],
+        "digest": "10|episode|当前|请用 ctx_remember 工具把这条事实存入长期记忆：DeepSeek_Harness 仓库的兜底启动端口是 30\n11|entity|DeepSeek_Harness 兜底启动端口|DeepSeek_Harness 仓库的兜底启动端口是 3090，官方桌面端不占用 HTTP 端口。\n12|episode|当前|之前让你记的 DeepSeek_Harness 兜底启动端口是多少？先用 ctx_find 查一下再回答，一句话即可。\n13|episode|当前|\n14|experience|grep|grep failed then succeeded\n15|experience|read|read failed then succeeded\n16|episode|当前|\n1|workspace|C:\\Users\\v_chchsli\\Desktop\\dsh-trivium|workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\n2|episode|当前|如果从左边那个检查点分叉，子会话会带着刚才那三条约定吗？一句话。\n3|entity|dsh-trivium 芯片与会话层默认关|dsh-trivium 的芯片标签和会话层默认都是关，需在设置里打开并重启 dsh web 才生效。\n4|entity|dsh-trivium 记忆文件位置|dsh-trivium 记忆存放在当前工作区 .dsh/trivium.tdb。\n5|decision|dsh-trivium 卸载删除记忆行为|dsh plugin remove 卸载 dsh-trivium 会删掉工作区 .dsh/trivium.tdb 和 ~\n6|episode|已压缩|先记这三条：芯片和会话层都默认关，要在设置里打开并重启；记忆在工作区 .dsh/trivium.tdb；dsh plug\n7|episode|当前|用两句话介绍 dsh-trivium：默认为什么静，卸载会带走什么。\n8|preference||演示口令：下一句回答开头必须是「芯片在线」。\n9|episode|当前|"
+      }
+    },
+    {
+      "name": "file-bytes",
+      "value": 1065
+    },
+    {
+      "name": "read-sample",
+      "value": [
+        {
+          "id": 8,
+          "text": "演示口令：下一句回答开头必须是「芯片在线」。"
+        }
+      ]
+    },
+    {
+      "name": "write",
+      "value": 32
+    },
+    {
+      "name": "reopen",
+      "value": {
+        "nodes": 17,
+        "edges": 18,
+        "rows": [
+          "10|episode|当前|请用 ctx_remember 工具把这条事实存入长期记忆：DeepSeek_Harness 仓库的兜底启动端口是 30",
+          "11|entity|DeepSeek_Harness 兜底启动端口|DeepSeek_Harness 仓库的兜底启动端口是 3090，官方桌面端不占用 HTTP 端口。",
+          "12|episode|当前|之前让你记的 DeepSeek_Harness 兜底启动端口是多少？先用 ctx_find 查一下再回答，一句话即可。",
+          "13|episode|当前|",
+          "14|experience|grep|grep failed then succeeded",
+          "15|experience|read|read failed then succeeded",
+          "16|episode|当前|",
+          "1|workspace|C:\\Users\\v_chchsli\\Desktop\\dsh-trivium|workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium",
+          "2|episode|当前|如果从左边那个检查点分叉，子会话会带着刚才那三条约定吗？一句话。",
+          "32|preference|f5-upgrade|记住：升级演练写入的一条事实。",
+          "3|entity|dsh-trivium 芯片与会话层默认关|dsh-trivium 的芯片标签和会话层默认都是关，需在设置里打开并重启 dsh web 才生效。",
+          "4|entity|dsh-trivium 记忆文件位置|dsh-trivium 记忆存放在当前工作区 .dsh/trivium.tdb。",
+          "5|decision|dsh-trivium 卸载删除记忆行为|dsh plugin remove 卸载 dsh-trivium 会删掉工作区 .dsh/trivium.tdb 和 ~",
+          "6|episode|已压缩|先记这三条：芯片和会话层都默认关，要在设置里打开并重启；记忆在工作区 .dsh/trivium.tdb；dsh plug",
+          "7|episode|当前|用两句话介绍 dsh-trivium：默认为什么静，卸载会带走什么。",
+          "8|preference||演示口令：下一句回答开头必须是「芯片在线」。",
+          "9|episode|当前|"
+        ],
+        "digest": "10|episode|当前|请用 ctx_remember 工具把这条事实存入长期记忆：DeepSeek_Harness 仓库的兜底启动端口是 30\n11|entity|DeepSeek_Harness 兜底启动端口|DeepSeek_Harness 仓库的兜底启动端口是 3090，官方桌面端不占用 HTTP 端口。\n12|episode|当前|之前让你记的 DeepSeek_Harness 兜底启动端口是多少？先用 ctx_find 查一下再回答，一句话即可。\n13|episode|当前|\n14|experience|grep|grep failed then succeeded\n15|experience|read|read failed then succeeded\n16|episode|当前|\n1|workspace|C:\\Users\\v_chchsli\\Desktop\\dsh-trivium|workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\n2|episode|当前|如果从左边那个检查点分叉，子会话会带着刚才那三条约定吗？一句话。\n32|preference|f5-upgrade|记住：升级演练写入的一条事实。\n3|entity|dsh-trivium 芯片与会话层默认关|dsh-trivium 的芯片标签和会话层默认都是关，需在设置里打开并重启 dsh web 才生效。\n4|entity|dsh-trivium 记忆文件位置|dsh-trivium 记忆存放在当前工作区 .dsh/trivium.tdb。\n5|decision|dsh-trivium 卸载删除记忆行为|dsh plugin remove 卸载 dsh-trivium 会删掉工作区 .dsh/trivium.tdb 和 ~\n6|episode|已压缩|先记这三条：芯片和会话层都默认关，要在设置里打开并重启；记忆在工作区 .dsh/trivium.tdb；dsh plug\n7|episode|当前|用两句话介绍 dsh-trivium：默认为什么静，卸载会带走什么。\n8|preference||演示口令：下一句回答开头必须是「芯片在线」。\n9|episode|当前|"
+      }
+    },
+    {
+      "name": "written-node-readable",
+      "value": true
+    },
+    {
+      "name": "kept-historic-nodes",
+      "value": true
+    },
+    {
+      "name": "restore-original",
+      "value": {
+        "nodes": 16,
+        "edges": 17,
+        "rows": [
+          "10|episode|当前|请用 ctx_remember 工具把这条事实存入长期记忆：DeepSeek_Harness 仓库的兜底启动端口是 30",
+          "11|entity|DeepSeek_Harness 兜底启动端口|DeepSeek_Harness 仓库的兜底启动端口是 3090，官方桌面端不占用 HTTP 端口。",
+          "12|episode|当前|之前让你记的 DeepSeek_Harness 兜底启动端口是多少？先用 ctx_find 查一下再回答，一句话即可。",
+          "13|episode|当前|",
+          "14|experience|grep|grep failed then succeeded",
+          "15|experience|read|read failed then succeeded",
+          "16|episode|当前|",
+          "1|workspace|C:\\Users\\v_chchsli\\Desktop\\dsh-trivium|workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium",
+          "2|episode|当前|如果从左边那个检查点分叉，子会话会带着刚才那三条约定吗？一句话。",
+          "3|entity|dsh-trivium 芯片与会话层默认关|dsh-trivium 的芯片标签和会话层默认都是关，需在设置里打开并重启 dsh web 才生效。",
+          "4|entity|dsh-trivium 记忆文件位置|dsh-trivium 记忆存放在当前工作区 .dsh/trivium.tdb。",
+          "5|decision|dsh-trivium 卸载删除记忆行为|dsh plugin remove 卸载 dsh-trivium 会删掉工作区 .dsh/trivium.tdb 和 ~",
+          "6|episode|已压缩|先记这三条：芯片和会话层都默认关，要在设置里打开并重启；记忆在工作区 .dsh/trivium.tdb；dsh plug",
+          "7|episode|当前|用两句话介绍 dsh-trivium：默认为什么静，卸载会带走什么。",
+          "8|preference||演示口令：下一句回答开头必须是「芯片在线」。",
+          "9|episode|当前|"
+        ],
+        "digest": "10|episode|当前|请用 ctx_remember 工具把这条事实存入长期记忆：DeepSeek_Harness 仓库的兜底启动端口是 30\n11|entity|DeepSeek_Harness 兜底启动端口|DeepSeek_Harness 仓库的兜底启动端口是 3090，官方桌面端不占用 HTTP 端口。\n12|episode|当前|之前让你记的 DeepSeek_Harness 兜底启动端口是多少？先用 ctx_find 查一下再回答，一句话即可。\n13|episode|当前|\n14|experience|grep|grep failed then succeeded\n15|experience|read|read failed then succeeded\n16|episode|当前|\n1|workspace|C:\\Users\\v_chchsli\\Desktop\\dsh-trivium|workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\n2|episode|当前|如果从左边那个检查点分叉，子会话会带着刚才那三条约定吗？一句话。\n3|entity|dsh-trivium 芯片与会话层默认关|dsh-trivium 的芯片标签和会话层默认都是关，需在设置里打开并重启 dsh web 才生效。\n4|entity|dsh-trivium 记忆文件位置|dsh-trivium 记忆存放在当前工作区 .dsh/trivium.tdb。\n5|decision|dsh-trivium 卸载删除记忆行为|dsh plugin remove 卸载 dsh-trivium 会删掉工作区 .dsh/trivium.tdb 和 ~\n6|episode|已压缩|先记这三条：芯片和会话层都默认关，要在设置里打开并重启；记忆在工作区 .dsh/trivium.tdb；dsh plug\n7|episode|当前|用两句话介绍 dsh-trivium：默认为什么静，卸载会带走什么。\n8|preference||演示口令：下一句回答开头必须是「芯片在线」。\n9|episode|当前|"
+      }
+    },
+    {
+      "name": "restore-matches-original-content",
+      "value": true
+    },
+    {
+      "name": "restored-after-upgrade-write",
+      "value": true
+    }
+  ],
+  "ok": true
+}

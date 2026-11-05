@@ -27,8 +27,8 @@ The earlier 30 → 10 figure only held while commands counted as zero, and no lo
 - facts reached through `ctx_find` / `ctx_read` gain heat and take the map's slots (before, the map was
   insertion-ordered and the oldest facts could never appear);
 - the map carries a version per session: unchanged means **0 tokens** (before, it was injected once at session
-  start and then went stale), changed means a summary line plus at most six diff lines, and a full copy every
-  six turns;
+  start and then went stale), changed means a summary line plus diff lines **clipped to the map budget** (the tail
+  is dropped and replaced by “…N more changes”), and a full copy every six turns;
 - the **Context** page shows the real delivery ledger and a read-only probe; **Activity** shows the last
   injection's mode / reason / tokens.
 
