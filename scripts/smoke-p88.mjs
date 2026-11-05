@@ -88,9 +88,19 @@ try {
     const diff = index.buildMapDiff(previous, report, { tokenBudget: 400 });
     const used = tokens.estimateTokens(diff.text);
     assert.ok(used <= 400, `diff stays inside the budget (${used})`);
+    /*
+     * A budget smaller than the header must produce **no text at all**, not a
+     * header that overruns it (second audit measured 31 tokens against a 20-token
+     * budget). No `|| lines === 1` escape hatch: the budget is the contract.
+     */
     const tight = index.buildMapDiff(previous, report, { tokenBudget: 40 });
-    assert.ok(tokens.estimateTokens(tight.text) <= 40 || tight.lines === 1, `a 40-token budget is honoured (${tokens.estimateTokens(tight.text)})`);
+    const tightTokens = tokens.estimateTokens(tight.text);
+    assert.ok(tightTokens <= 40, `a 40-token budget is honoured (${tightTokens})`);
     assert.ok(tight.omitted > 0, `clipping reports how many rows it dropped (${tight.omitted})`);
+    assert.equal(tight.omitted, tight.added + tight.changed + tight.removed, 'omitted counts every change that was not printed');
+    const tooSmall = index.buildMapDiff(previous, report, { tokenBudget: 5 });
+    assert.equal(tooSmall.text, '', 'a budget below the header injects nothing');
+    assert.ok(tooSmall.omitted > 0);
   }, 'a large diff is clipped to the map budget');
   await check(() => {
     const previous = { version: 'v1', entries: [] };

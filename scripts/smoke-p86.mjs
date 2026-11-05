@@ -113,6 +113,27 @@ try {
     const without = budget.mapTurnKeyOf([user('跑一下')]);
     assert.equal(withTool, without);
   }, 'tool results do not start a new turn');
+  /*
+   * Second audit (2026-11-05): a pre-step with no user message handed "" to the
+   * ledger, which read as a new turn and re-granted the whole budget (300 spent,
+   * then another 138 injected in the same turn). The helper has to carry the open
+   * turn forward, and the budget must not move.
+   */
+  await check(async () => {
+    const ledger = await import('../lib/turn-ledger.js');
+    const session = 'p86-ledger';
+    const key = 't:1';
+    ledger.beginTurn(session, key);
+    // Spending is visible through the delivered set, which is what `beginTurn`
+    // clears when it believes a new turn started.
+    ledger.deliveredOf(session, key).add(7);
+    const carried = ledger.resolveTurnKeyForLedger('', session);
+    assert.equal(carried, key, 'an empty observation carries the open turn');
+    const state = ledger.beginTurn(session, carried);
+    assert.equal(state.turnKey, key, 'the ledger stays on the same turn');
+    assert.equal(ledger.deliveredOf(session, carried).has(7), true, 'delivered records are not reset');
+  }, 'a pre-step without a user message does not restart the turn budget');
+
   await check(() => assert.equal(budget.mapTurnKeyOf([]), ''), 'no messages means no turn');
   await check(() => assert.equal(budget.mapTurnKeyOf([assistant('只有助手')]), ''), 'assistant-only is not a turn');
 } finally {
