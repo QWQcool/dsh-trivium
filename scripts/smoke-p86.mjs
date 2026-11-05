@@ -45,11 +45,44 @@ try {
 
   // The regression: fresh objects, same text, no ids.
   await check(() => {
-    const first = budget.mapTurnKeyOf([user('记住：发布前跑全量回归。')]);
-    const second = budget.mapTurnKeyOf([user('记住：发布前跑全量回归。'), assistant('好的。')]);
+    budget.resetTurnKeys();
+    const first = budget.mapTurnKeyOf([user('记住：发布前跑全量回归。')], { sessionId: 's1' });
+    const second = budget.mapTurnKeyOf([user('记住：发布前跑全量回归。'), assistant('好的。')], { sessionId: 's1' });
     assert.equal(first, second);
-    assert.ok(first.startsWith('txt:'), `expected the text fallback, got ${first}`);
+    assert.ok(first.startsWith('t:'), `expected the turn counter fallback, got ${first}`);
   }, 'the same user text keeps one key across pre-steps');
+  /*
+   * Audit F4 (2026-11-04): the two failures the reviewer reproduced.
+   */
+  await check(() => {
+    budget.resetTurnKeys();
+    const two = budget.mapTurnKeyOf([user('第一句'), user('第二句')], { sessionId: 's2' });
+    // The window shrank (compaction / fixed-length history) but the last message is
+    // the same: still the same turn, so the spent budget must not come back.
+    const truncated = budget.mapTurnKeyOf([user('第二句')], { sessionId: 's2' });
+    assert.equal(truncated, two, 'a shorter history is not a new turn');
+  }, 'truncating the history does not start a new turn');
+  await check(() => {
+    budget.resetTurnKeys();
+    const first = budget.mapTurnKeyOf([user('继续。')], { sessionId: 's3' });
+    // A fixed-length window that always shows the same text: we cannot tell a new
+    // message from the same one, so the turn is kept (see the note in the module).
+    const again = budget.mapTurnKeyOf([user('继续。')], { sessionId: 's3' });
+    assert.equal(again, first, 'an unchanged fixed window stays one turn');
+  }, 'a fixed-length window with identical text does not fake new turns');
+  await check(() => {
+    budget.resetTurnKeys();
+    const a = budget.mapTurnKeyOf([user('第一句')], { sessionId: 's4' });
+    const b = budget.mapTurnKeyOf([user('第一句'), user('第二句')], { sessionId: 's4' });
+    assert.notEqual(a, b);
+  }, 'another user message is another turn');
+  await check(() => {
+    budget.resetTurnKeys();
+    const a = budget.mapTurnKeyOf([user('同一句')], { sessionId: 's5' });
+    const b = budget.mapTurnKeyOf([user('同一句')], { sessionId: 's6' });
+    assert.equal(a, 't:1');
+    assert.equal(b, 't:1', 'sessions keep independent counters');
+  }, 'turn counters are per session');
   await check(() => {
     const a = budget.mapTurnKeyOf([user('第一句')]);
     const b = budget.mapTurnKeyOf([user('第一句'), assistant('x'), user('第二句')]);
