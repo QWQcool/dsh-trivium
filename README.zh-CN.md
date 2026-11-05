@@ -8,7 +8,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 > **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
 >
-> 当前 npm 发布版是 **0.8.5**（[发布说明](docs/release-0.8.5.md)）：上下文管线（事件快筛、地图热度、增量注入、卡住自愈、可见的待补写队列）、批量写入、`triviumdb@0.9.0`；作用域继承与 Router 随包但默认关闭。
+> 当前 npm 发布版是 **0.8.4**。已备好但未发布两个版本：**0.8.5** 只做内核升级（`triviumdb@0.9.0` + `undefined` 适配 + 升级/回退演练），**0.8.6** 才带上下文管线（事件快筛、地图热度、增量注入与新轮次键、卡住自愈、待补写队列）、批量写入、事实身份（默认关）、`MemoryWriter`，以及默认关闭的作用域继承与 Router。
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -341,7 +341,8 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 ## 更新说明
 
-- [0.8.5](docs/release-0.8.5.md)：抽取前的事件快筛、地图热度、增量地图注入、卡住/自愈诊断、可见的待补写队列、批量导入、内核升到 `triviumdb@0.9.0`；作用域继承与 Router 随包但默认关闭。
+- [0.8.6](docs/release-0.8.6.md)：抽取前的事件快筛、地图热度、增量地图注入与新轮次键、卡住/自愈诊断、可见的待补写队列、批量写入、事实身份（默认关）；作用域继承与 Router 随包但默认关闭。
+- 0.8.5（只有内核）：`triviumdb@0.9.0`、`undefined` 写入适配、升级与回退演练；不含任何管线行为改动。
 - [0.8.4](docs/release-0.8.4.md)：设置卡重构为四页（记忆库 / 上下文 / 运行记录 / 设置），新增 Ctrl/Cmd+K 命令面板、宽屏并列详情、设计稿配色与设置分组。服务端行为未变。
 - [0.8.3](docs/release-0.8.3.md)：更正改为「新增决策 + 修订边」，长正文尾部、日期守卫与压缩后召回修复。
 - [0.8.2](docs/release-0.8.2.md)：修复抽取与决策正确性问题，增加逐条授权的偏好导出与校验。
@@ -378,7 +379,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 已发布包：`0.8.5` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- 已发布包：`0.8.4` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.2.1-rc.4`（peer 范围同时接受 0.1.x 各线）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

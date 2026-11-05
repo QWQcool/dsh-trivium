@@ -1,4 +1,7 @@
-# 0.8.5 — Context pipeline and a kernel upgrade
+# 0.8.6 — Context pipeline
+
+2026-11-05. The kernel upgrade (`triviumdb@0.9.0`) ships separately in **0.8.5**, so that a problem can be
+attributed to the kernel or to a behaviour change without guessing. This release is the behaviour.
 
 2026-11-04. This is the first release that changes **how the memory pipeline behaves** (0.8.4 was presentation
 only). It also moves to `triviumdb@0.9.0`.

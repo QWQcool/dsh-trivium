@@ -8,8 +8,8 @@
 
 | 范围 | 状态与证据 |
 |---|---|
-| npm 发布包 | `dsh-trivium@0.8.5`；2026-11-04 从 `main` 发布（含内核 `triviumdb@0.9.0`）。发布内容、验证和已知限制见 [0.8.5 发布说明](release-0.8.5.md)，标签 `v0.8.5` |
-| 与 0.8.4 的差异 | 0.8.5 = 0.8.4 的设置页重构 + 阶段 0/1 的上下文与写入改动；`scope` 继承、`inherit`、Router 随包但由 `scopeInheritance`（默认关）门控 |
+| npm 发布包 | `dsh-trivium@0.8.4`（已发布）。**0.8.5** 只做内核升级，源码在分支 `release/0.8.5`（从 `d83450c` 拉出，尚未打 tag）；**0.8.6** 是 `main` 上的管线改动，尚未发布 |
+| 版本边界 | 0.8.5 = 内核 `triviumdb@0.9.0` + `undefined` 写入适配 + 升级/回退演练；0.8.6 = 事件快筛、地图热度、增量注入与新轮次键、事实身份（默认关）、批量写入、新诊断、`MemoryWriter`、`scope`/`inherit`/Router（默认关） |
 | 依赖与运行时 | `triviumdb@0.9.0-beta.3` 精确锁定；Node `^22.19.0 || >=24`；实际依赖以 package、lock 和安装环境为准 |
 
 当前源码已补变更路由的回环 HTTP、工具及导入的多进程竞争、恢复队列和浏览器组件检查；范围与边界见 [F-W04 / F-W05 结果](next-memory/F-W04-F-W05-RESULTS-2026-10-30.md)。DSH 宿主完整视觉、键盘和真实模型质量验收仍未完成。历史结果中的“未发布、未合并”只描述当时；标签后的源码不在 `v0.8.2` 发布包中。
@@ -21,7 +21,7 @@
 | 安装、配置、数据权限和日常使用 | [中文 README](../README.zh-CN.md) / [English README](../README.md) |
 | 可复现的跨会话记忆示例 | [离线演示与运行说明](guide-example.md) |
 | 产品边界和会话层契约 | [PLAN.md](../PLAN.md) / [PLAN-session-map.md](../PLAN-session-map.md) |
-| 发布内容与逐版回执 | [0.8.5](release-0.8.5.md)（[en](release-0.8.5.en.md)）、[0.8.4](release-0.8.4.md)、[0.8.3](release-0.8.3.md)、[0.8.2](release-0.8.2.md)、[0.8.1](release-0.8.1.md)、[0.8.0](release-0.8.0.md)、[0.7.1](release-0.7.1.md)；[发布检查清单](release-checklist.md) |
+| 发布内容与逐版回执 | [0.8.6](release-0.8.6.md)（[en](release-0.8.6.en.md)）、[0.8.4](release-0.8.4.md)、[0.8.3](release-0.8.3.md)、[0.8.2](release-0.8.2.md)、[0.8.1](release-0.8.1.md)、[0.8.0](release-0.8.0.md)、[0.7.1](release-0.7.1.md)；[发布检查清单](release-checklist.md) |
 | 当前源码变更和待验边界 | [F-W04 / F-W05 结果](next-memory/F-W04-F-W05-RESULTS-2026-10-30.md) / [历史 W1–W5](next-memory/WRITE-PROVENANCE-RESULTS.md) / [W6 单写者](next-memory/evidence-write-provenance/W6/README.md) |
 | 真实模型合成测试 | [5 场景基线 A5](next-memory/A5-WIDER-BASELINE-2026-10-30.md) / [改口、否定 A10](next-memory/A10-REGRESSION-N10-2026-10-30.md) / [工作报告及 A1–A10 索引](next-memory/WORK-REPORT-2026-10-30.md) |
 | 旧成本和对照实验的纠正 | [独立审查](next-memory/POST-081-REVIEW.md) / [R1–R2 修复](next-memory/R1-R2-RESULTS.md) / [历史证据清单](evidence/README.md) |
