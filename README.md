@@ -12,7 +12,14 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.8.4** ([release notes](docs/release-0.8.4.md)). Two releases are prepared but not published: **0.8.5** is the kernel upgrade only (`triviumdb@0.9.0`, plus the `undefined` adaptation and the upgrade/rollback drill), and **0.8.6** carries the context pipeline (event screening, map heat, incremental map injection, stuck recovery, a visible deferred-write queue), batched writes, fact identity, `MemoryWriter`, and inheritance/router behind an off switch. See the [documentation index](docs/README.md) for verification status.
+The published npm package is **0.8.5** ([release notes](docs/release-0.8.5.md)): **the kernel upgrade only** — `triviumdb` moves from `0.9.0-beta.3` to `0.9.0`, plus the `undefined` write adaptation it requires. No context-pipeline behaviour changes ship in this package. **0.8.6** (still on `main`, not published) carries the pipeline: event screening, map heat, incremental map injection, stuck recovery, a visible deferred-write queue, batched writes, fact identity, `MemoryWriter`, and inheritance/router behind an off switch. See the [documentation index](docs/README.md) for verification status.
+
+> **Back up the whole `.dsh` directory (with the plugin closed) before upgrading to 0.8.5.**
+> 0.9.0 raises the library format to **v10** and the previous kernel cannot read it
+> (`TDB_UNSUPPORTED_DATABASE_VERSION`), so **downgrading the plugin is not a rollback** — restoring a backup is,
+> and a restore returns the library to the moment of the backup, losing everything written after it.
+> Copy the **whole file group** (`trivium.tdb` plus `.gidx` `.pidx` `.pld.*` `.text` `.text.meta` `.vec` `.wal`
+> `.lock` `.flush_ok`); copying only `.tdb` yields `TDB_CORRUPTED_FILE`.
 
 ---
 
@@ -338,7 +345,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 ## Changelog
 
 - [0.8.6](docs/release-0.8.6.md): event screening before the model call, map heat, incremental map injection with a per-turn key, stuck/recovered diagnostics, a visible deferred-write queue, batched writes, fact identity (off by default). Inheritance and the router ship behind an off switch.
-- 0.8.5 (kernel only): `triviumdb@0.9.0`, the `undefined` write adaptation, and the upgrade/rollback drill. No pipeline behaviour change.
+- 0.8.5 (kernel only, **published**): `triviumdb@0.9.0`, the `undefined` write adaptation, and the upgrade/rollback drill. No pipeline behaviour change.
 - [0.8.4](docs/release-0.8.4.md): settings card rebuilt as four pages (memory / context / activity / settings), Ctrl/Cmd+K palette, split detail at wide widths, prototype visual language, grouped settings. No server behaviour change.
 - [0.8.3](docs/release-0.8.3.md): supersede rewrites as a new decision plus a revision edge; long-body tails, date guard and compaction recall fixes.
 - [0.8.2](docs/release-0.8.2.md): extraction and decision-correction fixes; optional approved-preference export and consumer verification.
@@ -375,7 +382,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Published package: `0.8.4` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Published package: `0.8.5` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.1-rc.4` (the peer range also admits the 0.1.x lines)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

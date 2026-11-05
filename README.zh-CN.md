@@ -8,7 +8,12 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 > **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
 >
-> 当前 npm 发布版是 **0.8.4**。已备好但未发布两个版本：**0.8.5** 只做内核升级（`triviumdb@0.9.0` + `undefined` 适配 + 升级/回退演练），**0.8.6** 才带上下文管线（事件快筛、地图热度、增量注入与新轮次键、卡住自愈、待补写队列）、批量写入、事实身份（默认关）、`MemoryWriter`，以及默认关闭的作用域继承与 Router。
+> 当前 npm 发布版是 **0.8.5**（[发布说明](docs/release-0.8.5.md)）：**只做内核升级**——`triviumdb` 从 `0.9.0-beta.3` 升到 `0.9.0`，外加它必需的 `undefined` 写入适配。**不含任何上下文管线改动**。**0.8.6**（仍在 `main`，未发布）才带管线：事件快筛、地图热度、增量注入与新轮次键、卡住自愈、待补写队列、批量写入、事实身份（默认关）、`MemoryWriter`，以及默认关闭的作用域继承与 Router。
+>
+> **升级到 0.8.5 前请备份整个 `.dsh` 目录（插件关闭状态下）。** 0.9.0 把库格式升到 **v10**，旧内核读不了
+> （`TDB_UNSUPPORTED_DATABASE_VERSION`），所以**降级插件不是回退**，恢复备份才是；而恢复备份会回到备份时刻，
+> **备份之后写入的内容会丢失**。备份要复制**整个文件组**（`trivium.tdb` 及同前缀的 `.gidx` `.pidx` `.pld.*`
+> `.text` `.text.meta` `.vec` `.wal` `.lock` `.flush_ok`），只复制 `.tdb` 会得到 `TDB_CORRUPTED_FILE`。
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -16,7 +21,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前使用 Web `0.2.1-rc.4` 验证；桌面 `0.2.1-rc.3` 的验证层级和局限见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`，内核精确锁定 `triviumdb@0.9.0-beta.3`。
+> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前使用 Web `0.2.1-rc.4` 验证；桌面 `0.2.1-rc.3` 的验证层级和局限见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`，内核精确锁定 `triviumdb@0.9.0`。
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -379,7 +384,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 已发布包：`0.8.4` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- 已发布包：`0.8.5` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.2.1-rc.4`（peer 范围同时接受 0.1.x 各线）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
