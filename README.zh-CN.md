@@ -375,7 +375,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 已发布包：`0.8.4` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- 已发布包：`0.8.5` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.2.1-rc.4`（peer 范围同时接受 0.1.x 各线）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

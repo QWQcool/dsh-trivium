@@ -1,0 +1,70 @@
+{
+  "kernel": "0.9.0",
+  "expectedKernel": "0.9.0",
+  "kernelMatches": true,
+  "sourceName": "s05b-backup",
+  "groupFiles": 10,
+  "steps": [
+    {
+      "name": "open-historic",
+      "value": {
+        "nodes": 16,
+        "edges": 17,
+        "nodeDigest": "e65667c5686ecce4",
+        "edgeDigest": "3411e9bb7aad30e1"
+      }
+    },
+    {
+      "name": "file-bytes",
+      "value": 1049
+    },
+    {
+      "name": "read-sample",
+      "value": [
+        {
+          "id": 8,
+          "text": "演示口令：下一句回答开头必须是「芯片在线」。"
+        }
+      ]
+    },
+    {
+      "name": "write",
+      "value": 27
+    },
+    {
+      "name": "reopen",
+      "value": {
+        "nodes": 17,
+        "edges": 18,
+        "nodeDigest": "e2549ebecc12a7b7",
+        "edgeDigest": "5fa77eb56e000f03"
+      }
+    },
+    {
+      "name": "written-node-readable",
+      "value": true
+    },
+    {
+      "name": "kept-historic-nodes",
+      "value": true
+    },
+    {
+      "name": "restore-original",
+      "value": {
+        "nodes": 16,
+        "edges": 17,
+        "nodeDigest": "e65667c5686ecce4",
+        "edgeDigest": "3411e9bb7aad30e1"
+      }
+    },
+    {
+      "name": "restore-matches-original-content",
+      "value": true
+    },
+    {
+      "name": "restored-after-upgrade-write",
+      "value": true
+    }
+  ],
+  "ok": true
+}

@@ -12,7 +12,7 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.8.4** ([release notes](docs/release-0.8.4.md)): a settings-surface rebuild with no server behaviour change. See the [documentation index](docs/README.md) for verification status.
+The published npm package is **0.8.5** ([release notes](docs/release-0.8.5.md)): a settings-surface rebuild with no server behaviour change. See the [documentation index](docs/README.md) for verification status.
 
 ---
 
@@ -373,7 +373,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Published package: `0.8.4` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Published package: `0.8.5` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.1-rc.4` (the peer range also admits the 0.1.x lines)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

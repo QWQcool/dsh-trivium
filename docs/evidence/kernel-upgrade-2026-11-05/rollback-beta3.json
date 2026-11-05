@@ -1,0 +1,32 @@
+{
+  "kernel": "0.9.0-beta.3",
+  "expectedKernel": "0.9.0-beta.3",
+  "kernelMatches": true,
+  "sourceName": "s05b-backup",
+  "groupFiles": 10,
+  "steps": [
+    {
+      "name": "open-historic",
+      "value": {
+        "nodes": 16,
+        "edges": 17,
+        "nodeDigest": "e65667c5686ecce4",
+        "edgeDigest": "3411e9bb7aad30e1"
+      }
+    },
+    {
+      "name": "file-bytes",
+      "value": 1049
+    },
+    {
+      "name": "read-sample",
+      "value": [
+        {
+          "id": 8,
+          "text": "演示口令：下一句回答开头必须是「芯片在线」。"
+        }
+      ]
+    }
+  ],
+  "ok": true
+}
