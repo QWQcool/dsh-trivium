@@ -7,6 +7,16 @@
 DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注入，设置页可改可归档。内核贴近 DSH：不另起进程、默认不加导航。要钉住某些记忆片段，再在设置里打开 **芯片** 注入；情节画布是可选的自嗨层，嵌在芯片开关下。每个工作区一个 `.dsh/trivium.tdb`，不另起服务。
 
 > **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
+>
+> **0.8.5 只做内核升级**（[发布说明](docs/release-0.8.5.md)）：`triviumdb` 从 `0.9.0-beta.3` 升到 `0.9.0`，
+> 外加 0.9.0 必需的 `undefined` 写入适配。事件快筛、地图热度、增量注入、事实身份、批量写入、
+> `MemoryWriter`、作用域与 Router **都不在这个包里**，另行发布。
+>
+> **升级前请备份整个 `.dsh` 目录（插件关闭状态下）。** 0.9.0 把库格式升到 **v10**，旧内核读不了
+> （`TDB_UNSUPPORTED_DATABASE_VERSION`），所以**降级插件不是回退**，恢复备份才是；而恢复备份会回到
+> 备份时刻的状态，**备份之后写入的内容会丢失**。备份要复制**整个文件组**（`trivium.tdb` 及同前缀的
+> `.gidx` `.pidx` `.pld.*` `.text` `.text.meta` `.vec` `.wal` `.lock` `.flush_ok`），只复制 `.tdb` 会得到
+> `TDB_CORRUPTED_FILE`。
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -14,7 +24,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前使用 Web `0.2.1-rc.4` 验证；桌面 `0.2.1-rc.3` 的验证层级和局限见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`，内核精确锁定 `triviumdb@0.9.0-beta.3`。
+> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前使用 Web `0.2.1-rc.4` 验证；桌面 `0.2.1-rc.3` 的验证层级和局限见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`，内核精确锁定 `triviumdb@0.9.0`。
 
 ```sh
 dsh plugin --profile web add dsh-trivium

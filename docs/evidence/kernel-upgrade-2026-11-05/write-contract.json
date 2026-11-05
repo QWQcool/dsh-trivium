@@ -1,0 +1,41 @@
+{
+  "ok": true,
+  "checks": 6,
+  "failed": 0,
+  "results": [
+    {
+      "name": "insert accepts a payload with optional fields",
+      "ok": true,
+      "value": {
+        "id": 2
+      }
+    },
+    {
+      "name": "updatePayload accepts the same shape",
+      "ok": true,
+      "value": null
+    },
+    {
+      "name": "commitTransaction accepts ops with the same shape",
+      "ok": true,
+      "value": null
+    },
+    {
+      "name": "updateEdge tolerates undefined metadata",
+      "ok": true,
+      "value": null
+    },
+    {
+      "name": "a reopened library returns the payload",
+      "ok": true,
+      "value": null
+    },
+    {
+      "name": "a function in a payload is rejected, not dropped",
+      "ok": true,
+      "value": {
+        "code": "STORAGE_UNSUPPORTED_VALUE"
+      }
+    }
+  ]
+}
