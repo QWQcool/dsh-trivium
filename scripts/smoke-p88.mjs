@@ -34,10 +34,13 @@ try {
     assert.equal(extract.screenEvent('https://example.com/a?b=1'), 1);
   }, 'commands, slash commands, paths and URLs score 1, not 0');
   await check(() => {
-    assert.equal(extract.screenEvent('好'), 1);
-    // "ok"/"继续" stay in the filler list: they are acknowledgements, not content.
+    // A single character that is not a known greeting is content.
+    assert.equal(extract.screenEvent('行'), 1);
+    // Greetings and acknowledgements stay in the filler lists: option B keeps only
+    // "no content at all" as a zero.
+    assert.equal(extract.screenEvent('好'), 0);
     assert.equal(extract.screenEvent('ok'), 0);
-  }, 'a single character can be the confirmation of the previous turn');
+  }, 'only the filler lists produce a zero, everything else is content');
   await check(() => {
     assert.equal(extract.screenEvent('   '), 0);
     assert.equal(extract.screenEvent(''), 0);

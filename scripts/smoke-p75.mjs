@@ -78,8 +78,14 @@ try {
   }
   await check(() => assert.equal(extract.screenEvent('ok 但记住用 pnpm'), 2), 'a greeting with a real cue still scores 2');
   await check(() => {
-    const detail = extract.screenEventDetail('git status');
-    assert.equal(detail.rule, 'shell-command');
+    /*
+     * Option B after audit F2 (2026-11-04): the shape rules are gone, so a command
+     * is content and only the filler rules can produce a zero. The rule name stays
+     * part of the contract, because every zero has to be traceable.
+     */
+    assert.equal(extract.screenEventDetail('git status').rule, 'content');
+    assert.equal(extract.screenEventDetail('ok').rule, 'filler');
+    assert.equal(extract.screenEventDetail('   ').rule, 'empty');
   }, 'every zero names the rule it matched');
   await check(() => {
     const detail = extract.screenEventDetail('好的');
