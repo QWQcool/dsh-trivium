@@ -88,8 +88,9 @@ the default switches, the supersede rules, the write filter and the revision-cha
 
 ## Known limits
 
-1. **Screening can lose a fact silently** — a zero requires a complete whitelist match, but "a path plus one
-   instruction" can still be scored 0, and there is no recovery pass.
+1. **Screening only skips filler.** The zeros are empty input, punctuation, acknowledgements and greetings;
+   commands, paths, URLs and single characters score 1. The screened-window audit is memory-only (three rows,
+   exposed on `/status`, lost on restart) and there is no replay path.
 2. **The map is rebuilt every turn** — measured ~108 ms at 5 000 nodes, on the first pre-step of each turn.
 3. **`lastMapInjection` is workspace-scoped**, so sessions overwrite each other's diagnostics.
 4. **A timeout does not cancel the extraction**; the abandoned run keeps the lock, and `stuck` is recorded once

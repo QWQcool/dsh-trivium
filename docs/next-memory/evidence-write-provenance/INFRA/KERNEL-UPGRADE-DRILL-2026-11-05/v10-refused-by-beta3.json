@@ -1,0 +1,10 @@
+{
+  "kernel": "0.9.0-beta.3",
+  "expectedKernel": "0.9.0-beta.3",
+  "kernelMatches": true,
+  "sourceName": ".dsh",
+  "groupFiles": 10,
+  "steps": [],
+  "ok": false,
+  "error": "TDB_UNSUPPORTED_DATABASE_VERSION: 不支持的数据库文件版本 (Unsupported database file version): 发现 v10，当前可读取 v5..=v9；v5 对应 TriviumDB 0.7.x/0.8.x，早于 0.7.0 的文件请手动导出迁移"
+}

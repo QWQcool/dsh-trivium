@@ -98,6 +98,13 @@ try {
     assert.ok(tightTokens <= 40, `a 40-token budget is honoured (${tightTokens})`);
     assert.ok(tight.omitted > 0, `clipping reports how many rows it dropped (${tight.omitted})`);
     assert.equal(tight.omitted, tight.added + tight.changed + tight.removed, 'omitted counts every change that was not printed');
+    // Fourth audit round: the number the model reads must equal the structured one.
+    if (tight.omitted > 0) {
+      assert.ok(
+        tight.text.includes(`…${tight.omitted} more changes`),
+        `the marker must say ${tight.omitted}: ${tight.text.split('\n').pop()}`,
+      );
+    }
     const tooSmall = index.buildMapDiff(previous, report, { tokenBudget: 5 });
     assert.equal(tooSmall.text, '', 'a budget below the header injects nothing');
     assert.ok(tooSmall.omitted > 0);

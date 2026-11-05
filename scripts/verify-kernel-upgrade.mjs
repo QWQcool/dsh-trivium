@@ -11,6 +11,7 @@
  * `--probe` only reads (used for the downgrade attempt: an older kernel opening a
  * file written by 0.9.0).
  */
+import { createHash } from "node:crypto";
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -34,9 +35,18 @@ const groupFiles = readdirSync(source).filter((name) => name.startsWith("trivium
  * A drill has to refuse a source that is not a library.
  */
 if (!groupFiles.includes("trivium.tdb")) {
-  console.error(JSON.stringify({ ok: false, error: "source is not a library: trivium.tdb is missing", source, groupFiles }, null, 2));
+  // No absolute paths in the output: this file is committed as evidence.
+  console.error(JSON.stringify({ ok: false, error: "source is not a library: trivium.tdb is missing", groupFiles }, null, 2));
   process.exit(2);
 }
+
+/*
+ * Which kernel must be loaded. Fourth audit round: the "beta.3 opened the restored
+ * backup" evidence actually recorded `0.9.0`, because the file was written by a
+ * later run. An evidence run now asserts the version it is supposed to prove.
+ */
+const expectArg = process.argv.find((arg) => arg.startsWith("--expect-kernel="));
+const expectedKernel = expectArg ? expectArg.split("=")[1] : "";
 
 const root = mkdtempSync(join(tmpdir(), "trivium-upgrade-"));
 process.env.DSH_HOME = join(root, "home");
@@ -50,22 +60,51 @@ const live = join(ws, ".dsh", "trivium.tdb");
 mkdirSync(join(ws, ".dsh"), { recursive: true });
 for (const name of groupFiles) copyFileSync(join(source, name), join(ws, ".dsh", name));
 
-const report = { kernel, source, groupFiles: groupFiles.length, steps: [], ok: true };
+const report = {
+  kernel,
+  expectedKernel: expectedKernel || null,
+  kernelMatches: expectedKernel ? kernel === expectedKernel : null,
+  // Only the directory name and the file count: absolute paths are machine data.
+  sourceName: source.replace(/[\\/]+$/, "").split(/[\\/]/).pop(),
+  groupFiles: groupFiles.length,
+  steps: [],
+  ok: true,
+};
 const step = (name, value) => {
   report.steps.push({ name, value });
   return value;
 };
 
-/** Content fingerprint: ids, type/name/text of every node, plus the edge count. */
+const hash = (value) =>
+  createHash("sha256").update(typeof value === "string" ? value : JSON.stringify(value)).digest("hex").slice(0, 16);
+
+/**
+ * Full-content fingerprint.
+ *
+ * Fourth audit round: the old one compared `id|type|name|first 60 chars of text`,
+ * so a truncated body, a lost `history` entry or a changed edge endpoint would all
+ * have passed. This hashes the **whole payload** (every field, including history)
+ * and the **edge endpoints and labels**, and reports only digests — the evidence
+ * file must not carry workspace text or paths.
+ */
 const snapshot = (db) => {
   const graph = store.exportGraph(db);
-  const rows = (graph.nodes || [])
-    .map((node) => {
-      const p = node.payload || {};
-      return `${node.id}|${p.type || ""}|${p.name || ""}|${String(p.text || "").slice(0, 60)}`;
-    })
-    .sort();
-  return { nodes: graph.nodes.length, edges: graph.edges.length, rows, digest: rows.join("\n") };
+  const nodes = (graph.nodes || [])
+    .map((node) => ({ id: Number(node.id), payload: hash(node.payload || {}) }))
+    .sort((a, b) => a.id - b.id);
+  const edges = (graph.edges || [])
+    .map((edge) => ({
+      from: Number(edge.from ?? edge.src ?? edge.source ?? 0),
+      to: Number(edge.to ?? edge.dst ?? edge.target ?? 0),
+      label: String(edge.label || edge.type || ""),
+    }))
+    .sort((a, b) => (a.from - b.from) || (a.to - b.to) || a.label.localeCompare(b.label));
+  return {
+    nodes: nodes.length,
+    edges: edges.length,
+    nodeDigest: hash(nodes),
+    edgeDigest: hash(edges),
+  };
 };
 
 try {
@@ -110,7 +149,7 @@ try {
     for (const name of readdirSync(original)) copyFileSync(join(original, name), join(ws, ".dsh", name));
     const third = await store.openWorkspaceDb(ws);
     const restored = step("restore-original", snapshot(third));
-    step("restore-matches-original-content", restored.digest === before.digest);
+    step("restore-matches-original-content", restored.nodeDigest === before.nodeDigest && restored.edgeDigest === before.edgeDigest);
     step("restored-after-upgrade-write", after.nodes === before.nodes + 1);
     store.closeAll();
   } else {

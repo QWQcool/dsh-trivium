@@ -21,6 +21,21 @@ restore-dropped-the-later-write  true
 ok                   true
 ```
 
+## 第四轮复审后的更正（2026-11-05）
+
+第一版证据有三处问题，已重做：
+
+1. **`rollback-beta3-opens-backup.json` 当时记的是 `kernel: "0.9.0"`** —— 文件是在恢复 0.9.0 之后才写的，
+   所以它证明不了"旧内核能打开"。现在脚本接受 `--expect-kernel=<版本>`，版本不符即判失败；
+   三份证据都是在**断言过版本的那次运行**里生成的：
+   - `upgrade-0.9.0.json`：`kernel=0.9.0`、`kernelMatches=true`
+   - `rollback-beta3-opens-backup.json`：`kernel=0.9.0-beta.3`、`kernelMatches=true`
+   - `v10-refused-by-beta3.json`：`kernel=0.9.0-beta.3`、`ok=false`、`TDB_UNSUPPORTED_DATABASE_VERSION`
+2. **"内容一致"只比了 `id|type|name|正文前 60 字`** —— 截断正文、丢 history、改边端点都会漏过。
+   现在比对**全量 payload 的 sha256 前 16 位**（含 history）与**边端点+标签**的摘要。
+3. **证据里带 8 行本机绝对路径** —— 报告现在只输出 `sourceName`（目录名）、文件数与摘要；
+   重新扫描 `C:\` / `Users\` / 用户名，**0 命中**。
+
 ## 结果二：**降级不可行**
 
 用 `0.9.0` 写过的库，再用 `0.9.0-beta.3` 打开：
