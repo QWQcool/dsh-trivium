@@ -155,7 +155,16 @@ try {
   } else {
     store.closeAll();
   }
-  report.ok = report.steps.every((row) => row.value !== false);
+  /*
+   * Fifth audit round: `kernelMatches` was recorded but never consulted, so a run
+   * under the wrong kernel still reported `ok: true` and exit 0. A version check
+   * that does not change the outcome is a comment, not a gate.
+   */
+  if (expectedKernel && !report.kernelMatches) {
+    report.ok = false;
+    report.error = `expected kernel ${expectedKernel}, loaded ${kernel}`;
+  }
+  report.ok = report.ok && report.steps.every((row) => row.value !== false);
   void sample;
 } catch (err) {
   report.ok = false;
