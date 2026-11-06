@@ -270,6 +270,9 @@ agent，`agent/created` 不会再触发，`staleLockInfo` 自然没跑。改用�
   （`raw/00-nodes-before.json` vs `raw/11-nodes-after-cleanup.json`）
 - `.dsh/trivium-pending.json` 已恢复为实验前快照（`windows:0`），避免下次会话付费重放测试窗口
 - `.dsh/trivium-usage.json` 已恢复为 11-04 快照（13 条），清掉测试造成的计数增量与幽灵条目
+- `.dsh/trivium-changes.jsonl` 已恢复为实验前快照（15 行），去掉本次 5 行测试记录
+  （`written 33/34`、`stuck`/`recovered`、`lock-busy`）；这些行的原文留在
+  `raw/16-changes-stuck-recovered.jsonl`，上面的结论不依赖它们留在库里
 - `.dsh/trivium-write.lock` 不存在；5199 端口无残留进程
 - 临时目录 `.tmp/a4-ws`、`.tmp/pending-memory-writes`、`.tmp/chrome-profile-a` 已删；
   `.tmp/s0-ws` 恢复原状（还原了被改名备份的 `.dsh`）
