@@ -1,0 +1,465 @@
+{
+  "date": "2026-11-06",
+  "baseCommit": "7b5a776",
+  "scope": "local uncommitted closeout",
+  "decision": "可发布",
+  "published": false,
+  "pushed": false,
+  "tagged": false,
+  "costCNY": 0,
+  "paidModelCalls": 0,
+  "liveHostRetest": false,
+  "verification": {
+    "fullSuite": {
+      "command": "node scripts/run-all.mjs",
+      "passed": 88,
+      "total": 88,
+      "sumScriptMs": 174552,
+      "scripts": [
+        {
+          "script": "smoke-p0.mjs",
+          "ms": 462
+        },
+        {
+          "script": "smoke-p1.mjs",
+          "ms": 938
+        },
+        {
+          "script": "p2-cases.mjs",
+          "ms": 2335
+        },
+        {
+          "script": "smoke-p3.mjs",
+          "ms": 1435
+        },
+        {
+          "script": "smoke-p4.mjs",
+          "ms": 1538
+        },
+        {
+          "script": "smoke-p5.mjs",
+          "ms": 855
+        },
+        {
+          "script": "smoke-p6.mjs",
+          "ms": 472
+        },
+        {
+          "script": "smoke-p7.mjs",
+          "ms": 3803
+        },
+        {
+          "script": "smoke-p8.mjs",
+          "ms": 1449
+        },
+        {
+          "script": "smoke-p9.mjs",
+          "ms": 772
+        },
+        {
+          "script": "smoke-p10.mjs",
+          "ms": 428
+        },
+        {
+          "script": "smoke-p11.mjs",
+          "ms": 135
+        },
+        {
+          "script": "smoke-p12.mjs",
+          "ms": 1227
+        },
+        {
+          "script": "smoke-p13.mjs",
+          "ms": 77
+        },
+        {
+          "script": "smoke-p14.mjs",
+          "ms": 120
+        },
+        {
+          "script": "smoke-p15.mjs",
+          "ms": 3037
+        },
+        {
+          "script": "smoke-p16.mjs",
+          "ms": 927
+        },
+        {
+          "script": "smoke-p17.mjs",
+          "ms": 866
+        },
+        {
+          "script": "smoke-p18.mjs",
+          "ms": 63
+        },
+        {
+          "script": "smoke-p19.mjs",
+          "ms": 10581
+        },
+        {
+          "script": "smoke-p20.mjs",
+          "ms": 2153
+        },
+        {
+          "script": "smoke-p21.mjs",
+          "ms": 3505
+        },
+        {
+          "script": "smoke-p22.mjs",
+          "ms": 4383
+        },
+        {
+          "script": "smoke-p23.mjs",
+          "ms": 10685
+        },
+        {
+          "script": "smoke-p24.mjs",
+          "ms": 95
+        },
+        {
+          "script": "smoke-p25.mjs",
+          "ms": 1015
+        },
+        {
+          "script": "smoke-p26.mjs",
+          "ms": 237
+        },
+        {
+          "script": "smoke-p27.mjs",
+          "ms": 826
+        },
+        {
+          "script": "smoke-p28.mjs",
+          "ms": 1690
+        },
+        {
+          "script": "smoke-p29.mjs",
+          "ms": 470
+        },
+        {
+          "script": "smoke-p30.mjs",
+          "ms": 2784
+        },
+        {
+          "script": "smoke-p31.mjs",
+          "ms": 8024
+        },
+        {
+          "script": "smoke-p32.mjs",
+          "ms": 62
+        },
+        {
+          "script": "smoke-p33.mjs",
+          "ms": 72
+        },
+        {
+          "script": "smoke-p34.mjs",
+          "ms": 549
+        },
+        {
+          "script": "smoke-p35.mjs",
+          "ms": 2383
+        },
+        {
+          "script": "smoke-p36.mjs",
+          "ms": 348
+        },
+        {
+          "script": "smoke-p37.mjs",
+          "ms": 937
+        },
+        {
+          "script": "smoke-p38.mjs",
+          "ms": 801
+        },
+        {
+          "script": "smoke-p39.mjs",
+          "ms": 73
+        },
+        {
+          "script": "smoke-p40.mjs",
+          "ms": 81
+        },
+        {
+          "script": "smoke-p41.mjs",
+          "ms": 13488
+        },
+        {
+          "script": "smoke-p42.mjs",
+          "ms": 2413
+        },
+        {
+          "script": "smoke-p43.mjs",
+          "ms": 243
+        },
+        {
+          "script": "smoke-p44.mjs",
+          "ms": 240
+        },
+        {
+          "script": "smoke-p45.mjs",
+          "ms": 118
+        },
+        {
+          "script": "smoke-p46.mjs",
+          "ms": 256
+        },
+        {
+          "script": "smoke-p47.mjs",
+          "ms": 558
+        },
+        {
+          "script": "smoke-p48.mjs",
+          "ms": 1222
+        },
+        {
+          "script": "smoke-p49.mjs",
+          "ms": 837
+        },
+        {
+          "script": "smoke-p50.mjs",
+          "ms": 632
+        },
+        {
+          "script": "smoke-p51.mjs",
+          "ms": 5066
+        },
+        {
+          "script": "smoke-p52.mjs",
+          "ms": 1295
+        },
+        {
+          "script": "smoke-p53.mjs",
+          "ms": 80
+        },
+        {
+          "script": "smoke-p54.mjs",
+          "ms": 77
+        },
+        {
+          "script": "smoke-p55.mjs",
+          "ms": 1847
+        },
+        {
+          "script": "smoke-p56.mjs",
+          "ms": 181
+        },
+        {
+          "script": "smoke-p57.mjs",
+          "ms": 1542
+        },
+        {
+          "script": "smoke-p58.mjs",
+          "ms": 1270
+        },
+        {
+          "script": "smoke-p59.mjs",
+          "ms": 310
+        },
+        {
+          "script": "smoke-p60.mjs",
+          "ms": 16787
+        },
+        {
+          "script": "smoke-p61.mjs",
+          "ms": 699
+        },
+        {
+          "script": "smoke-p62.mjs",
+          "ms": 16773
+        },
+        {
+          "script": "smoke-p63.mjs",
+          "ms": 1808
+        },
+        {
+          "script": "smoke-p64.mjs",
+          "ms": 403
+        },
+        {
+          "script": "smoke-p65.mjs",
+          "ms": 2752
+        },
+        {
+          "script": "smoke-p66.mjs",
+          "ms": 506
+        },
+        {
+          "script": "smoke-p67.mjs",
+          "ms": 1538
+        },
+        {
+          "script": "smoke-p68.mjs",
+          "ms": 113
+        },
+        {
+          "script": "smoke-p69.mjs",
+          "ms": 2533
+        },
+        {
+          "script": "smoke-p70.mjs",
+          "ms": 2215
+        },
+        {
+          "script": "smoke-p71.mjs",
+          "ms": 3886
+        },
+        {
+          "script": "smoke-p72.mjs",
+          "ms": 3437
+        },
+        {
+          "script": "smoke-p73.mjs",
+          "ms": 6916
+        },
+        {
+          "script": "smoke-p74.mjs",
+          "ms": 1134
+        },
+        {
+          "script": "smoke-p75.mjs",
+          "ms": 2633
+        },
+        {
+          "script": "smoke-p76.mjs",
+          "ms": 172
+        },
+        {
+          "script": "smoke-p77.mjs",
+          "ms": 291
+        },
+        {
+          "script": "smoke-p78.mjs",
+          "ms": 115
+        },
+        {
+          "script": "smoke-p79.mjs",
+          "ms": 837
+        },
+        {
+          "script": "smoke-p80.mjs",
+          "ms": 579
+        },
+        {
+          "script": "smoke-p81.mjs",
+          "ms": 1080
+        },
+        {
+          "script": "smoke-p82.mjs",
+          "ms": 188
+        },
+        {
+          "script": "smoke-p83.mjs",
+          "ms": 578
+        },
+        {
+          "script": "smoke-p84.mjs",
+          "ms": 777
+        },
+        {
+          "script": "smoke-p85.mjs",
+          "ms": 592
+        },
+        {
+          "script": "smoke-p86.mjs",
+          "ms": 58
+        },
+        {
+          "script": "smoke-p87.mjs",
+          "ms": 784
+        }
+      ]
+    },
+    "focused": {
+      "p74": "39/39",
+      "p75": "51/51",
+      "p83": "14/14"
+    },
+    "pack": {
+      "command": "npm pack --dry-run --json",
+      "name": "dsh-trivium",
+      "version": "0.8.6",
+      "entryCount": 49,
+      "sizeBytes": 257631
+    },
+    "scriptFiles": 120,
+    "diffCheck": "passed",
+    "sensitiveScan": "no matches in added content",
+    "frozenUiChanged": false,
+    "modelToolsContractChanged": false,
+    "versionOrKernelPinChanged": false
+  },
+  "counterexamples": {
+    "hostTurnSequence": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      0
+    ],
+    "keylessSequence": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "contentKeys": [
+      "t:1",
+      "t:2"
+    ],
+    "corruptPendingStatus": 500,
+    "corruptPendingOk": false,
+    "partialImport": {
+      "partial": true,
+      "newNodesBeforeFailure": 2,
+      "created": null,
+      "merged": null,
+      "applied": null,
+      "skipped": null,
+      "nodesAfterReopen": 2
+    }
+  },
+  "scoringContract": {
+    "mode": "score-only",
+    "actualDropped": 0,
+    "originalOrderPreserved": true,
+    "allZeroEventsReachExtraction": true,
+    "originalContentGateRetained": true,
+    "realEntryPointTest": "scripts/smoke-p75.mjs"
+  },
+  "assertionMigration": {
+    "from": "smoke-p88.mjs",
+    "to": {
+      "smoke-p75.mjs": 7,
+      "smoke-p74.mjs": 3
+    },
+    "removedAssertions": "none of the effective contracts; active-drop/reorder expectations replaced by the approved observational contract",
+    "replacedVacuousCheck": "p75 now exercises actual runExtract through isolated pending replay"
+  },
+  "closedFindings": [
+    "F86-01",
+    "F86-02",
+    "F86-03",
+    "F86-04",
+    "Q2 score-only decision",
+    "script file-count limit"
+  ],
+  "blockingFindings": [],
+  "limits": [
+    "No new paid live-host verification.",
+    "Keyless hosts cannot infer real user turns; six-turn refresh is not claimed there.",
+    "Router/inherit/scope remain experimental and off by default.",
+    "Diagnostic scopes, heat ghost entries and historical unreproduced p60 native crash remain documented."
+  ],
+  "sourceSha256": {
+    "lib/extract.js": "871aeb18b085770fdddf4d4b8a433ab3e97704fac0222481924e7a23c5f77525",
+    "lib/index.js": "68a9c009016ff33882fc51e060be86e73b3aebfd3a983d0ca7a2130d3bd35fa6",
+    "lib/markdown.js": "1f32a1455918584d73c94a1fa07fdd040d40535a3333a62daaffdea59464f4e9",
+    "scripts/smoke-p74.mjs": "ffb2aac1de82b11b55f75b38f6caec98ab1157ad742dcedc3bc30e7fdfa3c205",
+    "scripts/smoke-p75.mjs": "9fbdf76760cec4fb4e94a30ba4450bd8729d2fcc8e90702cb4cfd535887e8adf",
+    "scripts/smoke-p83.mjs": "33c60ddb271cb3027513502b81671234500eeea246abb5089059b1358325192c"
+  }
+}

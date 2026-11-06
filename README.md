@@ -12,7 +12,7 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.8.5** ([release notes](docs/release-0.8.5.md)): **the kernel upgrade only** — `triviumdb` moves from `0.9.0-beta.3` to `0.9.0`, plus the `undefined` write adaptation it requires. No context-pipeline behaviour changes ship in this package. **0.8.6** (still on `main`, not published) carries the pipeline: event screening, map heat, incremental map injection, stuck recovery, a visible deferred-write queue, batched writes, fact identity, `MemoryWriter`, and inheritance/router behind an off switch. See the [documentation index](docs/README.md) for verification status.
+The published npm package is **0.8.5** ([release notes](docs/release-0.8.5.md)): **the kernel upgrade only** — `triviumdb` moves from `0.9.0-beta.3` to `0.9.0`, plus the `undefined` write adaptation it requires. No context-pipeline behaviour changes ship in this package. **0.8.6** (still on `main`, not published) carries the pipeline: observational event scoring (no event removal or reordering), map heat, incremental map injection, stuck recovery, a visible deferred-write queue, batched writes, fact identity, `MemoryWriter`, and inheritance/router behind an off switch. See the [documentation index](docs/README.md) for verification status.
 
 > **Back up the whole `.dsh` directory (with the plugin closed) before upgrading to 0.8.5.**
 > 0.9.0 raises the library format to **v10** and the previous kernel cannot read it
@@ -344,7 +344,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 
 ## Changelog
 
-- [0.8.6](docs/release-0.8.6.md): event screening before the model call, map heat, incremental map injection with a per-turn key, stuck/recovered diagnostics, a visible deferred-write queue, batched writes, fact identity (off by default). Inheritance and the router ship behind an off switch.
+- [0.8.6](docs/release-0.8.6.md): observational event scoring (no event removal or reordering) before the model call, map heat, incremental map injection with a per-turn key, stuck/recovered diagnostics, a visible deferred-write queue, batched writes, fact identity (off by default). Inheritance and the router ship behind an off switch.
 - 0.8.5 (kernel only, **published**): `triviumdb@0.9.0`, the `undefined` write adaptation, and the upgrade/rollback drill. No pipeline behaviour change.
 - [0.8.4](docs/release-0.8.4.md): settings card rebuilt as four pages (memory / context / activity / settings), Ctrl/Cmd+K palette, split detail at wide widths, prototype visual language, grouped settings. No server behaviour change.
 - [0.8.3](docs/release-0.8.3.md): supersede rewrites as a new decision plus a revision edge; long-body tails, date guard and compaction recall fixes.

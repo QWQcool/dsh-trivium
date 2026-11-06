@@ -1,21 +1,21 @@
 /**
- * p75 — B1 event two-level screening (S0-3).
+ * p75 — B1 observational scoring and the unchanged extraction path.
  *
  * Covers:
  *   1. screenEvent scoring on the whitelist, on stated facts, and on the
  *      default "maybe" bucket;
  *   2. at least five false-positive counterexamples: text that *looks* like a
  *      greeting / command / path but carries a fact, and must never score 0;
- *   3. screenTurns: zero groups dropped, tool evidence kept, 2s promoted to the
- *      front without shuffling the rest;
+ *   3. screenTurns: every event retained in its original order, including zeros;
  *   4. the same corpus through distill() with and without screening: model calls
- *      drop by >= 20 % and the extracted facts do not change;
- *   5. screening never adds a call (calls with screening <= calls without).
+ *      and the extracted facts do not change;
+ *   5. the real extraction entry point preserves the existing content gate.
  */
 import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { Readable } from 'node:stream';
 
 const root = mkdtempSync(join(tmpdir(), 'trivium-p75-'));
 process.env.DSH_HOME = join(root, 'home');
@@ -46,7 +46,7 @@ try {
   for (const text of ['/compact', 'git status', 'npm test', 'C:\\proj\\readme.md', '~/proj', '/tmp/build.sh', 'https://example.com/a?b=1']) {
     await check(() => assert.equal(extract.screenEvent(text), 1), `1: ${text}`);
   }
-  // Stated facts score 2 so they go to the front of the batch.
+  // Stated facts score 2 for diagnostics, without moving in the batch.
   for (const text of ['记住，以后都用 pnpm。', '采用方案 A 做登录。', '从现在起回复用中文。']) {
     await check(() => assert.equal(extract.screenEvent(text), 2), `2: ${text}`);
   }
@@ -101,19 +101,25 @@ try {
     turn('方案 A 先别动，下周再改。'),
   ];
   const screened = extract.screenTurns(window);
-  await check(() => assert.equal(screened.dropped.length, 0), 'a zero user turn with tool evidence is kept');
-  await check(() => assert.equal(screened.turns[0].text, '记住，以后都用 pnpm。'), 'a 2 is promoted to the front');
-  await check(() => assert.equal(screened.turns[1].text, '好的'), 'a reply stays attached to the turn it answers');
+  await check(() => {
+    const withTool = extract.screenTurns([turn('ok'), turn('tool finished', 'tool')]);
+    assert.equal(withTool.dropped.length, 0);
+    assert.equal(withTool.counts.scored1, 1, 'tool evidence still raises the diagnostic score');
+    assert.equal(withTool.wouldDrop.length, 0);
+  }, 'a zero user turn with tool evidence is retained and scored as evidence');
+  await check(() => {
+    assert.equal(screened.turns[0], window[0]);
+    assert.equal(screened.promoted, 0);
+  }, 'a 2 never displaces an earlier event');
+  await check(() => assert.equal(screened.turns[3], window[3]), 'a reply stays attached to the turn it answers');
   await check(
-    () => assert.ok(screened.turns.findIndex((t) => t.text === '记住，以后都用 pnpm。') < screened.turns.findIndex((t) => t.text === '方案 A 先别动，下周再改。')),
-    'order inside the same score is preserved',
+    () => assert.deepEqual(screened.turns, window),
+    'the complete input chronology is preserved across every score',
   );
-  await check(() => assert.equal(screened.turns[screened.turns.length - 1].role, 'tool'), 'the 0-with-tool group moves behind the 2s');
+  await check(() => assert.equal(screened.turns[1], window[1]), 'tool results keep their original position');
   await check(() => {
     /*
-     * Audit F2 (2026-11-04): a zero group is only dropped when the **whole** window
-     * is zero. In a mixed window it travels with the rest, because dropping it is
-     * how a fact sitting in a short reply got lost.
+     * Mixed windows keep their zero groups and retain the diagnostic record.
      */
     const only = extract.screenTurns([turn('git status'), turn('exit 0', 'tool', { text: 'exit 0' }), turn('继续。')]);
     assert.equal(only.turns.length, 3, 'the zero group stays in a mixed window');
@@ -122,9 +128,11 @@ try {
   }, 'a mixed window keeps its greeting instead of deleting it');
   await check(() => {
     const empty = extract.screenTurns([turn('好的'), turn('收到')]);
-    assert.equal(empty.turns.length, 0);
+    assert.equal(empty.turns.length, 2);
+    assert.equal(empty.dropped.length, 0);
+    assert.equal(empty.wouldDrop.length, 2);
     assert.equal(empty.counts.scored0, 2);
-  }, 'an all-zero window screens down to nothing');
+  }, 'an all-zero window is retained; only wouldDrop describes the retired policy');
 
   // 4) Model calls vs extraction hits over one corpus.
   const factWindows = [];
@@ -158,29 +166,128 @@ try {
   /*
    * Audit F2 (2026-11-04) removed the command/path/URL zeros, so this corpus — which
    * is mostly shell commands — no longer saves calls. That is the accepted trade:
-   * a false zero loses a fact, a false 1 costs a call the plugin already paid.
-   * Screening now only pays off on windows that are pure filler.
+   * scoring is now observational, so it must not change calls or extracted facts.
    */
-  await check(() => assert.ok(treated.calls <= baseline.calls), 'screening never adds a model call');
+  await check(() => assert.equal(treated.calls, baseline.calls), 'score-only mode keeps the model call count unchanged');
   console.log(`   corpus calls: ${baseline.calls} -> ${treated.calls} (${(drop * 100).toFixed(1)}% saved on a command-heavy corpus)`);
   await check(() => {
     const filler = extract.screenTurns([turn('继续。'), turn('好的'), turn('收到')]);
-    assert.equal(filler.turns.length, 0);
+    assert.equal(filler.turns.length, 3);
+    assert.equal(filler.dropped.length, 0);
+    assert.equal(filler.wouldDrop.length, 3);
     assert.equal(filler.counts.scored0, 3);
-  }, 'a filler-only window still costs nothing');
+  }, 'a filler-only window is retained for the existing content gate');
   await check(() => assert.deepEqual(treated.applied, baseline.applied), 'the extracted facts are identical');
   await check(() => assert.ok(treated.applied.length >= 10), `the corpus really produced hits (${treated.applied.length})`);
   await check(() => assert.ok(treated.calls <= baseline.calls), 'screening never adds a model call');
   await check(() => assert.equal(treated.nodes, baseline.nodes), 'the same number of nodes is written');
 
-  // A screened window is consumed, not retried: the caller is told "ok".
+  // F2 contracts consolidated from smoke-p88; all observations retain events.
+  await check(() => {
+    assert.equal(extract.screenEvent('npm is the package manager for this project'), 1);
+  }, 'an English sentence that starts with a command name is not a zero');
+  await check(() => {
+    assert.equal(extract.screenEvent('git log --oneline -5'), 1);
+    assert.equal(extract.screenEvent('/compact'), 1);
+    assert.equal(extract.screenEvent('src/lib/store.js'), 1);
+    assert.equal(extract.screenEvent('https://example.com/a?b=1'), 1);
+  }, 'commands, slash commands, paths and URLs score 1, not 0');
+  await check(() => {
+    // A single character that is not a known greeting is content.
+    assert.equal(extract.screenEvent('行'), 1);
+    // Greetings and acknowledgements stay in the filler lists: option B keeps only
+    // "no content at all" as a zero.
+    assert.equal(extract.screenEvent('好'), 0);
+    assert.equal(extract.screenEvent('ok'), 0);
+  }, 'only the filler lists produce a zero, everything else is content');
+  await check(() => {
+    assert.equal(extract.screenEvent('   '), 0);
+    assert.equal(extract.screenEvent(''), 0);
+  }, 'only empty input is a zero on its own');
+
+  await check(() => {
+    const window = extract.screenTurns([
+      { role: 'user', text: '记住：部署窗口固定在每周四晚上。' },
+      { role: 'assistant', text: '好的。' },
+      { role: 'user', text: '嗯' },
+    ]);
+    assert.equal(window.dropped.length, 0, 'a mixed window must not drop groups');
+    assert.ok(window.turns.length >= 3, `all groups are kept (${window.turns.length})`);
+  }, 'a mixed window keeps the zero groups instead of deleting them');
+  await check(() => {
+    const window = extract.screenTurns([
+      { role: 'user', text: '' },
+      { role: 'assistant', text: 'nothing to say' },
+    ]);
+    assert.equal(window.turns.length, 2);
+    assert.equal(window.dropped.length, 0);
+    assert.equal(window.wouldDrop.length, 2);
+  }, 'an all-zero window is retained without a scoring-side consumption');
+  await check(() => {
+    const window = extract.screenTurns([{ role: 'user', text: '' }]);
+    assert.equal(window.audit.length, 1);
+    assert.equal(window.audit[0].rule, 'empty');
+    assert.equal(window.audit[0].dropped, false);
+    assert.equal(window.audit[0].wouldDrop, true);
+    assert.ok(typeof window.audit[0].text === 'string');
+  }, 'an observed zero leaves a hypothetical audit record with rule and text');
+
+
+  // Exercise runExtract via pending replay, not just the scoring helper. The
+  // local stream is a stub: this test never makes a model/network request.
   await check(async () => {
-    const seen = [];
-    const s = extract.screenTurns([turn('继续。')]);
-    assert.equal(s.turns.length, 0);
-    seen.push('consumed');
-    assert.equal(seen.length, 1);
-  }, 'an all-zero window has nothing left to extract');
+    const plugin = await import('../lib/index.js');
+    const handlers = new Map();
+    const prompts = [];
+    let httpHandler;
+    const ctx = {
+      llm: { async *stream(request) {
+        prompts.push(request.messages.flatMap((m) => m.content || []).map((b) => b.text || '').join('\n'));
+        yield { type: 'text-delta', index: 0, text: '{"candidates":[]}' };
+      } },
+      logger: () => ({ warn() {}, info() {}, error() {}, debug() {} }),
+      inject(_deps, fn) { fn(ctx); },
+      on(name, fn) { handlers.set(name, fn); return () => {}; },
+      effect(fn) { fn(); return () => {}; },
+      tools: { register() { return () => {}; } },
+      webServer: { register(def) { httpHandler = def.handler; return () => {}; } },
+    };
+    plugin.apply(ctx, {});
+    async function replay(name, texts) {
+      const cwd = join(root, name);
+      await store.openWorkspaceDb(cwd);
+      const turns = texts.map((text, i) => turn(text, 'user', { seq: i + 1, messageId: `${name}-${i}` }));
+      await extract.savePending(cwd, { sessionId: `${name}-pending`, turns });
+      const agent = { session: { id: name, header: { cwd }, requestHeader: () => ({ config: { provider: 'stub', model: 'stub' } }) }, inject() {} };
+      await handlers.get('agent/created')({ agent });
+      const req = Readable.from([]);
+      req.method = 'GET'; req.url = `/api/dsh-trivium/status?cwd=${encodeURIComponent(cwd)}`;
+      req.headers = {}; req.socket = { remoteAddress: '127.0.0.1' };
+      let status, data;
+      await httpHandler(req, { writeHead(n) { status = n; }, end(body) { data = JSON.parse(String(body)); } });
+      assert.equal(status, 200);
+      assert.equal(data.lastScreen.mode, 'score-only');
+      assert.equal(data.lastScreen.dropped, 0);
+      assert.notEqual(data.lastExtract.skippedBy, 'screen');
+      assert.equal(extract.loadPending(cwd), null, 'the ordinary extraction path completes the replay');
+      return data;
+    }
+    const filler = await replay('p75-filler', ['继续。']);
+    assert.equal(filler.lastScreen.wouldDrop, 1);
+    assert.equal(filler.lastScreen.audit[0].wouldDrop, true);
+    assert.equal(filler.lastScreen.audit[0].dropped, false);
+    assert.equal(filler.lastExtract.gate.reason, 'filler-only');
+    assert.equal(prompts.length, 0, 'the existing content gate still avoids a filler-only call');
+    const punctuation = await replay('p75-punctuation', ['!!!']);
+    assert.equal(punctuation.lastScreen.wouldDrop, 1);
+    assert.equal(prompts.length, 1, 'a score of zero cannot bypass the existing extraction gate');
+    assert.ok(prompts[0].includes('user: !!!'));
+    await replay('p75-order', ['继续。', 'marker-before-fact', '记住：marker-last-fact 使用 npm。']);
+    const prompt = prompts.at(-1);
+    const positions = ['user: 继续。', 'user: marker-before-fact', 'user: 记住：marker-last-fact 使用 npm。'].map((text) => prompt.indexOf(text));
+    assert.ok(positions.every((n) => n >= 0));
+    assert.ok(positions[0] < positions[1] && positions[1] < positions[2], 'the actual model prompt keeps the original window order');
+  }, 'score-only replay preserves zero events, chronology and the existing content gate');
 } finally {
   store.closeAll();
   rmSync(root, { recursive: true, force: true });

@@ -133,6 +133,10 @@ try {
     assert.equal(partial.ok, false);
     assert.equal(partial.partial, true);
     assert.equal(partial.newNodesBeforeFailure, 2, `two writes were durable before the failure (${partial.newNodesBeforeFailure})`);
+    assert.equal(partial.created, null, 'unknown created action count is not a false zero');
+    assert.equal(partial.merged, null, 'earlier merges cannot be inferred from node growth');
+    assert.equal(partial.applied, null, 'unknown applied action count is not a false zero');
+    assert.equal(partial.skipped, null, 'parse skips alone do not establish the total skipped count');
     assert.ok(partial.retryHint, 'the caller is told how to retry');
   }, 'a failed import reports a partial commit instead of a bare throw');
   store.closeAll();

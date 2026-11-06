@@ -22,6 +22,7 @@ process.env.DSH_HOME = join(root, 'home');
 process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
 const store = await import('../lib/store.js');
 const plugin = await import('../lib/index.js');
+const tokens = await import('../lib/tokens.js');
 
 let checks = 0;
 let failures = 0;
@@ -191,6 +192,51 @@ try {
     () => assert.ok(plugin.refreshShortMap(keyless, db, options, 'turn-after-keyless')),
     'a real key still starts a new turn after empty observations',
   );
+  // F3 budget contracts consolidated from smoke-p88.
+  const entry = (id, label) => ({ id, label });
+  const many = (prefix, count) => Array.from({ length: count }, (_, i) => entry(i + 1, `${prefix}${i} 很长的事实标题用于撑大差异文本`));
+  await check(() => {
+    const previous = { version: 'v1', entries: many('old', 6) };
+    const report = { version: 'v2', entries: [...many('old', 6), ...many('new', 12)], hidden: 0 };
+    const diff = plugin.buildMapDiff(previous, report, { tokenBudget: 400 });
+    assert.ok(diff.text.length > 0);
+    assert.ok(diff.lines <= 19, `line count is bounded (${diff.lines})`);
+    assert.ok(tokens.estimateTokens(diff.text) <= 400, 'a 12-line diff still fits the budget');
+  }, 'the diff reports how many rows it left out');
+  await check(() => {
+    const previous = { version: 'v1', entries: many('old', 40) };
+    const report = { version: 'v2', entries: many('new', 40), hidden: 0 };
+    const diff = plugin.buildMapDiff(previous, report, { tokenBudget: 400 });
+    const used = tokens.estimateTokens(diff.text);
+    assert.ok(used <= 400, `diff stays inside the budget (${used})`);
+    /*
+     * A budget smaller than the header must produce **no text at all**, not a
+     * header that overruns it (second audit measured 31 tokens against a 20-token
+     * budget). No `|| lines === 1` escape hatch: the budget is the contract.
+     */
+    const tight = plugin.buildMapDiff(previous, report, { tokenBudget: 40 });
+    const tightTokens = tokens.estimateTokens(tight.text);
+    assert.ok(tightTokens <= 40, `a 40-token budget is honoured (${tightTokens})`);
+    assert.ok(tight.omitted > 0, `clipping reports how many rows it dropped (${tight.omitted})`);
+    assert.equal(tight.omitted, tight.added + tight.changed + tight.removed, 'omitted counts every change that was not printed');
+    // Fourth audit round: the number the model reads must equal the structured one.
+    if (tight.omitted > 0) {
+      assert.ok(
+        tight.text.includes(`…${tight.omitted} more changes`),
+        `the marker must say ${tight.omitted}: ${tight.text.split('\n').pop()}`,
+      );
+    }
+    const tooSmall = plugin.buildMapDiff(previous, report, { tokenBudget: 5 });
+    assert.equal(tooSmall.text, '', 'a budget below the header injects nothing');
+    assert.ok(tooSmall.omitted > 0);
+  }, 'a large diff is clipped to the map budget');
+  await check(() => {
+    const previous = { version: 'v1', entries: [] };
+    const report = { version: 'v2', entries: [entry(1, '一个')], hidden: 0 };
+    const diff = plugin.buildMapDiff(previous, report, { tokenBudget: 400 });
+    assert.ok(diff.text.includes('+一个'));
+    assert.equal(diff.omitted, 0);
+  }, 'a small diff is not clipped');
 } finally {
   store.closeAll();
   rmSync(root, { recursive: true, force: true });

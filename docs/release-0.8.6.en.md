@@ -7,25 +7,21 @@ kept only for readers upgrading from <= 0.8.4.
 
 ## What changed
 
-### A window is scored before extraction — **kept, not a headline feature**
+### Scoring is observational: no dropped events or reordered windows
 
-An event is scored before it can enter an extraction window (0 = no content, 1 = maybe, 2 = states a fact):
+Events receive diagnostic scores: 0 for the filler/greeting/empty/punctuation rules, 1 for possible content,
+and 2 for explicit cues. A score is not proof that an event contains no fact.
 
-- **only a window whose turns all score 0** is consumed without an extraction call; a zero group inside a
-  mixed window is extracted with the rest;
-- 2s are moved to the front of the batch;
-- a 0 is raised to 1 when its turn carried tool calls, so an acknowledged request is not dropped as filler.
+Every original window, including an all-zero window, reaches the existing extraction/content gate in its
+original order. Scoring neither consumes a window nor moves score-2 events forward. The existing content
+gate still decides whether a model call is needed.
 
-**Only four things score 0**: empty input, punctuation only, acknowledgements (`好的`, `ok`, `继续。`) and
-greetings. Commands, paths, URLs and single characters score **1** — the audit showed "looks like a command"
-never proved "carries no fact" (`npm is the package manager for this project` used to score 0), and those
-zeros could not be recovered.
+`/status.lastScreen.mode` is `score-only` and `dropped` is always 0. `wouldDrop` counts the events that the
+retired all-zero-window policy would have excluded; the audit field is hypothetical too. The API retains
+at most three audit rows in memory, loses them on restart, and has no dedicated panel card.
 
-**We make no savings claim for this.** On a command-heavy corpus the call count is **30 → 30 (0.0% saved)**;
-the earlier 30 → 10 figure only held while commands counted as zero. On a real host the model calls
-`ctx_find` even for `ok`, so a whole-window drop appeared only when the user aborted a turn. The
-tool-evidence gate runs *before* that decision: once a window is consumed there is **no replay or
-recovery entry point** (limit 1). We keep the narrow filler whitelist, not a cost benefit.
+No call-saving claim is made. Earlier live-host drops describe the retired policy; the current observational
+path is verified through offline extraction-entry regressions.
 
 ### The short map follows real use, and is injected only when it changes
 
@@ -83,7 +79,8 @@ per fact; it now flushes a handful of times.
   It does **not** demonstrate an 18× gain.
 - **A batch is not a transaction.** When a later candidate fails, earlier writes stay durable. Review F86-03
   found the response was a bare 500: it now returns `partial:true`, `newNodesBeforeFailure` and `retryHint`
-  (reopen proved 2 surviving nodes, pinned in `smoke-p83`). Re-importing the same file is idempotent.
+  (reopen proved 2 surviving nodes, pinned in `smoke-p83`). Unknown `created / merged / applied / skipped` counts are
+  `null`, not zero. Re-importing the same file merges existing facts rather than adding duplicate nodes.
 
 ### Background (already shipped in **0.8.5**, not a 0.8.6 feature): `triviumdb` 0.9.0-beta.3 → 0.9.0
 
@@ -128,9 +125,8 @@ Unchanged switch values do **not** mean unchanged default behaviour: the identit
 
 ## Known limits
 
-1. **Screening only skips filler.** The zeros are empty input, punctuation, acknowledgements and greetings;
-   commands, paths, URLs and single characters score 1. The screened-window audit is memory-only (three rows,
-   exposed on `/status`, lost on restart) and there is no replay path.
+1. **Scores are observations only.** `wouldDrop` is hypothetical and `dropped` is always 0. Scoring does
+   not remove or reorder events; the existing content gate remains authoritative. Diagnostics are memory-only.
 2. **The map is rebuilt every turn** — measured ~108 ms at 5 000 nodes, on the first pre-step of each turn.
 3. **`lastMapInjection` is workspace-scoped**, so sessions overwrite each other's diagnostics.
 4. **A timeout does not cancel the extraction**; the abandoned run keeps the lock, and `stuck` is recorded once
@@ -142,17 +138,22 @@ Unchanged switch values do **not** mean unchanged default behaviour: the identit
    never reaches the six-turn full refresh. The offline contract reproduction passes; there is no live sample.
 8. **A corrupt pending file now fails loudly** (`GET /pending` → 500 / `ok:false`) instead of looking like an
    empty queue. Refreshing the card only re-reads; replay happens on the next session start.
-9. **Imports can partially commit.** The response carries `newNodesBeforeFailure` and `retryHint`; retrying the
-   same file is idempotent.
+9. **Imports can partially commit.** The response carries `newNodesBeforeFailure` and `retryHint`; unknown
+   action totals are `null`. Retrying the same file does not add duplicate nodes for facts already present.
 
 ## Verification
 
-`node scripts/run-all.mjs` → **89/89** (89 scripts, 147.4 s total, re-run locally by the author after the
-review fixes; 0.8.4 was 74/74). The reviewer ran 14 **non-UI** smokes (292/292 assertions) and did **not**
-re-run `run-all`; these are two different runs. Assertion counts after the fixes: `p74` 29→**36**,
-`p82` 13→**14**, `p83` 12→**14**, `p86` 15→**16**, `p87` 20→**22**.
+`node scripts/run-all.mjs` → **88/88**; package dry-run passed. These are offline results for the final local closeout.
 
-Real-host evidence (2026-11-06): both screening outcomes, the map's `full` 123 → `diff` 42 → `skip` 0 tokens,
+Final commands and outcomes are recorded in [the 0.8.6 release gate](reviews/0.8.6-FINAL-RESULTS.md).
+The seven scoring checks and three budget checks from `p88` now live in `p75` / `p74`; effective assertions
+are retained. The runner now discovers 88 scripts and `scripts/` contains 120 `.mjs` files.
+Targeted results: `p74` **39/39**, `p75` **51/51**, `p83` **14/14**.
+
+The live-host results below predate this closeout. Whole-window dropping is now retired and those results
+are not live acceptance of the score-only implementation.
+
+Historical real-host evidence (2026-11-06): both outcomes of the retired screening policy, the map's `full` 123 → `diff` 42 → `skip` 0 tokens,
 a `stuck{lock-stale}` → `recovered` pair (`afterMs` 86 021), the pending card matching the API and file
 (1 window / 51 events / 144 acknowledged), and a 24-line `CLAUDE.md` import (259 ms, 4 written / 7 skipped).
 
