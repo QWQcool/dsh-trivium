@@ -288,6 +288,21 @@ try {
     assert.ok(positions.every((n) => n >= 0));
     assert.ok(positions[0] < positions[1] && positions[1] < positions[2], 'the actual model prompt keeps the original window order');
   }, 'score-only replay preserves zero events, chronology and the existing content gate');
+
+  /*
+   * F86-05: a zero that survived because its group carried a tool result is
+   * invisible in `counts` (post-promotion) and in `audit` (only final zeros), so
+   * the diagnostic has to count it separately or the fact cannot be checked.
+   */
+  await check(() => {
+    const screened = extract.screenTurns([
+      { role: 'user', text: '继续。' },
+      { role: 'tool', text: 'ok' },
+    ]);
+    assert.equal(screened.keptByToolEvidence, 1, 'a zero kept by a tool result is counted');
+    assert.equal(screened.counts.scored0, 0, 'and it is not reported as a final zero');
+    assert.equal(screened.promoted, 1, 'the promoted counter still moves with it');
+  }, 'a group promoted by tool evidence is counted where a reader can see it');
 } finally {
   store.closeAll();
   rmSync(root, { recursive: true, force: true });

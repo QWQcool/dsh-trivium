@@ -63,6 +63,16 @@ try {
   const firstText = textOf(agent.injected[0]);
   const fullTokens = store.buildShortMapReport(db, 400).tokens;
   await check(() => assert.equal(agent.injected.length, 1), 'the first turn injects the map');
+  /*
+   * F86-06: the diagnostics counters have to say what they count. The startup
+   * injection is not a refresh, and the workspace-level record is shared by every
+   * session in the folder, so both need to be readable without guessing.
+   */
+  const bootStatus = plugin.workspaceStatus(cwd);
+  await check(() => assert.equal(bootStatus.mapInjections.sessionStart, 1), 'the startup injection has its own counter');
+  await check(() => assert.equal(bootStatus.lastMapInjection.sessionId, 'sess-p74'), 'the last injection names its session');
+  await check(() => assert.equal(bootStatus.lastMapInjection.mode, 'full'), 'the startup record is a full injection');
+  await check(() => assert.equal(bootStatus.lastMapInjection.reason, 'session-start'), 'the startup record says why');
   await check(() => assert.ok(firstText.includes('auth-gateway')), 'the full map names the facts');
   await check(() => assert.match(firstText, /^dsh-trivium memory map:/), 'the first injection is the full map, not a diff');
 
@@ -195,6 +205,8 @@ try {
     () => assert.ok(plugin.refreshShortMap(keyless, db, options, 'turn-after-keyless')),
     'a real key still starts a new turn after empty observations',
   );
+
+
   // F3 budget contracts consolidated from smoke-p88.
   const entry = (id, label) => ({ id, label });
   const many = (prefix, count) => Array.from({ length: count }, (_, i) => entry(i + 1, `${prefix}${i} 很长的事实标题用于撑大差异文本`));
