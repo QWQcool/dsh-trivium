@@ -1,0 +1,26 @@
+[
+  {
+    "at": "2026-11-06T04:49:07.173Z",
+    "mode": "full",
+    "reason": "session-start",
+    "tokens": 146,
+    "turnsSince": 0,
+    "version": "mapv-fnv1a-24fde35f-10-400"
+  },
+  {
+    "at": "2026-11-06T04:49:22.682Z",
+    "mode": "skip",
+    "reason": "unchanged",
+    "tokens": 0,
+    "turnsSince": 1,
+    "version": "mapv-fnv1a-24fde35f-10-400"
+  },
+  {
+    "at": "2026-11-06T04:49:26.442Z",
+    "mode": "skip",
+    "reason": "unchanged",
+    "tokens": 0,
+    "turnsSince": 2,
+    "version": "mapv-fnv1a-24fde35f-10-400"
+  }
+]

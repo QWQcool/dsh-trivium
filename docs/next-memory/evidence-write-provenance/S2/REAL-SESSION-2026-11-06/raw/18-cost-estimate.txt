@@ -1,0 +1,41 @@
+{
+  "rows": [
+    {
+      "session": "session-72b453d9-3fa",
+      "userTurns": 0,
+      "requests": 7,
+      "outChars": 3794,
+      "estOutTokens": 1518
+    },
+    {
+      "session": "session-830d0b54-7bc",
+      "userTurns": 0,
+      "requests": 2,
+      "outChars": 1947,
+      "estOutTokens": 779
+    },
+    {
+      "session": "session-c61cf2e9-13e",
+      "userTurns": 0,
+      "requests": 21,
+      "outChars": 29123,
+      "estOutTokens": 11649
+    }
+  ],
+  "totals": {
+    "requests": 30,
+    "userTurns": 0,
+    "outChars": 34864,
+    "estOutTokens": 13946
+  },
+  "extractionCalls": 2,
+  "assumptions": {
+    "promptTokensPerRequest": 12000,
+    "price": "peak: in 2 / out 8 CNY per M"
+  },
+  "estimateCnyPeak": 0.8796,
+  "breakdown": {
+    "promptPeak": 0.768,
+    "outPeak": 0.1116
+  }
+}

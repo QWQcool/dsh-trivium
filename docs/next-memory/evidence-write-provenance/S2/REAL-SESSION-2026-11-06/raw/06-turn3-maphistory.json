@@ -1,0 +1,18 @@
+[
+  {
+    "at": "2026-11-06T04:40:28.539Z",
+    "mode": "skip",
+    "reason": "unchanged",
+    "tokens": 0,
+    "turnsSince": 2,
+    "version": "mapv-fnv1a-24fde35f-10-400"
+  },
+  {
+    "at": "2026-11-06T04:44:45.729Z",
+    "mode": "skip",
+    "reason": "unchanged",
+    "tokens": 0,
+    "turnsSince": 4,
+    "version": "mapv-fnv1a-24fde35f-10-400"
+  }
+]

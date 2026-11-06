@@ -1,0 +1,52 @@
+new-chat: ok
+session-start-map: {"at":"2026-11-06T04:53:55.395Z","mode":"full","reason":"session-start","tokens":146,"turnsSince":0,"version":"mapv-fnv1a-24fde35f-10-400"} was 2026-11-06T04:49:26.442Z
+send: sent
+stop: {"clicked":true,"label":"停止生成"}
+{
+  "extract": {
+    "at": "2026-11-06T04:55:02.344Z",
+    "reason": "idle",
+    "applied": 0,
+    "skipped": [],
+    "skippedCount": 0,
+    "llmFailed": false,
+    "skippedBy": "screen",
+    "screenedOut": 1,
+    "screenedCounts": {
+      "scored0": 1,
+      "scored1": 0,
+      "scored2": 0
+    },
+    "gate": {
+      "skipped": true,
+      "reason": "screen-empty"
+    }
+  },
+  "screen": {
+    "at": "2026-11-06T04:55:02.344Z",
+    "dropped": 1,
+    "counts": {
+      "scored0": 1,
+      "scored1": 0,
+      "scored2": 0
+    },
+    "audit": [
+      {
+        "rule": "filler",
+        "score": 0,
+        "text": "ok",
+        "turns": 1,
+        "dropped": true
+      }
+    ]
+  },
+  "map": {
+    "at": "2026-11-06T04:54:01.672Z",
+    "mode": "skip",
+    "reason": "unchanged",
+    "tokens": 0,
+    "turnsSince": 1,
+    "version": "mapv-fnv1a-24fde35f-10-400"
+  },
+  "elapsedMs": 62187
+}

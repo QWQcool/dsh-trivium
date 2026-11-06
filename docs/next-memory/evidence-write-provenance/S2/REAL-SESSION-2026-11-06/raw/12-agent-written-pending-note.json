@@ -1,0 +1,30 @@
+{
+  "marker": "LOCKBUSY-2026-11-06",
+  "purpose": "待补写验证：确认这条待补写的记忆写入确实落盘",
+  "createdAt": "2026-11-06T13:36:00+08:00",
+  "workspace": "<home>\\Desktop\\dsh-trivium",
+  "intendedWrite": {
+    "tool": "ctx_remember",
+    "type": "experience",
+    "text": "0.8.6 验收临时标记：LOCKBUSY-2026-11-06。只用于「待补写验证」（确认待补写的写入确实落盘），2026-11-06 验收场景专用，不作他用。"
+  },
+  "blocker": {
+    "reason": "workspace write busy",
+    "lockFile": ".dsh/trivium-write.lock",
+    "ownerPid": 12780,
+    "ownerAlive": true,
+    "lockWrittenAt": "2026-11-06T13:35:27+08:00",
+    "note": "持锁进程是活的，按 lib/workspace-lock.js 的规则（stale = 超 TTL 且 owner 不存活）不会被回收；未删除、未 kill。"
+  },
+  "attempts": [
+    { "at": "2026-11-06T13:35:50+08:00", "result": "busy" },
+    { "at": "2026-11-06T13:35:58+08:00", "result": "busy" },
+    { "at": "2026-11-06T13:36:30+08:00", "result": "busy" },
+    { "at": "2026-11-06T13:38:20+08:00", "result": "busy" },
+    { "at": "2026-11-06T13:40:10+08:00", "result": "busy" },
+    { "at": "2026-11-06T13:42:40+08:00", "result": "busy" }
+  ],
+  "lastCheckedAt": "2026-11-06T13:42:40+08:00",
+  "status": "pending",
+  "nextStep": "锁释放（.dsh/trivium-write.lock 消失，或 owner 退出）后，用 ctx_remember 重放 intendedWrite.text，再用 ctx_find('LOCKBUSY') 核对落盘。"
+}

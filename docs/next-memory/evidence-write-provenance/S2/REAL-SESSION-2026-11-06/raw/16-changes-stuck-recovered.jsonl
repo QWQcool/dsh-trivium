@@ -1,0 +1,4 @@
+{"at":"2026-11-04T02:21:15.258Z","reason":"stuck","opId":"session-e19f27c2-c78c-4a61-a09b-e9014cde2416:stuck:lock-stale","nodeId":null,"byId":null,"action":"","type":"","preview":"","detail":"lock-stale","source":null}
+{"at":"2026-11-04T02:21:56.414Z","reason":"recovered","opId":"session-67af6b8e-725c-4126-a244-dc1418069046:recovered:lock-stale","nodeId":null,"byId":null,"action":"","type":"","preview":"","detail":"lock-stale","source":null}
+{"at":"2026-11-06T04:40:05.951Z","reason":"stuck","opId":"session-72b453d9-3fab-4325-9cd7-f948df76d8fb:stuck:lock-stale","nodeId":null,"byId":null,"action":"","type":"","preview":"","detail":"lock-stale","source":null}
+{"at":"2026-11-06T04:41:31.972Z","reason":"recovered","opId":"session-72b453d9-3fab-4325-9cd7-f948df76d8fb:recovered:lock-stale","nodeId":null,"byId":null,"action":"","type":"","preview":"","detail":"lock-stale","source":null}

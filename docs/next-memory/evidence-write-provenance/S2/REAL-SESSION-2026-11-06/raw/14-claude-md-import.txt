@@ -1,0 +1,124 @@
+{
+  "file": {
+    "id": "claude-workspace",
+    "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\s0-ws\\CLAUDE.md",
+    "family": "Claude Code",
+    "bytes": 869
+  },
+  "elapsedMs": 259,
+  "httpStatus": 200,
+  "result": {
+    "ok": true,
+    "created": 4,
+    "merged": 0,
+    "linked": 4,
+    "skipped": 7,
+    "applied": 4,
+    "maxWriteChars": 3000,
+    "maxWriteItems": 24,
+    "files": [
+      {
+        "id": "user",
+        "family": "WorkBuddy",
+        "path": "<home>\\.workbuddy\\MEMORY.md",
+        "exists": true,
+        "bytes": 1177
+      },
+      {
+        "id": "workspace",
+        "family": "WorkBuddy",
+        "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\s0-ws\\.workbuddy\\memory\\MEMORY.md",
+        "exists": false,
+        "bytes": 0
+      },
+      {
+        "id": "workspaceRoot",
+        "family": "WorkBuddy",
+        "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\s0-ws\\.workbuddy\\MEMORY.md",
+        "exists": false,
+        "bytes": 0
+      },
+      {
+        "id": "claude-user",
+        "family": "Claude Code",
+        "path": "<home>\\.claude\\CLAUDE.md",
+        "exists": false,
+        "bytes": 0
+      },
+      {
+        "id": "claude-workspace",
+        "family": "Claude Code",
+        "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\s0-ws\\CLAUDE.md",
+        "exists": true,
+        "bytes": 869
+      },
+      {
+        "id": "claude-dot",
+        "family": "Claude Code",
+        "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\s0-ws\\.claude\\CLAUDE.md",
+        "exists": false,
+        "bytes": 0
+      },
+      {
+        "id": "codex-user",
+        "family": "Codex",
+        "path": "<home>\\.codex\\AGENTS.md",
+        "exists": true,
+        "bytes": 1676
+      },
+      {
+        "id": "codex-workspace",
+        "family": "Codex",
+        "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\s0-ws\\AGENTS.md",
+        "exists": false,
+        "bytes": 0
+      },
+      {
+        "id": "codex-dot",
+        "family": "Codex",
+        "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\s0-ws\\.codex\\AGENTS.md",
+        "exists": false,
+        "bytes": 0
+      }
+    ],
+    "used": [
+      {
+        "id": "claude-workspace",
+        "family": "Claude Code",
+        "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\s0-ws\\CLAUDE.md",
+        "bytes": 869,
+        "parsed": 4
+      }
+    ]
+  },
+  "nodesBefore": 1,
+  "nodesAfter": 5,
+  "delta": 4,
+  "written": [
+    {
+      "id": 5,
+      "type": "preference",
+      "l0": ""
+    },
+    {
+      "id": 4,
+      "type": "preference",
+      "l0": ""
+    },
+    {
+      "id": 3,
+      "type": "preference",
+      "l0": ""
+    },
+    {
+      "id": 2,
+      "type": "preference",
+      "l0": ""
+    },
+    {
+      "id": 1,
+      "type": "workspace",
+      "l0": ""
+    }
+  ]
+}

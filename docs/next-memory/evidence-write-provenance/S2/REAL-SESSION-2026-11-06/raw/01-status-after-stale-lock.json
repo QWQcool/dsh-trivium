@@ -1,0 +1,259 @@
+{
+  "ok": true,
+  "cwd": "<home>\\Desktop\\dsh-trivium",
+  "dbPath": "<home>\\Desktop\\dsh-trivium\\.dsh\\trivium.tdb",
+  "dbExists": true,
+  "nodeCount": 16,
+  "diagnosticsScope": "workspace",
+  "lastInjectTokens": 123,
+  "lastInjectAt": "2026-11-06T04:33:37.838Z",
+  "lastMapInjection": {
+    "at": "2026-11-06T04:33:37.838Z",
+    "mode": "full",
+    "reason": "session-start",
+    "tokens": 123,
+    "turnsSince": 0,
+    "version": "mapv-fnv1a-16d80997-7-400"
+  },
+  "mapInjections": null,
+  "lastExtract": null,
+  "lastScreen": null,
+  "emptyAnswer": null,
+  "recovery": null,
+  "stuck": null,
+  "recovered": null,
+  "audit": {
+    "incomplete": false,
+    "lastErrorAt": null,
+    "scope": "process"
+  },
+  "pendingPersistence": {
+    "incomplete": false,
+    "lastErrorAt": null,
+    "scope": "process"
+  },
+  "mapTokenBudget": 400,
+  "turnTokenBudget": 300,
+  "lastContextPlan": null,
+  "preStep": {
+    "count": 0,
+    "at": null,
+    "stage": "",
+    "error": ""
+  },
+  "lastTrace": null,
+  "version": "0.8.6",
+  "recallMode": "off",
+  "autoRecall": false,
+  "anchorRecall": false,
+  "extractEnabled": true,
+  "chipsEnabled": false,
+  "sessionLayerEnabled": true,
+  "gitSidecarEnabled": false,
+  "pluginLocale": "host",
+  "configPanelOpen": true,
+  "writeApproval": false,
+  "workspaces": [
+    {
+      "cwd": "<home>\\Desktop\\dsh-trivium\\.tmp\\s0-ws",
+      "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\s0-ws\\.dsh\\trivium.tdb",
+      "nodeCount": 3,
+      "open": true
+    },
+    {
+      "cwd": "<home>\\Desktop\\dsh-trivium",
+      "path": "<home>\\Desktop\\dsh-trivium\\.dsh\\trivium.tdb",
+      "nodeCount": 16,
+      "open": true
+    },
+    {
+      "cwd": "<home>\\Desktop\\AICodingPrjStudy",
+      "path": "<home>\\Desktop\\AICodingPrjStudy\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\Desktop\\dsh-trivium\\.tmp\\r3\\ws",
+      "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\\S1",
+      "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\\S1\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\\S2",
+      "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\\S2\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\\S3",
+      "path": "<home>\\Desktop\\dsh-trivium\\.tmp\\r3\\ws\\S3\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-sFQ4sb",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-sFQ4sb\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-4s8piX",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-4s8piX\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-1hWRQc",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-1hWRQc\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-a8kIxK",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-a8kIxK\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-EpQsyI",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-EpQsyI\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-CNss2c",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-CNss2c\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-6o2Zce",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-6o2Zce\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-Zoz4su",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-Zoz4su\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-HVrSOW",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-HVrSOW\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-O4Gj9q",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-O4Gj9q\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-Euf9ic",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-Euf9ic\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-Si1XMi",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-Si1XMi\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-YKeZ4n",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-YKeZ4n\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-1Saq15",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-ws-1Saq15\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-x3mZVb",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-w5-other-x3mZVb\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-0YiWDA",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-0YiWDA\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-6FsYl0",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-6FsYl0\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-TTch9x",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-TTch9x\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-Reinyx",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-Reinyx\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-Z0jiBN",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-Z0jiBN\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-vAVP5t",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-a5-ws-vAVP5t\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-empty-7ezLt8",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-empty-7ezLt8\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-empty-tZ7DrC",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-empty-tZ7DrC\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    },
+    {
+      "cwd": "<home>\\AppData\\Local\\Temp\\trivium-empty-TggW4d",
+      "path": "<home>\\AppData\\Local\\Temp\\trivium-empty-TggW4d\\.dsh\\trivium.tdb",
+      "nodeCount": null,
+      "open": false
+    }
+  ],
+  "derived": {
+    "sidecar": {
+      "ok": true,
+      "error": "",
+      "at": "2026-11-06T04:33:37.838Z",
+      "cwd": "<home>\\Desktop\\dsh-trivium",
+      "scope": "workspace",
+      "enabled": false
+    }
+  },
+  "embeddingEnabled": false,
+  "embeddingUrl": "",
+  "embeddingModel": "text-embedding-3-small",
+  "embeddingApiKeySet": false,
+  "embeddingReady": false
+}

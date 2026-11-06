@@ -1,0 +1,4 @@
+{"text":"ok","score":0,"rule":"filler"}
+{"text":"继续","score":0,"rule":"filler"}
+{"text":"好的","score":0,"rule":"filler"}
+{"text":"只读操作，不要改任何文件：把 README.md 的第一行内容贴出来。","score":1,"rule":"content"}
