@@ -12,9 +12,9 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.8.5** ([release notes](docs/release-0.8.5.md)): **the kernel upgrade only** — `triviumdb` moves from `0.9.0-beta.3` to `0.9.0`, plus the `undefined` write adaptation it requires. No context-pipeline behaviour changes ship in this package. **0.8.6** (still on `main`, not published) carries the pipeline: observational event scoring (no event removal or reordering), map heat, incremental map injection, stuck recovery, a visible deferred-write queue, batched writes, fact identity, `MemoryWriter`, and inheritance/router behind an off switch. See the [documentation index](docs/README.md) for verification status.
+The published npm package is **0.8.6** ([release notes](docs/release-0.8.6.md)): the context-pipeline release — observational event scoring (scores are diagnostics; no event is removed or reordered), map heat, incremental map injection with a per-turn key, stuck/recovered diagnostics, a visible deferred-write queue, batched imports with an honest partial-commit receipt, fact identity (fuzzy merge off by default), `MemoryWriter`, and inheritance/router behind an off switch. **The kernel does not change in 0.8.6** (`triviumdb@0.9.0`, already shipped in [0.8.5](docs/release-0.8.5.md), which was the kernel-only release). See the [documentation index](docs/README.md) for verification status.
 
-> **Back up the whole `.dsh` directory (with the plugin closed) before upgrading to 0.8.5.**
+> **Back up the whole `.dsh` directory (with the plugin closed) before upgrading from 0.8.4 or earlier** (0.8.5 and 0.8.6 already ship `0.9.0`, so there is nothing to convert if you are on either).
 > 0.9.0 raises the library format to **v10** and the previous kernel cannot read it
 > (`TDB_UNSUPPORTED_DATABASE_VERSION`), so **downgrading the plugin is not a rollback** — restoring a backup is,
 > and a restore returns the library to the moment of the backup, losing everything written after it.
@@ -345,7 +345,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 ## Changelog
 
 - [0.8.6](docs/release-0.8.6.md): observational event scoring (no event removal or reordering) before the model call, map heat, incremental map injection with a per-turn key, stuck/recovered diagnostics, a visible deferred-write queue, batched writes, fact identity (off by default). Inheritance and the router ship behind an off switch.
-- 0.8.5 (kernel only, **published**): `triviumdb@0.9.0`, the `undefined` write adaptation, and the upgrade/rollback drill. No pipeline behaviour change.
+- [0.8.5](docs/release-0.8.5.md) (kernel only): `triviumdb@0.9.0`, the `undefined` write adaptation, and the upgrade/rollback drill. No pipeline behaviour change.
 - [0.8.4](docs/release-0.8.4.md): settings card rebuilt as four pages (memory / context / activity / settings), Ctrl/Cmd+K palette, split detail at wide widths, prototype visual language, grouped settings. No server behaviour change.
 - [0.8.3](docs/release-0.8.3.md): supersede rewrites as a new decision plus a revision edge; long-body tails, date guard and compaction recall fixes.
 - [0.8.2](docs/release-0.8.2.md): extraction and decision-correction fixes; optional approved-preference export and consumer verification.
@@ -382,7 +382,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Published package: `0.8.5` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Published package: `0.8.6` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.1-rc.4` (the peer range also admits the 0.1.x lines)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 
