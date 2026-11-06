@@ -154,6 +154,23 @@ try {
     assert.equal(plan.reason, 'version-only');
     assert.equal(plan.tokens, 0);
   }, 'a version-only change does not buy a diff');
+
+  /*
+   * A tool loop hands over the delta on later steps, so those pre-steps carry no
+   * user message and `mapTurnKeyOf` returns "". Counting each of them as a turn
+   * made `turnsSince` walk 0 -> 3 inside one user turn on a real host
+   * (2026-11-06, measured twice), which buys a forced full map every second turn.
+   */
+  const beforeDeltas = agent.injected.length;
+  const deltas = [1, 2, 3].map(() => plugin.refreshShortMap(agent, db, options, ''));
+  await check(() => assert.deepEqual(deltas, [null, null, null]), 'pre-steps without a user message do not move the counter');
+  await check(() => assert.equal(agent.injected.length, beforeDeltas), 'those pre-steps inject nothing');
+  await check(() => assert.ok(plugin.refreshShortMap(agent, db, options, 'turn-7')), 'the next real turn still refreshes');
+
+  // A host that never hands over a key must not go silent: the first "" counts.
+  const keyless = fakeAgent('sess-p74-keyless');
+  await plugin.ensureShortMap(keyless, options);
+  await check(() => assert.ok(plugin.refreshShortMap(keyless, db, options, '')), 'a key-less host still gets its first refresh');
 } finally {
   store.closeAll();
   rmSync(root, { recursive: true, force: true });

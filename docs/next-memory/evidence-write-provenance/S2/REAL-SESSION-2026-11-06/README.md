@@ -106,8 +106,11 @@
 `uid:<id>` 不相等，`refreshShortMap` 便把它当新一轮（`lib/index.js:952`）。
 status 里 `preStep.stage` 实测就是 `"channels-off"`（`raw/07-status-after-new-chat.json`）。
 
-最小修法（供评估，未实施）：把 `beginTurn(sessionId, turnKey)` 提到 channels-off 判断
+最小修法（当时的建议）：把 `beginTurn(sessionId, turnKey)` 提到 channels-off 判断
 之前；或让 `refreshShortMap` 在 `turnKey === ""` 时保持上一轮的 key 不变。
+
+> 验收后已按第二种修法修掉，见 §9。**真实宿主上的复测没有做**（要再花一次模型调用），
+> 所以 §2.2 的失败值仍然是这次真机的实测值，不代表修复后的行为。
 
 ### 2.3 另一处口径边界：`mapInjections.full` 不含会话起始
 
@@ -277,3 +280,29 @@ agent，`agent/created` 不会再触发，`staleLockInfo` 自然没跑。改用�
 - 临时目录 `.tmp/a4-ws`、`.tmp/pending-memory-writes`、`.tmp/chrome-profile-a` 已删；
   `.tmp/s0-ws` 恢复原状（还原了被改名备份的 `.dsh`）
 - `git status` 只有本证据目录
+
+## 9. 修复记录（验收之后）
+
+`turnsSince` 的计数在验收后被修掉，改的是 `refreshShortMap` 的守卫（`lib/index.js`）。
+
+**改法**：空 key 当「同一轮的后续 pre-step」，不再当成新的一轮。原守卫只跳过*相等*的
+key，而 `""` 与任何 key 都不相等，于是工具循环里每个不带用户消息的 pre-step 都加一次。
+这与 `lib/turn-ledger.js` 的 `resolveTurnKeyForLedger` 已经是同一条规则（那里也是把
+空 key 理解成「属于已经打开的那一轮」）。
+
+**兼容**：给"从没拿到过 key 的宿主"留了口子——`previous.turnKey` 为空时，`""` 仍然
+算一轮，避免这类宿主一整个会话都不再刷新。
+
+**回归**：`scripts/smoke-p74.mjs` 加 4 条断言（原 29 → 33）：
+
+- `pre-steps without a user message do not move the counter`（三个连续 `""` 都返回 `null`）
+- `those pre-steps inject nothing`
+- `the next real turn still refreshes`
+- `a key-less host still gets its first refresh`
+
+**防恒真验证**：把守卫临时改回旧的一行，p74 掉到 **31/33**，失败的是
+`those pre-steps...` 与 `those pre-steps inject nothing`（`4 !== 3`，多注入了一次）；
+改回后 33/33。全量 `node scripts/run-all.mjs` → **89/89**。
+
+**没做的**：没有在真实宿主上复测「一轮只走 1」。那要再花一次模型调用，等你要求时再做；
+在那之前，不要把 §2.2 的失败值当成已修复的证据。
