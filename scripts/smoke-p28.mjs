@@ -1,6 +1,6 @@
 /** Failed extraction remains pending and must be retried, never marked as successful dedupe. */
 import assert from "node:assert/strict";
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync , writeFileSync} from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -8,6 +8,7 @@ import { pathToFileURL } from "node:url";
 const root = mkdtempSync(join(tmpdir(), "dsh-trivium-p28-"));
 process.env.DSH_HOME = join(root, "home");
 process.env.DSH_TRIVIUM_SETTINGS = join(root, "settings.json");
+writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ supersedeMode: "auto" }), "utf8");
 const cwd = join(root, "workspace");
 
 const realSetTimeout = globalThis.setTimeout;

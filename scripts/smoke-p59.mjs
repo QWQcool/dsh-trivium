@@ -1,12 +1,13 @@
 /** Actual host event -> extraction -> audit -> pending consumption, no model. */
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync , writeFileSync} from "node:fs";
 import { tmpdir } from "node:os";
 import { isAbsolute, join, relative, resolve, sep } from "node:path";
 
 const root = mkdtempSync(join(tmpdir(), "dsh-trivium-p59-"));
 process.env.DSH_HOME = join(root, "home");
 process.env.DSH_TRIVIUM_SETTINGS = join(root, "settings.json");
+writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ supersedeMode: "auto" }), "utf8");
 const cwd = join(root, "workspace");
 const store = await import("../lib/store.js");
 const { loadPending } = await import("../lib/extract.js");

@@ -89,8 +89,8 @@ try {
     "detail is fetched on expand, not on list load",
   );
   check(
-    /if \(page === "context" \|\| page === "runs"\) \{\s*loadTraces\(\);\s*loadCorrections\(\);\s*loadTurn\(\);\s*loadChanges\(\);\s*loadPending\(\);\s*\}/.test(src),
-    "delivery records, traces, corrections and the deferred queue are fetched only while the context or activity page is open",
+    /if \(page === "context" \|\| page === "runs"\) \{\s*loadTraces\(\);\s*loadCorrections\(\);\s*loadTurn\(\);\s*loadChanges\(\);\s*loadPending\(\);\s*loadProposals\(\);\s*\}/.test(src),
+    "delivery records, traces, corrections, the deferred queue and replacement proposals are fetched only while the context or activity page is open",
   );
 
   /* ------------------------------------------------------------ accessibility */

@@ -54,6 +54,7 @@ if (mode === "recover") {
 const root = mkdtempSync(join(tmpdir(), "trivium-p62-"));
 process.env.DSH_HOME = join(root, "home");
 process.env.DSH_TRIVIUM_SETTINGS = join(root, "settings.json");
+writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ supersedeMode: "auto" }), "utf8");
 const extract = await import("../lib/extract.js");
 const store = await import("../lib/store.js");
 const { apply } = await import("../lib/index.js");
