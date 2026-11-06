@@ -80,7 +80,9 @@ try {
   await check(() => {
     const raw = JSON.stringify(summary);
     assert.ok(!raw.includes('x'.repeat(120)), 'the full turn text never reaches the panel');
-    assert.ok(!raw.includes('k1'), 'the acknowledged keys are not shipped');
+    // Use a key that is actually in the fixture: the old assertion looked for
+    // 'k1', which this file never contained, and could therefore never fail.
+    assert.ok(!raw.includes('session-aaaa1111:1'), 'the acknowledged keys are not shipped');
   }, 'the payload carries counts, not transcripts');
   await check(() => assert.ok(summary.updatedAt && summary.updatedAt.endsWith('Z'), 'the file mtime is reported as ISO'), 'updatedAt comes from the file itself');
 
@@ -132,6 +134,19 @@ try {
       const res = await fetch(`http://127.0.0.1:${port}/api/dsh-trivium/pending?cwd=${encodeURIComponent(join(root, 'nope'))}`);
       assert.equal(res.status, 400);
     }, 'GET /pending refuses an unknown workspace');
+    await check(async () => {
+      // F86-02: "cannot read" is not "nothing is waiting". The client only
+      // treats ok === false as an error, so a 200/ok:true with zero windows
+      // silently turned a corrupt queue into an empty one.
+      writeFileSync(pendingFile, '{broken-json', 'utf8');
+      const res = await fetch(`http://127.0.0.1:${port}/api/dsh-trivium/pending?cwd=${encodeURIComponent(ws)}`);
+      const body = await res.json();
+      assert.equal(res.status, 500);
+      assert.equal(body.ok, false, 'the consumer checks ok === false');
+      assert.equal(body.reason, 'unreadable');
+      assert.equal(body.windows.length, 0);
+      assert.ok(body.error || body.message, 'the failure carries a reason');
+    }, 'GET /pending fails loudly on a corrupt file (F86-02)');
   } finally {
     await new Promise((resolve) => server.close(resolve));
     store.closeAll();

@@ -167,10 +167,30 @@ try {
   await check(() => assert.equal(agent.injected.length, beforeDeltas), 'those pre-steps inject nothing');
   await check(() => assert.ok(plugin.refreshShortMap(agent, db, options, 'turn-7')), 'the next real turn still refreshes');
 
-  // A host that never hands over a key must not go silent: the first "" counts.
+  /*
+   * F86-01 (external review, 2026-11-06): a host that never exposes a user
+   * message keeps writing "" into `previous.turnKey`, so the anchor is missing
+   * and six empty pre-steps walked 1 -> 2 -> 3 -> 4 -> 5 -> full/refresh.
+   * The first empty observation may start a turn; the rest may not.
+   */
   const keyless = fakeAgent('sess-p74-keyless');
   await plugin.ensureShortMap(keyless, options);
-  await check(() => assert.ok(plugin.refreshShortMap(keyless, db, options, '')), 'a key-less host still gets its first refresh');
+  const keylessInjections = keyless.injected.length;
+  const firstEmpty = plugin.refreshShortMap(keyless, db, options, '');
+  const restEmpty = [1, 2, 3, 4, 5].map(() => plugin.refreshShortMap(keyless, db, options, ''));
+  await check(() => assert.ok(firstEmpty), 'a key-less host still gets its first refresh');
+  await check(
+    () => assert.deepEqual(restEmpty, [null, null, null, null, null]),
+    'repeated empty observations do not move the counter',
+  );
+  await check(
+    () => assert.equal(keyless.injected.length, keylessInjections),
+    'six empty pre-steps never force a full refresh',
+  );
+  await check(
+    () => assert.ok(plugin.refreshShortMap(keyless, db, options, 'turn-after-keyless')),
+    'a real key still starts a new turn after empty observations',
+  );
 } finally {
   store.closeAll();
   rmSync(root, { recursive: true, force: true });

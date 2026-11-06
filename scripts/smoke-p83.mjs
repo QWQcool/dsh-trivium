@@ -106,10 +106,41 @@ try {
     store.flushWorkspaceDb(db);
   }
   await check(() => assert.equal(threw, true), 'the failure still surfaces');
+  // "Durable" has to mean "still there after reopening the file group", not
+  // "visible through the handle that performed the write" (assertion audit).
+  store.closeAll();
+  const reopened = await store.openWorkspaceDb(ws);
   await check(() => {
-    const rows = store.findByType(db, 'preference');
-    assert.ok(rows.some((row) => row.payload?.name === 'survives'), 'the write before the failure is durable');
-  }, 'a write that already happened survives a later failure');
+    const rows = store.findByType(reopened, 'preference');
+    assert.ok(rows.some((row) => row.payload?.name === 'survives'), 'the write before the failure is durable across a reopen');
+  }, 'a write that already happened survives a later failure (after reopen)');
+
+  /*
+   * 5) The real import response must admit a partial commit (F86-03). A batch
+   * is not a transaction: earlier writes are already durable when a later
+   * candidate throws, and the caller needs to be told, not handed a bare 500.
+   */
+  const ws2 = join(root, 'ws2');
+  const db2 = await store.openWorkspaceDb(ws2);
+  writeFileSync(join(ws2, 'CLAUDE.md'), `${IMPORT_LINES.slice(0, 4).map((line) => `- ${line}`).join('\n')}\n`, 'utf8');
+  const before2 = db2.allNodeIds().length;
+  const rawInsert2 = db2.insert.bind(db2);
+  let inserts2 = 0;
+  db2.insert = (...args) => { if (++inserts2 === 3) throw new Error('synthetic third insert failure'); return rawInsert2(...args); };
+  const partial = markdownMod.importExternal(db2, { cwd: ws2, ids: ['claude-workspace'] });
+  db2.insert = rawInsert2;
+  await check(() => {
+    assert.equal(partial.ok, false);
+    assert.equal(partial.partial, true);
+    assert.equal(partial.newNodesBeforeFailure, 2, `two writes were durable before the failure (${partial.newNodesBeforeFailure})`);
+    assert.ok(partial.retryHint, 'the caller is told how to retry');
+  }, 'a failed import reports a partial commit instead of a bare throw');
+  store.closeAll();
+  const reopened2 = await store.openWorkspaceDb(ws2);
+  await check(
+    () => assert.equal(reopened2.allNodeIds().length - before2, 2),
+    'the partial commit really is durable after reopen',
+  );
 } finally {
   store.closeAll();
   rmSync(root, { recursive: true, force: true });

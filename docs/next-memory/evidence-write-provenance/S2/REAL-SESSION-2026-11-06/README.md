@@ -11,7 +11,8 @@
 - 原始 JSON 全部在 `raw/`，下面每条结论都能在对应文件里逐字核对
 
 结论摘要：**5 项里 4 项通过，A2 的「一轮只走 1」失败**（实测一轮走 3）。另发现一个
-诊断字段盲区（见 §7）。费用上界约 ¥0.88（峰价口径估算，非账单）。
+诊断字段盲区（见 §7）。费用**估算**约 ¥0.88（基于未核实的 12k 输入 token/请求假设，非账单、
+也非证明过的上界）。
 
 ---
 
@@ -95,19 +96,27 @@
 | T1（`raw/02-turn1-maphistory.json`） | 1 → 2 → 3 | +3 |
 | T5（`raw/09-turn5-maphistory.json`） | 2 → 3 → 4（前缀 1 来自上一轮） | +3 |
 
-这正是历史上出现过的「一轮走 4」缺陷，**没有修好**。后果是成本而不是数据：`turnsSince`
-到 6 就强制 `full` 刷新，实际变成每两轮一次全量（146 tokens），而不是每六轮。
+这正是历史上出现过的「一轮走 4」缺陷，**当时没有修好**。后果是成本而不是数据：
+`turnsSince` 到 6 就强制 `full` 刷新，实际变成每两轮一次全量（146/154 tokens），而不是每六轮。
 
-**最可疑的根因（代码路径与观测一致，未加日志证实）**：`lib/index.js` 在
-`if (!chipsOn && mode === "off") { preStep.stage = "channels-off"; return decision; }`
-（第 1405–1408 行）处提前返回，**`beginTurn()` 在第 1410 行，永远走不到**。而
-`resolveTurnKeyForLedger(observedKey, sessionId)`（`lib/turn-ledger.js:91`）在没有观测到
-用户消息时回退到 `currentTurnKey(sessionId)`，它就会是 `""`；空串与上一次记住的
-`uid:<id>` 不相等，`refreshShortMap` 便把它当新一轮（`lib/index.js:952`）。
-status 里 `preStep.stage` 实测就是 `"channels-off"`（`raw/07-status-after-new-chat.json`）。
+**T5 的完整轨迹**（`raw/09-turn5-maphistory.json`，共 **22 条**快照，工作区级 `mapHistory`）：
 
-最小修法（当时的建议）：把 `beginTurn(sessionId, turnKey)` 提到 channels-off 判断
-之前；或让 `refreshShortMap` 在 `turnKey === ""` 时保持上一轮的 key 不变。
+- 第 1 条 `04:54:01.672Z skip t=1` 属于前一个（中止轮次的）会话，**不是 T5**；
+- 其余 21 条从 `05:35:41.203Z` 起属于 T5 所在
+  `session-c61cf2e9-13e7-4fd6-b9f9-b17570474a60`（会话 id 见同轮 `trivium-pending.json`）：
+  `t=2 @05:35:41` → `t=3 @05:35:45` → `t=4 @05:35:51` → `t=5 @05:35:53`
+  → **`full/refresh 154 tok @05:35:55 (t→0)`** → `t=1..5 @05:36:02..10`
+  → **`full/refresh 154 tok @05:36:15 (t→0)`** → `t=1..5 @05:36:17..27`
+  → **`full/refresh 154 tok @05:36:32 (t→0)`** → `t=1 @05:37:26` → `t=2 @05:38:30`
+  → `t=3 @05:38:31` → `t=4 @05:38:39`。
+- 三次全量的版本全程都是 `mapv-fnv1a-24fde35f-10-400`（地图内容没变），纯粹由计数触发。
+  上面表格里的「+3」只是这段轨迹的一个切片，**不是完整轨迹**。
+
+**根因（修复时确认）**：`refreshShortMap` 的守卫是 `if (turnKey && previous.turnKey === turnKey) return null`，
+只跳过*相等*的轮次键；工具循环后续 pre-step 不带用户消息、`mapTurnKeyOf` 返回 `""`，
+空串与任何 key 都不相等，于是每个这样的 pre-step 都算一轮。当时猜测的
+「channels-off 提前返回导致 `currentTurnKey()` 恒为 `""`」只是**同一现象的另一个侧面**，
+不是守卫失效的直接原因；以 §9 的修复说明为准。
 
 > 验收后已按第二种修法修掉，见 §9。**真实宿主上的复测没有做**（要再花一次模型调用），
 > 所以 §2.2 的失败值仍然是这次真机的实测值，不代表修复后的行为。
@@ -233,19 +242,20 @@ agent，`agent/created` 不会再触发，`staleLockInfo` 自然没跑。改用�
 
 `raw/18-cost-estimate.txt`：3 个会话共 **30 次**模型请求（assistant 消息计数），输出字符
 34,864。宿主的 `session_projcache` 里**没有**这几场的 `usage`（进程是被 Stop-Process 杀掉
-的，stats 没落盘），所以只能给上界：
+的，stats 没落盘），所以只能给**估算值**：
 
 | 口径 | 值 |
 |---|---:|
 | 请求数 | 30（+2 次抽取调用） |
 | 输出 token 估算 | ≈ 13.9k（字符/2.5） |
-| 提示 token 上界 | 12k/请求（实测工具+系统提示头 31,118 字符 ≈ 8k tokens，再加历史） |
-| **峰价上界** | **¥0.88** |
+| 提示 token **假设** | 12k/请求（实测工具+系统提示头 31,118 字符 ≈ 8k tokens，再加历史；**未经计量**） |
+| **峰价估算** | **≈ ¥0.88** |
 | 谷价折算 | ≈ ¥0.44 |
 | 预算 | 单次 ≤¥3、当日 ≤¥10；本次 ≤¥1 自查 |
 
-**这不是账单**，是按 `docs/next-memory/COST-MODEL.md` 价目表算出来的上界。真实消耗应低于它
-（缓存命中、部分请求很短）。
+**这不是账单，也不是经过证明的费用上界**：12k/请求是复核发现的未核实假设，缓存命中、
+短请求、上下文复用都会让实际值偏离（复审材料修正项已指出）。按 `COST-MODEL.md` 的峰价表
+只能说"在这个假设下约 ¥0.88"。
 
 ---
 
@@ -253,8 +263,10 @@ agent，`agent/created` 不会再触发，`staleLockInfo` 自然没跑。改用�
 
 1. **地图热度（B2）只有落盘证据，没有排序效果证据**。边车文件的计数与节流都实测到了
    （§5.1），但「热度有没有让地图/召回的排序变好」这次没有对照，不能宣称。
-2. **身份去重默认关闭**（`identityMerge`），`MemoryWriter` / scope / inherit / Router 也没有
-   调用方——真机验证不到，等于未启用。
+2. **身份模糊合并默认关闭**（`identityMerge`），Router / inherit / scope 无调用方；但
+   **MemoryWriter 默认就在抽取写路径上**（`lib/extract.js` 的 `memoryWriterFor`），
+   `identity.js` 的类型/否定/数值守卫**默认参与** `findMergeTarget`（`lib/store.js`）。
+   复审 F86-04 纠正了"整组零调用方、零默认行为"的申报；这几条路径本次仍无真机效果数据。
 3. **没有多进程并发写验证**。`lock-busy` 是「外部存活进程占锁」造出来的，不是两个 DSH
    实例同时写；两个实例抢同一库的路径这次没跑。
 4. **事件快筛在真实宿主上几乎不会整窗丢弃**：模型每轮（连 `ok` 都算）都会调 `ctx_find`，
@@ -265,7 +277,7 @@ agent，`agent/created` 不会再触发，`staleLockInfo` 自然没跑。改用�
 6. **`mapInjections.full` 不计 session-start**（§2.3），建议要么补计，要么改名说明范围。
    本次没有把 `full` 拆成 `session-start` 与 `refresh` 两类，所以「全量注入了几次」这个数
    在 status 里查不全。
-7. **`turnsSince` 一轮 +3 未修**（§2.2），这是本次唯一失败的验收项。
+7. **`turnsSince` 一轮 +3 是本次唯一失败的验收项**；验收后修过两轮（§9），但**真机未复测**。
 
 ## 8. 收尾（已核对）
 
@@ -281,28 +293,39 @@ agent，`agent/created` 不会再触发，`staleLockInfo` 自然没跑。改用�
   `.tmp/s0-ws` 恢复原状（还原了被改名备份的 `.dsh`）
 - `git status` 只有本证据目录
 
-## 9. 修复记录（验收之后）
+## 9. 修复记录（验收之后，共两轮）
 
-`turnsSince` 的计数在验收后被修掉，改的是 `refreshShortMap` 的守卫（`lib/index.js`）。
+### 第一轮（`38a91ff`）
 
-**改法**：空 key 当「同一轮的后续 pre-step」，不再当成新的一轮。原守卫只跳过*相等*的
-key，而 `""` 与任何 key 都不相等，于是工具循环里每个不带用户消息的 pre-step 都加一次。
-这与 `lib/turn-ledger.js` 的 `resolveTurnKeyForLedger` 已经是同一条规则（那里也是把
-空 key 理解成「属于已经打开的那一轮」）。
+`refreshShortMap` 的守卫只跳过*相等*的 key，而工具循环后续 pre-step 不带用户消息、
+`mapTurnKeyOf` 返回 `""`，空串与任何 key 都不相等 → 每个这样的 pre-step 都加一次。
+改成「空 key 属于已打开的那一轮」，与 `resolveTurnKeyForLedger` 同一规则；`smoke-p74`
+29 → 33。防恒真：守卫改回旧的一行 → p74 **31/33**（`4 !== 3`，多注入一次），改回 33/33。
 
-**兼容**：给"从没拿到过 key 的宿主"留了口子——`previous.turnKey` 为空时，`""` 仍然
-算一轮，避免这类宿主一整个会话都不再刷新。
+### 第二轮（复审 F86-01 之后）
 
-**回归**：`scripts/smoke-p74.mjs` 加 4 条断言（原 29 → 33）：
+Astra 在 `470f7b4` 上用真实消息构造器复现出两个遗漏：
 
-- `pre-steps without a user message do not move the counter`（三个连续 `""` 都返回 `null`）
-- `those pre-steps inject nothing`
-- `the next real turn still refreshes`
-- `a key-less host still gets its first refresh`
+| 反例 | 修复前 | 修复后 |
+|---|---|---|
+| 从未拿到键的会话，连续 6 次空 pre-step | `1→2→3→4→5→0`，第六步 `full/refresh` | `1,1,1,1,1,1`，无 full |
+| 无 host id、正文在 `content[]` 的两条不同消息 | 都得到 `t:1` | `t:1` / `t:2` |
 
-**防恒真验证**：把守卫临时改回旧的一行，p74 掉到 **31/33**，失败的是
-`those pre-steps...` 与 `those pre-steps inject nothing`（`4 !== 3`，多注入了一次）；
-改回后 33/33。全量 `node scripts/run-all.mjs` → **89/89**。
+根因与第一轮同源：`previous.turnKey` 会被写成 `""`，**无法区分「第一次空观察」与
+「已经处理过的空观察」**；而 `mapTurnKeyOf` 的回退只读 `last.text`，真实 DSH v4 消息把正文
+放在 `content[]`。
 
-**没做的**：没有在真实宿主上复测「一轮只走 1」。那要再花一次模型调用，等你要求时再做；
-在那之前，不要把 §2.2 的失败值当成已修复的证据。
+修法：地图状态加独立的 `sawTurnKey` 锚点（只有第一次观察能推进计数），
+`mapTurnKeyOf` 从 `content[]` / `message.content[]` 读文本。正向对照未退化：有键宿主六个
+用户轮（每轮 3 个空续步）仍是 `1,2,3,4,5,0`，只在第六轮全量。
+
+**回归**：`p74` 33 → **36**、`p86` 15 → **16**；另补 `p82` 13→14（损坏 pending 的接口级
+失败）、`p83` 12→14（重开持久性 + 部分提交回执）、`p87` 20→22（模糊合并真正走入口）。
+全量 `node scripts/run-all.mjs` → **89/89**。
+
+**诚实边界**：从不在任何窗口暴露用户消息的宿主拿不到轮次键，会停在第一次观察、不触发
+6 轮强制全量。离线契约复现通过，真机样本仍为零。
+
+**没做的**：没有在真实宿主上复测「一轮只走 1」（要再花一次模型调用）。§2.2 的失败值
+仍是本次真机的实测值，不代表修复后的行为；逐条修复值与完整 T5 轨迹见
+`docs/reviews/0.8.6-REVIEW-PACKET.md` §九。

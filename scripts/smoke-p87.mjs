@@ -10,7 +10,7 @@
  * bodies too short to tell apart.
  */
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -150,25 +150,7 @@ try {
       );
       assert.equal(second[0].action, 'insert', 'fuzzy merging must be off by default');
     }, 'by default a paraphrase is stored separately, like 0.8.4');
-    // Candidate texts carry an explicit cue, because the write filter drops lines
-    // without one — that rule is unrelated to identity and would mask it here.
-    const first = extract.applyCandidates(
-      db,
-      [{ type: 'preference', name: '部署窗口', text: '记住：发布窗口固定在每周四晚上。' }],
-      { sessionId: 'p87' },
-    );
-    assert.equal(first.length, 1, 'fixture: the seed fact was written');
-    const before = store.findByType(db, 'preference').length;
-    await check(() => {
-      const applied = extract.applyCandidates(
-        db,
-        [{ type: 'preference', name: '部署窗口', text: '记住：每周四晚上是发布窗口。' }],
-        { sessionId: 'p87' },
-      );
-      assert.equal(applied.length, 1);
-      assert.equal(applied[0].action, 'merge', `expected merge, got ${applied[0].action}`);
-    }, 'a paraphrase merges through the extraction pipeline');
-    await check(() => assert.equal(store.findByType(db, 'preference').length, before), 'the paraphrase added no node');
+    const beforeCorrection = store.findByType(db, 'preference').length;
     await check(() => {
       const applied = extract.applyCandidates(
         db,
@@ -177,7 +159,46 @@ try {
       );
       assert.equal(applied[0].action, 'insert', `expected a new node, got ${applied[0].action}`);
     }, 'a correction that changes the day inserts instead of merging');
-    await check(() => assert.ok(store.findByType(db, 'preference').length >= before + 1), 'the correction is stored as its own fact');
+    await check(
+      () => assert.ok(store.findByType(db, 'preference').length >= beforeCorrection + 1),
+      'the correction is stored as its own fact',
+    );
+  } finally {
+    store.closeAll();
+  }
+
+  /*
+   * The old "paraphrase merges through the extraction pipeline" check seeded
+   * BOTH wordings first, so the second write passed by exact text match without
+   * ever reaching the fuzzy rule (external review assertion audit, 2026-11-06).
+   * Prove the entry point with the switch on and only one wording seeded.
+   */
+  const settings = await import('../lib/settings.js');
+  // `identityMerge` is a manual config key, not a panel field: writeUiSettings
+  // whitelists panel keys and silently drops it. Write the settings file directly.
+  writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ identityMerge: true }), 'utf8');
+  await check(() => assert.equal(settings.identityMergeOf(), true), 'fixture: fuzzy merging is enabled');
+  const fuzzyDb = await store.openWorkspaceDb(join(root, 'ws-fuzzy'));
+  try {
+    const seed = extract.applyCandidates(
+      fuzzyDb,
+      [{ type: 'preference', name: '部署窗口', text: '记住：发布窗口固定在每周四晚上。' }],
+      { sessionId: 'p87-fuzzy' },
+    );
+    await check(() => assert.equal(seed[0].action, 'insert'), 'fixture: only one wording is seeded');
+    const beforeFuzzy = store.findByType(fuzzyDb, 'preference').length;
+    await check(() => {
+      const applied = extract.applyCandidates(
+        fuzzyDb,
+        [{ type: 'preference', name: '部署窗口', text: '记住：每周四晚上是发布窗口。' }],
+        { sessionId: 'p87-fuzzy' },
+      );
+      assert.equal(applied[0].action, 'merge', `expected a fuzzy merge, got ${applied[0].action}`);
+    }, 'with identityMerge on, a different wording merges through the extraction pipeline');
+    await check(
+      () => assert.equal(store.findByType(fuzzyDb, 'preference').length, beforeFuzzy),
+      'the merge added no node',
+    );
   } finally {
     store.closeAll();
   }

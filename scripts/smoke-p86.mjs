@@ -127,12 +127,26 @@ try {
     // Spending is visible through the delivered set, which is what `beginTurn`
     // clears when it believes a new turn started.
     ledger.deliveredOf(session, key).add(7);
+    const booked = ledger.reserve(session, key, [{ id: 7, tokens: 300 }]);
+    ledger.commit(booked);
+    const spentBefore = ledger.spentOf(session, key);
+    assert.equal(spentBefore, 300, 'fixture: the whole allowance was spent');
     const carried = ledger.resolveTurnKeyForLedger('', session);
     assert.equal(carried, key, 'an empty observation carries the open turn');
     const state = ledger.beginTurn(session, carried);
     assert.equal(state.turnKey, key, 'the ledger stays on the same turn');
     assert.equal(ledger.deliveredOf(session, carried).has(7), true, 'delivered records are not reset');
+    assert.equal(ledger.spentOf(session, carried), spentBefore, 'the spent 300 tokens are not re-granted');
   }, 'a pre-step without a user message does not restart the turn budget');
+
+  await check(() => {
+    budget.resetTurnKeys();
+    const contentOnly = (text) => ({ role: 'user', source: { kind: 'user' }, content: [{ type: 'text', text }] });
+    const first = budget.mapTurnKeyOf([contentOnly('第一轮问题')], { sessionId: 'content-only' });
+    const second = budget.mapTurnKeyOf([contentOnly('第二轮不同问题')], { sessionId: 'content-only' });
+    assert.equal(first, 't:1');
+    assert.equal(second, 't:2', 'different text in content[] must not collapse into one turn');
+  }, 'id-less content[] messages keep distinct turn keys (F86-01)');
 
   await check(() => assert.equal(budget.mapTurnKeyOf([]), ''), 'no messages means no turn');
   await check(() => assert.equal(budget.mapTurnKeyOf([assistant('只有助手')]), ''), 'assistant-only is not a turn');

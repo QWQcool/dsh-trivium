@@ -13,54 +13,76 @@
 
 ```
 仓库：<repo>
-分支：main   HEAD：38a91ff
+分支：main（返修后的 HEAD 请自己用 git rev-parse HEAD 取，不要沿用旧 SHA）
 npm：latest = 0.8.5（0.8.6 尚未发布）
 版本：package.json 0.8.6；内核 triviumdb 0.9.0（本次没有升级内核）
-范围：v0.8.5..HEAD 共 52 个提交 · 105 个文件 · +11813/-1345
+范围：v0.8.5..HEAD（数字随返修提交变化，请自己跑命令取）
 ```
 
 作者声称的基线（请自己复核，不要采信）：
 
 ```bash
-git status --short                     # 应为空
-node scripts/run-all.mjs               # 声称 89/89
-node -e "console.log(require('./package.json').version)"            # 0.8.6
-node -e "console.log(require('triviumdb/package.json').version)"    # 0.9.0
-git diff v0.8.5..HEAD -- lib/tools.js lib/tool-defs.js lib/schema.js # 应为空
+git status --short                                                    # 应为空
+git diff --shortstat v0.8.5..HEAD                                     # 当前范围
+node -e "console.log(require('./package.json').version)"               # 0.8.6
+node -e "console.log(require('triviumdb/package.json').version)"       # 0.9.0
+git diff v0.8.5..HEAD -- lib/tools.js lib/tool-defs.js lib/schema.js  # 应为空
 ```
+
+**允许且推荐的非 UI 验证清单**（上一轮你跑的 14 个非 UI smoke 就是这一类；每个脚本用隔离的
+`DSH_HOME` / `DSH_TRIVIUM_SETTINGS`，`run-all` 已替你做好）：
+
+```bash
+node scripts/smoke-p73.mjs    # 到 smoke-p76.mjs
+node scripts/smoke-p79.mjs    # 到 smoke-p88.mjs
+node scripts/smoke-p74.mjs    # 36 条：地图三态 + 轮次键 + 空观察
+node scripts/smoke-p82.mjs    # 14 条：待补写 + 损坏文件接口失败
+node scripts/smoke-p83.mjs    # 14 条：批量写 + 部分提交 + 重开持久性
+node scripts/smoke-p86.mjs    # 16 条：轮次键 / 账本花费 / content[] 回退
+node scripts/smoke-p87.mjs    # 22 条：身份守卫 + 模糊合并入口
+node .tmp/review-0.8.6-470f7b4/reproduce.mjs                          # 复审反例复跑
+node scripts/run-all.mjs                                              # 作者声称 89/89；包含 4 个既有冻结 UI 脚本
+```
+
+**指令冲突已消除**：`AGENTS.md` §5 禁止的是**新增** UI/UX 断言（渲染树、可达性、布局断点、
+配色字号、开屏时间、滚动帧率），**运行既有的冻结脚本不违规**。如果你不愿执行任何 UI 脚本，
+就只跑上面的非 UI 清单，并明确写"run-all 未复跑"——不要因为清单里出现 run-all 就整轮不验。
 
 **如果你没有文件系统访问**：请把要跑的命令列出来，让送审人代跑并贴回输出，
 然后基于输出判断；**不要凭材料里的数字下结论**。
 
 ## 二、先读这三份
 
-1. `docs/reviews/0.8.6-REVIEW-PACKET.md` —— 本次主材料（行为变化、证据边界、七问）
+1. `docs/reviews/0.8.6-REVIEW-PACKET.md` —— 主材料；**先读 §九「复审后修订」**（逐条修复值与
+   完整 T5 轨迹），再看 §一~§八的送审原文
 2. `docs/next-memory/evidence-write-provenance/S2/REAL-SESSION-2026-11-06/README.md`
    —— 2026-11-06 真机验收的逐条实测值与未覆盖项，`raw/` 是原始 JSON
-3. `docs/release-0.8.6.md` —— 对外口径（判断它是否与实现一致）
+3. `docs/release-0.8.6.md` 与 `docs/release-0.8.6.en.md` —— 对外口径（中英都要核对）
 
 ## 三、必须给出判定的七件事
 
-（细节在评审包 §六，这里只列结论要求）
+（细节在评审包 §六；本轮返修后的问题重点已变，见下面每项括号）
 
-1. **轮次计数修复**（空键=同一轮）是否可辩护？"只在单测层验证、真机未复测"是否阻塞发布？
-2. **事件快筛**实测省调用 0%，却保留"整窗 0 分丢弃且无回收入口"的风险面——留还是删？
-   如果留，发布说明里"保留但不作为卖点"的措辞够不够？
-3. **随包但零调用方**的 `identity.js` / `router.js` / `inherit.js` / `memory-writer.js`
-   该不该出现在面向用户的版本里？
-4. **批量写**（`runDeferredWrites`）部分失败时的语义：前几条是否已落盘？调用方能否分辨？
-5. **待补写**只读不重试（没有"现在重试"入口）是设计还是缺口？
-6. **两处诊断口径**（`mapInjections.full` 不含 session-start；`lastScreen.counts` 是工具提升
-   之后的组分数）要不要在发布前修掉？
-7. **发布说明**是否如实覆盖了已知限制（含"每 6 轮强制一次全量"这句现在还成不成立）。
+1. **轮次计数修复**：`sawTurnKey` 锚点与 `content[]` 文本回退是否可辩护？两个复审反例
+   （无键会话六次空观察、无 id 两条消息）现在都通过；"真机仍未复测"是否阻塞发布？
+2. **事件快筛**：仍是 **开放决策**——你说"取消主动消费或只记录评分"，用户此前拍板
+   "保留但不宣传"。请给可执行的取舍建议，不要把该差异当成已修缺陷。
+3. **无调用方的实验代码**（`router.js` / `inherit.js` / `scope`）该不该随包、要不要显式标注
+   experimental？注意 `memory-writer.js` 与 identity 守卫**默认就在主链路**，不在可移除之列。
+4. **批量部分提交**：`partial / newNodesBeforeFailure / retryHint` + 幂等重试，够不够作为发布契约？
+5. **待补写**：你已判"设计选择通过"。请顺带核对损坏文件现在明确失败（500 / `ok:false`）。
+6. **诊断口径**：中英发布说明已写明 `mapInjections.full` 是刷新阶段计数、`lastScreen.counts`
+   是提升后分数、`lastMapInjection` 无会话标识。请判断"只改表述"是否足够，还是必须补计数字段。
+7. **发布说明**：中英两版是否还有与实现不一致的说法（尤其内核章节归属、18× 历史测量、
+   "每 6 轮"的前提、默认行为是否变化）。
 
 ## 四、按风险排序的抽查点
 
 - **写入正确性优先**：批量写/待补写/锁，错一条会丢事实或给出过期答案。
 - 抽查至少 3 个 smoke 的**断言本身**，而不只是它是否变绿——本次的缺陷正是
   "用例名说覆盖了，实际只覆盖了消费者的一半"。
-- 对每条"已修"的结论，问一句：**修复前它会不会失败？**（本次作者给了反向验证：
-  把守卫改回旧实现，`smoke-p74` 从 33/33 掉到 31/33。）
+- 对每条"已修"的结论，问一句：**修复前它会不会失败？**（第一轮作者给过反向验证：
+  守卫改回旧实现，`smoke-p74` 从 33/33 掉到 31/33；本轮新增的断言也请抽查。）
 
 ## 五、不要做的事
 
@@ -68,8 +90,9 @@ git diff v0.8.5..HEAD -- lib/tools.js lib/tool-defs.js lib/schema.js # 应为空
 - **不要改版本号**、不要动 `triviumdb` 的 pin、不要改 schema / DIM。
 - **不要跑付费模型实验**。真机证据已经落盘，离线与桩足够完成本次验收；确有需要请先提出，
   由用户单独批准（单次 ≤¥3、单日 ≤¥10）。
-- **不要新增或执行 UI/UX 类测试**（仓库 `AGENTS.md` §5 明文禁止：渲染树、可达性、布局断点、
-  配色字号、开屏时间、滚动帧率）。
+- **不要新增 UI/UX 类断言**（仓库 `AGENTS.md` §5 禁止新增：渲染树、可达性、布局断点、
+  配色字号、开屏时间、滚动帧率）；既有 `p13/p24/p26/p78` 已冻结、不得扩充。
+  **运行既有脚本是允许的**，不要再把这条理解成"连 run-all 都不能跑"。
 - **不要动真实默认工作区**；需要干净库时用临时目录 + 隔离 `DSH_HOME`。
 - 不要为了让测试变绿去改测试期望——若认为期望本身错了，单独指出并给理由。
 
