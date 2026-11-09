@@ -7,13 +7,17 @@
  * comes from the panel/API. This pins:
  *
  *   1. the default is propose: the correction is stored, no edge is written, the
- *      old decision stays the head, and both facts stay in the short map;
- *   2. the proposal names its targets and survives a read of the library;
- *   3. confirming one target through the HTTP surface writes the edge and clears
- *      the mark; rejecting leaves both facts live;
- *   4. an ambiguous label keeps every candidate, and confirming one of them does
- *      not touch the other;
- *   5. the legacy automatic path still exists behind `supersedeMode: "auto"`.
+ *      old decision stays the head, and both facts stay eligible for the map;
+ *   2. the list is what the panel reads, including the ETag it must echo;
+ *   3. **F87-01**: a reject is final for that pair — neither the confirm endpoint
+ *      nor the generic revision endpoint may write the refused edge, and a stale
+ *      ETag is refused as well;
+ *   4. **F87-02**: the confirm/reject routes take the workspace lock, so a held
+ *      lock answers 409 instead of writing;
+ *   5. confirming one candidate of an ambiguous proposal retires only that one,
+ *      the edge goes through the same validator as a manual revision (no cycle),
+ *      and a second confirm is refused;
+ *   6. the legacy automatic path still exists behind `supersedeMode: "auto"`.
  */
 import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
@@ -27,6 +31,7 @@ process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
 const store = await import('../lib/store.js');
 const extract = await import('../lib/extract.js');
 const review = await import('../lib/supersede-review.js');
+const lock = await import('../lib/workspace-lock.js');
 
 let checks = 0;
 let failures = 0;
@@ -45,57 +50,55 @@ const edgesOf = (db) => {
   return out;
 };
 const seed = (db) => store.insertNode(db, { type: 'decision', name: '方案 A', text: '本次上线按方案 A 执行' });
+const propose = (db, ws, name, sentence, quote) => extract.distill({
+  db,
+  turns: [turn(sentence)],
+  sessionId: name,
+  llmCall: one({ type: 'decision', name: '上线方案 B', text: '改用方案 B', quote }),
+});
 
 const ws = join(root, 'ws');
 const db = await store.openWorkspaceDb(ws);
 const oldId = seed(db);
-const sentence = '不再使用方案 A，改用方案 B。';
 
 try {
   // 1. propose by default
-  const out = await extract.distill({
-    db,
-    turns: [turn(sentence)],
-    sessionId: 'p89',
-    llmCall: one({ type: 'decision', name: '上线方案 B', text: '改用方案 B', quote: sentence }),
-  });
+  await propose(db, ws, 'p89', '不再使用方案 A，改用方案 B。', '不再使用方案 A，改用方案 B。');
   const newId = db.allNodeIds().map(Number).filter((id) => id !== oldId).at(-1);
   await check(() => assert.deepEqual(edgesOf(db), []), 'the default route writes no supersedes edge');
   await check(() => assert.equal(store.currentHeadOf(db, oldId).id, oldId), 'the old decision is still the head');
   await check(() => assert.equal(db.get(newId).payload.review, 'supersede-proposed'), 'the correction is marked as a proposal');
-  await check(
-    () => assert.deepEqual(db.get(newId).payload.proposedSupersedes, [oldId]),
-    'the proposal keeps the target ids',
-  );
-  await check(() => assert.equal(out.superseded.some((row) => row.proposed?.includes(oldId)), true), 'the intent is reported, not silent');
+  await check(() => assert.deepEqual(db.get(newId).payload.proposedSupersedes, [oldId]), 'the proposal keeps the target ids');
 
-  // 2. both sides stay visible to the model
   const map = store.buildShortMapReport(db, 400).text;
-  await check(() => assert.match(map, /方案 A/), 'the decision being replaced stays in the short map');
-  await check(() => assert.match(map, /方案 B/), 'the proposed correction is in the short map too');
+  await check(() => assert.match(map, /方案 A/), 'the decision being replaced stays eligible for the map');
+  await check(() => assert.match(map, /方案 B/), 'the proposed correction is eligible too');
 
-  const proposals = review.listSupersedeProposals(db);
-  await check(() => assert.equal(proposals.length, 1), 'one proposal is waiting');
-  await check(() => assert.deepEqual(proposals[0].targets.map((t) => t.id), [oldId]), 'the proposal names the target');
-  await check(() => assert.equal(proposals[0].targets[0].live, true), 'the target is reported as still live');
+  const listed = review.listSupersedeProposals(db);
+  await check(() => assert.equal(listed.length, 1), 'one proposal is waiting');
+  await check(() => assert.deepEqual(listed[0].targets.map((t) => t.id), [oldId]), 'the proposal names the target');
+  await check(() => assert.equal(listed[0].targets[0].live, true), 'the target is reported as still live');
+  await check(() => assert.ok(listed[0].etag), 'the list carries the ETag the panel must echo');
 
-  // 3a. reject leaves both facts current
-  const rejected = review.rejectSupersede(db, newId, { by: 'p89' });
+  // 2. reject is final for that pair (F87-01)
+  const rejected = review.rejectSupersede(db, newId, { source: 'p89' });
   await check(() => assert.equal(rejected.ok, true), 'a proposal can be rejected');
   await check(() => assert.deepEqual(edgesOf(db), []), 'rejecting writes no edge');
-  await check(() => assert.equal(db.get(newId).payload.review, undefined), 'rejecting clears the mark');
-  await check(() => assert.equal(store.currentHeadOf(db, oldId).id, oldId), 'both decisions are still current after a reject');
+  await check(() => assert.deepEqual(db.get(newId).payload.rejectedSupersedes, [oldId]), 'rejecting leaves a tombstone for that pair');
   await check(() => assert.equal(review.listSupersedeProposals(db).length, 0), 'a rejected proposal leaves the queue');
+  await check(
+    () => assert.equal(review.confirmProposal(db, { proposalId: newId, targetId: oldId }).code, 'proposal-rejected'),
+    'a rejected pair cannot be confirmed afterwards',
+  );
+  await check(
+    () => assert.equal(review.supersedeBlockedByProposal(db, { oldId, successorId: newId }).code, 'proposal-rejected'),
+    'the generic revision endpoint is blocked for the refused pair',
+  );
 
-  // 3b. confirm through the HTTP surface
-  const again = await extract.distill({
-    db,
-    turns: [turn('别用方案 A，改用方案 B 了。')],
-    sessionId: 'p89b',
-    llmCall: one({ type: 'decision', name: '上线方案 B', text: '改用方案 B', quote: '别用方案 A，改用方案 B 了。' }),
-  });
-  const proposalId = review.listSupersedeProposals(db)[0]?.id;
-  await check(() => assert.ok(proposalId), `the second attempt proposes as well (${JSON.stringify(again.superseded)})`);
+  // 3. HTTP: pending proposal, stale ETag, confirm, second confirm
+  const second = await propose(db, ws, 'p89b', '别用方案 A，改用方案 B 了。', '别用方案 A，改用方案 B 了。');
+  const pending = review.listSupersedeProposals(db)[0];
+  await check(() => assert.ok(pending), `the second attempt proposes as well (${JSON.stringify(second.superseded)})`);
 
   const { registerMemoryApi } = await import('../lib/server.js');
   const { createServer } = await import('node:http');
@@ -105,74 +108,154 @@ try {
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   const port = server.address().port;
   const cwd = encodeURIComponent(ws);
+  const post = (path, body) => fetch(`http://127.0.0.1:${port}${path}`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body || {}),
+  });
   try {
     await check(async () => {
       const res = await fetch(`http://127.0.0.1:${port}/api/dsh-trivium/supersede-proposals?cwd=${cwd}`);
       const body = await res.json();
       assert.equal(res.status, 200);
       assert.equal(body.proposals.length, 1);
-      assert.equal(body.proposals[0].id, proposalId);
-    }, 'GET /supersede-proposals lists the waiting proposal');
+      assert.equal(body.proposals[0].etag, pending.etag);
+    }, 'GET /supersede-proposals lists the waiting proposal with its ETag');
+
+    // Move the node (rename) so the ETag the panel saw is stale.
+    store.updateNode(db, pending.id, { name: '上线方案 B（改）' });
+    await check(async () => {
+      const res = await post(`/api/dsh-trivium/supersede-proposals/${pending.id}/confirm?cwd=${cwd}`, {
+        targetId: oldId,
+        etag: pending.etag,
+      });
+      const body = await res.json();
+      assert.equal(res.status, 409);
+      assert.equal(body.code, 'proposal-stale');
+    }, 'a stale proposal ETag is refused (F87-01)');
 
     await check(async () => {
-      const res = await fetch(`http://127.0.0.1:${port}/api/dsh-trivium/nodes/${oldId}/supersede?cwd=${cwd}`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ successorId: proposalId }),
+      const res = await post(`/api/dsh-trivium/supersede-proposals/${pending.id}/confirm?cwd=${cwd}`, {
+        targetId: oldId,
+        etag: review.listSupersedeProposals(db)[0].etag,
       });
       const body = await res.json();
       assert.equal(res.status, 200, JSON.stringify(body));
       assert.equal(body.ok, true);
-    }, 'the existing supersede endpoint is the confirmation path');
+      assert.equal(body.targetId, oldId);
+    }, 'confirming through the proposal endpoint writes the edge');
 
-    await check(() => assert.deepEqual(edgesOf(db), [`${proposalId}->${oldId}`]), 'confirming writes exactly one edge');
-    await check(() => assert.equal(store.currentHeadOf(db, oldId).id, proposalId), 'the confirmed correction becomes the head');
-    await check(() => assert.equal(db.get(proposalId).payload.review, undefined), 'confirming clears the proposal mark');
+    await check(() => assert.deepEqual(edgesOf(db), [`${pending.id}->${oldId}`]), 'exactly one edge exists');
+    await check(() => assert.equal(store.currentHeadOf(db, oldId).id, pending.id), 'the confirmed correction becomes the head');
+    await check(() => assert.equal(db.get(pending.id).payload.review, undefined), 'confirming clears the proposal mark');
+    await check(() => assert.equal(db.get(pending.id).payload.supersedeConfirmedVia, 'http'), 'the surface is recorded, not a claimed identity');
     await check(() => assert.equal(review.listSupersedeProposals(db).length, 0), 'a confirmed proposal leaves the queue');
+
+    await check(async () => {
+      const res = await post(`/api/dsh-trivium/supersede-proposals/${pending.id}/confirm?cwd=${cwd}`, { targetId: oldId, etag: pending.etag });
+      const body = await res.json();
+      assert.equal(res.status, 409);
+      assert.equal(body.code, 'proposal-not-pending');
+    }, 'a second confirmation is refused');
+
+    await check(async () => {
+      const res = await post(`/api/dsh-trivium/supersede-proposals/${pending.id}/confirm?cwd=${cwd}`, { targetId: oldId });
+      const body = await res.json();
+      assert.equal(res.status, 409);
+      assert.equal(body.code, 'proposal-missing-etag');
+    }, 'a confirmation without the ETag is refused instead of racing a stale page');
+
+    // 4. the write routes take the workspace lock (F87-02)
+    const held = lock.acquireWorkspaceLock(ws);
+    try {
+      await check(async () => {
+        const res = await post(`/api/dsh-trivium/supersede-proposals/${newId}/reject?cwd=${cwd}`, {});
+        const body = await res.json();
+        assert.equal(res.status, 409);
+        assert.equal(body.code, 'WORKSPACE_WRITE_BUSY');
+      }, 'reject is refused while another process holds the workspace lock');
+    } finally {
+      held.release?.();
+    }
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }
 
-  // 4. ambiguous labels keep every candidate
+  // 5. ambiguous proposals: one candidate, same validator, no cycle
   const ws2 = join(root, 'ws2');
   const db2 = await store.openWorkspaceDb(ws2);
   const a1 = store.insertNode(db2, { type: 'decision', name: '方案 A', text: '本次上线按方案 A 执行' });
   const a2 = store.insertNode(db2, { type: 'decision', name: '方案 A', text: '回滚预案也按方案 A 执行' });
-  await extract.distill({
-    db: db2,
-    turns: [turn('不再使用方案 A，改用方案 B。')],
-    sessionId: 'p89c',
-    llmCall: one({ type: 'decision', name: '上线方案 B', text: '改用方案 B', quote: '不再使用方案 A，改用方案 B。' }),
-  });
+  await propose(db2, ws2, 'p89c', '不再使用方案 A，改用方案 B。', '不再使用方案 A，改用方案 B。');
   const ambiguous = review.listSupersedeProposals(db2);
   await check(() => assert.equal(ambiguous.length, 1), 'an ambiguous replacement is still one proposal');
   await check(
     () => assert.deepEqual(ambiguous[0].targets.map((t) => t.id).sort(), [a1, a2].sort()),
     'the ambiguous proposal keeps both candidates',
   );
-  await check(() => assert.deepEqual(edgesOf(db2), []), 'an ambiguous proposal writes no edge');
-  const picked = review.confirmSupersede(db2, ambiguous[0].id, a1, { by: 'p89' });
+  await check(
+    () => assert.equal(review.confirmProposal(db2, { proposalId: ambiguous[0].id, targetId: 99999 }).code, 'proposal-target-not-listed'),
+    'a target that is not a candidate is refused',
+  );
+  const picked = review.confirmProposal(db2, { proposalId: ambiguous[0].id, targetId: a1, source: 'p89' });
   await check(() => assert.equal(picked.ok, true), 'one of the candidates can be chosen');
   await check(() => assert.deepEqual(edgesOf(db2), [`${ambiguous[0].id}->${a1}`]), 'only the chosen candidate is retired');
   await check(() => assert.equal(store.currentHeadOf(db2, a2).id, a2), 'the other candidate stays current');
   await check(
-    () => assert.equal(review.confirmSupersede(db2, ambiguous[0].id, a2, { by: 'p89' }).ok, false),
+    () => assert.equal(review.confirmProposal(db2, { proposalId: ambiguous[0].id, targetId: a2 }).code, 'proposal-not-pending'),
     'a second confirmation on the same node is refused',
   );
 
-  // 5. the legacy automatic path is still reachable, explicitly
-  writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ supersedeMode: 'auto' }), 'utf8');
+  // The helper must not be able to build a cycle: it delegates to revisions.supersede.
   const ws3 = join(root, 'ws3');
   const db3 = await store.openWorkspaceDb(ws3);
-  const legacyOld = seed(db3);
-  await extract.distill({
-    db: db3,
-    turns: [turn(sentence)],
-    sessionId: 'p89-auto',
-    llmCall: one({ type: 'decision', name: '上线方案 B', text: '改用方案 B', quote: sentence }),
+  const x = store.insertNode(db3, { type: 'decision', name: 'X', text: '按 X 执行' });
+  const y = store.insertNode(db3, { type: 'decision', name: 'Y', text: '按 Y 执行' });
+  store.ensureLink(db3, y, x, 'supersedes');
+  await check(() => {
+    const cyclic = review.confirmProposal(db3, { proposalId: x, targetId: y });
+    assert.equal(cyclic.ok, false, `a cycle must be refused, got ${JSON.stringify(cyclic)}`);
+  }, 'confirm delegates to the revision validator, so no cycle can be created');
+
+  /*
+   * F87-03: when the mark cannot be written, the extraction must not claim a
+   * proposal. The fact is written, the replacement is reported as failed, and
+   * nothing is left in the list that the panel could not see.
+   */
+  const ws5 = join(root, 'ws5');
+  const db5 = await store.openWorkspaceDb(ws5);
+  store.insertNode(db5, { type: 'decision', name: '方案 A', text: '本次上线按方案 A 执行' });
+  const failingWriter = {
+    insert: (node) => store.insertNode(db5, node),
+    merge: (id, node) => store.mergeInto(db5, id, node),
+    link: (from, to, label) => store.ensureLink(db5, from, to, label),
+    update: () => { throw new Error('sink down'); },
+  };
+  const failed = await extract.distill({
+    db: db5,
+    writer: failingWriter,
+    turns: [turn('不再使用方案 A，改用方案 B。')],
+    sessionId: 'p89-fail',
+    llmCall: one({ type: 'decision', name: '上线方案 B', text: '改用方案 B', quote: '不再使用方案 A，改用方案 B。' }),
   });
-  await check(() => assert.equal(edgesOf(db3).length, 1), 'supersedeMode "auto" restores the immediate edge');
-  await check(() => assert.equal(store.currentHeadOf(db3, legacyOld).id !== legacyOld, true), 'the automatic path still retires');
+  await check(
+    () => assert.equal(failed.superseded.some((row) => row.skipped === 'proposal-failed'), true),
+    'a proposal that cannot be marked is reported as failed, not as proposed',
+  );
+  await check(
+    () => assert.equal(failed.superseded.some((row) => Array.isArray(row.proposed) && row.proposed.length), false),
+    'the failed attempt is not reported as proposed',
+  );
+  await check(() => assert.equal(review.listSupersedeProposals(db5).length, 0), 'the panel list stays truthful after the failure');
+
+  // 6. the legacy automatic path is still reachable, explicitly
+  writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ supersedeMode: 'auto' }), 'utf8');
+  const ws4 = join(root, 'ws4');
+  const db4 = await store.openWorkspaceDb(ws4);
+  const legacyOld = seed(db4);
+  await propose(db4, ws4, 'p89-auto', '不再使用方案 A，改用方案 B。', '不再使用方案 A，改用方案 B。');
+  await check(() => assert.equal(edgesOf(db4).length, 1), 'supersedeMode "auto" restores the immediate edge');
+  await check(() => assert.equal(store.currentHeadOf(db4, legacyOld).id !== legacyOld, true), 'the automatic path still retires');
 } finally {
   store.closeAll();
   rmSync(root, { recursive: true, force: true });
