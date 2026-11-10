@@ -166,6 +166,81 @@ try {
     taken.release();
     return info;
   }, 'the existing reclaim path still takes a stale lock');
+  /*
+   * 6) The two timeout branches through the real entry, not the helper.
+   *
+   * `raceWithTimeout` is already covered with a fake timer, but that says nothing
+   * about what the plugin does when a model call never returns: the replay has to
+   * give up after 8s, the extraction after 30s, the window has to stay pending,
+   * and both conditions have to be visible. This is the slowest test in the
+   * suite by design (~32s) — a fast one could not observe the budgets.
+   */
+  const store = await import('../lib/store.js');
+  const extract = await import('../lib/extract.js');
+  const wsSlow = join(root, 'slow');
+  await store.openWorkspaceDb(wsSlow);
+  await extract.savePending(wsSlow, {
+    sessionId: 'session-slow',
+    turns: [{ role: 'user', text: '记住：慢窗口标记 SLOW-2026-11-10。', seq: 1, messageId: 'm-slow', recorded: true }],
+  });
+  const handlers = new Map();
+  const ctx = {
+    // Never yields: the run stays inside the extraction call for the whole test.
+    llm: { async *stream() { await new Promise(() => {}); } },
+    logger: () => ({ warn() {}, info() {}, error() {}, debug() {} }),
+    inject(_deps, fn) { fn(ctx); },
+    on(name, fn) { handlers.set(name, fn); return () => {}; },
+    effect(fn) { fn(); return () => {}; },
+    tools: { register() { return () => {}; } },
+    webServer: { register() { return () => {}; } },
+  };
+  plugin.apply(ctx, {});
+  const agent = {
+    session: { id: 'session-slow', header: { cwd: wsSlow }, requestHeader: () => ({ config: { provider: 'stub', model: 'stub' } }) },
+    inject() {},
+  };
+  const startedAt = Date.now();
+  /*
+   * The replay budget timer is deliberately unref'd, so with only a hanging model
+   * call left there is nothing to keep the loop alive and the process would exit
+   * mid-await. A plain interval holds the loop for the duration of this section.
+   */
+  const keepAlive = setInterval(() => {}, 1_000);
+  try {
+    await handlers.get('agent/created')({ agent });
+  } finally {
+    clearInterval(keepAlive);
+  }
+  const waited = Date.now() - startedAt;
+  await check(
+    () => assert.ok(waited >= 7_500 && waited < 20_000, `the replay gave up after ${waited}ms`),
+    'a pending replay gives up inside its budget instead of blocking the session start',
+  );
+  const slowLog = log.readChanges(wsSlow, { limit: 20 });
+  await check(
+    () => assert.equal(slowLog.entries.some((row) => row.reason === 'replay-timeout'), true),
+    'the replay timeout is recorded in the change log',
+  );
+  await check(
+    () => assert.equal(plugin.workspaceStatus(wsSlow).stuck?.open?.includes('replay-timeout'), true),
+    'the replay timeout is also an open stuck kind',
+  );
+  // Wait out the extraction budget (30s) from the same start.
+  const remaining = Math.max(0, 31_000 - (Date.now() - startedAt));
+  await new Promise((resolve) => setTimeout(resolve, remaining));
+  const slowStatus = plugin.workspaceStatus(wsSlow);
+  await check(
+    () => assert.equal(slowStatus.lastExtract?.skippedBy, 'extract-timeout'),
+    'a model call that never returns is reported as an extraction timeout',
+  );
+  await check(
+    () => assert.equal(slowStatus.stuck?.open?.includes('extract-timeout'), true),
+    'the extraction timeout is an open stuck kind too',
+  );
+  await check(
+    () => assert.equal(extract.pendingSummary(wsSlow).windows.length, 1),
+    'the timed-out window stays pending instead of being consumed',
+  );
 } finally {
   rmSync(root, { recursive: true, force: true });
 }
