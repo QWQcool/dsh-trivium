@@ -75,6 +75,24 @@ does not change them.
   kept;
 - `lastMapInjection.sessionId` makes a workspace-level record attributable to a session.
 
+### Expiry dates are recognised more widely, without guessing a locale
+
+The `until` field and the "invented date" guard now share one parser
+(`lib/date-parse.js`). Recognised absolute dates:
+
+- `2026-11-20`, `2026/11/20`, `2026.11.20`, `2026年11月20日`;
+- `November 20, 2026`, `20 Nov 2026` — the month is spelled out, so day/month
+  order is not ambiguous.
+
+**Deliberately not recognised**: `11/20/2026`. The same string is two different
+days in two countries, and the plugin does not guess on the user's behalf. The
+zone is not inferred either: parsing uses the `Asia/Shanghai` anchor and an `until`
+resolves to the end of that day in UTC.
+
+A date in a fact body still cannot become an expiry by itself: the guard only
+decides whether the user's own sentence supports a date, and `until` still comes
+from an explicit field.
+
 ### Panel
 
 The **Activity** page gained a **Replacements to confirm** card: the proposal text, the sentence it

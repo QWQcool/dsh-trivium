@@ -42,6 +42,20 @@ try {
     "下周 from yesterday is not stale yet",
   );
 
+  /*
+   * C2: an explicit `until` uses the same parser as the date guard. Chinese,
+   * slash/dot and English-month forms all name the month, so they are
+   * unambiguous; "11/20/2026" is not, and is never guessed at.
+   */
+  const same = "2026-11-20T23:59:59.000Z";
+  assert(resolveUntilAt("2026年11月20日") === same, "Chinese date resolves to end of day");
+  assert(resolveUntilAt("2026/11/20") === same, "slash separator resolves");
+  assert(resolveUntilAt("2026.11.20") === same, "dot separator resolves");
+  assert(resolveUntilAt("November 20, 2026") === same, "month-first English date resolves");
+  assert(resolveUntilAt("20 Nov 2026") === same, "day-first abbreviated English date resolves");
+  assert(resolveUntilAt("11/20/2026") === undefined, "a month/day order that depends on locale is not guessed");
+  assert(resolveUntilAt("2026-13-01") === undefined, "an impossible date does not resolve");
+
   const db = await openWorkspaceDb(cwd);
   const entity = insertNode(db, { type: "entity", name: "AuthGateway", text: "AuthGateway" });
   const live = insertNode(db, {

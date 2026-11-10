@@ -74,6 +74,30 @@ try {
   check(() => assert.match(String(otherFormat.applied[0]?.text || ''), /2026-12-31/), 'format differences do not count as invented');
   check(() => assert.equal(otherFormat.adjusted.length, 0), 'no adjustment for a cross-format match');
 
+  /*
+   * C2: English month spellings are unambiguous, so they take part in exactly the
+   * same check — a spelled date in the window authorises the abbreviated form in
+   * the fact, and an invented one is still removed.
+   */
+  const englishReal = await extract.distill({
+    db,
+    turns: [{ role: 'user', text: 'Ship on November 20, 2026.' }],
+    sessionId: 'p49',
+    llmCall: one({ type: 'decision', name: '发布日', text: 'Ship on Nov 20, 2026.' }),
+  });
+  check(() => assert.equal(englishReal.adjusted.length, 0), 'an English date in the window authorises the abbreviated form');
+  check(() => assert.match(String(englishReal.applied[0]?.text || ''), /Nov 20, 2026/), 'and the fact keeps the date as written');
+
+  const englishInvented = await extract.distill({
+    db,
+    turns: [{ role: 'user', text: '把结论记一下。' }],
+    sessionId: 'p49',
+    llmCall: one({ type: 'decision', name: '发布日', text: 'Ship on November 20, 2026.' }),
+  });
+  check(() => assert.equal(englishInvented.adjusted.length, 1), 'an invented English date is reported');
+  check(() => assert.deepEqual(englishInvented.adjusted[0].removed, ['2026-11-20']), 'it is named by the same key');
+  check(() => assert.doesNotMatch(String(englishInvented.applied[0]?.text || ''), /November/), 'and removed from the fact');
+
   // 4. if the date was the whole content, refuse instead of storing a stub
   const stub = await extract.distill({
     db,
