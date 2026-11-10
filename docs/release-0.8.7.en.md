@@ -34,6 +34,14 @@ back an edge that was already refused.
 Confirmation goes through the existing revision validator (`revisions.supersede`), so self, cycle,
 archived, already-superseded and chain length are all decided in one place.
 
+The `etag` also covers the **candidate**: if the decision that would be retired was edited after the
+page loaded, the stale page cannot confirm either. Rejection requires the `etag` too — otherwise an
+old page could decline candidates that were added later.
+
+**A replay of the same event does not undo a human rejection.** When the host retries a window it is
+the same session/seq/messageId, with no new user intent; the refusal stands. Only a proposal from an
+identifiable *new* event goes back into the queue.
+
 ### Rejecting leaves a tombstone
 
 Rejecting is not deleting: the fact stays current. The refused target is recorded in
@@ -41,15 +49,22 @@ Rejecting is not deleting: the fact stays current. The refused target is recorde
 cannot write the edge that was just declined. A later proposal about the same pair clears the
 tombstone (that is a new intent); the stale tab is stopped by the ETag, not by a permanent tombstone.
 
-### Every write endpoint takes the workspace lock
+### Four write endpoints take the workspace lock
 
 Confirm, reject, supersede and revoke now take the same lock as import. A second process gets 409
 `WORKSPACE_WRITE_BUSY` instead of "the panel says it worked while the library is locked".
+
+Scope, precisely: **not every write endpoint**. Settings, chips and node edit/delete/archive keep
+their existing in-process queue; they never contend with extraction for this lock, and this release
+does not change them.
 
 ### Failures are reported as failures
 
 - if the proposal mark cannot be written, extraction reports `proposal-failed` instead of claiming a
   proposal (there would be nothing in the list to show for it);
+- that run **does not consume the window** (`skippedBy: "proposal-failed"`, `proposalPending: true`),
+  so it is replayed; the facts already written are merged rather than duplicated, and the proposal is
+  stored once the sink is healthy again;
 - if the edge exists but clearing the mark fails, the response is 200 with
   `warning: "marker-not-cleared: …"` instead of a 500 that hides what already happened.
 
@@ -85,8 +100,11 @@ there is no "confirm all".
    budget. Both are eligible; on a large library only one may get a row.
 3. **Turn counting needs the host to expose a user message.** A host that never does will not reach
    the six-turn full refresh, and the counter fix still has **no live-host re-measurement**.
-4. `lastMapInjection` is workspace-scoped (it now carries `sessionId`); the heat sidecar keeps entries
-   for deleted nodes, so the ranking can carry ghosts.
+4. `lastMapInjection` is workspace-scoped (it now carries `sessionId`). The heat sidecar counts
+   references and is capped at 2000 entries; **deleting a node leaves its entry behind**, but no screen
+   or endpoint presents the sidecar as a ranking — the short map reads heat only for nodes that still
+   exist — so those entries are invisible and cost a little disk. The 0.8.6 note about ghosts "in the
+   ranking" was inaccurate; this is the accurate statement.
 5. `router` / `inherit` / `scope` ship but stay off by default; they are experimental and have not
    been accepted on a real host.
 6. Imports can partially commit; the response carries `newNodesBeforeFailure` and `retryHint`, and a
@@ -100,7 +118,7 @@ there is no "confirm all".
 
 | Script | Result |
 |---|---|
-| `smoke-p89` (P contract) | 41/41: no edge by default, both current, stale confirm after reject refused, stale/missing ETag, second confirm, 409 under a held lock, proposal write failure, ambiguous candidates, helper cannot build a cycle |
+| `smoke-p89` (P contract) | 53/53: no edge by default, both current, stale confirm after reject refused, same-event replay cannot undo a rejection, stale/missing ETag (proposal and candidate), rejection needs its own ETag, second confirm, 409 under a held lock, a failed proposal is finished by the replay without duplicating the fact, ambiguous candidates, a cycle is refused by the revision validator |
 | `smoke-p90` (HTTP contract) | 7/7 |
 | `smoke-p74` / `p75` / `p83` | 70 / 52 / 14 |
 

@@ -40,7 +40,7 @@ async function check(fn, label) {
   try { await fn(); console.log('ok ' + label); } catch (e) { failures += 1; console.error('FAIL ' + label + ': ' + e.message); }
 }
 
-const turn = (text) => ({ role: 'user', text, seq: 2, messageId: 'm2', at: '2026-11-02T09:00:00.000Z', recorded: true });
+const turn = (text, messageId = 'm2') => ({ role: 'user', text, seq: 2, messageId, at: '2026-11-02T09:00:00.000Z', recorded: true });
 const one = (candidate) => async () => JSON.stringify({ candidates: [candidate] });
 const edgesOf = (db) => {
   const out = [];
@@ -50,9 +50,9 @@ const edgesOf = (db) => {
   return out;
 };
 const seed = (db) => store.insertNode(db, { type: 'decision', name: '方案 A', text: '本次上线按方案 A 执行' });
-const propose = (db, ws, name, sentence, quote) => extract.distill({
+const propose = (db, ws, name, sentence, quote, messageId = 'm2') => extract.distill({
   db,
-  turns: [turn(sentence)],
+  turns: [turn(sentence, messageId)],
   sessionId: name,
   llmCall: one({ type: 'decision', name: '上线方案 B', text: '改用方案 B', quote }),
 });
@@ -95,8 +95,20 @@ try {
     'the generic revision endpoint is blocked for the refused pair',
   );
 
+  /*
+   * 2b. F87-01: replaying the *same* event must not undo the refusal. The host
+   * retries a window; there is no new user intent behind it.
+   */
+  const replay = await propose(db, ws, 'p89', '不再使用方案 A，改用方案 B。', '不再使用方案 A，改用方案 B。', 'm2');
+  await check(
+    () => assert.equal(replay.superseded.some((row) => row.skipped === 'proposal-rejected-replay'), true),
+    'a replay of the same event is reported as a rejected replay',
+  );
+  await check(() => assert.equal(review.listSupersedeProposals(db).length, 0), 'the replay does not put the proposal back');
+  await check(() => assert.deepEqual(db.get(newId).payload.rejectedSupersedes, [oldId]), 'the replay keeps the tombstone');
+
   // 3. HTTP: pending proposal, stale ETag, confirm, second confirm
-  const second = await propose(db, ws, 'p89b', '别用方案 A，改用方案 B 了。', '别用方案 A，改用方案 B 了。');
+  const second = await propose(db, ws, 'p89b', '别用方案 A，改用方案 B 了。', '别用方案 A，改用方案 B 了。', 'm3');
   const pending = review.listSupersedeProposals(db)[0];
   await check(() => assert.ok(pending), `the second attempt proposes as well (${JSON.stringify(second.superseded)})`);
 
@@ -134,6 +146,23 @@ try {
       assert.equal(body.code, 'proposal-stale');
     }, 'a stale proposal ETag is refused (F87-01)');
 
+    /*
+     * The same check has to cover the *candidate*: editing the decision that
+     * would be retired changes what "confirm this replacement" means, and the
+     * proposal node itself did not move.
+     */
+    const beforeTargetEdit = review.listSupersedeProposals(db)[0].etag;
+    store.updateNode(db, oldId, { text: '本次上线按方案 A 执行（补充：周五 22:00 全量）。' });
+    await check(async () => {
+      const res = await post(`/api/dsh-trivium/supersede-proposals/${pending.id}/confirm?cwd=${cwd}`, {
+        targetId: oldId,
+        etag: beforeTargetEdit,
+      });
+      const body = await res.json();
+      assert.equal(res.status, 409);
+      assert.equal(body.code, 'proposal-stale');
+    }, 'a candidate that changed after the page loaded also invalidates the ETag');
+
     await check(async () => {
       const res = await post(`/api/dsh-trivium/supersede-proposals/${pending.id}/confirm?cwd=${cwd}`, {
         targetId: oldId,
@@ -164,6 +193,38 @@ try {
       assert.equal(res.status, 409);
       assert.equal(body.code, 'proposal-missing-etag');
     }, 'a confirmation without the ETag is refused instead of racing a stale page');
+
+    /*
+     * 3b. Reject is not exempt either: a page that loaded before a candidate was
+     * added must not be able to decline a proposal it never showed.
+     */
+    const wsRej = join(root, 'ws-rej');
+    const dbRej = await store.openWorkspaceDb(wsRej);
+    store.insertNode(dbRej, { type: 'decision', name: '方案 A', text: '主库用 MySQL。' });
+    await propose(dbRej, wsRej, 'p89rej', '不再使用方案 A，改用方案 B。', '不再使用方案 A，改用方案 B。', 'm-rej');
+    const rejProposal = review.listSupersedeProposals(dbRej)[0];
+    const rejCwd = encodeURIComponent(wsRej);
+    await check(async () => {
+      const res = await post(`/api/dsh-trivium/supersede-proposals/${rejProposal.id}/reject?cwd=${rejCwd}`, {});
+      const body = await res.json();
+      assert.equal(res.status, 409);
+      assert.equal(body.code, 'proposal-missing-etag');
+    }, 'a rejection without the ETag is refused');
+    store.updateNode(dbRej, rejProposal.id, { name: '数据库选型（改）' });
+    await check(async () => {
+      const res = await post(`/api/dsh-trivium/supersede-proposals/${rejProposal.id}/reject?cwd=${rejCwd}`, { etag: rejProposal.etag });
+      const body = await res.json();
+      assert.equal(res.status, 409);
+      assert.equal(body.code, 'proposal-stale');
+    }, 'a stale rejection is refused');
+    await check(async () => {
+      const res = await post(`/api/dsh-trivium/supersede-proposals/${rejProposal.id}/reject?cwd=${rejCwd}`, {
+        etag: review.listSupersedeProposals(dbRej)[0].etag,
+      });
+      const body = await res.json();
+      assert.equal(res.status, 200, JSON.stringify(body));
+      assert.equal(review.listSupersedeProposals(dbRej).length, 0);
+    }, 'a rejection with the current ETag is accepted');
 
     // 4. the write routes take the workspace lock (F87-02)
     const held = lock.acquireWorkspaceLock(ws);
@@ -206,16 +267,29 @@ try {
     'a second confirmation on the same node is refused',
   );
 
-  // The helper must not be able to build a cycle: it delegates to revisions.supersede.
+  /*
+   * The helper must not be able to build a cycle: it delegates to
+   * `revisions.supersede`. A → B → C is a chain, and a proposal on A that targets
+   * C would close the loop; the validator has to say so, not merely "not pending".
+   */
   const ws3 = join(root, 'ws3');
   const db3 = await store.openWorkspaceDb(ws3);
-  const x = store.insertNode(db3, { type: 'decision', name: 'X', text: '按 X 执行' });
-  const y = store.insertNode(db3, { type: 'decision', name: 'Y', text: '按 Y 执行' });
-  store.ensureLink(db3, y, x, 'supersedes');
+  const a3 = store.insertNode(db3, { type: 'decision', name: 'A', text: '按 A 执行' });
+  const b3 = store.insertNode(db3, { type: 'decision', name: 'B', text: '按 B 执行' });
+  const c3 = store.insertNode(db3, { type: 'decision', name: 'C', text: '按 C 执行' });
+  store.ensureLink(db3, b3, a3, 'supersedes');
+  store.ensureLink(db3, c3, b3, 'supersedes');
+  store.updateNode(db3, a3, {
+    review: 'supersede-proposed',
+    proposedSupersedes: [c3],
+    supersedeProposedFor: 'message:m-cycle',
+  });
   await check(() => {
-    const cyclic = review.confirmProposal(db3, { proposalId: x, targetId: y });
+    const cyclic = review.confirmProposal(db3, { proposalId: a3, targetId: c3 });
     assert.equal(cyclic.ok, false, `a cycle must be refused, got ${JSON.stringify(cyclic)}`);
+    assert.equal(cyclic.code, 'cycle', `expected the validator's cycle code, got ${JSON.stringify(cyclic)}`);
   }, 'confirm delegates to the revision validator, so no cycle can be created');
+  await check(() => assert.deepEqual(edgesOf(db3).length, 2), 'the refused cycle wrote nothing');
 
   /*
    * F87-03: when the mark cannot be written, the extraction must not claim a
@@ -247,6 +321,32 @@ try {
     'the failed attempt is not reported as proposed',
   );
   await check(() => assert.equal(review.listSupersedeProposals(db5).length, 0), 'the panel list stays truthful after the failure');
+
+  /*
+   * The window is kept (see `extractOutcome`), so the replay has to finish the
+   * job: one proposal, and the fact already written is merged rather than
+   * duplicated.
+   */
+  await check(() => {
+    const failedOutcome = extract.extractOutcome({ llmFailed: false, superseded: [{ skipped: 'proposal-failed' }] });
+    assert.equal(failedOutcome.consume, false, 'a failed proposal must not consume the window');
+    assert.equal(failedOutcome.recovered, false, 'and it must not be reported as a recovery');
+    const healthy = extract.extractOutcome({ llmFailed: false, superseded: [{ proposed: [2] }] });
+    assert.equal(healthy.consume, true);
+  }, 'extractOutcome keeps the window when a proposal could not be stored');
+
+  const healed = await extract.distill({
+    db: db5,
+    turns: [turn('不再使用方案 A，改用方案 B。', 'm-heal')],
+    sessionId: 'p89-fail',
+    llmCall: one({ type: 'decision', name: '上线方案 B', text: '改用方案 B', quote: '不再使用方案 A，改用方案 B。' }),
+  });
+  await check(
+    () => assert.equal(healed.superseded.some((row) => Array.isArray(row.proposed) && row.proposed.length), true),
+    'the replay after the fault stores the proposal',
+  );
+  await check(() => assert.equal(review.listSupersedeProposals(db5).length, 1), 'the proposal is visible after the replay');
+  await check(() => assert.equal(db5.allNodeIds().length, 3), 'the fact was merged, not duplicated');
 
   // 6. the legacy automatic path is still reachable, explicitly
   writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ supersedeMode: 'auto' }), 'utf8');
