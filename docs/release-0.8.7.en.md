@@ -99,7 +99,10 @@ there is no "confirm all".
 2. **"Both current" is not "both in the map"**: the short map has eight named slots and a token
    budget. Both are eligible; on a large library only one may get a row.
 3. **Turn counting needs the host to expose a user message.** A host that never does will not reach
-   the six-turn full refresh, and the counter fix still has **no live-host re-measurement**.
+   the six-turn full refresh. The counter was re-measured on a real host (2026-11-10, DSH 0.2.1-rc.5):
+   a turn with tool calls advanced `mapInjections` by exactly one `skip` (`sessionStart:1`) and left
+   `turnsSince` at 1, so one user turn counts once. The library used for the measurement was restored
+   whole afterwards (16 nodes, same ids).
 4. `lastMapInjection` is workspace-scoped (it now carries `sessionId`). The heat sidecar counts
    references and is capped at 2000 entries; **deleting a node leaves its entry behind**, but no screen
    or endpoint presents the sidecar as a ranking — the short map reads heat only for nodes that still
