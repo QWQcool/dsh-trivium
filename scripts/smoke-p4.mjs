@@ -45,7 +45,7 @@ try {
   /*
    * C2: an explicit `until` uses the same parser as the date guard. Chinese,
    * slash/dot and English-month forms all name the month, so they are
-   * unambiguous; "11/20/2026" is not, and is never guessed at.
+   * unambiguous. All year-last numeric forms are outside the supported grammar.
    */
   const same = "2026-11-20T23:59:59.000Z";
   assert(resolveUntilAt("2026年11月20日") === same, "Chinese date resolves to end of day");
@@ -53,7 +53,15 @@ try {
   assert(resolveUntilAt("2026.11.20") === same, "dot separator resolves");
   assert(resolveUntilAt("November 20, 2026") === same, "month-first English date resolves");
   assert(resolveUntilAt("20 Nov 2026") === same, "day-first abbreviated English date resolves");
-  assert(resolveUntilAt("11/20/2026") === undefined, "a month/day order that depends on locale is not guessed");
+  assert(resolveUntilAt("November 20 2026") === same, "whitespace separates an English day and year");
+  assert(resolveUntilAt("November 20,2026") === same, "a comma separates an English day and year");
+  assert(resolveUntilAt("November 20th, 2026") === same, "an ordinal with a separator resolves");
+  assert(resolveUntilAt("20 Nov. 2026") === same, "a month abbreviation with a separator resolves");
+  assert(resolveUntilAt("04/06/2026") === undefined, "ambiguous year-last numeric dates are not guessed");
+  assert(resolveUntilAt("11/20/2026") === undefined, "the year-last numeric grammar stays unsupported even when one order is impossible");
+  for (const malformed of ["November 202026", "November 22026", "November 20th2026", "20 November2026", "20 Nov.2026"]) {
+    assert(resolveUntilAt(malformed) === undefined, `an English date without a year separator is refused: ${malformed}`);
+  }
   assert(resolveUntilAt("2026-13-01") === undefined, "an impossible date does not resolve");
 
   const db = await openWorkspaceDb(cwd);

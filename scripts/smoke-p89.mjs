@@ -337,7 +337,7 @@ try {
 
   const healed = await extract.distill({
     db: db5,
-    turns: [turn('不再使用方案 A，改用方案 B。', 'm-heal')],
+    turns: [turn('不再使用方案 A，改用方案 B。')],
     sessionId: 'p89-fail',
     llmCall: one({ type: 'decision', name: '上线方案 B', text: '改用方案 B', quote: '不再使用方案 A，改用方案 B。' }),
   });
@@ -347,6 +347,116 @@ try {
   );
   await check(() => assert.equal(review.listSupersedeProposals(db5).length, 1), 'the proposal is visible after the replay');
   await check(() => assert.equal(db5.allNodeIds().length, 3), 'the fact was merged, not duplicated');
+
+  /*
+   * F87-01/03: exercise the consumer, not just distill/extractOutcome. A new
+   * agent starts recovery of the SAME historical window after a storage fault;
+   * neither its historical session nor its event locator is changed for retry.
+   * The stream is a local stub, so no host or model service is started.
+   */
+  const plugin = await import('../lib/index.js');
+  const sentence = '不再使用方案 A，改用方案 B。';
+  const answer = JSON.stringify({ candidates: [{ type: 'decision', name: '上线方案 B', text: '改用方案 B', quote: sentence }] });
+  for (const [kind, locator] of [
+    ['message', { messageId: 'm-entry', seq: 2, recorded: true }],
+    ['sequence', { seq: 2, recorded: true }],
+    ['unlocated', { recorded: false }],
+  ]) {
+    const entryWs = join(root, `entry-${kind}`);
+    const entryDb = await store.openWorkspaceDb(entryWs);
+    const entryOld = seed(entryDb);
+    const window = { sessionId: `historical-${kind}`, turns: [{ role: 'user', text: sentence, ...locator }] };
+    await extract.savePending(entryWs, window);
+    const originalWindow = extract.loadPendingWindows(entryWs)[0];
+    let calls = 0;
+    const handlers = new Map();
+    const ctx = {
+      llm: { async *stream() { calls += 1; yield { type: 'text-delta', index: 0, text: answer }; } },
+      logger: () => ({ info() {}, warn() {}, error() {}, debug() {} }),
+      inject(_deps, fn) { fn(ctx); },
+      on(name, fn) { handlers.set(name, fn); return () => {}; },
+      effect(fn) { fn(); return () => {}; },
+      tools: { register() { return () => {}; } },
+      webServer: { register() { return () => {}; } },
+    };
+    plugin.apply(ctx, {});
+    const start = (attempt) => handlers.get('agent/created')({ agent: {
+      session: { id: `recover-${kind}-${attempt}`, header: { cwd: entryWs }, requestHeader: () => ({ config: { provider: 'stub', model: 'stub' } }) },
+      inject() {},
+    } });
+    const update = entryDb.updatePayload;
+    let failedIds;
+    entryDb.updatePayload = function (id, payload) {
+      if (payload.review === 'supersede-proposed') throw new Error('synthetic proposal storage failure');
+      return update.call(this, id, payload);
+    };
+    try {
+      await start('failure');
+      failedIds = store.findByType(entryDb, 'decision').map((row) => row.id).sort();
+      await check(() => {
+        assert.equal(calls, 1);
+        assert.equal(failedIds.length, 2, 'the fact was written before the proposal failed');
+        assert.equal(review.listSupersedeProposals(entryDb).length, 0);
+        // Failure bookkeeping may add `error`; the event and window must stay exact.
+        assert.deepEqual(extract.loadPendingWindows(entryWs).map(({ error, ...saved }) => saved), [originalWindow]);
+      }, `${kind}: a real-entry proposal failure retains the identical historical window`);
+      await check(() => {
+        const status = plugin.workspaceStatus(entryWs);
+        assert.equal(status.lastExtract.skippedBy, 'proposal-failed');
+        assert.equal(status.lastExtract.proposalPending, true);
+        assert.equal(status.recovery.state, 'failed');
+      }, `${kind}: the consumer reports failure instead of recovery`);
+    } finally {
+      entryDb.updatePayload = update;
+    }
+    await start('healed');
+    const entryProposal = review.listSupersedeProposals(entryDb)[0];
+    await check(() => {
+      assert.equal(calls, 2, 'the retained window was actually replayed');
+      assert.deepEqual(extract.loadPendingWindows(entryWs), []);
+      assert.equal(review.listSupersedeProposals(entryDb).length, 1);
+      assert.deepEqual(store.findByType(entryDb, 'decision').map((row) => row.id).sort(), failedIds);
+      assert.deepEqual(entryProposal.targets.map((row) => row.id), [entryOld]);
+      assert.equal(entryDb.get(entryProposal.id).payload.source.sessionId, originalWindow.sessionId);
+      assert.equal(entryDb.get(entryProposal.id).payload.supersedeProposedFor || '', extract.eventKeyOf({ ...locator, sessionId: originalWindow.sessionId }));
+      assert.deepEqual(edgesOf(entryDb), []);
+    }, `${kind}: the same window is consumed only after one proposal is stored without duplicating the fact`);
+    await check(() => {
+      const status = plugin.workspaceStatus(entryWs);
+      assert.equal(status.lastExtract.skippedBy, undefined);
+      assert.notEqual(status.lastExtract.proposalPending, true);
+      assert.equal(status.recovery.state, 'succeeded');
+    }, `${kind}: recovery succeeds only after the storage fault is removed`);
+
+    if (kind === 'unlocated') {
+      await check(() => {
+        assert.equal(entryDb.get(entryProposal.id).payload.supersedeProposedFor, undefined);
+        assert.equal(review.rejectSupersede(entryDb, entryProposal.id, { expectedEtag: entryProposal.etag }).ok, true);
+      }, 'the first proposal really has neither messageId nor seq and can be rejected');
+      await extract.savePending(entryWs, originalWindow);
+      await check(() => assert.deepEqual(extract.loadPendingWindows(entryWs), [originalWindow]), 'the unlocated rejection replay uses the same saved window');
+      await start('rejected-replay');
+      await check(() => {
+        assert.equal(calls, 3);
+        assert.deepEqual(extract.loadPendingWindows(entryWs), []);
+        assert.equal(review.listSupersedeProposals(entryDb).length, 0);
+        assert.deepEqual(entryDb.get(entryProposal.id).payload.rejectedSupersedes, [entryOld]);
+        assert.deepEqual(store.findByType(entryDb, 'decision').map((row) => row.id).sort(), failedIds);
+        assert.deepEqual(edgesOf(entryDb), []);
+        assert.equal(review.supersedeBlockedByProposal(entryDb, { oldId: entryOld, successorId: entryProposal.id }).code, 'proposal-rejected');
+        assert.equal(plugin.workspaceStatus(entryWs).lastExtract.supersedeSkipped.some((row) => row.skipped === 'proposal-rejected-replay'), true);
+      }, 'an initially unlocated event cannot reopen a refusal through the real replay entry');
+      const newlyIdentified = await extract.distill({
+        db: entryDb, turns: [turn(sentence, 'm-later')], sessionId: originalWindow.sessionId,
+        llmCall: async () => answer,
+      });
+      await check(() => {
+        assert.equal(newlyIdentified.superseded.some((row) => row.skipped === 'proposal-rejected-replay'), true);
+        assert.equal(review.listSupersedeProposals(entryDb).length, 0);
+        assert.deepEqual(entryDb.get(entryProposal.id).payload.rejectedSupersedes, [entryOld]);
+      }, 'a locator arriving later cannot prove a new generation against an unlocated refusal');
+    }
+  }
 
   // 6. the legacy automatic path is still reachable, explicitly
   writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ supersedeMode: 'auto' }), 'utf8');

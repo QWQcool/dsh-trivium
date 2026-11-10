@@ -40,14 +40,17 @@ old page could decline candidates that were added later.
 
 **A replay of the same event does not undo a human rejection.** When the host retries a window it is
 the same session/seq/messageId, with no new user intent; the refusal stands. Only a proposal from an
-identifiable *new* event goes back into the queue.
+event whose previous and current keys are both known and different goes back into the queue.
+If either occurrence lacks `messageId` / `seq`, including the very first proposal, the refusal
+stands. A locator supplied later does not prove a different earlier event. Consequently, a host
+without locators cannot automatically re-propose the same fact after a refusal.
 
 ### Rejecting leaves a tombstone
 
 Rejecting is not deleting: the fact stays current. The refused target is recorded in
 `rejectedSupersedes`, and the **generic revision endpoint refuses that exact pair**, so a stale tab
-cannot write the edge that was just declined. A later proposal about the same pair clears the
-tombstone (that is a new intent); the stale tab is stopped by the ETag, not by a permanent tombstone.
+cannot write the edge that was just declined. Only a proposal proven to come from a different event
+clears the tombstone; a stale tab is then stopped by the ETag.
 
 ### Four write endpoints take the workspace lock
 
@@ -84,9 +87,11 @@ The `until` field and the "invented date" guard now share one parser
 - `November 20, 2026`, `20 Nov 2026` — the month is spelled out, so day/month
   order is not ambiguous.
 
-**Deliberately not recognised**: `11/20/2026`. The same string is two different
-days in two countries, and the plugin does not guess on the user's behalf. The
-zone is not inferred either: parsing uses the `Asia/Shanghai` anchor and an `until`
+**Deliberately not recognised**: all year-last numeric forms. `04/06/2026` could mean April 6 or
+June 4. `11/20/2026` only permits month/day order, but is excluded by the same grammar rule rather
+than inferring a locale from the numbers. English years must be separated by whitespace or a comma;
+joined text such as `November 202026` or `20 Nov2026` is not parsed.
+The zone is not inferred either: parsing uses the `Asia/Shanghai` anchor and an `until`
 resolves to the end of that day in UTC.
 
 A date in a fact body still cannot become an expiry by itself: the guard only
@@ -139,10 +144,15 @@ there is no "confirm all".
 
 | Script | Result |
 |---|---|
-| `smoke-p89` (P contract) | 53/53: no edge by default, both current, stale confirm after reject refused, same-event replay cannot undo a rejection, stale/missing ETag (proposal and candidate), rejection needs its own ETag, second confirm, 409 under a held lock, a failed proposal is finished by the replay without duplicating the fact, ambiguous candidates, a cycle is refused by the revision validator |
+| `smoke-p89` (P contract) | 69/69: no edge by default, both current, stale confirm after reject refused, rejection protected even when the first proposal lacks locators, stale/missing ETag (proposal and candidate), rejection needs its own ETag, second confirm, 409 under a held lock; real plugin entry replays the same historical window, retaining it on proposal failure and consuming it after recovery without duplicating facts; ambiguous candidates, a cycle refused by the revision validator |
 | `smoke-p90` (HTTP contract) | 7/7 |
 | `smoke-p74` / `p75` / `p83` | 70 / 52 / 14 |
 
-Real-host check (2026-11-09, DSH 0.2.1-rc.5, isolated workspace, no model calls, default library
-untouched): confirm wrote one edge with `supersedeConfirmedVia:"http"`, reject left no edge and a
+Real-host check (2026-11-09, DSH 0.2.1-rc.5, actions targeted an isolated workspace, no model calls):
+confirm wrote one edge with `supersedeConfirmedVia:"http"`, reject left no edge and a
 tombstone, and the list was empty after both.
+The host also opened its default workspace database during startup. Without a prior snapshot, that
+database cannot be claimed unchanged or restored; see review report §8.5.
+
+The closeout checks use offline stubs; no real host or paid model was rerun. See the
+[final acceptance record](reviews/0.8.7-FINAL-RESULTS-2026-11-10.md).

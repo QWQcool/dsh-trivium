@@ -16,6 +16,7 @@ process.env.DSH_HOME = join(root, 'home');
 process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
 const store = await import('../lib/store.js');
 const extract = await import('../lib/extract.js');
+const dates = await import('../lib/date-parse.js');
 
 let checks = 0;
 let failures = 0;
@@ -97,6 +98,21 @@ try {
   check(() => assert.equal(englishInvented.adjusted.length, 1), 'an invented English date is reported');
   check(() => assert.deepEqual(englishInvented.adjusted[0].removed, ['2026-11-20']), 'it is named by the same key');
   check(() => assert.doesNotMatch(String(englishInvented.applied[0]?.text || ''), /November/), 'and removed from the fact');
+
+  for (const malformed of ['November 202026', 'November 20th2026', '20 Nov2026', '20 Nov.2026']) {
+    check(() => assert.deepEqual(dates.absoluteDates(`Ship on ${malformed}.`), []), `the body parser rejects a missing year separator: ${malformed}`);
+  }
+  const englishMalformedSource = await extract.distill({
+    db,
+    turns: [{ role: 'user', text: 'Ship on November 202026.' }],
+    sessionId: 'p49',
+    llmCall: one({ type: 'decision', name: '格式错误的发布日', text: 'Ship on November 20, 2026.' }),
+  });
+  check(() => {
+    assert.equal(englishMalformedSource.applied.length, 1);
+    assert.deepEqual(englishMalformedSource.adjusted[0]?.removed, ['2026-11-20']);
+    assert.doesNotMatch(englishMalformedSource.applied[0].text, /November/);
+  }, 'a malformed source date cannot authorise a date invented by the model');
 
   // 4. if the date was the whole content, refuse instead of storing a stub
   const stub = await extract.distill({
