@@ -21,7 +21,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前使用 Web `0.2.1-rc.4` 验证；桌面 `0.2.1-rc.3` 的验证层级和局限见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`，内核精确锁定 `triviumdb@0.9.0`。
+> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前使用 Web `0.2.2-rc.1` 验证（2026-11-10 实机启动）；桌面 `0.2.1-rc.3` 的验证层级和局限见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`，内核精确锁定 `triviumdb@0.9.0`。
 
 ```sh
 dsh plugin --profile web add dsh-trivium

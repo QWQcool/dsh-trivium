@@ -25,7 +25,7 @@ The published npm package is **0.8.7** ([release notes](docs/release-0.8.7.md)):
 
 ## Installation
 
-> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. Current Web verification uses `0.2.1-rc.4`; see the [baseline and evidence index](docs/README.md) for desktop `0.2.1-rc.3` coverage and limitations. Node must satisfy `^22.19.0 || >=24`; `triviumdb` is pinned to `0.9.0-beta.3`.
+> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. Current Web verification uses `0.2.2-rc.1` (2026-11-10, real host launch); see the [baseline and evidence index](docs/README.md) for desktop `0.2.1-rc.3` coverage and limitations. Node must satisfy `^22.19.0 || >=24`; `triviumdb` is pinned to `0.9.0`.
 
 ```sh
 dsh plugin --profile web add dsh-trivium
