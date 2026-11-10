@@ -8,9 +8,9 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 > **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
 >
-> 当前 npm 发布版是 **0.8.6**（[发布说明](docs/release-0.8.6.md)）：上下文管线版——事件评分（只记分，不删事件、不改顺序）、地图热度、增量注入与新轮次键、卡住自愈、待补写队列、批量导入与如实的部分提交回执、事实身份（模糊合并默认关）、`MemoryWriter`，以及默认关闭的作用域继承与 Router。**本版不动内核**（仍是 `triviumdb@0.9.0`，那一步已在 [0.8.5](docs/release-0.8.5.md) 单独发过）。
+> 当前 npm 发布版是 **0.8.7**（[发布说明](docs/release-0.8.7.md)）：**替代变成提案**——抽取只记录意图（`review: supersede-proposed` + 候选 id），旧决策仍是当前版本；硬边只由 `POST /supersede-proposals/<id>/confirm` 写入，服务端会在写锁内重查提案与 ETag。同一事件重放不能撤销人工拒绝；提案写不进去时窗口保留、下次重放补齐；确认/拒绝/修订/撤销四类接口都取工作区锁。日期解析接受中文、斜杠/点号与英文月份写法，拒绝依赖地区的 `11/20/2026`。0.8.6 自动建出的边保持原样。**本版不动内核**（仍是 `triviumdb@0.9.0`，那一步已在 [0.8.5](docs/release-0.8.5.md) 单独发过）。
 >
-> **从 ≤0.8.4 升级到 0.8.6 前请备份整个 `.dsh` 目录（插件关闭状态下）**；已经在 0.8.5 / 0.8.6 上则无需再转换，内核同为 0.9.0。 0.9.0 把库格式升到 **v10**，旧内核读不了
+> **从 ≤0.8.4 升级到 0.8.7 前请备份整个 `.dsh` 目录（插件关闭状态下）**；已经在 0.8.5 / 0.8.6 / 0.8.7 上则无需再转换，内核同为 0.9.0。 0.9.0 把库格式升到 **v10**，旧内核读不了
 > （`TDB_UNSUPPORTED_DATABASE_VERSION`），所以**降级插件不是回退**，恢复备份才是；而恢复备份会回到备份时刻，
 > **备份之后写入的内容会丢失**。备份要复制**整个文件组**（`trivium.tdb` 及同前缀的 `.gidx` `.pidx` `.pld.*`
 > `.text` `.text.meta` `.vec` `.wal` `.lock` `.flush_ok`），只复制 `.tdb` 会得到 `TDB_CORRUPTED_FILE`。
@@ -346,6 +346,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 ## 更新说明
 
+- [0.8.7](docs/release-0.8.7.md)：替代改为提案、由人确认（校验 ETag；同一事件重放不能撤销拒绝）、确认/拒绝/修订/撤销四类接口取工作区锁、提案写失败保留窗口、日期解析只加无歧义写法；0.8.6 自动建的边保持原样。
 - [0.8.6](docs/release-0.8.6.md)：抽取前的事件评分（只记分，不删事件、不改顺序）、地图热度、增量地图注入与新轮次键、卡住/自愈诊断、可见的待补写队列、批量写入、事实身份（默认关）；作用域继承与 Router 随包但默认关闭。
 - 0.8.5（只有内核）：`triviumdb@0.9.0`、`undefined` 写入适配、升级与回退演练；不含任何管线行为改动。
 - [0.8.4](docs/release-0.8.4.md)：设置卡重构为四页（记忆库 / 上下文 / 运行记录 / 设置），新增 Ctrl/Cmd+K 命令面板、宽屏并列详情、设计稿配色与设置分组。服务端行为未变。
@@ -384,7 +385,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 ## 发布信息
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 已发布包：`0.8.5` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- 已发布包：`0.8.7` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.2.1-rc.4`（peer 范围同时接受 0.1.x 各线）
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
