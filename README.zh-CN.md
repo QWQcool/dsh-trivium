@@ -386,7 +386,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
 - 已发布包：`0.8.7` · [npm](https://www.npmjs.com/package/dsh-trivium)
-- 测试宿主：`@deepseek-ai/dsh@0.2.1-rc.4`（peer 范围同时接受 0.1.x 各线）
+- 测试宿主：`@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证：面板可开、`/status` 与提案接口应答、控制台零报错；更早版本在 0.2.1-rc.4/rc.5 上验证过）。peer 范围同时接受 0.1.x 各线。
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
 ---

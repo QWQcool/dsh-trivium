@@ -35,6 +35,12 @@ try {
     ["0.1.6", false],
     ["0.2.0-rc.2", true],
     ["0.2.1-rc.2", true],
+    // 0.2.2 is the version this plugin was last launched under (2026-11-10). The
+    // format switch keys on the minor line, so it must stay v4 here; a regression
+    // would write the 0.1.x source shape and fail the whole turn.
+    ["0.2.1-rc.5", true],
+    ["0.2.2-rc.1", true],
+    ["0.2.2-alpha.3", true],
     ["1.0.0", true],
     ["", true],
     [undefined, true],
