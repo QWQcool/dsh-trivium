@@ -322,6 +322,7 @@ const tests = [
   }],
   ["a successful archive produces one committed receipt naming the object", async () => {
     const p = await loaded();
+    await expandEntry(p, 2);
     p.button("Archive").props.onClick();
     await p.flush();
     const receipt = p.elements().find((el) => el.props["data-receipt-state"] === "pending");
@@ -335,6 +336,7 @@ const tests = [
   }],
   ["a rejected write keeps the server code instead of reporting success", async () => {
     const p = await loaded();
+    await expandEntry(p, 2);
     p.button("Archive").props.onClick();
     await p.flush();
     await p.reply(p.take("nodes/2/archive"), { ok: false, code: "REVISION_LINKED", message: "chain protected" }, false, 409);
@@ -493,6 +495,8 @@ const tests = [
   }],
   ["permanent deletion confirms the exact object before any request", async () => {
     const p = await loaded();
+    // Destructive actions live in the expanded detail now.
+    await expandEntry(p, 2);
     p.button("Delete").props.onClick();
     await p.flush();
     const dialog = p.elements().find((el) => el.props.role === "alertdialog");

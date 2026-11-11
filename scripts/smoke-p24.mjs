@@ -103,7 +103,17 @@ async function panel() {
     await flush();
   }
   await flush();
-  return { flush, elements, text, take, reply, button, search, pending, requests, get confirmations() { return confirmations; } };
+  /*
+   * Destructive actions live in the expanded detail now, so a test that wants
+   * Archive/Delete has to open the row first — the same gesture a person makes.
+   */
+  async function openRow(label) {
+    const title = elements().find((el) => typeof el.props?.onClick === "function" && text(el).trim() === label);
+    assert.ok(title, "row exists: " + label);
+    title.props.onClick();
+    await flush();
+  }
+  return { flush, elements, text, take, reply, button, search, openRow, pending, requests, get confirmations() { return confirmations; } };
 }
 
 async function loaded(nodes = [row("Displayed workspace A memory")], statusPatch = {}) {
@@ -236,6 +246,8 @@ const tests = [
       const req = p.requests.find((r) => r.url.pathname.endsWith("/" + name));
       assert.equal(req.url.searchParams.get("cwd"), A, name + " must target A even after another session activates B");
     }
+    await p.openRow("#2 preference");
+    await p.reply(p.take("nodes/2/detail"), { id: 2 });
     p.button("Archive").props.onClick();
     const archive = p.take("nodes/2/archive");
     assert.equal(archive.url.searchParams.get("cwd"), A, "archive targets the shown memory's workspace");
@@ -255,6 +267,8 @@ const tests = [
   }],
   ["cancelled permanent deletion does not send a write", async () => {
     const p = await loaded();
+    await p.openRow("#2 preference");
+    await p.reply(p.take("nodes/2/detail"), { id: 2 });
     p.button("Delete").props.onClick();
     await p.flush();
     const dialog = p.elements().find((el) => el.props.role === "alertdialog");
@@ -266,6 +280,8 @@ const tests = [
   }],
   ["mutation completion refreshes the current search rather than an older closure", async () => {
     const p = await loaded();
+    await p.openRow("#2 preference");
+    await p.reply(p.take("nodes/2/detail"), { id: 2 });
     p.button("Archive").props.onClick();
     const archive = p.take("nodes/2/archive");
     await p.search("new query");
