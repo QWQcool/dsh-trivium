@@ -236,6 +236,21 @@ A memory knows where it came from only if the write recorded it (`kind`, session
 
 The recall check is read-only: it does not write, does not run a tool, and never requests an embedding. With no query vector it says the semantic channel did not run. Nothing on these tabs injects context or calls a model.
 
+### Querying while the host is running (source change, not yet released)
+
+The new read API borrows an already-open workspace: `POST /api/dsh-trivium/query?cwd=...`
+accepts bounded named queries for nodes, one-hop neighbors and orphan entities.
+It does not open another database handle or create an unopened workspace.
+
+For arbitrary read TQL and external audits, capture an independent snapshot with
+`POST /api/dsh-trivium/snapshots?cwd=...` and an empty JSON object. Query that
+snapshot by adding `snapshotId` to the query request, or run
+`dsh-trivium-query --snapshot <directory> --tql 'MATCH (n) RETURN n LIMIT 20'`.
+`dsh-trivium-check --snapshot <directory> --json` checks its revision integrity
+while the source writer remains open. Snapshot TQL executes in a separate process
+with time and output budgets. The snapshot is a point-in-time copy, not a live view.
+See [read API contracts and examples](docs/read-api.md) for limits and retention.
+
 ### Replacing a decision
 
 A newer decision does not expire the old one — it supersedes it. **Replace…** on a decision picks another existing decision, shows both side by side, and asks for confirmation. The old body and deadline are kept and nothing is archived; the panel then shows **Current version** / **Replaced** as its own axis, next to **Expired**.
