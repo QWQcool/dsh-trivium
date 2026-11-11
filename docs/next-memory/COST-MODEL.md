@@ -52,4 +52,4 @@ node scripts/cost-normalize.mjs --out=docs/evidence/cost-normalized.json <ledger
 
 **峰价是上界，谷价是对外口径；两者之差正好 2 倍（flash 与 v4-pro 均如此），所以任何跨时段相加都必须先换算。**
 
-R1/R2 按 calls 逐请求重新计算，包含工具循环；旧汇总 618 混用了格数。新的只读重算结果见 [验收](R1-R2-RESULTS.md)，不覆盖旧账本。归一化谷价是比较口径，不代表实际账单。
+R1/R2 按 calls 逐请求重新计算，包含工具循环；旧汇总 618 混用了格数。新的只读重算结果见 [验收](../archive/next-memory/R1-R2-RESULTS.md)，不覆盖旧账本。归一化谷价是比较口径，不代表实际账单。

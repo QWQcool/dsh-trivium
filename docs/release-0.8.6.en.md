@@ -145,7 +145,7 @@ Unchanged switch values do **not** mean unchanged default behaviour: the identit
 
 `node scripts/run-all.mjs` → **88/88**; package dry-run passed. These are offline results for the final local closeout.
 
-Final commands and outcomes are recorded in [the 0.8.6 release gate](reviews/0.8.6-FINAL-RESULTS.md).
+Final commands and outcomes are recorded in [the 0.8.6 release gate](archive/reviews/0.8.6-FINAL-RESULTS.md).
 The seven scoring checks and three budget checks from `p88` now live in `p75` / `p74`; effective assertions
 are retained. The runner now discovers 88 scripts and `scripts/` contains 120 `.mjs` files.
 Targeted results: `p74` **39/39**, `p75` **51/51**, `p83` **14/14**.

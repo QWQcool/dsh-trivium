@@ -143,7 +143,7 @@ Trivium is a memory kernel, not a journal, calendar, or chat companion. It store
 
 The session map is limited to 400 estimated tokens. When chips or automatic recall are enabled, pins, recall and corrections share 300 estimated tokens per turn; tools can fetch full text on demand. These limits exclude tool schemas and responses, model answers and background extraction; they are not a cap on the total request or bill.
 
-In a test workspace, ask the agent in session A to remember a project decision and link it to an entity. Start session B in the **same** workspace, ask it to find that entity with `ctx_find`, then inspect the returned path and read the fact with `ctx_read`. The [reproducible example](docs/guide-example.md) explains the steps, cleanup, and expected limits. Actual extraction and model tool choice are not guaranteed.
+In a test workspace, ask the agent in session A to remember a project decision and link it to an entity. Start session B in the **same** workspace, ask it to find that entity with `ctx_find`, then inspect the returned path and read the fact with `ctx_read`. The [reproducible example](docs/archive/guide-example.md) explains the steps, cleanup, and expected limits. Actual extraction and model tool choice are not guaranteed.
 
 ### Under the hood
 
@@ -151,7 +151,7 @@ In a test workspace, ask the agent in session A to remember a project decision a
 - **Four tools only** — `ctx_find` / `ctx_read` / `ctx_remember` / `ctx_link`. Chips / session layer do not add a fifth.
 - **Injection via `agent.inject()`** — not the system prompt, so `persona.complete: true` cannot silently drop the map.
 - **Recall carries paths** — every hit says which node it came from and along which edge.
-- **Failure handling** — embedding failures fall back to keyword and graph retrieval; extraction failures can be queued for replay. Some storage failures still need attention; see the [known limits](docs/next-memory/WRITE-PROVENANCE-RESULTS.md).
+- **Failure handling** — embedding failures fall back to keyword and graph retrieval; extraction failures can be queued for replay. Some storage failures still need attention; see the [known limits](docs/archive/next-memory/WRITE-PROVENANCE-RESULTS.md).
 - **UI follows the host language** — Settings and the Chips (memory whitelist) tab switch with DSH `locale/change` (`zh` / `en`). Any other resolved host language — and a browser that names no registered language — falls to English, the same `FALLBACK_LOCALE` the host itself uses.
 - **First-turn map** — the short map is injected once per session. If `session-start` loses a race with the first model step, `pre-step` fills it in; it is not rewritten every step (prefix-cache friendly).
 
@@ -334,13 +334,13 @@ These results describe distinct test layers; they are not one overall accuracy s
 
 | Evidence | Result and boundary |
 |---|---|
-| Current source offline regression | **63/63 script groups** passed on 2026-10-30; see the [F-W04 / F-W05 results](docs/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md). These tests include post-0.8.2 source changes and are not fresh acceptance of the published npm package. |
+| Current source offline regression | **63/63 script groups** passed on 2026-10-30; see the [F-W04 / F-W05 results](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md). These tests include post-0.8.2 source changes and are not fresh acceptance of the published npm package. |
 | Published 0.8.2 regression | **50/50 script groups** reported in the [release record](docs/release-0.8.2.md); separate from the current-source run. |
-| Extraction baseline, one real model | Five synthetic scenarios × five repetitions: **25/25** facts matched and entered the store; **21/25** subsequent-session answers passed in that earlier baseline. See [A5](docs/next-memory/A5-WIDER-BASELINE-2026-10-30.md). |
-| Correction and negation, one real model | Two fixed synthetic scenarios each produced **10/10** correct new-session answers after fixes. Three negation setup runs hit a request cap, and some runs used agent-initiated writes; these are not a general automatic-extraction success rate. See [A10](docs/next-memory/A10-REGRESSION-N10-2026-10-30.md). |
-| Change record and recovery, current source | Loopback HTTP, real subprocess contention and browser component fixtures were tested; full visual and keyboard acceptance in the DSH host remains open. See [results and limits](docs/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md). |
+| Extraction baseline, one real model | Five synthetic scenarios × five repetitions: **25/25** facts matched and entered the store; **21/25** subsequent-session answers passed in that earlier baseline. See [A5](docs/archive/next-memory/A5-WIDER-BASELINE-2026-10-30.md). |
+| Correction and negation, one real model | Two fixed synthetic scenarios each produced **10/10** correct new-session answers after fixes. Three negation setup runs hit a request cap, and some runs used agent-initiated writes; these are not a general automatic-extraction success rate. See [A10](docs/archive/next-memory/A10-REGRESSION-N10-2026-10-30.md). |
+| Change record and recovery, current source | Loopback HTTP, real subprocess contention and browser component fixtures were tested; full visual and keyboard acceptance in the DSH host remains open. See [results and limits](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md). |
 
-The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/next-memory/POST-081-REVIEW.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
+The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/archive/next-memory/POST-081-REVIEW.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 
 ## Changelog
 

@@ -13,11 +13,15 @@
 ## 2. 版本与文档（打包前全部完成）
 
 - [ ] `npm version <x.y.z> --no-git-tag-version`，确认 `package.json` 与 `package-lock.json` 同步。
+- [ ] **四处版本声明一起改**（之前每次都漏一处）：`README.md` 横幅 + Release info、`README.zh-CN.md` 横幅 + 发布信息、
+  `docs/README.md` 发布状态表（含 tag）、`docs/next-memory/CURRENT-STATE.md` 的 `latest`。
 - [ ] `README.md` / `README.zh-CN.md`：
   - [ ] `## Release info` / `## 发布信息` 的包版本是新版本。
   - [ ] 更新说明（Changelog）顶部有新版本条目。
   - [ ] 新增的命令、参数、支持范围已经写进正文或排障章节。
+- [ ] `docs/release-<version>.md`（和 `.en.md`，如果上一版有英文）写成**回执**而不是计划：不出现"待发布/尚未发布"。
 - [ ] `docs/README.md` 的当前基线、`PLAN.md` 的内核／宿主与实际依赖一致；历史报告仍保留其原版本。
+- [ ] **`node scripts/smoke-p91.mjs` 必须通过**——它就是上面这些声明的自动检查，版本没同步会直接失败。
 - [ ] 确认 `package.json` 的 `files` 覆盖所有**文档承诺随包分发**的文件（尤其 `scripts/` 与 `bin` 目标）。
 - [ ] `bin` 目标带 shebang，`node <script> --help` 能跑。
 

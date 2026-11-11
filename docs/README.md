@@ -1,41 +1,36 @@
-# 文档入口与版本状态
+# 文档入口（维护者）
 
-> **动手前先读 [当前状态](next-memory/CURRENT-STATE.md)。** 那一页是单一入口：发布包与源码的差异、已经验过什么、哪些结论已被推翻、哪些实验别再做。
+> **只读一页的话，读 [当前状态](next-memory/CURRENT-STATE.md)。** 它回答：现在发布的是什么、源码多了什么、哪些结论已经被推翻。
 
-更新：2026-11-01。安装和日常使用见 [中文 README](../README.zh-CN.md) / [English README](../README.md)；本文面向维护者。历史报告里的“当前”“未发布”“下一步”以报告日期为准，不是今天的指令。
+安装和日常使用看 [中文 README](../README.zh-CN.md) / [English README](../README.md)。本页面向维护者，2026-11-11 起只保留**在用的**文档；历史材料统一在 [`archive/`](archive/README.md)。
 
-## 先分清发布包与源码
+## 发布状态
 
-| 范围 | 状态与证据 |
+| 范围 | 状态 |
 |---|---|
-| npm 发布包 | `dsh-trivium@0.8.7`（已发布，2026-11-10，tag `v0.8.7` 指向 `main` 的 `e50358e`）。上一版 `0.8.6` 是上下文管线（`c892c6d`），`0.8.5` 只做内核升级（`release/0.8.5` 的 `7b39e8d`） |
-| 版本边界 | 0.8.5 = 内核 `triviumdb@0.9.0` + `undefined` 写入适配 + 升级/回退演练；0.8.6 = 观测性事件评分（不删事件、不重排）、地图热度、增量注入与新轮次键、事实身份（模糊合并默认关、守卫默认执行）、批量导入与部分提交回执、新诊断、`MemoryWriter`、`scope`/`inherit`/Router（默认关、实验）；**0.8.7（已发布，2026-11-10）** = 替代改为提案（人工确认）+ 确认/拒绝/修订/撤销四类接口取锁 + 提案失败如实上报 + 三项诊断计数，见 [0.8.7 发布说明](release-0.8.7.md) 与 [最终验收记录](reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) |
-| 依赖与运行时 | `triviumdb@0.9.0-beta.3` 精确锁定；Node `^22.19.0 || >=24`；实际依赖以 package、lock 和安装环境为准 |
+| npm 发布包 | `dsh-trivium@0.8.7`（2026-11-10 发布，tag `v0.8.7` → `e50358e`） |
+| 内核 | `triviumdb@0.9.0`（0.8.5 引入，0.8.6/0.8.7 未再升级） |
+| 已验证宿主 | `@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-11 真机一轮；0.2.1-rc.4/rc.5 为历史基线） |
+| 源码领先发布包的部分 | 确认审计行、交互式编辑并入工作区锁；见 [0.8.7 报告](reviews/0.8.7-REPORT-2026-11-06.md) §九 |
 
-当前源码已补变更路由的回环 HTTP、工具及导入的多进程竞争、恢复队列和浏览器组件检查；范围与边界见 [F-W04 / F-W05 结果](next-memory/F-W04-F-W05-RESULTS-2026-10-30.md)。DSH 宿主完整视觉、键盘和真实模型质量验收仍未完成。历史结果中的“未发布、未合并”只描述当时；标签后的源码不在 `v0.8.2` 发布包中。
-
-## 按目的查找
+## 现在该看什么
 
 | 需要 | 文档 |
 |---|---|
-| 安装、配置、数据权限和日常使用 | [中文 README](../README.zh-CN.md) / [English README](../README.md) |
-| 可复现的跨会话记忆示例 | [离线演示与运行说明](guide-example.md) |
-| 产品边界和会话层契约 | [PLAN.md](../PLAN.md) / [PLAN-session-map.md](../PLAN-session-map.md) |
-| 发布内容与逐版回执 | [0.8.6](release-0.8.6.md)（[en](release-0.8.6.en.md)）、[0.8.4](release-0.8.4.md)、[0.8.3](release-0.8.3.md)、[0.8.2](release-0.8.2.md)、[0.8.1](release-0.8.1.md)、[0.8.0](release-0.8.0.md)、[0.7.1](release-0.7.1.md)；[发布检查清单](release-checklist.md) |
-| 当前源码变更和待验边界 | [F-W04 / F-W05 结果](next-memory/F-W04-F-W05-RESULTS-2026-10-30.md) / [历史 W1–W5](next-memory/WRITE-PROVENANCE-RESULTS.md) / [W6 单写者](next-memory/evidence-write-provenance/W6/README.md) |
-| 真实模型合成测试 | [5 场景基线 A5](next-memory/A5-WIDER-BASELINE-2026-10-30.md) / [改口、否定 A10](next-memory/A10-REGRESSION-N10-2026-10-30.md) / [工作报告及 A1–A10 索引](next-memory/WORK-REPORT-2026-10-30.md) |
-| 旧成本和对照实验的纠正 | [独立审查](next-memory/POST-081-REVIEW.md) / [R1–R2 修复](next-memory/R1-R2-RESULTS.md) / [历史证据清单](evidence/README.md) |
-| 审查与回交 | [审查清单](next-memory/REVIEW_CHECKLIST.md) / [回交模板](next-memory/RESULT_TEMPLATE.md) |
-| 历史 B–E 交接 | [归档入口](NEXT-IDE-PROMPT-0.7.1.md) / [B 结果](next-memory/B-RESULTS.md) / [C 结果](next-memory/C-RESULTS.md) |
+| 现在到哪一步、哪些结论作废 | [CURRENT-STATE](next-memory/CURRENT-STATE.md) |
+| 这一版发了什么 | [0.8.7 发布说明](release-0.8.7.md) / [English](release-0.8.7.en.md) |
+| 下一步做什么、为什么挂起 | [路线图与 Super Agent](next-memory/ROADMAP-AND-SUPERAGENT.md) |
+| 替代/确认的契约 | [SUPERSEDE-CONTRACT-OPTIONS](next-memory/SUPERSEDE-CONTRACT-OPTIONS.md) |
+| 事实去重的语料与基线 | [IDENTITY-CORPUS-2026-11-11](next-memory/IDENTITY-CORPUS-2026-11-11.md) |
+| 成本口径 | [COST-MODEL](next-memory/COST-MODEL.md) |
+| 复审与放行记录（0.8.7） | [报告](reviews/0.8.7-REPORT-2026-11-06.md) / [最终验收](reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) |
+| 原始证据（真机/并发/写入来源） | [evidence-write-provenance](next-memory/evidence-write-provenance/) |
+| 发版步骤 | [发布检查清单](release-checklist.md) |
+| 历史（2026-10 至 0.8.6 的计划、审计、失败记录） | [archive/](archive/README.md) |
 
-## 怎样理解测试数据
+## 维护规则
 
-离线测试、真实宿主配可控桩、真实模型、正式包消费和桌面 UI 是不同层次，不能互相替代。A5 的五个合成场景各重复五次，抽取进库 25/25、新会话回答 21/25；它是修复前的旧基线，不是当前产品的总体准确率。A10 的改口和否定各 10 次，新会话回答各 10/10；其中否定场景有 3/10 次准备阶段触发请求上限，且部分轮次由 agent 调用工具写入。它不等于自然抽取的通用成功率。
-
-旧 D0/C4 部分实验臂重复种植，D1 未保留真实注入历史和短地图，D2 的早期弱命中不是语义准确率；不要用这些数据宣称公平横评、真实会话固定省钱或质量等效。原始文件与负面结果保留供复核；完整性校验只验证清单中的字节，不验证实验设计，也不覆盖所有证据目录。
-
-## 历史材料与维护规则
-
-`next-memory/` 包含多个阶段的设计、回交、失败、验收及原始证据，而不仅是某一版本的“当前计划”。`IMPLEMENTATION_PLAN.md`、`FRONTEND.html` 是历史规格；`RESULT.md`、`REVIEW-2026-10-28.md` 与相应 JSON/复现保留早期失败；`R5`、`R7`、`R8` 保留各自的验证层级。`BASELINE.json`、`TOOL_SCHEMA_BASELINE.json`、`ACCEPTANCE_CASES.json` 为冻结参考，不改成当前源码快照。各类 `evidence*` 目录和版本发布回执保留原始身份。
-
-维护时在本页更新当前入口，不再新增并行的 START、HANDOFF 或 CURRENT 快照。过时计划可保留历史身份和后继链接，不能重写原始结果。默认抽取开启，远程模型可能产生网络流量和费用；芯片、自动召回、会话层、Git 旁路和远程 embedding 默认关闭。相同 `.tdb` 只支持一个读写进程；不要拿真实用户库做故障测试。
+1. **一个事实只写一遍**：版本号与发布状态只在上表、`README.md`、`README.zh-CN.md` 和 `CURRENT-STATE.md` 出现，改版本时四处一起改，`scripts/smoke-p91.mjs` 会检查。
+2. **新文档先落 `CURRENT-STATE` 或发布说明**；写完一次性的计划/结果，进 `archive/`，不要留在 `next-memory/` 顶层。
+3. **历史文档不改**：`archive/` 里的内容按当时日期理解，里面的"当前/未发布/下一步"不是今天的指令。
+4. **发布前跑** `node scripts/smoke-p91.mjs`，它会因为版本声明不一致而失败。
