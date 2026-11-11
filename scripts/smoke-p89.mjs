@@ -32,6 +32,7 @@ const store = await import('../lib/store.js');
 const extract = await import('../lib/extract.js');
 const review = await import('../lib/supersede-review.js');
 const lock = await import('../lib/workspace-lock.js');
+const changes = await import('../lib/change-log.js');
 
 let checks = 0;
 let failures = 0;
@@ -179,6 +180,19 @@ try {
     await check(() => assert.equal(db.get(pending.id).payload.review, undefined), 'confirming clears the proposal mark');
     await check(() => assert.equal(db.get(pending.id).payload.supersedeConfirmedVia, 'http'), 'the surface is recorded, not a claimed identity');
     await check(() => assert.equal(review.listSupersedeProposals(db).length, 0), 'a confirmed proposal leaves the queue');
+    await check(() => {
+      /*
+       * The edge carries an operationId and a timestamp, but neither says which
+       * surface confirmed it. The change log is where a reader looks, so the
+       * confirmation has to leave a row of its own (P2 follow-up).
+       */
+      // `cwd` in this file is the URL-encoded query value; the log lives on disk.
+      const log = changes.readChanges(ws);
+      const row = log.entries.find((entry) => entry.reason === 'supersede-confirmed' && entry.nodeId === pending.id);
+      assert.ok(row, `no supersede-confirmed row in ${JSON.stringify(log.entries.slice(-3))}`);
+      assert.equal(row.byId, oldId, 'the row names the retired fact');
+      assert.match(row.detail, /via/, 'the row says which surface confirmed it');
+    }, 'a confirmation leaves its own change-log row');
 
     await check(async () => {
       const res = await post(`/api/dsh-trivium/supersede-proposals/${pending.id}/confirm?cwd=${cwd}`, { targetId: oldId, etag: pending.etag });
