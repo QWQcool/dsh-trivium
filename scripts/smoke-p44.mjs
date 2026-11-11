@@ -1,11 +1,15 @@
 /**
- * p44 — an empty extraction answer is a failure, not "nothing to store".
+ * Empty answers: an extraction that returns nothing (p44) and an assistant turn
+ * that returns nothing (p68, merged here 2026-11-11).
  *
  * A-2 evidence (real host + real model): the extraction call is capped by
  * maxTokens and a reasoning model can spend the whole budget thinking, ending
  * with stop_reason=max_tokens and no answer text. That blank answer used to look
  * like `{"candidates":[]}` to the plugin: the window was consumed and the pending
  * buffer cleared, so the fact was lost with no failure signal.
+ *
+ * W11 (p68): the same shape on the reply side — a blank assistant message and a
+ * step that only called a tool must not be reported as the same thing.
  */
 import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync } from 'node:fs';
@@ -18,6 +22,7 @@ process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
 const store = await import('../lib/store.js');
 const extract = await import('../lib/extract.js');
 const { createExtractScheduler } = await import('../lib/extract-scheduler.js');
+const plugin = await import('../lib/index.js');
 
 let checks = 0;
 let failures = 0;
@@ -76,6 +81,27 @@ try {
   check(() => assert.equal(ok.applied.length, 1), 'a real answer is applied');
   const stored = db.allNodeIds().map((id) => String(db.get(id)?.payload?.text || '')).join('\n');
   check(() => assert.match(stored, /9443/), 'the fact is readable from the database');
+
+  /*
+   * p68: a blank assistant turn is recognised, a tool-only step is not. Both are
+   * "no text", but only one means the model answered nothing.
+   */
+  const assistant = (content) => ({ type: 'assistant/message', seq: 3, data: { turn: 1, step: 1, message: { role: 'assistant', content } } });
+  check(() => assert.equal(plugin.isEmptyAssistantAnswer(assistant([])), true), 'an empty content list is a blank answer');
+  check(() => assert.equal(plugin.isEmptyAssistantAnswer(assistant([{ type: 'text', text: '' }])), true), 'an empty text block is a blank answer');
+  check(() => assert.equal(plugin.isEmptyAssistantAnswer(assistant([{ type: 'text', text: '   \n ' }])), true), 'whitespace only is a blank answer');
+  check(() => assert.equal(plugin.isEmptyAssistantAnswer(assistant([{ type: 'text', text: 'B' }])), false), 'real text is not blank');
+  check(
+    () => assert.equal(plugin.isEmptyAssistantAnswer(assistant([{ type: 'tool_use', id: 't1', name: 'ctx_find', input: {} }])), false),
+    'a tool-only step is not a blank answer',
+  );
+  check(
+    () => assert.equal(
+      plugin.isEmptyAssistantAnswer(assistant([{ type: 'tool_use', id: 't1', name: 'ctx_find', input: {} }, { type: 'text', text: '' }])),
+      false,
+    ),
+    'a tool step that also carries an empty text block is still a tool step',
+  );
   store.closeAll();
 } finally {
   store.closeAll();
