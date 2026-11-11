@@ -238,11 +238,13 @@ The recall check is read-only: it does not write, does not run a tool, and never
 
 ### Querying while the host is running (source change, not yet released)
 
-The new read API borrows an already-open workspace: `POST /api/dsh-trivium/query?cwd=...`
-accepts bounded named queries for nodes, one-hop neighbors and orphan entities.
-It does not open another database handle or create an unopened workspace.
+Send `{"tql":"MATCH (n)-[:about]->(hub) RETURN n, hub","params":{},"limit":200}`
+to `POST /api/dsh-trivium/query?cwd=...` to query the host's open workspace directly.
+The endpoint accepts parameterized read TQL and returns native rows, columns and
+a truncation flag. Named queries for nodes, one-hop neighbors and orphan entities
+are available on the same endpoint.
 
-For arbitrary read TQL and external audits, capture an independent snapshot with
+For a repeatable audit or an offline reader, capture an independent snapshot with
 `POST /api/dsh-trivium/snapshots?cwd=...` and an empty JSON object. Query that
 snapshot by adding `snapshotId` to the query request, or run
 `dsh-trivium-query --snapshot <directory> --tql 'MATCH (n) RETURN n LIMIT 20'`.

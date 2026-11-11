@@ -47,8 +47,12 @@ try {
   check(result.status === 200 && JSON.stringify(result.body.rows).includes("Detached") && !JSON.stringify(result.body.rows).includes("AuthGateway"), "orphan query ignores workspace membership but respects business links");
   result = await request("/query", { kind: "nodes", type: "entity", limit: 1 });
   check(result.status === 200 && result.body.rows.length === 1 && result.body.truncated === true, "a result cap explicitly reports truncation");
+  result = await request("/query", { tql: "MATCH (n)-[:about]->(hub) RETURN n, hub", params: {}, limit: 200 });
+  check(result.status === 200 && result.body.ok && result.body.source === "live" && result.body.truncated === false
+    && result.body.rows.some((r) => r.n?.payload?.name === "Header" && r.hub?.payload?.name === "AuthGateway"),
+  "the original issue request runs on the live host and returns native node columns");
   result = await request("/query", { tql: "CREATE (n {name:'unsafe'})" });
-  check(result.status === 400, "arbitrary TQL is rejected on the live path");
+  check(result.status >= 400 && result.status < 500, "the live TQL endpoint rejects mutations");
   for (const workspace of [unopened, join(root, "unknown")]) {
     result = await request("/query", { kind: "nodes" }, workspace);
     check(result.status === 409 && result.body.code === "WORKSPACE_NOT_OPEN" && !existsSync(workspace), "an unopened workspace is rejected without creating it");
@@ -86,6 +90,9 @@ try {
   check(result.status === 200 && result.body.source === "snapshot" && result.body.rows.length === 0, "snapshot queries retain the captured source version after further writes");
   result = await request("/query", { kind: "nodes", name: "AfterSnapshot" });
   check(result.status === 200 && result.body.rows.length === 1, "the live path sees the newer fact");
+  result = await request("/query", { tql: "MATCH (n) WHERE n.name == $name RETURN n.name AS name", params: { name: "AfterSnapshot" } });
+  check(result.status === 200 && result.body.source === "live" && result.body.rows[0]?.name === "AfterSnapshot",
+    "parameterized live TQL sees the committed write after snapshot capture");
   result = await request("/query", { snapshotId: captured.snapshotId, tql: 'FIND {type: "entity"} RETURN * LIMIT 100', limit: 1 });
   check(result.status === 200 && result.body.rows.length === 1 && result.body.truncated === true, "isolated TQL explicitly caps output despite a larger native LIMIT");
   result = await request("/query", { snapshotId: "../outside", tql: "MATCH (n) RETURN n" });

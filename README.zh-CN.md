@@ -229,11 +229,12 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ### 宿主运行时查询（源码新增，尚未发布）
 
-新增读接口 `POST /api/dsh-trivium/query?cwd=...`，复用宿主已经打开的工作区，
-提供节点筛选、一跳邻居和孤立实体等有边界的查询。查询不会另开数据库，
-也不会因为收到一个路径就创建尚未打开的工作区。
+向 `POST /api/dsh-trivium/query?cwd=...` 发送
+`{"tql":"MATCH (n)-[:about]->(hub) RETURN n, hub","params":{},"limit":200}`
+即可直接查询宿主打开的实时库。接口支持参数化只读 TQL，返回原生行、列和截断标记；
+同一入口也提供节点筛选、一跳邻居和孤立实体查询。
 
-任意只读 TQL 与外部审计使用独立快照：向
+需要固定审计时点或离线读取时，可请求独立快照。向
 `POST /api/dsh-trivium/snapshots?cwd=...` 发送空 JSON 对象即可捕获。
 随后在查询请求中指定 `snapshotId`，或运行
 `dsh-trivium-query --snapshot <目录> --tql 'MATCH (n) RETURN n LIMIT 20'`。

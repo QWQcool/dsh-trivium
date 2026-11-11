@@ -17,6 +17,43 @@ existing loopback and write-request origin checks also apply to these endpoints.
 POST /api/dsh-trivium/query?cwd=<URL-encoded-workspace>
 Content-Type: application/json
 
+{"tql":"MATCH (n)-[:about]->(hub) RETURN n, hub","params":{},"limit":200}
+```
+
+The host runs read TQL against its current writer handle through a query-only,
+read-only Console session. Bind scalar parameters (strings, finite numbers,
+booleans or null) by name, for example
+`{"tql":"MATCH (n) WHERE n.name == $name RETURN n.id AS id","params":{"name":"AuthGateway"}}`.
+The native parser accepts supported read syntax, including joins, aggregation,
+sorting, paging and graph algorithms. Results carry `ok`, `source: "live"`,
+`kind: "tql"`, native `columns`, `rows`, the returned `rowCount` and `truncated`.
+Each call sees the state at execution time. Use a snapshot ID to pin a series of
+queries to a specific generation.
+
+The client row limit defaults to 200 and accepts 1–1000. For an eligible read,
+the native parser validates an outer page of up to `limit + 1` rows. The extra
+row establishes truncation. If wide rows exceed the encoded byte budget, the
+host can fetch a smaller page within the original deadline. It marks the returned
+prefix with `truncated: true` and `truncationReason: "response-byte-budget"`.
+Queries with existing pagination or plan inspection use their original TQL.
+Every successful response contains at most `limit` rows. The native working-set
+budget is 1000 rows for operators that enforce it.
+Wide rows include vectors when the query selects whole nodes. Project required
+properties in TQL to fit the response byte budget.
+
+Live TQL accepts `timeoutMs` from 1–50, default 25. The native engine checks
+its deadline cooperatively. The adapter also checks elapsed time before returning
+the result. Node executes the native call synchronously, so other host callbacks
+can wait during that interval. A deadline yields HTTP 408, an exhausted working
+budget yields 422, and an oversized encoded result yields 413. An explicit TQL
+`LIMIT` can override the engine's default row budget for some operators.
+
+### Named live queries
+
+```http
+POST /api/dsh-trivium/query?cwd=<URL-encoded-workspace>
+Content-Type: application/json
+
 {"kind":"nodes","type":"entity","limit":200}
 ```
 
@@ -40,11 +77,11 @@ is one of `about`, `decided`, `broke`, `fixed`. `orphanEntities` finds entities
 without a business edge in either direction; workspace/session bookkeeping
 edges do not prevent an entity from being reported as an orphan.
 
-Live requests accept no arbitrary TQL. Node IDs are positive safe integers on
+Named queries take a `kind` field. Node IDs are positive safe integers on
 input. Rows contain node summaries, with decimal-string IDs; they omit vectors.
 Success returns `ok`, `source: "live"`, `kind`, `rows`, `limit`, and `truncated`.
 The default result limit is 200, maximum 1000. A result limit is separate from
-execution work limits: a live workspace above 1000 nodes, or an exhausted graph
+execution work limits: a named query on a workspace above 1000 nodes, or an exhausted graph
 work budget, returns a budget error and should be audited through a snapshot.
 It never presents an incomplete orphan scan as a complete result.
 
@@ -111,7 +148,7 @@ that includes startup, verification and execution. Output is capped at 512 KiB;
 10000). A large result can exceed the native response budget before the output
 row cap is applied; that returns an explicit error instead of a partial success.
 Node and native memory budgets are not an OS process sandbox or a complete RSS
-limit. No user TQL executes on the host's event loop.
+limit. Snapshot TQL executes on the worker's event loop.
 
 TriviumDB 0.9.0 lets explicit TQL `LIMIT` override its default row budget. The
 separate process, native budgets and bounded output remain necessary; slicing
@@ -137,8 +174,9 @@ snapshot explicitly for concurrent checking. Help commands do not open a store.
 
 ## 中文速览
 
-- 在线查询复用宿主已有句柄，仅开放节点筛选、一跳邻居和孤立实体三类操作。
-  大库或复杂审计改用快照；查询不会为任意路径创建或修复库。
+- 发送 `tql`、`params` 和 `limit` 可以查询宿主已有句柄上的最新数据，支持引擎的只读查询语法。
+  返回行数默认 200、最多 1000。原生截止时间默认 25ms、最多 50ms，按检查点取消。
+  超时、工作集和响应字节超限均返回明确错误。节点、一跳邻居、孤立实体仍支持 `kind` 快捷查询。
 - 快照由宿主按需捕获并校验，目录在 `.dsh/read-snapshots/`；源库继续写入时，
   旧快照保持捕获时刻的事实。没有每次 flush 发布 manifest 或自动刷新机制。
 - 带 `snapshotId` 的 TQL 查询在独立进程中执行。任意 TQL 的工作量不会由
