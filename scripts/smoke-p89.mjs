@@ -249,6 +249,25 @@ try {
         assert.equal(res.status, 409);
         assert.equal(body.code, 'WORKSPACE_WRITE_BUSY');
       }, 'reject is refused while another process holds the workspace lock');
+
+      /*
+       * The same lock has to cover the older interactive edits: they mutate the
+       * same store, and the panel used to report success while another process
+       * held the writer.
+       */
+      await check(async () => {
+        const res = await post(`/api/dsh-trivium/nodes/${oldId}?cwd=${cwd}`, { name: '方案 A（改名）' });
+        const body = await res.json();
+        assert.equal(res.status, 409, JSON.stringify(body));
+        assert.equal(body.code, 'WORKSPACE_WRITE_BUSY');
+      }, 'editing a fact is refused while the workspace lock is held');
+
+      await check(async () => {
+        const res = await post(`/api/dsh-trivium/nodes/${oldId}/merge?cwd=${cwd}`, { dropId: newId });
+        const body = await res.json();
+        assert.equal(res.status, 409, JSON.stringify(body));
+        assert.equal(body.code, 'WORKSPACE_WRITE_BUSY');
+      }, 'merging two facts is refused while the workspace lock is held');
     } finally {
       held.release?.();
     }
