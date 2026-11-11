@@ -27,6 +27,7 @@
 | 复审与放行记录（0.8.7） | [报告](reviews/0.8.7-REPORT-2026-11-06.md) / [最终验收](reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) |
 | 原始证据（真机/并发/写入来源） | [evidence-write-provenance](next-memory/evidence-write-provenance/) |
 | 发版步骤 | [发布检查清单](release-checklist.md) |
+| 接手在线 TQL 与下一版 npm 发布准备 | [公司电脑交接稿及 Codex 提示词](NPM-RELEASE-HANDOFF-2026-11-12.zh-CN.md) |
 | 历史（2026-10 至 0.8.6 的计划、审计、失败记录） | [archive/](archive/README.md) |
 
 ## 维护规则

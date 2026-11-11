@@ -1,6 +1,8 @@
 # Issue #5: bounded live reads and independent read snapshots
 
-Status: implemented and locally verified, based on main `5c8f685`; not released.
+Historical plan and verification receipt for PR #6 (`aec511e`). The subsequent
+`9d7b96a` change adds parameterized read TQL on the live handle. See the
+[current API contract](../read-api.md) for the live and snapshot query behavior.
 
 ## Problem and scope
 
