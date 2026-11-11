@@ -88,3 +88,12 @@ npm pack --dry-run              → 见发布回执
 
 **没有 `supersedeMode:"auto"` 的改动**：想临时回到自动建边的旧行为，仍可在 `~/.dsh/trivium.json`
 里设置，但这不是推荐用法。
+
+## 发布回执（2026-11-11）
+
+- tag `v0.8.8` → **`e7e4f37`**；
+- npm `dsh-trivium@0.8.8`，`dist-tags.latest = 0.8.8`，发布于 `2026-11-11T09:39:34Z`，
+  shasum `454bf0d7ee16ebb2a3eeb18422c91761d45601ce`（与本地 `npm pack` 逐字节一致，274,344 bytes / 51 文件）；
+- GitHub Release：https://github.com/QWQcool/dsh-trivium/releases/tag/v0.8.8 ；
+- 发布后核对：包内 **43 个 `lib/*.js` 与本地同提交 sha256 全部一致**；包内 `README` 已是 0.8.8
+  （这一版先改版本再打包，不再有 0.8.7 那种"包内 README 落后一档"的情况）。
