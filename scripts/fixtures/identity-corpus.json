@@ -1,0 +1,431 @@
+{
+  "version": 1,
+  "createdAt": "2026-11-11",
+  "note": "P1 calibration corpus: real facts from this repository plus hand-written pairs. Labels are what a human would decide, not what the scorer says.",
+  "real": [
+    {
+      "id": 11,
+      "type": "entity",
+      "name": "DeepSeek_Harness 兜底启动端口",
+      "text": "DeepSeek_Harness 仓库的兜底启动端口是 3090，官方桌面端不占用 HTTP 端口。"
+    },
+    {
+      "id": 8,
+      "type": "preference",
+      "name": "",
+      "text": "演示口令：下一句回答开头必须是「芯片在线」。"
+    },
+    {
+      "id": 5,
+      "type": "decision",
+      "name": "dsh-trivium 卸载删除记忆行为",
+      "text": "dsh plugin remove 卸载 dsh-trivium 会删掉工作区 .dsh/trivium.tdb 和 ~/.dsh/trivium.json；用 add 升级不会清记忆。"
+    },
+    {
+      "id": 4,
+      "type": "entity",
+      "name": "dsh-trivium 记忆文件位置",
+      "text": "dsh-trivium 记忆存放在当前工作区 .dsh/trivium.tdb。"
+    },
+    {
+      "id": 3,
+      "type": "entity",
+      "name": "dsh-trivium 芯片与会话层默认关",
+      "text": "dsh-trivium 的芯片标签和会话层默认都是关，需在设置里打开并重启 dsh web 才生效。"
+    }
+  ],
+  "pairs": [
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "source": "real",
+      "a": {
+        "type": "decision",
+        "name": "DeepSeek_Harness 兜底启动端口",
+        "text": "DeepSeek_Harness 仓库的兜底启动端口是 3090，官方桌面端不占用 HTTP 端口。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "DeepSeek_Harness 兜底启动端口",
+        "text": "DeepSeek_Harness 的兜底启动端口是 3090；官方桌面端不占 HTTP 端口。"
+      }
+    },
+    {
+      "label": "same",
+      "why": "reorder",
+      "source": "real",
+      "a": {
+        "type": "decision",
+        "name": "DeepSeek_Harness 兜底启动端口",
+        "text": "DeepSeek_Harness 仓库的兜底启动端口是 3090，官方桌面端不占用 HTTP 端口。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "DeepSeek_Harness 兜底启动端口",
+        "text": "官方桌面端不占用 HTTP 端口，兜底启动端口是 3090。"
+      }
+    },
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "source": "real",
+      "a": {
+        "type": "decision",
+        "name": "dsh-trivium 芯片与会话层默认关",
+        "text": "dsh-trivium 的芯片标签和会话层默认都是关，需在设置里打开并重启 dsh web 才生效。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "dsh-trivium 芯片与会话层默认关",
+        "text": "芯片标签和会话层默认关闭，要在设置里打开并重启 dsh web 才生效。"
+      }
+    },
+    {
+      "label": "same",
+      "why": "synonym",
+      "source": "real",
+      "a": {
+        "type": "decision",
+        "name": "dsh-trivium 记忆文件位置",
+        "text": "dsh-trivium 记忆存放在当前工作区 .dsh/trivium.tdb。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "dsh-trivium 记忆文件位置",
+        "text": "记忆文件在当前工作区的 .dsh/trivium.tdb 里。"
+      }
+    },
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "source": "real",
+      "a": {
+        "id": 5,
+        "type": "decision",
+        "name": "dsh-trivium 卸载删除记忆行为",
+        "text": "dsh plugin remove 卸载 dsh-trivium 会删掉工作区 .dsh/trivium.tdb 和 ~/.dsh/trivium.json；用 add 升级不会清记忆。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "dsh-trivium 卸载删除记忆行为",
+        "text": "用 dsh plugin remove 卸载会删除工作区 .dsh/trivium.tdb 与 ~/.dsh/trivium.json；用 add 升级不影响记忆。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "source": "real",
+      "a": {
+        "type": "decision",
+        "name": "DeepSeek_Harness 兜底启动端口",
+        "text": "DeepSeek_Harness 仓库的兜底启动端口是 3090，官方桌面端不占用 HTTP 端口。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "DeepSeek_Harness 兜底启动端口",
+        "text": "DeepSeek_Harness 的兜底启动端口改成 3990。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "negation",
+      "source": "real",
+      "a": {
+        "type": "decision",
+        "name": "dsh-trivium 记忆文件位置",
+        "text": "dsh-trivium 记忆存放在当前工作区 .dsh/trivium.tdb。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "dsh-trivium 记忆文件位置",
+        "text": "dsh-trivium 记忆不再存放在当前工作区 .dsh/trivium.tdb。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "entity",
+      "source": "real",
+      "a": {
+        "type": "decision",
+        "name": "dsh-trivium 芯片与会话层默认关",
+        "text": "dsh-trivium 的芯片标签和会话层默认都是关，需在设置里打开并重启 dsh web 才生效。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "dsh-trivium 芯片与会话层默认关",
+        "text": "dsh-trivium 的芯片标签默认开启，会话层默认关闭。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "source": "real",
+      "a": {
+        "id": 8,
+        "type": "preference",
+        "name": "",
+        "text": "演示口令：下一句回答开头必须是「芯片在线」。"
+      },
+      "b": {
+        "type": "preference",
+        "name": "",
+        "text": "演示口令：下一句回答开头必须是「记忆在线」。"
+      }
+    },
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "发布窗口",
+        "text": "发布窗口固定在每周四晚上 22:00。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "发布窗口",
+        "text": "每周四晚上 22:00 是固定的发布窗口。"
+      }
+    },
+    {
+      "label": "same",
+      "why": "reorder",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "回滚预案",
+        "text": "回滚时先切流量再回退数据库，最后通知值班。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "回滚预案",
+        "text": "先切流量，再回退数据库，最后通知值班。"
+      }
+    },
+    {
+      "label": "same",
+      "why": "synonym",
+      "source": "synthetic",
+      "a": {
+        "type": "preference",
+        "name": "包管理",
+        "text": "这个仓库依赖用 npm 安装，不要用 yarn。"
+      },
+      "b": {
+        "type": "preference",
+        "name": "包管理",
+        "text": "本项目用 npm 装依赖，不用 yarn。"
+      }
+    },
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "source": "synthetic",
+      "a": {
+        "type": "preference",
+        "name": "测试框架",
+        "text": "单测统一用 node:test，不引入 jest。"
+      },
+      "b": {
+        "type": "preference",
+        "name": "测试框架",
+        "text": "单元测试用 node:test 写，不需要 jest。"
+      }
+    },
+    {
+      "label": "same",
+      "why": "number-format",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "抽取超时",
+        "text": "抽取调用的超时时间是 30 秒。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "抽取超时",
+        "text": "抽取调用超时设为 30s。"
+      }
+    },
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "日志保留",
+        "text": "操作日志保留 30 天，超期自动清理。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "日志保留",
+        "text": "操作日志存 30 天，过期会被清掉。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "发布窗口",
+        "text": "发布窗口固定在每周四晚上 22:00。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "发布窗口",
+        "text": "发布窗口固定在每周五晚上 22:00。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "抽取超时",
+        "text": "抽取调用的超时时间是 30 秒。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "抽取超时",
+        "text": "抽取调用的超时时间改成 45 秒。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "negation",
+      "source": "synthetic",
+      "a": {
+        "type": "preference",
+        "name": "自动发布",
+        "text": "允许自动发布到生产环境。"
+      },
+      "b": {
+        "type": "preference",
+        "name": "自动发布",
+        "text": "不允许自动发布到生产环境。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "negation",
+      "source": "synthetic",
+      "a": {
+        "type": "preference",
+        "name": "包管理",
+        "text": "这个仓库依赖用 npm 安装。"
+      },
+      "b": {
+        "type": "preference",
+        "name": "包管理",
+        "text": "这个仓库依赖不用 npm 安装。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "entity",
+      "source": "synthetic",
+      "a": {
+        "type": "preference",
+        "name": "环境依赖",
+        "text": "生产环境用 npm 安装依赖。"
+      },
+      "b": {
+        "type": "preference",
+        "name": "环境依赖",
+        "text": "测试环境用 pnpm 安装依赖。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "entity",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "数据库",
+        "text": "主库用 MySQL 8.0。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "数据库",
+        "text": "主库改用 PostgreSQL 16。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "重试间隔",
+        "text": "失败重试间隔是 1.5 秒。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "重试间隔",
+        "text": "失败重试间隔是 5.1 秒。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "保留期",
+        "text": "备份保留十六天。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "保留期",
+        "text": "备份保留六十天。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "correction",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "值班安排",
+        "text": "这周的值班由张三负责。"
+      },
+      "b": {
+        "type": "decision",
+        "name": "值班安排",
+        "text": "这周的值班改由李四负责。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "type",
+      "source": "synthetic",
+      "a": {
+        "type": "decision",
+        "name": "发布窗口",
+        "text": "发布窗口固定在每周四晚上 22:00。"
+      },
+      "b": {
+        "type": "preference",
+        "name": "发布窗口",
+        "text": "发布窗口固定在每周四晚上 22:00。"
+      }
+    },
+    {
+      "label": "different",
+      "why": "entity-type",
+      "source": "synthetic",
+      "a": {
+        "type": "entity",
+        "name": "发布窗口",
+        "text": "发布窗口"
+      },
+      "b": {
+        "type": "entity",
+        "name": "发布窗口",
+        "text": "发布窗口固定在周四"
+      }
+    }
+  ]
+}

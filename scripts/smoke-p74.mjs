@@ -361,6 +361,20 @@ function namedOf(text) {
   await check(() => assert.ok(existsSync(join(cwd, '.dsh', 'trivium-usage.json'))), 'the sidecar lives beside the database');
   await check(() => assert.equal(DIM, 1536), 'DIM is untouched');
 
+  /*
+   * B3: deleting a fact must drop its heat entry. The counter is derived, so it
+   * is not part of the delete transaction; if it survived, a node that later
+   * reused the id would inherit the dead one's count.
+   */
+  await check(() => {
+    const gone = store.insertNode(db, { type: 'preference', name: 'temp', text: '临时事实，用来验证删除后热度不残留。' });
+    usage.noteNodeUse(cwd, [gone]);
+    assert.ok(usage.usageFor(cwd)[String(gone)], 'fixture: the reference was recorded');
+    store.deleteNode(db, gone);
+    assert.equal(usage.usageFor(cwd)[String(gone)], undefined, 'the deleted id is gone from the sidecar');
+    assert.equal(usage.usageFor(cwd)[String(hotEntityA)]?.count > 0, true, 'other entries are untouched');
+  }, 'deleting a node drops its heat entry');
+
   // Robustness: no workspace -> no throw, no write.
   await check(() => assert.equal(usage.noteNodeUse('', [1]).written, false), 'a reference without a workspace is ignored');
   await check(() => assert.deepEqual(usage.usageFor(''), {}), 'reading heat without a workspace returns nothing');

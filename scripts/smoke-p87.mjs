@@ -10,7 +10,7 @@
  * bodies too short to tell apart.
  */
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -202,6 +202,34 @@ try {
   } finally {
     store.closeAll();
   }
+  /*
+   * P1 calibration corpus: real facts from this repository plus hand-written
+   * pairs, labelled the way a person would label them.
+   *
+   * The hard gate is **zero false merges**, because merging retires a fact with
+   * no revision chain. Recall is only a floor: at 2026-11-11 the lexical scorer
+   * reaches 7/11 and the remaining misses are true paraphrases that character
+   * n-grams cannot see. Closing those needs the (optional, off-by-default)
+   * embedding path, not a lower threshold — at 0.5 the same corpus produces
+   * seven false merges.
+   */
+  await check(() => {
+    const corpus = JSON.parse(readFileSync(new URL('./fixtures/identity-corpus.json', import.meta.url), 'utf8'));
+    const positives = corpus.pairs.filter((row) => row.label === 'same');
+    const negatives = corpus.pairs.filter((row) => row.label !== 'same');
+    const merged = (row) => identity.sameFact(row.a, row.b).same;
+    const falseMerges = negatives.filter(merged);
+    const hits = positives.filter(merged).length;
+    assert.equal(
+      falseMerges.length,
+      0,
+      `false merges: ${falseMerges.map((row) => `${row.why} :: ${row.b.text}`).join(' | ')}`,
+    );
+    assert.ok(
+      hits / positives.length >= 0.6,
+      `recall ${hits}/${positives.length} fell below the recorded 7/11 baseline`,
+    );
+  }, 'the calibration corpus produces no false merges and recall does not regress');
 } finally {
   rmSync(root, { recursive: true, force: true });
 }
