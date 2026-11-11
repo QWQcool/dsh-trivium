@@ -149,6 +149,7 @@ function element(type, props, key) {
 
 function loadBundle(width = 0) {
   let registration = null;
+  const settingsWrites = [];
   const listeners = new Map();
   const win = {
     __ModuleLoader__: { load(def) { registration = def; } },
@@ -166,7 +167,12 @@ function loadBundle(width = 0) {
   };
   const sandbox = {
     window: win,
-    fetch: async (url) => ({ ok: true, status: 200, json: async () => fixtureFetch(url) }),
+    fetch: async (url, options = {}) => {
+      if (String(url).includes('/api/dsh-trivium/settings') && options.body) {
+        settingsWrites.push(JSON.parse(options.body));
+      }
+      return { ok: true, status: 200, json: async () => fixtureFetch(url) };
+    },
     setTimeout,
     clearTimeout,
     console,
@@ -178,7 +184,7 @@ function loadBundle(width = 0) {
   vm.createContext(sandbox);
   vm.runInContext(SOURCE, sandbox, { filename: 'lib/client.js' });
   if (!registration) throw new Error('bundle did not register');
-  return { registration, win };
+  return { registration, win, settingsWrites };
 }
 
 async function settle() {
@@ -194,7 +200,7 @@ async function mount(width = 0) {
       Button: function Button(props) { return element('button', props); },
     },
   };
-  const { registration, win } = loadBundle(width);
+  const { registration, win, settingsWrites } = loadBundle(width);
   const loaded = registration.factory((spec) => {
     if (Object.prototype.hasOwnProperty.call(table, spec)) return table[spec];
     throw new Error('unexpected require(' + spec + ')');
@@ -230,7 +236,7 @@ async function mount(width = 0) {
     await settle();
     tree = render();
   }
-  return { render, tree: () => tree, win };
+  return { render, tree: () => tree, win, settingsWrites };
 }
 
 function walk(node, out = { nodes: [], text: [] }) {
@@ -354,6 +360,33 @@ try {
   const memory = clickPage('memory');
   await check(() => assert(textOf(memory).includes('发布窗口')), 'returning to memory did not restore the list');
   await check(() => assert(pageTabs(memory).length === 4), 'the tab strip lost a tab');
+
+  // Exercise the real input handlers and POST payloads. In particular, a blank
+  // draft is the default allowance; only an explicit zero disables injection.
+  const budgetApp = await mount();
+  pageTabs(budgetApp.tree()).find((n) => labelOf(n) === LABELS.settings).props.onClick();
+  const budgetInput = (tree) => walk(tree).nodes.find(
+    (n) => n.type === 'input' && n.props.type === 'number' && n.props.max === 2000,
+  );
+  for (const [value, expected] of [['', 300], ['0', 0], ['900', 900], ['600.9', 600], ['9999', 2000]]) {
+    await check(async () => {
+      budgetInput(budgetApp.render()).props.onChange({ target: { value } });
+      budgetInput(budgetApp.render()).props.onBlur({ target: { value } });
+      await settle();
+      const posted = budgetApp.settingsWrites.at(-1);
+      assert(posted?.turnTokenBudget === expected, `POST budget ${posted?.turnTokenBudget}, expected ${expected}`);
+      assert(budgetInput(budgetApp.render()).props.value === String(expected), 'the displayed budget disagrees with the saved value');
+    }, `budget blur ${JSON.stringify(value)} saves and displays ${expected}`);
+  }
+  await check(async () => {
+    budgetInput(budgetApp.render()).props.onChange({ target: { value: '' } });
+    // Invoke the separate Save action without relying on the blur handler.
+    const save = walk(budgetApp.render()).nodes.find((n) => textOf(n) === '保存设置' && typeof n.props?.onClick === 'function');
+    assert(!!save, 'Save settings action is missing');
+    await save.props.onClick();
+    await settle();
+    assert(budgetApp.settingsWrites.at(-1)?.turnTokenBudget === 300, 'Save settings converted the blank draft to zero');
+  }, 'Save settings also treats a blank budget as the default');
 
   /*
    * Layout bands. The suite above runs with no window width (narrow, inline).
