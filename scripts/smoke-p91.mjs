@@ -86,7 +86,7 @@ check(() => {
     const lines = read(file).split('\n');
     const stale = lines.filter((line) => new RegExp(escaping).test(line)
       && /未发布|尚未发布|not published/i.test(line)
-      && !/没有未发布|无未发布|不含未发布|no unpublished|0 个未发布/i.test(line));
+      && !/没有未发布|无未发布|不含未发布|no unpublished|0 个未发布|未发布的代码|unpublished code/i.test(line));
     assert.deepEqual(stale, [], `${file} calls ${version} unpublished: ${stale[0] || ''}`);
   }
 }, 'the current version is not described as unpublished');
