@@ -77,7 +77,7 @@ try {
   await check(() => assert.match(map, /方案 A/), 'the decision being replaced stays eligible for the map');
   await check(() => assert.match(map, /方案 B/), 'the proposed correction is eligible too');
 
-  const listed = review.listSupersedeProposals(db);
+  const listed = review.listSupersedeProposals(db, { cwd: ws });
   await check(() => assert.equal(listed.length, 1), 'one proposal is waiting');
   await check(() => assert.deepEqual(listed[0].targets.map((t) => t.id), [oldId]), 'the proposal names the target');
   await check(() => assert.equal(listed[0].targets[0].live, true), 'the target is reported as still live');
@@ -112,7 +112,7 @@ try {
 
   // 3. HTTP: pending proposal, stale ETag, confirm, second confirm
   const second = await propose(db, ws, 'p89b', '别用方案 A，改用方案 B 了。', '别用方案 A，改用方案 B 了。', 'm3');
-  const pending = review.listSupersedeProposals(db)[0];
+  const pending = review.listSupersedeProposals(db, { cwd: ws })[0];
   await check(() => assert.ok(pending), `the second attempt proposes as well (${JSON.stringify(second.superseded)})`);
 
   const { registerMemoryApi } = await import('../lib/server.js');
@@ -154,7 +154,7 @@ try {
      * would be retired changes what "confirm this replacement" means, and the
      * proposal node itself did not move.
      */
-    const beforeTargetEdit = review.listSupersedeProposals(db)[0].etag;
+    const beforeTargetEdit = review.listSupersedeProposals(db, { cwd: ws })[0].etag;
     store.updateNode(db, oldId, { text: '本次上线按方案 A 执行（补充：周五 22:00 全量）。' });
     await check(async () => {
       const res = await post(`/api/dsh-trivium/supersede-proposals/${pending.id}/confirm?cwd=${cwd}`, {
@@ -169,7 +169,7 @@ try {
     await check(async () => {
       const res = await post(`/api/dsh-trivium/supersede-proposals/${pending.id}/confirm?cwd=${cwd}`, {
         targetId: oldId,
-        etag: review.listSupersedeProposals(db)[0].etag,
+        etag: review.listSupersedeProposals(db, { cwd: ws })[0].etag,
       });
       const body = await res.json();
       assert.equal(res.status, 200, JSON.stringify(body));
@@ -218,7 +218,7 @@ try {
     const dbRej = await store.openWorkspaceDb(wsRej);
     store.insertNode(dbRej, { type: 'decision', name: '方案 A', text: '主库用 MySQL。' });
     await propose(dbRej, wsRej, 'p89rej', '不再使用方案 A，改用方案 B。', '不再使用方案 A，改用方案 B。', 'm-rej');
-    const rejProposal = review.listSupersedeProposals(dbRej)[0];
+    const rejProposal = review.listSupersedeProposals(dbRej, { cwd: wsRej })[0];
     const rejCwd = encodeURIComponent(wsRej);
     await check(async () => {
       const res = await post(`/api/dsh-trivium/supersede-proposals/${rejProposal.id}/reject?cwd=${rejCwd}`, {});
@@ -235,7 +235,7 @@ try {
     }, 'a stale rejection is refused');
     await check(async () => {
       const res = await post(`/api/dsh-trivium/supersede-proposals/${rejProposal.id}/reject?cwd=${rejCwd}`, {
-        etag: review.listSupersedeProposals(dbRej)[0].etag,
+        etag: review.listSupersedeProposals(dbRej, { cwd: wsRej })[0].etag,
       });
       const body = await res.json();
       assert.equal(res.status, 200, JSON.stringify(body));
@@ -250,6 +250,31 @@ try {
       assert.equal(row.nodeId, rejProposal.id);
       assert.match(row.detail, /kept both/);
     }, 'a rejection leaves its own change-log row');
+
+    /*
+     * F88-01 (server half): two libraries can hold a proposal with the same id,
+     * the same text and therefore the same node-level ETag. A token minted for one
+     * must be refused by the other — otherwise a stale page could act on a
+     * proposal the user never saw, in a library they did not select.
+     */
+    const wsX = join(root, 'ws-x');
+    const wsY = join(root, 'ws-y');
+    const dbX = await store.openWorkspaceDb(wsX);
+    const dbY = await store.openWorkspaceDb(wsY);
+    for (const [dbX_, wsX_, name] of [[dbX, wsX, 'p89x'], [dbY, wsY, 'p89y']]) {
+      store.insertNode(dbX_, { type: 'decision', name: '方案 A', text: '本次上线按方案 A 执行' });
+      await propose(dbX_, wsX_, name, '不再使用方案 A，改用方案 B。', '不再使用方案 A，改用方案 B。');
+    }
+    const xEtag = review.listSupersedeProposals(dbX, { cwd: wsX })[0].etag;
+    const yProposal = review.listSupersedeProposals(dbY, { cwd: wsY })[0];
+    await check(async () => {
+      assert.equal(xEtag, review.listSupersedeProposals(dbY, { cwd: wsX })[0].etag, 'fixture: the two rows are identical');
+      const res = await post(`/api/dsh-trivium/supersede-proposals/${yProposal.id}/reject?cwd=${encodeURIComponent(wsY)}`, { etag: xEtag });
+      const body = await res.json();
+      assert.equal(res.status, 409, JSON.stringify(body));
+      assert.equal(body.code, 'proposal-stale');
+      assert.equal(review.listSupersedeProposals(dbY, { cwd: wsY }).length, 1, 'the other library is untouched');
+    }, 'a token minted for one library is refused by another');
 
     // 4. the write routes take the workspace lock (F87-02)
     const held = lock.acquireWorkspaceLock(ws);
@@ -341,7 +366,7 @@ try {
   const a1 = store.insertNode(db2, { type: 'decision', name: '方案 A', text: '本次上线按方案 A 执行' });
   const a2 = store.insertNode(db2, { type: 'decision', name: '方案 A', text: '回滚预案也按方案 A 执行' });
   await propose(db2, ws2, 'p89c', '不再使用方案 A，改用方案 B。', '不再使用方案 A，改用方案 B。');
-  const ambiguous = review.listSupersedeProposals(db2);
+  const ambiguous = review.listSupersedeProposals(db2, { cwd: ws2 });
   await check(() => assert.equal(ambiguous.length, 1), 'an ambiguous replacement is still one proposal');
   await check(
     () => assert.deepEqual(ambiguous[0].targets.map((t) => t.id).sort(), [a1, a2].sort()),
