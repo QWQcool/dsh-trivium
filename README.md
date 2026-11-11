@@ -12,9 +12,9 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.8.7**. By default, when extraction proposes replacing a decision, the old decision stays current until you confirm a candidate in **Activity**. [English release notes](docs/release-0.8.7.en.md)
+The published npm package is **0.8.8**. By default, when extraction proposes replacing a decision, the old decision stays current until you confirm a candidate in **Activity**; this release makes that safe across workspace switches, gives confirmations and declines their own audit rows, and puts the proposals card (with each candidate's body) at the top of the page. [English release notes](docs/release-0.8.8.en.md)
 
-> **Back up the whole `.dsh` directory (with the plugin closed) before upgrading from 0.8.4 or earlier** (0.8.5, 0.8.6 and 0.8.7 already ship `0.9.0`, so there is nothing to convert if you are on any of them).
+> **Back up the whole `.dsh` directory (with the plugin closed) before upgrading from 0.8.4 or earlier** (0.8.5 through 0.8.8 already ship `0.9.0`, so there is nothing to convert if you are on any of them).
 > 0.9.0 raises the library format to **v10** and the previous kernel cannot read it
 > (`TDB_UNSUPPORTED_DATABASE_VERSION`), so **downgrading the plugin is not a rollback** — restoring a backup is,
 > and a restore returns the library to the moment of the backup, losing everything written after it.
@@ -343,6 +343,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 
 ## Changelog
 
+- [0.8.8](docs/release-0.8.8.md): a proposal can no longer cross workspaces (late responses are dropped by sequence *and* workspace, and the proposal token names its library server-side), confirmations and declines get their own audit rows, node edit / merge / archive / delete join the workspace lock, a partial import reports what landed instead of "rejected", and the Activity page leads with the proposals card and each candidate's body.
 - [0.8.7](docs/release-0.8.7.md): replacements become proposals that only a person confirms (ETag-checked; a replay of the same event cannot undo a rejection), the confirm/reject/supersede/revoke routes take the workspace lock, a proposal that could not be stored keeps its window, and expiry dates accept unambiguous Chinese, slash/dot and English-month forms. Edges 0.8.6 created automatically stay as they are.
 - [0.8.6](docs/release-0.8.6.md): observational event scoring (no event removal or reordering) before the model call, map heat, incremental map injection with a per-turn key, stuck/recovered diagnostics, a visible deferred-write queue, batched writes, fact identity (off by default). Inheritance and the router ship behind an off switch.
 - [0.8.5](docs/release-0.8.5.md) (kernel only): `triviumdb@0.9.0`, the `undefined` write adaptation, and the upgrade/rollback drill. No pipeline behaviour change.
@@ -382,7 +383,7 @@ Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then res
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Published package: `0.8.7` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Published package: `0.8.8` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.2-rc.1` (launched and exercised on 2026-11-10: panel renders, `/status` and the proposal routes answer, zero console errors; earlier releases were verified on 0.2.1-rc.4/rc.5). The peer range also admits the 0.1.x lines.
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

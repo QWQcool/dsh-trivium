@@ -8,7 +8,7 @@
 
 | 范围 | 状态 |
 |---|---|
-| npm 发布包 | `dsh-trivium@0.8.7`（2026-11-10 发布，tag `v0.8.7` → `e50358e`） |
+| npm 发布包 | `dsh-trivium@0.8.8`（tag `v0.8.8` 指向本次发布提交；上一版 `0.8.7` → `e50358e`） |
 | 内核 | `triviumdb@0.9.0`（0.8.5 引入，0.8.6/0.8.7 未再升级） |
 | 已验证宿主 | `@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-11 真机一轮；0.2.1-rc.4/rc.5 为历史基线） |
 | 标签之后的源码改动 | [当前状态 §1](next-memory/CURRENT-STATE.md#1-发布包与源码) |
@@ -18,7 +18,7 @@
 | 需要 | 文档 |
 |---|---|
 | 现在到哪一步、哪些结论作废 | [CURRENT-STATE](next-memory/CURRENT-STATE.md) |
-| 这一版发了什么 | [0.8.7 发布说明](release-0.8.7.md) / [English](release-0.8.7.en.md) |
+| 这一版发了什么 | [0.8.8 发布说明](release-0.8.8.md) / [English](release-0.8.8.en.md) |
 | 下一步做什么、为什么挂起 | [待办与前置条件](next-memory/CURRENT-STATE.md#4-待办与前置条件) · [Super Agent 原始路线图](next-memory/ROADMAP-AND-SUPERAGENT.md) |
 | 面板改进、发包顺序和本轮复核 | [记忆面板交互稿](design/MEMORY-PANEL-2026-11-11.html)（下载后用浏览器打开） |
 | 替代提案如何确认或拒绝 | [现行契约](release-0.8.7.md) · [11 月 2 日的方案比较](next-memory/SUPERSEDE-CONTRACT-OPTIONS.md) |
