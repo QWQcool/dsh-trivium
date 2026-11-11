@@ -3,16 +3,15 @@
 > **动手前先读这一页。** 历史文档里的"当前 / 未发布 / 下一步"以它自己的日期为准，不是今天的指令。
 > 本页只写"现在是什么状态、什么已经验过、什么别再重复"，细节仍在各自文档里。
 
-更新：**2026-11-11**。发布基线 **0.8.7**（tag `v0.8.7`）；`main` 比标签多 **11 个提交**，其中**有未发布的代码**：
-确认审计行、交互式编辑并入工作区锁、脚本合并、事实身份语料与热度清理。这些攒在下一版（0.8.8）里，尚未定版本号。
+更新于 **2026-11-11**。
 
 ## 1. 发布包与源码
 
 | 范围 | 状态 |
 |---|---|
-| npm 发布包 | **`latest = 0.8.7`**（tag `v0.8.7`，2026-11-09；放行记录见 [`0.8.7-FINAL-RESULTS`](../reviews/0.8.7-FINAL-RESULTS-2026-11-10.md)、发布说明 `docs/release-0.8.7.md`） |
+| npm 发布包 | **`latest = 0.8.7`**，2026-11-10 发布，tag `v0.8.7` → `e50358e`。[发布回执](../reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) |
 | 发布分支 | `release/0.8.4`、`release/0.8.5` 保留为当时的发布快照；两个 store 修复已用 parity 提交搬回 main（`8801fd6`、`4b0ad42`），**不需要合并** |
-| 当前 main | 比 `v0.8.7` 多 **11 个提交**：4 个文档/整理，7 个代码或测试（确认审计行、编辑/合并/归档/删除并入工作区锁、脚本 119→118、身份语料闸门、热度删除清理）。**这些还没有发布** |
+| 当前 main | 运行时新增确认审计行、将编辑/合并/归档/删除纳入工作区锁，删除节点时清理热度。开发侧已加入身份语料回归、合并脚本并增加发布文档检查（p91）。 |
 | 依赖 pin | `package.json` 要 `triviumdb@0.9.0`（正式版） |
 | 本机实际内核 | 两台机器都已是 **`0.9.0`**（Administrator 机 2026-11-05 用 `npm install` 对齐，之前是 0.8.11）。跑测前仍建议自己查一次 |
 | 宿主基线 | `@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证）；README 里的 `0.2.1-rc.4` 已同步改掉 |
@@ -41,34 +40,20 @@
 | "公开 API 造不出坏链" | **错**。`ctx_remember` 的 `link_label` 原本可写 `supersedes`，已修 |
 | 查询复杂度 n^1.75 | **不成立**，阶段测量不支持该拟合 |
 | "必须加 `session/disposed` flush" | **不需要**，已有 `savePending` + `pending-replay` |
-| "自动建 `supersedes` 边是安全的" | **不再成立**。四轮复验证明"模型给出目标 ≠ 用户授权"，0.8.7 改为**提案制**（默认 `supersedeMode=propose`），硬边只能由人确认。见 §4 第 1 条 |
+| "自动建 `supersedes` 边是安全的" | 默认 `supersedeMode=propose`。抽取只提议，旧决定和新决定都保有进入短地图的资格。面板确认需要候选 ID 和 ETag，保持原样也要校验 ETag。[现行提案接口](../release-0.8.7.md#由人确认且确认前会重新核对) |
 
-## 4. 真正待办（按可解锁程度排序）
+## 4. 待办与前置条件
 
-1. ~~更正不建修订链~~ **0.8.3 已修（C 路线），0.8.7 又改成更保守的 P 路线**：
-   自动路径**不再写硬边**，只标 `review=supersede-proposed` 并带候选 id；旧决策仍是 head，短地图故意同时显示两边；
-   确认走 `POST /nodes/<old>/supersede`，拒绝走 `POST /supersede-proposals/<id>/reject`，列表 `GET /supersede-proposals`；
-   配置 `supersedeMode=auto` 可回到 0.8.6 行为（9 个旧守卫脚本 pin 了 auto）。
-   **刻意没给模型加 `supersedes_id` 参数** —— 这是 0.8.7 报告里最需要复审表态的取舍（见 §2.3）。
-   以下是修复前的原始记录：真机空库首轮两轮对话只落成 1 个 decision 节点、`supersededCount=0`、`supersedes` 边 `[]`，
-   抽取走 merge 分支；证据 `.tmp/r3/evidence-clean-run-20261101-172142/`（仅本地，已不在用户工作区）。
-2. **R3 第三片（同质量净费用）** 前置未满足：第二片要在真实宿主复跑通过（S3 长尾已于 11-01 复测通过，但需补 S2 的边级验证）。
-3. **B站 E1-B**：依赖对方扩展点，我们单方面交付不了。
-4. **REFERENCE 判分通道**：A5 剩 4/5，判分对"先否定后纠正"过严，缺人工语义复核。
-5. **0.8.7 报告里 5 项"需要决策才能做"的事**（B/C 批按授权跳过的）：逐条列在
-   [`0.8.7-REPORT`](../reviews/0.8.7-REPORT-2026-11-06.md) 三、四两节（B 收尾遗留 / C 技术债），做之前需要拍板，不要默认开做。
-5. ~~内核版本按机器核对~~ **两台机器都已是 `0.9.0` 正式版**：办公机 2026-11-04（见 §11），
-   Administrator 机 2026-11-05 用 `npm install` 对齐（此前 0.8.11）。以后仍按机器自查，别信本页。
-6. ~~后续方向与 Super-agent 适配计划~~ **阶段 0 已落地 6/6**（B1/B2/B3/B4/B5 + 作用域）；见 §8 与 `ROADMAP-AND-SUPERAGENT.md`。
-   **阶段 1 也已跑通**：并发实测、只读继承、Router 原型、批处理、待补写可见、三 Worker 验收（见 §10）。
-   剩下的都不是"再写代码"能解锁的：Router 常驻化要宿主形态，B6 要你拍板。
-7. ~~发布 0.8.4 需要先决策~~ **已发布**：走"只发前端"，分支 `release/0.8.4`，记录见 §9。
-8. ~~发 0.8.5 前要补两次真机验证~~ **已补**（`S1/PRE-0.8.5-2026-11-04`）：
-   ① `stuck{kind:"lock-stale"} → recovered{afterMs:35154}` 在真机成对出现，且是**跨会话**配对（靠变更记录 seed）；
-   ② `full/147` 查明是**工作区级诊断 + 多会话覆盖**造成的读法歧义，不是缺陷；但 `lastMapInjection` 不带 session 仍是口径缺陷。
-   仍未验证：`extract-timeout`（30 秒真实挂起）与 `replay-timeout` 两条分支。
-9. **阶段 1 的开关已落地**（`scopeInheritance`，默认关，见 §10）：关掉时 `readInheritedMap` 返回 `disabled`、
-   `startRouter` 抛 `SCOPE_DISABLED`，且**在打开句柄之前**就拒绝。开它需要改 `~/.dsh/trivium.json`。
+| 事项 | 下一步 |
+|---|---|
+| 下一包 | 先处理 F88-01 切库后可能操作旧提案的问题，再补保持原样的审计行和外部导入部分提交回执。[复现、交互稿与放行顺序](../design/MEMORY-PANEL-2026-11-11.html#order) |
+| P1 语义去重 | 等可用 embedding 端点，再用同一组正反例复测。[身份语料与阈值结果](IDENTITY-CORPUS-2026-11-11.md) |
+| P3 Router 常驻化 | 只读继承和 Router 原型已跑通，`scopeInheritance` 默认关。宿主提供 Router/Worker 接口后再做常驻集成。[只读继承](evidence-write-provenance/S1/INHERIT-READ-2026-11-03/README.md) · [三 Worker 结果](evidence-write-provenance/S1/THREE-WORKERS-2026-11-03/README.md) |
+| R3 同质量净费用 | 第二片 S3 长尾于 11 月 1 日复测通过，第三片仍需真实宿主的 S2 边级证据。 |
+| B 站 E1-B 与 REFERENCE | 前者等对方扩展点。后者的 A5 为 4/5，需人工复判“先否定后纠正”的回答。 |
+| 恢复诊断 | 已观察到跨会话的过期锁恢复。真实宿主的 `extract-timeout` 和 `replay-timeout` 仍缺实测记录。[宿主记录与边界](evidence-write-provenance/S1/PRE-0.8.5-2026-11-04/README.md) |
+
+其他 B/C 批遗留决策及修订过程见 [0.8.7 复审报告](../reviews/0.8.7-REPORT-2026-11-06.md)。
 
 ## 5. 别再重复做的实验
 
@@ -80,7 +65,7 @@
 | C3 三臂（无记忆 / 图+工具 / 纯文本） | 旧结论已降级，重跑前先读 `COST-QUALITY-RESULTS` 的修正口径 |
 | 用 Trivium 面板工作区下拉做隔离 | 实测**只切视图**：默认库 13→14，面板选的库 1→1 |
 | 用会话「选择工作区」做隔离 | 实测未改变写入目标，会话 cwd 固定 `Documents/deepseek-harness/default-workspace` |
-| 重做 B1/B2/B3/B5 或"作用域抽象" | 阶段 0 已完成（§8.1）；要改就改证据里写明的已知边界，不要从头再来 |
+| 重做 B1/B2/B3/B5 或"作用域抽象" | 阶段 0 已完成，具体边界见[阶段 0 证据](evidence-write-provenance/S0/)。 |
 | 重做设置页四页化/命令面板 | 已在 0.8.4 发布（`release/0.8.4`）；只修实机缺陷，不要重新排版 |
 | 按"每个会话都重发全量地图"估算 B3 收益 | 0.8.3 本来就只注入一次；B3 的对手是假想的每轮全量，对真实基线是"多几十 token 换新鲜度" |
 | 重跑 0.8.6 放行验收 | 已放行并发布（`0.8.6-FINAL-RESULTS`）；再跑只是重复付费，除非代码有实质改动 |
@@ -88,25 +73,15 @@
 
 ## 6. 真机实验的环境与方法（省下重新摸索的时间）
 
-- Node 用桌面版自带运行时：`…\DeepSeek Harness\resources\runtime\primary-runtime\dependencies\node\bin\node.exe`（24.21.0）；系统 Node 只有 22，宿主起不来。
+- 先用 `node -v` 核对当前运行时与宿主的 engines。11 月 1 日的走查使用了桌面版自带的 Node 24.21.0。
 - 宿主：`node node_modules/@deepseek-ai/dsh/lib/bin.js web --no-open --port <p>`，日志里会打印 `?token=` 的 URL。
-- 截图：本机只有 Chromium 二进制、没有 playwright 包，用零依赖 CDP 脚本（`.tmp/r3/cdp-shot.cjs`）。Chrome 必须加 `--no-sandbox`；`/json/list` 比 `/json/new` 可靠。
-- **工作区隔离**：换 `DSH_HOME` 不换工作区 —— 默认工作区在 `Documents/deepseek-harness/default-workspace`，要干净库只能备份后移走 `.dsh`（2026-11-01 已做一次，备份在 `.tmp/r3/backup-20261101-172142/`，md5 已核对）。
+- 11 月 1 日的截图使用 Chromium 和本地 CDP 脚本（`.tmp/r3/cdp-shot.cjs`）。
+- **工作区隔离**取决于会话实际使用的 cwd。使用隔离的 `DSH_HOME` 后仍应核对写入目标。11 月 1 日默认工作区备份在 `.tmp/r3/backup-20261101-172142/`，当时已核对 md5。
 - 抓包顺序：先 `GET /api/dsh-trivium/status?cwd=<ws>` 看 `lastExtract`，再拷贝 `.dsh` 用只读脚本查节点与边（不要对宿主正在用的库双开）。
 
-## 7. 文档地图（其余都是历史）
+## 7. 文档入口
 
-| 需要 | 看哪里 |
-|---|---|
-| 发布内容 | **`docs/release-0.8.7.md`**（中）/ `release-0.8.7.en.md`（英）；0.8.6 见 `release-0.8.6.md`，内核升级见 `release-0.8.5.md` |
-| 放行与复审 | `docs/reviews/0.8.7-REPORT-2026-11-06.md`（A–C 批 + F87 返修）、`docs/reviews/0.8.7-FINAL-RESULTS-2026-11-10.md`（含 0.2.2 真机）；0.8.6 的放行记录在 `docs/archive/reviews/` |
-| 现在该做什么 | `docs/next-memory/ROADMAP-AND-SUPERAGENT.md`、`docs/README.md` |
-| 替代 / 确认的契约 | `docs/next-memory/SUPERSEDE-CONTRACT-OPTIONS.md` |
-| 事实去重（语料与基线） | `docs/next-memory/IDENTITY-CORPUS-2026-11-11.md` |
-| 成本口径 | `docs/next-memory/COST-MODEL.md` |
-| 原始证据（真机/并发/写入来源） | `docs/next-memory/evidence-write-provenance/` |
-| 设置页重构 | `docs/design/SETTINGS-PAGE-SPLIT-2026-11-03.md`、`docs/design/SETTINGS-REDESIGN-HANDOFF.md` |
-| 历史（0.8.3 之前、A/B/C/D 实验、旧审计） | `docs/archive/`（入口 `docs/archive/README.md`） |
+按任务查找发布说明、设计稿、路线图和原始证据，见[维护者索引](../README.md)。
 
 ## 8. 历史版本记录
 

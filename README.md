@@ -12,7 +12,7 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.8.7** ([release notes](docs/release-0.8.7.md)): **a replacement is now a proposal until a person confirms it.** Extraction records the intent (`review: supersede-proposed` plus the candidate ids) and the old decision stays current; the edge is written only through `POST /supersede-proposals/<id>/confirm`, which re-checks the proposal and its ETag inside the workspace lock. A same-event replay cannot undo a rejection, a proposal that could not be stored keeps its window for replay, and the four write routes (confirm/reject/supersede/revoke) take the workspace lock. Expiry parsing accepts Chinese, slash/dot and English-month dates and refuses locale-dependent `11/20/2026`. Edges that 0.8.6 created automatically stay as they are. **The kernel does not change** (`triviumdb@0.9.0`, shipped in [0.8.5](docs/release-0.8.5.md)). See the [documentation index](docs/README.md) for verification status.
+The published npm package is **0.8.7**. By default, when extraction proposes replacing a decision, the old decision stays current until you confirm a candidate in **Activity**. [English release notes](docs/release-0.8.7.en.md)
 
 > **Back up the whole `.dsh` directory (with the plugin closed) before upgrading from 0.8.4 or earlier** (0.8.5, 0.8.6 and 0.8.7 already ship `0.9.0`, so there is nothing to convert if you are on any of them).
 > 0.9.0 raises the library format to **v10** and the previous kernel cannot read it
@@ -106,7 +106,7 @@ The plugin loads inside the `dsh web` process. It does not open its own port or 
 | `~/.dsh/trivium.json` | read/write | Settings and chip pins; may contain an embedding API key you typed |
 | `.dsh/trivium-pending.json` | read/write | Local queue when extract fails |
 | `.dsh/consumer-preferences/` | optional | 0.8.2 preference bindings, snapshots and generated persona copies; retained after uninstall |
-| `.dsh/trivium-changes.jsonl` | current source only | Local bounded change record; post-0.8.2, retained after uninstall |
+| `.dsh/trivium-changes.jsonl` | written as needed | Local change history, retained after uninstall |
 | Model extraction | on | When the host exposes a model service, extraction sends a bounded conversation excerpt to the current session's provider/model through DSH. A remote provider means network traffic and possible model charges. Without that service, extraction uses local rules |
 | Remote embeddings | off | When enabled, node text and search queries are sent to the configured embedding URL. Keyword and graph retrieval work without it |
 | Update check | manual | **Check for updates** fetches npm package metadata, without the conversation |
@@ -334,11 +334,10 @@ These results describe distinct test layers; they are not one overall accuracy s
 
 | Evidence | Result and boundary |
 |---|---|
-| Current source offline regression | **63/63 script groups** passed on 2026-10-30; see the [F-W04 / F-W05 results](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md). These tests include post-0.8.2 source changes and are not fresh acceptance of the published npm package. |
-| Published 0.8.2 regression | **50/50 script groups** reported in the [release record](docs/release-0.8.2.md); separate from the current-source run. |
+| Offline regression | Run `node scripts/run-all.mjs`. The [current source results](docs/next-memory/CURRENT-STATE.md) and the [0.8.7 release acceptance record](docs/reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) identify the revisions tested. |
 | Extraction baseline, one real model | Five synthetic scenarios × five repetitions: **25/25** facts matched and entered the store; **21/25** subsequent-session answers passed in that earlier baseline. See [A5](docs/archive/next-memory/A5-WIDER-BASELINE-2026-10-30.md). |
 | Correction and negation, one real model | Two fixed synthetic scenarios each produced **10/10** correct new-session answers after fixes. Three negation setup runs hit a request cap, and some runs used agent-initiated writes; these are not a general automatic-extraction success rate. See [A10](docs/archive/next-memory/A10-REGRESSION-N10-2026-10-30.md). |
-| Change record and recovery, current source | Loopback HTTP, real subprocess contention and browser component fixtures were tested; full visual and keyboard acceptance in the DSH host remains open. See [results and limits](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md). |
+| Change record and recovery | The October 30 run covered loopback HTTP, contention between processes, and browser component fixtures. [Results and limits](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md) |
 
 The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/archive/next-memory/POST-081-REVIEW.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 

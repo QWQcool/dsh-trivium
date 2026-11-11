@@ -8,7 +8,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 > **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
 >
-> 当前 npm 发布版是 **0.8.7**（[发布说明](docs/release-0.8.7.md)）：**替代变成提案**——抽取只记录意图（`review: supersede-proposed` + 候选 id），旧决策仍是当前版本；硬边只由 `POST /supersede-proposals/<id>/confirm` 写入，服务端会在写锁内重查提案与 ETag。同一事件重放不能撤销人工拒绝；提案写不进去时窗口保留、下次重放补齐；确认/拒绝/修订/撤销四类接口都取工作区锁。日期解析接受中文、斜杠/点号与英文月份写法，拒绝依赖地区的 `11/20/2026`。0.8.6 自动建出的边保持原样。**本版不动内核**（仍是 `triviumdb@0.9.0`，那一步已在 [0.8.5](docs/release-0.8.5.md) 单独发过）。
+> 当前 npm 发布版是 **0.8.7**。默认设置下，抽取发现改口时会提出替代建议，原决定继续生效，直到你在「运行记录」里确认一个候选。[发布说明](docs/release-0.8.7.md)
 >
 > **从 ≤0.8.4 升级到 0.8.7 前请备份整个 `.dsh` 目录（插件关闭状态下）**；已经在 0.8.5 / 0.8.6 / 0.8.7 上则无需再转换，内核同为 0.9.0。 0.9.0 把库格式升到 **v10**，旧内核读不了
 > （`TDB_UNSUPPORTED_DATABASE_VERSION`），所以**降级插件不是回退**，恢复备份才是；而恢复备份会回到备份时刻，
@@ -103,7 +103,7 @@ dsh plugin --profile web remove dsh-trivium
 | `~/.dsh/trivium.json` | 读写 | 设置和芯片钉选；可含你手填的 embedding API key |
 | `.dsh/trivium-pending.json` | 读写 | 抽取失败时的本地队列 |
 | `.dsh/consumer-preferences/` | 按需读写 | 授权绑定、偏好快照及人设副本；可能包含已批准的记忆，卸载后保留 |
-| `.dsh/trivium-changes.jsonl` | 当前源码按需写入 | 尚未发布的记忆变更记录；卸载后保留 |
+| `.dsh/trivium-changes.jsonl` | 按需写入 | 本地记忆变更记录，卸载后保留 |
 | 模型抽取 | 开 | 宿主模型服务可用时，通过 DSH 把限长的对话片段交给当前会话选用的 provider/model；远程模型意味着联网和可能的模型费用。没有模型服务时使用本地规则 |
 | 远程 embedding | 关 | 开启后，节点正文和查询文本会发送到配置的 embedding URL。不开也可使用关键词和图检索 |
 | 检查更新 | 手动触发 | 请求 npm 包元数据，不发送对话 |
@@ -337,8 +337,8 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 | 验证 | 结果与范围 |
 |---|---|
-| 离线回归 | 当前源码 **63/63 脚本组通过**，命令与范围见 [F-W04 / F-W05 结果](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md)。这是源码回归，不是模型准确率或 npm 包验收。 |
-| 变更记录与恢复 | 已验证回环 HTTP、真实子进程竞争和浏览器组件；DSH 宿主完整视觉、键盘验收仍待补。范围与限制见[结果](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md)。 |
+| 离线回归 | 运行 `node scripts/run-all.mjs`。[当前源码结果](docs/next-memory/CURRENT-STATE.md)和 [0.8.7 放行记录](docs/reviews/0.8.7-FINAL-RESULTS-2026-11-10.md)分别注明了验证基线。 |
+| 变更记录与恢复 | 10 月 30 日验证了回环 HTTP、真实子进程竞争和浏览器组件。[结果与适用范围](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md) |
 | 小样本真实模型 | [A5 基线](docs/archive/next-memory/A5-WIDER-BASELINE-2026-10-30.md)使用单一模型、5 类合成场景各 5 次：候选和入库各 25/25，新会话答对 21/25；这是修复前的历史基线。后续 [A10](docs/archive/next-memory/A10-REGRESSION-N10-2026-10-30.md) 两个固定场景各 10 次新会话回答均为 10/10，但否定场景有 3/10 次准备阶段触发请求上限，部分运行由 agent 主动写入。不同批次不能合并当作通用准确率。 |
 | 历史证据清单 | `node scripts/verify-evidence.mjs` 校验历史 manifest 中 9 个文件的大小与哈希；它不验证实验设计，也不覆盖全部新证据。 |
 

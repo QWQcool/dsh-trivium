@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>记忆面板改进稿 · dsh-trivium</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f8fafb;
+      --surface: #fff;
+      --ink: #202f3b;
+      --muted: #526371;
+      --line: #cfdae0;
+      --stage: #e5edf1;
+      --dot: #becfd6;
+      --teal: #075d62;
+      --teal-text: #115c5e;
+      --wash: #e6f3ef;
+      --warn: #795019;
+      --warn-wash: #fff4dc;
+      --shade: #edf1f4;
+      --mono: "IBM Plex Mono", Consolas, monospace;
+      --body: "Instrument Sans", "Segoe UI", "Microsoft YaHei UI", "PingFang SC", sans-serif;
+      font-family: var(--body);
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    :root[data-tone="dark"] {
+      color-scheme: dark;
+      --paper: #182229;
+      --surface: #202e36;
+      --ink: #e7eff1;
+      --muted: #b1c2ca;
+      --line: #42555d;
+      --stage: #25353f;
+      --dot: #415661;
+      --teal: #98dbce;
+      --teal-text: #a6e5d8;
+      --wash: #263f40;
+      --warn: #f0c980;
+      --warn-wash: #40372a;
+      --shade: #2a3942;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; }
+    button, input, select { font: inherit; color: inherit; }
+    button, select, summary { cursor: pointer; }
+    button, input, select { border-radius: 6px; }
+    button { border: 1px solid var(--line); background: var(--surface); }
+    button:hover:not(:disabled), summary:hover, a:hover { color: var(--teal-text); }
+    button:disabled { cursor: default; opacity: .55; }
+    :focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+    a { color: var(--teal-text); text-underline-offset: 3px; }
+    [hidden] { display: none !important; }
+    h1, h2, h3, h4, p, ol, ul, dl, dd, blockquote { margin: 0; }
+    code, kbd, .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    code { font-size: .93em; overflow-wrap: anywhere; }
+    .wrap { width: min(1120px, calc(100% - 64px)); margin-inline: auto; }
+    .mast { background: var(--surface); border-bottom: 1px solid var(--line); }
+    .mast-inner, .brand, .mast nav, .edition, .stage-tools, .stage-head, .panel-top, .hrow, .actions { display: flex; align-items: center; }
+    .mast-inner { min-height: 64px; gap: 24px; }
+    .brand { gap: 11px; font: 650 23px/1 "Geist", var(--body); letter-spacing: -1px; color: var(--ink); text-decoration: none; }
+    .mark { display: inline-block; width: 27px; height: 27px; position: relative; color: var(--teal); flex: none; }
+    .mark i { position: absolute; left: 3px; width: 21px; height: 3px; background: currentColor; transform: rotate(-28deg); }
+    .mark i::before, .mark i::after { content: ""; position: absolute; top: -2px; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .mark i::before { left: -1px; } .mark i::after { right: -1px; }
+    .mark i:first-child { top: 8px; } .mark i:last-child { top: 18px; }
+    .mast nav { gap: 23px; margin-left: auto; }
+    .mast nav a { font-size: 13px; color: var(--muted); text-decoration: none; }
+    .mast nav a:hover { color: var(--teal); text-decoration: underline; }
+    .tool { padding: 5px 10px; font-size: 12px; background: transparent; }
+    .intro { padding: 35px 0 24px; display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+    h1 { font-size: clamp(31px, 4vw, 48px); line-height: 1.22; letter-spacing: -.05em; font-weight: 720; }
+    .intro p { color: var(--muted); margin-top: 9px; font-size: 15px; }
+    .edition { flex-direction: column; align-items: end; gap: 2px; color: var(--muted); white-space: nowrap; font-size: 12px; }
+    .edition strong { font-family: var(--mono); font-size: 14px; color: var(--ink); }
+    .workbench { display: grid; grid-template-columns: minmax(465px, 1.38fr) minmax(295px, .86fr); align-items: start; gap: clamp(24px, 4.5vw, 64px); }
+    .stage { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--stage); }
+    .stage-head { min-height: 42px; padding: 6px 16px; justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--line); }
+    .stage-head strong { font-size: 13px; }
+    .stage-head small { padding-left: 8px; color: var(--muted); font-size: 11px; }
+    .stage-tools { gap: 7px; }
+    .stage-tools button { background: var(--surface); font-size: 11px; padding: 4px 8px; }
+    .mat { padding: 23px 14px; background-image: radial-gradient(var(--dot) .8px, transparent .9px); background-size: 13px 13px; }
+    .panel { width: min(100%, 420px); margin: 0 auto; background: var(--surface); border: 1px solid var(--line); border-radius: 11px; box-shadow: 0 7px 22px #142c3c10; font-size: 13px; line-height: 1.55; }
+    .panel-top { justify-content: space-between; gap: 8px; padding: 14px 17px 10px; }
+    .panel-top strong { font-size: 18px; letter-spacing: -.03em; }
+    .scope { display: inline-flex; gap: 5px; align-items: center; color: var(--muted); font-size: 11px; }
+    .scope select { padding: 3px 2px 3px 5px; background: var(--paper); border: 1px solid var(--line); font-size: 12px; }
+    .tabs { display: grid; grid-template-columns: repeat(4,1fr); padding: 0 12px; gap: 2px; border-bottom: 1px solid var(--line); }
+    .tabs button { min-height: 36px; padding: 4px 0; border: 0; border-radius: 0; border-bottom: 2px solid transparent; font-size: 13px; color: var(--muted); }
+    .tabs button[aria-selected="true"] { border-bottom-color: var(--teal); color: var(--teal); font-weight: 700; }
+    .pane { padding: 15px 17px 17px; }
+    .hrow { gap: 8px; justify-content: space-between; }
+    .pane h2 { font-size: 17px; line-height: 1.45; letter-spacing: -.02em; }
+    .pane h3 { font-size: 14px; }
+    .small, .muted { color: var(--muted); }
+    .small { font-size: 12px; }
+    .count { font-size: 12px; color: var(--muted); }
+    .proposal { margin-top: 10px; }
+    .new-fact { padding: 11px 13px; border-radius: 9px; background: var(--wash); border-left: 3px solid var(--teal); }
+    .fact-label { display: flex; gap: 7px; align-items: center; color: var(--teal-text); font-size: 11px; font-weight: 650; }
+    .identifier { font: 11px/1.5 var(--mono); color: var(--muted); }
+    .new-fact .identifier { color: var(--teal-text); }
+    .new-fact strong { display: block; font-size: 14px; margin: 4px 0 1px; }
+    .quote { margin-top: 6px; font-size: 12px; color: var(--muted); }
+    .quote summary { width: fit-content; }
+    .quote blockquote { margin-top: 4px; padding-left: 8px; border-left: 2px solid var(--line); }
+    fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+    .choices { position: relative; padding-left: 15px; margin-top: 10px; }
+    .choices::before { content: ""; position: absolute; left: 2px; top: 5px; bottom: 27px; border-left: 1px dashed var(--line); }
+    .choices legend { padding: 0; color: var(--muted); font-size: 12px; }
+    .candidate { position: relative; display: flex; gap: 8px; align-items: start; padding: 8px 9px; margin-top: 5px; border: 1px solid var(--line); border-radius: 7px; cursor: pointer; }
+    .candidate::before { position: absolute; content: ""; left: -14px; top: 17px; width: 12px; height: 1px; background: var(--line); }
+    .candidate:has(:checked) { border-color: var(--teal); background: var(--wash); }
+    .candidate input { margin: 4px 0 0; accent-color: var(--teal); }
+    .candidate strong { font-size: 12px; margin-right: 5px; }
+    .candidate .excerpt { display: block; color: var(--muted); font-size: 12px; }
+    .actions { flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .btn { min-height: 32px; padding: 5px 11px; font-size: 12px; font-weight: 620; }
+    .btn.primary { background: var(--teal); border-color: var(--teal); color: var(--surface); }
+    .btn.primary:hover:not(:disabled) { color: var(--surface); filter: brightness(1.09); }
+    .actions .btn:disabled { opacity: 1; color: var(--muted); background: var(--shade); border-color: var(--line); }
+    .section-break { border-top: 1px solid var(--line); margin-top: 15px; padding-top: 12px; }
+    .log { list-style: none; padding: 0; margin-top: 5px; }
+    .log li { display: grid; grid-template-columns: 39px minmax(0,1fr); gap: 7px; padding: 5px 0; }
+    .log time { color: var(--muted); font: 11px/1.8 var(--mono); }
+    .log strong { display: block; font-size: 12px; } .log span { font-size: 12px; color: var(--muted); }
+    .disclose { border-top: 1px solid var(--line); padding-top: 9px; margin-top: 8px; }
+    .disclose summary { font-size: 12px; color: var(--muted); }
+    .disclose p, .disclose dl { margin-top: 6px; }
+    .notice { margin-top: 10px; padding: 13px; border-radius: 8px; color: var(--teal-text); background: var(--wash); }
+    .notice.warn { background: var(--warn-wash); color: var(--warn); border-left: 3px solid var(--warn); }
+    .notice h3 { color: inherit; margin-bottom: 5px; }
+    .notice p + p { margin-top: 5px; }
+    .notice .btn { margin-top: 10px; color: var(--ink); }
+    .search { margin: 10px 0 6px; width: 100%; min-height: 35px; padding: 5px 10px; border: 1px solid var(--line); background: var(--paper); }
+    .memory-row { border-top: 1px solid var(--line); padding: 8px 0; }
+    .memory-row summary { font-weight: 630; }
+    .memory-row p { padding: 5px 0 0 14px; }
+    .memory-row summary span { font-weight: 400; margin-left: 5px; }
+    .memory-row summary .excerpt { display: block; margin-left: 15px; padding-top: 2px; color: var(--muted); font-size: 12px; }
+    .facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 12px; }
+    .facts dt { color: var(--muted); }
+    .guide { padding: 3px 0; }
+    .guide h2, .document h2 { font-size: 22px; line-height: 1.4; letter-spacing: -.03em; }
+    .guide > p { margin: 7px 0 15px; color: var(--muted); font-size: 14px; }
+    .scene { width: 100%; display: grid; grid-template-columns: 40px minmax(0,1fr) 16px; align-items: center; gap: 11px; padding: 11px 13px; text-align: left; border-radius: 9px; margin-bottom: 7px; }
+    .scene[aria-pressed="true"] { border-color: var(--teal); background: var(--wash); }
+    .scene strong, .scene small { display: block; }
+    .scene strong { font-size: 15px; } .scene small { font-size: 12px; color: var(--muted); }
+    .scene .mono { width: 36px; padding: 5px 0; border: 1px solid var(--line); border-radius: 5px; color: var(--teal-text); text-align: center; font-size: 13px; }
+    .scene .arrow { color: var(--teal-text); }
+    .guide-note { margin-top: 23px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .guide-note h3 { font-size: 15px; }
+    .guide-note p { margin-top: 6px; font-size: 13px; color: var(--muted); }
+    .guide-note a { font-size: 12px; }
+    .readout { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0; }
+    .readout button { padding: 4px 10px; font-size: 12px; }
+    .readout button[aria-pressed="true"] { color: var(--teal-text); background: var(--wash); border-color: var(--teal); }
+    .document { margin-top: 38px; padding-top: 23px; border-top: 1px solid var(--line); }
+    .document > header { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px 20px; margin-bottom: 14px; }
+    .document > header p, .doc-note { font-size: 13px; color: var(--muted); }
+    .steps { padding: 0; list-style: none; counter-reset: steps; }
+    .steps li { display: grid; grid-template-columns: 26px minmax(140px,.48fr) minmax(0,1.52fr); gap: 16px; align-items: baseline; padding: 13px 0; border-top: 1px solid var(--line); counter-increment: steps; font-size: 14px; }
+    .steps li::before { content: counter(steps, decimal-leading-zero); font: 12px var(--mono); color: var(--teal-text); }
+    .steps p { color: var(--muted); }
+    .reference { border-top: 1px solid var(--line); padding: 12px 0; }
+    .reference summary { font-size: 15px; font-weight: 640; width: fit-content; }
+    .reference p { max-width: 83ch; margin: 8px 0 1px; color: var(--muted); font-size: 14px; }
+    .reference ul { padding-left: 22px; font-size: 14px; color: var(--muted); }
+    .reference li { margin-top: 6px; }
+    footer { margin: 25px 0 35px; font-size: 12px; color: var(--muted); }
+    @media (max-width: 840px) {
+      .workbench { grid-template-columns: minmax(0,1fr) minmax(215px,.62fr); gap: 20px; }
+      .wrap { width: calc(100% - 32px); } .mat { padding: 12px 9px; }
+      .scene { grid-template-columns: minmax(0,1fr) 12px; } .scene .mono { display: none; }
+    }
+    @media (max-width: 670px) {
+      .wrap { width: calc(100% - 28px); }
+      .mast-inner { min-height: 53px; gap: 10px; } .mast nav { gap: 12px; }
+      .mast nav a, .mast button { font-size: 11px; } .brand { font-size: 20px; gap: 6px; }
+      .intro { display: block; padding: 23px 0 17px; } .intro p { margin-top: 5px; }
+      .edition { flex-direction: row; align-items: baseline; gap: 8px; margin-top: 8px; }
+      .edition strong { font-size: 12px; } .workbench { display: block; }
+      .stage { border-radius: 10px; } .stage-head { padding-inline: 8px; }
+      .guide { margin-top: 21px; } .scene { grid-template-columns: 40px minmax(0,1fr) 16px; }
+      .scene .mono { display: inline; } .guide-note { margin-top: 15px; }
+      .steps li { grid-template-columns: 22px 1fr; gap: 3px 10px; }
+      .steps p { grid-column: 2; } .document { margin-top: 26px; }
+    }
+    @media (max-width: 395px) {
+      .wrap { width: calc(100% - 18px); } .mat { padding: 5px; }
+      .pane, .panel-top { padding-inline: 12px; } .stage-head small { padding-left: 3px; }
+      .mast nav { gap: 8px; } .mast-inner { gap: 6px; }
+    }
+    @media print {
+      :root { color-scheme: light; }
+      .mast nav, .tool, .stage-tools { display: none; }
+      .wrap { width: 100%; } .workbench { display: block; }
+      .mat { background: none; } .panel { box-shadow: none; } .guide { margin-top: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="mast">
+    <div class="wrap mast-inner">
+      <a class="brand" href="#preview" aria-label="Trivium 面板预览"><span class="mark" aria-hidden="true"><i></i><i></i></span>Trivium</a>
+      <nav aria-label="评审目录"><a href="#preview">交互稿</a><a href="#order">开工顺序</a><a href="#evidence">复核记录</a></nav>
+      <button class="tool" id="tone" type="button">深色</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <header class="intro" id="preview">
+      <div><h1>记忆面板改进稿</h1><p>在宿主设置栏里对照新旧决定，读懂一次中断的导入。</p></div>
+      <div class="edition"><strong>2026.11.11</strong><span>评审基线 <code>main @ a80a05b</code></span></div>
+    </header>
+    <div class="workbench">
+      <section class="stage" aria-label="交互预览">
+        <header class="stage-head"><div><strong>面板预览</strong><small>合成数据 · 本地交互</small></div><div class="stage-tools"><button id="reset" type="button">重置示例</button></div></header>
+        <div class="mat">
+          <div class="panel">
+            <div class="panel-top"><strong>Trivium 记忆</strong><label class="scope">工作区<select id="workspace"><option value="coast">岸线手册</option><option value="tools">工具仓库</option></select></label></div>
+            <div class="tabs" role="tablist" aria-label="记忆面板">
+              <button type="button" role="tab" id="tab-memory" aria-controls="memory" data-page="memory" aria-selected="false" tabindex="-1">记忆库</button>
+              <button type="button" role="tab" id="tab-context" aria-controls="context" data-page="context" aria-selected="false" tabindex="-1">上下文</button>
+              <button type="button" role="tab" id="tab-runs" aria-controls="runs" data-page="runs" aria-selected="true">运行记录</button>
+              <button type="button" role="tab" id="tab-settings" aria-controls="settings" data-page="settings" aria-selected="false" tabindex="-1">设置</button>
+            </div>
+            <section class="pane" id="runs" role="tabpanel" aria-labelledby="tab-runs">
+              <div class="hrow"><h2>待确认替代</h2><span class="count" id="queue-count"></span></div>
+              <div class="proposal" id="proposal">
+                <div class="new-fact">
+                  <div class="fact-label">提议的新决定 <span class="identifier">#24</span></div>
+                  <strong id="new-name"></strong><p id="new-text"></p>
+                  <details class="quote"><summary>查看对话原句</summary><blockquote id="new-quote"></blockquote></details>
+                </div>
+                <fieldset class="choices"><legend>选一条要替代的现行决定</legend><div id="candidates"></div></fieldset>
+                <div class="actions"><button class="btn primary" id="confirm" type="button" disabled>确认替代</button><button class="btn" id="keep" type="button">整条保持原样</button></div>
+              </div>
+              <div class="notice" id="settled" hidden><h3>提案已处理</h3><p id="outcome"></p></div>
+              <div class="section-break" aria-live="polite"><h3>记忆变化</h3><ul class="log" id="activity-log"></ul></div>
+              <details class="disclose"><summary>待补写与运行诊断</summary><p class="small">此示例没有待补写窗口。上次抽取和自愈时间均未记录。</p></details>
+            </section>
+            <section class="pane" id="settings" role="tabpanel" aria-labelledby="tab-settings" hidden>
+              <h2>外部记忆导入</h2><p class="small">本次选定的来源为工作区中的 <code>CLAUDE.md</code>。</p>
+              <div class="notice warn" id="partial-receipt" role="status">
+                <h3>导入中断</h3><p id="partial-count"></p><p>可重新导入同一来源。已写入的相同事实会合并。</p>
+                <button class="btn" type="button" id="retry">重新导入这个来源</button>
+              </div>
+              <div class="notice" id="retry-receipt" role="status" hidden><h3>重试完成</h3><p>本次重试新增 1 条。相同事实已按导入规则合并。</p></div>
+              <details class="disclose"><summary>查看这次中断的技术回执</summary><dl class="facts">
+                <dt>接口</dt><dd><code>import-external</code></dd><dt>响应</dt><dd><code>HTTP 500</code></dd>
+                <dt>partial</dt><dd>true</dd><dt>newNodesBeforeFailure</dt><dd id="raw-count"></dd>
+                <dt>retryHint</dt><dd><code>重新导入同一文件可补齐失败部分；已写入的同一事实会合并，不会重复新增节点</code></dd>
+              </dl></details>
+            </section>
+            <section class="pane" id="memory" role="tabpanel" aria-labelledby="tab-memory" hidden>
+              <div class="hrow"><h2>记忆库</h2><span class="count" id="memory-count"></span></div>
+              <input class="search" type="search" id="query" aria-label="搜索记忆名称或正文" placeholder="搜索名称或正文">
+              <details class="disclose"><summary>筛选条件</summary><label><input type="checkbox" id="show-history"> 包含已替代的决定</label></details>
+              <div id="memory-list"></div>
+            </section>
+            <section class="pane" id="context" role="tabpanel" aria-labelledby="tab-context" hidden>
+              <h2>这一轮实际发送</h2><p class="small">示例会话 · 会话启动时的短地图</p>
+              <div class="notice"><h3>已发送的片段</h3><p id="delivered"></p></div>
+              <div class="section-break"><h3>只读试算</h3><p class="small" id="preview-query"></p>
+                <div class="actions"><button class="btn" type="button" id="simulate">试算这个查询</button></div>
+                <p class="notice" id="sim-result" role="status" hidden></p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+      <aside class="guide" aria-label="设计与试用说明">
+        <h2>试用场景</h2><p>选一处体验，也可以直接切换面板里的四个页签。</p>
+        <button class="scene" type="button" data-scene="runs" aria-pressed="true"><span class="mono">A1</span><span><strong>处理一条替代提案</strong><small>对照候选，处理后看审计记录。</small></span><span class="arrow" aria-hidden="true">↗</span></button>
+        <button class="scene" type="button" data-scene="settings" aria-pressed="false"><span class="mono">A2</span><span><strong>查看中断的导入</strong><small>区分新增、未知和可以重试的来源。</small></span><span class="arrow" aria-hidden="true">↗</span></button>
+        <div class="guide-note"><h3 id="note-title"></h3><p id="note-body"></p></div>
+        <div class="guide-note" id="receipt-controls" hidden>
+          <h3>故障时观测到的新增数</h3><div class="readout" aria-label="切换导入样例">
+            <button type="button" data-count="2" aria-pressed="true">2 条</button><button type="button" data-count="0" aria-pressed="false">0 条</button><button type="button" data-count="null" aria-pressed="false">未知</button>
+          </div><p>切换数值可查看同一种失败在三种数据条件下的措辞。</p>
+        </div>
+        <div class="guide-note"><h3>按宿主的实际宽度设计</h3><p>此前宿主走查量到约 420 px 的窄栏。稿件先展开「运行记录」方便评审，产品仍以「记忆库」为首屏。宽屏沿用已有详情栏。</p>
+          <a href="SETTINGS-PAGE-SPLIT-2026-11-03.md">查看宿主走查记录</a>
+        </div>
+      </aside>
+    </div>
+    <section class="document" id="order">
+      <header><h2>建议开工顺序</h2><p>0.8.8 先交付已有写入修复和准确的操作反馈。</p></header>
+      <ol class="steps">
+        <li><strong>先绑定操作所属的工作区</strong><p><b>F88-01</b>　提案读回时记住它属于哪个库。切库立即清空提案和待补写缓存，丢弃旧请求的迟到结果。点击确认或保持时再次核对工作区和提案版本。用两座节点 ID 和 ETag 相同的库验收。</p></li>
+        <li><strong>补齐两个操作结果</strong><p><b>A1</b>　保持原样后写一条独立审计记录，保留候选 ID。动作完成但审计写入失败时，在面板显示警告。<b>A2</b>　外部导入失败时读取部分提交回执，刷新库计数，给出同一来源的重试提示。</p></li>
+        <li><strong>冻结修复范围，复核写路径</strong><p>复用 p89 验证提案与锁，复用 p83 验证外部导入。将第二进程持锁的面板写路由纳入发前复核，检查拒写时内容完整、释放后可重试。前端视觉细化单独排期。</p></li>
+        <li><strong>获准后准备并发布 0.8.8</strong><p><b>A3</b>　取得 bump 授权后同步包、锁文件和四处版本声明，写双语发布说明。冻结提交，跑 p91、全量回归与证据校验，核对实际 tgz 的清单和哈希。独立安装该 tgz，在隔离 DSH 宿主人工走查切库、拒绝和导入失败。<b>A4</b>　经明确授权发布同一产物，核对 registry、冻结提交的 tag 和 GitHub Release。</p></li>
+        <li><strong>发后做导入基准和界面细化</strong><p>先比较真实外部导入的新增与重导，记录 p50/p95、有效写入数、flush 次数和重开后的内容。界面优先做候选正文对照、待处理事项前置、搜索和筛选分层。脚本现为 118/120，已有脚本可以承接这些契约回归。</p></li>
+      </ol>
+    </section>
+    <section class="document" id="evidence">
+      <header><h2>评审与复核记录</h2><p>产品事实、设计取舍和验收方法均以 2026-11-11 的基线为准。</p></header>
+      <details class="reference" open>
+        <summary>切换工作区的提案为什么应当先修</summary>
+        <p>切换时面板立即更新当前工作区，清理函数遗漏了提案。提案请求回来时直接更新列表。提交时面板又从当前选择生成请求地址。ETag 对节点和候选的内容作校验，其中没有工作区标识。<a href="../../lib/client.js">面板读取与提交</a> · <a href="../../lib/supersede-review.js">提案版本计算</a></p>
+        <p>两个临时库有编号、名称和正文相同，原句不同的提案。用既有 p26 组件夹具加载真实面板代码，延迟 A 的列表，切至 B 并显示 B 的列表，再交付迟到的 A 响应。工作区选择器仍是 B，卡片却显示 A 的原句。点击“保持原样”，把组件实际产生的请求转交回环 HTTP 路由，返回 200。A 仍有 1 条待确认，B 从 1 条变成 0 条。修复后在相同顺序下，旧行应失效。最后在隔离宿主手工复核。</p>
+      </details>
+      <details class="reference">
+        <summary>界面细节如何映射到现有能力</summary>
+        <ul>
+          <li><b>记忆库</b>　窄栏里将搜索放在第一行，类型、过期和已替代收入筛选。条目先展示名称和正文，在展开详情后提供编辑、归档和删除，沿用已有删除确认。</li>
+          <li><b>运行记录</b>　当前先显示诊断和待补写，再显示提案。候选接口已经给出最多 160 字正文，列表只展示编号和名称。稿件用正文区分同名候选，确认只作用于选中的目标，保持原样作用于整条提案。</li>
+          <li><b>上下文</b>　已送达的账本与只读试算各有入口。试算完成后保留本轮实际发送的原文，让人能分清“已经发送”和“会选什么”。</li>
+          <li><b>设置</b>　把导入回执放在触发操作的来源旁。后续把“保存向量连接”放到地址、模型和凭据输入旁，用已有设置接口，清楚标识显式保存与即时生效的选项。</li>
+          <li><b>视觉</b>　沿用宿主明暗和青绿色，将强调色留给当前页与确认动作。琥珀色表示需要查看的部分提交。状态同时有文字，原句与诊断可展开。新版计划只需替代已过时的待办。<a href="SETTINGS-PAGE-SPLIT-2026-11-03.md">既有四页与窄栏走查</a> · <a href="../screenshots/10-settings-memory.png">原宿主记忆库截图</a></li>
+        </ul>
+      </details>
+      <details class="reference">
+        <summary>A1 与 A2 的实现和验收边界</summary>
+        <p>A1 当前成功拒绝已保存墓碑、候选和时间。沿用现有变更日志给人工拒绝一个独立的双语原因码，成功一次记一行。陈旧 ETag、重试和持锁 409 不应多记一行。确认路由现以必填 ETag 推断“来自面板”，只能据此证明来自 HTTP 接口。两条路由均应如实标注来源、保留写入警告，面板要读取成功响应中的警告。<a href="../../lib/server.js">HTTP 路由</a> · <a href="../../lib/change-log.js">变更原因和双语标签</a></p>
+        <p>A2 当前的 <code>api()</code> 只在异常上留下状态、错误码和消息，有 HTTP 状态的失败一律显示为“被拒绝”。只对外部导入的 <code>partial === true</code> 采用部分提交措辞。<code>newNodesBeforeFailure</code> 是观测到的节点净增量，0 仍可能有合并，null 表示未知。合并、跳过和剩余总数都不能由它推出。按 <code>retryHint</code> 告知如何补齐。现有按钮会重新发现全部来源，若要给出稿中的“一键重试”，需锁定原来源集合并通过 <code>ids</code> 重发。0.8.8 可先只显示提示。通用 JSON 导入已有预检、指纹和事务，旁路更新失败另有反馈。<a href="../../lib/markdown.js">外部导入回执</a> · <a href="../../scripts/smoke-p83.mjs">落盘与重试契约</a></p>
+      </details>
+      <details class="reference">
+        <summary>本轮跑了什么，什么留到候选包验收</summary>
+        <p><code>node scripts/run-all.mjs</code>　86/86。<code>node scripts/smoke-p91.mjs</code>　12/12。<code>node scripts/verify-evidence.mjs</code>　9/9。<code>npm pack --dry-run --json</code>　当前 0.8.7 声明下列出 51 个文件。开发用身份语料及 smoke 脚本不在 npm 包文件清单内。</p>
+        <p>用现有 p89 的回环 HTTP 服务注册方式，让独立 Node 子进程取得同一临时工作区的写锁，收到持锁信号后发编辑、合并、归档、删除、提案确认、拒绝六个 POST。全部返回 409 <code>WORKSPACE_WRITE_BUSY</code>，原节点及提案仍在。释放锁后再编辑得到 200，并读回新名称。此次子进程持有工作区操作锁。<a href="../../scripts/smoke-p58.mjs">子进程锁验证方式</a> · <a href="../../scripts/smoke-p89.mjs">面板写路由夹具</a></p>
+        <p>本地 0.8.7 tgz 的 SHA-1 与发布回执一致，包里的 <code>lib/client.js</code> 与本次评审源码逐字节相同。独立 HTML 已在 Chromium 的 1280 px 和 390 px 视口目检，并走查确认、保持、切库、重试与计数未知等样例，浏览器脚本错误 0、外部请求 0。工作区故障的证据来自组件夹具与真实回环 HTTP，候选包的真实宿主操作仍待发前验收。<a href="../release-checklist.md">发布检查清单</a> · <a href="../reviews/0.8.7-FINAL-RESULTS-2026-11-10.md">上次发布回执</a></p>
+      </details>
+      <details class="reference">
+        <summary>性能、外部条件与已经决定的边界</summary>
+        <p>206 → 483 ms、1462 → 559/s 量的是同机单轮 Router 队列（10 个 Worker，各写 50 次）。另一组外部导入相关记录是 22 次实际写入、47 → 2 次 flush 的离线直调。下次用相同输入、相同库规模和机器，分首次导入与重复导入，在可比环境测真实 <code>POST /import-external</code>。只对复现出来的慢段尝试插件侧低成本改动。<a href="../next-memory/evidence-write-provenance/INFRA/TDB-0.9.0-2026-11-04/README.md">内核对比口径</a> · <a href="../next-memory/evidence-write-provenance/S1/IMPORT-BATCH-2026-11-03/README.md">批处理口径</a></p>
+        <p>P1 等可用的 embedding 端点，现有样本召回 7/11、误合并 0/15，阈值直接降至 0.5 时误合并为 7/15。P3 已有只读继承、Router 原型和三 Worker 验证，常驻接入等宿主接口。B 站 E1-B 等扩展点。REFERENCE 的 4/5 等人工复判。已有的 0.8.6 自动边逐条按需要撤销，内核维持 0.9.0。<a href="../next-memory/IDENTITY-CORPUS-2026-11-11.md">身份语料</a> · <a href="../next-memory/CURRENT-STATE.md">当前状态</a></p>
+      </details>
+      <details class="reference">
+        <summary>文档去重范围</summary>
+        <p>双语 README 首屏只保留版本和用户需要知道的变化，保留升级整组备份说明。回归数字从「当前状态」查，发布实绩从放行记录查。维护者索引区分现行契约和 11 月 2 日历史选项。本稿汇集交互和实施顺序，旧图、历史失败记录和原始证据继续可查。<a href="../README.md">维护者索引</a></p>
+      </details>
+    </section>
+    <footer>dsh-trivium / 面板设计评审 · 本轮付费模型调用 0 次，费用 ¥0</footer>
+  </main>
+  <script>
+    "use strict";
+    const byId = (id) => document.getElementById(id);
+    const all = (selector) => Array.from(document.querySelectorAll(selector));
+    const examples = {
+      coast: {
+        name: "移动端灰度发布", text: "先放量 10%，观察两小时再全量。",
+        quote: "移动端这次先放 10%，满两小时再全量。桌面端照旧。",
+        targets: [
+          { id: 12, name: "灰度发布", text: "移动端先放量 5%，观察一小时。" },
+          { id: 19, name: "灰度发布", text: "桌面端先放量 20%，观察错误率。" }
+        ],
+        query: "移动端如何灰度发布？"
+      },
+      tools: {
+        name: "网络重试", text: "下载超时后等待 60 秒再重试。",
+        quote: "下载超时的重试间隔改为一分钟。",
+        targets: [{ id: 12, name: "网络重试", text: "下载超时后等待 30 秒再重试。" }],
+        query: "下载超时多久后重试？"
+      }
+    };
+    const notes = {
+      runs: ["同名候选要能分得清", "现有接口已返回候选正文。让人直接读到差异，再选择要替代的一条。保持原样放在整条提案下，处理后可在「记忆变化」找到结果。"],
+      settings: ["把回执放回导入入口", "外部 Markdown 导入可能已经写入部分节点。面板要说明已观测到的新增数和重试范围。JSON 图导入继续使用预检与事务回执。"],
+      memory: ["先找内容，再展开操作", "搜索留在首屏，低频筛选收起。用名称和正文定位，展开后查看条目状态。此稿演示检索和浏览。"],
+      context: ["实际送达和只读试算", "上一轮实际发送的片段保留原文。试算取当前工作区的候选，处理完提案后可以看到两者的差异。"]
+    };
+    let page = "runs";
+    let workspace = "coast";
+    let state;
+    function freshScope() {
+      return { decision: "", chosen: null, retired: null, delta: 2, retried: false, log: [] };
+    }
+    function make(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+    function renderSubmit() {
+      const chosen = state[workspace].chosen;
+      byId("confirm").disabled = chosen === null;
+      byId("confirm").textContent = chosen === null ? "确认替代" : "用 #24 替代 #" + chosen;
+    }
+    function renderRuns() {
+      const sample = examples[workspace];
+      const local = state[workspace];
+      const done = Boolean(local.decision);
+      byId("queue-count").textContent = done ? "0 条待处理" : "1 条待处理";
+      byId("proposal").hidden = done;
+      byId("settled").hidden = !done;
+      byId("outcome").textContent = local.decision;
+      byId("new-name").textContent = sample.name;
+      byId("new-text").textContent = sample.text;
+      byId("new-quote").textContent = sample.quote;
+      byId("candidates").replaceChildren(...sample.targets.map((row) => {
+        const label = make("label", "candidate");
+        const radio = make("input");
+        radio.type = "radio";
+        radio.name = "candidate";
+        radio.value = String(row.id);
+        radio.checked = local.chosen === row.id;
+        radio.addEventListener("change", () => { local.chosen = row.id; renderSubmit(); });
+        const copy = make("span");
+        copy.append(make("strong", "", row.name), make("span", "identifier", "#" + row.id), make("span", "excerpt", row.text));
+        label.append(radio, copy);
+        return label;
+      }));
+      const entries = [...local.log, { at: "09:40", action: "提出替代建议", detail: "#24 · " + sample.name }];
+      byId("activity-log").replaceChildren(...entries.map((entry) => {
+        const li = make("li");
+        const copy = make("div");
+        copy.append(make("strong", "", entry.action), make("span", "", entry.detail));
+        li.append(make("time", "", entry.at), copy);
+        return li;
+      }));
+      renderSubmit();
+    }
+    function settle(confirming) {
+      const local = state[workspace];
+      if (local.decision || (confirming && local.chosen === null)) return;
+      const candidates = examples[workspace].targets;
+      if (confirming) {
+        local.retired = local.chosen;
+        local.decision = "#" + local.chosen + " 已由 #24 替代。" + (candidates.length > 1 ? "其余候选仍然现行。" : "");
+      } else {
+        local.decision = "#24 与全部候选仍然现行。";
+      }
+      const detail = confirming ? "#" + local.chosen + " → #24" : "提案 #24 · 候选 " + candidates.map((row) => "#" + row.id).join("、");
+      local.log.unshift({ at: "10:15", action: confirming ? "替代已确认" : "已保持原样", detail });
+      renderRuns();
+      renderMemory();
+      byId("settled").tabIndex = -1;
+      byId("settled").focus({ preventScroll: true });
+    }
+    function renderSettings() {
+      const local = state[workspace];
+      byId("partial-receipt").hidden = local.retried;
+      byId("retry-receipt").hidden = !local.retried;
+      const wording = {
+        2: "中断前新增了 2 条记忆。合并了多少条暂时无法统计。",
+        0: "中断前新增了 0 条记忆。已有记忆可能发生过合并。",
+        null: "无法确定中断前新增了多少条记忆。已有记忆可能发生过合并。"
+      };
+      byId("partial-count").textContent = wording[String(local.delta)];
+      byId("raw-count").textContent = String(local.delta);
+      all("[data-count]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.count === String(local.delta))));
+    }
+    function renderMemory() {
+      const local = state[workspace];
+      const sample = examples[workspace];
+      const query = byId("query").value.trim().toLocaleLowerCase();
+      const imported = [
+        { id: 31, name: "发布日志", text: "在变更记录里保留交付日期。" },
+        { id: 32, name: "交接说明", text: "交接时附上验收结果。" }
+      ];
+      const visible = [{ id: 24, name: sample.name, text: sample.text }, ...sample.targets];
+      // The unknown receipt still describes a concrete sample library.
+      // Refresh the rows from that library without deriving a count for the receipt.
+      if (local.delta !== 0) visible.push(...imported);
+      if (local.retried) visible.push({ id: 33, name: "归档约定", text: "按日期归档已完成的发布记录。" });
+      const rows = visible.filter((row) =>
+        (local.retired !== row.id || byId("show-history").checked) &&
+        (row.name + " " + row.text).toLocaleLowerCase().includes(query));
+      byId("memory-count").textContent = rows.length + " 条";
+      byId("memory-list").replaceChildren(...rows.map((row) => {
+        const detail = make("details", "memory-row");
+        const title = make("summary", "", row.name);
+        title.append(make("span", "identifier", "#" + row.id), make("span", "excerpt", row.text));
+        const status = local.retired === row.id ? "已替代" : "现行";
+        const statusText = make("p", "small", "决定 · " + status + (row.id >= 31 ? " · 来源 CLAUDE.md" : ""));
+        detail.append(title, statusText);
+        return detail;
+      }));
+      if (!rows.length) byId("memory-list").append(make("p", "notice", "没有匹配的记忆。可换个关键词或展开筛选条件。"));
+    }
+    function renderContext() {
+      const sample = examples[workspace];
+      byId("delivered").textContent = sample.targets[0].text;
+      byId("preview-query").textContent = "示例查询「" + sample.query + "」";
+    }
+    function selectPage(next) {
+      page = next;
+      all("[data-page]").forEach((button) => {
+        const active = button.dataset.page === next;
+        button.setAttribute("aria-selected", String(active));
+        button.tabIndex = active ? 0 : -1;
+        byId(button.dataset.page).hidden = !active;
+      });
+      all("[data-scene]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.scene === next)));
+      byId("note-title").textContent = notes[next][0];
+      byId("note-body").textContent = notes[next][1];
+      byId("receipt-controls").hidden = next !== "settings";
+      if (next === "memory") renderMemory();
+    }
+    function selectWorkspace(next) {
+      workspace = next;
+      state[next].chosen = null;
+      byId("workspace").value = next;
+      byId("query").value = "";
+      byId("show-history").checked = false;
+      byId("sim-result").hidden = true;
+      all(".panel details[open]").forEach((detail) => { detail.open = false; });
+      renderRuns();
+      renderSettings();
+      renderMemory();
+      renderContext();
+    }
+    function reset() {
+      state = { coast: freshScope(), tools: freshScope() };
+      selectWorkspace("coast");
+      selectPage("runs");
+    }
+    byId("reset").addEventListener("click", reset);
+    byId("workspace").addEventListener("change", (event) => selectWorkspace(event.target.value));
+    byId("confirm").addEventListener("click", () => settle(true));
+    byId("keep").addEventListener("click", () => settle(false));
+    byId("query").addEventListener("input", renderMemory);
+    byId("show-history").addEventListener("change", renderMemory);
+    byId("retry").addEventListener("click", () => {
+      state[workspace].retried = true;
+      renderSettings();
+      byId("retry-receipt").tabIndex = -1;
+      byId("retry-receipt").focus({ preventScroll: true });
+    });
+    byId("simulate").addEventListener("click", () => {
+      const sample = examples[workspace];
+      const eligible = [{id: 24, text: sample.text}, sample.targets[0]].filter((row) => row.id !== state[workspace].retired);
+      byId("sim-result").textContent = "本次示例试算的候选为 " + eligible.map((row) => "#" + row.id).join("、") + "。";
+      byId("sim-result").hidden = false;
+    });
+    all("[data-count]").forEach((button) => button.addEventListener("click", () => {
+      const value = button.dataset.count;
+      state[workspace].delta = value === "null" ? null : Number(value);
+      state[workspace].retried = false;
+      renderSettings();
+    }));
+    all("[data-page]").forEach((button) => button.addEventListener("click", () => selectPage(button.dataset.page)));
+    all("[data-scene]").forEach((button) => button.addEventListener("click", () => {
+      selectPage(button.dataset.scene);
+      const tab = byId("tab-" + page);
+      tab.focus({ preventScroll: true });
+      if (window.matchMedia("(max-width: 670px)").matches) tab.scrollIntoView({ block: "start" });
+    }));
+    document.querySelector(".tabs").addEventListener("keydown", (event) => {
+      const tabs = all("[data-page]");
+      const index = tabs.indexOf(event.target);
+      const positions = { ArrowLeft: (index + 3) % 4, ArrowRight: (index + 1) % 4, Home: 0, End: 3 };
+      if (index < 0 || !(event.key in positions)) return;
+      event.preventDefault();
+      const target = tabs[positions[event.key]];
+      selectPage(target.dataset.page);
+      target.focus();
+    });
+    function setTone(dark) {
+      document.documentElement.dataset.tone = dark ? "dark" : "light";
+      byId("tone").textContent = dark ? "浅色" : "深色";
+      byId("tone").setAttribute("aria-label", dark ? "切换到浅色" : "切换到深色");
+    }
+    setTone(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    byId("tone").addEventListener("click", () => setTone(document.documentElement.dataset.tone !== "dark"));
+    reset();
+  </script>
+</body>
+</html>
