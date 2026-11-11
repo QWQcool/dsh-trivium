@@ -20,9 +20,11 @@
  *   6. the legacy automatic path still exists behind `supersedeMode: "auto"`.
  */
 import assert from 'node:assert/strict';
+import { spawn } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = mkdtempSync(join(tmpdir(), 'trivium-p89-'));
 process.env.DSH_HOME = join(root, 'home');
@@ -240,6 +242,15 @@ try {
       assert.equal(review.listSupersedeProposals(dbRej).length, 0);
     }, 'a rejection with the current ETag is accepted');
 
+    await check(() => {
+      // A1: declining is a decision, so it gets its own row in the activity log.
+      const log = changes.readChanges(wsRej);
+      const row = log.entries.find((entry) => entry.reason === 'supersede-rejected');
+      assert.ok(row, `no supersede-rejected row in ${JSON.stringify(log.entries.slice(-2))}`);
+      assert.equal(row.nodeId, rejProposal.id);
+      assert.match(row.detail, /kept both/);
+    }, 'a rejection leaves its own change-log row');
+
     // 4. the write routes take the workspace lock (F87-02)
     const held = lock.acquireWorkspaceLock(ws);
     try {
@@ -270,6 +281,55 @@ try {
       }, 'merging two facts is refused while the workspace lock is held');
     } finally {
       held.release?.();
+    }
+
+    /*
+     * 4b. The same six routes, but with the lock held by a *different process*.
+     *
+     * `withWorkspaceLock` uses a file, not a process-local flag, and the panel
+     * competes with the CLI for it. A same-process test cannot tell those apart, so
+     * a child holds the lock and every interactive write has to answer 409 —
+     * including the older edit/merge/archive/delete routes.
+     */
+    const childScript = join(root, 'hold-lock.mjs');
+    writeFileSync(childScript, [
+      // The child is a separate ESM process: Windows needs a file:// URL here.
+      `import { acquireWorkspaceLock } from ${JSON.stringify(pathToFileURL(fileURLToPath(new URL('../lib/workspace-lock.js', import.meta.url))).href)};`,
+      'const lock = acquireWorkspaceLock(process.argv[2]);',
+      'if (!lock.ok) { console.log("busy"); process.exit(2); }',
+      'console.log("locked");',
+      'setTimeout(() => { try { lock.release(); } catch {} process.exit(0); }, 15000);',
+    ].join('\n'), 'utf8');
+    const child = spawn(process.execPath, [childScript, ws], { stdio: ['ignore', 'pipe', 'pipe'] });
+    const lockedByChild = await new Promise((resolve) => {
+      let out = '';
+      child.stdout.on('data', (chunk) => {
+        out += String(chunk);
+        if (out.includes('locked')) resolve(true);
+      });
+      child.on('exit', () => resolve(false));
+      setTimeout(() => resolve(false), 8000);
+    });
+    await check(() => assert.equal(lockedByChild, true), 'fixture: a separate process holds the workspace lock');
+    try {
+      const routes = [
+        [`/api/dsh-trivium/nodes/${oldId}`, { name: 'x' }, 'edit'],
+        [`/api/dsh-trivium/nodes/${oldId}/merge`, { dropId: newId }, 'merge'],
+        [`/api/dsh-trivium/nodes/${oldId}/archive`, {}, 'archive'],
+        [`/api/dsh-trivium/nodes/${oldId}/delete`, {}, 'delete'],
+        [`/api/dsh-trivium/supersede-proposals/${newId}/confirm`, { targetId: oldId, etag: 'x' }, 'confirm'],
+        [`/api/dsh-trivium/supersede-proposals/${newId}/reject`, { etag: 'x' }, 'reject'],
+      ];
+      for (const [path, body, name] of routes) {
+        await check(async () => {
+          const res = await post(`${path}?cwd=${cwd}`, body);
+          const payload = await res.json();
+          assert.equal(res.status, 409, `${name}: ${JSON.stringify(payload)}`);
+          assert.equal(payload.code, 'WORKSPACE_WRITE_BUSY');
+        }, `${name} answers 409 while another process holds the lock`);
+      }
+    } finally {
+      child.kill();
     }
   } finally {
     await new Promise((resolve) => server.close(resolve));

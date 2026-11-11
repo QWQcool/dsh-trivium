@@ -93,6 +93,42 @@ try {
     "delivery records, traces, corrections, the deferred queue and replacement proposals are fetched only while the context or activity page is open",
   );
 
+  /*
+   * F88-01: a proposal row carries node ids from the library it was read from.
+   * Three things have to hold, and a wiring check is the only offline way to keep
+   * them: the read has to drop late responses, a switch has to invalidate both the
+   * list and the request, and a submit has to refuse a row from another workspace.
+   */
+  check(
+    /const seq = \+\+proposalSeq\.current;\s*const scope = currentCwd\(\);/.test(src),
+    "the proposal read remembers which workspace it was for",
+  );
+  check(
+    /if \(seq !== proposalSeq\.current \|\| scope !== currentCwd\(\)\) return;/.test(src),
+    "a late proposal response is discarded instead of repainting the list",
+  );
+  check(
+    /proposalSeq\.current \+= 1;\s*setProposals\(null\);/.test(src),
+    "switching workspaces drops the proposals and invalidates the request in flight",
+  );
+  check(
+    /if \(scope && scope !== currentCwd\(\)\) \{/.test(src),
+    "a submit refuses a proposal read from another workspace",
+  );
+
+  /*
+   * A1/A2 wiring: a completed decision whose audit row failed must say both, and
+   * a partial import must report what landed — with 0 and "unknown" kept apart.
+   */
+  check(
+    /proposalAppliedAuditFailed/.test(src) && /settled\.warning/.test(src),
+    "a completed proposal action reports an audit write failure instead of a clean success",
+  );
+  check(
+    /body && body\.partial/.test(src) && /landed === 0/.test(src) && /Number\.isFinite\(landed\)/.test(src),
+    "a partial import reports the landed count, and distinguishes zero from unknown",
+  );
+
   /* ------------------------------------------------------------ accessibility */
   check(/role: "tab"/.test(src) && /aria-selected/.test(src), "tabs expose role and selection state");
   check(/"aria-valuenow": pct/.test(src), "the budget bar exposes its value");
