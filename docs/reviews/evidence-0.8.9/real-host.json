@@ -1,0 +1,121 @@
+{
+  "host": "0.2.2-rc.1",
+  "package": "0.8.9",
+  "checks": [
+    {
+      "ok": true,
+      "label": "bound live TQL sees current writer"
+    },
+    {
+      "ok": true,
+      "label": "issue original join",
+      "rows": 12,
+      "truncated": true,
+      "truncationReason": "response-byte-budget"
+    },
+    {
+      "ok": true,
+      "label": "aggregation",
+      "rows": [
+        {
+          "total": 589
+        }
+      ]
+    },
+    {
+      "ok": true,
+      "label": "exact bounded sorted pagination",
+      "first": {
+        "rank": 18
+      },
+      "next": {
+        "rank": 38
+      }
+    },
+    {
+      "ok": true,
+      "label": "mutation refused",
+      "http": 400,
+      "code": "TDB_QUERY_PARSE"
+    },
+    {
+      "ok": true,
+      "label": "capture snapshot"
+    },
+    {
+      "ok": true,
+      "label": "new fact written through chip route"
+    },
+    {
+      "ok": true,
+      "label": "live advances while captured generation stays stable"
+    },
+    {
+      "ok": true,
+      "label": "large full-input sorting reports budget rejection",
+      "code": "TDB_QUERY_BUDGET"
+    },
+    {
+      "ok": true,
+      "label": "native deadline observed",
+      "http": 408,
+      "code": "TDB_QUERY_CANCELLED"
+    },
+    {
+      "ok": true,
+      "label": "write and read recover after deadline"
+    },
+    {
+      "ok": true,
+      "label": "same-ID ownership fixture"
+    },
+    {
+      "ok": true,
+      "label": "switch clears old rows before B list arrives"
+    },
+    {
+      "ok": true,
+      "label": "both facts survive stale-list window"
+    },
+    {
+      "ok": true,
+      "label": "real host lock chips",
+      "http": 409
+    },
+    {
+      "ok": true,
+      "label": "real host lock chips/batch",
+      "http": 409
+    },
+    {
+      "ok": true,
+      "label": "real host lock chips/batch",
+      "http": 409
+    },
+    {
+      "ok": true,
+      "label": "real host lock nodes/5/delete",
+      "http": 409
+    },
+    {
+      "ok": true,
+      "label": "real host edit resumes after lock release"
+    },
+    {
+      "ok": true,
+      "label": "PR4 budget saves from real settings input"
+    },
+    {
+      "ok": true,
+      "label": "PR4 blank budget restores default"
+    },
+    {
+      "ok": true,
+      "label": "PR4 tool recovery switch persists"
+    },
+    {
+      "ok": true,
+      "label": "PR4 preview uses restored budget"
+    }
+  ]
+}

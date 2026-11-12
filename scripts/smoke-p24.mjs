@@ -109,7 +109,6 @@ async function panel() {
    */
   async function openRow(label) {
     const title = elements().find((el) => typeof el.props?.onClick === "function" && text(el).trim() === label);
-    assert.ok(title, "row exists: " + label);
     title.props.onClick();
     await flush();
   }

@@ -1,0 +1,202 @@
+{
+  "version": "0.8.9",
+  "sourceCommits": [
+    "9d7b96a0eec85e0dc07daa7273f50b76352f062c",
+    "45132e6"
+  ],
+  "node": "v24.15.0",
+  "npm": "11.12.1",
+  "host": "0.2.2-rc.1",
+  "kernel": "0.9.0",
+  "peers": {
+    "llm": "0.2.2-rc.1",
+    "tools": "0.2.2-rc.1"
+  },
+  "modelCalls": 0,
+  "costCNY": 0,
+  "smokeGroups": 86,
+  "scriptFiles": 120,
+  "lockAndProposalChecks": "p89 85/85 plus retained p90 7/7",
+  "readChecks": {
+    "p93": 13,
+    "p94": 24,
+    "p95": 20,
+    "p96": 27,
+    "p97": 26
+  },
+  "writeOwnershipChecks": 4,
+  "realHostChecks": 23,
+  "strictPeerTgzInstall": true,
+  "verifyPackageChecks": 13,
+  "installedCLIHelp": 4,
+  "snapshotCLIAfterHostShutdown": {
+    "query": true,
+    "integrityExit": 0,
+    "integrityOk": true,
+    "issues": []
+  },
+  "isolatedCredentialsRemoved": true,
+  "originalMemoryDbMtimeUnchanged": true,
+  "bench": [
+    {
+      "nodes": 585,
+      "checks": 74,
+      "passed": 74,
+      "outcomes": {
+        "success": 31,
+        "budget": 0,
+        "deadline": 1,
+        "busy": 0,
+        "error": 0
+      },
+      "pagination": {
+        "successfulRequests": 6,
+        "rejectedRequests": 0
+      },
+      "boundedPagination": {
+        "successfulRequests": 6,
+        "rejectedRequests": 0
+      },
+      "client": {
+        "query": {
+          "count": 32,
+          "minMs": 1.237,
+          "p50Ms": 2.023,
+          "p95Ms": 6.923,
+          "maxMs": 7.371
+        },
+        "ping": {
+          "count": 42,
+          "minMs": 70.807,
+          "p50Ms": 82.682,
+          "p95Ms": 96.576,
+          "maxMs": 99.596
+        },
+        "write": {
+          "count": 15,
+          "minMs": 89.3,
+          "p50Ms": 93.894,
+          "p95Ms": 100.772,
+          "maxMs": 100.772
+        },
+        "baselinePing": {
+          "count": 9,
+          "minMs": 4.577,
+          "p50Ms": 87.919,
+          "p95Ms": 102.661,
+          "maxMs": 102.661
+        },
+        "baselineWrite": {
+          "count": 3,
+          "minMs": 89.135,
+          "p50Ms": 97.585,
+          "p95Ms": 104.986,
+          "maxMs": 104.986
+        }
+      },
+      "host": {
+        "queryNative": {
+          "count": 32,
+          "minMs": 0.377,
+          "p50Ms": 0.653,
+          "p95Ms": 5.397,
+          "maxMs": 5.731
+        },
+        "writeFlush": {
+          "count": 18,
+          "minMs": 85.803,
+          "p50Ms": 90.809,
+          "p95Ms": 94.617,
+          "maxMs": 94.617
+        },
+        "eventLoopLag": {
+          "count": 33,
+          "minMs": 0,
+          "p50Ms": 85.261,
+          "p95Ms": 93.032,
+          "maxMs": 94.852
+        }
+      }
+    },
+    {
+      "nodes": 5000,
+      "checks": 74,
+      "passed": 74,
+      "outcomes": {
+        "success": 25,
+        "budget": 6,
+        "deadline": 1,
+        "busy": 0,
+        "error": 0
+      },
+      "pagination": {
+        "successfulRequests": 0,
+        "rejectedRequests": 6
+      },
+      "boundedPagination": {
+        "successfulRequests": 6,
+        "rejectedRequests": 0
+      },
+      "client": {
+        "query": {
+          "count": 32,
+          "minMs": 3.666,
+          "p50Ms": 7.144,
+          "p95Ms": 15.904,
+          "maxMs": 37.422
+        },
+        "ping": {
+          "count": 42,
+          "minMs": 186.885,
+          "p50Ms": 239.86,
+          "p95Ms": 794.952,
+          "maxMs": 807.511
+        },
+        "write": {
+          "count": 15,
+          "minMs": 204.447,
+          "p50Ms": 242.238,
+          "p95Ms": 806.535,
+          "maxMs": 806.535
+        },
+        "baselinePing": {
+          "count": 9,
+          "minMs": 3.557,
+          "p50Ms": 259.263,
+          "p95Ms": 288.517,
+          "maxMs": 288.517
+        },
+        "baselineWrite": {
+          "count": 3,
+          "minMs": 247.187,
+          "p50Ms": 269,
+          "p95Ms": 288.139,
+          "maxMs": 288.139
+        }
+      },
+      "host": {
+        "queryNative": {
+          "count": 32,
+          "minMs": 2.252,
+          "p50Ms": 5.378,
+          "p95Ms": 13.629,
+          "maxMs": 34.961
+        },
+        "writeFlush": {
+          "count": 18,
+          "minMs": 195.751,
+          "p50Ms": 242.571,
+          "p95Ms": 801.447,
+          "maxMs": 801.447
+        },
+        "eventLoopLag": {
+          "count": 58,
+          "minMs": 0,
+          "p50Ms": 5.49,
+          "p95Ms": 267.781,
+          "maxMs": 804.368
+        }
+      }
+    }
+  ]
+}

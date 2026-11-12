@@ -1,0 +1,4585 @@
+{
+  "protocol": "dsh-live-tql-http-v1",
+  "generatedAt": "2026-11-12T01:49:07.819Z",
+  "node": "v24.15.0",
+  "settings": {
+    "sizes": [
+      585,
+      5000
+    ],
+    "reps": 3,
+    "queryTimeoutMs": 50,
+    "externalHardTimeoutMs": 90000
+  },
+  "methodology": [
+    "Real registerMemoryApi; one writer in a dedicated host process and an independent HTTP client process.",
+    "Native timing wraps the existing writer's consoleRequest; write timing separately records flush.",
+    "Concurrent ping uses the real GET /status endpoint; concurrent writes use POST /nodes/:id and require exact acknowledged payload visibility.",
+    "Baseline phases send only the same HTTP writes and status pings, without concurrent TQL. Baseline latencies are reported separately; the experiment does not claim a statistically controlled incremental-overhead estimate.",
+    "Event-loop lag includes synchronous queries and confirmed write flushes; it is not attributed exclusively to TQL.",
+    "Deadlines are observed, not assumed: a 1ms probe may finish before cancellation; outcomes retain success, budget rejection and deadline cancellation separately.",
+    "Small-fixture full-input pagination must succeed. Large full-input pagination may explicitly exceed native work budgets; rejected requests are counted separately and never described as successful pagination.",
+    "Both fixture sizes must successfully sort/page a parameter-filtered 64-node working set, with exact expected ranks 1..20 and 21..40 verified independently of the returned ordering."
+  ],
+  "ok": true,
+  "deadlineObserved": true,
+  "results": [
+    {
+      "ok": true,
+      "fixture": {
+        "nodes": 585,
+        "hubs": 17,
+        "businessEdges": 2830,
+        "boundedPageWorkingSet": 64,
+        "seedMs": 831.417
+      },
+      "checks": [
+        {
+          "ok": true,
+          "label": "baseline-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "baseline-0: write-only concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-0: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-0: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-0: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-0: parameters select the expected hub"
+        },
+        {
+          "ok": true,
+          "label": "page20-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-0: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "page20-0: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-0: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page-0: ordered pages have 20 distinct rows each"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-0: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-0: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-0: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-0: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-0: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-0: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page-0: parameter-filtered working set sorts into the exact expected two pages"
+        },
+        {
+          "ok": true,
+          "label": "baseline-1-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "baseline-1: write-only concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-1-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-1: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-1: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-1: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-1: parameters select the expected hub"
+        },
+        {
+          "ok": true,
+          "label": "page20-1-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-1: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "page20-1: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-1: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page-1: ordered pages have 20 distinct rows each"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-1-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-1: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-1: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-1: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-1-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-1: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-1: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-1: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page-1: parameter-filtered working set sorts into the exact expected two pages"
+        },
+        {
+          "ok": true,
+          "label": "baseline-2-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "baseline-2: write-only concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-2-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-2: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-2: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-2: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-2: parameters select the expected hub"
+        },
+        {
+          "ok": true,
+          "label": "page20-2-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-2: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "page20-2: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-2: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page-2: ordered pages have 20 distinct rows each"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-2-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-2: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-2: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-2: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-2-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-2: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-2: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-2: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page-2: parameter-filtered working set sorts into the exact expected two pages"
+        },
+        {
+          "ok": true,
+          "label": "pagerank-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "pagerank: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "pagerank: query completes or is explicitly bounded",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "pagerank: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "deadline-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "deadline-0: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "deadline-0: query completes or is explicitly bounded",
+          "details": {
+            "status": 408,
+            "code": "TDB_QUERY_CANCELLED"
+          }
+        },
+        {
+          "ok": true,
+          "label": "deadline-0: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "after-timeout-probes: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "write and read remain usable after the deadline probes"
+        },
+        {
+          "ok": true,
+          "label": "HTTP reads and marker updates preserve the fixture's node count"
+        }
+      ],
+      "samples": [
+        {
+          "requestId": "585-1-connection-warmup",
+          "category": "warmup",
+          "label": "connection-warmup",
+          "status": 200,
+          "elapsedMs": 22.366,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-3-baseline-0-ping0",
+          "category": "baselinePing",
+          "label": "baseline-0-ping0",
+          "status": 200,
+          "elapsedMs": 4.577,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-2-baseline-0-write",
+          "category": "baselineWrite",
+          "label": "baseline-0-write",
+          "status": 200,
+          "elapsedMs": 104.986,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-5-baseline-0-ping2",
+          "category": "baselinePing",
+          "label": "baseline-0-ping2",
+          "status": 200,
+          "elapsedMs": 91.946,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-4-baseline-0-ping1",
+          "category": "baselinePing",
+          "label": "baseline-0-ping1",
+          "status": 200,
+          "elapsedMs": 102.661,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-6-join-0",
+          "category": "query",
+          "label": "join-0",
+          "status": 200,
+          "elapsedMs": 3.988,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-7-join-0-write",
+          "category": "write",
+          "label": "join-0-write",
+          "status": 200,
+          "elapsedMs": 97.978,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-8-join-0-ping0",
+          "category": "ping",
+          "label": "join-0-ping0",
+          "status": 200,
+          "elapsedMs": 99.596,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-9-join-0-ping1",
+          "category": "ping",
+          "label": "join-0-ping1",
+          "status": 200,
+          "elapsedMs": 88.281,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-10-join-0-ping2",
+          "category": "ping",
+          "label": "join-0-ping2",
+          "status": 200,
+          "elapsedMs": 89.966,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-11-join-0-visibility",
+          "category": "query",
+          "label": "join-0-visibility",
+          "status": 200,
+          "elapsedMs": 2.182,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-12-page0-0",
+          "category": "query",
+          "label": "page0-0",
+          "status": 200,
+          "elapsedMs": 7.371,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-13-page20-0",
+          "category": "query",
+          "label": "page20-0",
+          "status": 200,
+          "elapsedMs": 6.108,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-14-page20-0-write",
+          "category": "write",
+          "label": "page20-0-write",
+          "status": 200,
+          "elapsedMs": 95.662,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-15-page20-0-ping0",
+          "category": "ping",
+          "label": "page20-0-ping0",
+          "status": 200,
+          "elapsedMs": 96.576,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-16-page20-0-ping1",
+          "category": "ping",
+          "label": "page20-0-ping1",
+          "status": 200,
+          "elapsedMs": 82.55,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-17-page20-0-ping2",
+          "category": "ping",
+          "label": "page20-0-ping2",
+          "status": 200,
+          "elapsedMs": 82.682,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-18-page20-0-visibility",
+          "category": "query",
+          "label": "page20-0-visibility",
+          "status": 200,
+          "elapsedMs": 1.976,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-19-bounded-page0-0",
+          "category": "query",
+          "label": "bounded-page0-0",
+          "status": 200,
+          "elapsedMs": 2.108,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-20-bounded-page0-0-write",
+          "category": "write",
+          "label": "bounded-page0-0-write",
+          "status": 200,
+          "elapsedMs": 93.894,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-21-bounded-page0-0-ping0",
+          "category": "ping",
+          "label": "bounded-page0-0-ping0",
+          "status": 200,
+          "elapsedMs": 94.336,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-22-bounded-page0-0-ping1",
+          "category": "ping",
+          "label": "bounded-page0-0-ping1",
+          "status": 200,
+          "elapsedMs": 89.559,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-23-bounded-page0-0-ping2",
+          "category": "ping",
+          "label": "bounded-page0-0-ping2",
+          "status": 200,
+          "elapsedMs": 75.016,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-24-bounded-page0-0-visibility",
+          "category": "query",
+          "label": "bounded-page0-0-visibility",
+          "status": 200,
+          "elapsedMs": 1.844,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-25-bounded-page20-0",
+          "category": "query",
+          "label": "bounded-page20-0",
+          "status": 200,
+          "elapsedMs": 1.808,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-26-bounded-page20-0-write",
+          "category": "write",
+          "label": "bounded-page20-0-write",
+          "status": 200,
+          "elapsedMs": 92.669,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-27-bounded-page20-0-ping0",
+          "category": "ping",
+          "label": "bounded-page20-0-ping0",
+          "status": 200,
+          "elapsedMs": 80.131,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-28-bounded-page20-0-ping1",
+          "category": "ping",
+          "label": "bounded-page20-0-ping1",
+          "status": 200,
+          "elapsedMs": 80.057,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-29-bounded-page20-0-ping2",
+          "category": "ping",
+          "label": "bounded-page20-0-ping2",
+          "status": 200,
+          "elapsedMs": 80.325,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-30-bounded-page20-0-visibility",
+          "category": "query",
+          "label": "bounded-page20-0-visibility",
+          "status": 200,
+          "elapsedMs": 1.555,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-31-baseline-1-write",
+          "category": "baselineWrite",
+          "label": "baseline-1-write",
+          "status": 200,
+          "elapsedMs": 89.135,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-32-baseline-1-ping0",
+          "category": "baselinePing",
+          "label": "baseline-1-ping0",
+          "status": 200,
+          "elapsedMs": 81.209,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-33-baseline-1-ping1",
+          "category": "baselinePing",
+          "label": "baseline-1-ping1",
+          "status": 200,
+          "elapsedMs": 80.776,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-34-baseline-1-ping2",
+          "category": "baselinePing",
+          "label": "baseline-1-ping2",
+          "status": 200,
+          "elapsedMs": 81.167,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-35-join-1",
+          "category": "query",
+          "label": "join-1",
+          "status": 200,
+          "elapsedMs": 2.594,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-36-join-1-write",
+          "category": "write",
+          "label": "join-1-write",
+          "status": 200,
+          "elapsedMs": 93.47,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-37-join-1-ping0",
+          "category": "ping",
+          "label": "join-1-ping0",
+          "status": 200,
+          "elapsedMs": 88.487,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-38-join-1-ping1",
+          "category": "ping",
+          "label": "join-1-ping1",
+          "status": 200,
+          "elapsedMs": 88.842,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-39-join-1-ping2",
+          "category": "ping",
+          "label": "join-1-ping2",
+          "status": 200,
+          "elapsedMs": 74.829,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-40-join-1-visibility",
+          "category": "query",
+          "label": "join-1-visibility",
+          "status": 200,
+          "elapsedMs": 1.64,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-41-page0-1",
+          "category": "query",
+          "label": "page0-1",
+          "status": 200,
+          "elapsedMs": 5.44,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-42-page20-1",
+          "category": "query",
+          "label": "page20-1",
+          "status": 200,
+          "elapsedMs": 6.721,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-43-page20-1-write",
+          "category": "write",
+          "label": "page20-1-write",
+          "status": 200,
+          "elapsedMs": 95.675,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-44-page20-1-ping0",
+          "category": "ping",
+          "label": "page20-1-ping0",
+          "status": 200,
+          "elapsedMs": 93.657,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-45-page20-1-ping1",
+          "category": "ping",
+          "label": "page20-1-ping1",
+          "status": 200,
+          "elapsedMs": 78.563,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-46-page20-1-ping2",
+          "category": "ping",
+          "label": "page20-1-ping2",
+          "status": 200,
+          "elapsedMs": 78.893,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-47-page20-1-visibility",
+          "category": "query",
+          "label": "page20-1-visibility",
+          "status": 200,
+          "elapsedMs": 1.812,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-48-bounded-page0-1",
+          "category": "query",
+          "label": "bounded-page0-1",
+          "status": 200,
+          "elapsedMs": 1.958,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-49-bounded-page0-1-write",
+          "category": "write",
+          "label": "bounded-page0-1-write",
+          "status": 200,
+          "elapsedMs": 91.753,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-50-bounded-page0-1-ping0",
+          "category": "ping",
+          "label": "bounded-page0-1-ping0",
+          "status": 200,
+          "elapsedMs": 84.712,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-51-bounded-page0-1-ping1",
+          "category": "ping",
+          "label": "bounded-page0-1-ping1",
+          "status": 200,
+          "elapsedMs": 84.994,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-52-bounded-page0-1-ping2",
+          "category": "ping",
+          "label": "bounded-page0-1-ping2",
+          "status": 200,
+          "elapsedMs": 70.807,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-53-bounded-page0-1-visibility",
+          "category": "query",
+          "label": "bounded-page0-1-visibility",
+          "status": 200,
+          "elapsedMs": 2.023,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-54-bounded-page20-1",
+          "category": "query",
+          "label": "bounded-page20-1",
+          "status": 200,
+          "elapsedMs": 1.705,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-55-bounded-page20-1-write",
+          "category": "write",
+          "label": "bounded-page20-1-write",
+          "status": 200,
+          "elapsedMs": 92.834,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-56-bounded-page20-1-ping0",
+          "category": "ping",
+          "label": "bounded-page20-1-ping0",
+          "status": 200,
+          "elapsedMs": 92.82,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-57-bounded-page20-1-ping1",
+          "category": "ping",
+          "label": "bounded-page20-1-ping1",
+          "status": 200,
+          "elapsedMs": 77.8,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-58-bounded-page20-1-ping2",
+          "category": "ping",
+          "label": "bounded-page20-1-ping2",
+          "status": 200,
+          "elapsedMs": 78.278,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-59-bounded-page20-1-visibility",
+          "category": "query",
+          "label": "bounded-page20-1-visibility",
+          "status": 200,
+          "elapsedMs": 1.837,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-60-baseline-2-write",
+          "category": "baselineWrite",
+          "label": "baseline-2-write",
+          "status": 200,
+          "elapsedMs": 97.585,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-61-baseline-2-ping0",
+          "category": "baselinePing",
+          "label": "baseline-2-ping0",
+          "status": 200,
+          "elapsedMs": 98.551,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-62-baseline-2-ping1",
+          "category": "baselinePing",
+          "label": "baseline-2-ping1",
+          "status": 200,
+          "elapsedMs": 87.919,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-63-baseline-2-ping2",
+          "category": "baselinePing",
+          "label": "baseline-2-ping2",
+          "status": 200,
+          "elapsedMs": 88.272,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-64-join-2",
+          "category": "query",
+          "label": "join-2",
+          "status": 200,
+          "elapsedMs": 2.305,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-65-join-2-write",
+          "category": "write",
+          "label": "join-2-write",
+          "status": 200,
+          "elapsedMs": 95.102,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-66-join-2-ping0",
+          "category": "ping",
+          "label": "join-2-ping0",
+          "status": 200,
+          "elapsedMs": 95.914,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-67-join-2-ping1",
+          "category": "ping",
+          "label": "join-2-ping1",
+          "status": 200,
+          "elapsedMs": 81.243,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-68-join-2-ping2",
+          "category": "ping",
+          "label": "join-2-ping2",
+          "status": 200,
+          "elapsedMs": 81.328,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-69-join-2-visibility",
+          "category": "query",
+          "label": "join-2-visibility",
+          "status": 200,
+          "elapsedMs": 1.438,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-70-page0-2",
+          "category": "query",
+          "label": "page0-2",
+          "status": 200,
+          "elapsedMs": 5.735,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-71-page20-2",
+          "category": "query",
+          "label": "page20-2",
+          "status": 200,
+          "elapsedMs": 6.922,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-72-page20-2-write",
+          "category": "write",
+          "label": "page20-2-write",
+          "status": 200,
+          "elapsedMs": 95.226,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-73-page20-2-ping0",
+          "category": "ping",
+          "label": "page20-2-ping0",
+          "status": 200,
+          "elapsedMs": 92.799,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-74-page20-2-ping1",
+          "category": "ping",
+          "label": "page20-2-ping1",
+          "status": 200,
+          "elapsedMs": 81.475,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-75-page20-2-ping2",
+          "category": "ping",
+          "label": "page20-2-ping2",
+          "status": 200,
+          "elapsedMs": 81.455,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-76-page20-2-visibility",
+          "category": "query",
+          "label": "page20-2-visibility",
+          "status": 200,
+          "elapsedMs": 1.472,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-77-bounded-page0-2",
+          "category": "query",
+          "label": "bounded-page0-2",
+          "status": 200,
+          "elapsedMs": 2.173,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-78-bounded-page0-2-write",
+          "category": "write",
+          "label": "bounded-page0-2-write",
+          "status": 200,
+          "elapsedMs": 93.801,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-79-bounded-page0-2-ping0",
+          "category": "ping",
+          "label": "bounded-page0-2-ping0",
+          "status": 200,
+          "elapsedMs": 94.023,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-80-bounded-page0-2-ping1",
+          "category": "ping",
+          "label": "bounded-page0-2-ping1",
+          "status": 200,
+          "elapsedMs": 88.978,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-81-bounded-page0-2-ping2",
+          "category": "ping",
+          "label": "bounded-page0-2-ping2",
+          "status": 200,
+          "elapsedMs": 74.343,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-82-bounded-page0-2-visibility",
+          "category": "query",
+          "label": "bounded-page0-2-visibility",
+          "status": 200,
+          "elapsedMs": 1.237,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-83-bounded-page20-2",
+          "category": "query",
+          "label": "bounded-page20-2",
+          "status": 200,
+          "elapsedMs": 2.086,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "585-84-bounded-page20-2-write",
+          "category": "write",
+          "label": "bounded-page20-2-write",
+          "status": 200,
+          "elapsedMs": 89.3,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-85-bounded-page20-2-ping0",
+          "category": "ping",
+          "label": "bounded-page20-2-ping0",
+          "status": 200,
+          "elapsedMs": 75.626,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-86-bounded-page20-2-ping1",
+          "category": "ping",
+          "label": "bounded-page20-2-ping1",
+          "status": 200,
+          "elapsedMs": 75.754,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-87-bounded-page20-2-ping2",
+          "category": "ping",
+          "label": "bounded-page20-2-ping2",
+          "status": 200,
+          "elapsedMs": 76.159,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-88-bounded-page20-2-visibility",
+          "category": "query",
+          "label": "bounded-page20-2-visibility",
+          "status": 200,
+          "elapsedMs": 2.182,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-89-pagerank",
+          "category": "query",
+          "label": "pagerank",
+          "status": 200,
+          "elapsedMs": 6.923,
+          "outcome": "success",
+          "rowCount": 10,
+          "truncated": false
+        },
+        {
+          "requestId": "585-90-pagerank-write",
+          "category": "write",
+          "label": "pagerank-write",
+          "status": 200,
+          "elapsedMs": 96.188,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-91-pagerank-ping0",
+          "category": "ping",
+          "label": "pagerank-ping0",
+          "status": 200,
+          "elapsedMs": 90.501,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-92-pagerank-ping1",
+          "category": "ping",
+          "label": "pagerank-ping1",
+          "status": 200,
+          "elapsedMs": 90.471,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-93-pagerank-ping2",
+          "category": "ping",
+          "label": "pagerank-ping2",
+          "status": 200,
+          "elapsedMs": 76.294,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-94-pagerank-visibility",
+          "category": "query",
+          "label": "pagerank-visibility",
+          "status": 200,
+          "elapsedMs": 1.874,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-95-deadline-0",
+          "category": "query",
+          "label": "deadline-0",
+          "status": 408,
+          "elapsedMs": 6.228,
+          "outcome": "deadline",
+          "code": "TDB_QUERY_CANCELLED"
+        },
+        {
+          "requestId": "585-96-deadline-0-write",
+          "category": "write",
+          "label": "deadline-0-write",
+          "status": 200,
+          "elapsedMs": 100.772,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-97-deadline-0-ping0",
+          "category": "ping",
+          "label": "deadline-0-ping0",
+          "status": 200,
+          "elapsedMs": 96.262,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-98-deadline-0-ping1",
+          "category": "ping",
+          "label": "deadline-0-ping1",
+          "status": 200,
+          "elapsedMs": 96.616,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-99-deadline-0-ping2",
+          "category": "ping",
+          "label": "deadline-0-ping2",
+          "status": 200,
+          "elapsedMs": 89.582,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-100-deadline-0-visibility",
+          "category": "query",
+          "label": "deadline-0-visibility",
+          "status": 200,
+          "elapsedMs": 1.73,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "585-101-after-timeout-probes",
+          "category": "write",
+          "label": "after-timeout-probes",
+          "status": 200,
+          "elapsedMs": 93.563,
+          "outcome": "success"
+        },
+        {
+          "requestId": "585-102-after-timeout-probes-read",
+          "category": "query",
+          "label": "after-timeout-probes-read",
+          "status": 200,
+          "elapsedMs": 1.95,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        }
+      ],
+      "outcomes": {
+        "success": 31,
+        "budget": 0,
+        "deadline": 1,
+        "busy": 0,
+        "error": 0
+      },
+      "deadlineObserved": true,
+      "pagination": {
+        "successfulRequests": 6,
+        "rejectedRequests": 0
+      },
+      "boundedPagination": {
+        "successfulRequests": 6,
+        "rejectedRequests": 0
+      },
+      "client": {
+        "query": {
+          "count": 32,
+          "minMs": 1.237,
+          "p50Ms": 2.023,
+          "p95Ms": 6.923,
+          "maxMs": 7.371
+        },
+        "ping": {
+          "count": 42,
+          "minMs": 70.807,
+          "p50Ms": 82.682,
+          "p95Ms": 96.576,
+          "maxMs": 99.596
+        },
+        "write": {
+          "count": 15,
+          "minMs": 89.3,
+          "p50Ms": 93.894,
+          "p95Ms": 100.772,
+          "maxMs": 100.772
+        },
+        "baselinePing": {
+          "count": 9,
+          "minMs": 4.577,
+          "p50Ms": 87.919,
+          "p95Ms": 102.661,
+          "maxMs": 102.661
+        },
+        "baselineWrite": {
+          "count": 3,
+          "minMs": 89.135,
+          "p50Ms": 97.585,
+          "p95Ms": 104.986,
+          "maxMs": 104.986
+        }
+      },
+      "host": {
+        "queryNative": {
+          "count": 32,
+          "minMs": 0.377,
+          "p50Ms": 0.653,
+          "p95Ms": 5.397,
+          "maxMs": 5.731
+        },
+        "writeFlush": {
+          "count": 18,
+          "minMs": 85.803,
+          "p50Ms": 90.809,
+          "p95Ms": 94.617,
+          "maxMs": 94.617
+        },
+        "eventLoopLag": {
+          "count": 33,
+          "minMs": 0,
+          "p50Ms": 85.261,
+          "p95Ms": 93.032,
+          "maxMs": 94.852
+        },
+        "nativeCalls": [
+          {
+            "requestId": "585-2-baseline-0-write",
+            "method": "flush",
+            "elapsedMs": 93.375
+          },
+          {
+            "requestId": "585-6-join-0",
+            "method": "consoleRequest",
+            "elapsedMs": 1.111
+          },
+          {
+            "requestId": "585-7-join-0-write",
+            "method": "flush",
+            "elapsedMs": 91.47
+          },
+          {
+            "requestId": "585-11-join-0-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.377
+          },
+          {
+            "requestId": "585-12-page0-0",
+            "method": "consoleRequest",
+            "elapsedMs": 5.731
+          },
+          {
+            "requestId": "585-13-page20-0",
+            "method": "consoleRequest",
+            "elapsedMs": 3.939
+          },
+          {
+            "requestId": "585-14-page20-0-write",
+            "method": "flush",
+            "elapsedMs": 92.035
+          },
+          {
+            "requestId": "585-18-page20-0-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.578
+          },
+          {
+            "requestId": "585-19-bounded-page0-0",
+            "method": "consoleRequest",
+            "elapsedMs": 0.631
+          },
+          {
+            "requestId": "585-20-bounded-page0-0-write",
+            "method": "flush",
+            "elapsedMs": 90.193
+          },
+          {
+            "requestId": "585-24-bounded-page0-0-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.406
+          },
+          {
+            "requestId": "585-25-bounded-page20-0",
+            "method": "consoleRequest",
+            "elapsedMs": 0.653
+          },
+          {
+            "requestId": "585-26-bounded-page20-0-write",
+            "method": "flush",
+            "elapsedMs": 89.003
+          },
+          {
+            "requestId": "585-30-bounded-page20-0-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.416
+          },
+          {
+            "requestId": "585-31-baseline-1-write",
+            "method": "flush",
+            "elapsedMs": 85.803
+          },
+          {
+            "requestId": "585-35-join-1",
+            "method": "consoleRequest",
+            "elapsedMs": 1.157
+          },
+          {
+            "requestId": "585-36-join-1-write",
+            "method": "flush",
+            "elapsedMs": 90.352
+          },
+          {
+            "requestId": "585-40-join-1-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.549
+          },
+          {
+            "requestId": "585-41-page0-1",
+            "method": "consoleRequest",
+            "elapsedMs": 3.757
+          },
+          {
+            "requestId": "585-42-page20-1",
+            "method": "consoleRequest",
+            "elapsedMs": 4.184
+          },
+          {
+            "requestId": "585-43-page20-1-write",
+            "method": "flush",
+            "elapsedMs": 92.139
+          },
+          {
+            "requestId": "585-47-page20-1-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.48
+          },
+          {
+            "requestId": "585-48-bounded-page0-1",
+            "method": "consoleRequest",
+            "elapsedMs": 0.883
+          },
+          {
+            "requestId": "585-49-bounded-page0-1-write",
+            "method": "flush",
+            "elapsedMs": 88.946
+          },
+          {
+            "requestId": "585-53-bounded-page0-1-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.662
+          },
+          {
+            "requestId": "585-54-bounded-page20-1",
+            "method": "consoleRequest",
+            "elapsedMs": 0.683
+          },
+          {
+            "requestId": "585-55-bounded-page20-1-write",
+            "method": "flush",
+            "elapsedMs": 90.083
+          },
+          {
+            "requestId": "585-59-bounded-page20-1-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.694
+          },
+          {
+            "requestId": "585-60-baseline-2-write",
+            "method": "flush",
+            "elapsedMs": 94.617
+          },
+          {
+            "requestId": "585-64-join-2",
+            "method": "consoleRequest",
+            "elapsedMs": 1.085
+          },
+          {
+            "requestId": "585-65-join-2-write",
+            "method": "flush",
+            "elapsedMs": 91.486
+          },
+          {
+            "requestId": "585-69-join-2-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.398
+          },
+          {
+            "requestId": "585-70-page0-2",
+            "method": "consoleRequest",
+            "elapsedMs": 4.189
+          },
+          {
+            "requestId": "585-71-page20-2",
+            "method": "consoleRequest",
+            "elapsedMs": 5.397
+          },
+          {
+            "requestId": "585-72-page20-2-write",
+            "method": "flush",
+            "elapsedMs": 89.313
+          },
+          {
+            "requestId": "585-76-page20-2-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.463
+          },
+          {
+            "requestId": "585-77-bounded-page0-2",
+            "method": "consoleRequest",
+            "elapsedMs": 0.865
+          },
+          {
+            "requestId": "585-78-bounded-page0-2-write",
+            "method": "flush",
+            "elapsedMs": 91.326
+          },
+          {
+            "requestId": "585-82-bounded-page0-2-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.389
+          },
+          {
+            "requestId": "585-83-bounded-page20-2",
+            "method": "consoleRequest",
+            "elapsedMs": 0.589
+          },
+          {
+            "requestId": "585-84-bounded-page20-2-write",
+            "method": "flush",
+            "elapsedMs": 86.686
+          },
+          {
+            "requestId": "585-88-bounded-page20-2-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.525
+          },
+          {
+            "requestId": "585-89-pagerank",
+            "method": "consoleRequest",
+            "elapsedMs": 5.349
+          },
+          {
+            "requestId": "585-90-pagerank-write",
+            "method": "flush",
+            "elapsedMs": 93.046
+          },
+          {
+            "requestId": "585-94-pagerank-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.607
+          },
+          {
+            "requestId": "585-95-deadline-0",
+            "method": "consoleRequest",
+            "elapsedMs": 4.603,
+            "code": "TDB_QUERY_CANCELLED"
+          },
+          {
+            "requestId": "585-96-deadline-0-write",
+            "method": "flush",
+            "elapsedMs": 92.767
+          },
+          {
+            "requestId": "585-100-deadline-0-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 0.481
+          },
+          {
+            "requestId": "585-101-after-timeout-probes",
+            "method": "flush",
+            "elapsedMs": 90.809
+          },
+          {
+            "requestId": "585-102-after-timeout-probes-read",
+            "method": "consoleRequest",
+            "elapsedMs": 0.646
+          }
+        ],
+        "requests": [
+          {
+            "requestId": "585-1-connection-warmup",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 6.692
+          },
+          {
+            "requestId": "585-3-baseline-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.479
+          },
+          {
+            "requestId": "585-2-baseline-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 99.323
+          },
+          {
+            "requestId": "585-5-baseline-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.209
+          },
+          {
+            "requestId": "585-4-baseline-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.083
+          },
+          {
+            "requestId": "585-6-join-0",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 2.824
+          },
+          {
+            "requestId": "585-7-join-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 95.317
+          },
+          {
+            "requestId": "585-8-join-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.534
+          },
+          {
+            "requestId": "585-9-join-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.277
+          },
+          {
+            "requestId": "585-10-join-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.761
+          },
+          {
+            "requestId": "585-11-join-0-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.228
+          },
+          {
+            "requestId": "585-12-page0-0",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.382
+          },
+          {
+            "requestId": "585-13-page20-0",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 4.714
+          },
+          {
+            "requestId": "585-14-page20-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 94.969
+          },
+          {
+            "requestId": "585-15-page20-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.197
+          },
+          {
+            "requestId": "585-16-page20-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.89
+          },
+          {
+            "requestId": "585-17-page20-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.695
+          },
+          {
+            "requestId": "585-18-page20-0-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.159
+          },
+          {
+            "requestId": "585-19-bounded-page0-0",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.21
+          },
+          {
+            "requestId": "585-20-bounded-page0-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 92.84
+          },
+          {
+            "requestId": "585-21-bounded-page0-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.88
+          },
+          {
+            "requestId": "585-22-bounded-page0-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.019
+          },
+          {
+            "requestId": "585-23-bounded-page0-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.011
+          },
+          {
+            "requestId": "585-24-bounded-page0-0-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.183
+          },
+          {
+            "requestId": "585-25-bounded-page20-0",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.159
+          },
+          {
+            "requestId": "585-26-bounded-page20-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 92.247
+          },
+          {
+            "requestId": "585-27-bounded-page20-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.797
+          },
+          {
+            "requestId": "585-28-bounded-page20-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.604
+          },
+          {
+            "requestId": "585-29-bounded-page20-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.552
+          },
+          {
+            "requestId": "585-30-bounded-page20-0-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 0.968
+          },
+          {
+            "requestId": "585-31-baseline-1-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 88.952
+          },
+          {
+            "requestId": "585-32-baseline-1-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.047
+          },
+          {
+            "requestId": "585-33-baseline-1-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.997
+          },
+          {
+            "requestId": "585-34-baseline-1-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.621
+          },
+          {
+            "requestId": "585-35-join-1",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.852
+          },
+          {
+            "requestId": "585-36-join-1-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 93.158
+          },
+          {
+            "requestId": "585-37-join-1-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.321
+          },
+          {
+            "requestId": "585-38-join-1-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.738
+          },
+          {
+            "requestId": "585-39-join-1-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.67
+          },
+          {
+            "requestId": "585-40-join-1-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 0.985
+          },
+          {
+            "requestId": "585-41-page0-1",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 4.521
+          },
+          {
+            "requestId": "585-42-page20-1",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 5.24
+          },
+          {
+            "requestId": "585-43-page20-1-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 95.196
+          },
+          {
+            "requestId": "585-44-page20-1-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.032
+          },
+          {
+            "requestId": "585-45-page20-1-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.85
+          },
+          {
+            "requestId": "585-46-page20-1-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.667
+          },
+          {
+            "requestId": "585-47-page20-1-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.001
+          },
+          {
+            "requestId": "585-48-bounded-page0-1",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.341
+          },
+          {
+            "requestId": "585-49-bounded-page0-1-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 91.554
+          },
+          {
+            "requestId": "585-50-bounded-page0-1-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.019
+          },
+          {
+            "requestId": "585-51-bounded-page0-1-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.916
+          },
+          {
+            "requestId": "585-52-bounded-page0-1-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.751
+          },
+          {
+            "requestId": "585-53-bounded-page0-1-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.12
+          },
+          {
+            "requestId": "585-54-bounded-page20-1",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.14
+          },
+          {
+            "requestId": "585-55-bounded-page20-1-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 92.557
+          },
+          {
+            "requestId": "585-56-bounded-page20-1-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.201
+          },
+          {
+            "requestId": "585-57-bounded-page20-1-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.96
+          },
+          {
+            "requestId": "585-58-bounded-page20-1-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.787
+          },
+          {
+            "requestId": "585-59-bounded-page20-1-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.177
+          },
+          {
+            "requestId": "585-60-baseline-2-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 97.123
+          },
+          {
+            "requestId": "585-61-baseline-2-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.121
+          },
+          {
+            "requestId": "585-62-baseline-2-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.596
+          },
+          {
+            "requestId": "585-63-baseline-2-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.634
+          },
+          {
+            "requestId": "585-64-join-2",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.587
+          },
+          {
+            "requestId": "585-65-join-2-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 94.524
+          },
+          {
+            "requestId": "585-66-join-2-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.887
+          },
+          {
+            "requestId": "585-67-join-2-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.125
+          },
+          {
+            "requestId": "585-68-join-2-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.659
+          },
+          {
+            "requestId": "585-69-join-2-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 0.778
+          },
+          {
+            "requestId": "585-70-page0-2",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 4.807
+          },
+          {
+            "requestId": "585-71-page20-2",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.019
+          },
+          {
+            "requestId": "585-72-page20-2-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 91.963
+          },
+          {
+            "requestId": "585-73-page20-2-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.721
+          },
+          {
+            "requestId": "585-74-page20-2-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.573
+          },
+          {
+            "requestId": "585-75-page20-2-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.489
+          },
+          {
+            "requestId": "585-76-page20-2-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 0.789
+          },
+          {
+            "requestId": "585-77-bounded-page0-2",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.488
+          },
+          {
+            "requestId": "585-78-bounded-page0-2-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 93.523
+          },
+          {
+            "requestId": "585-79-bounded-page0-2-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.735
+          },
+          {
+            "requestId": "585-80-bounded-page0-2-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.551
+          },
+          {
+            "requestId": "585-81-bounded-page0-2-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.587
+          },
+          {
+            "requestId": "585-82-bounded-page0-2-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 0.745
+          },
+          {
+            "requestId": "585-83-bounded-page20-2",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.149
+          },
+          {
+            "requestId": "585-84-bounded-page20-2-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 89.08
+          },
+          {
+            "requestId": "585-85-bounded-page20-2-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.887
+          },
+          {
+            "requestId": "585-86-bounded-page20-2-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.602
+          },
+          {
+            "requestId": "585-87-bounded-page20-2-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.495
+          },
+          {
+            "requestId": "585-88-bounded-page20-2-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.02
+          },
+          {
+            "requestId": "585-89-pagerank",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.308
+          },
+          {
+            "requestId": "585-90-pagerank-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 95.89
+          },
+          {
+            "requestId": "585-91-pagerank-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.729
+          },
+          {
+            "requestId": "585-92-pagerank-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.678
+          },
+          {
+            "requestId": "585-93-pagerank-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.527
+          },
+          {
+            "requestId": "585-94-pagerank-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.14
+          },
+          {
+            "requestId": "585-95-deadline-0",
+            "method": "POST",
+            "status": 408,
+            "elapsedMs": 5.58
+          },
+          {
+            "requestId": "585-96-deadline-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 95.221
+          },
+          {
+            "requestId": "585-97-deadline-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.854
+          },
+          {
+            "requestId": "585-98-deadline-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.823
+          },
+          {
+            "requestId": "585-99-deadline-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.594
+          },
+          {
+            "requestId": "585-100-deadline-0-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.056
+          },
+          {
+            "requestId": "585-101-after-timeout-probes",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 93.398
+          },
+          {
+            "requestId": "585-102-after-timeout-probes-read",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 1.193
+          }
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "fixture": {
+        "nodes": 5000,
+        "hubs": 17,
+        "businessEdges": 10981,
+        "boundedPageWorkingSet": 64,
+        "seedMs": 15239.264
+      },
+      "checks": [
+        {
+          "ok": true,
+          "label": "baseline-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "baseline-0: write-only concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-0: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-0: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-0: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-0: parameters select the expected hub"
+        },
+        {
+          "ok": true,
+          "label": "page20-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-0: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "page20-0: query completes or is explicitly bounded",
+          "details": {
+            "status": 422,
+            "code": "TDB_QUERY_BUDGET"
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-0: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page-0: large full-input pagination is explicitly rejected, not counted as successful pagination",
+          "details": {
+            "first": "budget",
+            "second": "budget"
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-0: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-0: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-0: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-0: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-0: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-0: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page-0: parameter-filtered working set sorts into the exact expected two pages"
+        },
+        {
+          "ok": true,
+          "label": "baseline-1-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "baseline-1: write-only concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-1-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-1: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-1: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-1: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-1: parameters select the expected hub"
+        },
+        {
+          "ok": true,
+          "label": "page20-1-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-1: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "page20-1: query completes or is explicitly bounded",
+          "details": {
+            "status": 422,
+            "code": "TDB_QUERY_BUDGET"
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-1: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page-1: large full-input pagination is explicitly rejected, not counted as successful pagination",
+          "details": {
+            "first": "budget",
+            "second": "budget"
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-1-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-1: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-1: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-1: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-1-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-1: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-1: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-1: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page-1: parameter-filtered working set sorts into the exact expected two pages"
+        },
+        {
+          "ok": true,
+          "label": "baseline-2-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "baseline-2: write-only concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-2-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-2: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "join-2: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-2: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "join-2: parameters select the expected hub"
+        },
+        {
+          "ok": true,
+          "label": "page20-2-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-2: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "page20-2: query completes or is explicitly bounded",
+          "details": {
+            "status": 422,
+            "code": "TDB_QUERY_BUDGET"
+          }
+        },
+        {
+          "ok": true,
+          "label": "page20-2: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "page-2: large full-input pagination is explicitly rejected, not counted as successful pagination",
+          "details": {
+            "first": "budget",
+            "second": "budget"
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-2-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-2: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-2: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page0-2: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-2-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-2: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-2: query succeeds",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page20-2: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "bounded-page-2: parameter-filtered working set sorts into the exact expected two pages"
+        },
+        {
+          "ok": true,
+          "label": "pagerank-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "pagerank: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "pagerank: query completes or is explicitly bounded",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "pagerank: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "deadline-0-write: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "deadline-0: concurrent status pings complete"
+        },
+        {
+          "ok": true,
+          "label": "deadline-0: query completes or is explicitly bounded",
+          "details": {
+            "status": 408,
+            "code": "TDB_QUERY_CANCELLED"
+          }
+        },
+        {
+          "ok": true,
+          "label": "deadline-0: a read after the confirmed write sees its current value",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "after-timeout-probes: HTTP write acknowledged its exact payload",
+          "details": {
+            "status": 200
+          }
+        },
+        {
+          "ok": true,
+          "label": "write and read remain usable after the deadline probes"
+        },
+        {
+          "ok": true,
+          "label": "HTTP reads and marker updates preserve the fixture's node count"
+        }
+      ],
+      "samples": [
+        {
+          "requestId": "5000-1-connection-warmup",
+          "category": "warmup",
+          "label": "connection-warmup",
+          "status": 200,
+          "elapsedMs": 24.405,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-3-baseline-0-ping0",
+          "category": "baselinePing",
+          "label": "baseline-0-ping0",
+          "status": 200,
+          "elapsedMs": 3.557,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-2-baseline-0-write",
+          "category": "baselineWrite",
+          "label": "baseline-0-write",
+          "status": 200,
+          "elapsedMs": 288.139,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-5-baseline-0-ping2",
+          "category": "baselinePing",
+          "label": "baseline-0-ping2",
+          "status": 200,
+          "elapsedMs": 266.819,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-4-baseline-0-ping1",
+          "category": "baselinePing",
+          "label": "baseline-0-ping1",
+          "status": 200,
+          "elapsedMs": 288.517,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-6-join-0",
+          "category": "query",
+          "label": "join-0",
+          "status": 200,
+          "elapsedMs": 6.643,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-7-join-0-write",
+          "category": "write",
+          "label": "join-0-write",
+          "status": 200,
+          "elapsedMs": 280.597,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-8-join-0-ping0",
+          "category": "ping",
+          "label": "join-0-ping0",
+          "status": 200,
+          "elapsedMs": 281.989,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-9-join-0-ping1",
+          "category": "ping",
+          "label": "join-0-ping1",
+          "status": 200,
+          "elapsedMs": 279.208,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-10-join-0-ping2",
+          "category": "ping",
+          "label": "join-0-ping2",
+          "status": 200,
+          "elapsedMs": 262.982,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-11-join-0-visibility",
+          "category": "query",
+          "label": "join-0-visibility",
+          "status": 200,
+          "elapsedMs": 6.966,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-12-page0-0",
+          "category": "query",
+          "label": "page0-0",
+          "status": 422,
+          "elapsedMs": 15.904,
+          "outcome": "budget",
+          "code": "TDB_QUERY_BUDGET"
+        },
+        {
+          "requestId": "5000-13-page20-0",
+          "category": "query",
+          "label": "page20-0",
+          "status": 422,
+          "elapsedMs": 13.569,
+          "outcome": "budget",
+          "code": "TDB_QUERY_BUDGET"
+        },
+        {
+          "requestId": "5000-14-page20-0-write",
+          "category": "write",
+          "label": "page20-0-write",
+          "status": 200,
+          "elapsedMs": 280.746,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-15-page20-0-ping0",
+          "category": "ping",
+          "label": "page20-0-ping0",
+          "status": 200,
+          "elapsedMs": 282.033,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-16-page20-0-ping1",
+          "category": "ping",
+          "label": "page20-0-ping1",
+          "status": 200,
+          "elapsedMs": 277.56,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-17-page20-0-ping2",
+          "category": "ping",
+          "label": "page20-0-ping2",
+          "status": 200,
+          "elapsedMs": 270.579,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-18-page20-0-visibility",
+          "category": "query",
+          "label": "page20-0-visibility",
+          "status": 200,
+          "elapsedMs": 6.318,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-19-bounded-page0-0",
+          "category": "query",
+          "label": "bounded-page0-0",
+          "status": 200,
+          "elapsedMs": 7.428,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-20-bounded-page0-0-write",
+          "category": "write",
+          "label": "bounded-page0-0-write",
+          "status": 200,
+          "elapsedMs": 273.193,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-21-bounded-page0-0-ping0",
+          "category": "ping",
+          "label": "bounded-page0-0-ping0",
+          "status": 200,
+          "elapsedMs": 274.166,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-22-bounded-page0-0-ping1",
+          "category": "ping",
+          "label": "bounded-page0-0-ping1",
+          "status": 200,
+          "elapsedMs": 269.722,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-23-bounded-page0-0-ping2",
+          "category": "ping",
+          "label": "bounded-page0-0-ping2",
+          "status": 200,
+          "elapsedMs": 262.006,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-24-bounded-page0-0-visibility",
+          "category": "query",
+          "label": "bounded-page0-0-visibility",
+          "status": 200,
+          "elapsedMs": 7.578,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-25-bounded-page20-0",
+          "category": "query",
+          "label": "bounded-page20-0",
+          "status": 200,
+          "elapsedMs": 5.918,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-26-bounded-page20-0-write",
+          "category": "write",
+          "label": "bounded-page20-0-write",
+          "status": 200,
+          "elapsedMs": 276.179,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-27-bounded-page20-0-ping0",
+          "category": "ping",
+          "label": "bounded-page20-0-ping0",
+          "status": 200,
+          "elapsedMs": 272.77,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-28-bounded-page20-0-ping1",
+          "category": "ping",
+          "label": "bounded-page20-0-ping1",
+          "status": 200,
+          "elapsedMs": 273.982,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-29-bounded-page20-0-ping2",
+          "category": "ping",
+          "label": "bounded-page20-0-ping2",
+          "status": 200,
+          "elapsedMs": 258.013,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-30-bounded-page20-0-visibility",
+          "category": "query",
+          "label": "bounded-page20-0-visibility",
+          "status": 200,
+          "elapsedMs": 6.59,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-31-baseline-1-write",
+          "category": "baselineWrite",
+          "label": "baseline-1-write",
+          "status": 200,
+          "elapsedMs": 269,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-32-baseline-1-ping0",
+          "category": "baselinePing",
+          "label": "baseline-1-ping0",
+          "status": 200,
+          "elapsedMs": 259.263,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-33-baseline-1-ping1",
+          "category": "baselinePing",
+          "label": "baseline-1-ping1",
+          "status": 200,
+          "elapsedMs": 259.761,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-34-baseline-1-ping2",
+          "category": "baselinePing",
+          "label": "baseline-1-ping2",
+          "status": 200,
+          "elapsedMs": 260.389,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-35-join-1",
+          "category": "query",
+          "label": "join-1",
+          "status": 200,
+          "elapsedMs": 3.666,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-36-join-1-write",
+          "category": "write",
+          "label": "join-1-write",
+          "status": 200,
+          "elapsedMs": 806.535,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-37-join-1-ping0",
+          "category": "ping",
+          "label": "join-1-ping0",
+          "status": 200,
+          "elapsedMs": 807.511,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-38-join-1-ping1",
+          "category": "ping",
+          "label": "join-1-ping1",
+          "status": 200,
+          "elapsedMs": 794.952,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-39-join-1-ping2",
+          "category": "ping",
+          "label": "join-1-ping2",
+          "status": 200,
+          "elapsedMs": 795.888,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-40-join-1-visibility",
+          "category": "query",
+          "label": "join-1-visibility",
+          "status": 200,
+          "elapsedMs": 7.167,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-41-page0-1",
+          "category": "query",
+          "label": "page0-1",
+          "status": 422,
+          "elapsedMs": 12.044,
+          "outcome": "budget",
+          "code": "TDB_QUERY_BUDGET"
+        },
+        {
+          "requestId": "5000-42-page20-1",
+          "category": "query",
+          "label": "page20-1",
+          "status": 422,
+          "elapsedMs": 12.745,
+          "outcome": "budget",
+          "code": "TDB_QUERY_BUDGET"
+        },
+        {
+          "requestId": "5000-43-page20-1-write",
+          "category": "write",
+          "label": "page20-1-write",
+          "status": 200,
+          "elapsedMs": 270.848,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-44-page20-1-ping0",
+          "category": "ping",
+          "label": "page20-1-ping0",
+          "status": 200,
+          "elapsedMs": 272.191,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-45-page20-1-ping1",
+          "category": "ping",
+          "label": "page20-1-ping1",
+          "status": 200,
+          "elapsedMs": 262.473,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-46-page20-1-ping2",
+          "category": "ping",
+          "label": "page20-1-ping2",
+          "status": 200,
+          "elapsedMs": 263.514,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-47-page20-1-visibility",
+          "category": "query",
+          "label": "page20-1-visibility",
+          "status": 200,
+          "elapsedMs": 7.416,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-48-bounded-page0-1",
+          "category": "query",
+          "label": "bounded-page0-1",
+          "status": 200,
+          "elapsedMs": 7.348,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-49-bounded-page0-1-write",
+          "category": "write",
+          "label": "bounded-page0-1-write",
+          "status": 200,
+          "elapsedMs": 270.236,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-50-bounded-page0-1-ping0",
+          "category": "ping",
+          "label": "bounded-page0-1-ping0",
+          "status": 200,
+          "elapsedMs": 272.018,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-51-bounded-page0-1-ping1",
+          "category": "ping",
+          "label": "bounded-page0-1-ping1",
+          "status": 200,
+          "elapsedMs": 255.324,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-52-bounded-page0-1-ping2",
+          "category": "ping",
+          "label": "bounded-page0-1-ping2",
+          "status": 200,
+          "elapsedMs": 255.85,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-53-bounded-page0-1-visibility",
+          "category": "query",
+          "label": "bounded-page0-1-visibility",
+          "status": 200,
+          "elapsedMs": 6.323,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-54-bounded-page20-1",
+          "category": "query",
+          "label": "bounded-page20-1",
+          "status": 200,
+          "elapsedMs": 7.298,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-55-bounded-page20-1-write",
+          "category": "write",
+          "label": "bounded-page20-1-write",
+          "status": 200,
+          "elapsedMs": 238.159,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-56-bounded-page20-1-ping0",
+          "category": "ping",
+          "label": "bounded-page20-1-ping0",
+          "status": 200,
+          "elapsedMs": 239.86,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-57-bounded-page20-1-ping1",
+          "category": "ping",
+          "label": "bounded-page20-1-ping1",
+          "status": 200,
+          "elapsedMs": 234.496,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-58-bounded-page20-1-ping2",
+          "category": "ping",
+          "label": "bounded-page20-1-ping2",
+          "status": 200,
+          "elapsedMs": 220.165,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-59-bounded-page20-1-visibility",
+          "category": "query",
+          "label": "bounded-page20-1-visibility",
+          "status": 200,
+          "elapsedMs": 6.897,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-60-baseline-2-write",
+          "category": "baselineWrite",
+          "label": "baseline-2-write",
+          "status": 200,
+          "elapsedMs": 247.187,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-61-baseline-2-ping0",
+          "category": "baselinePing",
+          "label": "baseline-2-ping0",
+          "status": 200,
+          "elapsedMs": 248.291,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-62-baseline-2-ping1",
+          "category": "baselinePing",
+          "label": "baseline-2-ping1",
+          "status": 200,
+          "elapsedMs": 231.198,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-63-baseline-2-ping2",
+          "category": "baselinePing",
+          "label": "baseline-2-ping2",
+          "status": 200,
+          "elapsedMs": 231.974,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-64-join-2",
+          "category": "query",
+          "label": "join-2",
+          "status": 200,
+          "elapsedMs": 4.291,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-65-join-2-write",
+          "category": "write",
+          "label": "join-2-write",
+          "status": 200,
+          "elapsedMs": 233.793,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-66-join-2-ping0",
+          "category": "ping",
+          "label": "join-2-ping0",
+          "status": 200,
+          "elapsedMs": 231.992,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-67-join-2-ping1",
+          "category": "ping",
+          "label": "join-2-ping1",
+          "status": 200,
+          "elapsedMs": 224.741,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-68-join-2-ping2",
+          "category": "ping",
+          "label": "join-2-ping2",
+          "status": 200,
+          "elapsedMs": 225.235,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-69-join-2-visibility",
+          "category": "query",
+          "label": "join-2-visibility",
+          "status": 200,
+          "elapsedMs": 6.759,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-70-page0-2",
+          "category": "query",
+          "label": "page0-2",
+          "status": 422,
+          "elapsedMs": 12.413,
+          "outcome": "budget",
+          "code": "TDB_QUERY_BUDGET"
+        },
+        {
+          "requestId": "5000-71-page20-2",
+          "category": "query",
+          "label": "page20-2",
+          "status": 422,
+          "elapsedMs": 14.637,
+          "outcome": "budget",
+          "code": "TDB_QUERY_BUDGET"
+        },
+        {
+          "requestId": "5000-72-page20-2-write",
+          "category": "write",
+          "label": "page20-2-write",
+          "status": 200,
+          "elapsedMs": 242.238,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-73-page20-2-ping0",
+          "category": "ping",
+          "label": "page20-2-ping0",
+          "status": 200,
+          "elapsedMs": 230.176,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-74-page20-2-ping1",
+          "category": "ping",
+          "label": "page20-2-ping1",
+          "status": 200,
+          "elapsedMs": 230.722,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-75-page20-2-ping2",
+          "category": "ping",
+          "label": "page20-2-ping2",
+          "status": 200,
+          "elapsedMs": 231.515,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-76-page20-2-visibility",
+          "category": "query",
+          "label": "page20-2-visibility",
+          "status": 200,
+          "elapsedMs": 7.267,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-77-bounded-page0-2",
+          "category": "query",
+          "label": "bounded-page0-2",
+          "status": 200,
+          "elapsedMs": 7.139,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-78-bounded-page0-2-write",
+          "category": "write",
+          "label": "bounded-page0-2-write",
+          "status": 200,
+          "elapsedMs": 230.132,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-79-bounded-page0-2-ping0",
+          "category": "ping",
+          "label": "bounded-page0-2-ping0",
+          "status": 200,
+          "elapsedMs": 225.216,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-80-bounded-page0-2-ping1",
+          "category": "ping",
+          "label": "bounded-page0-2-ping1",
+          "status": 200,
+          "elapsedMs": 225.968,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-81-bounded-page0-2-ping2",
+          "category": "ping",
+          "label": "bounded-page0-2-ping2",
+          "status": 200,
+          "elapsedMs": 210.209,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-82-bounded-page0-2-visibility",
+          "category": "query",
+          "label": "bounded-page0-2-visibility",
+          "status": 200,
+          "elapsedMs": 6.871,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-83-bounded-page20-2",
+          "category": "query",
+          "label": "bounded-page20-2",
+          "status": 200,
+          "elapsedMs": 6.624,
+          "outcome": "success",
+          "rowCount": 20,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-84-bounded-page20-2-write",
+          "category": "write",
+          "label": "bounded-page20-2-write",
+          "status": 200,
+          "elapsedMs": 220.491,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-85-bounded-page20-2-ping0",
+          "category": "ping",
+          "label": "bounded-page20-2-ping0",
+          "status": 200,
+          "elapsedMs": 216.206,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-86-bounded-page20-2-ping1",
+          "category": "ping",
+          "label": "bounded-page20-2-ping1",
+          "status": 200,
+          "elapsedMs": 216.716,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-87-bounded-page20-2-ping2",
+          "category": "ping",
+          "label": "bounded-page20-2-ping2",
+          "status": 200,
+          "elapsedMs": 210.249,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-88-bounded-page20-2-visibility",
+          "category": "query",
+          "label": "bounded-page20-2-visibility",
+          "status": 200,
+          "elapsedMs": 7.247,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-89-pagerank",
+          "category": "query",
+          "label": "pagerank",
+          "status": 200,
+          "elapsedMs": 37.422,
+          "outcome": "success",
+          "rowCount": 10,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-90-pagerank-write",
+          "category": "write",
+          "label": "pagerank-write",
+          "status": 200,
+          "elapsedMs": 223.694,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-91-pagerank-ping0",
+          "category": "ping",
+          "label": "pagerank-ping0",
+          "status": 200,
+          "elapsedMs": 209.48,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-92-pagerank-ping1",
+          "category": "ping",
+          "label": "pagerank-ping1",
+          "status": 200,
+          "elapsedMs": 209.799,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-93-pagerank-ping2",
+          "category": "ping",
+          "label": "pagerank-ping2",
+          "status": 200,
+          "elapsedMs": 210.847,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-94-pagerank-visibility",
+          "category": "query",
+          "label": "pagerank-visibility",
+          "status": 200,
+          "elapsedMs": 7.049,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-95-deadline-0",
+          "category": "query",
+          "label": "deadline-0",
+          "status": 408,
+          "elapsedMs": 7.144,
+          "outcome": "deadline",
+          "code": "TDB_QUERY_CANCELLED"
+        },
+        {
+          "requestId": "5000-96-deadline-0-write",
+          "category": "write",
+          "label": "deadline-0-write",
+          "status": 200,
+          "elapsedMs": 204.447,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-97-deadline-0-ping0",
+          "category": "ping",
+          "label": "deadline-0-ping0",
+          "status": 200,
+          "elapsedMs": 205.789,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-98-deadline-0-ping1",
+          "category": "ping",
+          "label": "deadline-0-ping1",
+          "status": 200,
+          "elapsedMs": 201.395,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-99-deadline-0-ping2",
+          "category": "ping",
+          "label": "deadline-0-ping2",
+          "status": 200,
+          "elapsedMs": 186.885,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-100-deadline-0-visibility",
+          "category": "query",
+          "label": "deadline-0-visibility",
+          "status": 200,
+          "elapsedMs": 6.081,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        },
+        {
+          "requestId": "5000-101-after-timeout-probes",
+          "category": "write",
+          "label": "after-timeout-probes",
+          "status": 200,
+          "elapsedMs": 213.919,
+          "outcome": "success"
+        },
+        {
+          "requestId": "5000-102-after-timeout-probes-read",
+          "category": "query",
+          "label": "after-timeout-probes-read",
+          "status": 200,
+          "elapsedMs": 7.365,
+          "outcome": "success",
+          "rowCount": 1,
+          "truncated": false
+        }
+      ],
+      "outcomes": {
+        "success": 25,
+        "budget": 6,
+        "deadline": 1,
+        "busy": 0,
+        "error": 0
+      },
+      "deadlineObserved": true,
+      "pagination": {
+        "successfulRequests": 0,
+        "rejectedRequests": 6
+      },
+      "boundedPagination": {
+        "successfulRequests": 6,
+        "rejectedRequests": 0
+      },
+      "client": {
+        "query": {
+          "count": 32,
+          "minMs": 3.666,
+          "p50Ms": 7.144,
+          "p95Ms": 15.904,
+          "maxMs": 37.422
+        },
+        "ping": {
+          "count": 42,
+          "minMs": 186.885,
+          "p50Ms": 239.86,
+          "p95Ms": 794.952,
+          "maxMs": 807.511
+        },
+        "write": {
+          "count": 15,
+          "minMs": 204.447,
+          "p50Ms": 242.238,
+          "p95Ms": 806.535,
+          "maxMs": 806.535
+        },
+        "baselinePing": {
+          "count": 9,
+          "minMs": 3.557,
+          "p50Ms": 259.263,
+          "p95Ms": 288.517,
+          "maxMs": 288.517
+        },
+        "baselineWrite": {
+          "count": 3,
+          "minMs": 247.187,
+          "p50Ms": 269,
+          "p95Ms": 288.139,
+          "maxMs": 288.139
+        }
+      },
+      "host": {
+        "queryNative": {
+          "count": 32,
+          "minMs": 2.252,
+          "p50Ms": 5.378,
+          "p95Ms": 13.629,
+          "maxMs": 34.961
+        },
+        "writeFlush": {
+          "count": 18,
+          "minMs": 195.751,
+          "p50Ms": 242.571,
+          "p95Ms": 801.447,
+          "maxMs": 801.447
+        },
+        "eventLoopLag": {
+          "count": 58,
+          "minMs": 0,
+          "p50Ms": 5.49,
+          "p95Ms": 267.781,
+          "maxMs": 804.368
+        },
+        "nativeCalls": [
+          {
+            "requestId": "5000-2-baseline-0-write",
+            "method": "flush",
+            "elapsedMs": 274.255
+          },
+          {
+            "requestId": "5000-6-join-0",
+            "method": "consoleRequest",
+            "elapsedMs": 2.472
+          },
+          {
+            "requestId": "5000-7-join-0-write",
+            "method": "flush",
+            "elapsedMs": 270.622
+          },
+          {
+            "requestId": "5000-11-join-0-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 4.981
+          },
+          {
+            "requestId": "5000-12-page0-0",
+            "method": "consoleRequest",
+            "elapsedMs": 13.629,
+            "code": "TDB_QUERY_BUDGET"
+          },
+          {
+            "requestId": "5000-13-page20-0",
+            "method": "consoleRequest",
+            "elapsedMs": 11.63,
+            "code": "TDB_QUERY_BUDGET"
+          },
+          {
+            "requestId": "5000-14-page20-0-write",
+            "method": "flush",
+            "elapsedMs": 270.951
+          },
+          {
+            "requestId": "5000-18-page20-0-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 4.77
+          },
+          {
+            "requestId": "5000-19-bounded-page0-0",
+            "method": "consoleRequest",
+            "elapsedMs": 5.498
+          },
+          {
+            "requestId": "5000-20-bounded-page0-0-write",
+            "method": "flush",
+            "elapsedMs": 263.09
+          },
+          {
+            "requestId": "5000-24-bounded-page0-0-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 5.53
+          },
+          {
+            "requestId": "5000-25-bounded-page20-0",
+            "method": "consoleRequest",
+            "elapsedMs": 4.01
+          },
+          {
+            "requestId": "5000-26-bounded-page20-0-write",
+            "method": "flush",
+            "elapsedMs": 267.267
+          },
+          {
+            "requestId": "5000-30-bounded-page20-0-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 4.876
+          },
+          {
+            "requestId": "5000-31-baseline-1-write",
+            "method": "flush",
+            "elapsedMs": 264.65
+          },
+          {
+            "requestId": "5000-35-join-1",
+            "method": "consoleRequest",
+            "elapsedMs": 2.252
+          },
+          {
+            "requestId": "5000-36-join-1-write",
+            "method": "flush",
+            "elapsedMs": 801.447
+          },
+          {
+            "requestId": "5000-40-join-1-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 5.55
+          },
+          {
+            "requestId": "5000-41-page0-1",
+            "method": "consoleRequest",
+            "elapsedMs": 10.595,
+            "code": "TDB_QUERY_BUDGET"
+          },
+          {
+            "requestId": "5000-42-page20-1",
+            "method": "consoleRequest",
+            "elapsedMs": 11.375,
+            "code": "TDB_QUERY_BUDGET"
+          },
+          {
+            "requestId": "5000-43-page20-1-write",
+            "method": "flush",
+            "elapsedMs": 255.779
+          },
+          {
+            "requestId": "5000-47-page20-1-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 5.537
+          },
+          {
+            "requestId": "5000-48-bounded-page0-1",
+            "method": "consoleRequest",
+            "elapsedMs": 5.483
+          },
+          {
+            "requestId": "5000-49-bounded-page0-1-write",
+            "method": "flush",
+            "elapsedMs": 266.033
+          },
+          {
+            "requestId": "5000-53-bounded-page0-1-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 4.608
+          },
+          {
+            "requestId": "5000-54-bounded-page20-1",
+            "method": "consoleRequest",
+            "elapsedMs": 5.405
+          },
+          {
+            "requestId": "5000-55-bounded-page20-1-write",
+            "method": "flush",
+            "elapsedMs": 233.475
+          },
+          {
+            "requestId": "5000-59-bounded-page20-1-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 5.276
+          },
+          {
+            "requestId": "5000-60-baseline-2-write",
+            "method": "flush",
+            "elapsedMs": 242.571
+          },
+          {
+            "requestId": "5000-64-join-2",
+            "method": "consoleRequest",
+            "elapsedMs": 2.312
+          },
+          {
+            "requestId": "5000-65-join-2-write",
+            "method": "flush",
+            "elapsedMs": 226.633
+          },
+          {
+            "requestId": "5000-69-join-2-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 4.799
+          },
+          {
+            "requestId": "5000-70-page0-2",
+            "method": "consoleRequest",
+            "elapsedMs": 10.535,
+            "code": "TDB_QUERY_BUDGET"
+          },
+          {
+            "requestId": "5000-71-page20-2",
+            "method": "consoleRequest",
+            "elapsedMs": 12.142,
+            "code": "TDB_QUERY_BUDGET"
+          },
+          {
+            "requestId": "5000-72-page20-2-write",
+            "method": "flush",
+            "elapsedMs": 225.428
+          },
+          {
+            "requestId": "5000-76-page20-2-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 5.635
+          },
+          {
+            "requestId": "5000-77-bounded-page0-2",
+            "method": "consoleRequest",
+            "elapsedMs": 5.129
+          },
+          {
+            "requestId": "5000-78-bounded-page0-2-write",
+            "method": "flush",
+            "elapsedMs": 220.644
+          },
+          {
+            "requestId": "5000-82-bounded-page0-2-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 5.378
+          },
+          {
+            "requestId": "5000-83-bounded-page20-2",
+            "method": "consoleRequest",
+            "elapsedMs": 4.927
+          },
+          {
+            "requestId": "5000-84-bounded-page20-2-write",
+            "method": "flush",
+            "elapsedMs": 211.714
+          },
+          {
+            "requestId": "5000-88-bounded-page20-2-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 5.39
+          },
+          {
+            "requestId": "5000-89-pagerank",
+            "method": "consoleRequest",
+            "elapsedMs": 34.961
+          },
+          {
+            "requestId": "5000-90-pagerank-write",
+            "method": "flush",
+            "elapsedMs": 195.751
+          },
+          {
+            "requestId": "5000-94-pagerank-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 5.329
+          },
+          {
+            "requestId": "5000-95-deadline-0",
+            "method": "consoleRequest",
+            "elapsedMs": 4.849,
+            "code": "TDB_QUERY_CANCELLED"
+          },
+          {
+            "requestId": "5000-96-deadline-0-write",
+            "method": "flush",
+            "elapsedMs": 199.539
+          },
+          {
+            "requestId": "5000-100-deadline-0-visibility",
+            "method": "consoleRequest",
+            "elapsedMs": 4.4
+          },
+          {
+            "requestId": "5000-101-after-timeout-probes",
+            "method": "flush",
+            "elapsedMs": 209.675
+          },
+          {
+            "requestId": "5000-102-after-timeout-probes-read",
+            "method": "consoleRequest",
+            "elapsedMs": 5.458
+          }
+        ],
+        "requests": [
+          {
+            "requestId": "5000-1-connection-warmup",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 8.062
+          },
+          {
+            "requestId": "5000-3-baseline-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.994
+          },
+          {
+            "requestId": "5000-2-baseline-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 282.576
+          },
+          {
+            "requestId": "5000-5-baseline-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.982
+          },
+          {
+            "requestId": "5000-4-baseline-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.751
+          },
+          {
+            "requestId": "5000-6-join-0",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 4.981
+          },
+          {
+            "requestId": "5000-7-join-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 275.618
+          },
+          {
+            "requestId": "5000-8-join-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.746
+          },
+          {
+            "requestId": "5000-9-join-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.626
+          },
+          {
+            "requestId": "5000-10-join-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.251
+          },
+          {
+            "requestId": "5000-11-join-0-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.054
+          },
+          {
+            "requestId": "5000-12-page0-0",
+            "method": "POST",
+            "status": 422,
+            "elapsedMs": 14.749
+          },
+          {
+            "requestId": "5000-13-page20-0",
+            "method": "POST",
+            "status": 422,
+            "elapsedMs": 12.516
+          },
+          {
+            "requestId": "5000-14-page20-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 274.859
+          },
+          {
+            "requestId": "5000-15-page20-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.429
+          },
+          {
+            "requestId": "5000-16-page20-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.45
+          },
+          {
+            "requestId": "5000-17-page20-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.291
+          },
+          {
+            "requestId": "5000-18-page20-0-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 5.399
+          },
+          {
+            "requestId": "5000-19-bounded-page0-0",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.585
+          },
+          {
+            "requestId": "5000-20-bounded-page0-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 266.989
+          },
+          {
+            "requestId": "5000-21-bounded-page0-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.427
+          },
+          {
+            "requestId": "5000-22-bounded-page0-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.087
+          },
+          {
+            "requestId": "5000-23-bounded-page0-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.209
+          },
+          {
+            "requestId": "5000-24-bounded-page0-0-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.628
+          },
+          {
+            "requestId": "5000-25-bounded-page20-0",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 4.972
+          },
+          {
+            "requestId": "5000-26-bounded-page20-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 271.329
+          },
+          {
+            "requestId": "5000-27-bounded-page20-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.373
+          },
+          {
+            "requestId": "5000-28-bounded-page20-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.258
+          },
+          {
+            "requestId": "5000-29-bounded-page20-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.41
+          },
+          {
+            "requestId": "5000-30-bounded-page20-0-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 5.613
+          },
+          {
+            "requestId": "5000-31-baseline-1-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 268.586
+          },
+          {
+            "requestId": "5000-32-baseline-1-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.246
+          },
+          {
+            "requestId": "5000-33-baseline-1-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.215
+          },
+          {
+            "requestId": "5000-34-baseline-1-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.04
+          },
+          {
+            "requestId": "5000-35-join-1",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 3.058
+          },
+          {
+            "requestId": "5000-36-join-1-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 805.103
+          },
+          {
+            "requestId": "5000-37-join-1-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.331
+          },
+          {
+            "requestId": "5000-38-join-1-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.183
+          },
+          {
+            "requestId": "5000-39-join-1-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.221
+          },
+          {
+            "requestId": "5000-40-join-1-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.341
+          },
+          {
+            "requestId": "5000-41-page0-1",
+            "method": "POST",
+            "status": 422,
+            "elapsedMs": 11.275
+          },
+          {
+            "requestId": "5000-42-page20-1",
+            "method": "POST",
+            "status": 422,
+            "elapsedMs": 12.063
+          },
+          {
+            "requestId": "5000-43-page20-1-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 259.744
+          },
+          {
+            "requestId": "5000-44-page20-1-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.377
+          },
+          {
+            "requestId": "5000-45-page20-1-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.054
+          },
+          {
+            "requestId": "5000-46-page20-1-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.098
+          },
+          {
+            "requestId": "5000-47-page20-1-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.385
+          },
+          {
+            "requestId": "5000-48-bounded-page0-1",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.32
+          },
+          {
+            "requestId": "5000-49-bounded-page0-1-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 269.871
+          },
+          {
+            "requestId": "5000-50-bounded-page0-1-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.508
+          },
+          {
+            "requestId": "5000-51-bounded-page0-1-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.309
+          },
+          {
+            "requestId": "5000-52-bounded-page0-1-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.031
+          },
+          {
+            "requestId": "5000-53-bounded-page0-1-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 5.312
+          },
+          {
+            "requestId": "5000-54-bounded-page20-1",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.249
+          },
+          {
+            "requestId": "5000-55-bounded-page20-1-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 237.571
+          },
+          {
+            "requestId": "5000-56-bounded-page20-1-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.485
+          },
+          {
+            "requestId": "5000-57-bounded-page20-1-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.014
+          },
+          {
+            "requestId": "5000-58-bounded-page20-1-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.028
+          },
+          {
+            "requestId": "5000-59-bounded-page20-1-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 5.984
+          },
+          {
+            "requestId": "5000-60-baseline-2-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 246.716
+          },
+          {
+            "requestId": "5000-61-baseline-2-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.16
+          },
+          {
+            "requestId": "5000-62-baseline-2-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.019
+          },
+          {
+            "requestId": "5000-63-baseline-2-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.243
+          },
+          {
+            "requestId": "5000-64-join-2",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 3.122
+          },
+          {
+            "requestId": "5000-65-join-2-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 230.691
+          },
+          {
+            "requestId": "5000-66-join-2-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.277
+          },
+          {
+            "requestId": "5000-67-join-2-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.396
+          },
+          {
+            "requestId": "5000-68-join-2-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.95
+          },
+          {
+            "requestId": "5000-69-join-2-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 5.504
+          },
+          {
+            "requestId": "5000-70-page0-2",
+            "method": "POST",
+            "status": 422,
+            "elapsedMs": 11.234
+          },
+          {
+            "requestId": "5000-71-page20-2",
+            "method": "POST",
+            "status": 422,
+            "elapsedMs": 13.202
+          },
+          {
+            "requestId": "5000-72-page20-2-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 229.054
+          },
+          {
+            "requestId": "5000-73-page20-2-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.282
+          },
+          {
+            "requestId": "5000-74-page20-2-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.746
+          },
+          {
+            "requestId": "5000-75-page20-2-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.216
+          },
+          {
+            "requestId": "5000-76-page20-2-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.356
+          },
+          {
+            "requestId": "5000-77-bounded-page0-2",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 5.936
+          },
+          {
+            "requestId": "5000-78-bounded-page0-2-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 224.321
+          },
+          {
+            "requestId": "5000-79-bounded-page0-2-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.038
+          },
+          {
+            "requestId": "5000-80-bounded-page0-2-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.007
+          },
+          {
+            "requestId": "5000-81-bounded-page0-2-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.221
+          },
+          {
+            "requestId": "5000-82-bounded-page0-2-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 5.999
+          },
+          {
+            "requestId": "5000-83-bounded-page20-2",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 5.635
+          },
+          {
+            "requestId": "5000-84-bounded-page20-2-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 215.164
+          },
+          {
+            "requestId": "5000-85-bounded-page20-2-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.906
+          },
+          {
+            "requestId": "5000-86-bounded-page20-2-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.747
+          },
+          {
+            "requestId": "5000-87-bounded-page20-2-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.729
+          },
+          {
+            "requestId": "5000-88-bounded-page20-2-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.085
+          },
+          {
+            "requestId": "5000-89-pagerank",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 36.26
+          },
+          {
+            "requestId": "5000-90-pagerank-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 199.637
+          },
+          {
+            "requestId": "5000-91-pagerank-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.751
+          },
+          {
+            "requestId": "5000-92-pagerank-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.665
+          },
+          {
+            "requestId": "5000-93-pagerank-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.999
+          },
+          {
+            "requestId": "5000-94-pagerank-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.026
+          },
+          {
+            "requestId": "5000-95-deadline-0",
+            "method": "POST",
+            "status": 408,
+            "elapsedMs": 6.161
+          },
+          {
+            "requestId": "5000-96-deadline-0-write",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 203.953
+          },
+          {
+            "requestId": "5000-97-deadline-0-ping0",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 1.236
+          },
+          {
+            "requestId": "5000-98-deadline-0-ping1",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.828
+          },
+          {
+            "requestId": "5000-99-deadline-0-ping2",
+            "method": "GET",
+            "status": 200,
+            "elapsedMs": 0.838
+          },
+          {
+            "requestId": "5000-100-deadline-0-visibility",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 5.017
+          },
+          {
+            "requestId": "5000-101-after-timeout-probes",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 213.408
+          },
+          {
+            "requestId": "5000-102-after-timeout-probes-read",
+            "method": "POST",
+            "status": 200,
+            "elapsedMs": 6.182
+          }
+        ]
+      }
+    }
+  ]
+}

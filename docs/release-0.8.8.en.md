@@ -101,3 +101,9 @@ disputed ones are handled one at a time with "revoke replacement".
 
 `supersedeMode: "auto"` is unchanged: it still restores the old automatic behaviour from
 `~/.dsh/trivium.json`, but that is not the recommended setting.
+
+## Post-release acceptance erratum (2026-11-11)
+
+**Independent acceptance failed.** In DSH 0.2.2-rc.1, the previous workspace's memory list can remain visible after a switch. The deletion dialog can show the old entry while the request permanently deletes an entry with the same ID in the newly selected workspace. After switching, refresh the library, wait for the target workspace's list to load, and verify the entry before acting.
+
+The ordinary two-workspace proposal check and all six listed lock checks passed. Distinct directory names that lowercase to the same string can still share proposal tokens. Chip creation and bulk deletion write to the main store and can bypass the workspace lock. A partial external import reporting zero new nodes may already have updated an existing fact. The published tarball ran on the tested host after manual extraction, but a standard clean npm install with that host's real peers failed with `ERESOLVE`. The [independent acceptance report](reviews/0.8.8-INDEPENDENT-ACCEPTANCE-2026-11-11.md) records the audit and UI findings, reproduction steps, and host screenshots.

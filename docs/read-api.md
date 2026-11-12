@@ -1,6 +1,6 @@
 # Read queries while the host owns the writer
 
-Source implementation for issue #5; not yet part of a published npm release.
+Shipped in dsh-trivium 0.8.9 for issue #5.
 
 The host remains the single writer. Live queries borrow its already-open
 instance; external analysis uses an independently captured snapshot. Both paths

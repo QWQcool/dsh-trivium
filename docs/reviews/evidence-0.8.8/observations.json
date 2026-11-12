@@ -1,0 +1,536 @@
+{
+  "tag": "v0.8.8",
+  "commit": "e7e4f379d4bc0a8d8d12085dd82d3282e1f669ec",
+  "execution": {
+    "externalNetwork": false,
+    "modelRequests": 0,
+    "costCNY": 0,
+    "node": "24.15.0",
+    "npm": "11.12.1",
+    "host": "0.2.2-rc.1",
+    "packageSource": "registry tarball from offline npm cache",
+    "sha1": "454bf0d7ee16ebb2a3eeb18422c91761d45601ce",
+    "size": 274344,
+    "files": 51,
+    "standardInstall": "ERESOLVE",
+    "hostMode": "isolated profile, manually unpacked tgz, real peers and pinned kernel; external import faults injected only into dedicated synthetic database handles"
+  },
+  "scripts": {
+    "run-all": "86/86",
+    "smoke-p89": "81/81",
+    "smoke-p24": "12/12",
+    "smoke-p26": "19/19",
+    "smoke-p91": "12/12",
+    "smoke-p76": "39/39"
+  },
+  "diff": {
+    "files": 115,
+    "insertions": 2298,
+    "deletions": 1340
+  },
+  "releaseArtifact": {
+    "libFilesAgainstPublishCheckout": "43/43 raw",
+    "libFilesAgainstFreshCheckout": "41/43 raw; 43/43 normalized",
+    "freshPackSha1": "dc5ad374b3739782000f631a3143d94cdb663369",
+    "freshPackFilesWithLineEndingDifferences": [
+      "lib/extract-scheduler.js",
+      "lib/sidecar.js",
+      "package.json",
+      "scripts/check-integrity.mjs",
+      "scripts/clear-expired-until.mjs"
+    ]
+  },
+  "protocol": {
+    "normal": {
+      "sameIds": true,
+      "sameText": true,
+      "nodeTagsEqual": true,
+      "httpTokensEqual": false,
+      "crossed": {
+        "confirm": [
+          409,
+          "proposal-stale"
+        ],
+        "reject": [
+          409,
+          "proposal-stale"
+        ]
+      },
+      "pendingA": 1,
+      "pendingB": 1
+    },
+    "scopeStatus": {
+      "unknownReturnedEmpty": true,
+      "unknownListHttp": 400,
+      "omittedReturnsActive": true,
+      "explicitReadBBecomesActive": true
+    },
+    "oneWorkspaceAudit": {
+      "statuses": [
+        200,
+        200
+      ],
+      "rows": [
+        {
+          "reason": "supersede-rejected",
+          "nodeId": 5,
+          "byId": null,
+          "opId": "reject:5",
+          "detail": "kept both, 0 candidate(s)"
+        },
+        {
+          "reason": "supersede-confirmed",
+          "nodeId": 4,
+          "byId": 2,
+          "opId": "2->4",
+          "detail": "2->4 via panel"
+        }
+      ]
+    },
+    "panel": {
+      "showsB": true,
+      "showsA": false,
+      "pendingPreviewFromAInB": true,
+      "writesB": true,
+      "usesBToken": true,
+      "http": 200,
+      "rejectedTargets": [
+        2,
+        3
+      ],
+      "wrongScopeActionReceipt": "Kept both: proposal #4 declined, both decisions stay current. #4 灰度发布新规 Keep both 移动端先放 10%。 「这是 A 的原句」 candi"
+    },
+    "audit": {
+      "confirmedHttp": 200,
+      "confirmed": [
+        {
+          "reason": "supersede-confirmed",
+          "nodeId": 4,
+          "byId": 2,
+          "opId": "2->4",
+          "detail": "2->4 via panel"
+        }
+      ],
+      "rejected": [
+        {
+          "reason": "supersede-rejected",
+          "nodeId": 4,
+          "byId": null,
+          "opId": "reject:4",
+          "detail": "kept both, 0 candidate(s)"
+        }
+      ],
+      "rejectedTargetsReturned": [
+        2,
+        3
+      ],
+      "acceptedOperationId": null,
+      "repeat": {
+        "sameRequestHttp": 409,
+        "newProposalHttp": 200,
+        "onDisk": 2,
+        "visible": 1
+      },
+      "failure": {
+        "http": 200,
+        "warning": "audit-not-recorded: audit-lock-busy",
+        "pending": 0,
+        "incomplete": true
+      }
+    },
+    "fold": {
+      "separateDirectories": true,
+      "names": [
+        "U+0130",
+        "U+0069 U+0307"
+      ],
+      "identicalToken": true,
+      "http": 200,
+      "code": null,
+      "xPending": 1,
+      "yPending": 0
+    },
+    "lock": {
+      "edit": [
+        409,
+        "WORKSPACE_WRITE_BUSY"
+      ],
+      "merge": [
+        409,
+        "WORKSPACE_WRITE_BUSY"
+      ],
+      "archive": [
+        409,
+        "WORKSPACE_WRITE_BUSY"
+      ],
+      "delete": [
+        409,
+        "WORKSPACE_WRITE_BUSY"
+      ],
+      "confirm": [
+        409,
+        "WORKSPACE_WRITE_BUSY"
+      ],
+      "reject": [
+        409,
+        "WORKSPACE_WRITE_BUSY"
+      ],
+      "unchangedAfterSix": true,
+      "chips": {
+        "post": 200,
+        "created": 1,
+        "bulkDelete": 200,
+        "removed": true
+      },
+      "afterRelease": {
+        "http": 200,
+        "readback": "释放后新名"
+      }
+    }
+  },
+  "realHostDelayedProposal": {
+    "returnedAAfterB": true,
+    "selectedB": true,
+    "visibleA": false,
+    "visibleB": true,
+    "tokensDiffer": true,
+    "sentB": true,
+    "postB": true,
+    "http": 200
+  },
+  "realHostWrongDelete": [
+    {
+      "mode": "real DSH, only B list GET delayed",
+      "selectedB": true,
+      "sameId": 5,
+      "oldRowVisible": true,
+      "confirmation": "删除\n永久删除 #5 · 甲库专用检查项，交接前请复查。 · preference？\n\n删除后不可恢复。只想隐藏请用「归档」。\n取消\n删除",
+      "requestTargetsB": true,
+      "http": 200,
+      "aPresent": true,
+      "bPresent": false
+    },
+    {
+      "mode": "real DSH, only B list GET delayed",
+      "selectedB": true,
+      "sameId": 4,
+      "oldRowVisible": true,
+      "confirmation": "删除\n永久删除 #4 · 甲库专用检查项，交接前请复查。 · preference？\n\n删除后不可恢复。只想隐藏请用「归档」。\n取消\n删除",
+      "requestTargetsB": true,
+      "http": 200,
+      "aPresent": true,
+      "bPresent": false
+    }
+  ],
+  "realHostPartial": [
+    {
+      "scenario": "导入两条",
+      "http": 500,
+      "partial": true,
+      "delta": 2,
+      "merged": null,
+      "used": [
+        "claude-workspace"
+      ],
+      "text": "导入中断：中断前已写入 2 条，其余没有处理。重新导入同一文件可补齐失败部分；已写入的同一事实会合并，不会重复新增节点",
+      "globalState": "saved",
+      "globalText": "✓ 导入外部记忆 ui/导入两条partial已提交 导入中断：中断前已写入 2 条，其余没有处理。重新导入同一文件可补齐失败部分；已写入的同一事实会合并，不会重复新增节点 ×",
+      "underButton": true,
+      "captionRejected": false
+    },
+    {
+      "scenario": "导入零",
+      "http": 500,
+      "partial": true,
+      "delta": 0,
+      "merged": null,
+      "used": [
+        "claude-workspace"
+      ],
+      "text": "导入中断：中断前没有写入任何条目。重新导入同一文件可补齐失败部分；已写入的同一事实会合并，不会重复新增节点",
+      "globalState": "saved",
+      "globalText": "✓ 导入外部记忆 ui/导入零partial已提交 导入中断：中断前没有写入任何条目。重新导入同一文件可补齐失败部分；已写入的同一事实会合并，不会重复新增节点 ×",
+      "underButton": true,
+      "captionRejected": false
+    },
+    {
+      "scenario": "导入未知",
+      "http": 500,
+      "partial": true,
+      "delta": null,
+      "merged": null,
+      "used": [
+        "claude-workspace"
+      ],
+      "text": "导入中断：中断前写入的数量未知（服务端没有给出计数）。重新导入同一文件可补齐失败部分；已写入的同一事实会合并，不会重复新增节点",
+      "globalState": "saved",
+      "globalText": "✓ 导入外部记忆 ui/导入未知partial已提交 导入中断：中断前写入的数量未知（服务端没有给出计数）。重新导入同一文件可补齐失败部分；已写入的同一事实会合并，不会重复新增节点 ×",
+      "underButton": true,
+      "captionRejected": false
+    }
+  ],
+  "afterReopen": [
+    {
+      "fixture": "导入两条",
+      "nonWorkspaceNodesAfterReopen": 2
+    },
+    {
+      "fixture": "导入零",
+      "nonWorkspaceNodesAfterReopen": 1,
+      "preexistingNode": 2,
+      "updatedAtBefore": "2026-11-11T10:04:19.836Z",
+      "updatedAtAfter": "2026-11-11T10:11:28.143Z",
+      "sameText": true,
+      "beforeMergeAliases": null,
+      "afterMergeAliases": []
+    },
+    {
+      "fixture": "导入未知",
+      "nonWorkspaceNodesAfterReopen": 1
+    }
+  ],
+  "visual": {
+    "760": {
+      "viewport": 760,
+      "band": "narrow",
+      "borderBox": 728,
+      "contentBox": 696,
+      "dialogWidth": 760,
+      "collapsed": {
+        "filters": "false",
+        "archive": 0,
+        "delete": 0
+      },
+      "expanded": {
+        "dialog": 0,
+        "insideModal": 0,
+        "inSidePane": 0,
+        "totalDelete": 1,
+        "totalArchive": 1,
+        "deleteReachable": true
+      },
+      "proposal": {
+        "order": [
+          "proposals",
+          "diagnostics",
+          "pending",
+          "runs"
+        ],
+        "candidateText": [
+          "#2 灰度发布移动端先放量 5%，观察一小时。确认替代",
+          "#3 灰度发布桌面端先放量 20%，观察错误率。确认替代"
+        ],
+        "confirmButtons": 2,
+        "radios": 0,
+        "note": "已保持原样：这条提案（#4）的两条决策都继续现行。"
+      },
+      "vector": {
+        "fields": [
+          "checkbox",
+          "text",
+          "text",
+          "password"
+        ],
+        "orderedAfterFields": true,
+        "hasUrl": true
+      }
+    },
+    "1440": {
+      "viewport": 1440,
+      "band": "narrow",
+      "borderBox": 564,
+      "contentBox": 532,
+      "dialogWidth": 800,
+      "collapsed": {
+        "filters": "false",
+        "archive": 0,
+        "delete": 0
+      },
+      "expanded": {
+        "dialog": 0,
+        "insideModal": 0,
+        "inSidePane": 0,
+        "totalDelete": 1,
+        "totalArchive": 1,
+        "deleteReachable": true
+      },
+      "proposal": {
+        "order": [
+          "proposals",
+          "diagnostics",
+          "pending",
+          "runs"
+        ],
+        "candidateText": [
+          "#2 灰度发布移动端先放量 5%，观察一小时。确认替代",
+          "#3 灰度发布桌面端先放量 20%，观察错误率。确认替代"
+        ],
+        "confirmButtons": 2,
+        "radios": 0,
+        "note": "已保持原样：这条提案（#4）的两条决策都继续现行。"
+      },
+      "vector": {
+        "fields": [
+          "checkbox",
+          "text",
+          "text",
+          "password"
+        ],
+        "orderedAfterFields": true,
+        "hasUrl": true,
+        "writeHttp": 200,
+        "savedUrl": true,
+        "embeddingEnabled": false
+      }
+    },
+    "expanded": {
+      "viewport": 1600,
+      "band": "wide",
+      "borderBox": 1144,
+      "contentBox": 1112,
+      "dialogWidth": 1380,
+      "collapsed": {
+        "filters": "false",
+        "archive": 0,
+        "delete": 0
+      },
+      "expanded": {
+        "dialog": 0,
+        "insideModal": 0,
+        "inSidePane": 0,
+        "totalDelete": 1,
+        "totalArchive": 1,
+        "deleteReachable": true
+      },
+      "proposal": {
+        "order": [
+          "proposals",
+          "diagnostics",
+          "pending",
+          "runs"
+        ],
+        "candidateText": [
+          "#2 灰度发布移动端先放量 5%，观察一小时。确认替代",
+          "#3 灰度发布桌面端先放量 20%，观察错误率。确认替代"
+        ],
+        "confirmButtons": 2,
+        "radios": 0
+      },
+      "vector": {
+        "fields": [
+          "checkbox",
+          "text",
+          "text",
+          "password"
+        ],
+        "orderedAfterFields": true,
+        "hasUrl": true
+      }
+    },
+    "420-content": {
+      "viewport": 484,
+      "geometry": {
+        "outer": 452,
+        "inner": 420,
+        "band": "narrow"
+      },
+      "details": {
+        "modal": 0,
+        "inModal": 0,
+        "total": 1,
+        "reachable": true
+      },
+      "saveInfo": {
+        "fields": [
+          "checkbox",
+          "text",
+          "text",
+          "password"
+        ],
+        "orderedAfterFields": true,
+        "hasUrl": true
+      }
+    }
+  },
+  "mediumBand": {
+    "viewportProbe": {
+      "760": {
+        "border": 728,
+        "content": 696,
+        "band": "narrow"
+      },
+      "780": {
+        "border": 496,
+        "content": 464,
+        "band": "narrow"
+      },
+      "800": {
+        "border": 516,
+        "content": 484,
+        "band": "narrow"
+      },
+      "820": {
+        "border": 536,
+        "content": 504,
+        "band": "narrow"
+      },
+      "850": {
+        "border": 564,
+        "content": 532,
+        "band": "narrow"
+      },
+      "900": {
+        "border": 564,
+        "content": 532,
+        "band": "narrow"
+      },
+      "1024": {
+        "border": 564,
+        "content": 532,
+        "band": "narrow"
+      },
+      "1440": {
+        "border": 564,
+        "content": 532,
+        "band": "narrow"
+      }
+    },
+    "mediumNatural": null,
+    "geometry": {
+      "border": 854,
+      "content": 822,
+      "band": "medium"
+    },
+    "modalDelete": 0,
+    "modalArchive": 0,
+    "behind": {
+      "delete": 1,
+      "archive": 1
+    },
+    "deleteReachable": false,
+    "hitOverlay": true,
+    "rowDeleteAfterClosing": 0
+  },
+  "frozenTests": {
+    "p24": {
+      "cases": [
+        12,
+        12
+      ],
+      "assertionCallSites": [
+        37,
+        38
+      ]
+    },
+    "p26": {
+      "cases": [
+        19,
+        19
+      ],
+      "assertionCallSites": [
+        125,
+        125
+      ]
+    }
+  }
+}
