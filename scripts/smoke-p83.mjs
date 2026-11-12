@@ -145,6 +145,79 @@ try {
     () => assert.equal(reopened2.allNodeIds().length - before2, 2),
     'the partial commit really is durable after reopen',
   );
+
+  // Chip archive/delete is another synchronous batch. A response can only
+  // acknowledge it after the single final flush, including partial failures.
+  const bulkWorkspace = join(root, 'chip-bulk');
+  const bulkDb = await store.openWorkspaceDb(bulkWorkspace);
+  const ids = [];
+  store.runDeferredWrites(bulkDb, () => {
+    for (let i = 0; i < 6; i++) ids.push(store.insertNode(bulkDb, {
+      type: 'preference', name: 'BatchCanary' + i, text: 'BatchCanary' + i + ' remains searchable.',
+    }));
+  });
+  store.flushWorkspaceDb(bulkDb);
+  let bulkFlushes = 0;
+  const bulkFlush = bulkDb.flush.bind(bulkDb);
+  bulkDb.flush = () => { bulkFlushes++; return bulkFlush(); };
+  const archived = pins.batchChipAction(bulkDb, { action: 'archive', ids: ids.slice(0, 4) });
+  await check(() => {
+    assert.equal(archived.count, 4);
+    assert.equal(bulkFlushes, 1);
+    assert.ok(ids.slice(0, 4).every((id) => bulkDb.get(id).payload.status === 'archived'));
+    assert.deepEqual(store.findByType(bulkDb, 'preference').map((row) => row.id).sort(), ids.slice(4));
+    assert.deepEqual(pins.listChips(bulkDb).map((row) => row.id).sort(), ids.slice(4));
+    assert.equal(store.searchNodes(bulkDb, 'BatchCanary0').length, 0);
+    assert.ok(store.searchNodes(bulkDb, 'BatchCanary4').some((row) => row.id === ids[4]));
+  }, 'chip archives flush once and preserve current search visibility');
+  bulkFlushes = 0;
+  const removed = pins.batchChipAction(bulkDb, { action: 'delete', ids: ids.slice(4) });
+  await check(() => {
+    assert.equal(removed.count, 2);
+    assert.equal(bulkFlushes, 1);
+    assert.ok(ids.slice(4).every((id) => !bulkDb.get(id)));
+  }, 'chip deletes keep their semantics with one final flush');
+  bulkFlushes = 0;
+  pins.batchChipAction(bulkDb, { action: 'archive', ids: [] });
+  pins.batchChipAction(bulkDb, { action: 'delete', ids: [999999] });
+  await check(() => assert.equal(bulkFlushes, 0), 'empty or missing-only chip batches do not add a flush');
+  const prior = store.insertNode(bulkDb, { type: 'decision', name: 'prior', text: 'prior protected decision' });
+  const successor = store.insertNode(bulkDb, { type: 'decision', name: 'successor', text: 'successor protected decision' });
+  store.ensureLink(bulkDb, successor, prior, 'supersedes');
+  bulkFlushes = 0;
+  const protectedBatch = pins.batchChipAction(bulkDb, { action: 'delete', ids: [prior, successor] });
+  await check(() => {
+    assert.equal(protectedBatch.count, 0);
+    assert.deepEqual(protectedBatch.blocked, [prior, successor]);
+    assert.equal(bulkFlushes, 0);
+    assert.ok(bulkDb.get(prior) && bulkDb.get(successor));
+  }, 'protected-only chip batches keep the revision guard without adding a flush');
+
+  for (const action of ['archive', 'delete']) {
+    const failureWorkspace = join(root, 'chip-partial-' + action);
+    const engine = await store.openWorkspaceDb(failureWorkspace);
+    const first = store.insertNode(engine, { type: 'preference', text: 'first mutation must survive' });
+    const second = store.insertNode(engine, { type: 'preference', text: 'second mutation is interrupted' });
+    const method = action === 'archive' ? 'updatePayload' : 'delete';
+    const original = engine[method].bind(engine);
+    let calls = 0;
+    engine[method] = (...args) => {
+      if (++calls === 2) throw new Error('synthetic second chip mutation failure');
+      return original(...args);
+    };
+    await check(() => assert.throws(
+      () => pins.batchChipAction(engine, { action, ids: [first, second] }),
+      /synthetic second chip mutation failure/,
+    ), action + ' batch reports a later mutation failure');
+    engine[method] = original;
+    store.closeAll();
+    const durable = await store.openWorkspaceDb(failureWorkspace);
+    await check(() => {
+      if (action === 'archive') assert.equal(durable.get(first).payload.status, 'archived');
+      else assert.equal(durable.get(first), null);
+      assert.equal(durable.get(second).payload.status, 'active');
+    }, action + ' completed before failure survives reopening');
+  }
 } finally {
   store.closeAll();
   rmSync(root, { recursive: true, force: true });

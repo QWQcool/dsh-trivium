@@ -1,0 +1,2108 @@
+{
+  "fixtureNodes": 5000,
+  "dim": 1536,
+  "sampleCount": 198,
+  "totalWriteBytes": 1412324992,
+  "totalReadBytes": 3942767408,
+  "samples": [
+    {
+      "at": 152152696.3908,
+      "readBytes": 33810504,
+      "writeBytes": 96498013,
+      "writeOps": 15281,
+      "state": "Wait",
+      "reason": "EventPairLow"
+    },
+    {
+      "at": 152152755.3704,
+      "readBytes": 70166105,
+      "writeBytes": 101855508,
+      "writeOps": 15936,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152152804.8529,
+      "readBytes": 90310233,
+      "writeBytes": 122007828,
+      "writeOps": 18396,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152152847.635,
+      "readBytes": 97805421,
+      "writeBytes": 128495646,
+      "writeOps": 19190,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152152894.6019,
+      "readBytes": 131846268,
+      "writeBytes": 131316431,
+      "writeOps": 19522,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152152946.1097,
+      "readBytes": 166161513,
+      "writeBytes": 134593530,
+      "writeOps": 19866,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152152987.7639,
+      "readBytes": 182733929,
+      "writeBytes": 151165946,
+      "writeOps": 21890,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153035.4277,
+      "readBytes": 194366569,
+      "writeBytes": 162806778,
+      "writeOps": 23310,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153077.8658,
+      "readBytes": 215543201,
+      "writeBytes": 165627616,
+      "writeOps": 23642,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152153127.0294,
+      "readBytes": 232026795,
+      "writeBytes": 167405506,
+      "writeOps": 23806,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153173.4923,
+      "readBytes": 276009643,
+      "writeBytes": 181184450,
+      "writeOps": 25488,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153219.3944,
+      "readBytes": 292942507,
+      "writeBytes": 198125506,
+      "writeOps": 27556,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153266.9953,
+      "readBytes": 295957749,
+      "writeBytes": 199903325,
+      "writeOps": 27777,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153312.1416,
+      "readBytes": 329538268,
+      "writeBytes": 202453965,
+      "writeOps": 28016,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153359.7351,
+      "readBytes": 367810797,
+      "writeBytes": 209728193,
+      "writeOps": 28906,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153402.524,
+      "readBytes": 385792237,
+      "writeBytes": 227717825,
+      "writeOps": 31102,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153439.4845,
+      "readBytes": 391518551,
+      "writeBytes": 233444086,
+      "writeOps": 31802,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152153479.0298,
+      "readBytes": 425523749,
+      "writeBytes": 236264871,
+      "writeOps": 32133,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152153509.9231,
+      "readBytes": 428114206,
+      "writeBytes": 237772492,
+      "writeOps": 32261,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152153554.9773,
+      "readBytes": 468500271,
+      "writeBytes": 247168649,
+      "writeOps": 33411,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153600.7816,
+      "readBytes": 487685935,
+      "writeBytes": 266354313,
+      "writeOps": 35753,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152153652.9991,
+      "readBytes": 493109625,
+      "writeBytes": 270516208,
+      "writeOps": 36265,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153697.8642,
+      "readBytes": 526690144,
+      "writeBytes": 273091220,
+      "writeOps": 36507,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153757.7869,
+      "readBytes": 573883761,
+      "writeBytes": 289286536,
+      "writeOps": 38487,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153808.7875,
+      "readBytes": 588670321,
+      "writeBytes": 304081288,
+      "writeOps": 40292,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152153853.8466,
+      "readBytes": 591265539,
+      "writeBytes": 305168885,
+      "writeOps": 40427,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153898.4414,
+      "readBytes": 624996020,
+      "writeBytes": 307989670,
+      "writeOps": 40750,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152153946.9416,
+      "readBytes": 660368307,
+      "writeBytes": 312522064,
+      "writeOps": 41257,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152153990.8574,
+      "readBytes": 677120947,
+      "writeBytes": 329266512,
+      "writeOps": 43301,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154040.3983,
+      "readBytes": 687246312,
+      "writeBytes": 339400016,
+      "writeOps": 44538,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154083.057,
+      "readBytes": 707570923,
+      "writeBytes": 342220854,
+      "writeOps": 44870,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154131.2786,
+      "readBytes": 724112135,
+      "writeBytes": 343728481,
+      "writeOps": 45000,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154178.69,
+      "readBytes": 764645877,
+      "writeBytes": 353534031,
+      "writeOps": 46197,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154224.4652,
+      "readBytes": 781300213,
+      "writeBytes": 370188367,
+      "writeOps": 48230,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154270.5567,
+      "readBytes": 787997391,
+      "writeBytes": 375806140,
+      "writeOps": 48918,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154314.3496,
+      "readBytes": 821877834,
+      "writeBytes": 378546723,
+      "writeOps": 49240,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152154362.1316,
+      "readBytes": 853710903,
+      "writeBytes": 379341847,
+      "writeOps": 49283,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154405.772,
+      "readBytes": 871618615,
+      "writeBytes": 397249559,
+      "writeOps": 51468,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154454.5528,
+      "readBytes": 884398135,
+      "writeBytes": 410037271,
+      "writeOps": 53029,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154499.4687,
+      "readBytes": 891025775,
+      "writeBytes": 412858109,
+      "writeOps": 53361,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154546.968,
+      "readBytes": 920993896,
+      "writeBytes": 414365730,
+      "writeOps": 53489,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154592.4927,
+      "readBytes": 962223737,
+      "writeBytes": 424597270,
+      "writeOps": 54741,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154638.7846,
+      "readBytes": 977968761,
+      "writeBytes": 440350486,
+      "writeOps": 56663,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154682.7624,
+      "readBytes": 985602059,
+      "writeBytes": 446467971,
+      "writeOps": 57413,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154731.7841,
+      "readBytes": 1019299772,
+      "writeBytes": 449264180,
+      "writeOps": 57732,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152154775.3364,
+      "readBytes": 1052222651,
+      "writeBytes": 451338974,
+      "writeOps": 57940,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154822.8028,
+      "readBytes": 1070105787,
+      "writeBytes": 469222110,
+      "writeOps": 60123,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154865.9058,
+      "readBytes": 1082557431,
+      "writeBytes": 480674579,
+      "writeOps": 61521,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154915.8205,
+      "readBytes": 1116598334,
+      "writeBytes": 483495364,
+      "writeOps": 61852,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152154962.2916,
+      "readBytes": 1125829373,
+      "writeBytes": 485273053,
+      "writeOps": 62015,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155008.2898,
+      "readBytes": 1163578109,
+      "writeBytes": 499437021,
+      "writeOps": 63745,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155052.7641,
+      "readBytes": 1180125949,
+      "writeBytes": 515993053,
+      "writeOps": 65765,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155094.63,
+      "readBytes": 1195797557,
+      "writeBytes": 518813891,
+      "writeOps": 66097,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155145.678,
+      "readBytes": 1217261887,
+      "writeBytes": 520591781,
+      "writeOps": 66261,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155193.5042,
+      "readBytes": 1259213119,
+      "writeBytes": 531814821,
+      "writeOps": 67631,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155237.4938,
+      "readBytes": 1277014335,
+      "writeBytes": 549624229,
+      "writeOps": 69805,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152155285.3592,
+      "readBytes": 1281717129,
+      "writeBytes": 552885048,
+      "writeOps": 70207,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155330.0861,
+      "readBytes": 1315297648,
+      "writeBytes": 555640240,
+      "writeOps": 70471,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152155375.9057,
+      "readBytes": 1354045313,
+      "writeBytes": 563389604,
+      "writeOps": 71419,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155421.7731,
+      "readBytes": 1373869953,
+      "writeBytes": 583214244,
+      "writeOps": 73839,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152155461.9703,
+      "readBytes": 1380293067,
+      "writeBytes": 588138065,
+      "writeOps": 74444,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152155499.7925,
+      "readBytes": 1412326148,
+      "writeBytes": 590220894,
+      "writeOps": 74682,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155546.4658,
+      "readBytes": 1431846339,
+      "writeBytes": 591229036,
+      "writeOps": 74752,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155608.0317,
+      "readBytes": 1466080707,
+      "writeBytes": 612167788,
+      "writeOps": 77308,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155654.0626,
+      "readBytes": 1477868497,
+      "writeBytes": 622956403,
+      "writeOps": 78626,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152155698.2254,
+      "readBytes": 1509859067,
+      "writeBytes": 624769874,
+      "writeOps": 78834,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155743.0173,
+      "readBytes": 1533174789,
+      "writeBytes": 626547563,
+      "writeOps": 78997,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155790.8828,
+      "readBytes": 1560953861,
+      "writeBytes": 643783531,
+      "writeOps": 81102,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155835.2015,
+      "readBytes": 1574429701,
+      "writeBytes": 657267563,
+      "writeOps": 82747,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155880.7615,
+      "readBytes": 1581253949,
+      "writeBytes": 660088401,
+      "writeOps": 83079,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155925.0794,
+      "readBytes": 1611025462,
+      "writeBytes": 661596028,
+      "writeOps": 83209,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152155973.8786,
+      "readBytes": 1653639751,
+      "writeBytes": 673212211,
+      "writeOps": 84629,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156022.006,
+      "readBytes": 1673005639,
+      "writeBytes": 692586291,
+      "writeOps": 86993,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156064.6873,
+      "readBytes": 1676020881,
+      "writeBytes": 695149236,
+      "writeOps": 87294,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156116.6418,
+      "readBytes": 1709601400,
+      "writeBytes": 696914750,
+      "writeOps": 87453,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156160.2151,
+      "readBytes": 1750528137,
+      "writeBytes": 706843186,
+      "writeOps": 88667,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156209.5328,
+      "readBytes": 1769173129,
+      "writeBytes": 725496370,
+      "writeOps": 90944,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152156255.6478,
+      "readBytes": 1774596819,
+      "writeBytes": 729412575,
+      "writeOps": 91426,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156294.8581,
+      "readBytes": 1808177338,
+      "writeBytes": 731813200,
+      "writeOps": 91696,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152156329.6816,
+      "readBytes": 1825494731,
+      "writeBytes": 732503546,
+      "writeOps": 91734,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156377.9971,
+      "readBytes": 1854101195,
+      "writeBytes": 747167226,
+      "writeOps": 93524,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156425.2101,
+      "readBytes": 1870157515,
+      "writeBytes": 763223546,
+      "writeOps": 95484,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156466.7819,
+      "readBytes": 1873172757,
+      "writeBytes": 765664361,
+      "writeOps": 95769,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156515.3464,
+      "readBytes": 1906753276,
+      "writeBytes": 767552005,
+      "writeOps": 95944,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156557.9364,
+      "readBytes": 1950334221,
+      "writeBytes": 780134649,
+      "writeOps": 97482,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156591.7113,
+      "readBytes": 1963703565,
+      "writeBytes": 793512185,
+      "writeOps": 99115,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156637.9084,
+      "readBytes": 1971328671,
+      "writeBytes": 799629670,
+      "writeOps": 99864,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152156682.8098,
+      "readBytes": 2005329214,
+      "writeBytes": 802450455,
+      "writeOps": 100187,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156727.029,
+      "readBytes": 2041193295,
+      "writeBytes": 807744705,
+      "writeOps": 100787,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156773.4449,
+      "readBytes": 2061755215,
+      "writeBytes": 828306625,
+      "writeOps": 103297,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156821.2326,
+      "readBytes": 2070324633,
+      "writeBytes": 835368422,
+      "writeOps": 104162,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152156867.8502,
+      "readBytes": 2103905152,
+      "writeBytes": 837769183,
+      "writeOps": 104433,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156913.721,
+      "readBytes": 2142259601,
+      "writeBytes": 845545408,
+      "writeOps": 105335,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152156962.8366,
+      "readBytes": 2165885329,
+      "writeBytes": 869179328,
+      "writeOps": 108220,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157008.4927,
+      "readBytes": 2179590857,
+      "writeBytes": 872000166,
+      "writeOps": 108552,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157051.3266,
+      "readBytes": 2202923237,
+      "writeBytes": 873671834,
+      "writeOps": 108703,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157101.1423,
+      "readBytes": 2248937427,
+      "writeBytes": 888966024,
+      "writeOps": 110570,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157144.8409,
+      "readBytes": 2264461267,
+      "writeBytes": 904498056,
+      "writeOps": 112466,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157193.1658,
+      "readBytes": 2275938571,
+      "writeBytes": 907318894,
+      "writeOps": 112798,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157238.4745,
+      "readBytes": 2301057028,
+      "writeBytes": 908826515,
+      "writeOps": 112926,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157284.6557,
+      "readBytes": 2343220757,
+      "writeBytes": 919991943,
+      "writeOps": 114291,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157333.3447,
+      "readBytes": 2362611221,
+      "writeBytes": 939390599,
+      "writeOps": 116659,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152157380.4148,
+      "readBytes": 2366052447,
+      "writeBytes": 941594402,
+      "writeOps": 116932,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157425.3232,
+      "readBytes": 2399632966,
+      "writeBytes": 944145042,
+      "writeOps": 117171,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152157470.6266,
+      "readBytes": 2437659735,
+      "writeBytes": 951173711,
+      "writeOps": 118033,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157516.8877,
+      "readBytes": 2456951895,
+      "writeBytes": 970465871,
+      "writeOps": 120388,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152157565.9231,
+      "readBytes": 2464478697,
+      "writeBytes": 976485052,
+      "writeOps": 121125,
+      "state": "Wait",
+      "reason": "Unknown"
+    },
+    {
+      "at": 152157609.4292,
+      "readBytes": 2464628385,
+      "writeBytes": 976643068,
+      "writeOps": 121145,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152157657.6676,
+      "readBytes": 2464628385,
+      "writeBytes": 976913130,
+      "writeOps": 121178,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152157702.0599,
+      "readBytes": 2471452047,
+      "writeBytes": 977956149,
+      "writeOps": 121289,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152157747.4209,
+      "readBytes": 2497668780,
+      "writeBytes": 978963491,
+      "writeOps": 121414,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152157793.8999,
+      "readBytes": 2497668780,
+      "writeBytes": 978963491,
+      "writeOps": 121414,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152157842.2712,
+      "readBytes": 2498208904,
+      "writeBytes": 979043693,
+      "writeOps": 121415,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152157886.6006,
+      "readBytes": 2498208904,
+      "writeBytes": 979463770,
+      "writeOps": 121417,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152157932.4218,
+      "readBytes": 2498208904,
+      "writeBytes": 979463770,
+      "writeOps": 121417,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152157979.4873,
+      "readBytes": 2498208904,
+      "writeBytes": 979463776,
+      "writeOps": 121419,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152158025.5083,
+      "readBytes": 2498749081,
+      "writeBytes": 979733838,
+      "writeOps": 121452,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152158067.2431,
+      "readBytes": 2539643545,
+      "writeBytes": 989900110,
+      "writeOps": 122693,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152158111.6791,
+      "readBytes": 2560189081,
+      "writeBytes": 1010453838,
+      "writeOps": 125202,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158163.4691,
+      "readBytes": 2560189081,
+      "writeBytes": 1010453838,
+      "writeOps": 125202,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158209.5421,
+      "readBytes": 2560189187,
+      "writeBytes": 1010453891,
+      "writeOps": 125203,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158256.607,
+      "readBytes": 2562203815,
+      "writeBytes": 1011461205,
+      "writeOps": 125326,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158300.1093,
+      "readBytes": 2562203871,
+      "writeBytes": 1011461233,
+      "writeOps": 125327,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158343.8581,
+      "readBytes": 2562364275,
+      "writeBytes": 1011541435,
+      "writeOps": 125337,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158389.3613,
+      "readBytes": 2563204323,
+      "writeBytes": 1011961459,
+      "writeOps": 125389,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158422.2086,
+      "readBytes": 2563204323,
+      "writeBytes": 1011961459,
+      "writeOps": 125389,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158470.0455,
+      "readBytes": 2563204323,
+      "writeBytes": 1011961595,
+      "writeOps": 125390,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158515.6181,
+      "readBytes": 2563204323,
+      "writeBytes": 1012231657,
+      "writeOps": 125423,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158562.3333,
+      "readBytes": 2563204323,
+      "writeBytes": 1013274676,
+      "writeOps": 125534,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152158605.5252,
+      "readBytes": 2596244718,
+      "writeBytes": 1014282018,
+      "writeOps": 125659,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158640.4578,
+      "readBytes": 2596244718,
+      "writeBytes": 1014282018,
+      "writeOps": 125659,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158687.7002,
+      "readBytes": 2596244718,
+      "writeBytes": 1014282018,
+      "writeOps": 125659,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158730.4307,
+      "readBytes": 2596784842,
+      "writeBytes": 1014782244,
+      "writeOps": 125661,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158758.8783,
+      "readBytes": 2596784842,
+      "writeBytes": 1014782297,
+      "writeOps": 125662,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158792.5649,
+      "readBytes": 2596784842,
+      "writeBytes": 1014782297,
+      "writeOps": 125662,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158824.3844,
+      "readBytes": 2596784842,
+      "writeBytes": 1014782297,
+      "writeOps": 125662,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152158867.8207,
+      "readBytes": 2597087725,
+      "writeBytes": 1014807080,
+      "writeOps": 125669,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152158913.326,
+      "readBytes": 2644175067,
+      "writeBytes": 1031174422,
+      "writeOps": 127667,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152158963.8273,
+      "readBytes": 2660681751,
+      "writeBytes": 1046673739,
+      "writeOps": 129559,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159006.0841,
+      "readBytes": 2693813342,
+      "writeBytes": 1049600718,
+      "writeOps": 129904,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159053.6643,
+      "readBytes": 2728128285,
+      "writeBytes": 1051870229,
+      "writeOps": 130126,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159105.0209,
+      "readBytes": 2746773277,
+      "writeBytes": 1070515221,
+      "writeOps": 132403,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159152.387,
+      "readBytes": 2758258567,
+      "writeBytes": 1081091146,
+      "writeOps": 133694,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159198.4536,
+      "readBytes": 2786119765,
+      "writeBytes": 1083911931,
+      "writeOps": 134025,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152159243.283,
+      "readBytes": 2794476895,
+      "writeBytes": 1085689821,
+      "writeOps": 134189,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159286.6497,
+      "readBytes": 2836723039,
+      "writeBytes": 1097207773,
+      "writeOps": 135595,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159331.1547,
+      "readBytes": 2852861279,
+      "writeBytes": 1113346013,
+      "writeOps": 137565,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159381.0191,
+      "readBytes": 2858932137,
+      "writeBytes": 1117917578,
+      "writeOps": 138127,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159426.1827,
+      "readBytes": 2892512656,
+      "writeBytes": 1120318203,
+      "writeOps": 138397,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159472.0601,
+      "readBytes": 2927000481,
+      "writeBytes": 1124227804,
+      "writeOps": 138827,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159521.9555,
+      "readBytes": 2944883617,
+      "writeBytes": 1142110940,
+      "writeOps": 141011,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159566.8205,
+      "readBytes": 2954492939,
+      "writeBytes": 1151728401,
+      "writeOps": 142185,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152159613.0424,
+      "readBytes": 2984516825,
+      "writeBytes": 1154549186,
+      "writeOps": 142516,
+      "state": "Standby",
+      "reason": ""
+    },
+    {
+      "at": 152159659.7935,
+      "readBytes": 2996216291,
+      "writeBytes": 1156327076,
+      "writeOps": 142680,
+      "state": "Wait",
+      "reason": "Unknown"
+    },
+    {
+      "at": 152159705.4898,
+      "readBytes": 3036086755,
+      "writeBytes": 1170056868,
+      "writeOps": 144356,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159752.8181,
+      "readBytes": 3050906083,
+      "writeBytes": 1184884388,
+      "writeOps": 146166,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159798.8249,
+      "readBytes": 3056084013,
+      "writeBytes": 1188554833,
+      "writeOps": 146618,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159842.8551,
+      "readBytes": 3089664532,
+      "writeBytes": 1191375482,
+      "writeOps": 146889,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159885.7643,
+      "readBytes": 3127060517,
+      "writeBytes": 1197781411,
+      "writeOps": 147674,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159919.2774,
+      "readBytes": 3142469669,
+      "writeBytes": 1213182371,
+      "writeOps": 149554,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159964.3984,
+      "readBytes": 3151644709,
+      "writeBytes": 1222365603,
+      "writeOps": 150675,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152159994.8326,
+      "readBytes": 3154659951,
+      "writeBytes": 1224143422,
+      "writeOps": 150896,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160028.3268,
+      "readBytes": 3187970408,
+      "writeBytes": 1226273985,
+      "writeOps": 151133,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160075.0386,
+      "readBytes": 3222015591,
+      "writeBytes": 1229479275,
+      "writeOps": 151478,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160122.1303,
+      "readBytes": 3239808615,
+      "writeBytes": 1247264107,
+      "writeOps": 153649,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160169.2528,
+      "readBytes": 3250220753,
+      "writeBytes": 1257684384,
+      "writeOps": 154922,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152160212.8158,
+      "readBytes": 3278475167,
+      "writeBytes": 1260505169,
+      "writeOps": 155253,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160259.3331,
+      "readBytes": 3287356585,
+      "writeBytes": 1262282858,
+      "writeOps": 155416,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160304.19,
+      "readBytes": 3330495657,
+      "writeBytes": 1274693738,
+      "writeOps": 156932,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160356.0999,
+      "readBytes": 3348755625,
+      "writeBytes": 1292953706,
+      "writeOps": 159160,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152160402.1521,
+      "readBytes": 3351811827,
+      "writeBytes": 1294780677,
+      "writeOps": 159387,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160447.2569,
+      "readBytes": 3385392346,
+      "writeBytes": 1297331264,
+      "writeOps": 159625,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160491.8589,
+      "readBytes": 3421805291,
+      "writeBytes": 1302754354,
+      "writeOps": 160291,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160536.944,
+      "readBytes": 3440188139,
+      "writeBytes": 1321137202,
+      "writeOps": 162535,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160584.9671,
+      "readBytes": 3449387313,
+      "writeBytes": 1329328981,
+      "writeOps": 163537,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152160631.4165,
+      "readBytes": 3483428160,
+      "writeBytes": 1332149738,
+      "writeOps": 163868,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160679.9482,
+      "readBytes": 3515998509,
+      "writeBytes": 1333690161,
+      "writeOps": 164001,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160724.4496,
+      "readBytes": 3534922029,
+      "writeBytes": 1352605489,
+      "writeOps": 166310,
+      "state": "Standby",
+      "reason": ""
+    },
+    {
+      "at": 152160772.2399,
+      "readBytes": 3545948567,
+      "writeBytes": 1363640166,
+      "writeOps": 167658,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160817.1931,
+      "readBytes": 3566862949,
+      "writeBytes": 1366460951,
+      "writeOps": 167989,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152160859.3044,
+      "readBytes": 3582544275,
+      "writeBytes": 1367968779,
+      "writeOps": 168120,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160907.0176,
+      "readBytes": 3625863023,
+      "writeBytes": 1380289273,
+      "writeOps": 169624,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152160951.5796,
+      "readBytes": 3643041647,
+      "writeBytes": 1397467897,
+      "writeOps": 171722,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161001.2803,
+      "readBytes": 3647539641,
+      "writeBytes": 1400466598,
+      "writeOps": 172091,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161043.5237,
+      "readBytes": 3681120160,
+      "writeBytes": 1403287247,
+      "writeOps": 172363,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161079.1164,
+      "readBytes": 3713060273,
+      "writeBytes": 1404229112,
+      "writeOps": 172480,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161124.6923,
+      "readBytes": 3731852721,
+      "writeBytes": 1423021560,
+      "writeOps": 174775,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161169.3315,
+      "readBytes": 3743100390,
+      "writeBytes": 1434277368,
+      "writeOps": 176148,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161216.7686,
+      "readBytes": 3766046441,
+      "writeBytes": 1437098206,
+      "writeOps": 176480,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152161263.7262,
+      "readBytes": 3780236275,
+      "writeBytes": 1438876096,
+      "writeOps": 176644,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161310.0878,
+      "readBytes": 3824735219,
+      "writeBytes": 1452655040,
+      "writeOps": 178326,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161357.1581,
+      "readBytes": 3841471475,
+      "writeBytes": 1469383104,
+      "writeOps": 180368,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152161403.3996,
+      "readBytes": 3844691517,
+      "writeBytes": 1471103853,
+      "writeOps": 180582,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161444.6681,
+      "readBytes": 3878272036,
+      "writeBytes": 1473924502,
+      "writeOps": 180853,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161492.3574,
+      "readBytes": 3915823669,
+      "writeBytes": 1480486079,
+      "writeOps": 181657,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161535.8826,
+      "readBytes": 3937352245,
+      "writeBytes": 1502014655,
+      "writeOps": 184285,
+      "state": "Wait",
+      "reason": "Executive"
+    },
+    {
+      "at": 152161586.2563,
+      "readBytes": 3943267455,
+      "writeBytes": 1506422380,
+      "writeOps": 184827,
+      "state": "Running",
+      "reason": ""
+    },
+    {
+      "at": 152161632.8167,
+      "readBytes": 3976577912,
+      "writeBytes": 1508823005,
+      "writeOps": 185097,
+      "state": "Running",
+      "reason": ""
+    }
+  ],
+  "flushes": [
+    {
+      "iteration": 0,
+      "changed": true,
+      "startedAt": 152152717.4052,
+      "elapsedMs": 193.65299999713898,
+      "cpuMs": 173,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 29460923
+    },
+    {
+      "iteration": 1,
+      "changed": false,
+      "startedAt": 152152911.0725,
+      "elapsedMs": 197.31890001893044,
+      "cpuMs": 172,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 31034086
+    },
+    {
+      "iteration": 2,
+      "changed": true,
+      "startedAt": 152153110.3347,
+      "elapsedMs": 202.85570001602173,
+      "cpuMs": 156,
+      "samples": 5,
+      "states": {
+        "Running:": 5
+      },
+      "observedWriteBytes": 35048459
+    },
+    {
+      "iteration": 3,
+      "changed": false,
+      "startedAt": 152153313.1999,
+      "elapsedMs": 191.50200000405312,
+      "cpuMs": 126,
+      "samples": 4,
+      "states": {
+        "Running:": 2,
+        "Wait:Executive": 2
+      },
+      "observedWriteBytes": 26536678
+    },
+    {
+      "iteration": 4,
+      "changed": true,
+      "startedAt": 152153506.3307,
+      "elapsedMs": 189.13379999995232,
+      "cpuMs": 125,
+      "samples": 4,
+      "states": {
+        "Wait:Executive": 2,
+        "Running:": 2
+      },
+      "observedWriteBytes": 32743716
+    },
+    {
+      "iteration": 5,
+      "changed": false,
+      "startedAt": 152153695.4869,
+      "elapsedMs": 212.78380000591278,
+      "cpuMs": 124,
+      "samples": 5,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 2
+      },
+      "observedWriteBytes": 34898450
+    },
+    {
+      "iteration": 6,
+      "changed": true,
+      "startedAt": 152153909.6687,
+      "elapsedMs": 206.0934999883175,
+      "cpuMs": 172,
+      "samples": 4,
+      "states": {
+        "Running:": 4
+      },
+      "observedWriteBytes": 29698790
+    },
+    {
+      "iteration": 7,
+      "changed": false,
+      "startedAt": 152154115.7736,
+      "elapsedMs": 214.14119997620583,
+      "cpuMs": 172,
+      "samples": 5,
+      "states": {
+        "Running:": 4,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 34818242
+    },
+    {
+      "iteration": 8,
+      "changed": true,
+      "startedAt": 152154331.8155,
+      "elapsedMs": 204.1240999996662,
+      "cpuMs": 172,
+      "samples": 4,
+      "states": {
+        "Running:": 4
+      },
+      "observedWriteBytes": 33516262
+    },
+    {
+      "iteration": 9,
+      "changed": false,
+      "startedAt": 152154535.9501,
+      "elapsedMs": 205.75069999694824,
+      "cpuMs": 171,
+      "samples": 5,
+      "states": {
+        "Running:": 4,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 34898450
+    },
+    {
+      "iteration": 10,
+      "changed": true,
+      "startedAt": 152154743.53,
+      "elapsedMs": 196.64689999818802,
+      "cpuMs": 142,
+      "samples": 4,
+      "states": {
+        "Running:": 4
+      },
+      "observedWriteBytes": 32156390
+    },
+    {
+      "iteration": 11,
+      "changed": false,
+      "startedAt": 152154940.1852,
+      "elapsedMs": 187.9645999968052,
+      "cpuMs": 156,
+      "samples": 4,
+      "states": {
+        "Running:": 4
+      },
+      "observedWriteBytes": 33540838
+    },
+    {
+      "iteration": 12,
+      "changed": true,
+      "startedAt": 152155129.8169,
+      "elapsedMs": 197.51099997758865,
+      "cpuMs": 124,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 32293267
+    },
+    {
+      "iteration": 13,
+      "changed": false,
+      "startedAt": 152155327.3342,
+      "elapsedMs": 191.87610000371933,
+      "cpuMs": 157,
+      "samples": 5,
+      "states": {
+        "Wait:Executive": 3,
+        "Running:": 2
+      },
+      "observedWriteBytes": 34580654
+    },
+    {
+      "iteration": 14,
+      "changed": true,
+      "startedAt": 152155520.7008,
+      "elapsedMs": 200.59909999370575,
+      "cpuMs": 187,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 33540838
+    },
+    {
+      "iteration": 15,
+      "changed": false,
+      "startedAt": 152155721.3082,
+      "elapsedMs": 194.941899985075,
+      "cpuMs": 110,
+      "samples": 4,
+      "states": {
+        "Running:": 4
+      },
+      "observedWriteBytes": 33540838
+    },
+    {
+      "iteration": 16,
+      "changed": true,
+      "startedAt": 152155918.1464,
+      "elapsedMs": 186.85740000009537,
+      "cpuMs": 155,
+      "samples": 4,
+      "states": {
+        "Running:": 4
+      },
+      "observedWriteBytes": 33553208
+    },
+    {
+      "iteration": 17,
+      "changed": false,
+      "startedAt": 152156105.0133,
+      "elapsedMs": 199.4743999838829,
+      "cpuMs": 157,
+      "samples": 5,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 2
+      },
+      "observedWriteBytes": 34898450
+    },
+    {
+      "iteration": 18,
+      "changed": true,
+      "startedAt": 152156306.3634,
+      "elapsedMs": 200.39849999547005,
+      "cpuMs": 187,
+      "samples": 4,
+      "states": {
+        "Running:": 4
+      },
+      "observedWriteBytes": 33160815
+    },
+    {
+      "iteration": 19,
+      "changed": false,
+      "startedAt": 152156506.7771,
+      "elapsedMs": 181.28270000219345,
+      "cpuMs": 157,
+      "samples": 5,
+      "states": {
+        "Running:": 4,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 34898450
+    },
+    {
+      "iteration": 20,
+      "changed": true,
+      "startedAt": 152156689.8984,
+      "elapsedMs": 184.63929998874664,
+      "cpuMs": 140,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 30024478
+    },
+    {
+      "iteration": 21,
+      "changed": false,
+      "startedAt": 152156874.5429,
+      "elapsedMs": 164.09520000219345,
+      "cpuMs": 157,
+      "samples": 3,
+      "states": {
+        "Running:": 3
+      },
+      "observedWriteBytes": 26454758
+    },
+    {
+      "iteration": 22,
+      "changed": true,
+      "startedAt": 152157040.323,
+      "elapsedMs": 189.23629999160767,
+      "cpuMs": 141,
+      "samples": 4,
+      "states": {
+        "Running:": 4
+      },
+      "observedWriteBytes": 33647060
+    },
+    {
+      "iteration": 23,
+      "changed": false,
+      "startedAt": 152157229.5663,
+      "elapsedMs": 191.21629998087883,
+      "cpuMs": 125,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 32767887
+    },
+    {
+      "iteration": 24,
+      "changed": true,
+      "startedAt": 152157422.479,
+      "elapsedMs": 555.7335999906063,
+      "cpuMs": 172,
+      "samples": 12,
+      "states": {
+        "Wait:Executive": 9,
+        "Running:": 2,
+        "Wait:Unknown": 1
+      },
+      "observedWriteBytes": 35318728
+    },
+    {
+      "iteration": 25,
+      "changed": false,
+      "startedAt": 152157978.2193,
+      "elapsedMs": 870.7414000034332,
+      "cpuMs": 172,
+      "samples": 21,
+      "states": {
+        "Running:": 4,
+        "Wait:Executive": 17
+      },
+      "observedWriteBytes": 35318521
+    },
+    {
+      "iteration": 26,
+      "changed": true,
+      "startedAt": 152158850.7384,
+      "elapsedMs": 174.39819997549057,
+      "cpuMs": 109,
+      "samples": 4,
+      "states": {
+        "Running:": 4
+      },
+      "observedWriteBytes": 34793638
+    },
+    {
+      "iteration": 27,
+      "changed": false,
+      "startedAt": 152159025.1417,
+      "elapsedMs": 200.94999998807907,
+      "cpuMs": 172,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 32041702
+    },
+    {
+      "iteration": 28,
+      "changed": true,
+      "startedAt": 152159227.8743,
+      "elapsedMs": 206.8303999900818,
+      "cpuMs": 171,
+      "samples": 5,
+      "states": {
+        "Running:": 5
+      },
+      "observedWriteBytes": 34628382
+    },
+    {
+      "iteration": 29,
+      "changed": false,
+      "startedAt": 152159434.7142,
+      "elapsedMs": 205.13920000195503,
+      "cpuMs": 141,
+      "samples": 4,
+      "states": {
+        "Running:": 2,
+        "Wait:Executive": 1,
+        "Standby:": 1
+      },
+      "observedWriteBytes": 30321382
+    },
+    {
+      "iteration": 30,
+      "changed": true,
+      "startedAt": 152159641.0372,
+      "elapsedMs": 204.2946000099182,
+      "cpuMs": 173,
+      "samples": 5,
+      "states": {
+        "Wait:Unknown": 1,
+        "Running:": 4
+      },
+      "observedWriteBytes": 35048406
+    },
+    {
+      "iteration": 31,
+      "changed": false,
+      "startedAt": 152159845.3389,
+      "elapsedMs": 194.29629999399185,
+      "cpuMs": 140,
+      "samples": 5,
+      "states": {
+        "Running:": 5
+      },
+      "observedWriteBytes": 28492574
+    },
+    {
+      "iteration": 32,
+      "changed": true,
+      "startedAt": 152160041.1485,
+      "elapsedMs": 203.61110001802444,
+      "cpuMs": 172,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 31025894
+    },
+    {
+      "iteration": 33,
+      "changed": false,
+      "startedAt": 152160244.7672,
+      "elapsedMs": 201.27410000562668,
+      "cpuMs": 156,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 32497819
+    },
+    {
+      "iteration": 34,
+      "changed": true,
+      "startedAt": 152160447.9195,
+      "elapsedMs": 200.05380001664162,
+      "cpuMs": 172,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 29395384
+    },
+    {
+      "iteration": 35,
+      "changed": false,
+      "startedAt": 152160647.9798,
+      "elapsedMs": 199.66480001807213,
+      "cpuMs": 125,
+      "samples": 4,
+      "states": {
+        "Running:": 2,
+        "Standby:": 1,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 32770790
+    },
+    {
+      "iteration": 36,
+      "changed": true,
+      "startedAt": 152160849.9704,
+      "elapsedMs": 196.1288999915123,
+      "cpuMs": 157,
+      "samples": 5,
+      "states": {
+        "Running:": 5
+      },
+      "observedWriteBytes": 35318468
+    },
+    {
+      "iteration": 37,
+      "changed": false,
+      "startedAt": 152161046.1071,
+      "elapsedMs": 197.8585999906063,
+      "cpuMs": 171,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 32869094
+    },
+    {
+      "iteration": 38,
+      "changed": true,
+      "startedAt": 152161245.7213,
+      "elapsedMs": 204.3014000058174,
+      "cpuMs": 156,
+      "samples": 5,
+      "states": {
+        "Running:": 4,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 35048406
+    },
+    {
+      "iteration": 39,
+      "changed": false,
+      "startedAt": 152161450.0312,
+      "elapsedMs": 192.55370000004768,
+      "cpuMs": 157,
+      "samples": 4,
+      "states": {
+        "Running:": 3,
+        "Wait:Executive": 1
+      },
+      "observedWriteBytes": 28336926
+    }
+  ],
+  "targetSleepMs": 20,
+  "observedMedianIntervalMs": 45.867,
+  "businessEdges": 0,
+  "note": "Supplementary native-only fixture; same 5000 node count and 1536 dimensions, workspace membership edges only. Interior samples can undercount per-call I/O."
+}

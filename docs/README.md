@@ -24,6 +24,7 @@
 | 替代提案如何确认或拒绝 | [现行契约](release-0.8.7.md) · [11 月 2 日的方案比较](next-memory/SUPERSEDE-CONTRACT-OPTIONS.md) |
 | 事实去重的语料与基线 | [IDENTITY-CORPUS-2026-11-11](next-memory/IDENTITY-CORPUS-2026-11-11.md) |
 | 成本口径 | [COST-MODEL](next-memory/COST-MODEL.md) |
+| 5000 节点写延迟归因与批处理对比 | [2026-11-12 实测](reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
 | 复审与放行记录（0.8.7） | [报告](reviews/0.8.7-REPORT-2026-11-06.md) / [最终验收](reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) |
 | 原始证据（真机/并发/写入来源） | [evidence-write-provenance](next-memory/evidence-write-provenance/) |
 | 发版步骤 | [发布检查清单](release-checklist.md) |

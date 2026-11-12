@@ -12,6 +12,7 @@
 | npm 发布包 | **`latest = 0.8.9`**，tag `v0.8.9`。实际产物与验收见[发布说明](../release-0.8.9.md)。 |
 | 发布分支 | `release/0.8.4`、`release/0.8.5` 保留为当时的发布快照；两个 store 修复已用 parity 提交搬回 main（`8801fd6`、`4b0ad42`），**不需要合并** |
 | 当前 main | 本版包含 #4 的预算和规则抽取开关、#5 的在线 TQL 与独立快照，以及 F88-R01/R02/R03/R06 修复。[公司机器验收](../reviews/0.8.9-RESULTS-2026-11-12.md) |
+| main 领先发布包 | 芯片批量写合并 flush，归档省去重复全文索引重建，芯片列表只取 payload。[归因、前后对比与剩余 F-LAT-01](../reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
 | 依赖 pin | `package.json` 要 `triviumdb@0.9.0`（正式版） |
 | 本机实际内核 | 两台机器都已是 **`0.9.0`**（Administrator 机 2026-11-05 用 `npm install` 对齐，之前是 0.8.11）。跑测前仍建议自己查一次 |
 | 宿主基线 | `@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证）；README 里的 `0.2.1-rc.4` 已同步改掉 |
