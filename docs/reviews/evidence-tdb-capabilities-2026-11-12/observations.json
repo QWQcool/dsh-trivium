@@ -1,0 +1,61 @@
+{
+  "kernel": "0.9.0",
+  "realEmbeddingCalls": 0,
+  "costCNY": 0,
+  "vectorValidation": {
+    "shortInputLength": 2,
+    "normalisedLength": 1536,
+    "longInputLength": 3072,
+    "normalisedLongLength": 1536,
+    "nonFiniteBecomesZero": true
+  },
+  "embeddingRace": {
+    "requests": 2,
+    "text": "new text",
+    "vectorAfterNew": [
+      0,
+      1
+    ],
+    "vectorAfterLateOld": [
+      1,
+      0
+    ],
+    "staleResultOverwritesCurrentVector": true
+  },
+  "backfill": {
+    "embedded": 4,
+    "flushes": 4,
+    "includesWorkspaceMetadata": true
+  },
+  "namedNodes": {
+    "rowCount": 8,
+    "includesWorkspace": true,
+    "includesArchived": true,
+    "includesExpired": true,
+    "includesSuperseded": true,
+    "actualCurrentHead": 6
+  },
+  "snapshotNamed": {
+    "accepted": false,
+    "code": "QUERY_INVALID"
+  },
+  "largeRead": {
+    "nodes": 5000,
+    "indexedLookupCount": 1,
+    "indexedPayloadsValid": true,
+    "broadIndexedLookup": {
+      "ok": false,
+      "code": "TDB_QUERY_BUDGET",
+      "budget": 6
+    },
+    "indexedLookupMs": 0.03360000000020591,
+    "boundedNativeNeighborCount": 0,
+    "boundedNativeTruncated": false,
+    "boundedNativeNeighborMs": 0.03559999999993124,
+    "namedNeighbor": {
+      "ok": false,
+      "status": 422,
+      "code": "READ_QUERY_WORK_LIMIT"
+    }
+  }
+}

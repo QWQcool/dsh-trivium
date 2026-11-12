@@ -352,10 +352,21 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 | 验证 | 结果与范围 |
 |---|---|
-| 离线回归 | 运行 `node scripts/run-all.mjs`。[当前源码结果](docs/next-memory/CURRENT-STATE.md)和 [0.8.7 放行记录](docs/reviews/0.8.7-FINAL-RESULTS-2026-11-10.md)分别注明了验证基线。 |
+| 离线回归 | 运行 `node scripts/run-all.mjs`。[当前源码结果](docs/next-memory/CURRENT-STATE.md)注明了验证基线。[0.8.9 验收记录](docs/reviews/0.8.9-RESULTS-2026-11-12.md)包含严格成品安装、23 项真实宿主检查和 148 项 HTTP 负载检查。 |
 | 变更记录与恢复 | 10 月 30 日验证了回环 HTTP、真实子进程竞争和浏览器组件。[结果与适用范围](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md) |
 | 小样本真实模型 | [A5 基线](docs/archive/next-memory/A5-WIDER-BASELINE-2026-10-30.md)使用单一模型、5 类合成场景各 5 次：候选和入库各 25/25，新会话答对 21/25；这是修复前的历史基线。后续 [A10](docs/archive/next-memory/A10-REGRESSION-N10-2026-10-30.md) 两个固定场景各 10 次新会话回答均为 10/10，但否定场景有 3/10 次准备阶段触发请求上限，部分运行由 agent 主动写入。不同批次不能合并当作通用准确率。 |
 | 历史证据清单 | `node scripts/verify-evidence.mjs` 校验历史 manifest 中 9 个文件的大小与哈希；它不验证实验设计，也不覆盖全部新证据。 |
+
+源码提交 `6d28ed5` 的写路径优化位于 npm 0.8.9 发布之后。在同一台 Windows 机器上，用合成的 5000 节点、1536 维库测试 30 批、每批 8 条归档，结果如下。
+
+| 每批归档 8 条 | 优化前 | 优化源码 |
+|---|---|---|
+| 中位延迟 | 5383ms | 162ms |
+| p95 延迟 | 8065ms | 946ms |
+| 每批 flush 次数 | 8 | 1 |
+| 每批全文索引喂入次数 | 40,000 | 0 |
+
+插件合并批量落盘，省去归档时未变化文本的重复索引，并在芯片响应中只读取 payload。收益限于这套批量归档负载。单次写入的 flush 尖峰仍按 F-LAT-01 跟踪，内核和默认预算沿用当前值。报告含复现命令、计时数据、中途失败后的持久性验证和原 807ms 慢写入的拆分。[写延迟实测](docs/reviews/WRITE-LATENCY-RESULTS-2026-11-12.md)
 
 上述真实模型样本不能证明模型总会调用工具、完整会话效果或普遍降低成本。旧 D0 部分对照臂重复种植，D1 的 `0.51×` 模拟未计入完整注入历史和短地图；应按[独立审查](docs/archive/next-memory/POST-081-REVIEW.md)的限制解读。
 

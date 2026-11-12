@@ -351,10 +351,21 @@ These results describe distinct test layers; they are not one overall accuracy s
 
 | Evidence | Result and boundary |
 |---|---|
-| Offline regression | Run `node scripts/run-all.mjs`. The [current source results](docs/next-memory/CURRENT-STATE.md) and the [0.8.7 release acceptance record](docs/reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) identify the revisions tested. |
+| Offline regression | Run `node scripts/run-all.mjs`. The [current source results](docs/next-memory/CURRENT-STATE.md) identify the revision tested. The [0.8.9 acceptance record](docs/reviews/0.8.9-RESULTS-2026-11-12.md) includes strict package installation, 23 real-host checks and 148 HTTP load checks. |
 | Extraction baseline, one real model | Five synthetic scenarios × five repetitions: **25/25** facts matched and entered the store; **21/25** subsequent-session answers passed in that earlier baseline. See [A5](docs/archive/next-memory/A5-WIDER-BASELINE-2026-10-30.md). |
 | Correction and negation, one real model | Two fixed synthetic scenarios each produced **10/10** correct new-session answers after fixes. Three negation setup runs hit a request cap, and some runs used agent-initiated writes; these are not a general automatic-extraction success rate. See [A10](docs/archive/next-memory/A10-REGRESSION-N10-2026-10-30.md). |
 | Change record and recovery | The October 30 run covered loopback HTTP, contention between processes, and browser component fixtures. [Results and limits](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md) |
+
+The write-path optimization measured at source commit `6d28ed5` follows the published npm 0.8.9 package. On one Windows machine with a synthetic 5000-node, 1536-dimensional store, 30 batches of eight archives produced:
+
+| Eight-item archive batch | Before | Optimized source |
+|---|---|---|
+| Median latency | 5383 ms | 162 ms |
+| p95 latency | 8065 ms | 946 ms |
+| Flush calls per batch | 8 | 1 |
+| Text-index feeds per batch | 40,000 | 0 |
+
+The plugin batches persistence, skips unchanged archive text indexing, and reads payloads for the chip response. These measurements apply to batch archiving. Single-write flush spikes remain under investigation as F-LAT-01. The native kernel and default budgets are unchanged. The report includes the commands, traces, failed-batch durability checks and the original 807 ms write breakdown. [Write-latency results](docs/reviews/WRITE-LATENCY-RESULTS-2026-11-12.md)
 
 The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/archive/next-memory/POST-081-REVIEW.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 

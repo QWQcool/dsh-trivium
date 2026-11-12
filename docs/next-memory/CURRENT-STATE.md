@@ -48,7 +48,7 @@
 | 事项 | 下一步 |
 |---|---|
 | 下一步投入 | 0.8.9 已交付工作区写入修复和读路径。按实际运维查询讨论只读面板，再依据压测区分查询、输出物化与写 flush 的成本。[投入依据](../reviews/0.8.9-RESULTS-2026-11-12.md#后续投入依据) |
-| P1 语义去重 | 等可用 embedding 端点，再用同一组正反例复测。[身份语料与阈值结果](IDENTITY-CORPUS-2026-11-11.md) |
+| P1 向量召回与语义去重 | 先核对 F-EMB-01 向量验证、F-EMB-02 迟到响应回写，再用有效端点做隔离检索对照，身份合并另跑正反例。[TDB 审查](../reviews/TDB-CAPABILITY-AUDIT-2026-11-12.md) · [身份语料](IDENTITY-CORPUS-2026-11-11.md) |
 | P3 Router 常驻化 | 只读继承和 Router 原型已跑通，`scopeInheritance` 默认关。宿主提供 Router/Worker 接口后再做常驻集成。[只读继承](evidence-write-provenance/S1/INHERIT-READ-2026-11-03/README.md) · [三 Worker 结果](evidence-write-provenance/S1/THREE-WORKERS-2026-11-03/README.md) |
 | R3 同质量净费用 | 第二片 S3 长尾于 11 月 1 日复测通过，第三片仍需真实宿主的 S2 边级证据。 |
 | B 站 E1-B 与 REFERENCE | 前者等对方扩展点。后者的 A5 为 4/5，需人工复判“先否定后纠正”的回答。 |
