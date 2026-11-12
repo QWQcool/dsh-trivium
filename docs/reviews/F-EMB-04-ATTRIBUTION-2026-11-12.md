@@ -115,3 +115,5 @@ node scripts/verify-local-embedding.mjs --attribution --source-workspace .tmp/lo
 ## F-EMB-04 的状态
 
 **原 32/32 与 31/32 差额已完成归因，排序改法尚未实施。**是否改变融合方式、文本预处理或单通道保护，需要后续单独讨论并使用独立问题验证。本轮没有开展限定实体范围检索方案，也没有据这些开发样本确定新阈值。
+
+后续已完成 [TDB 候选 ID 文本能力与范围内 payload 评测](SCOPED-TEXT-CAPABILITY-2026-11-12.md)：条件性 payload 过滤可用，通用 ID 文本入口缺失；在带关系真值的隔离库中比较 fallback，仍未改变生产检索行为。

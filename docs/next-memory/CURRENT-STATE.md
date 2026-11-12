@@ -49,7 +49,7 @@
 | 事项 | 下一步 |
 |---|---|
 | 下一步投入 | 先收集三类查询卡片的真实使用问题，再定大库扫描分页、上游异步查询/游标优先级。单次同步 flush 尖峰 F-LAT-01 仍在，内核和预算未改。[本轮结果与剩余事项](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
-| P1 向量召回与语义去重 | F-EMB-01/02 已修；F-EMB-04 的 Top-5 差额已定位到当前 RRF 文本通道与候选截断，**尚未改排序**。相似度不足以区分冲突事实，合并继续关闭。原始 Ollama 加载仍用同权重运行器绕行。[归因对照](../reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md) · [本地结果](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) · [身份语料](IDENTITY-CORPUS-2026-11-11.md) |
+| P1 向量召回与语义去重 | F-EMB-01/02 已修；F-EMB-04 已归因并完成候选 ID 文本能力与 payload 范围实验，**尚未改生产排序或接入工具**。原生 URI 条件过滤可用，但缺少通用 ID 文本白名单；payload 单独召回不足，同实体文本噪声仍在。相似度身份合并继续关闭。[范围实验](../reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) · [归因对照](../reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md) · [本地结果](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 | P3 Router 常驻化 | 只读继承和 Router 原型已跑通，`scopeInheritance` 默认关。宿主提供 Router/Worker 接口后再做常驻集成。[只读继承](evidence-write-provenance/S1/INHERIT-READ-2026-11-03/README.md) · [三 Worker 结果](evidence-write-provenance/S1/THREE-WORKERS-2026-11-03/README.md) |
 | R3 同质量净费用 | 第二片 S3 长尾于 11 月 1 日复测通过，第三片仍需真实宿主的 S2 边级证据。 |
 | B 站 E1-B 与 REFERENCE | 前者等对方扩展点。后者的 A5 为 4/5，需人工复判“先否定后纠正”的回答。 |

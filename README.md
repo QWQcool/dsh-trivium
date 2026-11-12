@@ -372,6 +372,8 @@ The newer source also batches derived vector writes in groups of 16. In three al
 
 The one mixed-retrieval Top-5 miss was traced to generic text matches in weighted rank fusion: the relevant document fell from dense rank 1 to fused rank 19 before the plugin's 16-candidate cut. A larger pool alone did not restore Top-5; disabling the native text channel also regressed some Top-1 results. This is attribution, with production ranking unchanged. [Controlled evaluation](docs/reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md)
 
+Follow-up [scoped-text experiments](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) distinguish conditional native payload filtering from arbitrary ID-set text ranking, and evaluate payload fallbacks on declared relation truth. These are isolated diagnostics; tools and default retrieval remain unchanged.
+
 The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/archive/next-memory/POST-081-REVIEW.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 
 ## Changelog

@@ -1,0 +1,1278 @@
+[
+  {
+    "entity": "@upload",
+    "text": "How many retries are allowed?",
+    "relevant": [
+      "retry"
+    ],
+    "group": "same-question-different-entity",
+    "set": "relation-diagnostics",
+    "scopeSize": 2,
+    "payloadReads": 4,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "retry-other",
+            "id": 19,
+            "score": 3.3442623615264893
+          },
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 3.2903225421905518
+          },
+          {
+            "key": "embeddingdim",
+            "id": 26,
+            "score": 3.2087912559509277
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 3.0048584938049316
+          },
+          {
+            "key": "permission",
+            "id": 36,
+            "score": 2.9728915691375732
+          }
+        ],
+        "hit1": false,
+        "hit5": true,
+        "outside": 4
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 0.5304082772980451
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 0.5158641934394836
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 0.5158641934394836
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 3.3442622950819674
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "no_lexical_match",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  },
+  {
+    "entity": "@mail",
+    "text": "How many retries are allowed?",
+    "relevant": [
+      "retry-other"
+    ],
+    "group": "same-question-different-entity",
+    "set": "relation-diagnostics",
+    "scopeSize": 2,
+    "payloadReads": 4,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "retry-other",
+            "id": 19,
+            "score": 3.3442623615264893
+          },
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 3.2903225421905518
+          },
+          {
+            "key": "embeddingdim",
+            "id": 26,
+            "score": 3.2087912559509277
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 3.0048584938049316
+          },
+          {
+            "key": "permission",
+            "id": 36,
+            "score": 2.9728915691375732
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 4
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [
+          {
+            "key": "retry-other",
+            "id": 19,
+            "score": 0.787057443732583
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "retry-other",
+            "id": 19,
+            "score": 0.5209938287734985
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "retry-other",
+            "id": 19,
+            "score": 0.5209938287734985
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "retry-other",
+            "id": 19,
+            "score": 3.3442622950819674
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "no_lexical_match",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  },
+  {
+    "entity": "gateway",
+    "text": "X-Request-Id",
+    "relevant": [
+      "header"
+    ],
+    "group": "outside-top-hit",
+    "set": "relation-diagnostics",
+    "scopeSize": 3,
+    "payloadReads": 6,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 3.2903225421905518
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 3.238095283508301
+          },
+          {
+            "key": "@all",
+            "id": 1008,
+            "score": 1
+          },
+          {
+            "key": "@memory",
+            "id": 1001,
+            "score": 1
+          },
+          {
+            "key": "@query",
+            "id": 1004,
+            "score": 1
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 3
+      },
+      "payload-lexical": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 2
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 2.8899433347666945
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.6480230093002319
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.36339566111564636
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 3.3442622950819674
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.967741935483871
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 3.3442622950819674
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.967741935483871
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "lexical_candidates",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  },
+  {
+    "entity": "@memory",
+    "text": "Current checkpoint policy",
+    "relevant": [
+      "history-current"
+    ],
+    "group": "current-version",
+    "set": "relation-diagnostics",
+    "scopeSize": 13,
+    "payloadReads": 26,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "history-current",
+            "id": 2005,
+            "score": 4
+          },
+          {
+            "key": "history-old",
+            "id": 2004,
+            "score": 3.2903225421905518
+          },
+          {
+            "key": "supersede",
+            "id": 23,
+            "score": 3.173076868057251
+          },
+          {
+            "key": "@memory",
+            "id": 1001,
+            "score": 1
+          },
+          {
+            "key": "@release",
+            "id": 1002,
+            "score": 1
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 3
+      },
+      "payload-lexical": {
+        "rows": [
+          {
+            "key": "history-current",
+            "id": 2005,
+            "score": 4
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [
+          {
+            "key": "history-current",
+            "id": 2005,
+            "score": 8.170273314791359
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "history-current",
+            "id": 2005,
+            "score": 0.7008061408996582
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 0.38765090703964233
+          },
+          {
+            "key": "dbfile",
+            "id": 6,
+            "score": 0.3826436996459961
+          },
+          {
+            "key": "recall",
+            "id": 8,
+            "score": 0.3556332290172577
+          },
+          {
+            "key": "embeddingdim",
+            "id": 26,
+            "score": 0.3293536901473999
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "history-current",
+            "id": 2005,
+            "score": 3.3442622950819674
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 0.967741935483871
+          },
+          {
+            "key": "dbfile",
+            "id": 6,
+            "score": 0.9523809523809523
+          },
+          {
+            "key": "recall",
+            "id": 8,
+            "score": 0.9375
+          },
+          {
+            "key": "embeddingdim",
+            "id": 26,
+            "score": 0.9230769230769231
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "history-current",
+            "id": 2005,
+            "score": 3.3442622950819674
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 0.967741935483871
+          },
+          {
+            "key": "dbfile",
+            "id": 6,
+            "score": 0.9523809523809523
+          },
+          {
+            "key": "recall",
+            "id": 8,
+            "score": 0.9375
+          },
+          {
+            "key": "embeddingdim",
+            "id": 26,
+            "score": 0.9230769230769231
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "lexical_candidates",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  },
+  {
+    "entity": "@release",
+    "text": "release plan",
+    "relevant": [
+      "pending-old",
+      "pending-new"
+    ],
+    "group": "pending-proposal",
+    "set": "relation-diagnostics",
+    "scopeSize": 15,
+    "payloadReads": 30,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "pending-old",
+            "id": 2008,
+            "score": 3.3442623615264893
+          },
+          {
+            "key": "pending-new",
+            "id": 2009,
+            "score": 3.2903225421905518
+          },
+          {
+            "key": "gap-old",
+            "id": 2006,
+            "score": 3.2087912559509277
+          },
+          {
+            "key": "nopublish",
+            "id": 20,
+            "score": 3.145522356033325
+          },
+          {
+            "key": "publish",
+            "id": 3,
+            "score": 3.1341991424560547
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 1
+      },
+      "payload-lexical": {
+        "rows": [
+          {
+            "key": "pending-old",
+            "id": 2008,
+            "score": 3
+          },
+          {
+            "key": "pending-new",
+            "id": 2009,
+            "score": 3
+          },
+          {
+            "key": "publish",
+            "id": 3,
+            "score": 0.5
+          },
+          {
+            "key": "nopublish",
+            "id": 20,
+            "score": 0.5
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [
+          {
+            "key": "pending-old",
+            "id": 2008,
+            "score": 4.602229619965922
+          },
+          {
+            "key": "pending-new",
+            "id": 2009,
+            "score": 4.507921635950226
+          },
+          {
+            "key": "nopublish",
+            "id": 20,
+            "score": 1.7932368938279302
+          },
+          {
+            "key": "publish",
+            "id": 3,
+            "score": 1.3613292273266908
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "pending-old",
+            "id": 2008,
+            "score": 0.5450232625007629
+          },
+          {
+            "key": "pending-new",
+            "id": 2009,
+            "score": 0.5117604732513428
+          },
+          {
+            "key": "publish",
+            "id": 3,
+            "score": 0.48046836256980896
+          },
+          {
+            "key": "nopublish",
+            "id": 20,
+            "score": 0.39467334747314453
+          },
+          {
+            "key": "canpublish",
+            "id": 21,
+            "score": 0.36785927414894104
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "pending-old",
+            "id": 2008,
+            "score": 3.3442622950819674
+          },
+          {
+            "key": "pending-new",
+            "id": 2009,
+            "score": 3.2903225806451615
+          },
+          {
+            "key": "publish",
+            "id": 3,
+            "score": 3.238095238095238
+          },
+          {
+            "key": "nopublish",
+            "id": 20,
+            "score": 3.1875
+          },
+          {
+            "key": "canpublish",
+            "id": 21,
+            "score": 0.9230769230769231
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "pending-old",
+            "id": 2008,
+            "score": 3.3442622950819674
+          },
+          {
+            "key": "pending-new",
+            "id": 2009,
+            "score": 3.2903225806451615
+          },
+          {
+            "key": "nopublish",
+            "id": 20,
+            "score": 3.2232142857142856
+          },
+          {
+            "key": "publish",
+            "id": 3,
+            "score": 3.2023809523809526
+          },
+          {
+            "key": "canpublish",
+            "id": 21,
+            "score": 0.9230769230769231
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "lexical_candidates",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  },
+  {
+    "entity": "@all",
+    "text": "Can a 768-number vector be accepted by this plugin?",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "same-entity-generic-noise",
+    "set": "relation-diagnostics",
+    "scopeSize": 37,
+    "payloadReads": 74,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "payload",
+            "id": 15,
+            "score": 3.328397750854492
+          },
+          {
+            "key": "uninstall",
+            "id": 7,
+            "score": 3.1528847217559814
+          },
+          {
+            "key": "node",
+            "id": 31,
+            "score": 3.1048951148986816
+          },
+          {
+            "key": "snapshot",
+            "id": 11,
+            "score": 3
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 2.974790096282959
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [
+          {
+            "key": "payload",
+            "id": 15,
+            "score": 4.403921256159411
+          },
+          {
+            "key": "package",
+            "id": 2,
+            "score": 3.5345575133807827
+          },
+          {
+            "key": "timeout",
+            "id": 13,
+            "score": 3.5127327133975017
+          },
+          {
+            "key": "snapshot",
+            "id": 11,
+            "score": 3.4356493530310193
+          },
+          {
+            "key": "uninstall",
+            "id": 7,
+            "score": 2.9759328462738597
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "embeddingdim",
+            "id": 26,
+            "score": 0.4680463969707489
+          },
+          {
+            "key": "payload",
+            "id": 15,
+            "score": 0.4567025303840637
+          },
+          {
+            "key": "dbfile",
+            "id": 6,
+            "score": 0.4357498586177826
+          },
+          {
+            "key": "uninstall",
+            "id": 7,
+            "score": 0.4291626811027527
+          },
+          {
+            "key": "node",
+            "id": 31,
+            "score": 0.42656582593917847
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "embeddingdim",
+            "id": 26,
+            "score": 0.4680463969707489
+          },
+          {
+            "key": "payload",
+            "id": 15,
+            "score": 0.4567025303840637
+          },
+          {
+            "key": "dbfile",
+            "id": 6,
+            "score": 0.4357498586177826
+          },
+          {
+            "key": "uninstall",
+            "id": 7,
+            "score": 0.4291626811027527
+          },
+          {
+            "key": "node",
+            "id": 31,
+            "score": 0.42656582593917847
+          }
+        ],
+        "hit1": true,
+        "hit5": true,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "payload",
+            "id": 15,
+            "score": 3.328397673188789
+          },
+          {
+            "key": "uninstall",
+            "id": 7,
+            "score": 3.1528846153846155
+          },
+          {
+            "key": "node",
+            "id": 31,
+            "score": 3.104895104895105
+          },
+          {
+            "key": "snapshot",
+            "id": 11,
+            "score": 3.05
+          },
+          {
+            "key": "package",
+            "id": 2,
+            "score": 3.045472211426351
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "no_lexical_match",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  },
+  {
+    "entity": "@lonely",
+    "text": "How many retries are allowed?",
+    "relevant": [],
+    "group": "anchor-only",
+    "set": "relation-diagnostics",
+    "scopeSize": 1,
+    "payloadReads": 2,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "retry-other",
+            "id": 19,
+            "score": 3.3442623615264893
+          },
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 3.2903225421905518
+          },
+          {
+            "key": "embeddingdim",
+            "id": 26,
+            "score": 3.2087912559509277
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 3.0048584938049316
+          },
+          {
+            "key": "permission",
+            "id": 36,
+            "score": 2.9728915691375732
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 5
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "scope_has_anchor_only",
+    "semanticStatus": "no_semantic_candidates"
+  },
+  {
+    "entity": "gateway",
+    "text": "Where is the production server password?",
+    "relevant": [],
+    "group": "unanswerable",
+    "set": "relation-diagnostics",
+    "scopeSize": 3,
+    "payloadReads": 6,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "dbfile",
+            "id": 6,
+            "score": 3.3442623615264893
+          },
+          {
+            "key": "nopublish",
+            "id": 20,
+            "score": 3.0454721450805664
+          },
+          {
+            "key": "kernel",
+            "id": 32,
+            "score": 3.026888608932495
+          },
+          {
+            "key": "lock",
+            "id": 10,
+            "score": 2.9872124195098877
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 2.914285898208618
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 5
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.7706515559377852
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.27194368839263916
+          },
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.21882227063179016
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.27194368839263916
+          },
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.21882227063179016
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 3.328397673188789
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.9836065573770492
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "no_lexical_match",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  },
+  {
+    "entity": "@upload",
+    "text": "What city is the user visiting next week?",
+    "relevant": [],
+    "group": "unanswerable",
+    "set": "relation-diagnostics",
+    "scopeSize": 2,
+    "payloadReads": 4,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "dbfile",
+            "id": 6,
+            "score": 3.328397750854492
+          },
+          {
+            "key": "capacity",
+            "id": 35,
+            "score": 3.1528847217559814
+          },
+          {
+            "key": "supersede",
+            "id": 23,
+            "score": 3.130784749984741
+          },
+          {
+            "key": "kernel",
+            "id": 32,
+            "score": 3.0513834953308105
+          },
+          {
+            "key": "timeout",
+            "id": 13,
+            "score": 2.9284746646881104
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 5
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 0.5304082772980451
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 0.1620204597711563
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 0.1620204597711563
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 3.3442622950819674
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "no_lexical_match",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  },
+  {
+    "entity": "gateway",
+    "text": "独立计费服务的维护窗口是什么时候？",
+    "relevant": [],
+    "group": "unanswerable",
+    "set": "relation-diagnostics",
+    "scopeSize": 3,
+    "payloadReads": 6,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "local",
+            "id": 4,
+            "score": 3.328397750854492
+          },
+          {
+            "key": "appearance",
+            "id": 33,
+            "score": 3.2316715717315674
+          },
+          {
+            "key": "@memory",
+            "id": 1001,
+            "score": 1
+          },
+          {
+            "key": "@all",
+            "id": 1008,
+            "score": 1
+          },
+          {
+            "key": "@query",
+            "id": 1004,
+            "score": 1
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 4
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.2136821299791336
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.17241589725017548
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.2136821299791336
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.17241589725017548
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.2136821299791336
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.17241589725017548
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "no_lexical_match",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  }
+]

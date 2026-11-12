@@ -373,6 +373,8 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 混合检索唯一的 Top-5 漏题已完成归因：通用词的文本命中在加权排名融合中，将正确文档从纯向量第 1 压到第 19，随后被前 16 个候选截掉。单纯扩大候选池没有恢复 Top-5；关闭原生文本通道也造成部分 Top-1 退步。本轮保留生产排序。[归因与对照评测](docs/reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md)
 
+后续[范围文本实验](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md)区分了原生条件过滤与任意 ID 集合文本排名，并在有声明关系真值的隔离库中评测 payload 备选方案。这些仍是开发诊断，工具和默认检索保持原状。
+
 上述真实模型样本不能证明模型总会调用工具、完整会话效果或普遍降低成本。旧 D0 部分对照臂重复种植，D1 的 `0.51×` 模拟未计入完整注入历史和短地图；应按[独立审查](docs/archive/next-memory/POST-081-REVIEW.md)的限制解读。
 
 ## 更新说明

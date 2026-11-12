@@ -1,0 +1,402 @@
+[
+  {
+    "entity": "@lonely",
+    "text": "How many retries are allowed?",
+    "relevant": [],
+    "group": "anchor-only",
+    "set": "relation-diagnostics",
+    "scopeSize": 1,
+    "payloadReads": 2,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "retry-other",
+            "id": 19,
+            "score": 3.3442623615264893
+          },
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 3.2903225421905518
+          },
+          {
+            "key": "embeddingdim",
+            "id": 26,
+            "score": 3.2087912559509277
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 3.0048584938049316
+          },
+          {
+            "key": "permission",
+            "id": 36,
+            "score": 2.9728915691375732
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 5
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "scope_has_anchor_only",
+    "semanticStatus": "no_semantic_candidates"
+  },
+  {
+    "entity": "gateway",
+    "text": "Where is the production server password?",
+    "relevant": [],
+    "group": "unanswerable",
+    "set": "relation-diagnostics",
+    "scopeSize": 3,
+    "payloadReads": 6,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "dbfile",
+            "id": 6,
+            "score": 3.3442623615264893
+          },
+          {
+            "key": "nopublish",
+            "id": 20,
+            "score": 3.0454721450805664
+          },
+          {
+            "key": "kernel",
+            "id": 32,
+            "score": 3.026888608932495
+          },
+          {
+            "key": "lock",
+            "id": 10,
+            "score": 2.9872124195098877
+          },
+          {
+            "key": "scope",
+            "id": 37,
+            "score": 2.914285898208618
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 5
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.7706515559377852
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.27194368839263916
+          },
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.21882227063179016
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.27194368839263916
+          },
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.21882227063179016
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 3.328397673188789
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.9836065573770492
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "no_lexical_match",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  },
+  {
+    "entity": "@upload",
+    "text": "What city is the user visiting next week?",
+    "relevant": [],
+    "group": "unanswerable",
+    "set": "relation-diagnostics",
+    "scopeSize": 2,
+    "payloadReads": 4,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "dbfile",
+            "id": 6,
+            "score": 3.328397750854492
+          },
+          {
+            "key": "capacity",
+            "id": 35,
+            "score": 3.1528847217559814
+          },
+          {
+            "key": "supersede",
+            "id": 23,
+            "score": 3.130784749984741
+          },
+          {
+            "key": "kernel",
+            "id": 32,
+            "score": 3.0513834953308105
+          },
+          {
+            "key": "timeout",
+            "id": 13,
+            "score": 2.9284746646881104
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 5
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 0.5304082772980451
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 0.1620204597711563
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 0.1620204597711563
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "retry",
+            "id": 18,
+            "score": 3.3442622950819674
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "no_lexical_match",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  },
+  {
+    "entity": "gateway",
+    "text": "独立计费服务的维护窗口是什么时候？",
+    "relevant": [],
+    "group": "unanswerable",
+    "set": "relation-diagnostics",
+    "scopeSize": 3,
+    "payloadReads": 6,
+    "vectorReadsInPayloadScoring": 0,
+    "variants": {
+      "global-current": {
+        "rows": [
+          {
+            "key": "local",
+            "id": 4,
+            "score": 3.328397750854492
+          },
+          {
+            "key": "appearance",
+            "id": 33,
+            "score": 3.2316715717315674
+          },
+          {
+            "key": "@memory",
+            "id": 1001,
+            "score": 1
+          },
+          {
+            "key": "@all",
+            "id": 1008,
+            "score": 1
+          },
+          {
+            "key": "@query",
+            "id": 1004,
+            "score": 1
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 4
+      },
+      "payload-lexical": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "payload-bm25": {
+        "rows": [],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-dense": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.2136821299791336
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.17241589725017548
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-lexical-rrf": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.2136821299791336
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.17241589725017548
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      },
+      "scoped-bm25-rrf": {
+        "rows": [
+          {
+            "key": "header",
+            "id": 16,
+            "score": 0.2136821299791336
+          },
+          {
+            "key": "gateway",
+            "id": 17,
+            "score": 0.17241589725017548
+          }
+        ],
+        "hit1": false,
+        "hit5": false,
+        "outside": 0
+      }
+    },
+    "lexicalStatus": "no_lexical_match",
+    "semanticStatus": "semantic_candidates_answerability_not_assessed"
+  }
+]

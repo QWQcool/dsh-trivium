@@ -1,0 +1,20 @@
+{
+  "sha256TextLf": {
+    "cleanup.json": "e52a11d47f59486e5732745ed501c8b20a6e808d48bb5f56e5de9da024db2366",
+    "environment.json": "83ef7da0b933150c3333f32dcc299dd9b79ac27a2fc17cb584a583a3fff7a030",
+    "native-capabilities.json": "aefe1be4bba5b86094b7fb39f14323655014de4dcd5f362491715293d9b0439a",
+    "rank-traces.json": "e31b9daf86a90bb86986b66307e53e00aa8048c9a685e9dfb2b1f5e56db1edcc",
+    "relation-diagnostic-rows.json": "a4821cdbff63eadbbb4e61ab13b49606a96421c17f1e402fb7625f8a0f512014",
+    "relation-truth.json": "e45c3de36b0f14c2e038a4761e2550b908d8977f12503cafb9439341d017a83c",
+    "reused-32-rows.json": "9b00619fb6c20953424d1ffa50898b0c7955610f6b3f1ffa10132062e7dd8120",
+    "summary.json": "55af7f75cc7c8bccd31cc5c0d2e5f4270b4b26aa3f4e486ec39f70d39530c3e0",
+    "unanswerable-candidates.json": "b5336c3fbee53d90c491b923a37a83c6c6382b7ee21772e88e3f05984068eaf7",
+    "verification.json": "a58f0587c8c263835fd219c462b5a94540f454d4204a44c7abbc1d4d77c623af"
+  },
+  "sourceAtBlob": {
+    "path": "scripts/verify-local-embedding.mjs",
+    "gitBlob": "a7d9f7d8c873d850ea075abe1069d62c9026ed61",
+    "sha256TextLf": "aaa627d602bf20db49186b5462458a2fb99876b5bc8b35b9efcf1e18b1d41878"
+  },
+  "note": "Normalized text hashes identify artifacts; sourceAtBlob names immutable source, not a future working-tree file. Experimental interpretation is defined by the report."
+}

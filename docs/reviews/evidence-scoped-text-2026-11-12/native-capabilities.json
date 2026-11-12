@@ -1,0 +1,244 @@
+{
+  "cases": [
+    {
+      "policy": "unique",
+      "candidates": [
+        10
+      ],
+      "global": [
+        {
+          "id": 20,
+          "score": 2.3606557846069336
+        }
+      ],
+      "payloadId": [
+        {
+          "id": 20,
+          "score": 2.3606557846069336
+        }
+      ],
+      "payloadScope": [
+        {
+          "id": 10,
+          "score": 2.3606557846069336
+        }
+      ],
+      "uriWhitelist": [
+        {
+          "id": 10,
+          "score": 2.3606557846069336
+        }
+      ],
+      "globalVector": [
+        10
+      ],
+      "graphFirstCandidates": [
+        21
+      ],
+      "graphFirst": [
+        21
+      ],
+      "textThenFilter": {
+        "ok": true,
+        "rows": [],
+        "rowCount": 0,
+        "columns": []
+      },
+      "textFullThenFilter": {
+        "ok": true,
+        "rows": [
+          {
+            "id": 10,
+            "score": 0.07740025222301483
+          }
+        ],
+        "rowCount": 1,
+        "columns": [
+          {
+            "kind": "scalar",
+            "name": "id"
+          },
+          {
+            "kind": "scalar",
+            "name": "score"
+          }
+        ]
+      },
+      "seedThenText": {
+        "ok": false,
+        "code": "TDB_QUERY_PARSE",
+        "message": "TDB_QUERY_PARSE: 查询解析错误 (Query parse error): Expected Return, got Ident(\"TEXT\")"
+      }
+    },
+    {
+      "policy": "duplicate",
+      "candidates": [
+        10
+      ],
+      "global": [
+        {
+          "id": 20,
+          "score": 2.3606557846069336
+        }
+      ],
+      "payloadId": [
+        {
+          "id": 20,
+          "score": 2.3606557846069336
+        }
+      ],
+      "payloadScope": [
+        {
+          "id": 10,
+          "score": 2.3606557846069336
+        }
+      ],
+      "uriWhitelist": [
+        {
+          "id": 20,
+          "score": 2.3606557846069336
+        }
+      ],
+      "globalVector": [
+        10
+      ],
+      "graphFirstCandidates": [
+        21
+      ],
+      "graphFirst": [
+        21
+      ],
+      "textThenFilter": {
+        "ok": true,
+        "rows": [],
+        "rowCount": 0,
+        "columns": []
+      },
+      "textFullThenFilter": {
+        "ok": true,
+        "rows": [
+          {
+            "id": 10,
+            "score": 0.07740025222301483
+          }
+        ],
+        "rowCount": 1,
+        "columns": [
+          {
+            "kind": "scalar",
+            "name": "id"
+          },
+          {
+            "kind": "scalar",
+            "name": "score"
+          }
+        ]
+      },
+      "seedThenText": {
+        "ok": false,
+        "code": "TDB_QUERY_PARSE",
+        "message": "TDB_QUERY_PARSE: 查询解析错误 (Query parse error): Expected Return, got Ident(\"TEXT\")"
+      }
+    },
+    {
+      "policy": "missing",
+      "candidates": [
+        10
+      ],
+      "global": [
+        {
+          "id": 20,
+          "score": 2.3606557846069336
+        }
+      ],
+      "payloadId": [
+        {
+          "id": 20,
+          "score": 2.3606557846069336
+        }
+      ],
+      "payloadScope": [
+        {
+          "id": 10,
+          "score": 2.3606557846069336
+        }
+      ],
+      "uriWhitelist": [],
+      "globalVector": [
+        10
+      ],
+      "graphFirstCandidates": [
+        21
+      ],
+      "graphFirst": [
+        21
+      ],
+      "textThenFilter": {
+        "ok": true,
+        "rows": [],
+        "rowCount": 0,
+        "columns": []
+      },
+      "textFullThenFilter": {
+        "ok": true,
+        "rows": [
+          {
+            "id": 10,
+            "score": 0.07740025222301483
+          }
+        ],
+        "rowCount": 1,
+        "columns": [
+          {
+            "kind": "scalar",
+            "name": "id"
+          },
+          {
+            "kind": "scalar",
+            "name": "score"
+          }
+        ]
+      },
+      "seedThenText": {
+        "ok": false,
+        "code": "TDB_QUERY_PARSE",
+        "message": "TDB_QUERY_PARSE: 查询解析错误 (Query parse error): Expected Return, got Ident(\"TEXT\")"
+      }
+    }
+  ],
+  "conclusion": {
+    "arbitraryNodeIdTextWhitelist": false,
+    "payloadPrefilterBeforeTopK": true,
+    "uniqueCompleteUriConditional": true,
+    "textStatisticsAndPostingSearchRemainGlobal": true,
+    "basis": "Installed Node declarations, Console v1 contract and pinned 0.9.0 TQL TextSearchClause/TextSearchSource; runtime counterexamples above."
+  },
+  "largeStore": {
+    "nodes": 1200,
+    "intendedCandidates": [
+      10
+    ],
+    "textResult": {
+      "ok": true,
+      "data": {
+        "rows": [
+          {
+            "id": 10
+          }
+        ],
+        "rowCount": 1,
+        "columns": [
+          {
+            "kind": "scalar",
+            "name": "id"
+          }
+        ]
+      }
+    },
+    "consoleMaxOperations": 1000,
+    "sourcePipelineDefaultMaxNodes": 100000,
+    "graphFirst": [
+      10
+    ]
+  }
+}

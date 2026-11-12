@@ -1,0 +1,1378 @@
+{
+  "fixture": {
+    "nodes": 52,
+    "entities": 8,
+    "declaredEdges": 83,
+    "vectorsSha256": "77f321d108d0be8576060b10ec456b8d8d7f291cd2dcfebfe517593f8df67813"
+  },
+  "scopes": {
+    "@memory": {
+      "raw": [
+        "@memory",
+        "local",
+        "budget",
+        "dbfile",
+        "recall",
+        "chips",
+        "payload",
+        "embeddingdim",
+        "instruction",
+        "appearance",
+        "port",
+        "scope",
+        "archived",
+        "expired",
+        "history-old",
+        "history-current"
+      ],
+      "eligible": [
+        "@memory",
+        "local",
+        "budget",
+        "dbfile",
+        "recall",
+        "chips",
+        "payload",
+        "embeddingdim",
+        "instruction",
+        "appearance",
+        "port",
+        "scope",
+        "history-current"
+      ],
+      "gaps": [],
+      "paths": [
+        {
+          "key": "local",
+          "path": [
+            "@memory",
+            "local"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "local",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "budget",
+          "path": [
+            "@memory",
+            "budget"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "budget",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "dbfile",
+          "path": [
+            "@memory",
+            "dbfile"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "dbfile",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "recall",
+          "path": [
+            "@memory",
+            "recall"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "recall",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "chips",
+          "path": [
+            "@memory",
+            "chips"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "chips",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "payload",
+          "path": [
+            "@memory",
+            "payload"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "payload",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "embeddingdim",
+          "path": [
+            "@memory",
+            "embeddingdim"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "embeddingdim",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "instruction",
+          "path": [
+            "@memory",
+            "instruction"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "instruction",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "appearance",
+          "path": [
+            "@memory",
+            "appearance"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "appearance",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "port",
+          "path": [
+            "@memory",
+            "port"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "port",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "scope",
+          "path": [
+            "@memory",
+            "scope"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "scope",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "archived",
+          "path": [
+            "@memory",
+            "archived"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "archived",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "expired",
+          "path": [
+            "@memory",
+            "expired"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "expired",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "history-old",
+          "path": [
+            "@memory",
+            "history-old"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "history-old",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "history-current",
+          "path": [
+            "@memory",
+            "history-current"
+          ],
+          "steps": [
+            {
+              "from": "@memory",
+              "to": "history-current",
+              "label": "about"
+            }
+          ]
+        }
+      ]
+    },
+    "@release": {
+      "raw": [
+        "@release",
+        "package",
+        "publish",
+        "budget",
+        "uninstall",
+        "nopublish",
+        "canpublish",
+        "supersede",
+        "reject",
+        "offline",
+        "node",
+        "kernel",
+        "permission",
+        "gap-old",
+        "pending-old",
+        "pending-new"
+      ],
+      "eligible": [
+        "@release",
+        "package",
+        "publish",
+        "budget",
+        "uninstall",
+        "nopublish",
+        "canpublish",
+        "supersede",
+        "reject",
+        "offline",
+        "node",
+        "kernel",
+        "permission",
+        "pending-old",
+        "pending-new"
+      ],
+      "gaps": [
+        {
+          "matched": "gap-old",
+          "current": "gap-current"
+        }
+      ],
+      "paths": [
+        {
+          "key": "package",
+          "path": [
+            "@release",
+            "package"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "package",
+              "label": "decided"
+            }
+          ]
+        },
+        {
+          "key": "publish",
+          "path": [
+            "@release",
+            "publish"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "publish",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "budget",
+          "path": [
+            "@release",
+            "budget"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "budget",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "uninstall",
+          "path": [
+            "@release",
+            "uninstall"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "uninstall",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "nopublish",
+          "path": [
+            "@release",
+            "nopublish"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "nopublish",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "canpublish",
+          "path": [
+            "@release",
+            "canpublish"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "canpublish",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "supersede",
+          "path": [
+            "@release",
+            "supersede"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "supersede",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "reject",
+          "path": [
+            "@release",
+            "reject"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "reject",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "offline",
+          "path": [
+            "@release",
+            "offline"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "offline",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "node",
+          "path": [
+            "@release",
+            "node"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "node",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "kernel",
+          "path": [
+            "@release",
+            "kernel"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "kernel",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "permission",
+          "path": [
+            "@release",
+            "permission"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "permission",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "gap-old",
+          "path": [
+            "@release",
+            "gap-old"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "gap-old",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "pending-old",
+          "path": [
+            "@release",
+            "pending-old"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "pending-old",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "pending-new",
+          "path": [
+            "@release",
+            "pending-new"
+          ],
+          "steps": [
+            {
+              "from": "@release",
+              "to": "pending-new",
+              "label": "about"
+            }
+          ]
+        }
+      ]
+    },
+    "gateway": {
+      "raw": [
+        "gateway",
+        "header",
+        "@all"
+      ],
+      "eligible": [
+        "gateway",
+        "header",
+        "@all"
+      ],
+      "gaps": [],
+      "paths": [
+        {
+          "key": "header",
+          "path": [
+            "gateway",
+            "header"
+          ],
+          "steps": [
+            {
+              "from": "gateway",
+              "to": "header",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "@all",
+          "path": [
+            "gateway",
+            "@all"
+          ],
+          "steps": [
+            {
+              "from": "gateway",
+              "to": "@all",
+              "label": "about"
+            }
+          ]
+        }
+      ]
+    },
+    "@query": {
+      "raw": [
+        "@query",
+        "lock",
+        "snapshot",
+        "live",
+        "timeout",
+        "flush",
+        "expiry",
+        "partial",
+        "orphan",
+        "onehop",
+        "capacity"
+      ],
+      "eligible": [
+        "@query",
+        "lock",
+        "snapshot",
+        "live",
+        "timeout",
+        "flush",
+        "expiry",
+        "partial",
+        "orphan",
+        "onehop",
+        "capacity"
+      ],
+      "gaps": [],
+      "paths": [
+        {
+          "key": "lock",
+          "path": [
+            "@query",
+            "lock"
+          ],
+          "steps": [
+            {
+              "from": "@query",
+              "to": "lock",
+              "label": "broke"
+            }
+          ]
+        },
+        {
+          "key": "snapshot",
+          "path": [
+            "@query",
+            "snapshot"
+          ],
+          "steps": [
+            {
+              "from": "@query",
+              "to": "snapshot",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "live",
+          "path": [
+            "@query",
+            "live"
+          ],
+          "steps": [
+            {
+              "from": "@query",
+              "to": "live",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "timeout",
+          "path": [
+            "@query",
+            "timeout"
+          ],
+          "steps": [
+            {
+              "from": "@query",
+              "to": "timeout",
+              "label": "fixed"
+            }
+          ]
+        },
+        {
+          "key": "flush",
+          "path": [
+            "@query",
+            "flush"
+          ],
+          "steps": [
+            {
+              "from": "@query",
+              "to": "flush",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "expiry",
+          "path": [
+            "@query",
+            "expiry"
+          ],
+          "steps": [
+            {
+              "from": "@query",
+              "to": "expiry",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "partial",
+          "path": [
+            "@query",
+            "partial"
+          ],
+          "steps": [
+            {
+              "from": "@query",
+              "to": "partial",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "orphan",
+          "path": [
+            "@query",
+            "orphan"
+          ],
+          "steps": [
+            {
+              "from": "@query",
+              "to": "orphan",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "onehop",
+          "path": [
+            "@query",
+            "onehop"
+          ],
+          "steps": [
+            {
+              "from": "@query",
+              "to": "onehop",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "capacity",
+          "path": [
+            "@query",
+            "capacity"
+          ],
+          "steps": [
+            {
+              "from": "@query",
+              "to": "capacity",
+              "label": "about"
+            }
+          ]
+        }
+      ]
+    },
+    "@upload": {
+      "raw": [
+        "@upload",
+        "retry"
+      ],
+      "eligible": [
+        "@upload",
+        "retry"
+      ],
+      "gaps": [],
+      "paths": [
+        {
+          "key": "retry",
+          "path": [
+            "@upload",
+            "retry"
+          ],
+          "steps": [
+            {
+              "from": "@upload",
+              "to": "retry",
+              "label": "about"
+            }
+          ]
+        }
+      ]
+    },
+    "@mail": {
+      "raw": [
+        "@mail",
+        "retry-other"
+      ],
+      "eligible": [
+        "@mail",
+        "retry-other"
+      ],
+      "gaps": [],
+      "paths": [
+        {
+          "key": "retry-other",
+          "path": [
+            "@mail",
+            "retry-other"
+          ],
+          "steps": [
+            {
+              "from": "@mail",
+              "to": "retry-other",
+              "label": "about"
+            }
+          ]
+        }
+      ]
+    },
+    "@lonely": {
+      "raw": [
+        "@lonely"
+      ],
+      "eligible": [
+        "@lonely"
+      ],
+      "gaps": [],
+      "paths": []
+    },
+    "@all": {
+      "raw": [
+        "@all",
+        "package",
+        "publish",
+        "local",
+        "budget",
+        "dbfile",
+        "uninstall",
+        "recall",
+        "chips",
+        "lock",
+        "snapshot",
+        "live",
+        "timeout",
+        "flush",
+        "payload",
+        "header",
+        "gateway",
+        "retry",
+        "retry-other",
+        "nopublish",
+        "canpublish",
+        "expiry",
+        "supersede",
+        "reject",
+        "partial",
+        "embeddingdim",
+        "instruction",
+        "offline",
+        "orphan",
+        "onehop",
+        "node",
+        "kernel",
+        "appearance",
+        "port",
+        "capacity",
+        "permission",
+        "scope"
+      ],
+      "eligible": [
+        "@all",
+        "package",
+        "publish",
+        "local",
+        "budget",
+        "dbfile",
+        "uninstall",
+        "recall",
+        "chips",
+        "lock",
+        "snapshot",
+        "live",
+        "timeout",
+        "flush",
+        "payload",
+        "header",
+        "gateway",
+        "retry",
+        "retry-other",
+        "nopublish",
+        "canpublish",
+        "expiry",
+        "supersede",
+        "reject",
+        "partial",
+        "embeddingdim",
+        "instruction",
+        "offline",
+        "orphan",
+        "onehop",
+        "node",
+        "kernel",
+        "appearance",
+        "port",
+        "capacity",
+        "permission",
+        "scope"
+      ],
+      "gaps": [],
+      "paths": [
+        {
+          "key": "package",
+          "path": [
+            "@all",
+            "package"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "package",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "publish",
+          "path": [
+            "@all",
+            "publish"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "publish",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "local",
+          "path": [
+            "@all",
+            "local"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "local",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "budget",
+          "path": [
+            "@all",
+            "budget"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "budget",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "dbfile",
+          "path": [
+            "@all",
+            "dbfile"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "dbfile",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "uninstall",
+          "path": [
+            "@all",
+            "uninstall"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "uninstall",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "recall",
+          "path": [
+            "@all",
+            "recall"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "recall",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "chips",
+          "path": [
+            "@all",
+            "chips"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "chips",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "lock",
+          "path": [
+            "@all",
+            "lock"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "lock",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "snapshot",
+          "path": [
+            "@all",
+            "snapshot"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "snapshot",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "live",
+          "path": [
+            "@all",
+            "live"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "live",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "timeout",
+          "path": [
+            "@all",
+            "timeout"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "timeout",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "flush",
+          "path": [
+            "@all",
+            "flush"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "flush",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "payload",
+          "path": [
+            "@all",
+            "payload"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "payload",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "header",
+          "path": [
+            "@all",
+            "header"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "header",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "gateway",
+          "path": [
+            "@all",
+            "gateway"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "gateway",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "retry",
+          "path": [
+            "@all",
+            "retry"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "retry",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "retry-other",
+          "path": [
+            "@all",
+            "retry-other"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "retry-other",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "nopublish",
+          "path": [
+            "@all",
+            "nopublish"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "nopublish",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "canpublish",
+          "path": [
+            "@all",
+            "canpublish"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "canpublish",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "expiry",
+          "path": [
+            "@all",
+            "expiry"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "expiry",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "supersede",
+          "path": [
+            "@all",
+            "supersede"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "supersede",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "reject",
+          "path": [
+            "@all",
+            "reject"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "reject",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "partial",
+          "path": [
+            "@all",
+            "partial"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "partial",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "embeddingdim",
+          "path": [
+            "@all",
+            "embeddingdim"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "embeddingdim",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "instruction",
+          "path": [
+            "@all",
+            "instruction"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "instruction",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "offline",
+          "path": [
+            "@all",
+            "offline"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "offline",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "orphan",
+          "path": [
+            "@all",
+            "orphan"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "orphan",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "onehop",
+          "path": [
+            "@all",
+            "onehop"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "onehop",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "node",
+          "path": [
+            "@all",
+            "node"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "node",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "kernel",
+          "path": [
+            "@all",
+            "kernel"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "kernel",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "appearance",
+          "path": [
+            "@all",
+            "appearance"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "appearance",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "port",
+          "path": [
+            "@all",
+            "port"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "port",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "capacity",
+          "path": [
+            "@all",
+            "capacity"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "capacity",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "permission",
+          "path": [
+            "@all",
+            "permission"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "permission",
+              "label": "about"
+            }
+          ]
+        },
+        {
+          "key": "scope",
+          "path": [
+            "@all",
+            "scope"
+          ],
+          "steps": [
+            {
+              "from": "@all",
+              "to": "scope",
+              "label": "about"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

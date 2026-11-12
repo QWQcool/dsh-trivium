@@ -6,8 +6,9 @@ import engine from "triviumdb";
 import { performance } from "node:perf_hooks";
 import { createHash } from "node:crypto";
 import { configureEmbedding, normalizeVector } from "../lib/embed.js";
-import { openWorkspaceDb, closeAll, backfillEmbeddings, searchNodes } from "../lib/store.js";
+import { openWorkspaceDb, closeAll, backfillEmbeddings, searchNodes, currentHeadOf } from "../lib/store.js";
 import { DIM, zeroVector, indexTextFor } from "../lib/schema.js";
+import { isStalePayload } from "../lib/until.js";
 
 const args = process.argv.slice(2);
 function option(key, fallback) { const at = args.indexOf(key); return at < 0 ? fallback : args[at + 1]; }
@@ -15,6 +16,7 @@ if (args.includes("--help")) {
   console.log("node scripts/verify-local-embedding.mjs --url http://127.0.0.1:11435/v1/embeddings --model local --output .tmp/embedding-run --budget 0 [--nodes 5000]");
   console.log("  --compare-workspace .tmp/embedding-run/bulk --writes 128 --output .tmp/write-comparison --budget 0   # cached vectors, no HTTP");
   console.log("  --attribution [--source-workspace .tmp/embedding-run/quality] [--query-cache cache.json --offline] --output .tmp/attribution --budget 0");
+  console.log("  --scoped-text [--query-cache cache.json --offline] --output .tmp/scoped-text --budget 0   # isolated native probes + relation-truth evaluation");
   process.exit(0);
 }
 const url = new URL(option("--url", "http://127.0.0.1:11435/v1/embeddings"));
@@ -24,7 +26,7 @@ const model = option("--model", "gte-local");
 const output = resolve(option("--output", ".tmp/local-embedding-run"));
 const nodes = Number(option("--nodes", "5000"));
 if (!Number.isSafeInteger(nodes) || nodes < 0 || nodes > 5000) throw Error("--nodes must be 0..5000");
-if (["results.json", "comparison.json", "attribution.json"].some(name => existsSync(join(output, name)))) throw Error("Choose a fresh output directory.");
+if (["results.json", "comparison.json", "attribution.json", "scoped-text.json"].some(name => existsSync(join(output, name)))) throw Error("Choose a fresh output directory.");
 mkdirSync(output, { recursive: true });
 process.on("exit", code => writeFileSync(join(output,"exit.json"),JSON.stringify({code,at:new Date().toISOString()}),"utf8"));
 process.env.DSH_HOME = join(output, "home");
@@ -78,7 +80,7 @@ if (option("--compare-workspace", "")) {
 }
 async function request(input, cached = false) {
   if (cached && cache.has(input)) return cache.get(input);
-  if (args.includes("--offline")) throw Error("Offline attribution is missing a cached embedding.");
+  if (args.includes("--offline")) throw Error("Offline evaluation is missing a cached embedding.");
   const started = performance.now();
   const response = await fetch(url, { method: "POST", headers: { "content-type": "application/json" },
     body: JSON.stringify({ model, input }), signal: AbortSignal.timeout(15000) });
@@ -91,6 +93,11 @@ async function request(input, cached = false) {
 }
 if (args.includes("--attribution")) {
   try { await attributeRetrieval(); }
+  finally { configureEmbedding({ embeddingEnabled: false, embeddingApiKey: "" }); closeAll(); }
+  process.exit(0);
+}
+if (args.includes("--scoped-text")) {
+  try { await evaluateScopedText(); }
   finally { configureEmbedding({ embeddingEnabled: false, embeddingApiKey: "" }); closeAll(); }
   process.exit(0);
 }
@@ -402,4 +409,259 @@ async function attributeRetrieval() {
   for (const [setName, variants] of Object.entries(result.arms)) console.log(setName, JSON.stringify(Object.fromEntries(
     Object.entries(variants).filter(([, value]) => value.rows).map(([name, value]) => [name, { n: value.n, hit1: value.hit1, hit5: value.hit5 }]))));
   console.log(`attribution: ${result.checks.length}/${result.checks.length} checks; HTTP ${calls}; cost 0`);
+}
+
+/** Native ID-set capability probes followed by experimental payload retrieval.
+ * No tool registration, production route or default retrieval is modified.
+ */
+async function evaluateScopedText() {
+  const { TriviumDB, ConsoleSession } = engine;
+  if (["native-unique", "native-duplicate", "native-missing", "native-large", "relations"].some(name => existsSync(join(output, name + ".tdb")))) {
+    throw Error("Choose a fresh output directory; a prior partial scoped-text fixture exists.");
+  }
+  const digest = bytes => createHash("sha256").update(bytes).digest("hex");
+  const unit = [1, ...Array(DIM - 1).fill(0)];
+  const relationBytes = readFileSync(new URL("./fixtures/scoped-text-relations.json", import.meta.url));
+  const fixture = JSON.parse(relationBytes);
+  const result = { baselineCommit: "b55369b", kernel: "0.9.0", model, dimension: DIM, costYuan: 0,
+    corpusSha256: digest(corpusBytes), relationSha256: digest(relationBytes), startedAt: new Date().toISOString(),
+    note: "Synthetic development diagnostics. Relation/answer labels are declared, not inferred by a model; no independent real-user holdout claim.",
+    native: [], checks: [], queryPrefix: prefix };
+  const check = (condition, name) => { result.checks.push({ name, passed: Boolean(condition) }); if (!condition) throw Error(name); };
+  const files = prefixName => Object.fromEntries(readdirSync(output).filter(name => name.startsWith(prefixName + ".tdb"))
+    .sort().map(name => [name, digest(readFileSync(join(output, name)))]));
+  for (const policy of ["unique", "duplicate", "missing"]) {
+    const name = "native-" + policy, path = join(output, name + ".tdb");
+    let db = new TriviumDB(path, { dim: DIM, autoBuildQuiver: false });
+    const docs = [
+      { id: 10, payload: { id: 999, fixtureScope: "inside", uri: "urn:unique:inside", text: "needle " + "padding ".repeat(60) } },
+      { id: 20, payload: { id: 10, fixtureScope: "outside", uri: policy === "duplicate" ? "urn:unique:inside" : "urn:unique:outside", text: "needle needle needle" } },
+      { id: 21, payload: { id: 30, fixtureScope: "outside", uri: "urn:unique:third", text: "needle needle" } },
+    ];
+    for (const doc of docs) {
+      if (policy === "missing") delete doc.payload.uri;
+      db.insertWithId(doc.id, unit, doc.payload); db.indexText(doc.id, doc.payload.text);
+    }
+    db.buildTextIndex(); db.flush(); db.close();
+    const before = files(name);
+    db = new TriviumDB(path, { dim: DIM, accessMode: "readOnly", autoBuildQuiver: false, loadTextIndex: true });
+    const session = new ConsoleSession(JSON.stringify({ readOnly: true, features: ["query"], maxOperations: 1000, queryTimeoutMs: 50, maxResponseBytes: 500000 }));
+    try {
+      const text = query => {
+        try { return { ok: true, ...JSON.parse(db.consoleRequest(session, JSON.stringify({ version: 1, requestId: "scope-probe", command: { operation: "query", query, parameters: {} } }))).data }; }
+        catch (error) { return { ok: false, code: error.code, message: error.message }; }
+      };
+      const hits = filter => db.searchHybrid(zeroVector(), "needle", 1, 0, .01, .2, filter).map(hit => ({ id: hit.id, score: hit.score }));
+      const observed = { policy, candidates: [10], global: hits(), payloadId: hits({ id: { $in: [10] } }),
+        payloadScope: hits({ fixtureScope: "inside" }), uriWhitelist: hits({ uri: { $in: ["urn:unique:inside"] } }),
+        globalVector: db.search(unit, 1, 0, 0).map(hit => hit.id), graphFirstCandidates: [21],
+        graphFirst: db.searchGraphFirst(unit, [21], 1, 1000).map(hit => hit.id),
+        textThenFilter: text('TEXT BM25 "needle" TOP 1 AS hit WITH hit WHERE hit.id == 10 RETURN hit.id AS id, text_score(hit) AS score'),
+        textFullThenFilter: text('TEXT BM25 "needle" TOP 3 AS hit WITH hit WHERE hit.id == 10 RETURN hit.id AS id, text_score(hit) AS score'),
+        seedThenText: text('FIND {fixtureScope: "inside"} AS seed WITH seed TEXT BM25 "needle" TOP 1 AS hit WITH hit RETURN hit.id AS id') };
+      check(observed.global[0]?.id === 20 && observed.payloadId[0]?.id === 20, `${policy}: payload.id differs from actual NodeId`);
+      check(observed.globalVector[0] === 10 && observed.graphFirst[0] === 21, `${policy}: GraphFirst applies the actual ID set to vector ranking only`);
+      check(observed.payloadScope[0]?.id === 10, `${policy}: existing payload fields filter before text Top-K`);
+      check(observed.textThenFilter.ok && observed.textThenFilter.rows.length === 0
+        && observed.textFullThenFilter.rows[0]?.id === 10, `${policy}: TQL postfilter cannot recover a cut candidate`);
+      check(!observed.seedThenText.ok && observed.seedThenText.code === "TDB_QUERY_PARSE", `${policy}: documented text source cannot consume an ID-set seed`);
+      check(policy === "unique" ? observed.uriWhitelist[0]?.id === 10 : policy === "duplicate" ? observed.uriWhitelist[0]?.id === 20 : observed.uriWhitelist.length === 0,
+        `${policy}: URI mapping requires complete unique identifiers`);
+      result.native.push(observed);
+    } finally { session.detach(); db.close(); }
+    check(JSON.stringify(before) === JSON.stringify(files(name)), `${policy}: native probes leave persisted files unchanged`);
+  }
+  result.nativeConclusion = { arbitraryNodeIdTextWhitelist: false, payloadPrefilterBeforeTopK: true,
+    uniqueCompleteUriConditional: true, textStatisticsAndPostingSearchRemainGlobal: true,
+    basis: "Installed Node declarations, Console v1 contract and pinned 0.9.0 TQL TextSearchClause/TextSearchSource; runtime counterexamples above." };
+  {
+    const name = "native-large", path = join(output, name + ".tdb");
+    let large = new TriviumDB(path, { dim: DIM, autoBuildQuiver: false, maxQueryRows: 1000, rowOverflow: "throw" });
+    large.insertWithId(10, unit, { text: "needle padding", fixtureScope: "inside" });
+    large.indexText(10, "needle padding");
+    for (let i = 0; i < 1199; i++) { large.insertWithId(3000 + i, zeroVector(), { text: "background", fixtureScope: "outside" }); large.indexText(3000 + i, "background"); }
+    large.buildTextIndex(); large.flush(); large.close();
+    const before = files(name);
+    large = new TriviumDB(path, { dim: DIM, accessMode: "readOnly", autoBuildQuiver: false, loadTextIndex: true, maxQueryRows: 1000, rowOverflow: "throw" });
+    const session = new ConsoleSession(JSON.stringify({ readOnly: true, features: ["query"], maxOperations: 1000, queryTimeoutMs: 50, maxResponseBytes: 500000 }));
+    try {
+      let textResult;
+      try { textResult = { ok: true, data: JSON.parse(large.consoleRequest(session, JSON.stringify({ version: 1, requestId: "large-text", command: { operation: "query", query: 'TEXT BM25 "needle" TOP 1 AS hit WITH hit WHERE hit.id == 10 RETURN hit.id AS id', parameters: {} } }))).data }; }
+      catch (error) { textResult = { ok: false, code: error.code, message: error.message }; }
+      result.largeNativeControl = { nodes: large.nodeCount(), intendedCandidates: [10], textResult,
+        consoleMaxOperations: 1000, sourcePipelineDefaultMaxNodes: 100000,
+        graphFirst: large.searchGraphFirst(unit, [10], 1, 1000).map(hit => hit.id) };
+      check(textResult.ok && textResult.data.rows[0]?.id === 10, "1200-node TEXT succeeds: maxOperations is not the TEXT input-node budget");
+      check(result.largeNativeControl.graphFirst[0] === 10, "GraphFirst one-node vector read works in the same 1200-node store");
+    } finally { session.detach(); large.close(); }
+    check(JSON.stringify(before) === JSON.stringify(files(name)), "large native controls are read-only");
+  }
+
+  const cachePath = option("--query-cache", "");
+  if (cachePath) {
+    const saved = JSON.parse(readFileSync(resolve(cachePath), "utf8"));
+    if (saved.model !== model || saved.corpusSha256 !== digest(corpusBytes) || saved.queryPrefix !== prefix) throw Error("Embedding cache identity mismatch.");
+    for (const [input, vector] of saved.entries) { const value = normalizeVector(vector); if (!value) throw Error("Invalid cached vector."); cache.set(input, value); }
+  }
+  const storePath = new URL("../lib/store.js", import.meta.url), source = readFileSync(storePath, "utf8");
+  result.productionStoreSha256 = digest(source.replaceAll("\r\n", "\n"));
+  const auditPath = join(output, "store-audit.mjs");
+  writeFileSync(auditPath, source.replace(/(from\s+["'])\.\/([^"']+)(["'])/g,
+    (_all, start, path, end) => start + new URL(path, storePath).href + end) + "\nexport { queryTerms, primaryScore };\n", "utf8");
+  const audit = await import(pathToFileURL(auditPath).href);
+  const ids = new Map(corpus.documents.map((doc, index) => [doc.key, index + 2]));
+  for (const entity of fixture.entities) ids.set(entity.key, entity.id);
+  for (const doc of fixture.extraDocuments) ids.set(doc.key, doc.id);
+  const keyOf = new Map([...ids].map(([key, id]) => [id, key]));
+  const ref = key => { if (!ids.has(key)) throw Error("Unknown fixture reference: " + key); return ids.get(key); };
+  const path = join(output, "relations.tdb");
+  if (existsSync(path)) throw Error("Choose a fresh output directory; a prior partial relation fixture exists.");
+  let db = new TriviumDB(path, { dim: DIM, autoBuildQuiver: false });
+  const add = async (id, doc, metadataOnly = false) => {
+    const payload = { status: "active", createdAt: "2026-11-01T00:00:00Z", ...doc };
+    delete payload.key; delete payload.id;
+    db.insertWithId(id, metadataOnly ? zeroVector() : await request(indexTextFor(payload), true), payload);
+    db.indexText(id, indexTextFor(payload)); if (payload.name) db.indexKeyword(id, payload.name);
+  };
+  try {
+    for (const doc of corpus.documents) await add(ref(doc.key), doc);
+    for (const entity of fixture.entities.filter(row => !row.existing)) await add(entity.id, { type: "entity", name: entity.name }, true);
+    for (const doc of fixture.extraDocuments) await add(ref(doc.key), doc);
+    for (const [from, to, label] of fixture.edges) db.link(ref(from), ref(to), label, 1);
+    for (const key of fixture.allTopicBusinessMembers) db.link(ref(key), ref("@all"), "about", 1);
+    db.buildTextIndex(); db.flush();
+  } finally { db.close(); }
+  const before = files("relations");
+  db = new TriviumDB(path, { dim: DIM, accessMode: "readOnly", autoBuildQuiver: false, loadTextIndex: true });
+  const now = new Date("2026-11-12T00:00:00Z");
+  const sorted = values => [...values].sort();
+  const scopes = new Map();
+  const scopeOf = (entityKey, cap = 1000) => {
+    const entityId = ref(entityKey);
+    if (db.getPayload(entityId)?.type !== "entity") throw Error("Not an entity");
+    const walk = db.reachableDetailed(entityId, { minDepth: 1, maxDepth: 1, direction: "both", labels: ["about", "decided", "broke", "fixed"], maxVisitedNodes: cap, maxResults: cap, maxEdges: 10000 });
+    if (walk.truncated) throw Object.assign(Error("Incomplete scope"), { code: "SCOPE_WORK_LIMIT" });
+    const raw = new Set([entityId, ...walk.results.map(row => row.targetId)]);
+    const eligible = new Set(), gaps = [];
+    for (const id of raw) {
+      const payload = db.getPayload(id);
+      if (!payload || payload.status === "archived" || isStalePayload(payload, now)) continue;
+      const head = currentHeadOf(db, id);
+      if (!head.ok) throw Error("Invalid revision chain");
+      if (!raw.has(head.id)) { gaps.push({ matched: keyOf.get(id), current: keyOf.get(head.id) }); continue; }
+      const current = db.getPayload(head.id);
+      if (current && current.status !== "archived" && !isStalePayload(current, now)) eligible.add(head.id);
+    }
+    return { raw: [...raw], eligible: [...eligible], gaps, paths: walk.results.map(row => ({ key: keyOf.get(row.targetId), path: row.path.map(id => keyOf.get(id)), steps: row.steps.map(step => ({ from: keyOf.get(step.from), to: keyOf.get(step.to), label: step.label })) })) };
+  };
+  try {
+    result.scopes = {};
+    for (const entity of fixture.entities) {
+      const scoped = scopeOf(entity.key); scopes.set(entity.key, scoped);
+      const expectedRaw = entity.key === "@all" ? ["@all", ...fixture.allTopicBusinessMembers] : fixture.expectedRaw[entity.key];
+      const expectedEligible = entity.key === "@all" ? expectedRaw : fixture.expectedEligible[entity.key];
+      check(JSON.stringify(sorted(scoped.raw.map(id => keyOf.get(id)))) === JSON.stringify(sorted(expectedRaw)), entity.name + ": exact one-hop relation truth");
+      check(JSON.stringify(sorted(scoped.eligible.map(id => keyOf.get(id)))) === JSON.stringify(sorted(expectedEligible)), entity.name + ": current/expiry/revision membership truth");
+      result.scopes[entity.key] = { raw: scoped.raw.map(id => keyOf.get(id)), eligible: scoped.eligible.map(id => keyOf.get(id)), gaps: scoped.gaps, paths: scoped.paths };
+    }
+    const labels = new Set([...scopes.values()].flatMap(scope => scope.paths.flatMap(path => path.steps.map(step => step.label))));
+    check(["about", "decided", "broke", "fixed"].every(label => labels.has(label)), "relation truth exercises all four business labels");
+    result.fixture = { nodes: db.nodeCount(), entities: fixture.entities.length, declaredEdges: fixture.edges.length + fixture.allTopicBusinessMembers.length,
+      vectorsSha256: digest(Buffer.concat(db.allNodeIds().sort((a, b) => a - b).map(id => Buffer.from(new Float32Array(db.get(id).vector).buffer)))) };
+    check(scopes.get("@release").gaps.some(gap => gap.current === "gap-current"), "a replacement outside the business scope is reported, never smuggled through an old path");
+    let bounded = false; try { scopeOf("@memory", 1); } catch (error) { bounded = error.code === "SCOPE_WORK_LIMIT"; }
+    check(bounded, "truncated traversal is an explicit failure, not an empty complete scope");
+    const tokenize = text => {
+      const output = []; let word = "", cjk = [];
+      const flushWord = () => { if (word) output.push(word); word = ""; };
+      const flushCjk = () => { if (cjk.length === 1) output.push(cjk[0]); else for (let i = 0; i + 1 < cjk.length; i++) output.push(cjk[i] + cjk[i + 1]); cjk = []; };
+      for (const char of String(text).toLowerCase()) {
+        const n = char.codePointAt(0);
+        if (/[a-z0-9]/.test(char)) { flushCjk(); word += char; }
+        else if ((n >= 0x3400 && n <= 0x9fff) || (n >= 0x3040 && n <= 0x30ff) || (n >= 0xac00 && n <= 0xd7af)) { flushWord(); cjk.push(char); }
+        else { flushWord(); flushCjk(); }
+      }
+      flushWord(); flushCjk(); return output;
+    };
+    const rank = scored => scored.sort((a, b) => b.score - a.score || a.id - b.id);
+    const payloadLexical = (candidateIds, query) => {
+      const terms = audit.queryTerms(query);
+      return rank(candidateIds.map(id => ({ id, score: audit.primaryScore(db.getPayload(id), query, now, terms) })).filter(row => row.score > 0));
+    };
+    const payloadBm25 = (candidateIds, query) => {
+      const documents = candidateIds.map(id => { const words = tokenize(indexTextFor(db.getPayload(id))), tf = new Map(); for (const word of words) tf.set(word, (tf.get(word) || 0) + 1); return { id, words, tf }; });
+      const avg = documents.reduce((n, row) => n + row.words.length, 0) / (documents.length || 1);
+      const terms = [...new Set(tokenize(query))], scores = new Map();
+      for (const word of terms) {
+        const containing = documents.filter(doc => doc.tf.has(word)), df = containing.length;
+        if (!df) continue;
+        const idf = Math.log(1 + (documents.length - df + .5) / (df + .5));
+        for (const doc of containing) { const tf = doc.tf.get(word), score = idf * tf * 2.2 / (tf + 1.2 * (.25 + .75 * doc.words.length / avg)); scores.set(doc.id, (scores.get(doc.id) || 0) + score); }
+      }
+      return rank([...scores].map(([id, score]) => ({ id, score })));
+    };
+    const fuse = (dense, text) => {
+      if (!text.length) return dense;
+      const scores = new Map();
+      for (const [i, hit] of dense.entries()) scores.set(hit.id, 60 / (61 + i));
+      for (const [i, hit] of text.entries()) scores.set(hit.id, (scores.get(hit.id) || 0) + 2.4 * 60 / (61 + i));
+      return rank([...scores].map(([id, score]) => ({ id, score })));
+    };
+    const compact = rows => rows.map(hit => ({ key: keyOf.get(hit.id), id: hit.id, score: hit.score }));
+    const questions = [...corpus.queries.map((question, i) => ({ ...question, entity: fixture.baselineEntities[i], set: "reused-32" })),
+      ...fixture.scopedQuestions.map(question => ({ ...question, set: "relation-diagnostics" }))];
+    result.questions = [];
+    result.experimentalMethods = { lexical: "production primaryScore, scoped payload scan, descending score then NodeId",
+      bm25: "temporary in-memory payload BM25; ASCII words/CJK bigrams; k1=1.2,b=0.75; local scope corpus statistics; no AC or tuned stopwords",
+      fusion: "diagnostic only: existing 1:2.4 rank weights, no final-slot rescue; not production ranking" };
+    for (const question of questions) {
+      const candidateIds = scopes.get(question.entity).eligible;
+      check(question.relevant.every(key => candidateIds.includes(ref(key))), "declared relevant facts are eligible in " + question.entity + ": " + question.text);
+      const vector = await request(prefix + question.text, true);
+      const vectorIds = candidateIds.filter(id => db.get(id).vector.some(n => n !== 0));
+      const dense = vectorIds.length ? db.searchGraphFirst(vector, vectorIds, vectorIds.length, 1000).filter(hit => hit.score >= .01) : [];
+      let lexical, bm25; const payloadReads = [];
+      const originalGet = db.get, originalPayload = db.getPayload;
+      try {
+        db.get = () => { throw Error("Payload lexical evaluation must not materialize vectors"); };
+        db.getPayload = id => { payloadReads.push(id); return originalPayload.call(db, id); };
+        lexical = payloadLexical(candidateIds, question.text); bm25 = payloadBm25(candidateIds, question.text);
+      } finally { db.get = originalGet; db.getPayload = originalPayload; }
+      check(payloadReads.length === candidateIds.length * 2 && payloadReads.every(id => candidateIds.includes(id)),
+        "both payload text methods read only the admitted ID set: " + question.text);
+      const global = searchNodes(db, question.text, { topK: 5, queryVector: vector, includeStale: false, now });
+      const variants = { "global-current": global, "payload-lexical": lexical.slice(0, 5), "payload-bm25": bm25.slice(0, 5),
+        "scoped-dense": dense.slice(0, 5), "scoped-lexical-rrf": fuse(dense, lexical).slice(0, 5), "scoped-bm25-rrf": fuse(dense, bm25).slice(0, 5) };
+      for (const [name, rows] of Object.entries(variants)) if (name !== "global-current") check(rows.every(hit => candidateIds.includes(hit.id)), name + " stays inside " + question.entity + ": " + question.text);
+      const entry = { ...question, scopeSize: candidateIds.length, payloadReads: payloadReads.length, vectorReadsInPayloadScoring: 0,
+        variants: Object.fromEntries(Object.entries(variants).map(([name, rows]) => {
+        const at = rows.findIndex(hit => question.relevant.includes(keyOf.get(hit.id)));
+        return [name, { rows: compact(rows), hit1: at === 0, hit5: at >= 0, outside: rows.filter(hit => !candidateIds.includes(hit.id)).length }];
+      })) };
+      entry.lexicalStatus = candidateIds.length === 1 && candidateIds[0] === ref(question.entity) && !lexical.length ? "scope_has_anchor_only" : lexical.length ? "lexical_candidates" : "no_lexical_match";
+      entry.semanticStatus = dense.length ? "semantic_candidates_answerability_not_assessed" : "no_semantic_candidates";
+      if (question.group === "same-entity-generic-noise" || question.group === "outside-top-hit") entry.rankTrace = {
+        dense: compact(dense), lexical: compact(lexical), bm25: compact(bm25),
+        lexicalRrf: compact(fuse(dense, lexical)), bm25Rrf: compact(fuse(dense, bm25)) };
+      result.questions.push(entry);
+    }
+    result.metrics = {};
+    for (const set of ["reused-32", "relation-diagnostics"]) {
+      const answerable = result.questions.filter(q => q.set === set && q.relevant.length);
+      result.metrics[set] = Object.fromEntries(Object.keys(answerable[0].variants).map(name => [name, { n: answerable.length,
+        hit1: answerable.filter(q => q.variants[name].hit1).length, hit5: answerable.filter(q => q.variants[name].hit5).length,
+        outsideResults: answerable.reduce((n, q) => n + q.variants[name].outside, 0) }]));
+    }
+    result.unanswerable = result.questions.filter(q => !q.relevant.length);
+    result.completedAt = new Date().toISOString();
+  } finally {
+    db.close(); result.relationFilesUnchanged = JSON.stringify(before) === JSON.stringify(files("relations"));
+    result.http = { calls, tokens, badVectors }; result.costYuan = 0;
+    writeFileSync(join(output, "query-cache.json"), JSON.stringify({ model, corpusSha256: digest(corpusBytes), queryPrefix: prefix, entries: [...cache] }), "utf8");
+    writeFileSync(join(output, "scoped-text.json"), JSON.stringify(result, null, 2) + "\n", "utf8");
+  }
+  check(result.relationFilesUnchanged, "scope construction and ranking leave relation fixture files byte-identical");
+  writeFileSync(join(output, "scoped-text.json"), JSON.stringify(result, null, 2) + "\n", "utf8");
+  console.log(JSON.stringify(result.metrics));
+  console.log(`scoped-text: ${result.checks.length}/${result.checks.length} checks; HTTP ${calls}; cost 0`);
 }

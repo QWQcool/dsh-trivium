@@ -1,0 +1,1367 @@
+{
+  "command": "node scripts/run-all.mjs",
+  "passed": 85,
+  "failed": 0,
+  "scopeChecks": [
+    {
+      "name": "unique: payload.id differs from actual NodeId",
+      "passed": true
+    },
+    {
+      "name": "unique: GraphFirst applies the actual ID set to vector ranking only",
+      "passed": true
+    },
+    {
+      "name": "unique: existing payload fields filter before text Top-K",
+      "passed": true
+    },
+    {
+      "name": "unique: TQL postfilter cannot recover a cut candidate",
+      "passed": true
+    },
+    {
+      "name": "unique: documented text source cannot consume an ID-set seed",
+      "passed": true
+    },
+    {
+      "name": "unique: URI mapping requires complete unique identifiers",
+      "passed": true
+    },
+    {
+      "name": "unique: native probes leave persisted files unchanged",
+      "passed": true
+    },
+    {
+      "name": "duplicate: payload.id differs from actual NodeId",
+      "passed": true
+    },
+    {
+      "name": "duplicate: GraphFirst applies the actual ID set to vector ranking only",
+      "passed": true
+    },
+    {
+      "name": "duplicate: existing payload fields filter before text Top-K",
+      "passed": true
+    },
+    {
+      "name": "duplicate: TQL postfilter cannot recover a cut candidate",
+      "passed": true
+    },
+    {
+      "name": "duplicate: documented text source cannot consume an ID-set seed",
+      "passed": true
+    },
+    {
+      "name": "duplicate: URI mapping requires complete unique identifiers",
+      "passed": true
+    },
+    {
+      "name": "duplicate: native probes leave persisted files unchanged",
+      "passed": true
+    },
+    {
+      "name": "missing: payload.id differs from actual NodeId",
+      "passed": true
+    },
+    {
+      "name": "missing: GraphFirst applies the actual ID set to vector ranking only",
+      "passed": true
+    },
+    {
+      "name": "missing: existing payload fields filter before text Top-K",
+      "passed": true
+    },
+    {
+      "name": "missing: TQL postfilter cannot recover a cut candidate",
+      "passed": true
+    },
+    {
+      "name": "missing: documented text source cannot consume an ID-set seed",
+      "passed": true
+    },
+    {
+      "name": "missing: URI mapping requires complete unique identifiers",
+      "passed": true
+    },
+    {
+      "name": "missing: native probes leave persisted files unchanged",
+      "passed": true
+    },
+    {
+      "name": "1200-node TEXT succeeds: maxOperations is not the TEXT input-node budget",
+      "passed": true
+    },
+    {
+      "name": "GraphFirst one-node vector read works in the same 1200-node store",
+      "passed": true
+    },
+    {
+      "name": "large native controls are read-only",
+      "passed": true
+    },
+    {
+      "name": "PluginMemory: exact one-hop relation truth",
+      "passed": true
+    },
+    {
+      "name": "PluginMemory: current/expiry/revision membership truth",
+      "passed": true
+    },
+    {
+      "name": "ReleaseOps: exact one-hop relation truth",
+      "passed": true
+    },
+    {
+      "name": "ReleaseOps: current/expiry/revision membership truth",
+      "passed": true
+    },
+    {
+      "name": "AuthGateway: exact one-hop relation truth",
+      "passed": true
+    },
+    {
+      "name": "AuthGateway: current/expiry/revision membership truth",
+      "passed": true
+    },
+    {
+      "name": "QueryRuntime: exact one-hop relation truth",
+      "passed": true
+    },
+    {
+      "name": "QueryRuntime: current/expiry/revision membership truth",
+      "passed": true
+    },
+    {
+      "name": "UploadWorker: exact one-hop relation truth",
+      "passed": true
+    },
+    {
+      "name": "UploadWorker: current/expiry/revision membership truth",
+      "passed": true
+    },
+    {
+      "name": "MailSender: exact one-hop relation truth",
+      "passed": true
+    },
+    {
+      "name": "MailSender: current/expiry/revision membership truth",
+      "passed": true
+    },
+    {
+      "name": "LonelyService: exact one-hop relation truth",
+      "passed": true
+    },
+    {
+      "name": "LonelyService: current/expiry/revision membership truth",
+      "passed": true
+    },
+    {
+      "name": "AllPluginTopics: exact one-hop relation truth",
+      "passed": true
+    },
+    {
+      "name": "AllPluginTopics: current/expiry/revision membership truth",
+      "passed": true
+    },
+    {
+      "name": "relation truth exercises all four business labels",
+      "passed": true
+    },
+    {
+      "name": "a replacement outside the business scope is reported, never smuggled through an old path",
+      "passed": true
+    },
+    {
+      "name": "truncated traversal is an explicit failure, not an empty complete scope",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: Which installer should I use for dependencies?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Which installer should I use for dependencies?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: Which installer should I use for dependencies?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: Which installer should I use for dependencies?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: Which installer should I use for dependencies?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: Which installer should I use for dependencies?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: Which installer should I use for dependencies?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: Who must sign off before a public npm release?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Who must sign off before a public npm release?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: Who must sign off before a public npm release?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: Who must sign off before a public npm release?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: Who must sign off before a public npm release?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: Who must sign off before a public npm release?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: Who must sign off before a public npm release?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @memory: 不想让私人聊天离开电脑，有什么向量方案？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 不想让私人聊天离开电脑，有什么向量方案？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @memory: 不想让私人聊天离开电脑，有什么向量方案？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @memory: 不想让私人聊天离开电脑，有什么向量方案？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @memory: 不想让私人聊天离开电脑，有什么向量方案？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @memory: 不想让私人聊天离开电脑，有什么向量方案？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @memory: 不想让私人聊天离开电脑，有什么向量方案？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: 单次模型试验最多能花多少人民币？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 单次模型试验最多能花多少人民币？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: 单次模型试验最多能花多少人民币？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: 单次模型试验最多能花多少人民币？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: 单次模型试验最多能花多少人民币？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: 单次模型试验最多能花多少人民币？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: 单次模型试验最多能花多少人民币？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @memory: Where does the plugin keep a workspace's facts on disk?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Where does the plugin keep a workspace's facts on disk?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @memory: Where does the plugin keep a workspace's facts on disk?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @memory: Where does the plugin keep a workspace's facts on disk?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @memory: Where does the plugin keep a workspace's facts on disk?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @memory: Where does the plugin keep a workspace's facts on disk?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @memory: Where does the plugin keep a workspace's facts on disk?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: Does upgrading erase existing memories?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Does upgrading erase existing memories?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: Does upgrading erase existing memories?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: Does upgrading erase existing memories?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: Does upgrading erase existing memories?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: Does upgrading erase existing memories?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: Does upgrading erase existing memories?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @memory: 新安装后会立即把记忆发给模型吗？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 新安装后会立即把记忆发给模型吗？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @memory: 新安装后会立即把记忆发给模型吗？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @memory: 新安装后会立即把记忆发给模型吗？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @memory: 新安装后会立即把记忆发给模型吗？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @memory: 新安装后会立即把记忆发给模型吗？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @memory: 新安装后会立即把记忆发给模型吗？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @memory: 怎么固定下一轮必须带上的几条记忆？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 怎么固定下一轮必须带上的几条记忆？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @memory: 怎么固定下一轮必须带上的几条记忆？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @memory: 怎么固定下一轮必须带上的几条记忆？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @memory: 怎么固定下一轮必须带上的几条记忆？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @memory: 怎么固定下一轮必须带上的几条记忆？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @memory: 怎么固定下一轮必须带上的几条记忆？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @query: 另一个进程正在改库，编辑请求会怎样？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 另一个进程正在改库，编辑请求会怎样？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @query: 另一个进程正在改库，编辑请求会怎样？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @query: 另一个进程正在改库，编辑请求会怎样？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @query: 另一个进程正在改库，编辑请求会怎样？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @query: 另一个进程正在改库，编辑请求会怎样？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @query: 另一个进程正在改库，编辑请求会怎样？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @query: How can an external process read a stable copy while the host is writing?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: How can an external process read a stable copy while the host is writing?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @query: How can an external process read a stable copy while the host is writing?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @query: How can an external process read a stable copy while the host is writing?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @query: How can an external process read a stable copy while the host is writing?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @query: How can an external process read a stable copy while the host is writing?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @query: How can an external process read a stable copy while the host is writing?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @query: I need to see facts added after the captured copy was created.",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: I need to see facts added after the captured copy was created.",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @query: I need to see facts added after the captured copy was created.",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @query: I need to see facts added after the captured copy was created.",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @query: I need to see facts added after the captured copy was created.",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @query: I need to see facts added after the captured copy was created.",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @query: I need to see facts added after the captured copy was created.",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @query: Will a slow query prevent subsequent small requests from succeeding?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Will a slow query prevent subsequent small requests from succeeding?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @query: Will a slow query prevent subsequent small requests from succeeding?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @query: Will a slow query prevent subsequent small requests from succeeding?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @query: Will a slow query prevent subsequent small requests from succeeding?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @query: Will a slow query prevent subsequent small requests from succeeding?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @query: Will a slow query prevent subsequent small requests from succeeding?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @query: 批量归档怎么减少落盘次数？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 批量归档怎么减少落盘次数？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @query: 批量归档怎么减少落盘次数？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @query: 批量归档怎么减少落盘次数？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @query: 批量归档怎么减少落盘次数？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @query: 批量归档怎么减少落盘次数？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @query: 批量归档怎么减少落盘次数？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @memory: How do we inspect node metadata without copying large vectors?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: How do we inspect node metadata without copying large vectors?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @memory: How do we inspect node metadata without copying large vectors?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @memory: How do we inspect node metadata without copying large vectors?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @memory: How do we inspect node metadata without copying large vectors?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @memory: How do we inspect node metadata without copying large vectors?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @memory: How do we inspect node metadata without copying large vectors?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in gateway: AuthGateway",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: AuthGateway",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside gateway: AuthGateway",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside gateway: AuthGateway",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside gateway: AuthGateway",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside gateway: AuthGateway",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside gateway: AuthGateway",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @upload: What is the maximum retry count for the upload worker?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: What is the maximum retry count for the upload worker?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @upload: What is the maximum retry count for the upload worker?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @upload: What is the maximum retry count for the upload worker?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @upload: What is the maximum retry count for the upload worker?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @upload: What is the maximum retry count for the upload worker?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @upload: What is the maximum retry count for the upload worker?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @mail: How many attempts may the mail sender retry?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: How many attempts may the mail sender retry?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @mail: How many attempts may the mail sender retry?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @mail: How many attempts may the mail sender retry?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @mail: How many attempts may the mail sender retry?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @mail: How many attempts may the mail sender retry?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @mail: How many attempts may the mail sender retry?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: Is unattended publishing allowed for real public releases?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Is unattended publishing allowed for real public releases?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: Is unattended publishing allowed for real public releases?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: Is unattended publishing allowed for real public releases?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: Is unattended publishing allowed for real public releases?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: Is unattended publishing allowed for real public releases?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: Is unattended publishing allowed for real public releases?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: Which registry allows disposable automatic releases?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Which registry allows disposable automatic releases?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: Which registry allows disposable automatic releases?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: Which registry allows disposable automatic releases?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: Which registry allows disposable automatic releases?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: Which registry allows disposable automatic releases?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: Which registry allows disposable automatic releases?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @query: 已经过期的记忆应不应该列为当前事实？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 已经过期的记忆应不应该列为当前事实？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @query: 已经过期的记忆应不应该列为当前事实？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @query: 已经过期的记忆应不应该列为当前事实？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @query: 已经过期的记忆应不应该列为当前事实？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @query: 已经过期的记忆应不应该列为当前事实？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @query: 已经过期的记忆应不应该列为当前事实？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: Which version of a changed decision should be treated as current?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Which version of a changed decision should be treated as current?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: Which version of a changed decision should be treated as current?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: Which version of a changed decision should be treated as current?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: Which version of a changed decision should be treated as current?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: Which version of a changed decision should be treated as current?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: Which version of a changed decision should be treated as current?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: 我选择保持原样后会留下什么记录？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 我选择保持原样后会留下什么记录？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: 我选择保持原样后会留下什么记录？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: 我选择保持原样后会留下什么记录？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: 我选择保持原样后会留下什么记录？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: 我选择保持原样后会留下什么记录？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: 我选择保持原样后会留下什么记录？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @query: 导入中途报错，怎么知道到底写进去了多少？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 导入中途报错，怎么知道到底写进去了多少？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @query: 导入中途报错，怎么知道到底写进去了多少？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @query: 导入中途报错，怎么知道到底写进去了多少？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @query: 导入中途报错，怎么知道到底写进去了多少？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @query: 导入中途报错，怎么知道到底写进去了多少？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @query: 导入中途报错，怎么知道到底写进去了多少？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @memory: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @memory: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @memory: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @memory: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @memory: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @memory: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @memory: Should the retrieval task instruction be prefixed to every stored document?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Should the retrieval task instruction be prefixed to every stored document?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @memory: Should the retrieval task instruction be prefixed to every stored document?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @memory: Should the retrieval task instruction be prefixed to every stored document?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @memory: Should the retrieval task instruction be prefixed to every stored document?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @memory: Should the retrieval task instruction be prefixed to every stored document?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @memory: Should the retrieval task instruction be prefixed to every stored document?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: Will running the full regression suite consume model credits?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Will running the full regression suite consume model credits?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: Will running the full regression suite consume model credits?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: Will running the full regression suite consume model credits?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: Will running the full regression suite consume model credits?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: Will running the full regression suite consume model credits?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: Will running the full regression suite consume model credits?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @query: 只有 in_workspace 边的 entity 算孤立吗？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 只有 in_workspace 边的 entity 算孤立吗？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @query: 只有 in_workspace 边的 entity 算孤立吗？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @query: 只有 in_workspace 边的 entity 算孤立吗？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @query: 只有 in_workspace 边的 entity 算孤立吗？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @query: 只有 in_workspace 边的 entity 算孤立吗？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @query: 只有 in_workspace 边的 entity 算孤立吗？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @query: How far does the relationship lookup traverse?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: How far does the relationship lookup traverse?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @query: How far does the relationship lookup traverse?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @query: How far does the relationship lookup traverse?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @query: How far does the relationship lookup traverse?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @query: How far does the relationship lookup traverse?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @query: How far does the relationship lookup traverse?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: Which database version is fixed for these experiments?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Which database version is fixed for these experiments?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: Which database version is fixed for these experiments?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: Which database version is fixed for these experiments?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: Which database version is fixed for these experiments?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: Which database version is fixed for these experiments?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: Which database version is fixed for these experiments?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @memory: 11434",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 11434",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @memory: 11434",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @memory: 11434",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @memory: 11434",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @memory: 11434",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @memory: 11434",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @memory: 两个库里的节点都叫 42，怎样避免把操作发错？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 两个库里的节点都叫 42，怎样避免把操作发错？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @memory: 两个库里的节点都叫 42，怎样避免把操作发错？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @memory: 两个库里的节点都叫 42，怎样避免把操作发错？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @memory: 两个库里的节点都叫 42，怎样避免把操作发错？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @memory: 两个库里的节点都叫 42，怎样避免把操作发错？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @memory: 两个库里的节点都叫 42，怎样避免把操作发错？",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @upload: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @upload: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @upload: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @upload: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @upload: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @upload: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @mail: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @mail: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @mail: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @mail: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @mail: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @mail: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside gateway: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @memory: Current checkpoint policy",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Current checkpoint policy",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @memory: Current checkpoint policy",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @memory: Current checkpoint policy",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @memory: Current checkpoint policy",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @memory: Current checkpoint policy",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @memory: Current checkpoint policy",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @release: release plan",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: release plan",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @release: release plan",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @release: release plan",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @release: release plan",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @release: release plan",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @release: release plan",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @all: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @all: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @all: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @all: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @all: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @all: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @lonely: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @lonely: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @lonely: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @lonely: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @lonely: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @lonely: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in gateway: Where is the production server password?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: Where is the production server password?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside gateway: Where is the production server password?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside gateway: Where is the production server password?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside gateway: Where is the production server password?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside gateway: Where is the production server password?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside gateway: Where is the production server password?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in @upload: What city is the user visiting next week?",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: What city is the user visiting next week?",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside @upload: What city is the user visiting next week?",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside @upload: What city is the user visiting next week?",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside @upload: What city is the user visiting next week?",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside @upload: What city is the user visiting next week?",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside @upload: What city is the user visiting next week?",
+      "passed": true
+    },
+    {
+      "name": "declared relevant facts are eligible in gateway: 独立计费服务的维护窗口是什么时候？",
+      "passed": true
+    },
+    {
+      "name": "both payload text methods read only the admitted ID set: 独立计费服务的维护窗口是什么时候？",
+      "passed": true
+    },
+    {
+      "name": "payload-lexical stays inside gateway: 独立计费服务的维护窗口是什么时候？",
+      "passed": true
+    },
+    {
+      "name": "payload-bm25 stays inside gateway: 独立计费服务的维护窗口是什么时候？",
+      "passed": true
+    },
+    {
+      "name": "scoped-dense stays inside gateway: 独立计费服务的维护窗口是什么时候？",
+      "passed": true
+    },
+    {
+      "name": "scoped-lexical-rrf stays inside gateway: 独立计费服务的维护窗口是什么时候？",
+      "passed": true
+    },
+    {
+      "name": "scoped-bm25-rrf stays inside gateway: 独立计费服务的维护窗口是什么时候？",
+      "passed": true
+    },
+    {
+      "name": "scope construction and ranking leave relation fixture files byte-identical",
+      "passed": true
+    }
+  ],
+  "scopePassed": 338,
+  "attributionCompatibilityChecks": 51,
+  "attributionCompatibilityHttp": 0,
+  "originalAttributionPreserved": true,
+  "productionVersionAndFrozenTestsUnchanged": true,
+  "scriptFiles": 120,
+  "costYuan": 0,
+  "paidGenerationCalls": 0
+}

@@ -1,0 +1,19 @@
+{
+  "node": "24.15.0",
+  "npm": "11.12.1",
+  "kernel": "0.9.0",
+  "platform": "Windows",
+  "gpu": "RTX 3080 10GB",
+  "ollama": "0.40.16",
+  "model": "rjmalagon/gte-qwen2-1.5b-instruct-embed-f16",
+  "weightSha256": "224550f5a5221748d8d1af5aa5a1aad3510d26f20beb8dec918dab67510c075e",
+  "measuredRuntime": "Ollama bundled llama-server, same GGUF weights; explicit embeddings / last pooling / qwen2.attention.causal=false / CUDA",
+  "measuredPort": 11435,
+  "ctxSize": 4096,
+  "batchSize": 512,
+  "ubatchSize": 512,
+  "gpuLayers": 99,
+  "officialTransformersParityTested": false,
+  "nativeAddonSha256": "b5a7d6f30820d2a4b91aa8a18d5b63ebccd3f07baeae7f87883bb4fa9f74f9ab",
+  "auditedTdbTagCommit": "7f73ccb17c9db0c75f66cef4edd7472161314dfd"
+}

@@ -1,0 +1,127 @@
+{
+  "baselineCommit": "b55369b",
+  "kernel": "0.9.0",
+  "model": "gte-local",
+  "dimension": 1536,
+  "costYuan": 0,
+  "corpusSha256": "1761d1eed532c6beeeac158378622078723bd553fb476cae2f442bd5fca07ad5",
+  "relationSha256": "e2a87f7ccc21d8426a2555d13d8e27d1c9ad711bb24224b568cbb4ef0710eb74",
+  "startedAt": "2026-11-12T08:06:42.313Z",
+  "note": "Synthetic development diagnostics. Relation/answer labels are declared, not inferred by a model; no independent real-user holdout claim.",
+  "queryPrefix": "Instruct: Given a question about project memory, retrieve relevant facts that answer the question\nQuery: ",
+  "nativeConclusion": {
+    "arbitraryNodeIdTextWhitelist": false,
+    "payloadPrefilterBeforeTopK": true,
+    "uniqueCompleteUriConditional": true,
+    "textStatisticsAndPostingSearchRemainGlobal": true,
+    "basis": "Installed Node declarations, Console v1 contract and pinned 0.9.0 TQL TextSearchClause/TextSearchSource; runtime counterexamples above."
+  },
+  "productionStoreSha256": "036ec1aff37c652edb845c13dc61523adbe9e4764a87f24b0600ebbd9612e4cf",
+  "fixture": {
+    "nodes": 52,
+    "entities": 8,
+    "declaredEdges": 83,
+    "vectorsSha256": "77f321d108d0be8576060b10ec456b8d8d7f291cd2dcfebfe517593f8df67813"
+  },
+  "experimentalMethods": {
+    "lexical": "production primaryScore, scoped payload scan, descending score then NodeId",
+    "bm25": "temporary in-memory payload BM25; ASCII words/CJK bigrams; k1=1.2,b=0.75; local scope corpus statistics; no AC or tuned stopwords",
+    "fusion": "diagnostic only: existing 1:2.4 rank weights, no final-slot rescue; not production ranking"
+  },
+  "metrics": {
+    "reused-32": {
+      "global-current": {
+        "n": 32,
+        "hit1": 24,
+        "hit5": 27,
+        "outsideResults": 81
+      },
+      "payload-lexical": {
+        "n": 32,
+        "hit1": 8,
+        "hit5": 8,
+        "outsideResults": 0
+      },
+      "payload-bm25": {
+        "n": 32,
+        "hit1": 23,
+        "hit5": 26,
+        "outsideResults": 0
+      },
+      "scoped-dense": {
+        "n": 32,
+        "hit1": 26,
+        "hit5": 32,
+        "outsideResults": 0
+      },
+      "scoped-lexical-rrf": {
+        "n": 32,
+        "hit1": 28,
+        "hit5": 32,
+        "outsideResults": 0
+      },
+      "scoped-bm25-rrf": {
+        "n": 32,
+        "hit1": 28,
+        "hit5": 32,
+        "outsideResults": 0
+      }
+    },
+    "relation-diagnostics": {
+      "global-current": {
+        "n": 6,
+        "hit1": 4,
+        "hit5": 5,
+        "outsideResults": 15
+      },
+      "payload-lexical": {
+        "n": 6,
+        "hit1": 3,
+        "hit5": 3,
+        "outsideResults": 0
+      },
+      "payload-bm25": {
+        "n": 6,
+        "hit1": 5,
+        "hit5": 5,
+        "outsideResults": 0
+      },
+      "scoped-dense": {
+        "n": 6,
+        "hit1": 6,
+        "hit5": 6,
+        "outsideResults": 0
+      },
+      "scoped-lexical-rrf": {
+        "n": 6,
+        "hit1": 6,
+        "hit5": 6,
+        "outsideResults": 0
+      },
+      "scoped-bm25-rrf": {
+        "n": 6,
+        "hit1": 5,
+        "hit5": 5,
+        "outsideResults": 0
+      }
+    }
+  },
+  "completedAt": "2026-11-12T08:06:44.295Z",
+  "relationFilesUnchanged": true,
+  "http": {
+    "calls": 0,
+    "tokens": 0,
+    "badVectors": 0
+  },
+  "scopedResultRows": 624,
+  "scopedOutsideRows": 0,
+  "vectorCapture": {
+    "http": {
+      "calls": 15,
+      "tokens": 307,
+      "badVectors": 0
+    },
+    "preliminaryChecks": 289,
+    "note": "Initial real-vector capture preceded additional budget/read-bound controls and the fourth business-label case; final assertions run on cached real vectors."
+  }
+}

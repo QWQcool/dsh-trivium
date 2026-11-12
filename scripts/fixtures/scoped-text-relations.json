@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "note": "Synthetic relation truth over the unchanged local-embedding corpus. Labels and relations are declared before scoring. Development diagnostics, not an independently reviewed real-user holdout.",
+  "entities": [
+    {"key":"@memory","id":1001,"name":"PluginMemory"},
+    {"key":"@release","id":1002,"name":"ReleaseOps"},
+    {"key":"gateway","id":17,"name":"AuthGateway","existing":true},
+    {"key":"@query","id":1004,"name":"QueryRuntime"},
+    {"key":"@upload","id":1005,"name":"UploadWorker"},
+    {"key":"@mail","id":1006,"name":"MailSender"},
+    {"key":"@lonely","id":1007,"name":"LonelyService"},
+    {"key":"@all","id":1008,"name":"AllPluginTopics"}
+  ],
+  "extraDocuments": [
+    {"key":"loose-header","id":2001,"type":"decision","name":"Loose correlation note","text":"X-Request-Id X-Request-Id X-Request-Id X-Request-Id X-Request-Id","status":"active"},
+    {"key":"archived","id":2002,"type":"decision","name":"Archived memory policy","text":"Retired storage uses an external service.","status":"archived"},
+    {"key":"expired","id":2003,"type":"decision","name":"Expired memory policy","text":"Temporary storage lives on a remote host.","untilAt":"2020-01-01T00:00:00Z"},
+    {"key":"history-old","id":2004,"type":"decision","name":"Old checkpoint policy","text":"Checkpoints use the old-format file."},
+    {"key":"history-current","id":2005,"type":"decision","name":"Current checkpoint policy","text":"Checkpoints use the new-format file."},
+    {"key":"gap-old","id":2006,"type":"decision","name":"Old release archive","text":"Release archives use the obsolete folder."},
+    {"key":"gap-current","id":2007,"type":"decision","name":"New release archive","text":"Release archives use the replacement folder, without a business link yet."},
+    {"key":"pending-old","id":2008,"type":"decision","name":"Existing release plan","text":"The existing release plan requires manual approval."},
+    {"key":"pending-new","id":2009,"type":"decision","name":"Proposed release plan","text":"The proposed release plan would permit unattended publishing.","review":"supersede-proposed"}
+  ],
+  "edges": [
+    ["local","@memory","about"], ["dbfile","@memory","about"], ["recall","@memory","about"],
+    ["chips","@memory","about"], ["payload","@memory","about"], ["embeddingdim","@memory","about"],
+    ["instruction","@memory","about"], ["appearance","@memory","about"], ["scope","@memory","about"],
+    ["port","@memory","about"], ["budget","@memory","about"],
+    ["@release","package","decided"], ["publish","@release","about"], ["uninstall","@release","about"],
+    ["budget","@release","about"], ["nopublish","@release","about"], ["canpublish","@release","about"],
+    ["supersede","@release","about"], ["reject","@release","about"], ["offline","@release","about"],
+    ["node","@release","about"], ["kernel","@release","about"], ["permission","@release","about"],
+    ["header","gateway","about"], ["retry","@upload","about"], ["retry-other","@mail","about"],
+    ["snapshot","@query","about"], ["live","@query","about"], ["timeout","@query","fixed"],
+    ["lock","@query","broke"], ["capacity","@query","about"], ["onehop","@query","about"],
+    ["orphan","@query","about"], ["partial","@query","about"], ["flush","@query","about"], ["expiry","@query","about"],
+    ["archived","@memory","about"], ["expired","@memory","about"],
+    ["history-old","@memory","about"], ["history-current","@memory","about"], ["history-current","history-old","supersedes"],
+    ["gap-old","@release","about"], ["gap-current","gap-old","supersedes"],
+    ["pending-old","@release","about"], ["pending-new","@release","about"],
+    ["loose-header","@memory","in_workspace"], ["loose-header","@lonely","from_session"]
+  ],
+  "allTopicBusinessMembers": [
+    "package","publish","local","budget","dbfile","uninstall","recall","chips","lock","snapshot","live","timeout",
+    "flush","payload","header","gateway","retry","retry-other","nopublish","canpublish","expiry","supersede","reject",
+    "partial","embeddingdim","instruction","offline","orphan","onehop","node","kernel","appearance","port","capacity","permission","scope"
+  ],
+  "expectedRaw": {
+    "@memory":["@memory","local","dbfile","recall","chips","payload","embeddingdim","instruction","appearance","scope","port","budget","archived","expired","history-old","history-current"],
+    "@release":["@release","package","publish","uninstall","budget","nopublish","canpublish","supersede","reject","offline","node","kernel","permission","gap-old","pending-old","pending-new"],
+    "gateway":["gateway","header","@all"],
+    "@query":["@query","snapshot","live","timeout","lock","capacity","onehop","orphan","partial","flush","expiry"],
+    "@upload":["@upload","retry"], "@mail":["@mail","retry-other"], "@lonely":["@lonely"]
+  },
+  "expectedEligible": {
+    "@memory":["@memory","local","dbfile","recall","chips","payload","embeddingdim","instruction","appearance","scope","port","budget","history-current"],
+    "@release":["@release","package","publish","uninstall","budget","nopublish","canpublish","supersede","reject","offline","node","kernel","permission","pending-old","pending-new"],
+    "gateway":["gateway","header","@all"],
+    "@query":["@query","snapshot","live","timeout","lock","capacity","onehop","orphan","partial","flush","expiry"],
+    "@upload":["@upload","retry"], "@mail":["@mail","retry-other"], "@lonely":["@lonely"]
+  },
+  "baselineEntities":["@release","@release","@memory","@release","@memory","@release","@memory","@memory","@query","@query","@query","@query","@query","@memory","gateway","gateway","@upload","@mail","@release","@release","@query","@release","@release","@query","@memory","@memory","@release","@query","@query","@release","@memory","@memory"],
+  "scopedQuestions": [
+    {"entity":"@upload","text":"How many retries are allowed?","relevant":["retry"],"group":"same-question-different-entity"},
+    {"entity":"@mail","text":"How many retries are allowed?","relevant":["retry-other"],"group":"same-question-different-entity"},
+    {"entity":"gateway","text":"X-Request-Id","relevant":["header"],"group":"outside-top-hit"},
+    {"entity":"@memory","text":"Current checkpoint policy","relevant":["history-current"],"group":"current-version"},
+    {"entity":"@release","text":"release plan","relevant":["pending-old","pending-new"],"group":"pending-proposal"},
+    {"entity":"@all","text":"Can a 768-number vector be accepted by this plugin?","relevant":["embeddingdim"],"group":"same-entity-generic-noise"},
+    {"entity":"@lonely","text":"How many retries are allowed?","relevant":[],"group":"anchor-only"},
+    {"entity":"gateway","text":"Where is the production server password?","relevant":[],"group":"unanswerable"},
+    {"entity":"@upload","text":"What city is the user visiting next week?","relevant":[],"group":"unanswerable"},
+    {"entity":"gateway","text":"独立计费服务的维护窗口是什么时候？","relevant":[],"group":"unanswerable"}
+  ]
+}
