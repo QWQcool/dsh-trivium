@@ -17,6 +17,7 @@ if (args.includes("--help")) {
   console.log("  --compare-workspace .tmp/embedding-run/bulk --writes 128 --output .tmp/write-comparison --budget 0   # cached vectors, no HTTP");
   console.log("  --attribution [--source-workspace .tmp/embedding-run/quality] [--query-cache cache.json --offline] --output .tmp/attribution --budget 0");
   console.log("  --scoped-text [--query-cache cache.json --offline] --output .tmp/scoped-text --budget 0   # isolated native probes + relation-truth evaluation");
+  console.log("  --entity-search-acceptance [--query-cache cache.json --offline] --output .tmp/entity-search --budget 0   # production HTTP backend, new frozen questions");
   process.exit(0);
 }
 const url = new URL(option("--url", "http://127.0.0.1:11435/v1/embeddings"));
@@ -26,7 +27,7 @@ const model = option("--model", "gte-local");
 const output = resolve(option("--output", ".tmp/local-embedding-run"));
 const nodes = Number(option("--nodes", "5000"));
 if (!Number.isSafeInteger(nodes) || nodes < 0 || nodes > 5000) throw Error("--nodes must be 0..5000");
-if (["results.json", "comparison.json", "attribution.json", "scoped-text.json"].some(name => existsSync(join(output, name)))) throw Error("Choose a fresh output directory.");
+if (["results.json", "comparison.json", "attribution.json", "scoped-text.json", "entity-search.json"].some(name => existsSync(join(output, name)))) throw Error("Choose a fresh output directory.");
 mkdirSync(output, { recursive: true });
 process.on("exit", code => writeFileSync(join(output,"exit.json"),JSON.stringify({code,at:new Date().toISOString()}),"utf8"));
 process.env.DSH_HOME = join(output, "home");
@@ -99,6 +100,10 @@ if (args.includes("--attribution")) {
 if (args.includes("--scoped-text")) {
   try { await evaluateScopedText(); }
   finally { configureEmbedding({ embeddingEnabled: false, embeddingApiKey: "" }); closeAll(); }
+  process.exit(0);
+}
+if (args.includes("--entity-search-acceptance")) {
+  await acceptEntitySearch();
   process.exit(0);
 }
 const report = { startedAt: new Date().toISOString(), costYuan: 0, kernel: "0.9.0", model,
@@ -664,4 +669,127 @@ async function evaluateScopedText() {
   writeFileSync(join(output, "scoped-text.json"), JSON.stringify(result, null, 2) + "\n", "utf8");
   console.log(JSON.stringify(result.metrics));
   console.log(`scoped-text: ${result.checks.length}/${result.checks.length} checks; HTTP ${calls}; cost 0`);
+}
+
+/** New questions frozen at 11fbe0c; exercise the actual HTTP route and worker. */
+async function acceptEntitySearch() {
+  const { default: http } = await import("node:http");
+  const { registerMemoryApi } = await import("../lib/server.js");
+  const { readUiSettings } = await import("../lib/settings.js");
+  const { setTestEmbed } = await import("../lib/embed.js");
+  const bytes = Buffer.from(readFileSync(new URL("./fixtures/entity-search-acceptance.json", import.meta.url), "utf8").replaceAll("\r\n", "\n"), "utf8");
+  const hash = value => createHash("sha256").update(value).digest("hex");
+  const fixture = JSON.parse(bytes);
+  const cachePath = option("--query-cache", "");
+  if (cachePath) {
+    const saved = JSON.parse(readFileSync(resolve(cachePath), "utf8"));
+    if (saved.model !== model || saved.corpusSha256 !== hash(bytes) || saved.queryPrefix !== prefix) throw Error("Acceptance cache identity mismatch.");
+    for (const [input, vector] of saved.entries) { const valid = normalizeVector(vector); if (!valid) throw Error("Invalid cache."); cache.set(input, valid); }
+  }
+  const report = { frozenQuestionCommit: "11fbe0c", questionSha256: hash(bytes), model, kernel: "0.9.0", costYuan: 0,
+    startedAt: new Date().toISOString(), note: "New synthetic domains and predeclared questions; not a third-party human review. No scoring adjustment or merged-ranking claim.",
+    queries: [], checks: [] };
+  const check = (condition, name) => { report.checks.push({ name, passed: Boolean(condition) }); if (!condition) throw Error(name); };
+  const cwd = join(output, "workspace");
+  if (existsSync(join(cwd, ".dsh", "trivium.tdb"))) throw Error("Choose a fresh acceptance directory.");
+  let db, server, modelReplays = 0, apiModelRequests = 0, fetchOriginal = globalThis.fetch;
+  const record = async (doc, metadata = false) => {
+    const payload = { type: "decision", status: "active", createdAt: "2026-11-01T00:00:00Z", ...doc };
+    for (const field of ["id", "entity", "entities", "supersededBy"]) delete payload[field];
+    db.insertWithId(doc.id, metadata ? zeroVector() : await request(indexTextFor(payload), true), payload);
+    db.indexText(doc.id, indexTextFor(payload)); if (payload.name) db.indexKeyword(doc.id, payload.name);
+  };
+  const dataFiles = directory => Object.fromEntries(readdirSync(directory).filter(name => name !== "read-snapshots" && !name.endsWith(".lock"))
+    .sort().map(name => [name, hash(readFileSync(join(directory, name)))]));
+  try {
+    setTestEmbed(null); configureEmbedding({ embeddingEnabled: false, embeddingApiKey: "" });
+    db = await openWorkspaceDb(cwd);
+    for (const entity of fixture.entities) await record({ ...entity, type: "entity" }, true);
+    for (const fact of [...fixture.facts, ...fixture.special]) {
+      await record(fact);
+      for (const parent of fact.entities || (fact.entity ? [fact.entity] : [])) db.link(fact.id, parent, "about", 1);
+      if (fact.supersededBy) db.link(fact.supersededBy, fact.id, "supersedes", 1);
+    }
+    db.buildTextIndex(); db.flush();
+    writeFileSync(process.env.DSH_TRIVIUM_SETTINGS, JSON.stringify({ workspaces: [cwd], extractEnabled: false, recallMode: "off",
+      embeddingEnabled: true, embeddingUrl: url.href, embeddingModel: model, embeddingApiKey: "", embeddingQueryPrefix: prefix }), "utf8");
+    globalThis.fetch = async (target, options) => {
+      if (String(target) !== url.href) return fetchOriginal(target, options);
+      const input = JSON.parse(options.body).input;
+      if (args.includes("--offline")) {
+        if (!cache.has(input)) throw Error("Offline provider replay cache miss.");
+        modelReplays++;
+        return new Response(JSON.stringify({ data: [{ embedding: cache.get(input) }] }), { status: 200, headers: { "content-type": "application/json" } });
+      }
+      apiModelRequests++;
+      const response = await fetchOriginal(target, options), data = await response.clone().json();
+      calls++; tokens += Number(data.usage?.prompt_tokens || 0);
+      const vector = normalizeVector(data.data?.[0]?.embedding);
+      if (response.ok && vector) cache.set(input, vector); else badVectors++;
+      return response;
+    };
+    let handler;
+    registerMemoryApi({ webServer: { register(entry) { handler = entry.handler; return () => {}; } } }, { liveOptions: readUiSettings, status: {} });
+    server = http.createServer((req, res) => handler(req, res));
+    await new Promise(done => server.listen(0, "127.0.0.1", done));
+    const base = `http://127.0.0.1:${server.address().port}/api/dsh-trivium`;
+    const post = async (path, body) => {
+      const response = await fetch(base + path + "?cwd=" + encodeURIComponent(cwd), {
+        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+      return { status: response.status, body: await response.json() };
+    };
+    const initialCalls = apiModelRequests + modelReplays;
+    const defaultRead = await post("/entity-search", { entityId: 101, query: fixture.questions[0].query });
+    check(defaultRead.status === 200 && defaultRead.body.channels.semantic.status === "not_requested"
+      && apiModelRequests + modelReplays === initialCalls, "HTTP semantic mode is off unless explicitly requested");
+    const captured = await post("/snapshots", {});
+    check(captured.status === 200, "real snapshot capture route creates the fixed acceptance source");
+    const sourceBefore = dataFiles(join(cwd, ".dsh"));
+    const snapBefore = dataFiles(captured.body.directory);
+    for (const source of ["live", "snapshot"]) for (const question of fixture.questions) {
+      const response = await post("/entity-search", { entityId: question.entityId, query: question.query, semantic: true, limit: 5,
+        ...(source === "snapshot" ? { snapshotId: captured.body.snapshotId } : {}) });
+      check(response.status === 200, source + " request completed: " + question.query);
+      const value = response.body;
+      const raw = new Set([question.entityId, ...db.reachableDetailed(question.entityId, { minDepth: 1, maxDepth: 1, direction: "both",
+        labels: ["about", "decided", "broke", "fixed"], maxVisitedNodes: 1001, maxResults: 1000, maxEdges: 10000 }).results.map(row => row.targetId)]);
+      const returned = [...value.textCandidates, ...value.semanticCandidates];
+      check(returned.every(row => raw.has(Number(row.id)) && ![301, 302, 303, 304].includes(Number(row.id))), source + " current in-scope IDs only: " + question.query);
+      check(value.answerability === "not_assessed" && value.scope.complete && !value.expanded, source + " truthful scope and answerability: " + question.query);
+      if (question.entityId !== 105) check(value.channels.semantic.status === "ran", source + " real semantic channel completed: " + question.query);
+      else check(value.state === "scope_anchor_only" && value.channels.semantic.status === "skipped", source + " empty entity skips model lookup");
+      if (source === "snapshot") check(value.asOf === captured.body.createdAt && value.snapshotId === captured.body.snapshotId, "pinned capture reference time: " + question.query);
+      const textIds = value.textCandidates.map(row => Number(row.id)), semanticIds = value.semanticCandidates.map(row => Number(row.id));
+      report.queries.push({ source, ...question, textIds, semanticIds,
+        textHit1: question.relevant.includes(textIds[0]), textHit5: textIds.some(id => question.relevant.includes(id)),
+        semanticHit1: question.relevant.includes(semanticIds[0]), semanticHit5: semanticIds.some(id => question.relevant.includes(id)),
+        eitherChannelHit: [...textIds, ...semanticIds].some(id => question.relevant.includes(id)),
+        scope: value.scope, state: value.state, channels: value.channels, answerability: value.answerability,
+        candidates: { text: value.textCandidates, semantic: value.semanticCandidates } });
+    }
+    report.metrics = {};
+    for (const source of ["live", "snapshot"]) {
+      const rows = report.queries.filter(row => row.source === source && row.relevant.length);
+      report.metrics[source] = { n: rows.length, textHit1: rows.filter(row => row.textHit1).length, textHit5: rows.filter(row => row.textHit5).length,
+        semanticHit1: rows.filter(row => row.semanticHit1).length, semanticHit5: rows.filter(row => row.semanticHit5).length,
+        eitherChannelHit: rows.filter(row => row.eitherChannelHit).length,
+        note: "eitherChannelHit counts the union of two separate candidate lists; it is not a merged Top-5 metric." };
+    }
+    report.noAnswer = report.queries.filter(row => !row.relevant.length);
+    check(JSON.stringify(sourceBefore) === JSON.stringify(dataFiles(join(cwd, ".dsh"))), "all HTTP searches preserve live database files");
+    check(JSON.stringify(snapBefore) === JSON.stringify(dataFiles(captured.body.directory)), "all snapshot workers preserve artifact bytes");
+    const liveRows = report.queries.filter(row => row.source === "live"), snapRows = report.queries.filter(row => row.source === "snapshot");
+    check(liveRows.every((row, i) => JSON.stringify([row.textIds, row.semanticIds]) === JSON.stringify([snapRows[i].textIds, snapRows[i].semanticIds])), "live and pinned snapshot candidates match for fixed data");
+    report.completedAt = new Date().toISOString();
+  } catch (error) { report.failure = String(error.message); process.exitCode = 1; }
+  finally {
+    globalThis.fetch = fetchOriginal;
+    if (server) await new Promise(done => server.close(done));
+    setTestEmbed(null); configureEmbedding({ embeddingEnabled: false, embeddingApiKey: "" }); closeAll();
+    report.http = { calls, apiModelRequests, modelReplays, tokens, badVectors };
+    writeFileSync(join(output, "query-cache.json"), JSON.stringify({ model, corpusSha256: hash(bytes), queryPrefix: prefix, entries: [...cache] }), "utf8");
+    writeFileSync(join(output, "entity-search.json"), JSON.stringify(report, null, 2) + "\n", "utf8");
+  }
+  console.log(JSON.stringify(report.metrics || report.failure));
+  console.log(`entity-search acceptance: ${report.checks.filter(check => check.passed).length}/${report.checks.length}; model HTTP ${calls}; replays ${modelReplays}; cost 0`);
 }

@@ -1,0 +1,97 @@
+{
+  "host": "DSH 0.2.2-rc.1",
+  "uiUsed": false,
+  "costYuan": 0,
+  "open": {
+    "status": 200,
+    "nodes": 31
+  },
+  "default": {
+    "status": 200,
+    "source": "live",
+    "semantic": {
+      "status": "not_requested",
+      "truncated": false
+    },
+    "text": [],
+    "vector": [],
+    "answerability": "not_assessed",
+    "work": {
+      "examinedNodes": 8,
+      "payloadReads": 16,
+      "payloadBytes": 2352,
+      "examinedEdges": 50,
+      "cpuMs": 7.094700000001467,
+      "embeddingCalls": 0,
+      "limits": {
+        "nodes": 1000,
+        "edges": 10000,
+        "payloadBytes": 524288,
+        "cpuMs": 150
+      }
+    }
+  },
+  "live": {
+    "status": 200,
+    "source": "live",
+    "semantic": {
+      "status": "ran",
+      "truncated": true
+    },
+    "text": [],
+    "vector": [
+      "231",
+      "234",
+      "233",
+      "235",
+      "240"
+    ],
+    "answerability": "not_assessed",
+    "work": {
+      "examinedNodes": 8,
+      "payloadReads": 16,
+      "payloadBytes": 2352,
+      "examinedEdges": 50,
+      "cpuMs": 4.092100000008941,
+      "embeddingCalls": 1,
+      "limits": {
+        "nodes": 1000,
+        "edges": 10000,
+        "payloadBytes": 524288,
+        "cpuMs": 150
+      }
+    }
+  },
+  "snapshot": {
+    "status": 200,
+    "source": "snapshot",
+    "semantic": {
+      "status": "ran",
+      "truncated": true
+    },
+    "text": [],
+    "vector": [
+      "231",
+      "234",
+      "233",
+      "235",
+      "240"
+    ],
+    "snapshotId": "snapshot-023edd60-8d92-45d4-9a83-91a424419c6b",
+    "answerability": "not_assessed",
+    "work": {
+      "examinedNodes": 8,
+      "payloadReads": 16,
+      "payloadBytes": 2352,
+      "examinedEdges": 50,
+      "cpuMs": 6.188500000000005,
+      "embeddingCalls": 1,
+      "limits": {
+        "nodes": 1000,
+        "edges": 10000,
+        "payloadBytes": 524288,
+        "cpuMs": 150
+      }
+    }
+  }
+}

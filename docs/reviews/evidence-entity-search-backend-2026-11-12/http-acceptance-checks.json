@@ -1,0 +1,2062 @@
+{
+  "live": [
+    {
+      "name": "HTTP semantic mode is off unless explicitly requested",
+      "passed": true
+    },
+    {
+      "name": "real snapshot capture route creates the fixed acceptance source",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live empty entity skips model lookup",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot empty entity skips model lookup",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "all HTTP searches preserve live database files",
+      "passed": true
+    },
+    {
+      "name": "all snapshot workers preserve artifact bytes",
+      "passed": true
+    },
+    {
+      "name": "live and pinned snapshot candidates match for fixed data",
+      "passed": true
+    }
+  ],
+  "offline": [
+    {
+      "name": "HTTP semantic mode is off unless explicitly requested",
+      "passed": true
+    },
+    {
+      "name": "real snapshot capture route creates the fixed acceptance source",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "live request completed: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "live real semantic channel completed: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "live request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "live empty entity skips model lookup",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 最多可以同时跑多少个构建任务？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 取消构建时，多久后才会强制杀掉进程？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Changing the OS without changing dependencies should change which cache identifier?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How long can I look up build execution logs?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 构建失败后允许重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How are stored artifact objects identified?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 没有固定保留的制品上传后多久过期？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 制品下载地址签好后能使用多久？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Is a 100 MiB artifact bundle within the upload limit?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Can different bytes replace an object under an existing digest?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 最高级别事故应该立刻通知谁？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How long are repeated notifications for one incident suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: P1 incidents occur during quiet hours. Are those notifications suppressed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 通知 webhook 失败后可以重试几次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: X-Alert-Id",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 报表聚合数据每隔多久更新一次？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: What character encoding should an exported CSV reader expect?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Does a report export permit 6000 rows?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How long can a report pagination cursor be reused?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 报表时间统一按什么时区保存？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 审计记录应该保留多长时间？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Which Docker image version is used by the builder?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: Which encryption algorithm protects the artifact archive?",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "snapshot real semantic channel completed: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: 支付服务的银行卡验证规则是什么？",
+      "passed": true
+    },
+    {
+      "name": "snapshot request completed: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot current in-scope IDs only: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot truthful scope and answerability: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "snapshot empty entity skips model lookup",
+      "passed": true
+    },
+    {
+      "name": "pinned capture reference time: How many retries are allowed?",
+      "passed": true
+    },
+    {
+      "name": "all HTTP searches preserve live database files",
+      "passed": true
+    },
+    {
+      "name": "all snapshot workers preserve artifact bytes",
+      "passed": true
+    },
+    {
+      "name": "live and pinned snapshot candidates match for fixed data",
+      "passed": true
+    }
+  ]
+}

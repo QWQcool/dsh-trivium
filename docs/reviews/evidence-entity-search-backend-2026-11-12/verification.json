@@ -1,0 +1,38 @@
+{
+  "fullCommand": "node scripts/run-all.mjs",
+  "passed": 85,
+  "failed": 0,
+  "entityContractScenarios": 35,
+  "scriptsMjs": 120,
+  "protectedFilesUnchanged": true,
+  "protectedFiles": [
+    "lib/tools.js",
+    "lib/index.js",
+    "lib/tool-defs.js",
+    "lib/client.js",
+    "lib/read-query.js",
+    "lib/live-tql.js",
+    "lib/read-snapshots.js",
+    "lib/snapshot-query-worker.mjs",
+    "package.json",
+    "package-lock.json",
+    "scripts/smoke-p13.mjs",
+    "scripts/smoke-p24.mjs",
+    "scripts/smoke-p26.mjs",
+    "scripts/smoke-p78.mjs"
+  ],
+  "defaultFunctionSha256TextLf": {
+    "searchNodes": "8f14985266490928806ddbf6b7f7f81d628af4f2daf3ef873f864beb0f0feaae",
+    "primaryScore": "00e33720cfdd9b45abecaaa49d734f244101d437c90b01a87bef184b84b4ad7f",
+    "queryTerms": "c0e3f321d3a866f411c2c86dbacbe8d8de326b441b1de2f7dae3f79d292997d3",
+    "rankBoost": "bd13d01c0bcc379d98db05cddc0934dea0d37faaf5191c65267e477ae5dc5c98"
+  },
+  "questionFixtureUnchangedFromFreeze": true,
+  "offlineMatchesLive": true,
+  "packDryRun": {
+    "version": "0.8.9",
+    "files": 60,
+    "workerIncluded": true
+  },
+  "published": false
+}

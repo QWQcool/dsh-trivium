@@ -375,6 +375,8 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 后续[范围文本实验](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md)区分了原生条件过滤与任意 ID 集合文本排名，并在有声明关系真值的隔离库中评测 payload 备选方案。这些仍是开发诊断，工具和默认检索保持原状。
 
+更新的源码增加独立[实体范围 HTTP 后端](docs/read-api.md#explicit-entity-search-unreleased-source)：显式选择工作区和实体，两路候选分别返回，query embedding 需要请求方主动开启。它未接入工具、自动召回或 UI。[冻结新题验收与并发检查](docs/reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md)覆盖 live/snapshot 读取；npm 0.8.9 尚不包含该入口。
+
 上述真实模型样本不能证明模型总会调用工具、完整会话效果或普遍降低成本。旧 D0 部分对照臂重复种植，D1 的 `0.51×` 模拟未计入完整注入历史和短地图；应按[独立审查](docs/archive/next-memory/POST-081-REVIEW.md)的限制解读。
 
 ## 更新说明

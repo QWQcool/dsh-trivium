@@ -1055,3 +1055,221 @@
   console.log(`\nP97: ${checks - failures}/${checks} checks passed`);
   if (failures) process.exitCode = 1;
 }
+
+// Entity-search backend: consolidated correctness and HTTP protocol checks.
+{
+  const { default: assert } = await import("node:assert/strict");
+  const { default: http } = await import("node:http");
+  const { mkdtempSync, readFileSync, readdirSync, writeFileSync, existsSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join, resolve, relative, isAbsolute, sep } = await import("node:path");
+  const { createHash } = await import("node:crypto");
+  const { default: engine } = await import("triviumdb");
+  const root = mkdtempSync(join(tmpdir(), "dsh-entity-search-"));
+  process.env.DSH_HOME = join(root, "home"); process.env.DSH_TRIVIUM_SETTINGS = join(root, "settings.json");
+  const store = await import("../lib/store.js"), embed = await import("../lib/embed.js");
+  const { searchEntity, validateEntitySearch, entityQueryEmbedding } = await import("../lib/entity-search.js");
+  const { searchEntitySnapshot } = await import("../lib/entity-search-snapshot.js");
+  const { createReadSnapshot } = await import("../lib/read-snapshots.js");
+  const { registerMemoryApi } = await import("../lib/server.js");
+  const { readUiSettings } = await import("../lib/settings.js");
+  const unit = axis => Array.from({length:1536},(_,i)=>i===axis?1:0), zero=Array(1536).fill(0);
+  const deferred=()=>{let resolve;const promise=new Promise(done=>{resolve=done});return{promise,resolve}};
+  const ids=rows=>rows.map(row=>Number(row.id));
+  const errorIs=(status,code)=>error=>error.status===status&&(!code||error.code===code);
+  let checks=0,server,db;const nativeHandles=[];const cwd=join(root,"A");
+  const check=async(label,fn)=>{await fn();checks++;console.log("ok entity-search "+label)};
+  const vectorReply=async()=>({status:"ran",vector:unit(0),calls:1});
+  try{
+    embed.setTestEmbed(null);embed.configureEmbedding({embeddingEnabled:false,embeddingApiKey:""});
+    db=await store.openWorkspaceDb(cwd);
+    for(const[id,type,name,text,extra]of[
+      [101,"entity","ServiceA","Authentication service"],[102,"entity","ServiceB","Other service"],[103,"entity","Empty",""],
+      [201,"decision","Retry","Retry three times."],[202,"decision","Other retry","Retry five times."],
+      [203,"preference","Audit","Retain audit records."],[204,"decision","Archived","Archived retry",{status:"archived"}],
+      [205,"decision","Expired","Expired retry",{untilAt:"2020-01-01T00:00:00Z"}],
+      [206,"decision","Old policy","Old checkpoint."],[207,"decision","Current policy","New checkpoint."],
+      [208,"decision","Old archive","Old release archive."],[209,"decision","New archive","Replacement archive outside scope."],
+      [210,"decision","Existing plan","Manual approval."],[211,"decision","Proposed plan","Automatic approval.",{review:"supersede-proposed"}],
+      [212,"decision","Loose retry","Retry retry retry three times."]])db.insertWithId(id,id===103?zero:unit(id===202?1:0),{type,name,text,status:"active",createdAt:"2026-11-01T00:00:00Z",...extra});
+    for(const id of[201,203,204,205,206,207,208,210,211])db.link(id,101,"about",1);
+    db.link(202,102,"about",1);db.link(203,102,"fixed",1);db.link(212,101,"in_workspace",1);db.link(212,103,"from_session",1);
+    db.link(207,206,"supersedes",1);db.link(209,208,"supersedes",1);db.flush();
+    const disk=()=>Object.fromEntries(readdirSync(join(cwd,".dsh")).filter(n=>n.startsWith("trivium.tdb")&&!n.endsWith(".lock")).map(n=>[n,createHash("sha256").update(readFileSync(join(cwd,".dsh",n))).digest("hex")]));
+    const before=disk();
+    await check("strict input and opt-in",async()=>{
+      for(const body of[null,[],{},{entityId:"101",query:"retry"},{entityId:0,query:"retry"},{entityId:101,query:""},{entityId:101,query:"x".repeat(4097)},
+        {entityId:101,query:"x",limit:0},{entityId:101,query:"x",semantic:"true"},{entityId:101,query:"x",budget:99999},{entityId:101,query:"x",depth:2}])assert.throws(()=>validateEntitySearch(body),errorIs(400));
+      let calls=0;const r=await searchEntity(db,{entityId:101,query:"retry"},{embedding:async()=>{calls++;return vectorReply()}});
+      assert.equal(calls,0);assert.equal(r.channels.semantic.status,"not_requested");assert.deepEqual(ids(r.textCandidates),[201]);
+    });
+    await check("one-hop current scope, gaps, proposals and typed channels",async()=>{
+      const r=await searchEntity(db,{entityId:101,query:"retry",semantic:true,limit:20},{embedding:vectorReply});
+      assert.equal(r.scope.eligibleCount,6);assert.equal(r.scope.complete,true);assert.equal(r.expanded,false);assert.equal(r.answerability,"not_assessed");
+      assert.deepEqual(ids(r.semanticCandidates).sort((a,b)=>a-b),[101,201,203,207,210,211]);
+      assert.ok(r.warnings.some(w=>w.matchedId==="208"&&w.currentId==="209"));assert.equal(r.semanticCandidates.find(x=>x.id==="211").review,"supersede-proposed");
+      for(const row of[...r.textCandidates,...r.semanticCandidates])assert.ok(row.path.nodes.includes(row.id));
+      assert.equal(r.textCandidates[0].scoreKind,"lexical");assert.equal(r.semanticCandidates[0].scoreKind,"cosine");
+      const clipped=await searchEntity(db,{entityId:101,query:"retry",semantic:true,limit:1},{embedding:vectorReply});
+      assert.equal(clipped.channels.semantic.truncated,true);assert.equal(clipped.channels.text.truncated,false);assert.ok(!Object.hasOwn(clipped,"rows"));
+    });
+    await check("provider disabled, exceptions and invalid native vectors degrade",async()=>{
+      assert.equal((await searchEntity(db,{entityId:101,query:"retry",semantic:true})).channels.semantic.status,"disabled");
+      for(const vector of[[1,2],zero,Array(1536).fill(NaN),Array(1536).fill(1e300),Array(1536).fill(1e-300)]){
+        const r=await searchEntity(db,{entityId:101,query:"retry",semantic:true},{embedding:async()=>({status:"ran",vector,calls:1})});
+        assert.equal(r.degraded,true);assert.deepEqual(ids(r.textCandidates),[201]);assert.deepEqual(r.semanticCandidates,[]);
+      }
+      const r=await searchEntity(db,{entityId:101,query:"retry",semantic:true},{embedding:async()=>{throw Error("provider failed")}});
+      assert.equal(r.channels.semantic.status,"failed");assert.deepEqual(ids(r.textCandidates),[201]);
+    });
+    await check("module-level config binding begins before provider scheduling",async()=>{
+      let calls=0;embed.setTestEmbed(async()=>{calls++;return unit(0)});
+      const pending=searchEntity(db,{entityId:101,query:"retry",semantic:true});embed.configureEmbedding({embeddingModel:"new-before-provider"});
+      try{await assert.rejects(()=>pending,errorIs(409,"ENTITY_SEARCH_EMBEDDING_CHANGED"));assert.equal(calls,0)}finally{embed.setTestEmbed(null);embed.configureEmbedding({embeddingEnabled:false,embeddingApiKey:""})}
+    });
+    await check("anchor-only and invalid anchors spend no provider calls",async()=>{
+      let calls=0;const options={embedding:async()=>{calls++;return vectorReply()}};
+      const r=await searchEntity(db,{entityId:103,query:"retry",semantic:true},options);assert.equal(r.state,"scope_anchor_only");assert.equal(r.channels.semantic.status,"skipped");
+      await assert.rejects(()=>searchEntity(db,{entityId:999,query:"retry",semantic:true},options),errorIs(404));
+      await assert.rejects(()=>searchEntity(db,{entityId:201,query:"retry",semantic:true},options),errorIs(400));assert.equal(calls,0);
+    });
+    await check("shared nodes, edges, payload, CPU and response budgets",async()=>{
+      for(const limits of[{nodes:1},{edges:1},{payloadBytes:20}])await assert.rejects(()=>searchEntity(db,{entityId:101,query:"retry"},{limits}),e=>errorIs(422)(e)&&Boolean(e.work));
+      await assert.rejects(()=>searchEntity(db,{entityId:101,query:"retry"},{limits:{responseBytes:200}}),errorIs(413));
+      let time=0;const original=db.getPayload;try{db.getPayload=id=>{time+=100;return original.call(db,id)};
+        await assert.rejects(()=>searchEntity(db,{entityId:101,query:"retry"},{clock:()=>time}),errorIs(408));}finally{db.getPayload=original}
+    });
+    await check("provider timeout preserves lexical results",async()=>{
+      const r=await searchEntity(db,{entityId:101,query:"retry",semantic:true},{remainingMs:500,embedding:async()=>new Promise(()=>{})});
+      assert.equal(r.channels.semantic.status,"timeout");assert.equal(r.degraded,true);assert.deepEqual(ids(r.textCandidates),[201]);
+    });
+    await check("successful queries preserve persisted bytes",async()=>assert.deepEqual(disk(),before));
+    const mutated=async mutate=>{
+      const entered=deferred(),reply=deferred();const pending=searchEntity(db,{entityId:101,query:"retry",semantic:true},{embedding:async()=>{entered.resolve();return reply.promise}});
+      await entered.promise;const restore=mutate();reply.resolve({status:"ran",vector:unit(0),calls:1});
+      try{await assert.rejects(()=>pending,errorIs(409,"ENTITY_SEARCH_SCOPE_CHANGED"))}finally{restore()}
+    };
+    await check("changed body rejects late semantic results",async()=>mutated(()=>{const old=db.getPayload(201);db.updatePayload(201,{...old,text:"Retry seven times."});return()=>db.updatePayload(201,old)}));
+    await check("removed business edge rejects late semantic results",async()=>mutated(()=>{db.unlink(201,101,"about");return()=>db.link(201,101,"about",1)}));
+    await check("new business membership rejects late semantic results",async()=>mutated(()=>{db.link(212,101,"fixed",1);return()=>db.unlink(212,101,"fixed")}));
+    await check("entity deletion during embedding is a conflict, not a fresh missing-entity lookup",async()=>mutated(()=>{
+      const old=db.get(101),incoming=db.getIncomingEdges(101);db.delete(101);
+      return()=>{db.insertWithId(101,old.vector,old.payload);for(const edge of incoming)db.link(edge.sourceId,101,edge.label,edge.weight)};
+    }));
+    await check("deleted/reused IDs cannot restore earlier identity",async()=>mutated(()=>{
+      const old=db.get(201);db.delete(201);db.insertWithId(201,old.vector,{...old.payload,text:"New identity",createdAt:"2026-11-12T01:00:00Z"});db.link(201,101,"about",1);
+      return()=>{db.delete(201);db.insertWithId(201,old.vector,old.payload);db.link(201,101,"about",1)};
+    }));
+    await check("replacement binding rejects in-flight result",async()=>{
+      let current=true;const entered=deferred(),reply=deferred();const pending=searchEntity(db,{entityId:101,query:"retry",semantic:true},{isCurrent:()=>current,embedding:async()=>{entered.resolve();return reply.promise}});
+      await entered.promise;current=false;reply.resolve({status:"ran",vector:unit(0),calls:1});await assert.rejects(()=>pending,errorIs(409,"ENTITY_SEARCH_SOURCE_CHANGED"));
+    });
+    await check("cancel settles a provider ignoring its signal",async()=>{
+      const controller=new AbortController(),entered=deferred();const pending=searchEntity(db,{entityId:101,query:"retry",semantic:true},{signal:controller.signal,embedding:async()=>{entered.resolve();return new Promise(()=>{})}});
+      await entered.promise;controller.abort();await assert.rejects(()=>pending,errorIs(499));
+    });
+    await check("unrelated edits preserve an unchanged scope",async()=>{
+      const entered=deferred(),reply=deferred(),old=db.getPayload(202);const pending=searchEntity(db,{entityId:101,query:"retry",semantic:true},{embedding:async()=>{entered.resolve();return reply.promise}});
+      await entered.promise;db.updatePayload(202,{...old,text:"Unrelated edit"});reply.resolve({status:"ran",vector:unit(0),calls:1});
+      try{assert.deepEqual(ids((await pending).textCandidates),[201])}finally{db.updatePayload(202,old)}
+    });
+    await check("expiry during embedding changes live scope but snapshot time stays fixed",async()=>{
+      const old=db.getPayload(201);db.updatePayload(201,{...old,untilAt:"2026-11-12T00:00:01Z"});
+      let at=new Date("2026-11-12T00:00:00Z");const entered=deferred(),reply=deferred();
+      const pending=searchEntity(db,{entityId:101,query:"retry",semantic:true},{timeNow:()=>at,embedding:async()=>{entered.resolve();return reply.promise}});
+      await entered.promise;at=new Date("2026-11-12T00:00:02Z");reply.resolve({status:"ran",vector:unit(0),calls:1});
+      try{await assert.rejects(()=>pending,errorIs(409,"ENTITY_SEARCH_SCOPE_CHANGED"));const historical=await searchEntity(db,{entityId:101,query:"retry"},{source:"snapshot",asOf:"2026-11-12T00:00:00Z"});assert.deepEqual(ids(historical.textCandidates),[201])}finally{db.updatePayload(201,old)}
+    });
+    await check("revision self-cycle fails closed",async()=>{
+      db.link(201,201,"supersedes",1);try{await assert.rejects(()=>searchEntity(db,{entityId:101,query:"retry"}),errorIs(422,"ENTITY_SEARCH_REVISION_INVALID"))}finally{db.unlink(201,201,"supersedes")}
+    });
+    await check("large store uses only bounded payload and native relationships",async()=>{
+      const large=new engine.TriviumDB(join(root,"large.tdb"),{dim:1536,autoBuildQuiver:false});nativeHandles.push(large);
+      large.insertWithId(1,zero,{type:"entity",name:"Hub"});for(let id=2;id<=1200;id++)large.insertWithId(id,unit(0),{type:"decision",text:"Retry fact"});large.link(2,1,"about",1);
+      large.get=()=>{throw Error("vector materialization")};large.allNodeIds=()=>{throw Error("full scan")};assert.deepEqual(ids((await searchEntity(large,{entityId:1,query:"retry"})).textCandidates),[2]);
+    });
+    const snapshot=createReadSnapshot(db,cwd);
+    await check("snapshot returns captured time and separate candidates",async()=>{
+      const r=await searchEntitySnapshot(cwd,snapshot.snapshotId,{entityId:101,query:"retry",semantic:true},{embedding:vectorReply});
+      assert.equal(r.source,"snapshot");assert.equal(r.asOf,snapshot.createdAt);assert.equal(r.generationId,snapshot.generationId);assert.deepEqual(ids(r.textCandidates),[201]);assert.ok(ids(r.semanticCandidates).includes(201));
+    });
+    await check("latest snapshot stays pinned across live edits and recapture",async()=>{
+      const entered=deferred(),reply=deferred(),old=db.getPayload(201);const pending=searchEntitySnapshot(cwd,"latest",{entityId:101,query:"retry",semantic:true},{embedding:async()=>{entered.resolve();return reply.promise}});
+      await entered.promise;db.updatePayload(201,{...old,text:"Retry nine times."});db.flush();createReadSnapshot(db,cwd);reply.resolve({status:"ran",vector:unit(0),calls:1});
+      try{const r=await pending;assert.equal(r.snapshotId,snapshot.snapshotId);assert.equal(r.textCandidates[0].text,old.text)}finally{db.updatePayload(201,old);db.flush()}
+    });
+    await check("snapshot wall deadline kills before provider",async()=>{
+      let calls=0;await assert.rejects(()=>searchEntitySnapshot(cwd,snapshot.snapshotId,{entityId:101,query:"retry",semantic:true},{remainingMs:1,embedding:async()=>{calls++;return vectorReply()}}),errorIs(408));assert.equal(calls,0);
+    });
+    await check("snapshot cancellation aborts its provider and releases the worker",async()=>{
+      const entered=deferred(),reply=deferred(),controller=new AbortController();let providerSignal;
+      const pending=searchEntitySnapshot(cwd,snapshot.snapshotId,{entityId:101,query:"retry",semantic:true},{signal:controller.signal,embedding:async(_query,context)=>{providerSignal=context.signal;entered.resolve();return reply.promise}});
+      await entered.promise;controller.abort();await assert.rejects(()=>pending,errorIs(499));assert.equal(providerSignal.aborted,true);reply.resolve({status:"ran",vector:unit(0),calls:1});
+      const next=await searchEntitySnapshot(cwd,snapshot.snapshotId,{entityId:101,query:"retry"});assert.deepEqual(ids(next.textCandidates),[201]);
+    });
+    await check("corrupt artifact refuses provider work",async()=>{
+      const broken=createReadSnapshot(db,cwd);writeFileSync(join(broken.directory,"database.tdb.manifest.json"),"broken");let calls=0;
+      await assert.rejects(()=>searchEntitySnapshot(cwd,broken.snapshotId,{entityId:101,query:"retry",semantic:true},{embedding:async()=>{calls++;return vectorReply()}}));assert.equal(calls,0);
+    });
+    await check("snapshot UTF-8 crosses pipe chunk boundaries intact",async()=>{
+      const old=db.getPayload(201),text="中文".repeat(20000);db.updatePayload(201,{...old,text});db.flush();const s=createReadSnapshot(db,cwd);
+      try{const r=await searchEntitySnapshot(cwd,s.snapshotId,{entityId:101,query:"中文",limit:1});assert.equal(r.textCandidates[0].text,text)}finally{db.updatePayload(201,old);db.flush()}
+    });
+    let handler;registerMemoryApi({webServer:{register(entry){handler=entry.handler;return()=>{}}}},{liveOptions:readUiSettings,status:{}});
+    server=http.createServer((req,res)=>handler(req,res));await new Promise(done=>server.listen(0,"127.0.0.1",done));
+    const base=`http://127.0.0.1:${server.address().port}/api/dsh-trivium`;
+    const request=async(body,mode="",options={})=>{const response=await fetch(base+"/entity-search"+(mode==="no-cwd"?"":"?cwd="+encodeURIComponent(cwd)),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body),...options});return{status:response.status,body:await response.json()}};
+    await check("HTTP explicit workspace, body schema and no lazy open",async()=>{
+      assert.equal((await request({entityId:101,query:"retry"},"no-cwd")).status,400);assert.equal((await request({entityId:101,query:"retry",scope:"global"})).status,400);
+      const response=await fetch(base+"/entity-search?cwd="+encodeURIComponent(join(root,"unopened")),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({entityId:101,query:"retry"})});assert.equal(response.status,409);assert.equal(existsSync(join(root,"unopened")),false);
+      const r=await request({entityId:101,query:"retry"});assert.equal(r.status,200);assert.equal(r.body.cwd,resolve(cwd));
+    });
+    await check("HTTP disabled semantic mode clearly degrades",async()=>{const r=await request({entityId:101,query:"retry",semantic:true});assert.equal(r.status,200);assert.equal(r.body.degraded,true);assert.equal(r.body.channels.semantic.status,"disabled")});
+    await check("HTTP active-workspace change cannot redirect explicit request",async()=>{
+      const other=await store.openWorkspaceDb(join(root,"B"));other.insertWithId(101,zero,{type:"entity",name:"PrivateB"});
+      const entered=deferred(),reply=deferred();embed.setTestEmbed(async()=>{entered.resolve();return reply.promise});const pending=request({entityId:101,query:"retry",semantic:true});
+      await entered.promise;store.setActiveCwd(join(root,"B"));reply.resolve(unit(0));try{const r=await pending;assert.equal(r.status,200);assert.equal(r.body.scope.name,"ServiceA");assert.equal(JSON.stringify(r.body).includes("PrivateB"),false)}finally{embed.setTestEmbed(null);store.setActiveCwd(cwd)}
+    });
+    await check("HTTP concurrent edit returns 409 without partial candidates",async()=>{
+      const entered=deferred(),reply=deferred(),old=db.getPayload(201);embed.setTestEmbed(async()=>{entered.resolve();return reply.promise});const pending=request({entityId:101,query:"retry",semantic:true});
+      await entered.promise;db.updatePayload(201,{...old,text:"Concurrent body"});reply.resolve(unit(0));try{const r=await pending;assert.equal(r.status,409);assert.equal(r.body.code,"ENTITY_SEARCH_SCOPE_CHANGED");assert.ok(!Object.hasOwn(r.body,"textCandidates"))}finally{embed.setTestEmbed(null);db.updatePayload(201,old)}
+    });
+    await check("HTTP configuration switch invalidates query vector",async()=>{
+      const entered=deferred(),reply=deferred();embed.setTestEmbed(async()=>{entered.resolve();return reply.promise});const pending=request({entityId:101,query:"retry",semantic:true});
+      await entered.promise;embed.configureEmbedding({embeddingModel:"changed"});reply.resolve(unit(0));const r=await pending;assert.equal(r.status,409);assert.equal(r.body.code,"ENTITY_SEARCH_EMBEDDING_CHANGED");embed.setTestEmbed(null);
+    });
+    await check("HTTP snapshot broker returns pinned channels through the real transport",async()=>{
+      let calls=0;embed.setTestEmbed(async()=>{calls++;return unit(0)});
+      try{const r=await request({entityId:101,query:"retry",semantic:true,snapshotId:snapshot.snapshotId});assert.equal(r.status,200);assert.equal(r.body.snapshotId,snapshot.snapshotId);assert.equal(r.body.asOf,snapshot.createdAt);assert.ok(ids(r.body.semanticCandidates).includes(201));assert.equal(calls,1)}finally{embed.setTestEmbed(null)}
+    });
+    await check("HTTP cancellation releases bounded admission",async()=>{
+      const entered=deferred(),reply=deferred();embed.setTestEmbed(async()=>{entered.resolve();return reply.promise});const controller=new AbortController();const pending=request({entityId:101,query:"retry",semantic:true},"",{signal:controller.signal}).catch(e=>e);
+      await entered.promise;assert.equal((await request({entityId:101,query:"retry"})).status,429);controller.abort();await pending;reply.resolve(unit(0));
+      let next;for(let i=0;i<30;i++){await new Promise(done=>setImmediate(done));next=await request({entityId:101,query:"retry"});if(next.status!==429)break}assert.equal(next.status,200);embed.setTestEmbed(null);
+    });
+    await check("HTTP origin fence is retained",async()=>{const r=await fetch(base+"/entity-search?cwd="+encodeURIComponent(cwd),{method:"POST",headers:{"content-type":"application/json",origin:"https://foreign.invalid"},body:JSON.stringify({entityId:101,query:"retry"})});assert.equal(r.status,403)});
+    await check("actual provider failures, response byte limit and cancellation are bounded",async()=>{
+      let mode="error";const entered=deferred(),disconnected=deferred();
+      const provider=http.createServer((req,res)=>{req.resume();if(mode==="hang"){entered.resolve();res.once("close",()=>disconnected.resolve());return}res.writeHead(mode==="error"?503:200,{"content-type":"application/json"});res.end(mode==="large"?JSON.stringify({padding:"x".repeat(100000),data:[{embedding:unit(0)}]}):JSON.stringify({data:[{embedding:[1,2]}]}))});
+      await new Promise(done=>provider.listen(0,"127.0.0.1",done));const endpoint=`http://127.0.0.1:${provider.address().port}/v1/embeddings`;
+      const settings=existsSync(process.env.DSH_TRIVIUM_SETTINGS)?readFileSync(process.env.DSH_TRIVIUM_SETTINGS,"utf8"):"{}";
+      writeFileSync(process.env.DSH_TRIVIUM_SETTINGS,JSON.stringify({embeddingEnabled:true,embeddingUrl:endpoint,embeddingApiKey:"",embeddingModel:"controlled"}));
+      try{
+        for(mode of["error","invalid","large"]){const r=await request({entityId:101,query:"retry",semantic:true});assert.equal(r.status,200);assert.equal(r.body.degraded,true);assert.deepEqual(ids(r.body.textCandidates),[201]);assert.equal(r.body.channels.semantic.status,"failed")}
+        mode="hang";const controller=new AbortController();const pending=request({entityId:101,query:"retry",semantic:true},"",{signal:controller.signal}).catch(e=>e);await entered.promise;controller.abort();await pending;
+        await Promise.race([disconnected.promise,new Promise((_,reject)=>setTimeout(()=>reject(Error("provider connection was not aborted")),1000))]);
+        let next;for(let i=0;i<30;i++){next=await request({entityId:101,query:"retry"});if(next.status===200)break;await new Promise(done=>setImmediate(done))}assert.equal(next.status,200);
+        const timed=await entityQueryEmbedding("retry",{timeoutMs:30});assert.equal(timed.status,"timeout");
+      }finally{provider.closeAllConnections();await new Promise(done=>provider.close(done));writeFileSync(process.env.DSH_TRIVIUM_SETTINGS,settings);embed.configureEmbedding({embeddingEnabled:false,embeddingApiKey:""})}
+    });
+    await check("HTTP close and reopen rejects the old handle",async()=>{
+      const entered=deferred(),reply=deferred();embed.setTestEmbed(async()=>{entered.resolve();return reply.promise});const pending=request({entityId:101,query:"retry",semantic:true});
+      await entered.promise;store.closeAll();db=await store.openWorkspaceDb(cwd);reply.resolve(unit(0));const r=await pending;assert.equal(r.status,409);embed.setTestEmbed(null);
+    });
+  }finally{
+    embed.setTestEmbed(null);embed.configureEmbedding({embeddingEnabled:false,embeddingApiKey:""});if(server)await new Promise(done=>server.close(done));
+    store.closeAll();for(const handle of nativeHandles){try{handle.close()}catch{}}
+    const rel=relative(resolve(tmpdir()),resolve(root));if(rel&&rel!==".."&&!rel.startsWith(`..${sep}`)&&!isAbsolute(rel))rmSync(root,{recursive:true,force:true});
+  }
+  console.log(`Entity search: ${checks}/${checks} contract checks`);
+}

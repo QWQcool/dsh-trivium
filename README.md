@@ -374,6 +374,8 @@ The one mixed-retrieval Top-5 miss was traced to generic text matches in weighte
 
 Follow-up [scoped-text experiments](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) distinguish conditional native payload filtering from arbitrary ID-set text ranking, and evaluate payload fallbacks on declared relation truth. These are isolated diagnostics; tools and default retrieval remain unchanged.
 
+Newer source adds an explicit [entity-search HTTP backend](docs/read-api.md#explicit-entity-search-unreleased-source): choose an entity/workspace, receive separate lexical and semantic candidates, and opt in to query embeddings. It is not connected to tools or automatic recall and has no UI. [Frozen new-question acceptance and concurrency checks](docs/reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) cover live/snapshot reads; this endpoint is not in npm 0.8.9.
+
 The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/archive/next-memory/POST-081-REVIEW.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 
 ## Changelog

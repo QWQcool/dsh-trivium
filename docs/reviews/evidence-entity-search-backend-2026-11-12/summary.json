@@ -1,0 +1,49 @@
+{
+  "frozenQuestionCommit": "11fbe0c",
+  "questionSha256TextLf": "37199c8c2cd991a591e559011d0f8e9ed5e1e9381e03442f532f4d831fdcebfb",
+  "metrics": {
+    "live": {
+      "n": 24,
+      "textHit1": 5,
+      "textHit5": 5,
+      "semanticHit1": 24,
+      "semanticHit5": 24,
+      "eitherChannelHit": 24,
+      "note": "eitherChannelHit counts the union of two separate candidate lists; it is not a merged Top-5 metric."
+    },
+    "snapshot": {
+      "n": 24,
+      "textHit1": 5,
+      "textHit5": 5,
+      "semanticHit1": 24,
+      "semanticHit5": 24,
+      "eitherChannelHit": 24,
+      "note": "eitherChannelHit counts the union of two separate candidate lists; it is not a merged Top-5 metric."
+    }
+  },
+  "answerableQuestions": 24,
+  "unanswerableOrAnchorOnlyQuestions": 4,
+  "liveChecks": 257,
+  "offlineChecks": 257,
+  "liveProvider": {
+    "calls": 79,
+    "apiModelRequests": 54,
+    "modelReplays": 0,
+    "tokens": 2116,
+    "badVectors": 0
+  },
+  "offlineProvider": {
+    "calls": 0,
+    "apiModelRequests": 0,
+    "modelReplays": 54,
+    "tokens": 0,
+    "badVectors": 0
+  },
+  "additionalRealHostModelRequests": 2,
+  "costYuan": 0,
+  "paidGenerationCalls": 0,
+  "candidateListsAreSeparate": true,
+  "caveat": "New synthetic domains and predeclared questions; not a third-party human review. No scoring adjustment or merged-ranking claim.",
+  "startedAt": "2026-11-12T09:10:27.746Z",
+  "completedAt": "2026-11-12T09:10:32.578Z"
+}

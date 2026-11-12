@@ -1,0 +1,66 @@
+{
+  "sha256TextLf": {
+    "cleanup.json": "f8afba138400355611aa88bb541f2a25a73555acfe25bd392afd3a631a5cb303",
+    "contract-checks.json": "f490cb03679b7d5a4a0d57beeb4d32bb81e33a10c9545f861edfd7ef39f59887",
+    "environment.json": "4c2c5648713616c8ee675bd55507967ada5ba4f1e3650e7030ed0788b75b7c14",
+    "http-acceptance-checks.json": "cc8ce51370e163cf5b23f1f92a0c0f71f454dbf0ce69f0fa4441f2d6370f1b99",
+    "new-question-rows.json": "173b81ad43191e14f0f32ad3a1ec8a622cefbd8595485d398472d03aafd68df5",
+    "real-host-http.json": "fe9e40367cff543fe02dad15cb750baa134738babc5cebc8fbbff1a391f250c0",
+    "summary.json": "8cfc617cecd3862eddec46451f2042378c4286e3ef76bebf4095e4f4883ab9d7",
+    "unanswerable-candidates.json": "57bbe7ab5ff933d75109038a3887e7979618710ba483ec8dbc0fd6e9819e0f0f",
+    "verification.json": "09ac47b2c87b287242908d3bc6a3a98abca6f566ce98797822dc647f37da07a2"
+  },
+  "sourcesAtBlob": [
+    {
+      "path": "lib/entity-search.js",
+      "gitBlob": "c42519a80d5229af5007264e6822aa2248cfc688",
+      "sha256TextLf": "21c2ce2ab61cccc471aa552afb35e16ad905d0f6bc071f781d76515a5547d80d"
+    },
+    {
+      "path": "lib/entity-search-snapshot.js",
+      "gitBlob": "c923905e606194febc999d7a8342cb22542c8c25",
+      "sha256TextLf": "0de6c2b0fe0a2091c1f889d110de4db8a4b6fe812c4770c9d09d77e5b89d24f3"
+    },
+    {
+      "path": "lib/entity-search-worker.mjs",
+      "gitBlob": "9379809ab7f0ee1db2d7922392fc2f5f413cfc65",
+      "sha256TextLf": "8fdaf1dd7b6a19ceb71e13bdec3b8c965fdbd59b77350f55978682c6f7429cd5"
+    },
+    {
+      "path": "lib/read-api.js",
+      "gitBlob": "12fa436b00911d47c4f51e45941659d2c41dec2a",
+      "sha256TextLf": "a2655f02f02357480a2337d2853ab63f70dd694c043522779e3d1a2e170f664c"
+    },
+    {
+      "path": "lib/server.js",
+      "gitBlob": "9db1e1f8c65ddd0fac1decf12a36a51eeb8d247f",
+      "sha256TextLf": "bcc3b8de38aecfb05c528e502f218d8e1fe3d3120026086ac33d58ec8c3eb985"
+    },
+    {
+      "path": "lib/embed.js",
+      "gitBlob": "832eb07e377aba16749100e27a9a61265cf25fa6",
+      "sha256TextLf": "0be0e0ccfc48dedc28311675c072d84bcf1b7b24162ad8676660f8c1adc73482"
+    },
+    {
+      "path": "lib/store.js",
+      "gitBlob": "f6613f7bc3d6d7c9a50b08d438605cb553f9eb19",
+      "sha256TextLf": "49f0125be3c6159b8e14cc23e1c411d9c8343c29e9ca263645848c3a607f5262"
+    },
+    {
+      "path": "scripts/smoke-p93.mjs",
+      "gitBlob": "65a6c949e9451464732c312d413509101a061415",
+      "sha256TextLf": "5cba20410443fb1e330286fdd83efc659156564a6ac8751a8d1756c7505456d3"
+    },
+    {
+      "path": "scripts/verify-local-embedding.mjs",
+      "gitBlob": "4ad1e0d6d5bc5d7a7ca8a466a2d8dc1bcd107be0",
+      "sha256TextLf": "03f874a50c16765483b15b7f8029f55d3ae4c4387ca027afbb981661b5636a02"
+    },
+    {
+      "path": "scripts/fixtures/entity-search-acceptance.json",
+      "gitBlob": "0fa546c41669f70e6a048e3ed9cb476bcf4d272e",
+      "sha256TextLf": "37199c8c2cd991a591e559011d0f8e9ed5e1e9381e03442f532f4d831fdcebfb"
+    }
+  ],
+  "note": "Normalized artifact text hashes plus immutable Git source blobs. Hashes establish provenance, not general retrieval accuracy."
+}

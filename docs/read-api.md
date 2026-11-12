@@ -6,7 +6,9 @@ below are newer source changes, pending a subsequent release.
 
 The host remains the single writer. Live queries borrow its already-open
 instance; external analysis uses an independently captured snapshot. Both paths
-report their source. These APIs do not invoke a model or an embedding service.
+report their source. TQL, named fact queries and snapshot capture do not invoke
+a model or an embedding service. The independent entity-search endpoint below
+can explicitly request query embeddings; it is never called by those APIs.
 
 ## Live HTTP queries
 
@@ -133,6 +135,89 @@ Admission allows at most two requests globally and one per workspace; excess
 work receives `429 READ_BUSY`. Native live-query deadlines are cooperative:
 they do not provide hard real-time interruption of Node's synchronous binding.
 Replies are bounded to 512 KiB. Invalid fields and operations are rejected.
+
+## Explicit entity search (unreleased source)
+
+```http
+POST /api/dsh-trivium/entity-search?cwd=<URL-encoded-workspace>
+Content-Type: application/json
+
+{"entityId":104,"query":"How long can a report cursor be reused?","limit":5}
+```
+
+`cwd` is required explicitly and must already be open in the host. The request
+does not open or synchronize a database and does not follow `activeCwd` after
+admission. `entityId` is a positive safe integer; `query` is nonempty, at most
+4096 UTF-8 bytes. `limit` defaults to 5 and accepts 1–20 **per channel**. Unknown
+fields, caller budgets, traversal depth overrides and arbitrary TQL are rejected.
+
+The default is `semantic: false`: no provider call. To use the configured,
+enabled embedding service, add `"semantic":true`. Only the question and existing
+query instruction prefix go to that service. No generation model is called.
+An optional `snapshotId` selects an existing generation; `"latest"` is pinned at
+request start. No failure silently switches sources or broadens the scope.
+
+Scope is the entity and both-direction business one-hop neighbours through
+`about`, `decided`, `broke`, `fixed`. Workspace/session bookkeeping edges do not
+expand it. Archived, expired, dirty and replaced history are filtered. Pending
+replacement proposals remain eligible and marked. A current version without a
+direct scope path is omitted with `CURRENT_OUTSIDE_SCOPE` metadata, never shown
+using the historical node's path. Broken revision chains fail closed.
+
+Success has `textCandidates` and `semanticCandidates`, each separately limited
+and carrying decimal-string IDs, summaries, actual relation paths, `score` and
+`scoreKind` (`lexical` or `cosine`). These score scales are not interchangeable
+and neither is an answer probability. There is no merged ranking. `channels`
+reports execution/degradation and separate `truncated` flags. `state` is
+`candidates`, `no_candidates` or `scope_anchor_only`; `answerability` is always
+`not_assessed`. Nearest neighbours do not establish that a question is answerable.
+
+`scope.complete` means the recorded one-hop scope was fully examined. It does
+not claim all real-world associations are recorded; inspect `warnings` for
+current-version association gaps. `scope.fingerprint` is a read-set digest,
+not a global identity or a write authorization token. Cache keys must also bind
+the workspace, source/generation, entity, question and channel options.
+
+Live queries build the scope, wait without a workspace write lock, then rebuild
+and compare the relevant read set before returning. Relevant body, membership,
+path or current-state changes yield `409 ENTITY_SEARCH_SCOPE_CHANGED`; close or
+reopen yields `409 ENTITY_SEARCH_SOURCE_CHANGED`. Embedding configuration changes
+yield `409 ENTITY_SEARCH_EMBEDDING_CHANGED`. There is no automatic retry/model
+call. Unrelated changes outside the read set do not invalidate it. Snapshot
+queries use an immutable verified generation and assess expiry at capture time.
+
+Budgets are shared across both validation passes and channels: 1000 distinct
+examined IDs (including revision validation), 10000 edge/probe units, 512 KiB of
+hydrated payload JSON, a 150ms cooperative CPU window excluding provider wait,
+and a 512 KiB encoded response. `work.cpuMs` measures the active-read wall window
+(`performance.now` minus provider wait), not OS CPU consumption. The HTTP
+handler has a 15s deadline from admission, including body/worker/provider time;
+it cannot account for client waiting before the host dispatches the handler.
+Provider wait reserves time for the final
+scope check and reads at most 64 KiB of embedding response. An embedding-only
+timeout, provider failure, invalid query vector or disabled configuration can
+return current lexical results with `degraded:true`. It does not change the scope.
+
+Execution/work/response exhaustion returns 408/422/413 without partial candidate
+lists. Invalid or unavailable anchors return 400/404/409. Request body limits and
+loopback/origin checks are the same as the other read APIs. Shared admission is
+two active read requests globally, one per workspace; an explicit semantic wait
+can therefore make other read-API requests return `429 READ_BUSY`. Writers are
+not held behind a workspace lock during this wait. Client disconnect cancels
+the provider and waits for snapshot worker exit before releasing admission.
+
+The live native call is synchronous, so its CPU deadline rejects late output
+cooperatively. Snapshot verification and scoring run in a killable child with a
+parent wall-clock deadline. Provider calls are brokered by the host; connection
+configuration/keys are not sent through the worker protocol and common provider
+credential environment variables are stripped. This endpoint writes no facts,
+vectors, links, indexes, heat or delivery ledgers. It does not modify `ctx_find`,
+automatic recall, existing fixed-query semantics or UI.
+
+Stored-vector model compatibility is still the operator's responsibility after
+a model change/backfill; this endpoint does not infer a model from dimension or
+invent calibrated relevance thresholds. Acceptance and remaining limits are in
+the [backend report](reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md).
 
 ## Capturing a stable snapshot
 
