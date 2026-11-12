@@ -1,0 +1,222 @@
+{
+  "baselineCommit": "3c1830f",
+  "startedAt": "2026-11-12T06:40:23.316Z",
+  "kernel": "0.9.0",
+  "model": "gte-local",
+  "dimension": 1536,
+  "costYuan": 0,
+  "corpusSha256": "1761d1eed532c6beeeac158378622078723bd553fb476cae2f442bd5fca07ad5",
+  "challengeSha256": "d743a62572bd9aeacfc6758cfc9ac19250e339c8524a71bcadb4947f4196f6f9",
+  "queryPrefix": "Instruct: Given a question about project memory, retrieve relevant facts that answer the question\nQuery: ",
+  "source": "prior persisted quality fixture, opened readOnly",
+  "method": "Same vectors, documents and production code. Intercepted text/pool inputs are diagnostic only; no weight or ranking change is applied to lib/.",
+  "caveat": "The 32 questions are a reused diagnostic set. Challenge questions were written after seeing the failure, not an independent quality holdout.",
+  "documentVectorsSha256": "3a960568091c8dd9098c37817355dcc56c6979025f90462c518bf3b6ac83275a",
+  "businessEdges": 0,
+  "productionStoreSha256": "036ec1aff37c652edb845c13dc61523adbe9e4764a87f24b0600ebbd9612e4cf",
+  "completedAt": "2026-11-12T06:40:26.853Z",
+  "sourceFilesUnchanged": true,
+  "http": {
+    "calls": 0,
+    "tokens": 0,
+    "badVectors": 0
+  },
+  "arms": {
+    "baseline": {
+      "keyword-graph": {
+        "n": 32,
+        "hit1": 22,
+        "hit5": 25,
+        "mrrAt5": 0.7291666666666666
+      },
+      "hybrid-raw": {
+        "n": 32,
+        "hit1": 26,
+        "hit5": 30,
+        "mrrAt5": 0.8697916666666666
+      },
+      "dense": {
+        "n": 32,
+        "hit1": 23,
+        "hit5": 32,
+        "mrrAt5": 0.8463541666666666
+      },
+      "exact": {
+        "n": 32,
+        "hit1": 23,
+        "hit5": 32,
+        "mrrAt5": 0.8463541666666666
+      },
+      "native-hybrid": {
+        "n": 32,
+        "hit1": 27,
+        "hit5": 31,
+        "mrrAt5": 0.890625
+      },
+      "plugin-hybrid": {
+        "n": 32,
+        "hit1": 27,
+        "hit5": 31,
+        "mrrAt5": 0.890625
+      },
+      "plugin-pool-all": {
+        "n": 32,
+        "hit1": 27,
+        "hit5": 31,
+        "mrrAt5": 0.890625
+      },
+      "plugin-text-off": {
+        "n": 32,
+        "hit1": 26,
+        "hit5": 32,
+        "mrrAt5": 0.9010416666666666
+      },
+      "plugin-expand-zero": {
+        "n": 32,
+        "hit1": 27,
+        "hit5": 31,
+        "mrrAt5": 0.890625
+      },
+      "hybrid-min-zero": {
+        "n": 32,
+        "hit1": 27,
+        "hit5": 31,
+        "mrrAt5": 0.890625
+      },
+      "comparisons": {
+        "n": 32,
+        "denseExactSameTop5": 32,
+        "nativePluginSameTop5": 32,
+        "poolAllSameTop5": 32,
+        "graphOffSameTop5": 32,
+        "minZeroSameTop5": 32,
+        "textOffTop1Regressions": [
+          "Who must sign off before a public npm release?",
+          "How can an external process read a stable copy while the host is writing?",
+          "I need to see facts added after the captured copy was created."
+        ],
+        "textOffTop1Gains": [
+          "新安装后会立即把记忆发给模型吗？",
+          "Can a 768-number vector be accepted by this plugin?"
+        ]
+      }
+    },
+    "challenge": {
+      "keyword-graph": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 11,
+        "mrrAt5": 0.7321428571428571
+      },
+      "hybrid-raw": {
+        "n": 14,
+        "hit1": 9,
+        "hit5": 13,
+        "mrrAt5": 0.7738095238095238
+      },
+      "dense": {
+        "n": 14,
+        "hit1": 13,
+        "hit5": 14,
+        "mrrAt5": 0.9642857142857143
+      },
+      "exact": {
+        "n": 14,
+        "hit1": 13,
+        "hit5": 14,
+        "mrrAt5": 0.9642857142857143
+      },
+      "native-hybrid": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8214285714285714
+      },
+      "plugin-hybrid": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8214285714285714
+      },
+      "plugin-pool-all": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8214285714285714
+      },
+      "plugin-text-off": {
+        "n": 14,
+        "hit1": 13,
+        "hit5": 14,
+        "mrrAt5": 0.9642857142857143
+      },
+      "plugin-expand-zero": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8214285714285714
+      },
+      "hybrid-min-zero": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8214285714285714
+      },
+      "comparisons": {
+        "n": 14,
+        "denseExactSameTop5": 14,
+        "nativePluginSameTop5": 14,
+        "poolAllSameTop5": 14,
+        "graphOffSameTop5": 14,
+        "minZeroSameTop5": 14,
+        "textOffTop1Regressions": [],
+        "textOffTop1Gains": [
+          "Are 768-dimensional embeddings supported?",
+          "向量只有768个数能被接受吗？",
+          "What should I do when a query times out?"
+        ]
+      }
+    }
+  },
+  "runs": [
+    {
+      "name": "real-query-evaluation",
+      "http": {
+        "calls": 95,
+        "tokens": 2049,
+        "badVectors": 0
+      },
+      "checks": 51
+    },
+    {
+      "name": "read-only-cache-replay",
+      "http": {
+        "calls": 0,
+        "tokens": 0,
+        "badVectors": 0
+      },
+      "checks": 51,
+      "sourceFilesUnchanged": true
+    },
+    {
+      "name": "fresh-document-verification",
+      "http": {
+        "calls": 36,
+        "tokens": 782,
+        "badVectors": 0
+      },
+      "checks": 50,
+      "documentVectorsMatchPrior": true
+    },
+    {
+      "name": "fresh-offline-after-runner-stop",
+      "http": {
+        "calls": 0,
+        "tokens": 0,
+        "badVectors": 0
+      },
+      "checks": 50
+    }
+  ],
+  "preliminarySingleQuestionCalls": 2
+}

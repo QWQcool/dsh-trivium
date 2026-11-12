@@ -1,0 +1,106 @@
+[
+  {
+    "set": "baseline",
+    "question": {
+      "text": "Can a 768-number vector be accepted by this plugin?",
+      "relevant": [
+        "embeddingdim"
+      ],
+      "group": "numeric"
+    },
+    "denseRank": 1,
+    "nativeFullRank": 19,
+    "pluginFullRank": 19,
+    "stages": [
+      {
+        "stage": "native-hybrid",
+        "keys": [
+          "payload",
+          "uninstall",
+          "node",
+          "snapshot",
+          "package",
+          "scope",
+          "timeout",
+          "retry",
+          "capacity",
+          "retry-other",
+          "publish",
+          "partial",
+          "permission",
+          "offline",
+          "header",
+          "budget"
+        ]
+      },
+      {
+        "stage": "keyword-fallback",
+        "keys": []
+      },
+      {
+        "stage": "entity-anchor",
+        "keys": []
+      },
+      {
+        "stage": "same-as-normalize",
+        "keys": []
+      },
+      {
+        "stage": "business-expand",
+        "keys": []
+      }
+    ]
+  },
+  {
+    "set": "challenge",
+    "question": {
+      "text": "Does an in_workspace edge make an entity non-isolated?",
+      "relevant": [
+        "orphan"
+      ],
+      "group": "paraphrase"
+    },
+    "denseRank": 2,
+    "nativeFullRank": 10,
+    "pluginFullRank": 10,
+    "stages": [
+      {
+        "stage": "native-hybrid",
+        "keys": [
+          "dbfile",
+          "onehop",
+          "snapshot",
+          "canpublish",
+          "scope",
+          "supersede",
+          "lock",
+          "embeddingdim",
+          "uninstall",
+          "orphan",
+          "gateway",
+          "live",
+          "timeout",
+          "port",
+          "instruction",
+          "chips"
+        ]
+      },
+      {
+        "stage": "keyword-fallback",
+        "keys": []
+      },
+      {
+        "stage": "entity-anchor",
+        "keys": []
+      },
+      {
+        "stage": "same-as-normalize",
+        "keys": []
+      },
+      {
+        "stage": "business-expand",
+        "keys": []
+      }
+    ]
+  }
+]

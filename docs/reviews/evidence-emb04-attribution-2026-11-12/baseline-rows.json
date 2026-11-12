@@ -1,0 +1,4055 @@
+[
+  {
+    "text": "Which installer should I use for dependencies?",
+    "relevant": [
+      "package"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "package",
+          "payload",
+          "offline",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "package",
+          "kernel",
+          "payload",
+          "live",
+          "offline"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "package",
+          "uninstall",
+          "dbfile",
+          "kernel",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "package",
+          "uninstall",
+          "dbfile",
+          "kernel",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "package",
+          "kernel",
+          "payload",
+          "live",
+          "offline"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "package",
+          "kernel",
+          "payload",
+          "live",
+          "offline"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "package",
+          "kernel",
+          "payload",
+          "live",
+          "offline"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "package",
+          "uninstall",
+          "dbfile",
+          "kernel",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "package",
+          "kernel",
+          "payload",
+          "live",
+          "offline"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "package",
+          "kernel",
+          "payload",
+          "live",
+          "offline"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Who must sign off before a public npm release?",
+    "relevant": [
+      "publish",
+      "nopublish"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "nopublish",
+          "publish",
+          "package",
+          "scope",
+          "budget"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "nopublish",
+          "publish",
+          "package",
+          "scope",
+          "budget"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "package",
+          "publish",
+          "node",
+          "nopublish",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "exact": {
+        "top": [
+          "package",
+          "publish",
+          "node",
+          "nopublish",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "native-hybrid": {
+        "top": [
+          "nopublish",
+          "publish",
+          "package",
+          "scope",
+          "embeddingdim"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "nopublish",
+          "publish",
+          "package",
+          "scope",
+          "embeddingdim"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "nopublish",
+          "publish",
+          "package",
+          "scope",
+          "embeddingdim"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "package",
+          "publish",
+          "node",
+          "nopublish",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "nopublish",
+          "publish",
+          "package",
+          "scope",
+          "embeddingdim"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "nopublish",
+          "publish",
+          "package",
+          "scope",
+          "embeddingdim"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "不想让私人聊天离开电脑，有什么向量方案？",
+    "relevant": [
+      "local"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "local",
+          "recall",
+          "appearance",
+          "chips",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "local",
+          "recall",
+          "appearance",
+          "chips",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "local",
+          "recall",
+          "appearance",
+          "chips",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "local",
+          "recall",
+          "appearance",
+          "chips",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "local",
+          "recall",
+          "appearance",
+          "chips",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "local",
+          "recall",
+          "appearance",
+          "chips",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "local",
+          "recall",
+          "appearance",
+          "chips",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "local",
+          "recall",
+          "appearance",
+          "chips",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "local",
+          "recall",
+          "appearance",
+          "chips",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "单次模型试验最多能花多少人民币？",
+    "relevant": [
+      "budget"
+    ],
+    "group": "cross-language",
+    "variants": {
+      "keyword-graph": {
+        "top": [],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-raw": {
+        "top": [
+          "budget",
+          "recall",
+          "local",
+          "retry",
+          "retry-other"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "budget",
+          "recall",
+          "chips",
+          "dbfile",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "budget",
+          "recall",
+          "chips",
+          "dbfile",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "budget",
+          "recall",
+          "chips",
+          "dbfile",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "budget",
+          "recall",
+          "chips",
+          "dbfile",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "budget",
+          "recall",
+          "chips",
+          "dbfile",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "budget",
+          "recall",
+          "chips",
+          "dbfile",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "budget",
+          "recall",
+          "chips",
+          "dbfile",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "budget",
+          "recall",
+          "chips",
+          "dbfile",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Where does the plugin keep a workspace's facts on disk?",
+    "relevant": [
+      "dbfile"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "scope",
+          "uninstall",
+          "publish",
+          "port",
+          "permission"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-raw": {
+        "top": [
+          "scope",
+          "uninstall",
+          "dbfile",
+          "node",
+          "permission"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 3
+      },
+      "dense": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "scope",
+          "lock",
+          "node"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "exact": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "scope",
+          "lock",
+          "node"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "native-hybrid": {
+        "top": [
+          "scope",
+          "uninstall",
+          "node",
+          "dbfile",
+          "permission"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "plugin-hybrid": {
+        "top": [
+          "scope",
+          "uninstall",
+          "node",
+          "dbfile",
+          "permission"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "plugin-pool-all": {
+        "top": [
+          "scope",
+          "uninstall",
+          "node",
+          "dbfile",
+          "permission"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "plugin-text-off": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "scope",
+          "lock",
+          "node"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "scope",
+          "uninstall",
+          "node",
+          "dbfile",
+          "permission"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "scope",
+          "uninstall",
+          "node",
+          "dbfile",
+          "permission"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      }
+    }
+  },
+  {
+    "text": "Does upgrading erase existing memories?",
+    "relevant": [
+      "uninstall"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "uninstall",
+          "recall",
+          "dbfile",
+          "chips",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "chips",
+          "flush",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "chips",
+          "flush",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "chips",
+          "flush",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "chips",
+          "flush",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "chips",
+          "flush",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "chips",
+          "flush",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "chips",
+          "flush",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "uninstall",
+          "dbfile",
+          "chips",
+          "flush",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "新安装后会立即把记忆发给模型吗？",
+    "relevant": [
+      "recall"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "chips",
+          "recall",
+          "local"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "hybrid-raw": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "uninstall",
+          "appearance"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "dense": {
+        "top": [
+          "recall",
+          "local",
+          "chips",
+          "uninstall",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "recall",
+          "local",
+          "chips",
+          "uninstall",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "uninstall",
+          "dbfile"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-hybrid": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "uninstall",
+          "dbfile"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-pool-all": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "uninstall",
+          "dbfile"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-text-off": {
+        "top": [
+          "recall",
+          "local",
+          "chips",
+          "uninstall",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "uninstall",
+          "dbfile"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "uninstall",
+          "dbfile"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      }
+    }
+  },
+  {
+    "text": "怎么固定下一轮必须带上的几条记忆？",
+    "relevant": [
+      "chips"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "chips",
+          "recall",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "appearance",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "recall",
+          "chips",
+          "local",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "exact": {
+        "top": [
+          "recall",
+          "chips",
+          "local",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "native-hybrid": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "chips",
+          "recall",
+          "local",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "另一个进程正在改库，编辑请求会怎样？",
+    "relevant": [
+      "lock"
+    ],
+    "group": "cross-language",
+    "variants": {
+      "keyword-graph": {
+        "top": [],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-raw": {
+        "top": [
+          "lock",
+          "local",
+          "recall",
+          "appearance",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "lock",
+          "recall",
+          "local",
+          "scope",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "lock",
+          "recall",
+          "local",
+          "scope",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "lock",
+          "recall",
+          "local",
+          "scope",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "lock",
+          "recall",
+          "local",
+          "scope",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "lock",
+          "recall",
+          "local",
+          "scope",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "lock",
+          "recall",
+          "local",
+          "scope",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "lock",
+          "recall",
+          "local",
+          "scope",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "lock",
+          "recall",
+          "local",
+          "scope",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "How can an external process read a stable copy while the host is writing?",
+    "relevant": [
+      "snapshot"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "snapshot",
+          "timeout",
+          "instruction",
+          "lock",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "snapshot",
+          "lock",
+          "live",
+          "capacity",
+          "timeout"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "lock",
+          "snapshot",
+          "live",
+          "flush",
+          "dbfile"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "exact": {
+        "top": [
+          "lock",
+          "snapshot",
+          "live",
+          "flush",
+          "dbfile"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "native-hybrid": {
+        "top": [
+          "snapshot",
+          "lock",
+          "live",
+          "timeout",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "snapshot",
+          "lock",
+          "live",
+          "timeout",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "snapshot",
+          "lock",
+          "live",
+          "timeout",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "lock",
+          "snapshot",
+          "live",
+          "flush",
+          "dbfile"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "snapshot",
+          "lock",
+          "live",
+          "timeout",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "snapshot",
+          "lock",
+          "live",
+          "timeout",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "I need to see facts added after the captured copy was created.",
+    "relevant": [
+      "live"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "scope",
+          "instruction",
+          "live",
+          "partial"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 3
+      },
+      "hybrid-raw": {
+        "top": [
+          "instruction",
+          "live",
+          "supersede",
+          "partial",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "dense": {
+        "top": [
+          "dbfile",
+          "live",
+          "lock",
+          "snapshot",
+          "flush"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "exact": {
+        "top": [
+          "dbfile",
+          "live",
+          "lock",
+          "snapshot",
+          "flush"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "native-hybrid": {
+        "top": [
+          "live",
+          "instruction",
+          "scope",
+          "supersede",
+          "partial"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "live",
+          "instruction",
+          "scope",
+          "supersede",
+          "partial"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "live",
+          "instruction",
+          "scope",
+          "supersede",
+          "partial"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "dbfile",
+          "live",
+          "lock",
+          "snapshot",
+          "flush"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "live",
+          "instruction",
+          "scope",
+          "supersede",
+          "partial"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "live",
+          "instruction",
+          "scope",
+          "supersede",
+          "partial"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Will a slow query prevent subsequent small requests from succeeding?",
+    "relevant": [
+      "timeout"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "timeout",
+          "capacity",
+          "gateway",
+          "supersede",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "timeout",
+          "capacity",
+          "snapshot",
+          "supersede",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "timeout",
+          "capacity",
+          "lock",
+          "flush",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "timeout",
+          "capacity",
+          "lock",
+          "flush",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "timeout",
+          "capacity",
+          "snapshot",
+          "live",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "timeout",
+          "capacity",
+          "snapshot",
+          "live",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "timeout",
+          "capacity",
+          "snapshot",
+          "live",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "timeout",
+          "capacity",
+          "lock",
+          "flush",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "timeout",
+          "capacity",
+          "snapshot",
+          "live",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "timeout",
+          "capacity",
+          "snapshot",
+          "live",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "批量归档怎么减少落盘次数？",
+    "relevant": [
+      "flush"
+    ],
+    "group": "cross-language",
+    "variants": {
+      "keyword-graph": {
+        "top": [],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-raw": {
+        "top": [
+          "recall",
+          "flush",
+          "retry",
+          "local",
+          "retry-other"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "dense": {
+        "top": [
+          "recall",
+          "flush",
+          "local",
+          "chips",
+          "appearance"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "exact": {
+        "top": [
+          "recall",
+          "flush",
+          "local",
+          "chips",
+          "appearance"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "native-hybrid": {
+        "top": [
+          "recall",
+          "flush",
+          "local",
+          "chips",
+          "appearance"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-hybrid": {
+        "top": [
+          "recall",
+          "flush",
+          "local",
+          "chips",
+          "appearance"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-pool-all": {
+        "top": [
+          "recall",
+          "flush",
+          "local",
+          "chips",
+          "appearance"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-text-off": {
+        "top": [
+          "recall",
+          "flush",
+          "local",
+          "chips",
+          "appearance"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "recall",
+          "flush",
+          "local",
+          "chips",
+          "appearance"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "recall",
+          "flush",
+          "local",
+          "chips",
+          "appearance"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      }
+    }
+  },
+  {
+    "text": "How do we inspect node metadata without copying large vectors?",
+    "relevant": [
+      "payload"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "payload",
+          "node",
+          "scope",
+          "snapshot",
+          "onehop"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "payload",
+          "scope",
+          "node",
+          "snapshot",
+          "onehop"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "payload",
+          "scope",
+          "dbfile",
+          "snapshot",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "payload",
+          "scope",
+          "dbfile",
+          "snapshot",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "payload",
+          "scope",
+          "node",
+          "snapshot",
+          "onehop"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "payload",
+          "scope",
+          "node",
+          "snapshot",
+          "onehop"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "payload",
+          "scope",
+          "node",
+          "snapshot",
+          "onehop"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "payload",
+          "scope",
+          "dbfile",
+          "snapshot",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "payload",
+          "scope",
+          "node",
+          "snapshot",
+          "onehop"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "payload",
+          "scope",
+          "node",
+          "snapshot",
+          "onehop"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "X-Request-Id",
+    "relevant": [
+      "header"
+    ],
+    "group": "identifier",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "header"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "header",
+          "scope",
+          "payload",
+          "gateway",
+          "embeddingdim"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "header",
+          "scope",
+          "gateway",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "header",
+          "scope",
+          "gateway",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "header",
+          "scope",
+          "gateway",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "header",
+          "scope",
+          "gateway",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "header",
+          "scope",
+          "gateway",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "header",
+          "scope",
+          "gateway",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "header",
+          "scope",
+          "gateway",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "header",
+          "scope",
+          "gateway",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "AuthGateway",
+    "relevant": [
+      "gateway"
+    ],
+    "group": "identifier",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "gateway"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "gateway",
+          "header",
+          "local",
+          "port",
+          "permission"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "gateway",
+          "header",
+          "local",
+          "port",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "gateway",
+          "header",
+          "local",
+          "port",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "gateway",
+          "header",
+          "local",
+          "port",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "gateway",
+          "header",
+          "local",
+          "port",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "gateway",
+          "header",
+          "local",
+          "port",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "gateway",
+          "header",
+          "local",
+          "port",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "gateway",
+          "header",
+          "local",
+          "port",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "gateway",
+          "header",
+          "local",
+          "port",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "What is the maximum retry count for the upload worker?",
+    "relevant": [
+      "retry"
+    ],
+    "group": "numeric",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "retry",
+          "partial",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "retry",
+          "partial",
+          "capacity",
+          "kernel",
+          "timeout"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "retry",
+          "retry-other",
+          "capacity",
+          "embeddingdim",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "retry",
+          "retry-other",
+          "capacity",
+          "embeddingdim",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "retry",
+          "partial",
+          "capacity",
+          "dbfile",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "retry",
+          "partial",
+          "capacity",
+          "dbfile",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "retry",
+          "partial",
+          "capacity",
+          "dbfile",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "retry",
+          "retry-other",
+          "capacity",
+          "embeddingdim",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "retry",
+          "partial",
+          "capacity",
+          "dbfile",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "retry",
+          "partial",
+          "capacity",
+          "dbfile",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "How many attempts may the mail sender retry?",
+    "relevant": [
+      "retry-other"
+    ],
+    "group": "numeric",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "retry-other",
+          "retry",
+          "partial"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "retry-other",
+          "retry",
+          "partial",
+          "lock",
+          "publish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "retry-other",
+          "retry",
+          "embeddingdim",
+          "capacity",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "retry-other",
+          "retry",
+          "embeddingdim",
+          "capacity",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "retry-other",
+          "retry",
+          "partial",
+          "lock",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "retry-other",
+          "retry",
+          "partial",
+          "lock",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "retry-other",
+          "retry",
+          "partial",
+          "lock",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "retry-other",
+          "retry",
+          "embeddingdim",
+          "capacity",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "retry-other",
+          "retry",
+          "partial",
+          "lock",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "retry-other",
+          "retry",
+          "partial",
+          "lock",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Is unattended publishing allowed for real public releases?",
+    "relevant": [
+      "nopublish",
+      "publish"
+    ],
+    "group": "negation",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "nopublish",
+          "canpublish",
+          "node",
+          "publish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "nopublish",
+          "canpublish",
+          "publish",
+          "kernel",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "nopublish",
+          "canpublish",
+          "publish",
+          "snapshot",
+          "lock"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "nopublish",
+          "canpublish",
+          "publish",
+          "snapshot",
+          "lock"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "nopublish",
+          "canpublish",
+          "kernel",
+          "publish",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "nopublish",
+          "canpublish",
+          "kernel",
+          "publish",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "nopublish",
+          "canpublish",
+          "kernel",
+          "publish",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "nopublish",
+          "canpublish",
+          "publish",
+          "snapshot",
+          "lock"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "nopublish",
+          "canpublish",
+          "kernel",
+          "publish",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "nopublish",
+          "canpublish",
+          "kernel",
+          "publish",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Which registry allows disposable automatic releases?",
+    "relevant": [
+      "canpublish"
+    ],
+    "group": "negation",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "node",
+          "publish",
+          "offline"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "uninstall",
+          "flush",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "uninstall",
+          "flush",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "node",
+          "uninstall",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "node",
+          "uninstall",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "node",
+          "uninstall",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "uninstall",
+          "flush",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "node",
+          "uninstall",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "node",
+          "uninstall",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "已经过期的记忆应不应该列为当前事实？",
+    "relevant": [
+      "expiry"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "expiry",
+          "chips",
+          "reject",
+          "recall",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "expiry",
+          "chips",
+          "recall",
+          "reject",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "expiry",
+          "recall",
+          "chips",
+          "supersede",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "expiry",
+          "recall",
+          "chips",
+          "supersede",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "expiry",
+          "chips",
+          "recall",
+          "reject",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "expiry",
+          "chips",
+          "recall",
+          "reject",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "expiry",
+          "chips",
+          "recall",
+          "reject",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "expiry",
+          "recall",
+          "chips",
+          "supersede",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "expiry",
+          "chips",
+          "recall",
+          "reject",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "expiry",
+          "chips",
+          "recall",
+          "reject",
+          "local"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Which version of a changed decision should be treated as current?",
+    "relevant": [
+      "supersede"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "supersede",
+          "canpublish",
+          "kernel",
+          "capacity",
+          "publish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "supersede",
+          "kernel",
+          "publish",
+          "canpublish",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "supersede",
+          "lock",
+          "reject",
+          "recall",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "supersede",
+          "lock",
+          "reject",
+          "recall",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "supersede",
+          "kernel",
+          "capacity",
+          "publish",
+          "canpublish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "supersede",
+          "kernel",
+          "capacity",
+          "publish",
+          "canpublish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "supersede",
+          "kernel",
+          "capacity",
+          "publish",
+          "canpublish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "supersede",
+          "lock",
+          "reject",
+          "recall",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "supersede",
+          "kernel",
+          "capacity",
+          "publish",
+          "canpublish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "supersede",
+          "kernel",
+          "capacity",
+          "publish",
+          "canpublish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "我选择保持原样后会留下什么记录？",
+    "relevant": [
+      "reject"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "reject"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "reject",
+          "local",
+          "recall",
+          "chips",
+          "appearance"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "recall",
+          "local",
+          "chips",
+          "reject",
+          "dbfile"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "exact": {
+        "top": [
+          "recall",
+          "local",
+          "chips",
+          "reject",
+          "dbfile"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "native-hybrid": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "chips",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "chips",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "chips",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "chips",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "chips",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "chips",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "导入中途报错，怎么知道到底写进去了多少？",
+    "relevant": [
+      "partial"
+    ],
+    "group": "cross-language",
+    "variants": {
+      "keyword-graph": {
+        "top": [],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-raw": {
+        "top": [
+          "partial",
+          "recall",
+          "local",
+          "appearance",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "partial",
+          "recall",
+          "dbfile",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "partial",
+          "recall",
+          "dbfile",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "partial",
+          "recall",
+          "dbfile",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "partial",
+          "recall",
+          "dbfile",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "partial",
+          "recall",
+          "dbfile",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "partial",
+          "recall",
+          "dbfile",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "partial",
+          "recall",
+          "dbfile",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "partial",
+          "recall",
+          "dbfile",
+          "local",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Can a 768-number vector be accepted by this plugin?",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "numeric",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "payload",
+          "package",
+          "timeout",
+          "snapshot",
+          "uninstall"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-raw": {
+        "top": [
+          "payload",
+          "node",
+          "uninstall",
+          "package",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "dense": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "dbfile",
+          "uninstall",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "dbfile",
+          "uninstall",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "payload",
+          "uninstall",
+          "node",
+          "snapshot",
+          "package"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": 19
+      },
+      "plugin-hybrid": {
+        "top": [
+          "payload",
+          "uninstall",
+          "node",
+          "snapshot",
+          "package"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "plugin-pool-all": {
+        "top": [
+          "payload",
+          "uninstall",
+          "node",
+          "snapshot",
+          "package"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "plugin-text-off": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "dbfile",
+          "uninstall",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "payload",
+          "uninstall",
+          "node",
+          "snapshot",
+          "package"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "payload",
+          "uninstall",
+          "node",
+          "snapshot",
+          "package"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": 19
+      }
+    }
+  },
+  {
+    "text": "Should the retrieval task instruction be prefixed to every stored document?",
+    "relevant": [
+      "instruction"
+    ],
+    "group": "negation",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "instruction",
+          "dbfile",
+          "nopublish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "instruction",
+          "dbfile",
+          "nopublish",
+          "scope",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "instruction",
+          "dbfile",
+          "flush",
+          "recall",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "instruction",
+          "dbfile",
+          "flush",
+          "recall",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "instruction",
+          "dbfile",
+          "nopublish",
+          "supersede",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "instruction",
+          "dbfile",
+          "nopublish",
+          "supersede",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "instruction",
+          "dbfile",
+          "nopublish",
+          "supersede",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "instruction",
+          "dbfile",
+          "flush",
+          "recall",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "instruction",
+          "dbfile",
+          "nopublish",
+          "supersede",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "instruction",
+          "dbfile",
+          "nopublish",
+          "supersede",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Will running the full regression suite consume model credits?",
+    "relevant": [
+      "offline"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "offline",
+          "budget"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "offline",
+          "budget",
+          "publish",
+          "canpublish",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "offline",
+          "budget",
+          "uninstall",
+          "kernel",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "offline",
+          "budget",
+          "uninstall",
+          "kernel",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "offline",
+          "budget",
+          "dbfile",
+          "live",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "offline",
+          "budget",
+          "dbfile",
+          "live",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "offline",
+          "budget",
+          "dbfile",
+          "live",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "offline",
+          "budget",
+          "uninstall",
+          "kernel",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "offline",
+          "budget",
+          "dbfile",
+          "live",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "offline",
+          "budget",
+          "dbfile",
+          "live",
+          "supersede"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "只有 in_workspace 边的 entity 算孤立吗？",
+    "relevant": [
+      "orphan"
+    ],
+    "group": "identifier",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "dbfile",
+          "orphan",
+          "onehop",
+          "gateway",
+          "port"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "hybrid-raw": {
+        "top": [
+          "orphan",
+          "dbfile",
+          "scope",
+          "onehop",
+          "lock"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "orphan",
+          "scope",
+          "chips",
+          "snapshot",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "orphan",
+          "scope",
+          "chips",
+          "snapshot",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "orphan",
+          "dbfile",
+          "scope",
+          "onehop",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "orphan",
+          "dbfile",
+          "scope",
+          "onehop",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "orphan",
+          "dbfile",
+          "scope",
+          "onehop",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "orphan",
+          "scope",
+          "chips",
+          "snapshot",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "orphan",
+          "dbfile",
+          "scope",
+          "onehop",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "orphan",
+          "dbfile",
+          "scope",
+          "onehop",
+          "uninstall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "How far does the relationship lookup traverse?",
+    "relevant": [
+      "onehop"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "onehop"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "onehop",
+          "live",
+          "supersede",
+          "scope",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "onehop",
+          "dbfile",
+          "embeddingdim",
+          "flush",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "onehop",
+          "dbfile",
+          "embeddingdim",
+          "flush",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "onehop",
+          "supersede",
+          "live",
+          "dbfile",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "onehop",
+          "supersede",
+          "live",
+          "dbfile",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "onehop",
+          "supersede",
+          "live",
+          "dbfile",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "onehop",
+          "dbfile",
+          "embeddingdim",
+          "flush",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "onehop",
+          "supersede",
+          "live",
+          "dbfile",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "onehop",
+          "supersede",
+          "live",
+          "dbfile",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Which database version is fixed for these experiments?",
+    "relevant": [
+      "kernel"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "kernel",
+          "snapshot",
+          "orphan",
+          "instruction"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "kernel",
+          "snapshot",
+          "dbfile",
+          "capacity",
+          "timeout"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "kernel",
+          "dbfile",
+          "uninstall",
+          "flush",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "kernel",
+          "dbfile",
+          "uninstall",
+          "flush",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "kernel",
+          "snapshot",
+          "dbfile",
+          "capacity",
+          "timeout"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "kernel",
+          "snapshot",
+          "dbfile",
+          "capacity",
+          "timeout"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "kernel",
+          "snapshot",
+          "dbfile",
+          "capacity",
+          "timeout"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "kernel",
+          "dbfile",
+          "uninstall",
+          "flush",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "kernel",
+          "snapshot",
+          "dbfile",
+          "capacity",
+          "timeout"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "kernel",
+          "snapshot",
+          "dbfile",
+          "capacity",
+          "timeout"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "11434",
+    "relevant": [
+      "port"
+    ],
+    "group": "identifier",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "port"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "port",
+          "embeddingdim",
+          "kernel",
+          "dbfile",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "dbfile",
+          "port",
+          "chips",
+          "embeddingdim",
+          "kernel"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "exact": {
+        "top": [
+          "dbfile",
+          "port",
+          "chips",
+          "embeddingdim",
+          "kernel"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "native-hybrid": {
+        "top": [
+          "port",
+          "dbfile",
+          "chips",
+          "embeddingdim",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "port",
+          "dbfile",
+          "chips",
+          "embeddingdim",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "port",
+          "dbfile",
+          "chips",
+          "embeddingdim",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "port",
+          "dbfile",
+          "chips",
+          "embeddingdim",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "port",
+          "dbfile",
+          "chips",
+          "embeddingdim",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "port",
+          "dbfile",
+          "chips",
+          "embeddingdim",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "两个库里的节点都叫 42，怎样避免把操作发错？",
+    "relevant": [
+      "scope"
+    ],
+    "group": "cross-language",
+    "variants": {
+      "keyword-graph": {
+        "top": [],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-raw": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "appearance",
+          "chips"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "dense": {
+        "top": [
+          "recall",
+          "local",
+          "scope",
+          "chips",
+          "lock"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 3
+      },
+      "exact": {
+        "top": [
+          "recall",
+          "local",
+          "scope",
+          "chips",
+          "lock"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 3
+      },
+      "native-hybrid": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "scope",
+          "chips"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "plugin-hybrid": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "scope",
+          "chips"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "plugin-pool-all": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "scope",
+          "chips"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "plugin-text-off": {
+        "top": [
+          "recall",
+          "local",
+          "scope",
+          "chips",
+          "lock"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 3
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "scope",
+          "chips"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "reject",
+          "recall",
+          "local",
+          "scope",
+          "chips"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      }
+    }
+  }
+]

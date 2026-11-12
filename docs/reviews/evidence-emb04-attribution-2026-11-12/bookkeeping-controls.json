@@ -1,0 +1,292 @@
+{
+  "controls": {
+    "public-root-index": {
+      "n": 32,
+      "hit1": 27,
+      "hit5": 31,
+      "mrrAt5": 0.890625,
+      "failedQuestionNativeRank": 19
+    },
+    "no-root-index": {
+      "n": 32,
+      "hit1": 27,
+      "hit5": 31,
+      "mrrAt5": 0.890625,
+      "failedQuestionNativeRank": 19
+    }
+  },
+  "freshQueryArms": {
+    "baseline": {
+      "keyword-graph": {
+        "n": 32,
+        "hit1": 22,
+        "hit5": 25,
+        "mrrAt5": 0.7291666666666666
+      },
+      "hybrid-raw": {
+        "n": 32,
+        "hit1": 26,
+        "hit5": 30,
+        "mrrAt5": 0.8697916666666666
+      },
+      "dense": {
+        "n": 32,
+        "hit1": 23,
+        "hit5": 32,
+        "mrrAt5": 0.8463541666666666
+      },
+      "exact": {
+        "n": 32,
+        "hit1": 23,
+        "hit5": 32,
+        "mrrAt5": 0.8463541666666666
+      },
+      "native-hybrid": {
+        "n": 32,
+        "hit1": 27,
+        "hit5": 31,
+        "mrrAt5": 0.890625
+      },
+      "plugin-hybrid": {
+        "n": 32,
+        "hit1": 27,
+        "hit5": 31,
+        "mrrAt5": 0.890625
+      },
+      "plugin-pool-all": {
+        "n": 32,
+        "hit1": 27,
+        "hit5": 31,
+        "mrrAt5": 0.890625
+      },
+      "plugin-text-off": {
+        "n": 32,
+        "hit1": 26,
+        "hit5": 32,
+        "mrrAt5": 0.9010416666666666
+      },
+      "plugin-expand-zero": {
+        "n": 32,
+        "hit1": 27,
+        "hit5": 31,
+        "mrrAt5": 0.890625
+      },
+      "hybrid-min-zero": {
+        "n": 32,
+        "hit1": 27,
+        "hit5": 31,
+        "mrrAt5": 0.890625
+      },
+      "comparisons": {
+        "n": 32,
+        "denseExactSameTop5": 32,
+        "nativePluginSameTop5": 32,
+        "poolAllSameTop5": 32,
+        "graphOffSameTop5": 32,
+        "minZeroSameTop5": 32,
+        "textOffTop1Regressions": [
+          "Who must sign off before a public npm release?",
+          "How can an external process read a stable copy while the host is writing?",
+          "I need to see facts added after the captured copy was created."
+        ],
+        "textOffTop1Gains": [
+          "新安装后会立即把记忆发给模型吗？",
+          "Can a 768-number vector be accepted by this plugin?"
+        ]
+      }
+    },
+    "challenge": {
+      "keyword-graph": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 11,
+        "mrrAt5": 0.7321428571428571
+      },
+      "hybrid-raw": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8095238095238095
+      },
+      "dense": {
+        "n": 14,
+        "hit1": 13,
+        "hit5": 14,
+        "mrrAt5": 0.9642857142857143
+      },
+      "exact": {
+        "n": 14,
+        "hit1": 13,
+        "hit5": 14,
+        "mrrAt5": 0.9642857142857143
+      },
+      "native-hybrid": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8214285714285714
+      },
+      "plugin-hybrid": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8214285714285714
+      },
+      "plugin-pool-all": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8214285714285714
+      },
+      "plugin-text-off": {
+        "n": 14,
+        "hit1": 13,
+        "hit5": 14,
+        "mrrAt5": 0.9642857142857143
+      },
+      "plugin-expand-zero": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8214285714285714
+      },
+      "hybrid-min-zero": {
+        "n": 14,
+        "hit1": 10,
+        "hit5": 13,
+        "mrrAt5": 0.8214285714285714
+      },
+      "comparisons": {
+        "n": 14,
+        "denseExactSameTop5": 14,
+        "nativePluginSameTop5": 14,
+        "poolAllSameTop5": 14,
+        "graphOffSameTop5": 14,
+        "minZeroSameTop5": 14,
+        "textOffTop1Regressions": [],
+        "textOffTop1Gains": [
+          "Are 768-dimensional embeddings supported?",
+          "向量只有768个数能被接受吗？",
+          "What should I do when a query times out?"
+        ]
+      }
+    }
+  },
+  "rawChallengeChangedRows": [
+    {
+      "question": "Will a 3072-dimensional embedding be truncated?",
+      "priorTop": [
+        {
+          "id": 15,
+          "key": "payload",
+          "score": 3.328397750854492
+        },
+        {
+          "id": 26,
+          "key": "embeddingdim",
+          "score": 3.306187152862549
+        },
+        {
+          "id": 35,
+          "key": "capacity",
+          "score": 3.181236743927002
+        },
+        {
+          "id": 18,
+          "key": "retry",
+          "score": 3.1193182468414307
+        },
+        {
+          "id": 37,
+          "key": "scope",
+          "score": 3.0608108043670654
+        }
+      ],
+      "publicRootTop": [
+        {
+          "id": 26,
+          "key": "embeddingdim",
+          "score": 3.3442623615264893
+        },
+        {
+          "id": 15,
+          "key": "payload",
+          "score": 3.2903225421905518
+        },
+        {
+          "id": 35,
+          "key": "capacity",
+          "score": 3.181236743927002
+        },
+        {
+          "id": 18,
+          "key": "retry",
+          "score": 3.1193182468414307
+        },
+        {
+          "id": 37,
+          "key": "scope",
+          "score": 3.0608108043670654
+        }
+      ]
+    },
+    {
+      "question": "Does an in_workspace edge make an entity non-isolated?",
+      "priorTop": [
+        {
+          "id": 30,
+          "key": "onehop",
+          "score": 3.260080575942993
+        },
+        {
+          "id": 6,
+          "key": "dbfile",
+          "score": 3.256178140640259
+        },
+        {
+          "id": 21,
+          "key": "canpublish",
+          "score": 3.168067455291748
+        },
+        {
+          "id": 37,
+          "key": "scope",
+          "score": 3.1654248237609863
+        },
+        {
+          "id": 11,
+          "key": "snapshot",
+          "score": 3.159090995788574
+        }
+      ],
+      "publicRootTop": [
+        {
+          "id": 30,
+          "key": "onehop",
+          "score": 3.260080575942993
+        },
+        {
+          "id": 6,
+          "key": "dbfile",
+          "score": 3.256178140640259
+        },
+        {
+          "id": 11,
+          "key": "snapshot",
+          "score": 3.194805383682251
+        },
+        {
+          "id": 37,
+          "key": "scope",
+          "score": 3.1654248237609863
+        },
+        {
+          "id": 21,
+          "key": "canpublish",
+          "score": 3.132352828979492
+        }
+      ]
+    }
+  ],
+  "note": "All instructed primary results are stable. Raw-query challenge Top-1 changes from 9/14 to 10/14 under public bookkeeping text."
+}

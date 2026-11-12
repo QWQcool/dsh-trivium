@@ -1,0 +1,16 @@
+{
+  "sha256TextLf": {
+    "baseline-rows.json": "01047219e6bfeda52986cc3dd520c634ec75310bd9faa69d55f656f08b66eadb",
+    "bookkeeping-controls.json": "68b4c28ee22e708ad10fae4065e8922f924cb3fc04080087caa6859a9cee57cc",
+    "challenge-rows.json": "564d84bf5906dd5557b89c292b746a4ad4cad70cee9a52b08c8a375e578923ec",
+    "cleanup.json": "e52a11d47f59486e5732745ed501c8b20a6e808d48bb5f56e5de9da024db2366",
+    "environment.json": "9f19622378724f0b6200953289cb95ea3217a1f7bcb04a40cb46a4de4a4c42db",
+    "failure-trace.json": "ea97f99521cba4ce371554aa98e7453332e3740a5b710d329a48e8d73463007c",
+    "misses.json": "faacbc094742dae854d52811773d31d4774507bc34c0c223566d129ec5c0f7b7",
+    "summary.json": "47b6e54ae4750a9555b33a81e6526f6ac9ba87ee386f41a0c8374640994855e1",
+    "unanswerable-candidates.json": "ecd7c8946557c2cde3b9a4066be6343f7d3319d0b731bc3d4d53b30ce7683aae",
+    "verification.json": "58701ebfdadceece96920dcee3ccf5b18ec9b78a6a6221ceb356584a48ff1031",
+    "../../../scripts/verify-local-embedding.mjs": "69422f1508e2f56f8c9dbf30a493c6301c26b0903cd2425897f5f2bab57d1bf4"
+  },
+  "note": "UTF-8 LF-normalized text hashes identify artifacts; the report defines experimental meaning and limitations."
+}

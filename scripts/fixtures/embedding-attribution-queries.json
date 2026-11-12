@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "note": "Diagnostic stress questions written after observing the original miss. Not a blind holdout and not used to select a new ranking or threshold.",
+  "queries": [
+    {"text":"Are 768-dimensional embeddings supported?","relevant":["embeddingdim"],"group":"dimension-paraphrase"},
+    {"text":"Can I submit an embedding containing 768 values?","relevant":["embeddingdim"],"group":"dimension-paraphrase"},
+    {"text":"Must embedding vectors have exactly 1536 finite entries?","relevant":["embeddingdim"],"group":"dimension-paraphrase"},
+    {"text":"Will a 3072-dimensional embedding be truncated?","relevant":["embeddingdim"],"group":"dimension-paraphrase"},
+    {"text":"向量只有768个数能被接受吗？","relevant":["embeddingdim"],"group":"dimension-paraphrase"},
+    {"text":"多少维的 embedding 才符合存储契约？","relevant":["embeddingdim"],"group":"dimension-paraphrase"},
+    {"text":"Embedding contract","relevant":["embeddingdim"],"group":"exact-lookup"},
+    {"text":"1536 finite numeric values","relevant":["embeddingdim"],"group":"exact-lookup"},
+    {"text":"Are public releases published without asking the owner?","relevant":["publish","nopublish"],"group":"negation"},
+    {"text":"Does the disposable test registry permit unattended publishing?","relevant":["canpublish"],"group":"negation"},
+    {"text":"What should I do when a query times out?","relevant":["timeout"],"group":"paraphrase"},
+    {"text":"Does an in_workspace edge make an entity non-isolated?","relevant":["orphan"],"group":"paraphrase"},
+    {"text":"Which request header carries correlation IDs?","relevant":["header"],"group":"paraphrase"},
+    {"text":"Where is a workspace's memory database saved?","relevant":["dbfile"],"group":"paraphrase"}
+  ]
+}

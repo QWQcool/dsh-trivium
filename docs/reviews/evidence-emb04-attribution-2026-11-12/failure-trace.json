@@ -1,0 +1,2060 @@
+{
+  "question": {
+    "text": "Can a 768-number vector be accepted by this plugin?",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "numeric"
+  },
+  "nativeTokens": [
+    "can",
+    "a",
+    "768",
+    "number",
+    "vector",
+    "be",
+    "accepted",
+    "by",
+    "this",
+    "plugin"
+  ],
+  "pluginTerms": [
+    "can",
+    "768-number",
+    "vector",
+    "be",
+    "accepted",
+    "by",
+    "this",
+    "plugin"
+  ],
+  "nativeTextWeight": 2.4000000953674316,
+  "rrfK": 60,
+  "stages": [
+    {
+      "stage": "native-hybrid",
+      "keys": [
+        "payload",
+        "uninstall",
+        "node",
+        "snapshot",
+        "package",
+        "scope",
+        "timeout",
+        "retry",
+        "capacity",
+        "retry-other",
+        "publish",
+        "partial",
+        "permission",
+        "offline",
+        "header",
+        "budget"
+      ]
+    },
+    {
+      "stage": "keyword-fallback",
+      "keys": []
+    },
+    {
+      "stage": "entity-anchor",
+      "keys": []
+    },
+    {
+      "stage": "same-as-normalize",
+      "keys": []
+    },
+    {
+      "stage": "business-expand",
+      "keys": []
+    }
+  ],
+  "explained": [
+    {
+      "id": 15,
+      "key": "payload",
+      "score": 3.328397750854492,
+      "nativeRank": 1,
+      "denseRank": 2,
+      "sparseRank": 1,
+      "densePart": 0.9677419066429138,
+      "sparsePart": 2.3606557846069336,
+      "predicted": 3.328397750854492,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a",
+        "vector"
+      ]
+    },
+    {
+      "id": 7,
+      "key": "uninstall",
+      "score": 3.1528847217559814,
+      "nativeRank": 2,
+      "denseRank": 4,
+      "sparseRank": 5,
+      "densePart": 0.9375,
+      "sparsePart": 2.2153847217559814,
+      "predicted": 3.1528847217559814,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "plugin"
+      ]
+    },
+    {
+      "id": 31,
+      "key": "node",
+      "score": 3.1048951148986816,
+      "nativeRank": 3,
+      "denseRank": 5,
+      "sparseRank": 6,
+      "densePart": 0.9230769276618958,
+      "sparsePart": 2.1818182468414307,
+      "predicted": 3.1048951148986816,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "plugin"
+      ]
+    },
+    {
+      "id": 11,
+      "key": "snapshot",
+      "score": 3.049999952316284,
+      "nativeRank": 4,
+      "denseRank": 15,
+      "sparseRank": 4,
+      "densePart": 0.800000011920929,
+      "sparsePart": 2.25,
+      "predicted": 3.049999952316284,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "can",
+        "a"
+      ]
+    },
+    {
+      "id": 2,
+      "key": "package",
+      "score": 3.0454721450805664,
+      "nativeRank": 5,
+      "denseRank": 23,
+      "sparseRank": 2,
+      "densePart": 0.7228915691375732,
+      "sparsePart": 2.322580575942993,
+      "predicted": 3.0454721450805664,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "this"
+      ]
+    },
+    {
+      "id": 37,
+      "key": "scope",
+      "score": 2.9872124195098877,
+      "nativeRank": 6,
+      "denseRank": 9,
+      "sparseRank": 8,
+      "densePart": 0.8695651888847351,
+      "sparsePart": 2.117647171020508,
+      "predicted": 2.9872124195098877,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 13,
+      "key": "timeout",
+      "score": 2.959871768951416,
+      "nativeRank": 7,
+      "denseRank": 29,
+      "sparseRank": 3,
+      "densePart": 0.6741573214530945,
+      "sparsePart": 2.2857143878936768,
+      "predicted": 2.959871768951416,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "can",
+        "a"
+      ]
+    },
+    {
+      "id": 18,
+      "key": "retry",
+      "score": 2.9394960403442383,
+      "nativeRank": 8,
+      "denseRank": 8,
+      "sparseRank": 10,
+      "densePart": 0.8823529481887817,
+      "sparsePart": 2.057142972946167,
+      "predicted": 2.9394960403442383,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 35,
+      "key": "capacity",
+      "score": 2.9284746646881104,
+      "nativeRank": 9,
+      "denseRank": 17,
+      "sparseRank": 7,
+      "densePart": 0.7792207598686218,
+      "sparsePart": 2.1492538452148438,
+      "predicted": 2.9284746646881104,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 19,
+      "key": "retry-other",
+      "score": 2.8176426887512207,
+      "nativeRank": 10,
+      "denseRank": 16,
+      "sparseRank": 11,
+      "densePart": 0.7894737124443054,
+      "sparsePart": 2.0281689167022705,
+      "predicted": 2.8176426887512207,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 3,
+      "key": "publish",
+      "score": 2.7928388118743896,
+      "nativeRank": 11,
+      "denseRank": 25,
+      "sparseRank": 9,
+      "densePart": 0.7058823704719543,
+      "sparsePart": 2.08695650100708,
+      "predicted": 2.7928388118743896,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 25,
+      "key": "partial",
+      "score": 2.703463077545166,
+      "nativeRank": 12,
+      "denseRank": 12,
+      "sparseRank": 17,
+      "densePart": 0.8333333134651184,
+      "sparsePart": 1.8701298236846924,
+      "predicted": 2.703463077545166,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 36,
+      "key": "permission",
+      "score": 2.695945978164673,
+      "nativeRank": 13,
+      "denseRank": 20,
+      "sparseRank": 14,
+      "densePart": 0.75,
+      "sparsePart": 1.9459459781646729,
+      "predicted": 2.695945978164673,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 28,
+      "key": "offline",
+      "score": 2.654420852661133,
+      "nativeRank": 14,
+      "denseRank": 28,
+      "sparseRank": 13,
+      "densePart": 0.6818181872367859,
+      "sparsePart": 1.9726027250289917,
+      "predicted": 2.654420852661133,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 16,
+      "key": "header",
+      "score": 2.6521739959716797,
+      "nativeRank": 15,
+      "denseRank": 32,
+      "sparseRank": 12,
+      "densePart": 0.6521739363670349,
+      "sparsePart": 2,
+      "predicted": 2.6521739959716797,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 5,
+      "key": "budget",
+      "score": 2.6176743507385254,
+      "nativeRank": 16,
+      "denseRank": 26,
+      "sparseRank": 15,
+      "densePart": 0.6976743936538696,
+      "sparsePart": 1.9199999570846558,
+      "predicted": 2.6176743507385254,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 23,
+      "key": "supersede",
+      "score": 2.609022617340088,
+      "nativeRank": 17,
+      "denseRank": 24,
+      "sparseRank": 16,
+      "densePart": 0.7142857313156128,
+      "sparsePart": 1.894736886024475,
+      "predicted": 2.609022617340088,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 30,
+      "key": "onehop",
+      "score": 2.4913151264190674,
+      "nativeRank": 18,
+      "denseRank": 33,
+      "sparseRank": 18,
+      "densePart": 0.6451612710952759,
+      "sparsePart": 1.8461538553237915,
+      "predicted": 2.4913151264190674,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": [
+        "a"
+      ]
+    },
+    {
+      "id": 26,
+      "key": "embeddingdim",
+      "score": 0.9836065769195557,
+      "nativeRank": 19,
+      "denseRank": 1,
+      "sparseRank": null,
+      "densePart": 0.9836065769195557,
+      "sparsePart": 0,
+      "predicted": 0.9836065769195557,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 6,
+      "key": "dbfile",
+      "score": 0.9523809552192688,
+      "nativeRank": 20,
+      "denseRank": 3,
+      "sparseRank": null,
+      "densePart": 0.9523809552192688,
+      "sparsePart": 0,
+      "predicted": 0.9523809552192688,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 32,
+      "key": "kernel",
+      "score": 0.9090909361839294,
+      "nativeRank": 21,
+      "denseRank": 6,
+      "sparseRank": null,
+      "densePart": 0.9090909361839294,
+      "sparsePart": 0,
+      "predicted": 0.9090909361839294,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 14,
+      "key": "flush",
+      "score": 0.89552241563797,
+      "nativeRank": 22,
+      "denseRank": 7,
+      "sparseRank": null,
+      "densePart": 0.89552241563797,
+      "sparsePart": 0,
+      "predicted": 0.89552241563797,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 4,
+      "key": "local",
+      "score": 0.8571428656578064,
+      "nativeRank": 23,
+      "denseRank": 10,
+      "sparseRank": null,
+      "densePart": 0.8571428656578064,
+      "sparsePart": 0,
+      "predicted": 0.8571428656578064,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 10,
+      "key": "lock",
+      "score": 0.8450704216957092,
+      "nativeRank": 24,
+      "denseRank": 11,
+      "sparseRank": null,
+      "densePart": 0.8450704216957092,
+      "sparsePart": 0,
+      "predicted": 0.8450704216957092,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 9,
+      "key": "chips",
+      "score": 0.8219178318977356,
+      "nativeRank": 25,
+      "denseRank": 13,
+      "sparseRank": null,
+      "densePart": 0.8219178318977356,
+      "sparsePart": 0,
+      "predicted": 0.8219178318977356,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 8,
+      "key": "recall",
+      "score": 0.8108108043670654,
+      "nativeRank": 26,
+      "denseRank": 14,
+      "sparseRank": null,
+      "densePart": 0.8108108043670654,
+      "sparsePart": 0,
+      "predicted": 0.8108108043670654,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 27,
+      "key": "instruction",
+      "score": 0.7692307829856873,
+      "nativeRank": 27,
+      "denseRank": 18,
+      "sparseRank": null,
+      "densePart": 0.7692307829856873,
+      "sparsePart": 0,
+      "predicted": 0.7692307829856873,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 21,
+      "key": "canpublish",
+      "score": 0.7594936490058899,
+      "nativeRank": 28,
+      "denseRank": 19,
+      "sparseRank": null,
+      "densePart": 0.7594936490058899,
+      "sparsePart": 0,
+      "predicted": 0.7594936490058899,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 34,
+      "key": "port",
+      "score": 0.7407407164573669,
+      "nativeRank": 29,
+      "denseRank": 21,
+      "sparseRank": null,
+      "densePart": 0.7407407164573669,
+      "sparsePart": 0,
+      "predicted": 0.7407407164573669,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 12,
+      "key": "live",
+      "score": 0.7317073345184326,
+      "nativeRank": 30,
+      "denseRank": 22,
+      "sparseRank": null,
+      "densePart": 0.7317073345184326,
+      "sparsePart": 0,
+      "predicted": 0.7317073345184326,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 20,
+      "key": "nopublish",
+      "score": 0.6896551847457886,
+      "nativeRank": 31,
+      "denseRank": 27,
+      "sparseRank": null,
+      "densePart": 0.6896551847457886,
+      "sparsePart": 0,
+      "predicted": 0.6896551847457886,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 33,
+      "key": "appearance",
+      "score": 0.6666666865348816,
+      "nativeRank": 32,
+      "denseRank": 30,
+      "sparseRank": null,
+      "densePart": 0.6666666865348816,
+      "sparsePart": 0,
+      "predicted": 0.6666666865348816,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 29,
+      "key": "orphan",
+      "score": 0.6593406796455383,
+      "nativeRank": 33,
+      "denseRank": 31,
+      "sparseRank": null,
+      "densePart": 0.6593406796455383,
+      "sparsePart": 0,
+      "predicted": 0.6593406796455383,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 22,
+      "key": "expiry",
+      "score": 0.6382978558540344,
+      "nativeRank": 34,
+      "denseRank": 34,
+      "sparseRank": null,
+      "densePart": 0.6382978558540344,
+      "sparsePart": 0,
+      "predicted": 0.6382978558540344,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 24,
+      "key": "reject",
+      "score": 0.6315789222717285,
+      "nativeRank": 35,
+      "denseRank": 35,
+      "sparseRank": null,
+      "densePart": 0.6315789222717285,
+      "sparsePart": 0,
+      "predicted": 0.6315789222717285,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    },
+    {
+      "id": 17,
+      "key": "gateway",
+      "score": 0.625,
+      "nativeRank": 36,
+      "denseRank": 36,
+      "sparseRank": null,
+      "densePart": 0.625,
+      "sparsePart": 0,
+      "predicted": 0.625,
+      "error": 0,
+      "pluginLexical": 0,
+      "pluginRankBoost": 0,
+      "nativeTokenOverlap": []
+    }
+  ],
+  "nativeAll": [
+    {
+      "id": 15,
+      "key": "payload",
+      "score": 3.328397750854492
+    },
+    {
+      "id": 7,
+      "key": "uninstall",
+      "score": 3.1528847217559814
+    },
+    {
+      "id": 31,
+      "key": "node",
+      "score": 3.1048951148986816
+    },
+    {
+      "id": 11,
+      "key": "snapshot",
+      "score": 3.049999952316284
+    },
+    {
+      "id": 2,
+      "key": "package",
+      "score": 3.0454721450805664
+    },
+    {
+      "id": 37,
+      "key": "scope",
+      "score": 2.9872124195098877
+    },
+    {
+      "id": 13,
+      "key": "timeout",
+      "score": 2.959871768951416
+    },
+    {
+      "id": 18,
+      "key": "retry",
+      "score": 2.9394960403442383
+    },
+    {
+      "id": 35,
+      "key": "capacity",
+      "score": 2.9284746646881104
+    },
+    {
+      "id": 19,
+      "key": "retry-other",
+      "score": 2.8176426887512207
+    },
+    {
+      "id": 3,
+      "key": "publish",
+      "score": 2.7928388118743896
+    },
+    {
+      "id": 25,
+      "key": "partial",
+      "score": 2.703463077545166
+    },
+    {
+      "id": 36,
+      "key": "permission",
+      "score": 2.695945978164673
+    },
+    {
+      "id": 28,
+      "key": "offline",
+      "score": 2.654420852661133
+    },
+    {
+      "id": 16,
+      "key": "header",
+      "score": 2.6521739959716797
+    },
+    {
+      "id": 5,
+      "key": "budget",
+      "score": 2.6176743507385254
+    },
+    {
+      "id": 23,
+      "key": "supersede",
+      "score": 2.609022617340088
+    },
+    {
+      "id": 30,
+      "key": "onehop",
+      "score": 2.4913151264190674
+    },
+    {
+      "id": 26,
+      "key": "embeddingdim",
+      "score": 0.9836065769195557
+    },
+    {
+      "id": 6,
+      "key": "dbfile",
+      "score": 0.9523809552192688
+    },
+    {
+      "id": 32,
+      "key": "kernel",
+      "score": 0.9090909361839294
+    },
+    {
+      "id": 14,
+      "key": "flush",
+      "score": 0.89552241563797
+    },
+    {
+      "id": 4,
+      "key": "local",
+      "score": 0.8571428656578064
+    },
+    {
+      "id": 10,
+      "key": "lock",
+      "score": 0.8450704216957092
+    },
+    {
+      "id": 9,
+      "key": "chips",
+      "score": 0.8219178318977356
+    },
+    {
+      "id": 8,
+      "key": "recall",
+      "score": 0.8108108043670654
+    },
+    {
+      "id": 27,
+      "key": "instruction",
+      "score": 0.7692307829856873
+    },
+    {
+      "id": 21,
+      "key": "canpublish",
+      "score": 0.7594936490058899
+    },
+    {
+      "id": 34,
+      "key": "port",
+      "score": 0.7407407164573669
+    },
+    {
+      "id": 12,
+      "key": "live",
+      "score": 0.7317073345184326
+    },
+    {
+      "id": 20,
+      "key": "nopublish",
+      "score": 0.6896551847457886
+    },
+    {
+      "id": 33,
+      "key": "appearance",
+      "score": 0.6666666865348816
+    },
+    {
+      "id": 29,
+      "key": "orphan",
+      "score": 0.6593406796455383
+    },
+    {
+      "id": 22,
+      "key": "expiry",
+      "score": 0.6382978558540344
+    },
+    {
+      "id": 24,
+      "key": "reject",
+      "score": 0.6315789222717285
+    },
+    {
+      "id": 17,
+      "key": "gateway",
+      "score": 0.625
+    }
+  ],
+  "denseAll": [
+    {
+      "id": 26,
+      "key": "embeddingdim",
+      "score": 0.4680463969707489
+    },
+    {
+      "id": 15,
+      "key": "payload",
+      "score": 0.4567025303840637
+    },
+    {
+      "id": 6,
+      "key": "dbfile",
+      "score": 0.4357498586177826
+    },
+    {
+      "id": 7,
+      "key": "uninstall",
+      "score": 0.4291626811027527
+    },
+    {
+      "id": 31,
+      "key": "node",
+      "score": 0.42656582593917847
+    },
+    {
+      "id": 32,
+      "key": "kernel",
+      "score": 0.39897242188453674
+    },
+    {
+      "id": 14,
+      "key": "flush",
+      "score": 0.3435686230659485
+    },
+    {
+      "id": 18,
+      "key": "retry",
+      "score": 0.316206693649292
+    },
+    {
+      "id": 37,
+      "key": "scope",
+      "score": 0.3118759095668793
+    },
+    {
+      "id": 4,
+      "key": "local",
+      "score": 0.30770018696784973
+    },
+    {
+      "id": 10,
+      "key": "lock",
+      "score": 0.3006940186023712
+    },
+    {
+      "id": 25,
+      "key": "partial",
+      "score": 0.2871215045452118
+    },
+    {
+      "id": 9,
+      "key": "chips",
+      "score": 0.28242984414100647
+    },
+    {
+      "id": 8,
+      "key": "recall",
+      "score": 0.27886492013931274
+    },
+    {
+      "id": 11,
+      "key": "snapshot",
+      "score": 0.2700238525867462
+    },
+    {
+      "id": 19,
+      "key": "retry-other",
+      "score": 0.26727139949798584
+    },
+    {
+      "id": 35,
+      "key": "capacity",
+      "score": 0.2652428150177002
+    },
+    {
+      "id": 27,
+      "key": "instruction",
+      "score": 0.26430630683898926
+    },
+    {
+      "id": 21,
+      "key": "canpublish",
+      "score": 0.2633363604545593
+    },
+    {
+      "id": 36,
+      "key": "permission",
+      "score": 0.260294646024704
+    },
+    {
+      "id": 34,
+      "key": "port",
+      "score": 0.2510518431663513
+    },
+    {
+      "id": 12,
+      "key": "live",
+      "score": 0.2488255500793457
+    },
+    {
+      "id": 2,
+      "key": "package",
+      "score": 0.24381761252880096
+    },
+    {
+      "id": 23,
+      "key": "supersede",
+      "score": 0.242141991853714
+    },
+    {
+      "id": 3,
+      "key": "publish",
+      "score": 0.2322869896888733
+    },
+    {
+      "id": 5,
+      "key": "budget",
+      "score": 0.22926931083202362
+    },
+    {
+      "id": 20,
+      "key": "nopublish",
+      "score": 0.22850123047828674
+    },
+    {
+      "id": 28,
+      "key": "offline",
+      "score": 0.21725255250930786
+    },
+    {
+      "id": 13,
+      "key": "timeout",
+      "score": 0.2119043618440628
+    },
+    {
+      "id": 33,
+      "key": "appearance",
+      "score": 0.21037380397319794
+    },
+    {
+      "id": 29,
+      "key": "orphan",
+      "score": 0.18266549706459045
+    },
+    {
+      "id": 16,
+      "key": "header",
+      "score": 0.18009981513023376
+    },
+    {
+      "id": 30,
+      "key": "onehop",
+      "score": 0.17667238414287567
+    },
+    {
+      "id": 22,
+      "key": "expiry",
+      "score": 0.17048344016075134
+    },
+    {
+      "id": 24,
+      "key": "reject",
+      "score": 0.15776965022087097
+    },
+    {
+      "id": 17,
+      "key": "gateway",
+      "score": 0.13652125000953674
+    }
+  ],
+  "sparseAll": [
+    {
+      "id": 15,
+      "key": "payload",
+      "score": 2.3606557846069336
+    },
+    {
+      "id": 2,
+      "key": "package",
+      "score": 2.322580575942993
+    },
+    {
+      "id": 13,
+      "key": "timeout",
+      "score": 2.2857143878936768
+    },
+    {
+      "id": 11,
+      "key": "snapshot",
+      "score": 2.25
+    },
+    {
+      "id": 7,
+      "key": "uninstall",
+      "score": 2.2153847217559814
+    },
+    {
+      "id": 31,
+      "key": "node",
+      "score": 2.1818182468414307
+    },
+    {
+      "id": 35,
+      "key": "capacity",
+      "score": 2.1492538452148438
+    },
+    {
+      "id": 37,
+      "key": "scope",
+      "score": 2.117647171020508
+    },
+    {
+      "id": 3,
+      "key": "publish",
+      "score": 2.08695650100708
+    },
+    {
+      "id": 18,
+      "key": "retry",
+      "score": 2.057142972946167
+    },
+    {
+      "id": 19,
+      "key": "retry-other",
+      "score": 2.0281689167022705
+    },
+    {
+      "id": 16,
+      "key": "header",
+      "score": 2
+    },
+    {
+      "id": 28,
+      "key": "offline",
+      "score": 1.9726027250289917
+    },
+    {
+      "id": 36,
+      "key": "permission",
+      "score": 1.9459459781646729
+    },
+    {
+      "id": 5,
+      "key": "budget",
+      "score": 1.9199999570846558
+    },
+    {
+      "id": 23,
+      "key": "supersede",
+      "score": 1.894736886024475
+    },
+    {
+      "id": 25,
+      "key": "partial",
+      "score": 1.8701298236846924
+    },
+    {
+      "id": 30,
+      "key": "onehop",
+      "score": 1.8461538553237915
+    }
+  ],
+  "pluginAll": [
+    {
+      "id": 15,
+      "key": "payload",
+      "score": 3.328397750854492
+    },
+    {
+      "id": 7,
+      "key": "uninstall",
+      "score": 3.1528847217559814
+    },
+    {
+      "id": 31,
+      "key": "node",
+      "score": 3.1048951148986816
+    },
+    {
+      "id": 11,
+      "key": "snapshot",
+      "score": 3.049999952316284
+    },
+    {
+      "id": 2,
+      "key": "package",
+      "score": 3.0454721450805664
+    },
+    {
+      "id": 37,
+      "key": "scope",
+      "score": 2.9872124195098877
+    },
+    {
+      "id": 13,
+      "key": "timeout",
+      "score": 2.959871768951416
+    },
+    {
+      "id": 18,
+      "key": "retry",
+      "score": 2.9394960403442383
+    },
+    {
+      "id": 35,
+      "key": "capacity",
+      "score": 2.9284746646881104
+    },
+    {
+      "id": 19,
+      "key": "retry-other",
+      "score": 2.8176426887512207
+    },
+    {
+      "id": 3,
+      "key": "publish",
+      "score": 2.7928388118743896
+    },
+    {
+      "id": 25,
+      "key": "partial",
+      "score": 2.703463077545166
+    },
+    {
+      "id": 36,
+      "key": "permission",
+      "score": 2.695945978164673
+    },
+    {
+      "id": 28,
+      "key": "offline",
+      "score": 2.654420852661133
+    },
+    {
+      "id": 16,
+      "key": "header",
+      "score": 2.6521739959716797
+    },
+    {
+      "id": 5,
+      "key": "budget",
+      "score": 2.6176743507385254
+    },
+    {
+      "id": 23,
+      "key": "supersede",
+      "score": 2.609022617340088
+    },
+    {
+      "id": 30,
+      "key": "onehop",
+      "score": 2.4913151264190674
+    },
+    {
+      "id": 26,
+      "key": "embeddingdim",
+      "score": 0.9836065769195557
+    },
+    {
+      "id": 6,
+      "key": "dbfile",
+      "score": 0.9523809552192688
+    },
+    {
+      "id": 32,
+      "key": "kernel",
+      "score": 0.9090909361839294
+    },
+    {
+      "id": 14,
+      "key": "flush",
+      "score": 0.89552241563797
+    },
+    {
+      "id": 4,
+      "key": "local",
+      "score": 0.8571428656578064
+    },
+    {
+      "id": 10,
+      "key": "lock",
+      "score": 0.8450704216957092
+    },
+    {
+      "id": 9,
+      "key": "chips",
+      "score": 0.8219178318977356
+    },
+    {
+      "id": 8,
+      "key": "recall",
+      "score": 0.8108108043670654
+    },
+    {
+      "id": 27,
+      "key": "instruction",
+      "score": 0.7692307829856873
+    },
+    {
+      "id": 21,
+      "key": "canpublish",
+      "score": 0.7594936490058899
+    },
+    {
+      "id": 34,
+      "key": "port",
+      "score": 0.7407407164573669
+    },
+    {
+      "id": 12,
+      "key": "live",
+      "score": 0.7317073345184326
+    },
+    {
+      "id": 20,
+      "key": "nopublish",
+      "score": 0.6896551847457886
+    },
+    {
+      "id": 33,
+      "key": "appearance",
+      "score": 0.6666666865348816
+    },
+    {
+      "id": 29,
+      "key": "orphan",
+      "score": 0.6593406796455383
+    },
+    {
+      "id": 22,
+      "key": "expiry",
+      "score": 0.6382978558540344
+    },
+    {
+      "id": 24,
+      "key": "reject",
+      "score": 0.6315789222717285
+    },
+    {
+      "id": 17,
+      "key": "gateway",
+      "score": 0.625
+    }
+  ],
+  "textAblations": {
+    "full": [
+      {
+        "id": 15,
+        "key": "payload",
+        "score": 3.328397750854492
+      },
+      {
+        "id": 7,
+        "key": "uninstall",
+        "score": 3.1528847217559814
+      },
+      {
+        "id": 31,
+        "key": "node",
+        "score": 3.1048951148986816
+      },
+      {
+        "id": 11,
+        "key": "snapshot",
+        "score": 3.049999952316284
+      },
+      {
+        "id": 2,
+        "key": "package",
+        "score": 3.0454721450805664
+      },
+      {
+        "id": 37,
+        "key": "scope",
+        "score": 2.9872124195098877
+      },
+      {
+        "id": 13,
+        "key": "timeout",
+        "score": 2.959871768951416
+      },
+      {
+        "id": 18,
+        "key": "retry",
+        "score": 2.9394960403442383
+      },
+      {
+        "id": 35,
+        "key": "capacity",
+        "score": 2.9284746646881104
+      },
+      {
+        "id": 19,
+        "key": "retry-other",
+        "score": 2.8176426887512207
+      },
+      {
+        "id": 3,
+        "key": "publish",
+        "score": 2.7928388118743896
+      },
+      {
+        "id": 25,
+        "key": "partial",
+        "score": 2.703463077545166
+      },
+      {
+        "id": 36,
+        "key": "permission",
+        "score": 2.695945978164673
+      },
+      {
+        "id": 28,
+        "key": "offline",
+        "score": 2.654420852661133
+      },
+      {
+        "id": 16,
+        "key": "header",
+        "score": 2.6521739959716797
+      },
+      {
+        "id": 5,
+        "key": "budget",
+        "score": 2.6176743507385254
+      },
+      {
+        "id": 23,
+        "key": "supersede",
+        "score": 2.609022617340088
+      },
+      {
+        "id": 30,
+        "key": "onehop",
+        "score": 2.4913151264190674
+      },
+      {
+        "id": 26,
+        "key": "embeddingdim",
+        "score": 0.9836065769195557
+      },
+      {
+        "id": 6,
+        "key": "dbfile",
+        "score": 0.9523809552192688
+      },
+      {
+        "id": 32,
+        "key": "kernel",
+        "score": 0.9090909361839294
+      },
+      {
+        "id": 14,
+        "key": "flush",
+        "score": 0.89552241563797
+      },
+      {
+        "id": 4,
+        "key": "local",
+        "score": 0.8571428656578064
+      },
+      {
+        "id": 10,
+        "key": "lock",
+        "score": 0.8450704216957092
+      },
+      {
+        "id": 9,
+        "key": "chips",
+        "score": 0.8219178318977356
+      },
+      {
+        "id": 8,
+        "key": "recall",
+        "score": 0.8108108043670654
+      },
+      {
+        "id": 27,
+        "key": "instruction",
+        "score": 0.7692307829856873
+      },
+      {
+        "id": 21,
+        "key": "canpublish",
+        "score": 0.7594936490058899
+      },
+      {
+        "id": 34,
+        "key": "port",
+        "score": 0.7407407164573669
+      },
+      {
+        "id": 12,
+        "key": "live",
+        "score": 0.7317073345184326
+      },
+      {
+        "id": 20,
+        "key": "nopublish",
+        "score": 0.6896551847457886
+      },
+      {
+        "id": 33,
+        "key": "appearance",
+        "score": 0.6666666865348816
+      },
+      {
+        "id": 29,
+        "key": "orphan",
+        "score": 0.6593406796455383
+      },
+      {
+        "id": 22,
+        "key": "expiry",
+        "score": 0.6382978558540344
+      },
+      {
+        "id": 24,
+        "key": "reject",
+        "score": 0.6315789222717285
+      },
+      {
+        "id": 17,
+        "key": "gateway",
+        "score": 0.625
+      }
+    ],
+    "genericOnly": [
+      {
+        "id": 7,
+        "key": "uninstall",
+        "score": 3.1875
+      },
+      {
+        "id": 31,
+        "key": "node",
+        "score": 3.1384615898132324
+      },
+      {
+        "id": 11,
+        "key": "snapshot",
+        "score": 3.085714340209961
+      },
+      {
+        "id": 2,
+        "key": "package",
+        "score": 3.083547353744507
+      },
+      {
+        "id": 37,
+        "key": "scope",
+        "score": 3.0188190937042236
+      },
+      {
+        "id": 13,
+        "key": "timeout",
+        "score": 2.9967379570007324
+      },
+      {
+        "id": 15,
+        "key": "payload",
+        "score": 2.995910882949829
+      },
+      {
+        "id": 18,
+        "key": "retry",
+        "score": 2.9693093299865723
+      },
+      {
+        "id": 35,
+        "key": "capacity",
+        "score": 2.9610390663146973
+      },
+      {
+        "id": 19,
+        "key": "retry-other",
+        "score": 2.846616744995117
+      },
+      {
+        "id": 3,
+        "key": "publish",
+        "score": 2.8235294818878174
+      },
+      {
+        "id": 25,
+        "key": "partial",
+        "score": 2.703463077545166
+      },
+      {
+        "id": 36,
+        "key": "permission",
+        "score": 2.695945978164673
+      },
+      {
+        "id": 28,
+        "key": "offline",
+        "score": 2.654420852661133
+      },
+      {
+        "id": 16,
+        "key": "header",
+        "score": 2.6521739959716797
+      },
+      {
+        "id": 5,
+        "key": "budget",
+        "score": 2.6176743507385254
+      },
+      {
+        "id": 23,
+        "key": "supersede",
+        "score": 2.609022617340088
+      },
+      {
+        "id": 30,
+        "key": "onehop",
+        "score": 2.4913151264190674
+      },
+      {
+        "id": 26,
+        "key": "embeddingdim",
+        "score": 0.9836065769195557
+      },
+      {
+        "id": 6,
+        "key": "dbfile",
+        "score": 0.9523809552192688
+      },
+      {
+        "id": 32,
+        "key": "kernel",
+        "score": 0.9090909361839294
+      },
+      {
+        "id": 14,
+        "key": "flush",
+        "score": 0.89552241563797
+      },
+      {
+        "id": 4,
+        "key": "local",
+        "score": 0.8571428656578064
+      },
+      {
+        "id": 10,
+        "key": "lock",
+        "score": 0.8450704216957092
+      },
+      {
+        "id": 9,
+        "key": "chips",
+        "score": 0.8219178318977356
+      },
+      {
+        "id": 8,
+        "key": "recall",
+        "score": 0.8108108043670654
+      },
+      {
+        "id": 27,
+        "key": "instruction",
+        "score": 0.7692307829856873
+      },
+      {
+        "id": 21,
+        "key": "canpublish",
+        "score": 0.7594936490058899
+      },
+      {
+        "id": 34,
+        "key": "port",
+        "score": 0.7407407164573669
+      },
+      {
+        "id": 12,
+        "key": "live",
+        "score": 0.7317073345184326
+      },
+      {
+        "id": 20,
+        "key": "nopublish",
+        "score": 0.6896551847457886
+      },
+      {
+        "id": 33,
+        "key": "appearance",
+        "score": 0.6666666865348816
+      },
+      {
+        "id": 29,
+        "key": "orphan",
+        "score": 0.6593406796455383
+      },
+      {
+        "id": 22,
+        "key": "expiry",
+        "score": 0.6382978558540344
+      },
+      {
+        "id": 24,
+        "key": "reject",
+        "score": 0.6315789222717285
+      },
+      {
+        "id": 17,
+        "key": "gateway",
+        "score": 0.625
+      }
+    ],
+    "contentOnly": [
+      {
+        "id": 15,
+        "key": "payload",
+        "score": 3.328397750854492
+      },
+      {
+        "id": 26,
+        "key": "embeddingdim",
+        "score": 0.9836065769195557
+      },
+      {
+        "id": 6,
+        "key": "dbfile",
+        "score": 0.9523809552192688
+      },
+      {
+        "id": 7,
+        "key": "uninstall",
+        "score": 0.9375
+      },
+      {
+        "id": 31,
+        "key": "node",
+        "score": 0.9230769276618958
+      },
+      {
+        "id": 32,
+        "key": "kernel",
+        "score": 0.9090909361839294
+      },
+      {
+        "id": 14,
+        "key": "flush",
+        "score": 0.89552241563797
+      },
+      {
+        "id": 18,
+        "key": "retry",
+        "score": 0.8823529481887817
+      },
+      {
+        "id": 37,
+        "key": "scope",
+        "score": 0.8695651888847351
+      },
+      {
+        "id": 4,
+        "key": "local",
+        "score": 0.8571428656578064
+      },
+      {
+        "id": 10,
+        "key": "lock",
+        "score": 0.8450704216957092
+      },
+      {
+        "id": 25,
+        "key": "partial",
+        "score": 0.8333333134651184
+      },
+      {
+        "id": 9,
+        "key": "chips",
+        "score": 0.8219178318977356
+      },
+      {
+        "id": 8,
+        "key": "recall",
+        "score": 0.8108108043670654
+      },
+      {
+        "id": 11,
+        "key": "snapshot",
+        "score": 0.800000011920929
+      },
+      {
+        "id": 19,
+        "key": "retry-other",
+        "score": 0.7894737124443054
+      },
+      {
+        "id": 35,
+        "key": "capacity",
+        "score": 0.7792207598686218
+      },
+      {
+        "id": 27,
+        "key": "instruction",
+        "score": 0.7692307829856873
+      },
+      {
+        "id": 21,
+        "key": "canpublish",
+        "score": 0.7594936490058899
+      },
+      {
+        "id": 36,
+        "key": "permission",
+        "score": 0.75
+      },
+      {
+        "id": 34,
+        "key": "port",
+        "score": 0.7407407164573669
+      },
+      {
+        "id": 12,
+        "key": "live",
+        "score": 0.7317073345184326
+      },
+      {
+        "id": 2,
+        "key": "package",
+        "score": 0.7228915691375732
+      },
+      {
+        "id": 23,
+        "key": "supersede",
+        "score": 0.7142857313156128
+      },
+      {
+        "id": 3,
+        "key": "publish",
+        "score": 0.7058823704719543
+      },
+      {
+        "id": 5,
+        "key": "budget",
+        "score": 0.6976743936538696
+      },
+      {
+        "id": 20,
+        "key": "nopublish",
+        "score": 0.6896551847457886
+      },
+      {
+        "id": 28,
+        "key": "offline",
+        "score": 0.6818181872367859
+      },
+      {
+        "id": 13,
+        "key": "timeout",
+        "score": 0.6741573214530945
+      },
+      {
+        "id": 33,
+        "key": "appearance",
+        "score": 0.6666666865348816
+      },
+      {
+        "id": 29,
+        "key": "orphan",
+        "score": 0.6593406796455383
+      },
+      {
+        "id": 16,
+        "key": "header",
+        "score": 0.6521739363670349
+      },
+      {
+        "id": 30,
+        "key": "onehop",
+        "score": 0.6451612710952759
+      },
+      {
+        "id": 22,
+        "key": "expiry",
+        "score": 0.6382978558540344
+      },
+      {
+        "id": 24,
+        "key": "reject",
+        "score": 0.6315789222717285
+      },
+      {
+        "id": 17,
+        "key": "gateway",
+        "score": 0.625
+      }
+    ],
+    "noText": [
+      {
+        "id": 26,
+        "key": "embeddingdim",
+        "score": 0.4680463969707489
+      },
+      {
+        "id": 15,
+        "key": "payload",
+        "score": 0.4567025303840637
+      },
+      {
+        "id": 6,
+        "key": "dbfile",
+        "score": 0.4357498586177826
+      },
+      {
+        "id": 7,
+        "key": "uninstall",
+        "score": 0.4291626811027527
+      },
+      {
+        "id": 31,
+        "key": "node",
+        "score": 0.42656582593917847
+      },
+      {
+        "id": 32,
+        "key": "kernel",
+        "score": 0.39897242188453674
+      },
+      {
+        "id": 14,
+        "key": "flush",
+        "score": 0.3435686230659485
+      },
+      {
+        "id": 18,
+        "key": "retry",
+        "score": 0.316206693649292
+      },
+      {
+        "id": 37,
+        "key": "scope",
+        "score": 0.3118759095668793
+      },
+      {
+        "id": 4,
+        "key": "local",
+        "score": 0.30770018696784973
+      },
+      {
+        "id": 10,
+        "key": "lock",
+        "score": 0.3006940186023712
+      },
+      {
+        "id": 25,
+        "key": "partial",
+        "score": 0.2871215045452118
+      },
+      {
+        "id": 9,
+        "key": "chips",
+        "score": 0.28242984414100647
+      },
+      {
+        "id": 8,
+        "key": "recall",
+        "score": 0.27886492013931274
+      },
+      {
+        "id": 11,
+        "key": "snapshot",
+        "score": 0.2700238525867462
+      },
+      {
+        "id": 19,
+        "key": "retry-other",
+        "score": 0.26727139949798584
+      },
+      {
+        "id": 35,
+        "key": "capacity",
+        "score": 0.2652428150177002
+      },
+      {
+        "id": 27,
+        "key": "instruction",
+        "score": 0.26430630683898926
+      },
+      {
+        "id": 21,
+        "key": "canpublish",
+        "score": 0.2633363604545593
+      },
+      {
+        "id": 36,
+        "key": "permission",
+        "score": 0.260294646024704
+      },
+      {
+        "id": 34,
+        "key": "port",
+        "score": 0.2510518431663513
+      },
+      {
+        "id": 12,
+        "key": "live",
+        "score": 0.2488255500793457
+      },
+      {
+        "id": 2,
+        "key": "package",
+        "score": 0.24381761252880096
+      },
+      {
+        "id": 23,
+        "key": "supersede",
+        "score": 0.242141991853714
+      },
+      {
+        "id": 3,
+        "key": "publish",
+        "score": 0.2322869896888733
+      },
+      {
+        "id": 5,
+        "key": "budget",
+        "score": 0.22926931083202362
+      },
+      {
+        "id": 20,
+        "key": "nopublish",
+        "score": 0.22850123047828674
+      },
+      {
+        "id": 28,
+        "key": "offline",
+        "score": 0.21725255250930786
+      },
+      {
+        "id": 13,
+        "key": "timeout",
+        "score": 0.2119043618440628
+      },
+      {
+        "id": 33,
+        "key": "appearance",
+        "score": 0.21037380397319794
+      },
+      {
+        "id": 29,
+        "key": "orphan",
+        "score": 0.18266549706459045
+      },
+      {
+        "id": 16,
+        "key": "header",
+        "score": 0.18009981513023376
+      },
+      {
+        "id": 30,
+        "key": "onehop",
+        "score": 0.17667238414287567
+      },
+      {
+        "id": 22,
+        "key": "expiry",
+        "score": 0.17048344016075134
+      },
+      {
+        "id": 24,
+        "key": "reject",
+        "score": 0.15776965022087097
+      },
+      {
+        "id": 17,
+        "key": "gateway",
+        "score": 0.13652125000953674
+      }
+    ]
+  },
+  "callOrderRepeats": [
+    {
+      "nativeSha256": "df9708b9ff6f66554843e5c3ed062263a9e1fa4dbc11cee60d802a6440213b8a",
+      "denseSha256": "dcb4d70c0be614e0936dc852d668563c8acf879a6443f4d853af4ea45427365e",
+      "pluginSha256": "0e3c0d64471d8618ee68903e89d0a5cd51adc6bc0f847ad2b3741c2f3634787c"
+    },
+    {
+      "pluginSha256": "0e3c0d64471d8618ee68903e89d0a5cd51adc6bc0f847ad2b3741c2f3634787c",
+      "denseSha256": "dcb4d70c0be614e0936dc852d668563c8acf879a6443f4d853af4ea45427365e",
+      "nativeSha256": "df9708b9ff6f66554843e5c3ed062263a9e1fa4dbc11cee60d802a6440213b8a"
+    },
+    {
+      "nativeSha256": "df9708b9ff6f66554843e5c3ed062263a9e1fa4dbc11cee60d802a6440213b8a",
+      "denseSha256": "dcb4d70c0be614e0936dc852d668563c8acf879a6443f4d853af4ea45427365e",
+      "pluginSha256": "0e3c0d64471d8618ee68903e89d0a5cd51adc6bc0f847ad2b3741c2f3634787c"
+    },
+    {
+      "pluginSha256": "0e3c0d64471d8618ee68903e89d0a5cd51adc6bc0f847ad2b3741c2f3634787c",
+      "denseSha256": "dcb4d70c0be614e0936dc852d668563c8acf879a6443f4d853af4ea45427365e",
+      "nativeSha256": "df9708b9ff6f66554843e5c3ed062263a9e1fa4dbc11cee60d802a6440213b8a"
+    },
+    {
+      "nativeSha256": "df9708b9ff6f66554843e5c3ed062263a9e1fa4dbc11cee60d802a6440213b8a",
+      "denseSha256": "dcb4d70c0be614e0936dc852d668563c8acf879a6443f4d853af4ea45427365e",
+      "pluginSha256": "0e3c0d64471d8618ee68903e89d0a5cd51adc6bc0f847ad2b3741c2f3634787c"
+    }
+  ],
+  "context": {
+    "counts": {
+      "dense_recall": 36,
+      "fused_recall": 36,
+      "rerank": 36,
+      "sparse_recall": 18
+    },
+    "observations": {
+      "vectorRecallCandidates": 36,
+      "quiverRoute": 0
+    }
+  }
+}

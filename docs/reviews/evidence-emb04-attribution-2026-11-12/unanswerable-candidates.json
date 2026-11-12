@@ -1,0 +1,173 @@
+[
+  {
+    "text": "What is the production server password?",
+    "dense": [
+      {
+        "id": 6,
+        "key": "dbfile",
+        "score": 0.45987385511398315
+      },
+      {
+        "id": 4,
+        "key": "local",
+        "score": 0.3906875550746918
+      },
+      {
+        "id": 34,
+        "key": "port",
+        "score": 0.3620784282684326
+      },
+      {
+        "id": 7,
+        "key": "uninstall",
+        "score": 0.35348236560821533
+      },
+      {
+        "id": 36,
+        "key": "permission",
+        "score": 0.3371789753437042
+      }
+    ],
+    "hybrid": [
+      {
+        "id": 6,
+        "key": "dbfile",
+        "score": 3.3442623615264893
+      },
+      {
+        "id": 32,
+        "key": "kernel",
+        "score": 3.064171314239502
+      },
+      {
+        "id": 20,
+        "key": "nopublish",
+        "score": 3.0454721450805664
+      },
+      {
+        "id": 35,
+        "key": "capacity",
+        "score": 2.9748783111572266
+      },
+      {
+        "id": 10,
+        "key": "lock",
+        "score": 2.9395649433135986
+      }
+    ]
+  },
+  {
+    "text": "明年公司的营收目标是多少？",
+    "dense": [
+      {
+        "id": 8,
+        "key": "recall",
+        "score": 0.2852576971054077
+      },
+      {
+        "id": 9,
+        "key": "chips",
+        "score": 0.28107574582099915
+      },
+      {
+        "id": 5,
+        "key": "budget",
+        "score": 0.2668498754501343
+      },
+      {
+        "id": 4,
+        "key": "local",
+        "score": 0.2554914355278015
+      },
+      {
+        "id": 26,
+        "key": "embeddingdim",
+        "score": 0.20586472749710083
+      }
+    ],
+    "hybrid": [
+      {
+        "id": 8,
+        "key": "recall",
+        "score": 0.2852576971054077
+      },
+      {
+        "id": 9,
+        "key": "chips",
+        "score": 0.28107574582099915
+      },
+      {
+        "id": 5,
+        "key": "budget",
+        "score": 0.2668498754501343
+      },
+      {
+        "id": 4,
+        "key": "local",
+        "score": 0.2554914355278015
+      },
+      {
+        "id": 26,
+        "key": "embeddingdim",
+        "score": 0.20586472749710083
+      }
+    ]
+  },
+  {
+    "text": "Which city is the user visiting next week?",
+    "dense": [
+      {
+        "id": 6,
+        "key": "dbfile",
+        "score": 0.32566550374031067
+      },
+      {
+        "id": 8,
+        "key": "recall",
+        "score": 0.2620517611503601
+      },
+      {
+        "id": 35,
+        "key": "capacity",
+        "score": 0.25639215111732483
+      },
+      {
+        "id": 7,
+        "key": "uninstall",
+        "score": 0.25332725048065186
+      },
+      {
+        "id": 9,
+        "key": "chips",
+        "score": 0.2507038414478302
+      }
+    ],
+    "hybrid": [
+      {
+        "id": 6,
+        "key": "dbfile",
+        "score": 3.3442623615264893
+      },
+      {
+        "id": 35,
+        "key": "capacity",
+        "score": 3.1677656173706055
+      },
+      {
+        "id": 23,
+        "key": "supersede",
+        "score": 3.1552796363830566
+      },
+      {
+        "id": 32,
+        "key": "kernel",
+        "score": 3.077340602874756
+      },
+      {
+        "id": 13,
+        "key": "timeout",
+        "score": 2.9825870990753174
+      }
+    ]
+  }
+]

@@ -370,6 +370,8 @@ The plugin batches persistence, skips unchanged archive text indexing, and reads
 
 The newer source also batches derived vector writes in groups of 16. In three alternating rounds on identical 5000-node stores, updating 128 cached real vectors took a median **17.466s → 0.920s**, with **128 → 8** flushes. This isolates persistence work; it is not a before/after full 5000-request embedding run. Local weights improved this small retrieval sample but did not separate same-fact from conflicting-fact similarities, so automatic semantic merging remains off. These changes and the **Context → Fact queries** card (current facts, one-hop relationships and orphan entities, with live/snapshot provenance) are source changes after npm 0.8.9. [Acceptance and evidence](docs/reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md)
 
+The one mixed-retrieval Top-5 miss was traced to generic text matches in weighted rank fusion: the relevant document fell from dense rank 1 to fused rank 19 before the plugin's 16-candidate cut. A larger pool alone did not restore Top-5; disabling the native text channel also regressed some Top-1 results. This is attribution, with production ranking unchanged. [Controlled evaluation](docs/reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md)
+
 The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/archive/next-memory/POST-081-REVIEW.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 
 ## Changelog

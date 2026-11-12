@@ -1,0 +1,418 @@
+{
+  "command": "node scripts/run-all.mjs",
+  "passed": 85,
+  "failed": 0,
+  "attributionChecks": [
+    {
+      "name": "fixture node count matches the original 36 + bookkeeping",
+      "passed": true
+    },
+    {
+      "name": "business payloads and valid vectors match the fixed corpus",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Which installer should I use for dependencies?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Who must sign off before a public npm release?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 不想让私人聊天离开电脑，有什么向量方案？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 单次模型试验最多能花多少人民币？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Where does the plugin keep a workspace's facts on disk?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Does upgrading erase existing memories?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 新安装后会立即把记忆发给模型吗？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 怎么固定下一轮必须带上的几条记忆？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 另一个进程正在改库，编辑请求会怎样？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: How can an external process read a stable copy while the host is writing?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: I need to see facts added after the captured copy was created.",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Will a slow query prevent subsequent small requests from succeeding?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 批量归档怎么减少落盘次数？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: How do we inspect node metadata without copying large vectors?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: AuthGateway",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: What is the maximum retry count for the upload worker?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: How many attempts may the mail sender retry?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Is unattended publishing allowed for real public releases?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Which registry allows disposable automatic releases?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 已经过期的记忆应不应该列为当前事实？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Which version of a changed decision should be treated as current?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 我选择保持原样后会留下什么记录？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 导入中途报错，怎么知道到底写进去了多少？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "weighted RRF reproduces every native score for the failed question",
+      "passed": true
+    },
+    {
+      "name": "five alternating call orders reproduce identical failed-question ranks",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Should the retrieval task instruction be prefixed to every stored document?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Will running the full regression suite consume model credits?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 只有 in_workspace 边的 entity 算孤立吗？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: How far does the relationship lookup traverse?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Which database version is fixed for these experiments?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 11434",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 两个库里的节点都叫 42，怎样避免把操作发错？",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Are 768-dimensional embeddings supported?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Can I submit an embedding containing 768 values?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Must embedding vectors have exactly 1536 finite entries?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Will a 3072-dimensional embedding be truncated?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: 向量只有768个数能被接受吗？",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: 多少维的 embedding 才符合存储契约？",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Embedding contract",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: 1536 finite numeric values",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Are public releases published without asking the owner?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Does the disposable test registry permit unattended publishing?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: What should I do when a query times out?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Does an in_workspace edge make an entity non-isolated?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Which request header carries correlation IDs?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Where is a workspace's memory database saved?",
+      "passed": true
+    },
+    {
+      "name": "prior quality fixture files remain byte-identical after read-only evaluation",
+      "passed": true
+    }
+  ],
+  "offlineChecks": [
+    {
+      "name": "fixture node count matches the original 36 + bookkeeping",
+      "passed": true
+    },
+    {
+      "name": "business payloads and valid vectors match the fixed corpus",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Which installer should I use for dependencies?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Who must sign off before a public npm release?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 不想让私人聊天离开电脑，有什么向量方案？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 单次模型试验最多能花多少人民币？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Where does the plugin keep a workspace's facts on disk?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Does upgrading erase existing memories?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 新安装后会立即把记忆发给模型吗？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 怎么固定下一轮必须带上的几条记忆？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 另一个进程正在改库，编辑请求会怎样？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: How can an external process read a stable copy while the host is writing?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: I need to see facts added after the captured copy was created.",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Will a slow query prevent subsequent small requests from succeeding?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 批量归档怎么减少落盘次数？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: How do we inspect node metadata without copying large vectors?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: X-Request-Id",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: AuthGateway",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: What is the maximum retry count for the upload worker?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: How many attempts may the mail sender retry?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Is unattended publishing allowed for real public releases?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Which registry allows disposable automatic releases?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 已经过期的记忆应不应该列为当前事实？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Which version of a changed decision should be treated as current?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 我选择保持原样后会留下什么记录？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 导入中途报错，怎么知道到底写进去了多少？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Can a 768-number vector be accepted by this plugin?",
+      "passed": true
+    },
+    {
+      "name": "weighted RRF reproduces every native score for the failed question",
+      "passed": true
+    },
+    {
+      "name": "five alternating call orders reproduce identical failed-question ranks",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Should the retrieval task instruction be prefixed to every stored document?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Will running the full regression suite consume model credits?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 只有 in_workspace 边的 entity 算孤立吗？",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: How far does the relationship lookup traverse?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: Which database version is fixed for these experiments?",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 11434",
+      "passed": true
+    },
+    {
+      "name": "baseline: inspection copy equals production: 两个库里的节点都叫 42，怎样避免把操作发错？",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Are 768-dimensional embeddings supported?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Can I submit an embedding containing 768 values?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Must embedding vectors have exactly 1536 finite entries?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Will a 3072-dimensional embedding be truncated?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: 向量只有768个数能被接受吗？",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: 多少维的 embedding 才符合存储契约？",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Embedding contract",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: 1536 finite numeric values",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Are public releases published without asking the owner?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Does the disposable test registry permit unattended publishing?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: What should I do when a query times out?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Does an in_workspace edge make an entity non-isolated?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Which request header carries correlation IDs?",
+      "passed": true
+    },
+    {
+      "name": "challenge: inspection copy equals production: Where is a workspace's memory database saved?",
+      "passed": true
+    }
+  ],
+  "productionAndVersionAndFrozenTestsUnchanged": true,
+  "scriptFiles": 120,
+  "costYuan": 0,
+  "paidGenerationCalls": 0,
+  "freshOfflinePrimaryMatchesReplay": true
+}

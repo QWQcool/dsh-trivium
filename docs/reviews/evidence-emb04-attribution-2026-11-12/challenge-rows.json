@@ -1,0 +1,1779 @@
+[
+  {
+    "text": "Are 768-dimensional embeddings supported?",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "dimension-paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "permission"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-raw": {
+        "top": [
+          "payload",
+          "embeddingdim",
+          "permission",
+          "scope",
+          "node"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "dense": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "node",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "node",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "payload",
+          "embeddingdim",
+          "permission",
+          "scope",
+          "kernel"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-hybrid": {
+        "top": [
+          "payload",
+          "embeddingdim",
+          "permission",
+          "scope",
+          "kernel"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-pool-all": {
+        "top": [
+          "payload",
+          "embeddingdim",
+          "permission",
+          "scope",
+          "kernel"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-text-off": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "node",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "payload",
+          "embeddingdim",
+          "permission",
+          "scope",
+          "kernel"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "payload",
+          "embeddingdim",
+          "permission",
+          "scope",
+          "kernel"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      }
+    }
+  },
+  {
+    "text": "Can I submit an embedding containing 768 values?",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "dimension-paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "embeddingdim",
+          "timeout",
+          "snapshot",
+          "permission"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "embeddingdim",
+          "snapshot",
+          "timeout",
+          "permission",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "embeddingdim",
+          "snapshot",
+          "permission",
+          "timeout",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "embeddingdim",
+          "snapshot",
+          "permission",
+          "timeout",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "embeddingdim",
+          "snapshot",
+          "permission",
+          "timeout",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "embeddingdim",
+          "snapshot",
+          "permission",
+          "timeout",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "embeddingdim",
+          "snapshot",
+          "permission",
+          "timeout",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Must embedding vectors have exactly 1536 finite entries?",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "dimension-paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "budget",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "budget",
+          "scope",
+          "retry"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "budget",
+          "scope",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "budget",
+          "scope",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "budget",
+          "scope",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "budget",
+          "scope",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "budget",
+          "scope",
+          "kernel"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Will a 3072-dimensional embedding be truncated?",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "dimension-paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "embeddingdim"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "payload",
+          "embeddingdim",
+          "capacity",
+          "retry",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "dense": {
+        "top": [
+          "embeddingdim",
+          "dbfile",
+          "kernel",
+          "payload",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "embeddingdim",
+          "dbfile",
+          "kernel",
+          "payload",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "capacity",
+          "retry",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "capacity",
+          "retry",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "capacity",
+          "retry",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "embeddingdim",
+          "dbfile",
+          "kernel",
+          "payload",
+          "chips"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "capacity",
+          "retry",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "capacity",
+          "retry",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "向量只有768个数能被接受吗？",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "dimension-paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "local"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-raw": {
+        "top": [
+          "local",
+          "embeddingdim",
+          "retry",
+          "payload",
+          "recall"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "dense": {
+        "top": [
+          "embeddingdim",
+          "local",
+          "dbfile",
+          "chips",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "embeddingdim",
+          "local",
+          "dbfile",
+          "chips",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "local",
+          "embeddingdim",
+          "dbfile",
+          "chips",
+          "recall"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-hybrid": {
+        "top": [
+          "local",
+          "embeddingdim",
+          "dbfile",
+          "chips",
+          "recall"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-pool-all": {
+        "top": [
+          "local",
+          "embeddingdim",
+          "dbfile",
+          "chips",
+          "recall"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-text-off": {
+        "top": [
+          "embeddingdim",
+          "local",
+          "dbfile",
+          "chips",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "local",
+          "embeddingdim",
+          "dbfile",
+          "chips",
+          "recall"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "local",
+          "embeddingdim",
+          "dbfile",
+          "chips",
+          "recall"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      }
+    }
+  },
+  {
+    "text": "多少维的 embedding 才符合存储契约？",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "dimension-paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "embeddingdim"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "local",
+          "recall",
+          "dbfile"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "local",
+          "dbfile",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "local",
+          "dbfile",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "local",
+          "dbfile",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "local",
+          "dbfile",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "local",
+          "dbfile",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "local",
+          "dbfile",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "local",
+          "dbfile",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "local",
+          "dbfile",
+          "recall"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Embedding contract",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "exact-lookup",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "embeddingdim"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "package",
+          "instruction",
+          "publish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "dbfile",
+          "kernel",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "dbfile",
+          "kernel",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "dbfile",
+          "kernel",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "dbfile",
+          "kernel",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "dbfile",
+          "kernel",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "dbfile",
+          "kernel",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "dbfile",
+          "kernel",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "embeddingdim",
+          "chips",
+          "dbfile",
+          "kernel",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "1536 finite numeric values",
+    "relevant": [
+      "embeddingdim"
+    ],
+    "group": "exact-lookup",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "embeddingdim",
+          "payload"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "retry",
+          "kernel",
+          "flush"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "retry"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "retry"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "retry"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "retry"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "retry"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "retry"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "retry"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "embeddingdim",
+          "payload",
+          "kernel",
+          "dbfile",
+          "retry"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Are public releases published without asking the owner?",
+    "relevant": [
+      "publish",
+      "nopublish"
+    ],
+    "group": "negation",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "nopublish",
+          "permission",
+          "node",
+          "publish",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "nopublish",
+          "permission",
+          "publish",
+          "scope",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "publish",
+          "nopublish",
+          "canpublish",
+          "permission",
+          "lock"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "publish",
+          "nopublish",
+          "canpublish",
+          "permission",
+          "lock"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "nopublish",
+          "permission",
+          "publish",
+          "snapshot",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "nopublish",
+          "permission",
+          "publish",
+          "snapshot",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "nopublish",
+          "permission",
+          "publish",
+          "snapshot",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "publish",
+          "nopublish",
+          "canpublish",
+          "permission",
+          "lock"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "nopublish",
+          "permission",
+          "publish",
+          "snapshot",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "nopublish",
+          "permission",
+          "publish",
+          "snapshot",
+          "node"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Does the disposable test registry permit unattended publishing?",
+    "relevant": [
+      "canpublish"
+    ],
+    "group": "negation",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "canpublish",
+          "publish",
+          "nopublish"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "canpublish",
+          "publish",
+          "nopublish",
+          "lock",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "offline",
+          "publish",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "offline",
+          "publish",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "canpublish",
+          "publish",
+          "nopublish",
+          "lock",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "canpublish",
+          "publish",
+          "nopublish",
+          "lock",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "canpublish",
+          "publish",
+          "nopublish",
+          "lock",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "canpublish",
+          "nopublish",
+          "offline",
+          "publish",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "canpublish",
+          "publish",
+          "nopublish",
+          "lock",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "canpublish",
+          "publish",
+          "nopublish",
+          "lock",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "What should I do when a query times out?",
+    "relevant": [
+      "timeout"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "capacity",
+          "retry",
+          "retry-other",
+          "timeout",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 4
+      },
+      "hybrid-raw": {
+        "top": [
+          "capacity",
+          "retry",
+          "timeout",
+          "retry-other",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 3
+      },
+      "dense": {
+        "top": [
+          "timeout",
+          "capacity",
+          "dbfile",
+          "live",
+          "retry-other"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "timeout",
+          "capacity",
+          "dbfile",
+          "live",
+          "retry-other"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "capacity",
+          "timeout",
+          "retry-other",
+          "retry",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-hybrid": {
+        "top": [
+          "capacity",
+          "timeout",
+          "retry-other",
+          "retry",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-pool-all": {
+        "top": [
+          "capacity",
+          "timeout",
+          "retry-other",
+          "retry",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-text-off": {
+        "top": [
+          "timeout",
+          "capacity",
+          "dbfile",
+          "live",
+          "retry-other"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "capacity",
+          "timeout",
+          "retry-other",
+          "retry",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "capacity",
+          "timeout",
+          "retry-other",
+          "retry",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      }
+    }
+  },
+  {
+    "text": "Does an in_workspace edge make an entity non-isolated?",
+    "relevant": [
+      "orphan"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "dbfile",
+          "onehop",
+          "snapshot",
+          "supersede",
+          "gateway"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-raw": {
+        "top": [
+          "onehop",
+          "dbfile",
+          "canpublish",
+          "scope",
+          "snapshot"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "dense": {
+        "top": [
+          "scope",
+          "orphan",
+          "lock",
+          "dbfile",
+          "snapshot"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "exact": {
+        "top": [
+          "scope",
+          "orphan",
+          "lock",
+          "dbfile",
+          "snapshot"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "native-hybrid": {
+        "top": [
+          "dbfile",
+          "onehop",
+          "snapshot",
+          "canpublish",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": 10
+      },
+      "plugin-hybrid": {
+        "top": [
+          "dbfile",
+          "onehop",
+          "snapshot",
+          "canpublish",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "plugin-pool-all": {
+        "top": [
+          "dbfile",
+          "onehop",
+          "snapshot",
+          "canpublish",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "plugin-text-off": {
+        "top": [
+          "scope",
+          "orphan",
+          "lock",
+          "dbfile",
+          "snapshot"
+        ],
+        "hit1": false,
+        "hit5": true,
+        "firstRelevantRank": 2
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "dbfile",
+          "onehop",
+          "snapshot",
+          "canpublish",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": null
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "dbfile",
+          "onehop",
+          "snapshot",
+          "canpublish",
+          "scope"
+        ],
+        "hit1": false,
+        "hit5": false,
+        "firstRelevantRank": 10
+      }
+    }
+  },
+  {
+    "text": "Which request header carries correlation IDs?",
+    "relevant": [
+      "header"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "header",
+          "scope"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "header",
+          "scope",
+          "gateway",
+          "payload",
+          "live"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "header",
+          "scope",
+          "flush",
+          "payload",
+          "gateway"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "header",
+          "scope",
+          "flush",
+          "payload",
+          "gateway"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "header",
+          "scope",
+          "flush",
+          "payload",
+          "gateway"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "header",
+          "scope",
+          "flush",
+          "payload",
+          "gateway"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "header",
+          "scope",
+          "flush",
+          "payload",
+          "gateway"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "header",
+          "scope",
+          "flush",
+          "payload",
+          "gateway"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "header",
+          "scope",
+          "flush",
+          "payload",
+          "gateway"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "header",
+          "scope",
+          "flush",
+          "payload",
+          "gateway"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  },
+  {
+    "text": "Where is a workspace's memory database saved?",
+    "relevant": [
+      "dbfile"
+    ],
+    "group": "paraphrase",
+    "variants": {
+      "keyword-graph": {
+        "top": [
+          "dbfile",
+          "uninstall",
+          "scope",
+          "snapshot",
+          "lock"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-raw": {
+        "top": [
+          "dbfile",
+          "uninstall",
+          "scope",
+          "snapshot",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "dense": {
+        "top": [
+          "dbfile",
+          "uninstall",
+          "scope",
+          "lock",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "exact": {
+        "top": [
+          "dbfile",
+          "uninstall",
+          "scope",
+          "lock",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "native-hybrid": {
+        "top": [
+          "dbfile",
+          "uninstall",
+          "scope",
+          "snapshot",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-hybrid": {
+        "top": [
+          "dbfile",
+          "uninstall",
+          "scope",
+          "snapshot",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-pool-all": {
+        "top": [
+          "dbfile",
+          "uninstall",
+          "scope",
+          "snapshot",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-text-off": {
+        "top": [
+          "dbfile",
+          "uninstall",
+          "scope",
+          "lock",
+          "snapshot"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "plugin-expand-zero": {
+        "top": [
+          "dbfile",
+          "uninstall",
+          "scope",
+          "snapshot",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      },
+      "hybrid-min-zero": {
+        "top": [
+          "dbfile",
+          "uninstall",
+          "scope",
+          "snapshot",
+          "capacity"
+        ],
+        "hit1": true,
+        "hit5": true,
+        "firstRelevantRank": 1
+      }
+    }
+  }
+]
