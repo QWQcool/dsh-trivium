@@ -1,0 +1,2344 @@
+{
+  "startedAt": "2026-11-12T05:43:58.155Z",
+  "costYuan": 0,
+  "kernel": "0.9.0",
+  "model": "gte-local",
+  "endpoint": "loopback:11435",
+  "dimension": 1536,
+  "queryPrefix": "Instruct: Given a question about project memory, retrieve relevant facts that answer the question\nQuery: ",
+  "corpusSha256": "46ac45cb4884a1682263c72d4d7b6f329885269dcb4c1b9d0126684913748080",
+  "documents": 36,
+  "questions": 32,
+  "caveat": "Hand-labelled synthetic retrieval corpus; no production accuracy claim or identity threshold calibration.",
+  "retrieval": {
+    "keyword-graph": {
+      "n": 32,
+      "hit1": 22,
+      "hit5": 25,
+      "byGroup": {
+        "paraphrase": {
+          "n": 17,
+          "hit1": 14,
+          "hit5": 16
+        },
+        "cross-language": {
+          "n": 5,
+          "hit1": 0,
+          "hit5": 0
+        },
+        "identifier": {
+          "n": 4,
+          "hit1": 3,
+          "hit5": 4
+        },
+        "numeric": {
+          "n": 3,
+          "hit1": 2,
+          "hit5": 2
+        },
+        "negation": {
+          "n": 3,
+          "hit1": 3,
+          "hit5": 3
+        }
+      },
+      "rows": [
+        {
+          "text": "Which installer should I use for dependencies?",
+          "relevant": [
+            "package"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "package",
+            "payload",
+            "offline",
+            "live"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Who must sign off before a public npm release?",
+          "relevant": [
+            "publish",
+            "nopublish"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "nopublish",
+            "publish",
+            "package",
+            "scope",
+            "budget"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "不想让私人聊天离开电脑，有什么向量方案？",
+          "relevant": [
+            "local"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "local"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "单次模型试验最多能花多少人民币？",
+          "relevant": [
+            "budget"
+          ],
+          "group": "cross-language",
+          "top": [],
+          "hit1": false,
+          "hit5": false
+        },
+        {
+          "text": "Where does the plugin keep a workspace's facts on disk?",
+          "relevant": [
+            "dbfile"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "scope",
+            "uninstall",
+            "publish",
+            "port",
+            "permission"
+          ],
+          "hit1": false,
+          "hit5": false
+        },
+        {
+          "text": "Does upgrading erase existing memories?",
+          "relevant": [
+            "uninstall"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "uninstall"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "新安装后会立即把记忆发给模型吗？",
+          "relevant": [
+            "recall"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "chips",
+            "recall",
+            "local"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "怎么固定下一轮必须带上的几条记忆？",
+          "relevant": [
+            "chips"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "chips",
+            "recall",
+            "local"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "另一个进程正在改库，编辑请求会怎样？",
+          "relevant": [
+            "lock"
+          ],
+          "group": "cross-language",
+          "top": [],
+          "hit1": false,
+          "hit5": false
+        },
+        {
+          "text": "How can an external process read a stable copy while the host is writing?",
+          "relevant": [
+            "snapshot"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "snapshot",
+            "timeout",
+            "instruction",
+            "lock",
+            "live"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "I need to see facts added after the captured copy was created.",
+          "relevant": [
+            "live"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "scope",
+            "instruction",
+            "live",
+            "partial"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "Will a slow query prevent subsequent small requests from succeeding?",
+          "relevant": [
+            "timeout"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "timeout",
+            "capacity",
+            "gateway",
+            "supersede",
+            "snapshot"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "批量归档怎么减少落盘次数？",
+          "relevant": [
+            "flush"
+          ],
+          "group": "cross-language",
+          "top": [],
+          "hit1": false,
+          "hit5": false
+        },
+        {
+          "text": "How do we inspect node metadata without copying large vectors?",
+          "relevant": [
+            "payload"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "payload",
+            "node",
+            "scope",
+            "snapshot",
+            "onehop"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "X-Request-Id",
+          "relevant": [
+            "header"
+          ],
+          "group": "identifier",
+          "top": [
+            "header"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "AuthGateway",
+          "relevant": [
+            "gateway"
+          ],
+          "group": "identifier",
+          "top": [
+            "gateway"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "What is the maximum retry count for the upload worker?",
+          "relevant": [
+            "retry"
+          ],
+          "group": "numeric",
+          "top": [
+            "retry",
+            "partial",
+            "capacity"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "How many attempts may the mail sender retry?",
+          "relevant": [
+            "retry-other"
+          ],
+          "group": "numeric",
+          "top": [
+            "retry-other",
+            "retry",
+            "partial"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Is unattended publishing allowed for real public releases?",
+          "relevant": [
+            "nopublish",
+            "publish"
+          ],
+          "group": "negation",
+          "top": [
+            "nopublish",
+            "canpublish",
+            "node",
+            "publish"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which registry allows disposable automatic releases?",
+          "relevant": [
+            "canpublish"
+          ],
+          "group": "negation",
+          "top": [
+            "canpublish",
+            "nopublish",
+            "node"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "已经过期的记忆应不应该列为当前事实？",
+          "relevant": [
+            "expiry"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "expiry",
+            "chips",
+            "reject",
+            "recall",
+            "local"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which version of a changed decision should be treated as current?",
+          "relevant": [
+            "supersede"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "supersede",
+            "canpublish",
+            "kernel",
+            "capacity",
+            "publish"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "我选择保持原样后会留下什么记录？",
+          "relevant": [
+            "reject"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "reject"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "导入中途报错，怎么知道到底写进去了多少？",
+          "relevant": [
+            "partial"
+          ],
+          "group": "cross-language",
+          "top": [],
+          "hit1": false,
+          "hit5": false
+        },
+        {
+          "text": "Can a 768-number vector be accepted by this plugin?",
+          "relevant": [
+            "embeddingdim"
+          ],
+          "group": "numeric",
+          "top": [
+            "payload",
+            "package",
+            "timeout",
+            "snapshot",
+            "uninstall"
+          ],
+          "hit1": false,
+          "hit5": false
+        },
+        {
+          "text": "Should the retrieval task instruction be prefixed to every stored document?",
+          "relevant": [
+            "instruction"
+          ],
+          "group": "negation",
+          "top": [
+            "instruction",
+            "dbfile",
+            "nopublish"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Will running the full regression suite consume model credits?",
+          "relevant": [
+            "offline"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "offline",
+            "budget"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "只有 in_workspace 边的 entity 算孤立吗？",
+          "relevant": [
+            "orphan"
+          ],
+          "group": "identifier",
+          "top": [
+            "dbfile",
+            "orphan",
+            "onehop",
+            "gateway",
+            "port"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "How far does the relationship lookup traverse?",
+          "relevant": [
+            "onehop"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "onehop"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which database version is fixed for these experiments?",
+          "relevant": [
+            "kernel"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "kernel",
+            "snapshot",
+            "orphan",
+            "instruction"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "11434",
+          "relevant": [
+            "port"
+          ],
+          "group": "identifier",
+          "top": [
+            "port"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "两个库里的节点都叫 42，怎样避免把操作发错？",
+          "relevant": [
+            "scope"
+          ],
+          "group": "cross-language",
+          "top": [],
+          "hit1": false,
+          "hit5": false
+        }
+      ]
+    },
+    "hybrid-raw": {
+      "n": 32,
+      "hit1": 26,
+      "hit5": 30,
+      "byGroup": {
+        "paraphrase": {
+          "n": 17,
+          "hit1": 14,
+          "hit5": 17
+        },
+        "cross-language": {
+          "n": 5,
+          "hit1": 3,
+          "hit5": 4
+        },
+        "identifier": {
+          "n": 4,
+          "hit1": 4,
+          "hit5": 4
+        },
+        "numeric": {
+          "n": 3,
+          "hit1": 2,
+          "hit5": 2
+        },
+        "negation": {
+          "n": 3,
+          "hit1": 3,
+          "hit5": 3
+        }
+      },
+      "rows": [
+        {
+          "text": "Which installer should I use for dependencies?",
+          "relevant": [
+            "package"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "package",
+            "kernel",
+            "payload",
+            "live",
+            "offline"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Who must sign off before a public npm release?",
+          "relevant": [
+            "publish",
+            "nopublish"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "nopublish",
+            "publish",
+            "package",
+            "scope",
+            "budget"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "不想让私人聊天离开电脑，有什么向量方案？",
+          "relevant": [
+            "local"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "local",
+            "recall",
+            "appearance",
+            "chips",
+            "scope"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "单次模型试验最多能花多少人民币？",
+          "relevant": [
+            "budget"
+          ],
+          "group": "cross-language",
+          "top": [
+            "budget",
+            "recall",
+            "local",
+            "retry",
+            "retry-other"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Where does the plugin keep a workspace's facts on disk?",
+          "relevant": [
+            "dbfile"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "scope",
+            "uninstall",
+            "dbfile",
+            "node",
+            "permission"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "Does upgrading erase existing memories?",
+          "relevant": [
+            "uninstall"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "uninstall",
+            "recall",
+            "dbfile",
+            "chips",
+            "supersede"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "新安装后会立即把记忆发给模型吗？",
+          "relevant": [
+            "recall"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "chips",
+            "recall",
+            "local",
+            "uninstall",
+            "appearance"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "怎么固定下一轮必须带上的几条记忆？",
+          "relevant": [
+            "chips"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "chips",
+            "recall",
+            "local",
+            "appearance",
+            "dbfile"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "另一个进程正在改库，编辑请求会怎样？",
+          "relevant": [
+            "lock"
+          ],
+          "group": "cross-language",
+          "top": [
+            "lock",
+            "local",
+            "recall",
+            "appearance",
+            "capacity"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "How can an external process read a stable copy while the host is writing?",
+          "relevant": [
+            "snapshot"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "snapshot",
+            "lock",
+            "live",
+            "capacity",
+            "timeout"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "I need to see facts added after the captured copy was created.",
+          "relevant": [
+            "live"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "instruction",
+            "live",
+            "supersede",
+            "partial",
+            "scope"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "Will a slow query prevent subsequent small requests from succeeding?",
+          "relevant": [
+            "timeout"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "timeout",
+            "capacity",
+            "snapshot",
+            "supersede",
+            "live"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "批量归档怎么减少落盘次数？",
+          "relevant": [
+            "flush"
+          ],
+          "group": "cross-language",
+          "top": [
+            "recall",
+            "flush",
+            "retry",
+            "local",
+            "retry-other"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "How do we inspect node metadata without copying large vectors?",
+          "relevant": [
+            "payload"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "payload",
+            "scope",
+            "node",
+            "snapshot",
+            "onehop"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "X-Request-Id",
+          "relevant": [
+            "header"
+          ],
+          "group": "identifier",
+          "top": [
+            "header",
+            "scope",
+            "payload",
+            "gateway",
+            "embeddingdim"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "AuthGateway",
+          "relevant": [
+            "gateway"
+          ],
+          "group": "identifier",
+          "top": [
+            "gateway",
+            "header",
+            "local",
+            "port",
+            "permission"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "What is the maximum retry count for the upload worker?",
+          "relevant": [
+            "retry"
+          ],
+          "group": "numeric",
+          "top": [
+            "retry",
+            "partial",
+            "capacity",
+            "kernel",
+            "timeout"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "How many attempts may the mail sender retry?",
+          "relevant": [
+            "retry-other"
+          ],
+          "group": "numeric",
+          "top": [
+            "retry-other",
+            "retry",
+            "partial",
+            "lock",
+            "publish"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Is unattended publishing allowed for real public releases?",
+          "relevant": [
+            "nopublish",
+            "publish"
+          ],
+          "group": "negation",
+          "top": [
+            "nopublish",
+            "canpublish",
+            "publish",
+            "kernel",
+            "node"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which registry allows disposable automatic releases?",
+          "relevant": [
+            "canpublish"
+          ],
+          "group": "negation",
+          "top": [
+            "canpublish",
+            "nopublish",
+            "node",
+            "publish",
+            "offline"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "已经过期的记忆应不应该列为当前事实？",
+          "relevant": [
+            "expiry"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "expiry",
+            "chips",
+            "recall",
+            "reject",
+            "local"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which version of a changed decision should be treated as current?",
+          "relevant": [
+            "supersede"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "supersede",
+            "kernel",
+            "publish",
+            "canpublish",
+            "capacity"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "我选择保持原样后会留下什么记录？",
+          "relevant": [
+            "reject"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "reject",
+            "local",
+            "recall",
+            "chips",
+            "appearance"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "导入中途报错，怎么知道到底写进去了多少？",
+          "relevant": [
+            "partial"
+          ],
+          "group": "cross-language",
+          "top": [
+            "partial",
+            "recall",
+            "local",
+            "appearance",
+            "chips"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Can a 768-number vector be accepted by this plugin?",
+          "relevant": [
+            "embeddingdim"
+          ],
+          "group": "numeric",
+          "top": [
+            "payload",
+            "node",
+            "uninstall",
+            "package",
+            "scope"
+          ],
+          "hit1": false,
+          "hit5": false
+        },
+        {
+          "text": "Should the retrieval task instruction be prefixed to every stored document?",
+          "relevant": [
+            "instruction"
+          ],
+          "group": "negation",
+          "top": [
+            "instruction",
+            "dbfile",
+            "nopublish",
+            "scope",
+            "supersede"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Will running the full regression suite consume model credits?",
+          "relevant": [
+            "offline"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "offline",
+            "budget",
+            "publish",
+            "canpublish",
+            "supersede"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "只有 in_workspace 边的 entity 算孤立吗？",
+          "relevant": [
+            "orphan"
+          ],
+          "group": "identifier",
+          "top": [
+            "orphan",
+            "dbfile",
+            "scope",
+            "onehop",
+            "lock"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "How far does the relationship lookup traverse?",
+          "relevant": [
+            "onehop"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "onehop",
+            "live",
+            "supersede",
+            "scope",
+            "dbfile"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which database version is fixed for these experiments?",
+          "relevant": [
+            "kernel"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "kernel",
+            "snapshot",
+            "dbfile",
+            "capacity",
+            "timeout"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "11434",
+          "relevant": [
+            "port"
+          ],
+          "group": "identifier",
+          "top": [
+            "port",
+            "embeddingdim",
+            "kernel",
+            "dbfile",
+            "chips"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "两个库里的节点都叫 42，怎样避免把操作发错？",
+          "relevant": [
+            "scope"
+          ],
+          "group": "cross-language",
+          "top": [
+            "reject",
+            "recall",
+            "local",
+            "appearance",
+            "chips"
+          ],
+          "hit1": false,
+          "hit5": false
+        }
+      ]
+    },
+    "hybrid-instructed": {
+      "n": 32,
+      "hit1": 27,
+      "hit5": 31,
+      "byGroup": {
+        "paraphrase": {
+          "n": 17,
+          "hit1": 15,
+          "hit5": 17
+        },
+        "cross-language": {
+          "n": 5,
+          "hit1": 3,
+          "hit5": 5
+        },
+        "identifier": {
+          "n": 4,
+          "hit1": 4,
+          "hit5": 4
+        },
+        "numeric": {
+          "n": 3,
+          "hit1": 2,
+          "hit5": 2
+        },
+        "negation": {
+          "n": 3,
+          "hit1": 3,
+          "hit5": 3
+        }
+      },
+      "rows": [
+        {
+          "text": "Which installer should I use for dependencies?",
+          "relevant": [
+            "package"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "package",
+            "kernel",
+            "payload",
+            "live",
+            "offline"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Who must sign off before a public npm release?",
+          "relevant": [
+            "publish",
+            "nopublish"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "nopublish",
+            "publish",
+            "package",
+            "scope",
+            "embeddingdim"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "不想让私人聊天离开电脑，有什么向量方案？",
+          "relevant": [
+            "local"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "local",
+            "recall",
+            "appearance",
+            "chips",
+            "uninstall"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "单次模型试验最多能花多少人民币？",
+          "relevant": [
+            "budget"
+          ],
+          "group": "cross-language",
+          "top": [
+            "budget",
+            "recall",
+            "chips",
+            "dbfile",
+            "local"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Where does the plugin keep a workspace's facts on disk?",
+          "relevant": [
+            "dbfile"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "scope",
+            "uninstall",
+            "node",
+            "dbfile",
+            "permission"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "Does upgrading erase existing memories?",
+          "relevant": [
+            "uninstall"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "uninstall",
+            "dbfile",
+            "chips",
+            "flush",
+            "recall"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "新安装后会立即把记忆发给模型吗？",
+          "relevant": [
+            "recall"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "chips",
+            "recall",
+            "local",
+            "uninstall",
+            "dbfile"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "怎么固定下一轮必须带上的几条记忆？",
+          "relevant": [
+            "chips"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "chips",
+            "recall",
+            "local",
+            "dbfile",
+            "flush"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "另一个进程正在改库，编辑请求会怎样？",
+          "relevant": [
+            "lock"
+          ],
+          "group": "cross-language",
+          "top": [
+            "lock",
+            "recall",
+            "local",
+            "scope",
+            "capacity"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "How can an external process read a stable copy while the host is writing?",
+          "relevant": [
+            "snapshot"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "snapshot",
+            "lock",
+            "live",
+            "timeout",
+            "capacity"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "I need to see facts added after the captured copy was created.",
+          "relevant": [
+            "live"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "live",
+            "instruction",
+            "scope",
+            "supersede",
+            "partial"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Will a slow query prevent subsequent small requests from succeeding?",
+          "relevant": [
+            "timeout"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "timeout",
+            "capacity",
+            "snapshot",
+            "live",
+            "supersede"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "批量归档怎么减少落盘次数？",
+          "relevant": [
+            "flush"
+          ],
+          "group": "cross-language",
+          "top": [
+            "recall",
+            "flush",
+            "local",
+            "chips",
+            "appearance"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "How do we inspect node metadata without copying large vectors?",
+          "relevant": [
+            "payload"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "payload",
+            "scope",
+            "node",
+            "snapshot",
+            "onehop"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "X-Request-Id",
+          "relevant": [
+            "header"
+          ],
+          "group": "identifier",
+          "top": [
+            "header",
+            "scope",
+            "gateway",
+            "local",
+            "chips"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "AuthGateway",
+          "relevant": [
+            "gateway"
+          ],
+          "group": "identifier",
+          "top": [
+            "gateway",
+            "header",
+            "local",
+            "port",
+            "chips"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "What is the maximum retry count for the upload worker?",
+          "relevant": [
+            "retry"
+          ],
+          "group": "numeric",
+          "top": [
+            "retry",
+            "partial",
+            "capacity",
+            "dbfile",
+            "kernel"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "How many attempts may the mail sender retry?",
+          "relevant": [
+            "retry-other"
+          ],
+          "group": "numeric",
+          "top": [
+            "retry-other",
+            "retry",
+            "partial",
+            "lock",
+            "scope"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Is unattended publishing allowed for real public releases?",
+          "relevant": [
+            "nopublish",
+            "publish"
+          ],
+          "group": "negation",
+          "top": [
+            "nopublish",
+            "canpublish",
+            "kernel",
+            "publish",
+            "node"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which registry allows disposable automatic releases?",
+          "relevant": [
+            "canpublish"
+          ],
+          "group": "negation",
+          "top": [
+            "canpublish",
+            "nopublish",
+            "node",
+            "uninstall",
+            "flush"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "已经过期的记忆应不应该列为当前事实？",
+          "relevant": [
+            "expiry"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "expiry",
+            "chips",
+            "recall",
+            "reject",
+            "local"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which version of a changed decision should be treated as current?",
+          "relevant": [
+            "supersede"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "supersede",
+            "kernel",
+            "capacity",
+            "publish",
+            "canpublish"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "我选择保持原样后会留下什么记录？",
+          "relevant": [
+            "reject"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "reject",
+            "recall",
+            "local",
+            "chips",
+            "dbfile"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "导入中途报错，怎么知道到底写进去了多少？",
+          "relevant": [
+            "partial"
+          ],
+          "group": "cross-language",
+          "top": [
+            "partial",
+            "recall",
+            "dbfile",
+            "local",
+            "chips"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Can a 768-number vector be accepted by this plugin?",
+          "relevant": [
+            "embeddingdim"
+          ],
+          "group": "numeric",
+          "top": [
+            "payload",
+            "uninstall",
+            "node",
+            "snapshot",
+            "package"
+          ],
+          "hit1": false,
+          "hit5": false
+        },
+        {
+          "text": "Should the retrieval task instruction be prefixed to every stored document?",
+          "relevant": [
+            "instruction"
+          ],
+          "group": "negation",
+          "top": [
+            "instruction",
+            "dbfile",
+            "nopublish",
+            "supersede",
+            "payload"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Will running the full regression suite consume model credits?",
+          "relevant": [
+            "offline"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "offline",
+            "budget",
+            "dbfile",
+            "live",
+            "supersede"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "只有 in_workspace 边的 entity 算孤立吗？",
+          "relevant": [
+            "orphan"
+          ],
+          "group": "identifier",
+          "top": [
+            "orphan",
+            "dbfile",
+            "scope",
+            "onehop",
+            "uninstall"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "How far does the relationship lookup traverse?",
+          "relevant": [
+            "onehop"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "onehop",
+            "supersede",
+            "live",
+            "dbfile",
+            "scope"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which database version is fixed for these experiments?",
+          "relevant": [
+            "kernel"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "kernel",
+            "snapshot",
+            "dbfile",
+            "capacity",
+            "timeout"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "11434",
+          "relevant": [
+            "port"
+          ],
+          "group": "identifier",
+          "top": [
+            "port",
+            "dbfile",
+            "chips",
+            "embeddingdim",
+            "kernel"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "两个库里的节点都叫 42，怎样避免把操作发错？",
+          "relevant": [
+            "scope"
+          ],
+          "group": "cross-language",
+          "top": [
+            "reject",
+            "recall",
+            "local",
+            "scope",
+            "chips"
+          ],
+          "hit1": false,
+          "hit5": true
+        }
+      ]
+    },
+    "dense-instructed": {
+      "n": 32,
+      "hit1": 23,
+      "hit5": 32,
+      "byGroup": {
+        "paraphrase": {
+          "n": 17,
+          "hit1": 11,
+          "hit5": 17
+        },
+        "cross-language": {
+          "n": 5,
+          "hit1": 3,
+          "hit5": 5
+        },
+        "identifier": {
+          "n": 4,
+          "hit1": 3,
+          "hit5": 4
+        },
+        "numeric": {
+          "n": 3,
+          "hit1": 3,
+          "hit5": 3
+        },
+        "negation": {
+          "n": 3,
+          "hit1": 3,
+          "hit5": 3
+        }
+      },
+      "rows": [
+        {
+          "text": "Which installer should I use for dependencies?",
+          "relevant": [
+            "package"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "package",
+            "uninstall",
+            "dbfile",
+            "kernel",
+            "node"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Who must sign off before a public npm release?",
+          "relevant": [
+            "publish",
+            "nopublish"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "package",
+            "publish",
+            "node",
+            "nopublish",
+            "scope"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "不想让私人聊天离开电脑，有什么向量方案？",
+          "relevant": [
+            "local"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "local",
+            "recall",
+            "appearance",
+            "chips",
+            "uninstall"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "单次模型试验最多能花多少人民币？",
+          "relevant": [
+            "budget"
+          ],
+          "group": "cross-language",
+          "top": [
+            "budget",
+            "recall",
+            "chips",
+            "dbfile",
+            "local"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Where does the plugin keep a workspace's facts on disk?",
+          "relevant": [
+            "dbfile"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "uninstall",
+            "dbfile",
+            "scope",
+            "lock",
+            "node"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "Does upgrading erase existing memories?",
+          "relevant": [
+            "uninstall"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "uninstall",
+            "dbfile",
+            "chips",
+            "flush",
+            "recall"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "新安装后会立即把记忆发给模型吗？",
+          "relevant": [
+            "recall"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "recall",
+            "local",
+            "chips",
+            "uninstall",
+            "dbfile"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "怎么固定下一轮必须带上的几条记忆？",
+          "relevant": [
+            "chips"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "recall",
+            "chips",
+            "local",
+            "dbfile",
+            "flush"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "另一个进程正在改库，编辑请求会怎样？",
+          "relevant": [
+            "lock"
+          ],
+          "group": "cross-language",
+          "top": [
+            "lock",
+            "recall",
+            "local",
+            "scope",
+            "capacity"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "How can an external process read a stable copy while the host is writing?",
+          "relevant": [
+            "snapshot"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "lock",
+            "snapshot",
+            "live",
+            "flush",
+            "dbfile"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "I need to see facts added after the captured copy was created.",
+          "relevant": [
+            "live"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "dbfile",
+            "live",
+            "lock",
+            "snapshot",
+            "flush"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "Will a slow query prevent subsequent small requests from succeeding?",
+          "relevant": [
+            "timeout"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "timeout",
+            "capacity",
+            "lock",
+            "flush",
+            "live"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "批量归档怎么减少落盘次数？",
+          "relevant": [
+            "flush"
+          ],
+          "group": "cross-language",
+          "top": [
+            "recall",
+            "flush",
+            "local",
+            "chips",
+            "appearance"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "How do we inspect node metadata without copying large vectors?",
+          "relevant": [
+            "payload"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "payload",
+            "scope",
+            "dbfile",
+            "snapshot",
+            "live"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "X-Request-Id",
+          "relevant": [
+            "header"
+          ],
+          "group": "identifier",
+          "top": [
+            "header",
+            "scope",
+            "gateway",
+            "local",
+            "chips"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "AuthGateway",
+          "relevant": [
+            "gateway"
+          ],
+          "group": "identifier",
+          "top": [
+            "gateway",
+            "header",
+            "local",
+            "port",
+            "chips"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "What is the maximum retry count for the upload worker?",
+          "relevant": [
+            "retry"
+          ],
+          "group": "numeric",
+          "top": [
+            "retry",
+            "retry-other",
+            "capacity",
+            "embeddingdim",
+            "flush"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "How many attempts may the mail sender retry?",
+          "relevant": [
+            "retry-other"
+          ],
+          "group": "numeric",
+          "top": [
+            "retry-other",
+            "retry",
+            "embeddingdim",
+            "capacity",
+            "flush"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Is unattended publishing allowed for real public releases?",
+          "relevant": [
+            "nopublish",
+            "publish"
+          ],
+          "group": "negation",
+          "top": [
+            "nopublish",
+            "canpublish",
+            "publish",
+            "snapshot",
+            "lock"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which registry allows disposable automatic releases?",
+          "relevant": [
+            "canpublish"
+          ],
+          "group": "negation",
+          "top": [
+            "canpublish",
+            "nopublish",
+            "uninstall",
+            "flush",
+            "dbfile"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "已经过期的记忆应不应该列为当前事实？",
+          "relevant": [
+            "expiry"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "expiry",
+            "recall",
+            "chips",
+            "supersede",
+            "local"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which version of a changed decision should be treated as current?",
+          "relevant": [
+            "supersede"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "supersede",
+            "lock",
+            "reject",
+            "recall",
+            "kernel"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "我选择保持原样后会留下什么记录？",
+          "relevant": [
+            "reject"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "recall",
+            "local",
+            "chips",
+            "reject",
+            "dbfile"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "导入中途报错，怎么知道到底写进去了多少？",
+          "relevant": [
+            "partial"
+          ],
+          "group": "cross-language",
+          "top": [
+            "partial",
+            "recall",
+            "dbfile",
+            "local",
+            "chips"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Can a 768-number vector be accepted by this plugin?",
+          "relevant": [
+            "embeddingdim"
+          ],
+          "group": "numeric",
+          "top": [
+            "embeddingdim",
+            "payload",
+            "dbfile",
+            "uninstall",
+            "node"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Should the retrieval task instruction be prefixed to every stored document?",
+          "relevant": [
+            "instruction"
+          ],
+          "group": "negation",
+          "top": [
+            "instruction",
+            "dbfile",
+            "flush",
+            "recall",
+            "snapshot"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Will running the full regression suite consume model credits?",
+          "relevant": [
+            "offline"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "offline",
+            "budget",
+            "uninstall",
+            "kernel",
+            "dbfile"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "只有 in_workspace 边的 entity 算孤立吗？",
+          "relevant": [
+            "orphan"
+          ],
+          "group": "identifier",
+          "top": [
+            "orphan",
+            "scope",
+            "chips",
+            "snapshot",
+            "dbfile"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "How far does the relationship lookup traverse?",
+          "relevant": [
+            "onehop"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "onehop",
+            "dbfile",
+            "embeddingdim",
+            "flush",
+            "payload"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "Which database version is fixed for these experiments?",
+          "relevant": [
+            "kernel"
+          ],
+          "group": "paraphrase",
+          "top": [
+            "kernel",
+            "dbfile",
+            "uninstall",
+            "flush",
+            "snapshot"
+          ],
+          "hit1": true,
+          "hit5": true
+        },
+        {
+          "text": "11434",
+          "relevant": [
+            "port"
+          ],
+          "group": "identifier",
+          "top": [
+            "dbfile",
+            "port",
+            "chips",
+            "embeddingdim",
+            "kernel"
+          ],
+          "hit1": false,
+          "hit5": true
+        },
+        {
+          "text": "两个库里的节点都叫 42，怎样避免把操作发错？",
+          "relevant": [
+            "scope"
+          ],
+          "group": "cross-language",
+          "top": [
+            "recall",
+            "local",
+            "scope",
+            "chips",
+            "lock"
+          ],
+          "hit1": false,
+          "hit5": true
+        }
+      ]
+    }
+  },
+  "unanswerable": [
+    {
+      "text": "What is the production server password?",
+      "nearest": [
+        {
+          "key": "dbfile",
+          "score": 0.45987385511398315
+        },
+        {
+          "key": "local",
+          "score": 0.3906875550746918
+        },
+        {
+          "key": "port",
+          "score": 0.3620784282684326
+        }
+      ]
+    },
+    {
+      "text": "明年公司的营收目标是多少？",
+      "nearest": [
+        {
+          "key": "recall",
+          "score": 0.2852576971054077
+        },
+        {
+          "key": "chips",
+          "score": 0.28107574582099915
+        },
+        {
+          "key": "budget",
+          "score": 0.2668498754501343
+        }
+      ]
+    },
+    {
+      "text": "Which city is the user visiting next week?",
+      "nearest": [
+        {
+          "key": "dbfile",
+          "score": 0.32566550374031067
+        },
+        {
+          "key": "recall",
+          "score": 0.2620517611503601
+        },
+        {
+          "key": "capacity",
+          "score": 0.25639215111732483
+        }
+      ]
+    }
+  ],
+  "identityPairs": [
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "cosine": 0.9844233723222028
+    },
+    {
+      "label": "same",
+      "why": "reorder",
+      "cosine": 0.9336346398602912
+    },
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "cosine": 0.9810792461227081
+    },
+    {
+      "label": "same",
+      "why": "synonym",
+      "cosine": 0.9880856953572146
+    },
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "cosine": 0.9924080064929321
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "cosine": 0.8923007025317976
+    },
+    {
+      "label": "different",
+      "why": "negation",
+      "cosine": 0.9841961582936007
+    },
+    {
+      "label": "different",
+      "why": "entity",
+      "cosine": 0.9626370471303952
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "cosine": 0.898563109644623
+    },
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "cosine": 0.9877240539137199
+    },
+    {
+      "label": "same",
+      "why": "reorder",
+      "cosine": 0.9429999574389195
+    },
+    {
+      "label": "same",
+      "why": "synonym",
+      "cosine": 0.8985060874477577
+    },
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "cosine": 0.9128093386359151
+    },
+    {
+      "label": "same",
+      "why": "number-format",
+      "cosine": 0.8862603329319749
+    },
+    {
+      "label": "same",
+      "why": "paraphrase",
+      "cosine": 0.981954405348247
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "cosine": 0.9935579945667576
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "cosine": 0.9243656517020435
+    },
+    {
+      "label": "different",
+      "why": "negation",
+      "cosine": 0.9122220965527943
+    },
+    {
+      "label": "different",
+      "why": "negation",
+      "cosine": 0.9575695326898529
+    },
+    {
+      "label": "different",
+      "why": "entity",
+      "cosine": 0.8982768242995773
+    },
+    {
+      "label": "different",
+      "why": "entity",
+      "cosine": 0.8196503706904015
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "cosine": 0.9889543336883987
+    },
+    {
+      "label": "different",
+      "why": "value",
+      "cosine": 0.9720605799113193
+    },
+    {
+      "label": "different",
+      "why": "correction",
+      "cosine": 0.9783180919412859
+    },
+    {
+      "label": "different",
+      "why": "type",
+      "cosine": 0.8200512993497221
+    },
+    {
+      "label": "different",
+      "why": "entity-type",
+      "cosine": 0.9430098599238192
+    }
+  ],
+  "identityNote": "Cosine diagnostics only. No semantic merge enabled; labels were not used to choose a threshold.",
+  "backfill": {
+    "requested": 5000,
+    "ok": true,
+    "embedded": 5000,
+    "failed": 0,
+    "skipped": 0,
+    "elapsedMs": 117691.87509999999,
+    "nodesPerSecond": 42.48381628512264,
+    "flushes": 313,
+    "vectorWrites": 5000,
+    "flushTimings": {
+      "count": 313,
+      "p50Ms": 138.12660000000324,
+      "p95Ms": 401.27130000000034
+    },
+    "firstVectorDimension": 1536,
+    "firstVectorNorm": 0.9999999809070501,
+    "note": "5000 synthetic facts for write cost; retrieval quality is measured separately."
+  },
+  "completedAt": "2026-11-12T05:45:58.843Z",
+  "http": {
+    "calls": 5148,
+    "tokens": 174714,
+    "badVectors": 0,
+    "count": 5148,
+    "p50Ms": 12.68739999999525,
+    "p95Ms": 14.901700000002165
+  }
+}

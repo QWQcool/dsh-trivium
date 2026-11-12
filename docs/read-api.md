@@ -1,6 +1,8 @@
 # Read queries while the host owns the writer
 
-Shipped in dsh-trivium 0.8.9 for issue #5.
+The TQL, snapshot and CLI APIs shipped in dsh-trivium 0.8.9 for issue #5.
+The current-fact selector, named snapshot queries and Context-page query card
+below are newer source changes, pending a subsequent release.
 
 The host remains the single writer. Live queries borrow its already-open
 instance; external analysis uses an independently captured snapshot. Both paths
@@ -60,6 +62,10 @@ Content-Type: application/json
 Other named queries:
 
 ```json
+{"kind":"currentFacts","type":"decision","name":"Release window","limit":50}
+```
+
+```json
 {"kind":"nodes","name":"AuthGateway","limit":20}
 ```
 
@@ -68,22 +74,59 @@ Other named queries:
 ```
 
 ```json
-{"kind":"orphanEntities","limit":200}
+{"kind":"orphanEntities","currentOnly":true,"name":"AuthGateway","limit":200}
 ```
 
-`nodes` accepts exact `type` and `name` filters. `neighbors` examines one hop;
+`currentFacts` excludes workspace/session metadata, archived and expired facts,
+and superseded decision history. It reuses the plugin's current-head validation;
+a malformed revision chain returns `422 READ_QUERY_REVISION_INVALID`, including
+self-loops. Pending replacement proposals do not retire either fact. Optional
+`type` (entity/preference/decision/experience) and `name` filters are exact.
+
+`nodes` retains its raw-list semantics and exact `type`/`name` filters.
+`neighbors` examines one hop;
 `direction` is `both` (default), `incoming` or `outgoing`. Its optional `label`
-is one of `about`, `decided`, `broke`, `fixed`. `orphanEntities` finds entities
+is one of `about`, `decided`, `broke`, `fixed`. Each returned neighbour also
+contains `relationships: [{from,to,label}]` for matching business edges between
+the anchor and that neighbour; endpoint IDs are decimal strings.
+`orphanEntities` finds entities
 without a business edge in either direction; workspace/session bookkeeping
-edges do not prevent an entity from being reported as an orphan.
+edges do not prevent an entity from being reported as an orphan. Its optional
+exact `name` filter narrows the scan; `currentOnly: true` applies the same current
+fact rules. The panel sets it to true. Omitting it preserves the older raw-entity
+query. `completeScan: true` means all entities in that name scope were checked,
+even if the returned orphan list is truncated.
 
 Named queries take a `kind` field. Node IDs are positive safe integers on
 input. Rows contain node summaries, with decimal-string IDs; they omit vectors.
-Success returns `ok`, `source: "live"`, `kind`, `rows`, `limit`, and `truncated`.
+Success returns `ok`, `source`, `asOf`, `timeBasis`, `kind`, `rows`, `limit`, and `truncated`.
 The default result limit is 200, maximum 1000. A result limit is separate from
-execution work limits: a named query on a workspace above 1000 nodes, or an exhausted graph
-work budget, returns a budget error and should be audited through a snapshot.
-It never presents an incomplete orphan scan as a complete result.
+execution work limits. Raw `nodes` retains its whole-workspace 1000-node gate.
+The three business selectors use bounded candidates, payload-only projections
+and native one-hop traversal: a small neighbourhood or exact-name lookup can
+therefore succeed in a 5000-node workspace. The adapter admits at most 1000
+distinct node payloads and 10000 edge/probe work units. This accounting does not
+measure native internal scan work; Console queries retain a 50ms native deadline
+and a 150ms total selector window. An excessive orphan candidate set, incomplete
+traversal or exhausted budget returns 422 without partial rows. A truncated
+output is distinct from an incomplete scan. `work` reports the adapter counters.
+
+Live selectors use `timeBasis: "query-time"`. Named snapshot selectors use the
+same implementation and budgets with `timeBasis: "snapshot-capture"` and
+`asOf` equal to the publication's capture time. Expiry is assessed at that time;
+viewing an old snapshot later does not silently change its historical results.
+Snapshot capture does not bypass work limits.
+
+```json
+{"snapshotId":"latest","kind":"currentFacts","limit":50}
+```
+
+In the newer source UI, open **Context → Fact queries**, choose one of the three
+selectors and live/snapshot source, then run. **Create and select snapshot** is
+explicit capture; subsequent queries pin the returned ID. The card shows source,
+reference time, generation ID, row count and truncation. Failures show the HTTP
+status and code, rather than an empty result. Changing workspaces discards late
+responses and the previous workspace's snapshot/node/name selection.
 
 Request bodies are limited to 16 KiB and a 2-second body-read deadline.
 Admission allows at most two requests globally and one per workspace; excess

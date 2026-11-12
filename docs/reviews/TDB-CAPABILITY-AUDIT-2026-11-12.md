@@ -1,6 +1,8 @@
 # TDB 能力使用审查、查询面板范围与 embedding 验证
 
-2026-11-12。审查基于 main@6d28ed5、已安装的 triviumdb 0.9.0 类型声明及隔离功能探测。真实 embedding 调用 0 次，费用 ¥0。结论来自源码和本地桩，真实向量召回质量需要有效端点后另测。[功能探测记录](evidence-tdb-capabilities-2026-11-12/observations.json)
+2026-11-12。审查基于 main@6d28ed5、已安装的 triviumdb 0.9.0 类型声明及隔离功能探测。以下是实现前审查，当时真实 embedding 调用 0 次，费用 ¥0。[功能探测记录](evidence-tdb-capabilities-2026-11-12/observations.json)
+
+后续已完成 F-EMB-01/02 修复、16 条向量批量落盘、三类具名 live/snapshot 查询及面板，并用本地真实 GTE 向量验证。当前结论、原始 Ollama 加载失败和剩余项以[后续验收报告](LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md)为准；不要把下面的前置计划当成仍未开工的清单。
 
 ## 当前功能怎样使用 TDB
 

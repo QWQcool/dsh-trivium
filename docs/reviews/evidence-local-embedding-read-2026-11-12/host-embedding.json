@@ -1,0 +1,20 @@
+{
+  "costYuan": 0,
+  "backfill": {
+    "status": 200,
+    "ok": true,
+    "embedded": 7,
+    "failed": 0,
+    "skipped": 0
+  },
+  "visibleResult": "向量已写入 7 条；失败 0 条；因内容或配置变化跳过 0 条。失败项可重新回填。",
+  "savedPrefixMatches": true,
+  "vectorRead": {
+    "status": 200,
+    "source": "live",
+    "nodeId": "2",
+    "dimension": 1536,
+    "allFinite": true,
+    "norm": 1.0000000372131936
+  }
+}

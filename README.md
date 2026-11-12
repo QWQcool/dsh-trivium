@@ -355,6 +355,7 @@ These results describe distinct test layers; they are not one overall accuracy s
 | Extraction baseline, one real model | Five synthetic scenarios × five repetitions: **25/25** facts matched and entered the store; **21/25** subsequent-session answers passed in that earlier baseline. See [A5](docs/archive/next-memory/A5-WIDER-BASELINE-2026-10-30.md). |
 | Correction and negation, one real model | Two fixed synthetic scenarios each produced **10/10** correct new-session answers after fixes. Three negation setup runs hit a request cap, and some runs used agent-initiated writes; these are not a general automatic-extraction success rate. See [A10](docs/archive/next-memory/A10-REGRESSION-N10-2026-10-30.md). |
 | Change record and recovery | The October 30 run covered loopback HTTP, contention between processes, and browser component fixtures. [Results and limits](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md) |
+| Local embedding, newer source | On 36 hand-labelled synthetic memories and 32 questions, Top-1/Top-5 hits rose from **22/32, 25/32** (keyword + graph) to **27/32, 31/32** (local GTE vectors with query instructions). A separate real 5000-node backfill completed **5000/5000** in 117.7s, with 313 flushes and ¥0 cost. [Runtime setup, failures and limits](docs/reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 
 The write-path optimization measured at source commit `6d28ed5` follows the published npm 0.8.9 package. On one Windows machine with a synthetic 5000-node, 1536-dimensional store, 30 batches of eight archives produced:
 
@@ -366,6 +367,8 @@ The write-path optimization measured at source commit `6d28ed5` follows the publ
 | Text-index feeds per batch | 40,000 | 0 |
 
 The plugin batches persistence, skips unchanged archive text indexing, and reads payloads for the chip response. These measurements apply to batch archiving. Single-write flush spikes remain under investigation as F-LAT-01. The native kernel and default budgets are unchanged. The report includes the commands, traces, failed-batch durability checks and the original 807 ms write breakdown. [Write-latency results](docs/reviews/WRITE-LATENCY-RESULTS-2026-11-12.md)
+
+The newer source also batches derived vector writes in groups of 16. In three alternating rounds on identical 5000-node stores, updating 128 cached real vectors took a median **17.466s → 0.920s**, with **128 → 8** flushes. This isolates persistence work; it is not a before/after full 5000-request embedding run. Local weights improved this small retrieval sample but did not separate same-fact from conflicting-fact similarities, so automatic semantic merging remains off. These changes and the **Context → Fact queries** card (current facts, one-hop relationships and orphan entities, with live/snapshot provenance) are source changes after npm 0.8.9. [Acceptance and evidence](docs/reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md)
 
 The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/archive/next-memory/POST-081-REVIEW.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 

@@ -1,0 +1,7 @@
+{
+  "source": "reopened-read-only-process",
+  "businessNodes": 5000,
+  "badVectors": 0,
+  "minNorm": 0.9999999397980195,
+  "maxNorm": 1.0000000614275244
+}

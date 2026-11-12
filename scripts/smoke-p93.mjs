@@ -107,6 +107,9 @@
       assert.deepEqual(ids(executeReadQuery(db, { kind: "neighbors", id: 2, direction: "outgoing" })), [3]);
       assert.deepEqual(ids(executeReadQuery(db, { kind: "neighbors", id: 2, direction: "incoming" })), [5, 7]);
       assert.deepEqual(ids(executeReadQuery(db, { kind: "neighbors", id: 2 })), [3, 5, 7]);
+      const neighbors = executeReadQuery(db, { kind: "neighbors", id: 2 });
+      assert.deepEqual(neighbors.rows.find(row => row.id === "5").relationships,
+        [{ from: "5", to: "2", label: "about" }]);
     });
     check("a business label narrows neighbors and result truncation stays explicit", () => {
       assert.deepEqual(ids(executeReadQuery(db, { kind: "neighbors", id: 2, label: "about" })), [5]);
@@ -169,11 +172,57 @@
     for (let id = 1; id <= READ_QUERY_MAX_NODES + 1; id++) {
       large.insertWithId(id, [1, 0], { type: "entity", name: `entity-${id}` });
     }
-    check("a large store is refused before a tiny result limit can hide its scan cost", () => {
-      for (const body of [{ kind: "nodes", limit: 1 }, { kind: "neighbors", id: 1, limit: 1 }, { kind: "orphanEntities", limit: 1 }]) {
+    check("raw scans and excessive orphan candidates retain their work limits", () => {
+      for (const body of [{ kind: "nodes", limit: 1 }, { kind: "orphanEntities", limit: 1 }]) {
         rejects(() => executeReadQuery(large, body), 422, "READ_QUERY_WORK_LIMIT");
       }
       assert.equal(large.nodeCount(), READ_QUERY_MAX_NODES + 1);
+      assert.deepEqual(ids(executeReadQuery(large, { kind: "neighbors", id: 1, limit: 1 })), []);
+      const page = executeReadQuery(large, { kind: "currentFacts", limit: 1 });
+      assert.equal(page.rows.length, 1);
+      assert.equal(page.truncated, true);
+      assert.ok(page.work.examinedNodes <= READ_QUERY_MAX_NODES);
+    });
+    check("current facts exclude archived, expired and replaced history, and preserve pending proposals", () => {
+      const current = open("current-facts");
+      for (let id = 1; id <= 7; id++) current.insertWithId(id, [1, 0], {
+        type: id === 1 ? "workspace" : "decision", name: "fact-" + id, text: "fact " + id,
+        status: id === 2 ? "archived" : "active",
+        ...(id === 3 ? { untilAt: "2026-01-01T00:00:00Z" } : {}),
+        ...(id === 6 ? { review: "supersede-proposed" } : {}),
+      });
+      current.link(5, 4, "supersedes", 1);
+      const query = { kind: "currentFacts", limit: 10 };
+      const live = executeReadQuery(current, query, { asOf: "2026-11-12T00:00:00Z" });
+      assert.deepEqual(ids(live), [5, 6, 7]);
+      assert.equal(live.rows.find(row => row.id === "6").review, "supersede-proposed");
+      assert.equal(live.asOf, "2026-11-12T00:00:00.000Z");
+      assert.equal(live.completeScan, true);
+      assert.deepEqual(ids(executeReadQuery(current, { ...query, name: "fact-5" })), [5]);
+      const historical = executeReadQuery(current, query, { source: "snapshot", asOf: "2025-12-31T00:00:00Z", timeBasis: "snapshot-capture" });
+      assert.deepEqual(ids(historical), [3, 5, 6, 7]);
+      assert.equal(historical.timeBasis, "snapshot-capture");
+      current.link(7, 4, "supersedes", 1);
+      rejects(() => executeReadQuery(current, query), 422, "READ_QUERY_REVISION_INVALID");
+      const cycle = open("current-cycle");
+      cycle.insertWithId(1, [1, 0], { type: "decision", name: "self", status: "active" });
+      cycle.link(1, 1, "supersedes", 1);
+      rejects(() => executeReadQuery(cycle, query), 422, "READ_QUERY_REVISION_INVALID");
+    });
+    check("5000-node local reads use payloads and bounded native relationships", () => {
+      const local = open("large-local");
+      for (let id = 1; id <= 5000; id++) local.insertWithId(id, [1, 0], {
+        type: id <= 3 ? "entity" : "preference", name: "local-" + id, text: "local " + id,
+        status: id === 3 ? "archived" : "active",
+      });
+      local.link(4, 1, "about", 1);
+      local.get = () => { throw Error("Named reads must not materialize vectors"); };
+      assert.deepEqual(ids(executeReadQuery(local, { kind: "neighbors", id: 1 })), [4]);
+      const orphans = executeReadQuery(local, { kind: "orphanEntities", currentOnly: true });
+      assert.deepEqual(ids(orphans), [2]);
+      assert.equal(orphans.completeScan, true);
+      assert.equal(orphans.scannedEntities, 3);
+      assert.deepEqual(ids(executeReadQuery(local, { kind: "currentFacts", name: "local-5000" })), [5000]);
     });
     check("native response budgeting rejects oversized payload output", () => {
       const big = open("big-response");
@@ -252,6 +301,13 @@
     check(db.nodeCount() === 4, "snapshot queries do not change source facts");
     const clipped = await queryReadSnapshot(cwd, snapshot.snapshotId, { ...query, limit: 1 });
     check(clipped.rows.length === 1 && clipped.truncated === true && clipped.limit === 1, "result rows are explicitly truncated to the requested limit");
+    const named = await queryReadSnapshot(cwd, snapshot.snapshotId, { kind: "currentFacts", limit: 2 });
+    check(named.source === "snapshot" && named.timeBasis === "snapshot-capture" && named.asOf === snapshot.createdAt
+      && named.rows.length === 2 && named.truncated === true && named.snapshotId === snapshot.snapshotId,
+      "named selectors preserve captured generation, reference time and truncation");
+    const namedOrphans = await queryReadSnapshot(cwd, snapshot.snapshotId, { kind: "orphanEntities", currentOnly: true });
+    check(namedOrphans.rows.length === 3 && namedOrphans.completeScan === true,
+      "snapshot named orphan semantics match the live selector");
     const parameterized = await querySnapshotDirectory(snapshot.directory, {
       tql: 'FIND {type: "entity"} RETURN $bonus + 1 AS score', params: { bonus: 11 }, timeoutMs: 5000,
     });

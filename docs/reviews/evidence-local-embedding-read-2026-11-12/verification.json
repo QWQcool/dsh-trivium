@@ -1,0 +1,359 @@
+{
+  "command": "node scripts/run-all.mjs",
+  "passed": 85,
+  "failed": 0,
+  "scriptFiles": 120,
+  "frozenUiTestsExpanded": false,
+  "p98MergedInto": "smoke-p89.mjs",
+  "rows": [
+    {
+      "script": "smoke-p0.mjs",
+      "ms": 416
+    },
+    {
+      "script": "smoke-p1.mjs",
+      "ms": 766
+    },
+    {
+      "script": "p2-cases.mjs",
+      "ms": 1725
+    },
+    {
+      "script": "smoke-p3.mjs",
+      "ms": 1011
+    },
+    {
+      "script": "smoke-p4.mjs",
+      "ms": 1243
+    },
+    {
+      "script": "smoke-p5.mjs",
+      "ms": 4785
+    },
+    {
+      "script": "smoke-p6.mjs",
+      "ms": 401
+    },
+    {
+      "script": "smoke-p7.mjs",
+      "ms": 2922
+    },
+    {
+      "script": "smoke-p8.mjs",
+      "ms": 1189
+    },
+    {
+      "script": "smoke-p9.mjs",
+      "ms": 634
+    },
+    {
+      "script": "smoke-p10.mjs",
+      "ms": 346
+    },
+    {
+      "script": "smoke-p11.mjs",
+      "ms": 112
+    },
+    {
+      "script": "smoke-p12.mjs",
+      "ms": 923
+    },
+    {
+      "script": "smoke-p13.mjs",
+      "ms": 64
+    },
+    {
+      "script": "smoke-p14.mjs",
+      "ms": 97
+    },
+    {
+      "script": "smoke-p15.mjs",
+      "ms": 2584
+    },
+    {
+      "script": "smoke-p16.mjs",
+      "ms": 773
+    },
+    {
+      "script": "smoke-p17.mjs",
+      "ms": 704
+    },
+    {
+      "script": "smoke-p18.mjs",
+      "ms": 55
+    },
+    {
+      "script": "smoke-p19.mjs",
+      "ms": 7020
+    },
+    {
+      "script": "smoke-p20.mjs",
+      "ms": 976
+    },
+    {
+      "script": "smoke-p21.mjs",
+      "ms": 2673
+    },
+    {
+      "script": "smoke-p22.mjs",
+      "ms": 3694
+    },
+    {
+      "script": "smoke-p23.mjs",
+      "ms": 7235
+    },
+    {
+      "script": "smoke-p24.mjs",
+      "ms": 107
+    },
+    {
+      "script": "smoke-p25.mjs",
+      "ms": 842
+    },
+    {
+      "script": "smoke-p26.mjs",
+      "ms": 207
+    },
+    {
+      "script": "smoke-p27.mjs",
+      "ms": 772
+    },
+    {
+      "script": "smoke-p28.mjs",
+      "ms": 1182
+    },
+    {
+      "script": "smoke-p29.mjs",
+      "ms": 494
+    },
+    {
+      "script": "smoke-p30.mjs",
+      "ms": 2109
+    },
+    {
+      "script": "smoke-p31.mjs",
+      "ms": 5629
+    },
+    {
+      "script": "smoke-p33.mjs",
+      "ms": 73
+    },
+    {
+      "script": "smoke-p34.mjs",
+      "ms": 446
+    },
+    {
+      "script": "smoke-p35.mjs",
+      "ms": 1948
+    },
+    {
+      "script": "smoke-p36.mjs",
+      "ms": 295
+    },
+    {
+      "script": "smoke-p37.mjs",
+      "ms": 785
+    },
+    {
+      "script": "smoke-p38.mjs",
+      "ms": 648
+    },
+    {
+      "script": "smoke-p39.mjs",
+      "ms": 59
+    },
+    {
+      "script": "smoke-p41.mjs",
+      "ms": 10057
+    },
+    {
+      "script": "smoke-p42.mjs",
+      "ms": 1852
+    },
+    {
+      "script": "smoke-p43.mjs",
+      "ms": 212
+    },
+    {
+      "script": "smoke-p44.mjs",
+      "ms": 242
+    },
+    {
+      "script": "smoke-p45.mjs",
+      "ms": 105
+    },
+    {
+      "script": "smoke-p46.mjs",
+      "ms": 204
+    },
+    {
+      "script": "smoke-p47.mjs",
+      "ms": 455
+    },
+    {
+      "script": "smoke-p48.mjs",
+      "ms": 971
+    },
+    {
+      "script": "smoke-p49.mjs",
+      "ms": 909
+    },
+    {
+      "script": "smoke-p50.mjs",
+      "ms": 516
+    },
+    {
+      "script": "smoke-p51.mjs",
+      "ms": 3820
+    },
+    {
+      "script": "smoke-p52.mjs",
+      "ms": 1048
+    },
+    {
+      "script": "smoke-p53.mjs",
+      "ms": 65
+    },
+    {
+      "script": "smoke-p54.mjs",
+      "ms": 63
+    },
+    {
+      "script": "smoke-p55.mjs",
+      "ms": 1628
+    },
+    {
+      "script": "smoke-p56.mjs",
+      "ms": 153
+    },
+    {
+      "script": "smoke-p57.mjs",
+      "ms": 1139
+    },
+    {
+      "script": "smoke-p58.mjs",
+      "ms": 1357
+    },
+    {
+      "script": "smoke-p60.mjs",
+      "ms": 16517
+    },
+    {
+      "script": "smoke-p61.mjs",
+      "ms": 477
+    },
+    {
+      "script": "smoke-p62.mjs",
+      "ms": 16411
+    },
+    {
+      "script": "smoke-p63.mjs",
+      "ms": 1462
+    },
+    {
+      "script": "smoke-p64.mjs",
+      "ms": 329
+    },
+    {
+      "script": "smoke-p65.mjs",
+      "ms": 2077
+    },
+    {
+      "script": "smoke-p66.mjs",
+      "ms": 467
+    },
+    {
+      "script": "smoke-p67.mjs",
+      "ms": 1302
+    },
+    {
+      "script": "smoke-p69.mjs",
+      "ms": 1843
+    },
+    {
+      "script": "smoke-p70.mjs",
+      "ms": 7356
+    },
+    {
+      "script": "smoke-p74.mjs",
+      "ms": 5273
+    },
+    {
+      "script": "smoke-p75.mjs",
+      "ms": 2652
+    },
+    {
+      "script": "smoke-p76.mjs",
+      "ms": 31176
+    },
+    {
+      "script": "smoke-p77.mjs",
+      "ms": 251
+    },
+    {
+      "script": "smoke-p78.mjs",
+      "ms": 112
+    },
+    {
+      "script": "smoke-p79.mjs",
+      "ms": 568
+    },
+    {
+      "script": "smoke-p80.mjs",
+      "ms": 459
+    },
+    {
+      "script": "smoke-p81.mjs",
+      "ms": 954
+    },
+    {
+      "script": "smoke-p82.mjs",
+      "ms": 181
+    },
+    {
+      "script": "smoke-p83.mjs",
+      "ms": 1470
+    },
+    {
+      "script": "smoke-p84.mjs",
+      "ms": 702
+    },
+    {
+      "script": "smoke-p85.mjs",
+      "ms": 496
+    },
+    {
+      "script": "smoke-p86.mjs",
+      "ms": 57
+    },
+    {
+      "script": "smoke-p87.mjs",
+      "ms": 549
+    },
+    {
+      "script": "smoke-p89.mjs",
+      "ms": 10011
+    },
+    {
+      "script": "smoke-p91.mjs",
+      "ms": 384
+    },
+    {
+      "script": "smoke-p92.mjs",
+      "ms": 1090
+    },
+    {
+      "script": "smoke-p93.mjs",
+      "ms": 6554
+    }
+  ],
+  "paidGenerationCalls": 0,
+  "costYuan": 0,
+  "packDryRun": {
+    "command": "npm pack --dry-run --json",
+    "version": "0.8.9",
+    "files": 57,
+    "snapshotWorkerIncluded": true,
+    "published": false
+  }
+}

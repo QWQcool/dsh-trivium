@@ -12,7 +12,7 @@
 | npm 发布包 | **`latest = 0.8.9`**，tag `v0.8.9`。实际产物与验收见[发布说明](../release-0.8.9.md)。 |
 | 发布分支 | `release/0.8.4`、`release/0.8.5` 保留为当时的发布快照；两个 store 修复已用 parity 提交搬回 main（`8801fd6`、`4b0ad42`），**不需要合并** |
 | 当前 main | 本版包含 #4 的预算和规则抽取开关、#5 的在线 TQL 与独立快照，以及 F88-R01/R02/R03/R06 修复。[公司机器验收](../reviews/0.8.9-RESULTS-2026-11-12.md) |
-| main 领先发布包 | 芯片批量写合并 flush，归档省去重复全文索引重建，芯片列表只取 payload。[归因、前后对比与剩余 F-LAT-01](../reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
+| main 领先发布包 | 芯片批量写合并 flush、归档免重建；向量严格验证、迟到写入保护、16 条批量回填；三类 live/snapshot 查询卡片。[写延迟](../reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) · [本地向量与只读查询验收](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 | 依赖 pin | `package.json` 要 `triviumdb@0.9.0`（正式版） |
 | 本机实际内核 | 两台机器都已是 **`0.9.0`**（Administrator 机 2026-11-05 用 `npm install` 对齐，之前是 0.8.11）。跑测前仍建议自己查一次 |
 | 宿主基线 | `@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证）；README 里的 `0.2.1-rc.4` 已同步改掉 |
@@ -23,7 +23,8 @@
 
 | 层 | 结论 | 证据 |
 |---|---|---|
-| 源码与成品 | `run-all` **86/86**（脚本合并后 120 文件）。585／5000 节点负载 **148/148**，严格成品安装 **13 项**，真实 DSH **23/23**，停宿主后的快照查询/体检及四个 CLI help 通过。 | [2026-11-12 公司验收](../reviews/0.8.9-RESULTS-2026-11-12.md) |
+| 0.8.9 成品 | 发布验收 `run-all` **86/86**。585／5000 节点负载 **148/148**，严格成品安装 **13 项**，真实 DSH **23/23**，停宿主后的快照查询/体检及四个 CLI help 通过。 | [2026-11-12 公司验收](../reviews/0.8.9-RESULTS-2026-11-12.md) |
+| 本轮源码 | `run-all` **85/85**；p98 断言并入 p89，scripts 仍 120。真实本地向量 5000/5000 回填并重开验证；32 问对照；真实 DSH 查询卡片与设置保存通过。 | [本地向量与查询结果](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 | 0.8.6 放行 | 收尾时 `run-all` **88/88**、`npm pack --dry-run` 49 文件、付费调用 0 次（¥0） | [`0.8.6-FINAL-RESULTS`](../archive/reviews/0.8.6-FINAL-RESULTS.md) |
 | 0.8.7 放行 | `main@f9d72e9` 上的拒绝保护阻塞项已修；真实插件入口回归（含 pending replay 全链路）与日期反例通过；脚本仍 119 | [`0.8.7-FINAL-RESULTS`](../reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) |
 | 真实模型 + 合成夹具 | A5：抽取命中 25/25、进库 25/25、新会话答对 21/25；A10：改口/否定各 10/10 | `A5-WIDER-BASELINE`、`A10-REGRESSION-N10` |
@@ -47,8 +48,8 @@
 
 | 事项 | 下一步 |
 |---|---|
-| 下一步投入 | 0.8.9 已交付工作区写入修复和读路径。按实际运维查询讨论只读面板，再依据压测区分查询、输出物化与写 flush 的成本。[投入依据](../reviews/0.8.9-RESULTS-2026-11-12.md#后续投入依据) |
-| P1 向量召回与语义去重 | 先核对 F-EMB-01 向量验证、F-EMB-02 迟到响应回写，再用有效端点做隔离检索对照，身份合并另跑正反例。[TDB 审查](../reviews/TDB-CAPABILITY-AUDIT-2026-11-12.md) · [身份语料](IDENTITY-CORPUS-2026-11-11.md) |
+| 下一步投入 | 先收集三类查询卡片的真实使用问题，再定大库扫描分页、上游异步查询/游标优先级。单次同步 flush 尖峰 F-LAT-01 仍在，内核和预算未改。[本轮结果与剩余事项](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
+| P1 向量召回与语义去重 | F-EMB-01/02 已修并实测；本地 GTE 在小语料提升召回，但同事实与冲突事实 cosine 明显重叠，合并继续关闭。原始 Ollama 模型包的 embedding 元数据缺失，实测使用同权重显式运行器。[本地结果](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) · [身份语料](IDENTITY-CORPUS-2026-11-11.md) |
 | P3 Router 常驻化 | 只读继承和 Router 原型已跑通，`scopeInheritance` 默认关。宿主提供 Router/Worker 接口后再做常驻集成。[只读继承](evidence-write-provenance/S1/INHERIT-READ-2026-11-03/README.md) · [三 Worker 结果](evidence-write-provenance/S1/THREE-WORKERS-2026-11-03/README.md) |
 | R3 同质量净费用 | 第二片 S3 长尾于 11 月 1 日复测通过，第三片仍需真实宿主的 S2 边级证据。 |
 | B 站 E1-B 与 REFERENCE | 前者等对方扩展点。后者的 A5 为 4/5，需人工复判“先否定后纠正”的回答。 |

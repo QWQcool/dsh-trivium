@@ -1,0 +1,87 @@
+{
+  "kernel": "0.9.0",
+  "nodes": 5000,
+  "vectorsPerRound": 128,
+  "rounds": 3,
+  "networkCalls": 0,
+  "costYuan": 0,
+  "note": "Cached real vectors in identical isolated stores; measures read/update/flush cost, not full backfill.",
+  "per-vector": {
+    "elapsed": {
+      "count": 3,
+      "p50Ms": 17465.645500000006,
+      "p95Ms": 17649.6318
+    },
+    "samples": [
+      {
+        "round": 0,
+        "elapsedMs": 17649.6318,
+        "flushes": 128,
+        "flush": {
+          "count": 128,
+          "p50Ms": 118.10379999999896,
+          "p95Ms": 175.36089999999967
+        }
+      },
+      {
+        "round": 1,
+        "elapsedMs": 17420.154899999998,
+        "flushes": 128,
+        "flush": {
+          "count": 128,
+          "p50Ms": 116.40639999999985,
+          "p95Ms": 248.92009999999573
+        }
+      },
+      {
+        "round": 2,
+        "elapsedMs": 17465.645500000006,
+        "flushes": 128,
+        "flush": {
+          "count": 128,
+          "p50Ms": 115.62430000000313,
+          "p95Ms": 311.38410000000295
+        }
+      }
+    ]
+  },
+  "batch-16": {
+    "elapsed": {
+      "count": 3,
+      "p50Ms": 919.5273000000016,
+      "p95Ms": 1786.9930999999997
+    },
+    "samples": [
+      {
+        "round": 0,
+        "elapsedMs": 897.1564999999973,
+        "flushes": 8,
+        "flush": {
+          "count": 8,
+          "p50Ms": 109.24430000000211,
+          "p95Ms": 121.18190000000322
+        }
+      },
+      {
+        "round": 1,
+        "elapsedMs": 1786.9930999999997,
+        "flushes": 8,
+        "flush": {
+          "count": 8,
+          "p50Ms": 132.69120000000112,
+          "p95Ms": 499.5053000000007
+        }
+      },
+      {
+        "round": 2,
+        "elapsedMs": 919.5273000000016,
+        "flushes": 8,
+        "flush": {
+          "count": 8,
+          "p50Ms": 108.72140000000218,
+          "p95Ms": 126.11469999999827
+        }
+      }
+    ]
+  }
+}

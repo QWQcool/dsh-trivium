@@ -1,0 +1,116 @@
+[
+  {
+    "width": 1440,
+    "case": "live-current",
+    "status": 200,
+    "source": "live",
+    "rows": 50,
+    "truncated": true,
+    "asOf": "2026-11-12T05:50:29.739Z"
+  },
+  {
+    "width": 1440,
+    "case": "one-hop",
+    "status": 200,
+    "rows": [
+      "9"
+    ]
+  },
+  {
+    "width": 1440,
+    "case": "orphans",
+    "status": 200,
+    "rows": [
+      "3"
+    ],
+    "completeScan": true
+  },
+  {
+    "width": 1440,
+    "case": "snapshot-orphans",
+    "status": 200,
+    "source": "snapshot",
+    "snapshotId": "snapshot-f9b74bac-2e2c-4adf-8009-04f8862c13a8",
+    "timeBasis": "snapshot-capture",
+    "asOf": "2026-11-12T05:50:30.650Z",
+    "capturedAt": "2026-11-12T05:50:30.650Z",
+    "rows": [
+      "3"
+    ]
+  },
+  {
+    "width": 1440,
+    "case": "invalid-limit",
+    "status": 400,
+    "code": "READ_QUERY_INVALID_INPUT",
+    "visibleText": "事实查询\n只读\n\n查看当前事实、直接关系或孤立实体。不调用模型，也不请求 embedding。\n\n查询内容\n当前事实\n1 跳关系\n孤立实体\n数据来源\nlive · 宿主当前数据\nsnapshot · 固定快照\n精确名称（可选）\n最多返回条数\n检查当前有效的实体是否缺少业务关系；工作区归属边不算关系。\n快照 ID（留空选最新）\n运行查询\n创建并选用快照\n复制当前数据库到独立快照。已有快照不会随之后的编辑更新。\nlimit must be an integer between 1 and 1000.\n400 · READ_QUERY_INVALID_INPUT"
+  },
+  {
+    "width": 1440,
+    "case": "budget-error",
+    "status": 422,
+    "code": "READ_QUERY_WORK_LIMIT",
+    "visibleText": "事实查询\n只读\n\n查看当前事实、直接关系或孤立实体。不调用模型，也不请求 embedding。\n\n查询内容\n当前事实\n1 跳关系\n孤立实体\n数据来源\nlive · 宿主当前数据\nsnapshot · 固定快照\n精确名称（可选）\n事实类型\n全部\nentity\npreference\ndecision\nexperience\n最多返回条数\n排除已归档、已过期和已被替换的历史版本。待确认提案仍按现有事实显示。\n快照 ID（留空选最新）\n运行查询\n创建并选用快照\n复制当前数据库到独立快照。已有快照不会随之后的编辑更新。\n查询超出工作预算，未返回部分结果。请填写精确名称或缩小关系范围；快照查询也保留预算限制。\n422 · READ_QUERY_WORK_LIMIT"
+  },
+  {
+    "width": 1440,
+    "pageErrors": []
+  },
+  {
+    "width": 760,
+    "case": "live-current",
+    "status": 200,
+    "source": "live",
+    "rows": 50,
+    "truncated": true,
+    "asOf": "2026-11-12T05:50:36.501Z"
+  },
+  {
+    "width": 760,
+    "case": "one-hop",
+    "status": 200,
+    "rows": [
+      "9"
+    ]
+  },
+  {
+    "width": 760,
+    "case": "orphans",
+    "status": 200,
+    "rows": [
+      "3"
+    ],
+    "completeScan": true
+  },
+  {
+    "width": 760,
+    "case": "snapshot-orphans",
+    "status": 200,
+    "source": "snapshot",
+    "snapshotId": "snapshot-bb5c9a08-9547-4c87-a1f1-ef838417cc87",
+    "timeBasis": "snapshot-capture",
+    "asOf": "2026-11-12T05:50:37.380Z",
+    "capturedAt": "2026-11-12T05:50:37.380Z",
+    "rows": [
+      "3"
+    ]
+  },
+  {
+    "width": 760,
+    "case": "invalid-limit",
+    "status": 400,
+    "code": "READ_QUERY_INVALID_INPUT",
+    "visibleText": "事实查询\n只读\n\n查看当前事实、直接关系或孤立实体。不调用模型，也不请求 embedding。\n\n查询内容\n当前事实\n1 跳关系\n孤立实体\n数据来源\nlive · 宿主当前数据\nsnapshot · 固定快照\n精确名称（可选）\n最多返回条数\n检查当前有效的实体是否缺少业务关系；工作区归属边不算关系。\n快照 ID（留空选最新）\n运行查询\n创建并选用快照\n复制当前数据库到独立快照。已有快照不会随之后的编辑更新。\nlimit must be an integer between 1 and 1000.\n400 · READ_QUERY_INVALID_INPUT"
+  },
+  {
+    "width": 760,
+    "case": "budget-error",
+    "status": 422,
+    "code": "READ_QUERY_WORK_LIMIT",
+    "visibleText": "事实查询\n只读\n\n查看当前事实、直接关系或孤立实体。不调用模型，也不请求 embedding。\n\n查询内容\n当前事实\n1 跳关系\n孤立实体\n数据来源\nlive · 宿主当前数据\nsnapshot · 固定快照\n精确名称（可选）\n事实类型\n全部\nentity\npreference\ndecision\nexperience\n最多返回条数\n排除已归档、已过期和已被替换的历史版本。待确认提案仍按现有事实显示。\n快照 ID（留空选最新）\n运行查询\n创建并选用快照\n复制当前数据库到独立快照。已有快照不会随之后的编辑更新。\n查询超出工作预算，未返回部分结果。请填写精确名称或缩小关系范围；快照查询也保留预算限制。\n422 · READ_QUERY_WORK_LIMIT"
+  },
+  {
+    "width": 760,
+    "pageErrors": []
+  }
+]
