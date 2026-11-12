@@ -22,7 +22,7 @@
 
 | 层 | 结论 | 证据 |
 |---|---|---|
-| 源码与成品 | `run-all` **92/92**。585／5000 节点负载实验 **148/148**。严格 peer 安装后的包检查 **13 项**，HTTP／CLI 检查 **14 项**。 | 2026-11-12 本机实跑，真实宿主走查安排在公司最终候选包验收。 |
+| 源码与成品 | `run-all` **86/86**（脚本合并后 120 文件）。585／5000 节点负载 **148/148**，严格成品安装 **13 项**，真实 DSH **23/23**，停宿主后的快照查询/体检及四个 CLI help 通过。 | [2026-11-12 公司验收](../reviews/0.8.9-RESULTS-2026-11-12.md) |
 | 0.8.6 放行 | 收尾时 `run-all` **88/88**、`npm pack --dry-run` 49 文件、付费调用 0 次（¥0） | [`0.8.6-FINAL-RESULTS`](../archive/reviews/0.8.6-FINAL-RESULTS.md) |
 | 0.8.7 放行 | `main@f9d72e9` 上的拒绝保护阻塞项已修；真实插件入口回归（含 pending replay 全链路）与日期反例通过；脚本仍 119 | [`0.8.7-FINAL-RESULTS`](../reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) |
 | 真实模型 + 合成夹具 | A5：抽取命中 25/25、进库 25/25、新会话答对 21/25；A10：改口/否定各 10/10 | `A5-WIDER-BASELINE`、`A10-REGRESSION-N10` |
@@ -46,7 +46,7 @@
 
 | 事项 | 下一步 |
 |---|---|
-| 下一包 | 先处理 F88-01 切库后可能操作旧提案的问题，再补保持原样的审计行和外部导入部分提交回执。[复现、交互稿与放行顺序](../design/MEMORY-PANEL-2026-11-11.html#order) |
+| 下一步投入 | 0.8.9 已交付工作区写入修复和读路径。按实际运维查询讨论只读面板，再依据压测区分查询、输出物化与写 flush 的成本。[投入依据](../reviews/0.8.9-RESULTS-2026-11-12.md#后续投入依据) |
 | P1 语义去重 | 等可用 embedding 端点，再用同一组正反例复测。[身份语料与阈值结果](IDENTITY-CORPUS-2026-11-11.md) |
 | P3 Router 常驻化 | 只读继承和 Router 原型已跑通，`scopeInheritance` 默认关。宿主提供 Router/Worker 接口后再做常驻集成。[只读继承](evidence-write-provenance/S1/INHERIT-READ-2026-11-03/README.md) · [三 Worker 结果](evidence-write-provenance/S1/THREE-WORKERS-2026-11-03/README.md) |
 | R3 同质量净费用 | 第二片 S3 长尾于 11 月 1 日复测通过，第三片仍需真实宿主的 S2 边级证据。 |

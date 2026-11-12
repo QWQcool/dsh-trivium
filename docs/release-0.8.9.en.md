@@ -26,4 +26,14 @@ Run `dsh plugin --profile web add dsh-trivium@0.8.9` and restart the host. Stand
 
 The kernel remains triviumdb 0.9.0. Existing 0.8.8 data uses the same format. Disputed automatic edges from 0.8.6 can be revoked individually. The READMEs retain the full backup requirements for older format upgrades.
 
-The [company-machine acceptance record](reviews/0.8.9-RESULTS-2026-11-12.md) documents regression, load, package installation and real-host checks. Publication time, candidate commit and tarball integrity are added after registry verification.
+The [company-machine acceptance record](reviews/0.8.9-RESULTS-2026-11-12.md) documents regression, load, package installation and real-host checks.
+
+## Publication receipt
+
+- npm latest is **0.8.9**, published **2026-11-12T02:18:47.968Z**.
+- Accepted source and the remote annotated tag v0.8.9 identify **63d4db2e1888fb2eaf93076ed68df1f302837d62**.
+- Published tarball **291567 bytes, 57 files**. Source, archive and strict installation match byte for byte. CLI files use LF to preserve bytes through npm installation.
+- SHA-1 `0fd2ba389c96bde358f94a55a37211ba4ed5535a`.
+- Integrity `sha512-IdoG+PEIyqi0JOzviCjwnS7OF2mvRBQ+7g+6VuA8B2fVmetw4HrQG6khG2ISjCjxFl2PSSdcnXDnlLywI2YqHA==`.
+- A fresh registry tarball download has the accepted SHA-512. Registry metadata omits gitHead for this tarball publication, so the commit, immutable tag and file/integrity comparison establish provenance.
+- The [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.8.9) attaches the same tarball. The [issue #5 reply](https://github.com/QWQcool/dsh-trivium/issues/5#issuecomment-6812483522) records the upgrade command and limits.

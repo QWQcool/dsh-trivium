@@ -1,5 +1,7 @@
 # 公司电脑接手与 npm 发布交接（2026-11-12）
 
+> 执行回执已完成，npm 0.8.9 发布与验收见[公司机器结果](reviews/0.8.9-RESULTS-2026-11-12.md)和[发布回执](release-0.8.9.md#发布回执)。脚本按本机上限合并，原 p93–p97 均在 p93 中运行。以下正文保留交接时的命令与结果。
+
 源码：[QWQcool/dsh-trivium](https://github.com/QWQcool/dsh-trivium)，**直接交付 `origin/main`，不走 PR**。起点 `aec511e` 已含 #4、#6；本轮功能提交 **`9d7b96a0eec85e0dc07daa7273f50b76352f062c`**（`feat(read)`）增加在线自由只读 TQL。开发分支 `codex/live-read-tql` 仅供追溯。
 
 **已验**：最终全套 **92/92**，p96 **27/27**、p97 **26/26**，bench **148/148**（585／5000 节点各 74 项）；585 节点／1536 维合成库复现 Issue 原样 JOIN，默认 limit=200 返回 12 行，执行器结果 JSON 约 75 KiB（字节预算截断）。干净目录严格安装真实 llm/tools **0.2.1-rc.4**、内核 **0.9.0**，verify-package **13 项**及成品 HTTP/CLI **14 项**通过。

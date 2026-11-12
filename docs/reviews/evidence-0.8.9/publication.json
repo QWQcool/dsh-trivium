@@ -1,0 +1,14 @@
+{
+  "version": "0.8.9",
+  "latest": "0.8.9",
+  "publishedAt": "2026-11-12T02:18:47.968Z",
+  "gitHead": null,
+  "candidate": "63d4db2e1888fb2eaf93076ed68df1f302837d62",
+  "shasum": "0fd2ba389c96bde358f94a55a37211ba4ed5535a",
+  "integrity": "sha512-IdoG+PEIyqi0JOzviCjwnS7OF2mvRBQ+7g+6VuA8B2fVmetw4HrQG6khG2ISjCjxFl2PSSdcnXDnlLywI2YqHA==",
+  "size": 291567,
+  "fileCount": 57,
+  "downloadHashMatches": true,
+  "tag": "v0.8.9",
+  "issueComment": "https://github.com/QWQcool/dsh-trivium/issues/5#issuecomment-6812483522"
+}

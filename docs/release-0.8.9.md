@@ -30,4 +30,14 @@
 
 内核固定为 triviumdb 0.9.0。0.8.8 到本版沿用现有数据格式。0.8.6 建立的自动边按需要逐条撤销。更早格式升级的整组备份要求见双语 README。
 
-公司机器的回归、负载、成品安装和真实宿主结果见[0.8.9 验收记录](reviews/0.8.9-RESULTS-2026-11-12.md)。发布时间、候选提交及 tgz 完整性在 registry 核验后追加到本页。
+公司机器的回归、负载、成品安装和真实宿主结果见[0.8.9 验收记录](reviews/0.8.9-RESULTS-2026-11-12.md)。
+
+## 发布回执
+
+- npm latest 为 **0.8.9**，发布时间 **2026-11-12T02:18:47.968Z**（北京时间 10:18:47）。
+- 已验收提交与远端 annotated tag v0.8.9 均指向 **63d4db2e1888fb2eaf93076ed68df1f302837d62**。
+- 实际发布 tgz 为 **291567 字节、57 文件**。源码、归档与严格安装后的文件逐字节一致。CLI 使用 LF，避免 npm 安装时改写 shebang。
+- SHA-1 为 `0fd2ba389c96bde358f94a55a37211ba4ed5535a`。
+- Integrity 为 `sha512-IdoG+PEIyqi0JOzviCjwnS7OF2mvRBQ+7g+6VuA8B2fVmetw4HrQG6khG2ISjCjxFl2PSSdcnXDnlLywI2YqHA==`。
+- 再次下载 registry tgz，SHA-512 与已验产物一致。tarball 发布的 registry 元数据未提供 gitHead，来源由提交、tag 和文件/完整性比对确认。
+- [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.8.9) 已附同一 tgz。[Issue #5 发布回复](https://github.com/QWQcool/dsh-trivium/issues/5#issuecomment-6812483522) 已写明版本、升级命令与边界。
