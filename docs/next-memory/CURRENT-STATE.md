@@ -12,7 +12,7 @@
 | npm 发布包 | **`latest = 0.8.9`**，tag `v0.8.9`。实际产物与验收见[发布说明](../release-0.8.9.md)。 |
 | 发布分支 | `release/0.8.4`、`release/0.8.5` 保留为当时的发布快照；两个 store 修复已用 parity 提交搬回 main（`8801fd6`、`4b0ad42`），**不需要合并** |
 | 当前 main | 本版包含 #4 的预算和规则抽取开关、#5 的在线 TQL 与独立快照，以及 F88-R01/R02/R03/R06 修复。[公司机器验收](../reviews/0.8.9-RESULTS-2026-11-12.md) |
-| main 领先发布包 | 芯片批量写、向量保护与回填、三类查询卡片；独立实体范围只读后端已验收，显式 semantic 请求，两路分别返回，未接入工具/自动召回/UI。[实体后端](../reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) · [写延迟](../reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) · [本地向量与查询](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
+| main 领先发布包 | 芯片批量写、向量保护与回填、三类查询卡片；独立实体范围只读后端已验收，显式 semantic 请求，两路分别返回；**2026-11-13 加了设置页只读入口**（面板未真机走查），仍未接入工具/自动召回/融合排序。[实体后端](../reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) · [面板入口](../reviews/ENTITY-SEARCH-PANEL-2026-11-13.md) · [写延迟](../reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) · [本地向量与查询](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 | 依赖 pin | `package.json` 要 `triviumdb@0.9.0`（正式版） |
 | 本机实际内核 | 两台机器都已是 **`0.9.0`**（Administrator 机 2026-11-05 用 `npm install` 对齐，之前是 0.8.11）。跑测前仍建议自己查一次 |
 | 宿主基线 | `@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证）；README 里的 `0.2.1-rc.4` 已同步改掉 |
@@ -26,6 +26,7 @@
 | 0.8.9 成品 | 发布验收 `run-all` **86/86**。585／5000 节点负载 **148/148**，严格成品安装 **13 项**，真实 DSH **23/23**，停宿主后的快照查询/体检及四个 CLI help 通过。 | [2026-11-12 公司验收](../reviews/0.8.9-RESULTS-2026-11-12.md) |
 | 本轮源码 | `run-all` **85/85**；p98 断言并入 p89，scripts 仍 120。真实本地向量 5000/5000 回填并重开验证；32 问对照；真实 DSH 查询卡片与设置保存通过。 | [本地向量与查询结果](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 | 实体范围后端 | 新增协议/并发段 **35/35**，冻结新题 live/snapshot 各24道有答案题语义首选命中24/24；4道无答案/无关系题不确认答案。实际HTTP与独立worker通过，真实DSH三次HTTP通过。属于合成候选检索验收，不代表生成回答准确率。 | [接口、新题与边界](../reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) |
+| 实体范围面板 | 只读卡片挂在「上下文」页；全量回归 **85/85**，p78 结构渲染 **56/56**，请求体通过端点校验。**未做真实宿主点击走查**（无新增 UI 测试）。 | [面板入口与边界](../reviews/ENTITY-SEARCH-PANEL-2026-11-13.md) |
 | 0.8.6 放行 | 收尾时 `run-all` **88/88**、`npm pack --dry-run` 49 文件、付费调用 0 次（¥0） | [`0.8.6-FINAL-RESULTS`](../archive/reviews/0.8.6-FINAL-RESULTS.md) |
 | 0.8.7 放行 | `main@f9d72e9` 上的拒绝保护阻塞项已修；真实插件入口回归（含 pending replay 全链路）与日期反例通过；脚本仍 119 | [`0.8.7-FINAL-RESULTS`](../reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) |
 | 真实模型 + 合成夹具 | A5：抽取命中 25/25、进库 25/25、新会话答对 21/25；A10：改口/否定各 10/10 | `A5-WIDER-BASELINE`、`A10-REGRESSION-N10` |
@@ -50,7 +51,7 @@
 | 事项 | 下一步 |
 |---|---|
 | 下一步投入 | 先收集三类查询卡片的真实使用问题，再定大库扫描分页、上游异步查询/游标优先级。单次同步 flush 尖峰 F-LAT-01 仍在，内核和预算未改。[本轮结果与剩余事项](../reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
-| P1 向量召回与语义去重 | F-EMB-01/02 已修；F-EMB-04 已归因，实体范围独立后端已实现并验收两路候选，**尚未选择融合排序或接入工具**。无答案近邻和同实体文本噪声仍在，相似度身份合并继续关闭。[后端结果](../reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) · [范围实验](../reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) · [归因对照](../reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md) |
+| P1 向量召回与语义去重 | F-EMB-01/02 已修；F-EMB-04 已归因，实体范围独立后端已实现并验收两路候选，2026-11-13 加了设置页只读入口；**尚未选择融合排序或接入工具**。无答案近邻和同实体文本噪声仍在，相似度身份合并继续关闭。[后端结果](../reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) · [面板入口](../reviews/ENTITY-SEARCH-PANEL-2026-11-13.md) · [范围实验](../reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) · [归因对照](../reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md) |
 | P3 Router 常驻化 | 只读继承和 Router 原型已跑通，`scopeInheritance` 默认关。宿主提供 Router/Worker 接口后再做常驻集成。[只读继承](evidence-write-provenance/S1/INHERIT-READ-2026-11-03/README.md) · [三 Worker 结果](evidence-write-provenance/S1/THREE-WORKERS-2026-11-03/README.md) |
 | R3 同质量净费用 | 第二片 S3 长尾于 11 月 1 日复测通过，第三片仍需真实宿主的 S2 边级证据。 |
 | B 站 E1-B 与 REFERENCE | 前者等对方扩展点。后者的 A5 为 4/5，需人工复判“先否定后纠正”的回答。 |

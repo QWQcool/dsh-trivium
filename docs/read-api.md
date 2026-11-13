@@ -212,12 +212,21 @@ parent wall-clock deadline. Provider calls are brokered by the host; connection
 configuration/keys are not sent through the worker protocol and common provider
 credential environment variables are stripped. This endpoint writes no facts,
 vectors, links, indexes, heat or delivery ledgers. It does not modify `ctx_find`,
-automatic recall, existing fixed-query semantics or UI.
+automatic recall or existing fixed-query semantics.
+
+A read-only card in Settings → Context is a separate client of this endpoint: it
+sends the explicit workspace, shows the two candidate channels side by side with
+their own truncation flags and score kinds, and surfaces the endpoint's error
+codes. It adds no caching, retry, merged ranking or answer confidence, and clears
+its state when the workspace changes. The HTTP contract above is unchanged by
+that entry.
 
 Stored-vector model compatibility is still the operator's responsibility after
 a model change/backfill; this endpoint does not infer a model from dimension or
 invent calibrated relevance thresholds. Acceptance and remaining limits are in
-the [backend report](reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md).
+the [backend report](reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md); the panel
+entry and its verification are in the
+[panel report](reviews/ENTITY-SEARCH-PANEL-2026-11-13.md).
 
 ## Capturing a stable snapshot
 
