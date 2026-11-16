@@ -11,8 +11,8 @@
  * release notes have to exist, and the index has to agree.
  */
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -71,7 +71,7 @@ check(() => {
 }, 'no living document still advertises an older published version');
 
 check(() => {
-  const state = read('docs/next-memory/CURRENT-STATE.md');
+  const state = read('docs/CURRENT-STATE.md');
   assert.match(state, new RegExp(`latest = ${escaping}|latest=\`?${escaping}`), `CURRENT-STATE does not mention latest ${version}`);
 }, 'the current-state page names the published version');
 
@@ -82,7 +82,7 @@ check(() => {
    * forms are skipped before matching — this check is for the assertion, not for
    * the word.
    */
-  for (const file of ['docs/README.md', 'docs/next-memory/CURRENT-STATE.md']) {
+  for (const file of ['docs/README.md', 'docs/CURRENT-STATE.md']) {
     const lines = read(file).split('\n');
     const stale = lines.filter((line) => new RegExp(escaping).test(line)
       && /未发布|尚未发布|not published/i.test(line)
@@ -96,6 +96,29 @@ check(() => {
   // The notes have to say what shipped, not that it is planned.
   assert.doesNotMatch(notes, /待发布|尚未发布|not published/i, `docs/release-${version}.md still reads as a plan`);
 }, 'the release notes are written as a record, not a plan');
+
+check(() => {
+  function markdownFiles(dir) {
+    return readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
+      const path = join(dir, entry.name);
+      return entry.isDirectory() ? markdownFiles(path) : entry.name.endsWith('.md') ? [path] : [];
+    });
+  }
+  const files = ['README.md', 'README.zh-CN.md', 'PLAN.md', 'PLAN-session-map.md'].map(file => join(ROOT, file));
+  files.push(...markdownFiles(join(ROOT, 'docs')));
+  const missing = [];
+  for (const file of files) {
+    const prose = readFileSync(file, 'utf8').replace(/```[\s\S]*?```|~~~[\s\S]*?~~~/g, '');
+    for (const match of prose.matchAll(/!?\[[^\]]*\]\((?:<([^>]+)>|([^\s)]+))(?:\s+["'][^"']*["'])?\)/g)) {
+      const target = match[1] || match[2];
+      if (/^(?:[a-z][a-z0-9+.-]*:|#)/i.test(target)) continue;
+      const pathname = decodeURIComponent(target.split(/[?#]/)[0]);
+      const resolved = pathname.startsWith('/') ? resolve(ROOT, '.' + pathname) : resolve(dirname(file), pathname);
+      if (!existsSync(resolved)) missing.push(`${file}: ${target}`);
+    }
+  }
+  assert.deepEqual(missing, [], 'Missing local documentation targets:\n' + missing.join('\n'));
+}, 'all local Markdown links and image targets exist');
 
 console.log(`P91: ${checks - failures}/${checks}`);
 if (failures) process.exitCode = 1;

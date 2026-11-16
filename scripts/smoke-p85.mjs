@@ -1,7 +1,7 @@
 /**
  * p85 — the stage 1 switch, and the promise that "off means 0.8.3".
  *
- * `ROADMAP-AND-SUPERAGENT.md` §160 requires an escape hatch: scope inheritance and
+ * `docs/ROADMAP.md` 的 Super Agent 适配约束 requires an escape hatch: scope inheritance and
  * the multi-writer router must be behind a switch that is **off by default**, and
  * with the switch off the plugin must behave exactly like 0.8.3.
  *

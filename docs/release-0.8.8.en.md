@@ -1,5 +1,7 @@
 # dsh-trivium 0.8.8
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](DEVELOPMENT.md)。
+
 **A write-correctness patch plus a panel re-layout.** 0.8.7 turned replacements into proposals; this
 release fixes the three edges where proposals still went wrong in real use (workspace switching,
 cross-library tokens, missing audit rows), and puts the work first on the Activity page.

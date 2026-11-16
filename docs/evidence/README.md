@@ -1,14 +1,14 @@
 # 历史测试数据（账本与已知局限）
 
-> R1/R2 审查确认这些文件哈希完整，但部分实验设计/评分不可靠；旧抽取文件也没有完整候选。**完整性不等于结论有效。** 当时的修复见 [R1/R2 结果](../archive/next-memory/R1-R2-RESULTS.md)，当前版本和后续验证见[文档入口](../README.md)；历史文件不覆盖。
+> R1/R2 审查确认这些文件哈希完整，但部分实验设计/评分不可靠；旧抽取文件也没有完整候选。**完整性不等于结论有效。** 当时的修复见 [R1/R2 结果](../HISTORY.md)，当前版本和后续验证见[文档入口](../README.md)；历史文件不覆盖。
 
-> 下方付费重跑命令是历史记录，其中第一条的预算超过本机单次上限，**不要直接执行**。如需重新设计实验，应明确指定不超过 ¥3 的单次预算，检查当日累计费用并保留新证据；预算不足时停止，不得覆盖历史结果。
+> 付费重跑须另定真实模型、预算和停止条件；本页只提供离线复核入口，旧网络调用保留在账本，不作为当前执行指令。
 
 这里保存 2026-10-29 部分历史实验账本，并非项目全部对外数据的来源。各文件记录当时可采集的回答、usage、判分和注入量；早期抽取文件不含完整候选，实验设计也有已知缺陷。A 系列等后续证据位于 `docs/next-memory/evidence-*`，请从相应结果报告追溯。
 
 - 生成时间：2026-10-29
 - 价目来源：[DeepSeek 官方价格页](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/)
-- 成本口径：**谷价（空闲时段）**，峰价同时记录；见 [COST-MODEL.md](../next-memory/COST-MODEL.md)
+- 成本口径：**谷价（空闲时段）**，峰价同时记录；见 [COST-MODEL.md](../COST-MODEL.md)
 - 校验：`manifest.json` 里每个文件都有 `sha256` 与调用数；文件名带日期，不覆盖历史
 
 ## 数据集
@@ -34,10 +34,7 @@ node scripts/verify-evidence.mjs
 # 2. 任意账本按谷价重算
 node scripts/cost-normalize.mjs --out=.tmp/recheck.json docs/evidence/2026-10-29-d1-10turn-compaction.json
 
-# 3. 重新跑（要 DEEPSEEK_API_KEY，费用按谷价量级）
-node scripts/bench-c4.mjs --run --reps=3 --budget=12 --out=.tmp/c4/step1.json
-node scripts/bench-d1.mjs --run --budget=3 --turns=10 --out=.tmp/c4/d1-10b.json
-node scripts/bench-extract-cost.mjs --run --budget=2 --out=.tmp/c4/extract.json
+# 3. 需要新实验时，先按 docs/DEVELOPMENT.md 与 ROADMAP.md 选择场景和预算
 ```
 
 重新生成证据包：`node scripts/pack-evidence.mjs`（保留请求/回答/候选；遇到已存在且不同的历史文件会拒绝覆盖，使用新的 --out-dir）。

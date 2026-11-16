@@ -1,5 +1,7 @@
 # 0.8.6 — Context pipeline
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](DEVELOPMENT.md)。
+
 2026-11-06. The kernel upgrade (`triviumdb@0.9.0`) shipped separately in **0.8.5**, so a problem can be
 attributed to the kernel or to a behaviour change without guessing. **0.8.6 does not upgrade the kernel**:
 it is still `0.9.0`. This release is the pipeline behaviour. The kernel section below is 0.8.5 history,
@@ -145,7 +147,7 @@ Unchanged switch values do **not** mean unchanged default behaviour: the identit
 
 `node scripts/run-all.mjs` → **88/88**; package dry-run passed. These are offline results for the final local closeout.
 
-Final commands and outcomes are recorded in [the 0.8.6 release gate](archive/reviews/0.8.6-FINAL-RESULTS.md).
+Final commands and outcomes are recorded in [the 0.8.6 release gate](HISTORY.md).
 The seven scoring checks and three budget checks from `p88` now live in `p75` / `p74`; effective assertions
 are retained. The runner now discovers 88 scripts and `scripts/` contains 120 `.mjs` files.
 Targeted results: `p74` **39/39**, `p75` **51/51**, `p83` **14/14**.

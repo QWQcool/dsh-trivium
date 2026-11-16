@@ -1,5 +1,7 @@
 # 5000 节点写入延迟归因与插件侧优化
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](../CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](../DEVELOPMENT.md)。
+
 2026-11-12。基线为已发布 0.8.9 后的 main@daac859。Node 24.15.0，triviumdb 0.9.0，Windows x64 原生二进制 SHA-256 为 b5a7d6f30820d2a4b91aa8a18d5b63ebccd3f07baeae7f87883bb4fa9f74f9ab。模型调用 0 次，费用 ¥0。
 
 ## 原来的 288ms → 807ms 怎样解释

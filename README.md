@@ -55,7 +55,7 @@ If you launch DSH with [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart), 
 Local source checkout:
 
 ```sh
-npm install
+npm ci
 node scripts/link-dsh.mjs
 npm test              # optional: runs every offline smoke script
 ```
@@ -143,7 +143,7 @@ Trivium is a memory kernel, not a journal, calendar, or chat companion. It store
 
 The session map is limited to 400 estimated tokens. When chips or automatic recall are enabled, pins, recall and corrections share 300 estimated tokens per turn; tools can fetch full text on demand. These limits exclude tool schemas and responses, model answers and background extraction; they are not a cap on the total request or bill.
 
-In a test workspace, ask the agent in session A to remember a project decision and link it to an entity. Start session B in the **same** workspace, ask it to find that entity with `ctx_find`, then inspect the returned path and read the fact with `ctx_read`. The [reproducible example](docs/archive/guide-example.md) explains the steps, cleanup, and expected limits. Actual extraction and model tool choice are not guaranteed.
+In a test workspace, ask the agent in session A to remember a project decision and link it to an entity. Start session B in the **same** workspace, ask it to find that entity with `ctx_find`, then inspect the returned path and read the fact with `ctx_read`. The [reproducible example](docs/guide-example.md) explains the steps, cleanup, and expected limits. Actual extraction and model tool choice are not guaranteed.
 
 ### Under the hood
 
@@ -151,7 +151,7 @@ In a test workspace, ask the agent in session A to remember a project decision a
 - **Four tools only** — `ctx_find` / `ctx_read` / `ctx_remember` / `ctx_link`. Chips / session layer do not add a fifth.
 - **Injection via `agent.inject()`** — not the system prompt, so `persona.complete: true` cannot silently drop the map.
 - **Recall carries paths** — every hit says which node it came from and along which edge.
-- **Failure handling** — embedding failures fall back to keyword and graph retrieval; extraction failures can be queued for replay. Some storage failures still need attention; see the [known limits](docs/archive/next-memory/WRITE-PROVENANCE-RESULTS.md).
+- **Failure handling** — embedding failures fall back to keyword and graph retrieval; extraction failures can be queued for replay. Some storage failures still need attention; see the [known limits](docs/HISTORY.md).
 - **UI follows the host language** — Settings and the Chips (memory whitelist) tab switch with DSH `locale/change` (`zh` / `en`). Any other resolved host language — and a browser that names no registered language — falls to English, the same `FALLBACK_LOCALE` the host itself uses.
 - **First-turn map** — the short map is injected once per session. If `session-start` loses a race with the first model step, `pre-step` fills it in; it is not rewritten every step (prefix-cache friendly).
 
@@ -236,7 +236,7 @@ A memory knows where it came from only if the write recorded it (`kind`, session
 
 The recall check is read-only: it does not write, does not run a tool, and never requests an embedding. With no query vector it says the semantic channel did not run. Nothing on these tabs injects context or calls a model.
 
-### Querying while the host is running (source change, not yet released)
+### Querying while the host is running (released in 0.8.9)
 
 Send `{"tql":"MATCH (n)-[:about]->(hub) RETURN n, hub","params":{},"limit":200}`
 to `POST /api/dsh-trivium/query?cwd=...` to query the host's open workspace directly.
@@ -351,10 +351,10 @@ These results describe distinct test layers; they are not one overall accuracy s
 
 | Evidence | Result and boundary |
 |---|---|
-| Offline regression | Run `node scripts/run-all.mjs`. The [current source results](docs/next-memory/CURRENT-STATE.md) identify the revision tested. The [0.8.9 acceptance record](docs/reviews/0.8.9-RESULTS-2026-11-12.md) includes strict package installation, 23 real-host checks and 148 HTTP load checks. |
-| Extraction baseline, one real model | Five synthetic scenarios × five repetitions: **25/25** facts matched and entered the store; **21/25** subsequent-session answers passed in that earlier baseline. See [A5](docs/archive/next-memory/A5-WIDER-BASELINE-2026-10-30.md). |
-| Correction and negation, one real model | Two fixed synthetic scenarios each produced **10/10** correct new-session answers after fixes. Three negation setup runs hit a request cap, and some runs used agent-initiated writes; these are not a general automatic-extraction success rate. See [A10](docs/archive/next-memory/A10-REGRESSION-N10-2026-10-30.md). |
-| Change record and recovery | The October 30 run covered loopback HTTP, contention between processes, and browser component fixtures. [Results and limits](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md) |
+| Offline regression | Run `node scripts/run-all.mjs`. The [current source results](docs/CURRENT-STATE.md) identify the revision tested. The [0.8.9 acceptance record](docs/reviews/0.8.9-RESULTS-2026-11-12.md) includes strict package installation, 23 real-host checks and 148 HTTP load checks. |
+| Extraction baseline, one real model | Five synthetic scenarios × five repetitions: **25/25** facts matched and entered the store; **21/25** subsequent-session answers passed in that earlier baseline. See [A5](docs/HISTORY.md). |
+| Correction and negation, one real model | Two fixed synthetic scenarios each produced **10/10** correct new-session answers after fixes. Three negation setup runs hit a request cap, and some runs used agent-initiated writes; these are not a general automatic-extraction success rate. See [A10](docs/HISTORY.md). |
+| Change record and recovery | The October 30 run covered loopback HTTP, contention between processes, and browser component fixtures. [Results and limits](docs/HISTORY.md) |
 | Local embedding, newer source | On 36 hand-labelled synthetic memories and 32 questions, Top-1/Top-5 hits rose from **22/32, 25/32** (keyword + graph) to **27/32, 31/32** (local GTE vectors with query instructions). A separate real 5000-node backfill completed **5000/5000** in 117.7s, with 313 flushes and ¥0 cost. [Runtime setup, failures and limits](docs/reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 
 The write-path optimization measured at source commit `6d28ed5` follows the published npm 0.8.9 package. On one Windows machine with a synthetic 5000-node, 1536-dimensional store, 30 batches of eight archives produced:
@@ -374,9 +374,9 @@ The one mixed-retrieval Top-5 miss was traced to generic text matches in weighte
 
 Follow-up [scoped-text experiments](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) distinguish conditional native payload filtering from arbitrary ID-set text ranking, and evaluate payload fallbacks on declared relation truth. These are isolated diagnostics; tools and default retrieval remain unchanged.
 
-Newer source adds an explicit [entity-search HTTP backend](docs/read-api.md#explicit-entity-search-unreleased-source): choose an entity/workspace, receive separate lexical and semantic candidates, and opt in to query embeddings. It is not connected to tools or automatic recall and has no UI. [Frozen new-question acceptance and concurrency checks](docs/reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) cover live/snapshot reads; this endpoint is not in npm 0.8.9.
+Newer source adds an explicit [entity-search HTTP backend](docs/read-api.md#explicit-entity-search-unreleased-source): choose an entity/workspace, receive separate lexical and semantic candidates, and opt in to query embeddings. Newer source also has a read-only card on the Context page, pending a real-host interaction pass. It is not connected to tools or automatic recall. [Frozen new-question acceptance and concurrency checks](docs/reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) cover live/snapshot reads; this endpoint is not in npm 0.8.9.
 
-The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/archive/next-memory/POST-081-REVIEW.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
+The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/HISTORY.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 
 ## Changelog
 
@@ -415,7 +415,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 - `npx dsh-trivium-check <workspace>` — opens the graph **read-only** and reports `supersedes` self loops, cycles, forks, duplicate URIs, dangling endpoints and unresolvable chains. Exit code 0 clean, 2 issues, 1 cannot open.
 - `npx dsh-trivium-clear-until <workspace>` — dry run: lists stale decisions that still carry a deadline. `--apply` clears only deadlines whose text also appears in the body (the shape 0.4.21 produced from prose dates); `--apply --all` clears every stale deadline, including explicit ones. Close the host first — the kernel is single-writer.
 
-Local source checkout: `npm install`, then `node scripts/link-dsh.mjs`, then restart `dsh web`. `triviumdb` is a native module; if it will not install, check Node against `package.json` `engines` (`^22.19.0 || >=24`).
+Local source checkout: `npm ci`, then `node scripts/link-dsh.mjs`, then restart `dsh web`. `triviumdb` is a native module; if it will not install, check Node against `package.json` `engines` (`^22.19.0 || >=24`).
 
 ---
 

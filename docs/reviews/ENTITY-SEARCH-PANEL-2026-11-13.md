@@ -1,5 +1,7 @@
 # 实体范围检索的只读面板入口
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](../CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](../DEVELOPMENT.md)。
+
 2026-11-13。基线 `main@f2dcfe9`，TDB 0.9.0。本轮只加设置页「上下文」的一张只读卡片，复用已验收的 `POST /api/dsh-trivium/entity-search`。未改 `ctx_find`、工具 schema、自动召回、默认排序、后端校验与预算；未发版，未部署到常用宿主。
 
 ## 改了什么

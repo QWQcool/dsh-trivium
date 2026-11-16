@@ -1,5 +1,7 @@
 # 发布检查清单
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](DEVELOPMENT.md)。
+
 当前基线见 [文档入口](README.md)。本清单用于已经获用户授权的发布任务；日常文档整理、审查和本地修复不自动授权 npm 发布、推送或 issue 留言。
 
 每次发 npm 包按顺序执行。目的是避免 0.5.1 那次「README 里写着旧版本号、体检脚本没进包」的问题。
@@ -14,20 +16,20 @@
 
 - [ ] `npm version <x.y.z> --no-git-tag-version`，确认 `package.json` 与 `package-lock.json` 同步。
 - [ ] **四处版本声明一起改**（之前每次都漏一处）：`README.md` 横幅 + Release info、`README.zh-CN.md` 横幅 + 发布信息、
-  `docs/README.md` 发布状态表（含 tag）、`docs/next-memory/CURRENT-STATE.md` 的 `latest`。
+  `docs/README.md` 发布状态表（含 tag）、`docs/CURRENT-STATE.md` 的 `latest`。
 - [ ] `README.md` / `README.zh-CN.md`：
   - [ ] `## Release info` / `## 发布信息` 的包版本是新版本。
   - [ ] 更新说明（Changelog）顶部有新版本条目。
   - [ ] 新增的命令、参数、支持范围已经写进正文或排障章节。
 - [ ] `docs/release-<version>.md`（和 `.en.md`，如果上一版有英文）写成**回执**而不是计划：不出现"待发布/尚未发布"。
-- [ ] `docs/README.md` 的当前基线、`PLAN.md` 的内核／宿主与实际依赖一致；历史报告仍保留其原版本。
+- [ ] `docs/README.md`、`docs/CURRENT-STATE.md` 和 `PLAN.md` 的内核／宿主与实际依赖一致；更新 ROADMAP 的完成状态，历史结果保留原测量日期。
 - [ ] **`node scripts/smoke-p91.mjs` 必须通过**——它就是上面这些声明的自动检查，版本没同步会直接失败。
 - [ ] 确认 `package.json` 的 `files` 覆盖所有**文档承诺随包分发**的文件（尤其 `scripts/` 与 `bin` 目标）。
 - [ ] `bin` 目标带 shebang，`node <script> --help` 能跑。
 
 ## 3. 回归
 
-- [ ] `npm test`：所有脚本通过（0.7.0 发布基线为 23 组；以当前 `scripts/run-all.mjs` 为准）。
+- [ ] `npm test`：所有逻辑用例通过；集合文件数不代表覆盖数，用 `npm run test:list` 核对。
 - [ ] 发布相关专项：打包脚本/P22、issue 回归（p15）。
 - [ ] `npm pack --dry-run` 文件清单人工过一遍：版本号、文件数、`README`、`LICENSE`、`bin` 目标都在。
 - [ ] 独立消费目录 `npm install <tgz> <真实 peers>` → `node scripts/verify-package.mjs <dir>`；不允许 `--force` / `--legacy-peer-deps`。

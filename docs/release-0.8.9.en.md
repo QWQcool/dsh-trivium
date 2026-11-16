@@ -1,5 +1,7 @@
 # dsh-trivium 0.8.9
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](DEVELOPMENT.md)。
+
 This release fixes workspace write ownership and delivers issue #5's live read queries, independent snapshots and snapshot CLI. It includes feature commit `9d7b96a` and handoff commit `45132e6`.
 
 ## Writes and compatibility

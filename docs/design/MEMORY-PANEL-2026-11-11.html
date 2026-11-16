@@ -206,6 +206,7 @@
   </style>
 </head>
 <body>
+<aside data-maintenance-notice style="position:relative;z-index:9999;padding:12px 20px;background:#fff3cd;color:#3f3212;font:14px/1.6 sans-serif">历史设计稿（原日期保留）。2026-11-16：当前实现和开发顺序已更新，请先读 <a href="../CURRENT-STATE.md">当前状态</a> 与 <a href="../ROADMAP.md">路线图</a>；下方演示数据不作为当前验收结果。</aside>
   <header class="mast">
     <div class="wrap mast-inner">
       <a class="brand" href="#preview" aria-label="Trivium 面板预览"><span class="mark" aria-hidden="true"><i></i><i></i></span>Trivium</a>
@@ -286,7 +287,7 @@
           </div><p>切换数值可查看同一种失败在三种数据条件下的措辞。</p>
         </div>
         <div class="guide-note"><h3>按宿主的实际宽度设计</h3><p>此前宿主走查量到约 420 px 的窄栏。稿件先展开「运行记录」方便评审，产品仍以「记忆库」为首屏。宽屏沿用已有详情栏。</p>
-          <a href="SETTINGS-PAGE-SPLIT-2026-11-03.md">查看宿主走查记录</a>
+          <a href="../../PLAN.md">查看宿主走查记录</a>
         </div>
       </aside>
     </div>
@@ -314,7 +315,7 @@
           <li><b>运行记录</b>　当前先显示诊断和待补写，再显示提案。候选接口已经给出最多 160 字正文，列表只展示编号和名称。稿件用正文区分同名候选，确认只作用于选中的目标，保持原样作用于整条提案。</li>
           <li><b>上下文</b>　已送达的账本与只读试算各有入口。试算完成后保留本轮实际发送的原文，让人能分清“已经发送”和“会选什么”。</li>
           <li><b>设置</b>　把导入回执放在触发操作的来源旁。后续把“保存向量连接”放到地址、模型和凭据输入旁，用已有设置接口，清楚标识显式保存与即时生效的选项。</li>
-          <li><b>视觉</b>　沿用宿主明暗和青绿色，将强调色留给当前页与确认动作。琥珀色表示需要查看的部分提交。状态同时有文字，原句与诊断可展开。新版计划只需替代已过时的待办。<a href="SETTINGS-PAGE-SPLIT-2026-11-03.md">既有四页与窄栏走查</a> · <a href="../screenshots/10-settings-memory.png">原宿主记忆库截图</a></li>
+          <li><b>视觉</b>　沿用宿主明暗和青绿色，将强调色留给当前页与确认动作。琥珀色表示需要查看的部分提交。状态同时有文字，原句与诊断可展开。新版计划只需替代已过时的待办。<a href="../../PLAN.md">既有四页与窄栏走查</a> · <a href="../screenshots/10-settings-memory.png">原宿主记忆库截图</a></li>
         </ul>
       </details>
       <details class="reference">
@@ -330,12 +331,12 @@
       </details>
       <details class="reference">
         <summary>性能、外部条件与已经决定的边界</summary>
-        <p>206 → 483 ms、1462 → 559/s 量的是同机单轮 Router 队列（10 个 Worker，各写 50 次）。另一组外部导入相关记录是 22 次实际写入、47 → 2 次 flush 的离线直调。下次用相同输入、相同库规模和机器，分首次导入与重复导入，在可比环境测真实 <code>POST /import-external</code>。只对复现出来的慢段尝试插件侧低成本改动。<a href="../next-memory/evidence-write-provenance/INFRA/TDB-0.9.0-2026-11-04/README.md">内核对比口径</a> · <a href="../next-memory/evidence-write-provenance/S1/IMPORT-BATCH-2026-11-03/README.md">批处理口径</a></p>
-        <p>P1 等可用的 embedding 端点，现有样本召回 7/11、误合并 0/15，阈值直接降至 0.5 时误合并为 7/15。P3 已有只读继承、Router 原型和三 Worker 验证，常驻接入等宿主接口。B 站 E1-B 等扩展点。REFERENCE 的 4/5 等人工复判。已有的 0.8.6 自动边逐条按需要撤销，内核维持 0.9.0。<a href="../next-memory/IDENTITY-CORPUS-2026-11-11.md">身份语料</a> · <a href="../next-memory/CURRENT-STATE.md">当前状态</a></p>
+        <p>206 → 483 ms、1462 → 559/s 量的是同机单轮 Router 队列（10 个 Worker，各写 50 次）。另一组外部导入相关记录是 22 次实际写入、47 → 2 次 flush 的离线直调。下次用相同输入、相同库规模和机器，分首次导入与重复导入，在可比环境测真实 <code>POST /import-external</code>。只对复现出来的慢段尝试插件侧低成本改动。<a href="../HISTORY.md">内核对比口径</a> · <a href="../HISTORY.md">批处理口径</a></p>
+        <p>P1 已完成本地真实向量与实体范围后端评测，新增了只读卡片，仍待真实宿主操作验收。词面基线为 7/11，向量同异事实分布仍重叠，自动合并继续关闭。P3 已有只读继承、Router 原型和三 Worker 验证，常驻接入等宿主接口。B 站 E1-B 等扩展点。REFERENCE 的 4/5 等人工复判。已有的 0.8.6 自动边逐条按需要撤销，内核维持 0.9.0。<a href="../IDENTITY-CORPUS.md">身份语料</a> · <a href="../CURRENT-STATE.md">当前状态</a></p>
       </details>
       <details class="reference">
         <summary>文档去重范围</summary>
-        <p>双语 README 首屏只保留版本和用户需要知道的变化，保留升级整组备份说明。回归数字从「当前状态」查，发布实绩从放行记录查。维护者索引区分现行契约和 11 月 2 日历史选项。本稿汇集交互和实施顺序，旧图、历史失败记录和原始证据继续可查。<a href="../README.md">维护者索引</a></p>
+        <p>双语 README 首屏只保留版本和用户需要知道的变化，保留升级整组备份说明。回归数字从「当前状态」查，发布实绩从放行记录查。维护者索引区分现行契约和 11 月 2 日历史选项。本稿汇集交互和实施顺序，旧图、历史失败记录和原始证据继续可查。<a href="../HISTORY.md">维护者索引</a></p>
       </details>
     </section>
     <footer>dsh-trivium / 面板设计评审 · 本轮付费模型调用 0 次，费用 ¥0</footer>

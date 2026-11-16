@@ -52,10 +52,12 @@ clone / `git pull` 后若 jsonl 变了会自动导回。设置里 **Git 旁路**
 本地跟源码联调：
 
 ```sh
-npm install
+npm ci
 node scripts/link-dsh.mjs
 npm test              # 可选：跑全部离线 smoke
 ```
+
+回归与按主题筛选见 [开发指南](docs/DEVELOPMENT.md)，后续重点见 [路线图](docs/ROADMAP.md)。
 
 `npm test` 不需要 DSH 宿主，也不会碰你真实的 `~/.dsh/trivium.json`（每个脚本用独立的临时设置文件）。想只跑一部分就传子串：`npm test -- p8`。
 
@@ -138,7 +140,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 短地图每会话最多 400 估算 token；开启芯片或自动召回后，芯片、召回和更正在每轮共用 300 估算 token，工具可按需读取全文。纯致谢等确认短句不会触发抽取模型。这些预算不包括工具定义、工具返回、模型回答或后台抽取，不能当作整次请求的费用上限。
 
-预算是输出长度的估算，不等于整次请求或账单的上限。历史合成测试的结果和限制见[评测报告](docs/archive/next-memory/COST-QUALITY-RESULTS.md)；不能据此声称真实会话固定省钱或优于其他产品。当前可展示的测试数据见[验证与测试数据](#验证与测试数据)。
+预算是输出长度的估算，不等于整次请求或账单的上限。历史合成测试的结果和限制见[评测报告](docs/HISTORY.md)；不能据此声称真实会话固定省钱或优于其他产品。当前可展示的测试数据见[验证与测试数据](#验证与测试数据)。
 
 ### 底层工程
 
@@ -227,7 +229,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 召回检查是只读的：不写库、不跑工具、不请求 embedding。没有查询向量时明确显示语义通道未运行。这些页签不会注入上下文，也不会调用模型。
 
-### 宿主运行时查询（源码新增，尚未发布）
+### 宿主运行时查询（0.8.9 已发布）
 
 向 `POST /api/dsh-trivium/query?cwd=...` 发送
 `{"tql":"MATCH (n)-[:about]->(hub) RETURN n, hub","params":{},"limit":200}`
@@ -265,7 +267,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ### 跨会话示例
 
-在隔离的测试工作区中，请助手记住一条合成事实，例如「本项目鉴权走 header X」，再新建会话并询问该项目的鉴权方式；确认轨迹中使用了 `ctx_find`，并检查返回的事实。若还建立了实体和决策之间的关联，可以查看返回的图路径。不要用真实凭据作为示例。[离线可复现示例](docs/archive/guide-example.md)提供无需模型和 DSH 宿主的操作及预期结果；它验证存取和图关系，不代表真实模型一定会调用工具。
+在隔离的测试工作区中，请助手记住一条合成事实，例如「本项目鉴权走 header X」，再新建会话并询问该项目的鉴权方式；确认轨迹中使用了 `ctx_find`，并检查返回的事实。若还建立了实体和决策之间的关联，可以查看返回的图路径。不要用真实凭据作为示例。[离线可复现示例](docs/guide-example.md)提供无需模型和 DSH 宿主的操作及预期结果；它验证存取和图关系，不代表真实模型一定会调用工具。
 
 ### 按授权导出偏好
 
@@ -352,9 +354,9 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 | 验证 | 结果与范围 |
 |---|---|
-| 离线回归 | 运行 `node scripts/run-all.mjs`。[当前源码结果](docs/next-memory/CURRENT-STATE.md)注明了验证基线。[0.8.9 验收记录](docs/reviews/0.8.9-RESULTS-2026-11-12.md)包含严格成品安装、23 项真实宿主检查和 148 项 HTTP 负载检查。 |
-| 变更记录与恢复 | 10 月 30 日验证了回环 HTTP、真实子进程竞争和浏览器组件。[结果与适用范围](docs/archive/next-memory/F-W04-F-W05-RESULTS-2026-10-30.md) |
-| 小样本真实模型 | [A5 基线](docs/archive/next-memory/A5-WIDER-BASELINE-2026-10-30.md)使用单一模型、5 类合成场景各 5 次：候选和入库各 25/25，新会话答对 21/25；这是修复前的历史基线。后续 [A10](docs/archive/next-memory/A10-REGRESSION-N10-2026-10-30.md) 两个固定场景各 10 次新会话回答均为 10/10，但否定场景有 3/10 次准备阶段触发请求上限，部分运行由 agent 主动写入。不同批次不能合并当作通用准确率。 |
+| 离线回归 | 运行 `node scripts/run-all.mjs`。[当前源码结果](docs/CURRENT-STATE.md)注明了验证基线。[0.8.9 验收记录](docs/reviews/0.8.9-RESULTS-2026-11-12.md)包含严格成品安装、23 项真实宿主检查和 148 项 HTTP 负载检查。 |
+| 变更记录与恢复 | 10 月 30 日验证了回环 HTTP、真实子进程竞争和浏览器组件。[结果与适用范围](docs/HISTORY.md) |
+| 小样本真实模型 | [A5 基线](docs/HISTORY.md)使用单一模型、5 类合成场景各 5 次：候选和入库各 25/25，新会话答对 21/25；这是修复前的历史基线。后续 [A10](docs/HISTORY.md) 两个固定场景各 10 次新会话回答均为 10/10，但否定场景有 3/10 次准备阶段触发请求上限，部分运行由 agent 主动写入。不同批次不能合并当作通用准确率。 |
 | 历史证据清单 | `node scripts/verify-evidence.mjs` 校验历史 manifest 中 9 个文件的大小与哈希；它不验证实验设计，也不覆盖全部新证据。 |
 | 本地 embedding，未发布源码 | 36 条人工标注合成记忆、32 个问题，关键词 + 图的 Top-1 / Top-5 命中 **22/32、25/32**，本地 GTE 向量加查询指令后为 **27/32、31/32**。另用真实向量回填 5000 条：**5000/5000**，117.7s，313 次 flush，费用 ¥0。[运行方式、失败项与边界](docs/reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 
@@ -375,9 +377,9 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 后续[范围文本实验](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md)区分了原生条件过滤与任意 ID 集合文本排名，并在有声明关系真值的隔离库中评测 payload 备选方案。这些仍是开发诊断，工具和默认检索保持原状。
 
-更新的源码增加独立[实体范围 HTTP 后端](docs/read-api.md#explicit-entity-search-unreleased-source)：显式选择工作区和实体，两路候选分别返回，query embedding 需要请求方主动开启。它未接入工具、自动召回或 UI。[冻结新题验收与并发检查](docs/reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md)覆盖 live/snapshot 读取；npm 0.8.9 尚不包含该入口。
+更新的源码增加独立[实体范围 HTTP 后端](docs/read-api.md#explicit-entity-search-unreleased-source)：显式选择工作区和实体，两路候选分别返回，query embedding 需要请求方主动开启。源码已增加「上下文」页只读卡片，仍待真实宿主操作验收；未接入工具或自动召回。[冻结新题验收与并发检查](docs/reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md)覆盖 live/snapshot 读取；npm 0.8.9 尚不包含该入口。
 
-上述真实模型样本不能证明模型总会调用工具、完整会话效果或普遍降低成本。旧 D0 部分对照臂重复种植，D1 的 `0.51×` 模拟未计入完整注入历史和短地图；应按[独立审查](docs/archive/next-memory/POST-081-REVIEW.md)的限制解读。
+上述真实模型样本不能证明模型总会调用工具、完整会话效果或普遍降低成本。旧 D0 部分对照臂重复种植，D1 的 `0.51×` 模拟未计入完整注入历史和短地图；应按[独立审查](docs/HISTORY.md)的限制解读。
 
 ## 更新说明
 
@@ -416,7 +418,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 - `npx dsh-trivium-check <工作区>` —— 以**只读**方式打开图，报告 `supersedes` 自环、循环、分叉、重复 URI、悬空端点与无法解析的链。退出码：0 干净，2 有问题，1 打不开。
 - `npx dsh-trivium-clear-until <工作区>` —— 默认只列出仍带期限的过期决策；`--apply` 只清「期限文本同时出现在正文里」的那些（0.4.21 从正文抓日期的形态）；`--apply --all` 清掉所有过期期限，包括用户显式填的。先关宿主，内核是单写者。
 
-本地联调：仓库里 `npm install` 后 `node scripts/link-dsh.mjs`，再重启 `dsh web`。`triviumdb` 是原生模块，装不上时先看 Node 是否满足 `package.json` 的 `engines`（`^22.19.0 || >=24`）。
+本地联调：仓库里 `npm ci` 后 `node scripts/link-dsh.mjs`，再重启 `dsh web`。`triviumdb` 是原生模块，装不上时先看 Node 是否满足 `package.json` 的 `engines`（`^22.19.0 || >=24`）。
 
 ---
 

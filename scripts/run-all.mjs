@@ -1,101 +1,116 @@
-/**
- * Run every offline smoke script sequentially and aggregate the result.
- *
- *   npm test                # everything
- *   npm test -- p8          # only scripts whose file name contains "p8"
- *   npm test -- smoke-p1    # same idea
- *
- * Two things this centralizes that hand-running does not:
- *
- * 1. Discovery. Scripts are found by pattern, so a new scripts/smoke-pN.mjs is
- *    picked up automatically. Enumerating them by hand already failed once
- *    (smoke-p9 existed but was never registered in package.json).
- * 2. Settings isolation. Every child gets its own DSH_TRIVIUM_SETTINGS temp
- *    file, so no script can touch the live ~/.dsh/trivium.json. Only smoke-p8 /
- *    p11 / p12 set that variable themselves today; the rest relied on a tmpdir
- *    guard inside rememberWorkspace()/writeSidecarHash(), which writePins()
- *    does not have.
- *
- * No running DSH host is needed. Most scripts exercise lib/ directly; p25
- * loads lib/index.js with the installed DSH peer packages and a controlled
- * coordinator to verify the real pre-step wiring without model requests.
- */
+/** Offline regression runner. A logical case gets its own process and temporary settings. */
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, readdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { dirname, join, resolve } from "node:path";
+import { createRequire } from "node:module";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const SCRIPTS_DIR = dirname(fileURLToPath(import.meta.url));
-const filter = String(process.argv[2] || "").trim().toLowerCase();
+const childId = process.argv[2] === "--case" ? process.argv[3] : null;
+const listOnly = !childId && process.argv.slice(2).includes("--list");
+const filter = childId
+  ? ""
+  : String(process.argv.slice(2).find((x) => x !== "--list") || "")
+      .trim()
+      .toLowerCase();
 
-// `npm install` prunes the DSH peer packages (the public registry only has a
-// version the peer range rejects), which breaks every script that loads
-// lib/index.js. Repair them before anything runs.
-const { ensurePeers } = await import("./link-peers.mjs");
-const peers = ensurePeers({ root: dirname(SCRIPTS_DIR) });
-const brokenPeers = Object.entries(peers).filter(([, value]) => value === "missing" || String(value).startsWith("failed"));
-if (brokenPeers.length) {
-  console.warn(`peer packages unavailable: ${brokenPeers.map(([name, value]) => `${name}=${value}`).join(", ")}`);
-}
-
-/** smoke-pN.mjs sort by N; p2-cases.mjs sits where a smoke-p2 would. */
-function discover() {
-  const rows = [];
-  for (const name of readdirSync(SCRIPTS_DIR)) {
-    const smoke = name.match(/^smoke-p(\d+)\.mjs$/);
-    if (smoke) {
-      rows.push({ key: Number(smoke[1]), name });
-      continue;
+async function discover() {
+  const jobs = [];
+  for (const file of readdirSync(SCRIPTS_DIR)) {
+    const numeric = file.match(/^smoke-p(\d+)\.mjs$/);
+    if (numeric || file === "p2-cases.mjs") {
+      const key = numeric ? Number(numeric[1]) : 2;
+      jobs.push({ key, id: `p${key}`, file, suite: false });
+    } else if (/^smoke-[a-z][a-z-]*\.mjs$/.test(file)) {
+      const module = await import(pathToFileURL(join(SCRIPTS_DIR, file)).href);
+      if (!module.cases || typeof module.cases !== "object")
+        throw new Error(`${file} must export cases`);
+      for (const [id, run] of Object.entries(module.cases)) {
+        if (!/^p\d+$/.test(id) || typeof run !== "function")
+          throw new Error(`Invalid case ${file}:${id}`);
+        jobs.push({ key: Number(id.slice(1)), id, file, suite: true, run });
+      }
     }
-    if (name === "p2-cases.mjs") rows.push({ key: 2, name });
   }
-  return rows
-    .filter((row) => !filter || row.name.toLowerCase().includes(filter))
-    .sort((a, b) => a.key - b.key || a.name.localeCompare(b.name));
+  const ids = new Set();
+  for (const job of jobs) {
+    if (ids.has(job.id)) throw new Error(`Duplicate regression ID ${job.id}`);
+    ids.add(job.id);
+  }
+  return jobs.sort((a, b) => a.key - b.key);
 }
 
-const jobs = discover();
-if (!jobs.length) {
-  console.error(filter ? `No script matches "${filter}".` : "No smoke scripts found.");
-  process.exit(1);
+const all = await discover();
+if (childId) {
+  const job = all.find((x) => x.id === childId && x.suite);
+  if (!job) throw new Error(`Unknown suite case ${childId}`);
+  await job.run();
+} else {
+  const jobs = all.filter(
+    (job) =>
+      !filter ||
+      `${job.id} smoke-${job.id}.mjs ${job.file}`
+        .toLowerCase()
+        .includes(filter),
+  );
+  if (!jobs.length)
+    throw new Error(`No regression matches ${JSON.stringify(filter)}`);
+  if (listOnly) {
+    for (const job of jobs) console.log(`${job.id.padEnd(5)} ${job.file}`);
+    console.log(
+      `${jobs.length} logical cases in ${new Set(jobs.map((x) => x.file)).size} files`,
+    );
+  } else {
+    const require = createRequire(import.meta.url);
+    for (const name of ["@deepseek-ai/dsh-llm", "@deepseek-ai/dsh-tools"]) {
+      try {
+        require.resolve(name);
+      } catch {
+        throw new Error(
+          `Missing development dependency ${name}. Run npm ci before npm test.`,
+        );
+      }
+    }
+    const settingsRoot = mkdtempSync(join(tmpdir(), "dsh-trivium-run-"));
+    const results = [];
+    try {
+      console.log(
+        `Running ${jobs.length} logical cases in separate processes.`,
+      );
+      for (const job of jobs) {
+        console.log(`\n== ${job.id} (${job.file})`);
+        const started = Date.now();
+        const args = job.suite
+          ? [fileURLToPath(import.meta.url), "--case", job.id]
+          : [join(SCRIPTS_DIR, job.file)];
+        const result = spawnSync(process.execPath, args, {
+          stdio: "inherit",
+          env: {
+            ...process.env,
+            DSH_TRIVIUM_SETTINGS: join(settingsRoot, `${job.id}.json`),
+            DSH_HOME: join(settingsRoot, `${job.id}-home`),
+          },
+        });
+        results.push({
+          ...job,
+          ok: result.status === 0,
+          status: result.status,
+          ms: Date.now() - started,
+        });
+      }
+    } finally {
+      if (dirname(resolve(settingsRoot)) !== resolve(tmpdir()))
+        throw new Error("Refusing cleanup outside temp directory");
+      rmSync(settingsRoot, { recursive: true, force: true });
+    }
+    const passed = results.filter((x) => x.ok).length;
+    console.log("\n== summary");
+    for (const row of results)
+      console.log(
+        `${row.ok ? "pass" : "FAIL"} ${row.id.padEnd(5)} ${String(row.ms).padStart(6)} ms ${row.file}${row.ok ? "" : ` (exit ${row.status})`}`,
+      );
+    console.log(`\n${passed}/${results.length} passed`);
+    if (passed !== results.length) process.exitCode = 1;
+  }
 }
-
-const home = mkdtempSync(join(tmpdir(), "dsh-trivium-run-"));
-const results = [];
-let failed = 0;
-
-console.log(`Running ${jobs.length} script(s) sequentially. Settings are isolated to ${home}\n`);
-
-for (const job of jobs) {
-  const started = Date.now();
-  console.log(`\n${"=".repeat(60)}\n== ${job.name}\n${"=".repeat(60)}`);
-  const run = spawnSync(process.execPath, [join(SCRIPTS_DIR, job.name)], {
-    stdio: "inherit",
-    env: {
-      ...process.env,
-      // Per-script file so one script cannot seed another's state.
-      DSH_TRIVIUM_SETTINGS: join(home, `${job.name}.json`),
-      DSH_HOME: join(home, `${job.name}-home`),
-    },
-  });
-  const ms = Date.now() - started;
-  const ok = run.status === 0;
-  if (!ok) failed += 1;
-  results.push({ name: job.name, ok, ms, status: run.status });
-}
-
-rmSync(home, { recursive: true, force: true });
-
-console.log(`\n${"=".repeat(60)}\n== summary\n${"=".repeat(60)}`);
-for (const row of results) {
-  const mark = row.ok ? "pass" : "FAIL";
-  console.log(`${mark}  ${row.name.padEnd(22)} ${String(row.ms).padStart(6)} ms${row.ok ? "" : `  (exit ${row.status})`}`);
-}
-console.log(`\n${results.length - failed}/${results.length} passed`);
-
-if (failed) {
-  console.error(`${failed} script(s) failed.`);
-  process.exit(1);
-}
-console.log("All smoke scripts passed.");

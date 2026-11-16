@@ -1,5 +1,7 @@
 # dsh-trivium 0.8.3
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](DEVELOPMENT.md)。
+
 状态：**已发布**（npm `latest` + git tag `v0.8.3` + GitHub Release，2026-11-02）。
 tarball shasum `7406c132433941a32ca9e0698a05bde883b2136c`，44 个文件 / 213.7 kB。
 

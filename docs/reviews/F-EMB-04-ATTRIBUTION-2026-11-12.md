@@ -1,5 +1,7 @@
 # F-EMB-04：纯向量 32/32、混合检索 31/32 的归因
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](../CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](../DEVELOPMENT.md)。
+
 2026-11-12，生产源码基线 `3c1830f`，TDB 0.9.0。**完成归因与对照，未修改 lib/、排序、权重、默认预算、内核或版本，未发布。**本轮只扩展既有评测脚本、增加诊断问题和证据文档。
 
 ## 结论
@@ -110,7 +112,7 @@ node scripts/verify-local-embedding.mjs --attribution --source-workspace .tmp/lo
 
 新机器可省略 `--source-workspace`，脚本会在新输出目录创建公开命名的合成小库并生成向量。`--query-cache` 可复用向量，`--offline` 遇到缺失缓存立即失败。只接受 loopback、预算 0、全新输出目录；模型启动方式沿用[上一轮报告](LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md)。
 
-[证据目录](evidence-emb04-attribution-2026-11-12/)保留各题结果、通道名次与分数、干预、重复与输入摘要；不提交向量缓存、数据库、临时导出模块或机器路径。
+[证据目录](evidence-emb04-attribution-2026-11-12)保留各题结果、通道名次与分数、干预、重复与输入摘要；不提交向量缓存、数据库、临时导出模块或机器路径。
 
 ## F-EMB-04 的状态
 

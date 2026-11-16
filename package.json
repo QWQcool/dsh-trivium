@@ -42,28 +42,9 @@
   },
   "scripts": {
     "test": "node scripts/run-all.mjs",
+    "test:list": "node scripts/run-all.mjs --list",
+    "test:docs": "node scripts/smoke-p91.mjs",
     "link-dsh": "node scripts/link-dsh.mjs",
-    "smoke-p0": "node scripts/smoke-p0.mjs",
-    "smoke-p1": "node scripts/smoke-p1.mjs",
-    "smoke-p2": "node scripts/p2-cases.mjs",
-    "smoke-p3": "node scripts/smoke-p3.mjs",
-    "smoke-p4": "node scripts/smoke-p4.mjs",
-    "smoke-p5": "node scripts/smoke-p5.mjs",
-    "smoke-p6": "node scripts/smoke-p6.mjs",
-    "smoke-p7": "node scripts/smoke-p7.mjs",
-    "smoke-p8": "node scripts/smoke-p8.mjs",
-    "smoke-p9": "node scripts/smoke-p9.mjs",
-    "smoke-p10": "node scripts/smoke-p10.mjs",
-    "smoke-p11": "node scripts/smoke-p11.mjs",
-    "smoke-p12": "node scripts/smoke-p12.mjs",
-    "smoke-p13": "node scripts/smoke-p13.mjs",
-    "smoke-p14": "node scripts/smoke-p14.mjs",
-    "smoke-p15": "node scripts/smoke-p15.mjs",
-    "smoke-p16": "node scripts/smoke-p16.mjs",
-    "smoke-p17": "node scripts/smoke-p17.mjs",
-    "smoke-p18": "node scripts/smoke-p18.mjs",
-    "smoke-p19": "node scripts/smoke-p19.mjs",
-    "smoke-p20": "node scripts/smoke-p20.mjs",
     "preuninstall": "node ./lib/purge.js",
     "verify-live-p2": "node scripts/verify-live-p2.mjs"
   },
@@ -93,5 +74,9 @@
   "bugs": {
     "url": "https://github.com/QWQcool/dsh-trivium/issues"
   },
-  "homepage": "https://github.com/QWQcool/dsh-trivium#readme"
+  "homepage": "https://github.com/QWQcool/dsh-trivium#readme",
+  "devDependencies": {
+    "@deepseek-ai/dsh-llm": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-tools": "0.2.2-rc.1"
+  }
 }

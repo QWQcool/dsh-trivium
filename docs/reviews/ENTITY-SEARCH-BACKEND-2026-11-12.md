@@ -1,5 +1,7 @@
 # 实体范围只读后端：协议与验收
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](../CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](../DEVELOPMENT.md)。
+
 2026-11-12。基线 main@513745c，TDB 0.9.0。验收题目与本协议先在 `11fbe0c` 固定，再实现后端。本轮未 bump 或发布；ctx_find、自动召回、默认排序和 UI 保持原状。接口已实现并在隔离宿主验证，未部署到用户常用宿主。
 
 独立入口为 `POST /api/dsh-trivium/entity-search?cwd=...`。工作区与 entityId 显式指定；仅借用已打开的宿主句柄，或读取显式捕获的固定快照。语义通道默认关闭，只有请求 semantic=true 且宿主 embedding 已配置时才调用。词面与语义候选分别返回，不提供融合总排名或答案置信度。
@@ -68,7 +70,7 @@ npm pack --dry-run --json
 
 `lib/tools.js`、`lib/index.js`、`lib/tool-defs.js`、`lib/client.js` 及默认 searchNodes 排序函数保持不变。store 仅增加复用词面评分的准备函数；embedding 适配器仅增加可选取消/期限/响应字节参数，旧调用保持原默认值。接口是显式新增入口，没有生产自动调用者。
 
-[证据目录](evidence-entity-search-backend-2026-11-12/)含逐题候选、合同场景、真实宿主 HTTP 回执、输入与源码摘要；不提交数据库、缓存、profile 或凭据。已实现、已隔离验收、已部署分开记录；本轮未部署至用户常用宿主或 npm。
+[证据目录](evidence-entity-search-backend-2026-11-12)含逐题候选、合同场景、真实宿主 HTTP 回执、输入与源码摘要；不提交数据库、缓存、profile 或凭据。已实现、已隔离验收、已部署分开记录；本轮未部署至用户常用宿主或 npm。
 
 ## 剩余边界
 

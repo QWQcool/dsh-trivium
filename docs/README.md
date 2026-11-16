@@ -1,40 +1,38 @@
-# 文档入口（维护者）
+# 文档入口
 
-> **只读一页的话，读 [当前状态](next-memory/CURRENT-STATE.md)。** 它回答：现在发布的是什么、源码多了什么、哪些结论已经被推翻。
-
-安装和日常使用看 [中文 README](../README.zh-CN.md) / [English README](../README.md)。本页面向维护者，2026-11-11 起只保留**在用的**文档；历史材料统一在 [`archive/`](archive/README.md)。
+维护状态更新于 2026-11-16。安装和日常使用看[中文 README](../README.zh-CN.md) / [English README](../README.md)，接手开发先读 [CURRENT-STATE](CURRENT-STATE.md)。
 
 ## 发布状态
 
-| 范围 | 状态 |
+| 范围 | 记录 |
 |---|---|
-| npm 发布包 | `dsh-trivium@0.8.9`（tag `v0.8.9`，发布回执见版本说明） |
-| 内核 | `triviumdb@0.9.0`（0.8.5 引入，0.8.6/0.8.7 未再升级） |
-| 已验证宿主 | `@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-11 真机一轮；0.2.1-rc.4/rc.5 为历史基线） |
-| 标签之后的源码改动 | [当前状态 §1](next-memory/CURRENT-STATE.md#1-发布包与源码) |
+| 已发布包 | `dsh-trivium@0.8.9`，tag `v0.8.9`，见[回执](release-0.8.9.md) |
+| 运行依赖 | `triviumdb@0.9.0`，0.9.1 仅列为独立评估项 |
+| 已验证宿主 | DSH `0.2.2-rc.1`，源码/实机/发布边界见当前状态 |
 
-## 现在该看什么
+## 日常维护
 
-| 需要 | 文档 |
+| 目的 | 文档 |
 |---|---|
-| 现在到哪一步、哪些结论作废 | [CURRENT-STATE](next-memory/CURRENT-STATE.md) |
-| 这一版发了什么 | [0.8.9 发布说明](release-0.8.9.md) / [English](release-0.8.9.en.md) |
-| 下一步做什么、为什么挂起 | [待办与前置条件](next-memory/CURRENT-STATE.md#4-待办与前置条件) · [Super Agent 原始路线图](next-memory/ROADMAP-AND-SUPERAGENT.md) |
-| 面板改进、发包顺序和本轮复核 | [记忆面板交互稿](design/MEMORY-PANEL-2026-11-11.html)（下载后用浏览器打开） |
-| 替代提案如何确认或拒绝 | [现行契约](release-0.8.7.md) · [11 月 2 日的方案比较](next-memory/SUPERSEDE-CONTRACT-OPTIONS.md) |
-| 事实去重的语料与基线 | [IDENTITY-CORPUS-2026-11-11](next-memory/IDENTITY-CORPUS-2026-11-11.md) |
-| 成本口径 | [COST-MODEL](next-memory/COST-MODEL.md) |
-| 5000 节点写延迟归因与批处理对比 | [2026-11-12 实测](reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
-| TDB 能力使用、查询面板与 embedding 前置 | [2026-11-12 审查](reviews/TDB-CAPABILITY-AUDIT-2026-11-12.md) |
-| 复审与放行记录（0.8.7） | [报告](reviews/0.8.7-REPORT-2026-11-06.md) / [最终验收](reviews/0.8.7-FINAL-RESULTS-2026-11-10.md) |
-| 原始证据（真机/并发/写入来源） | [evidence-write-provenance](next-memory/evidence-write-provenance/) |
-| 发版步骤 | [发布检查清单](release-checklist.md) |
-| 接手在线 TQL 与下一版 npm 发布准备 | [公司电脑交接稿及 Codex 提示词](NPM-RELEASE-HANDOFF-2026-11-12.zh-CN.md) |
-| 历史（2026-10 至 0.8.6 的计划、审计、失败记录） | [archive/](archive/README.md) |
+| 现在到哪一步、哪些结论作废 | [CURRENT-STATE](CURRENT-STATE.md) |
+| 低成本记忆、Super Agent、TDB 开发顺序 | [ROADMAP](ROADMAP.md) |
+| 产品契约、模块与并发 | [PLAN](../PLAN.md) · [芯片与会话层](../PLAN-session-map.md) |
+| 环境、按主题回归、实验入口 | [DEVELOPMENT](DEVELOPMENT.md) |
+| HTTP、TQL、快照、实体搜索 | [read-api](read-api.md) |
+| 请求、token 与费用 | [COST-MODEL](COST-MODEL.md) |
+| 自动合并为何仍默认关 | [IDENTITY-CORPUS](IDENTITY-CORPUS.md) |
+| 小型可重复示例 | [guide-example](guide-example.md) |
+| 发布步骤 | [release-checklist](release-checklist.md) |
 
-## 维护规则
+## 按需追溯
 
-1. **一个事实只写一遍**：版本号与发布状态只在上表、`README.md`、`README.zh-CN.md` 和 `CURRENT-STATE.md` 出现，改版本时四处一起改，`scripts/smoke-p91.mjs` 会检查。
-2. **新文档先落 `CURRENT-STATE` 或发布说明**；写完一次性的计划/结果，进 `archive/`，不要留在 `next-memory/` 顶层。
-3. **历史文档不改**：`archive/` 里的内容按当时日期理解，里面的"当前/未发布/下一步"不是今天的指令。
-4. **发布前跑** `node scripts/smoke-p91.mjs`，它会因为版本声明不一致而失败。
+| 主题 | 记录 |
+|---|---|
+| 实体检索 | [后端](reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) · [面板](reviews/ENTITY-SEARCH-PANEL-2026-11-13.md) |
+| 向量与检索质量 | [结果](reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) · [融合归因](reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md) · [范围实验](reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) |
+| 写延迟和批处理 | [测量结果](reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
+| 发布/复审 | release-*.md · [0.8.9 验收](reviews/0.8.9-RESULTS-2026-11-12.md) |
+| 旧计划、实验修正、原文位置 | [HISTORY](HISTORY.md) |
+| 原始测量 | [evidence](evidence/README.md) · [写入/宿主证据](next-memory/evidence-write-provenance) |
+
+一个结论维护一个入口。任务写 ROADMAP，完成后更新状态；不再复制开工提示词和机器交接稿。历史发布回执和失败数据按原日期保留，现状在 HISTORY 说明。本地链接和版本声明由 `npm run test:docs` 检查。

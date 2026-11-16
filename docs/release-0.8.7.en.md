@@ -1,5 +1,7 @@
 # 0.8.7 — a replacement becomes a proposal
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](DEVELOPMENT.md)。
+
 2026-11-09. **The kernel does not change** (still `triviumdb@0.9.0`; that upgrade shipped in 0.8.5).
 This release changes one thing: **a change of mind no longer retires a decision by itself**.
 

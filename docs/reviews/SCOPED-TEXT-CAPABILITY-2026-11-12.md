@@ -1,5 +1,7 @@
 # TDB 候选 ID 文本能力与范围内 payload 评测
 
+> 状态提示（2026-11-16）：以下保留原日期的发布/测量记录；文中的“当前、下一步”和旧脚本文件名按当时理解。现状见 [CURRENT-STATE](../CURRENT-STATE.md)，当前运行方法见 [DEVELOPMENT](../DEVELOPMENT.md)。
+
 2026-11-12，生产基线 `b55369b`，Node 24.15.0、npm 11.12.1、TDB 0.9.0，原生二进制 SHA-256 与上一轮一致。本轮只修改开发评测脚本、夹具与文档。**ctx_find、自动召回、默认排序、UI、内核、预算、版本和发布渠道均未修改，未发包。**
 
 ## 原生能力结论：通用 ID 集合不支持，payload 条件有条件支持
@@ -93,7 +95,7 @@ node scripts/verify-local-embedding.mjs --scoped-text --output .tmp/scope-text-l
 node scripts/verify-local-embedding.mjs --scoped-text --query-cache .tmp/scope-text-live/query-cache.json --offline --output .tmp/scope-text-replay --budget 0 --nodes 0
 ```
 
-也可通过 `--query-cache` 复用已有相同模型、指令及原语料缓存，新增正文/问题才请求向量。模型固定为上一轮同一份本地权重。证据见[目录](evidence-scoped-text-2026-11-12/)；不提交数据库、向量缓存或临时导出模块。历史评测脚本指纹固定到其原提交，避免后续扩展脚本引起历史证据校验误报。
+也可通过 `--query-cache` 复用已有相同模型、指令及原语料缓存，新增正文/问题才请求向量。模型固定为上一轮同一份本地权重。证据见[目录](evidence-scoped-text-2026-11-12)；不提交数据库、向量缓存或临时导出模块。历史评测脚本指纹固定到其原提交，避免后续扩展脚本引起历史证据校验误报。
 
 ## 结论与剩余边界
 
