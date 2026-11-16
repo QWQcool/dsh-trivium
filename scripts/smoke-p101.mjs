@@ -1,0 +1,718 @@
+/**
+ * p101 — entity-scoped search card: user-visible behaviour under controlled replies.
+ *
+ * p78 only executes the card as part of the context page; p93 covers the backend
+ * contract. This file drives the real component (same JSX/hook stub as p78) with a
+ * reply-controlled fetch so the panel itself is asserted on:
+ *
+ *   1. default cost: semantic off, one POST, only endpoint fields, no embedding call;
+ *   2. two channels stay separate and answerability is always shown;
+ *   3. empty scope (`scope_anchor_only`, `no_candidates`) is not rendered as an answer;
+ *   4. workspace A -> B drops the old input/result and a late A reply never lands in B;
+ *   5. out-of-order replies inside one workspace: the older reply cannot overwrite;
+ *   6. fixed snapshot keeps captured text; a missing snapshot does not fall back to live;
+ *   7. 400/404/408/409/422/429 render distinct states, one request each, no auto retry;
+ *   8. a degraded semantic channel keeps the lexical candidates and names the reason.
+ *
+ * Evidence level: controlled component test (no browser, no host, no network).
+ * Real-desktop results are recorded separately in docs/reviews.
+ */
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import vm from 'node:vm';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const SOURCE = readFileSync(join(ROOT, 'lib', 'client.js'), 'utf8');
+
+const ALPHA = '/ws/alpha';
+const BETA = '/ws/beta';
+
+let checks = 0;
+let failures = 0;
+async function check(fn, label) {
+  checks += 1;
+  try {
+    await fn();
+    console.log('ok ' + label);
+  } catch (e) {
+    failures += 1;
+    console.error('FAIL ' + label + ': ' + e.message);
+  }
+}
+function assert(cond, message) {
+  if (!cond) throw new Error(message || 'assertion failed');
+}
+
+function workspaceStatus(cwd, other, nodeCount) {
+  return {
+    ok: true,
+    cwd,
+    dbPath: cwd + '/.dsh/trivium.tdb',
+    nodeCount,
+    workspaces: [
+      { cwd: ALPHA, path: ALPHA + '/.dsh/trivium.tdb', nodeCount: 2 },
+      { cwd: BETA, path: BETA + '/.dsh/trivium.tdb', nodeCount: 1 },
+    ],
+    version: '0.8.9',
+    lastInjectTokens: 0,
+    mapTokenBudget: 400,
+    turnTokenBudget: 300,
+    recallMode: 'off',
+    extractEnabled: true,
+    chipsEnabled: false,
+    sessionLayerEnabled: false,
+    gitSidecarEnabled: false,
+    pluginLocale: 'zh',
+    configPanelOpen: true,
+    embeddingEnabled: false,
+    embeddingModel: 'local-test-double',
+    lastExtract: null,
+    stuck: null,
+    recovered: null,
+    lastMapInjection: null,
+    other,
+  };
+}
+
+const NODES = {
+  [ALPHA]: { ok: true, nodes: [{ id: 1, type: 'entity', name: 'Alpha 服务', text: 'Alpha 的合成事实。' }] },
+  [BETA]: { ok: true, nodes: [{ id: 2, type: 'entity', name: 'Beta 服务', text: 'Beta 的合成事实。' }] },
+};
+
+function cwdOf(url) {
+  try {
+    return new URL(url, 'http://local.invalid').searchParams.get('cwd') || '';
+  } catch {
+    return '';
+  }
+}
+
+function response(status, payload) {
+  return { ok: status < 400, status, json: async () => payload };
+}
+
+/** A reply-controlled HTTP layer: entity-search requests stay pending until the test answers. */
+function createServer() {
+  const calls = [];
+  const searches = [];
+  let liveText = '报告游标可以复用 24 小时。';
+  const fetchImpl = async (url, opts) => {
+    const href = String(url);
+    calls.push({ href, opts });
+    if (href.includes('/api/dsh-trivium/entity-search')) {
+      return new Promise((resolve) => {
+        searches.push({
+          href,
+          cwd: cwdOf(href),
+          body: JSON.parse((opts && opts.body) || '{}'),
+          reply(status, payload) { resolve(response(status, payload)); },
+        });
+      });
+    }
+    if (href.includes('/api/dsh-trivium/status')) {
+      const cwd = cwdOf(href) || ALPHA;
+      return response(200, cwd === BETA ? workspaceStatus(BETA, ALPHA, 1) : workspaceStatus(ALPHA, BETA, 2));
+    }
+    if (href.includes('/api/dsh-trivium/nodes')) {
+      return response(200, NODES[cwdOf(href)] || NODES[ALPHA]);
+    }
+    if (href.includes('/api/dsh-trivium/external')) return response(200, { ok: true, files: [] });
+    if (href.includes('/api/dsh-trivium/changes')) return response(200, { ok: true, entries: [], labels: {} });
+    if (href.includes('/api/dsh-trivium/pending')) return response(200, { ok: true, windows: [], turns: 0, acknowledged: 0 });
+    if (href.includes('/api/dsh-trivium/recall-traces')) return response(200, { ok: true, entries: [] });
+    if (href.includes('/api/dsh-trivium/turn')) return response(200, { ok: true, sessions: [] });
+    if (href.includes('/api/dsh-trivium/corrections')) return response(200, { ok: true, sessions: [] });
+    if (href.includes('/api/dsh-trivium/embedding')) return response(200, { ok: true, calls: 0 });
+    return response(200, { ok: true });
+  };
+  return { fetchImpl, calls, searches, text: () => liveText, setText: (next) => { liveText = next; } };
+}
+
+function createRuntime() {
+  const hooks = [];
+  const effects = [];
+  const seenDeps = [];
+  let cursor = 0;
+  const react = {
+    useState(init) {
+      const i = cursor++;
+      if (!(i in hooks)) hooks[i] = typeof init === 'function' ? init() : init;
+      return [hooks[i], (next) => { hooks[i] = typeof next === 'function' ? next(hooks[i]) : next; }];
+    },
+    useRef(init) {
+      const i = cursor++;
+      if (!(i in hooks)) hooks[i] = { current: init === undefined ? null : init };
+      return hooks[i];
+    },
+    useMemo(fn) { cursor += 1; return fn(); },
+    useCallback(fn) {
+      const i = cursor++;
+      if (!(i in hooks)) hooks[i] = fn;
+      return hooks[i];
+    },
+    useEffect(fn, deps) { effects.push({ index: cursor++, fn, deps }); },
+    Fragment: 'Fragment',
+  };
+  return {
+    react,
+    begin: () => { cursor = 0; effects.length = 0; },
+    pending: () => effects.slice(),
+    depsUnchanged(index, deps) {
+      const prev = seenDeps[index];
+      if (!Array.isArray(deps) || !Array.isArray(prev) || prev.length !== deps.length) return false;
+      seenDeps[index] = deps.slice();
+      return prev.every((value, i) => Object.is(value, deps[i]));
+    },
+    markDeps(index, deps) { seenDeps[index] = Array.isArray(deps) ? deps.slice() : null; },
+  };
+}
+
+const element = (type, props, key) => ({ type, props: props || {}, key });
+
+function loadBundle(fetchImpl) {
+  let registration = null;
+  const listeners = new Map();
+  const win = {
+    __ModuleLoader__: { load(def) { registration = def; } },
+    innerWidth: 0,
+    addEventListener(name, fn) {
+      if (!listeners.has(name)) listeners.set(name, []);
+      listeners.get(name).push(fn);
+    },
+    removeEventListener(name, fn) {
+      listeners.set(name, (listeners.get(name) || []).filter((item) => item !== fn));
+    },
+    dispatch(name, event) {
+      for (const fn of listeners.get(name) || []) fn(event);
+    },
+  };
+  const sandbox = {
+    window: win,
+    fetch: fetchImpl,
+    setTimeout,
+    clearTimeout,
+    console,
+    URLSearchParams,
+    document: { getElementById: () => null },
+  };
+  vm.createContext(sandbox);
+  vm.runInContext(SOURCE, sandbox, { filename: 'lib/client.js' });
+  if (!registration) throw new Error('bundle did not register');
+  return { registration, win };
+}
+
+const settle = async (rounds = 8) => {
+  for (let i = 0; i < rounds; i += 1) await new Promise((resolve) => setImmediate(resolve));
+};
+
+async function mount() {
+  const server = createServer();
+  const runtime = createRuntime();
+  const table = {
+    react: runtime.react,
+    'react/jsx-runtime': { jsx: element, jsxs: element, Fragment: 'Fragment' },
+    '@deepseek-ai/dsh-client-ui-primitives': {
+      Button: function Button(props) { return element('button', props); },
+    },
+  };
+  const { registration } = loadBundle(server.fetchImpl);
+  const loaded = registration.factory((spec) => {
+    if (Object.prototype.hasOwnProperty.call(table, spec)) return table[spec];
+    throw new Error('unexpected require(' + spec + ')');
+  });
+  let component = null;
+  loaded.apply({
+    workspaces: { list: null },
+    sessions: {},
+    slots: {
+      inject: (_key, body) => body(),
+      register: (_entry, comp) => { component = comp; return { dispose() {} }; },
+    },
+    on: () => {},
+  });
+  if (!component) throw new Error('settings section was not registered');
+  loaded.__locale.setPluginLocalePref('zh');
+
+  let current = null;
+  const render = () => {
+    runtime.begin();
+    current = component({});
+    for (const effect of runtime.pending()) {
+      if (runtime.depsUnchanged(effect.index, effect.deps)) continue;
+      runtime.markDeps(effect.index, effect.deps);
+      effect.fn();
+    }
+    return current;
+  };
+  render();
+  for (let i = 0; i < 8; i += 1) {
+    await settle();
+    render();
+  }
+  return { render, tree: () => current, server };
+}
+
+function walk(node, out = { nodes: [], text: [] }) {
+  if (node == null || node === false) return out;
+  if (typeof node === 'string' || typeof node === 'number') {
+    out.text.push(String(node));
+    return out;
+  }
+  if (Array.isArray(node)) {
+    for (const child of node) walk(child, out);
+    return out;
+  }
+  out.nodes.push(node);
+  if (node.props && node.props.children !== undefined) walk(node.props.children, out);
+  return out;
+}
+const textOf = (tree) => walk(tree).text.join(' ');
+const nodesOf = (tree) => walk(tree).nodes;
+
+const pageTab = (tree, label) => {
+  const strip = nodesOf(tree).find((n) => n.props && n.props.role === 'tablist');
+  return walk(strip).nodes.find((n) => n.props && n.props.role === 'tab' && n.props.children === label);
+};
+
+const entityCard = (tree) => {
+  const card = nodesOf(tree).find((n) => n.type === 'section' && textOf(n).startsWith('实体范围检索'));
+  assert(!!card, 'the entity-search card is not rendered');
+  return card;
+};
+
+const labeledControl = (card, label) => {
+  const field = walk(card).nodes.find(
+    (n) => n.type === 'label' && Array.isArray(n.props.children)
+      && n.props.children[0] && n.props.children[0].props
+      && n.props.children[0].props.children === label,
+  );
+  assert(!!field, `no field labelled ${label}`);
+  return field.props.children[1];
+};
+
+const runButton = (card) => {
+  // The run control is the host `Button` primitive: in a structural tree its node
+  // type is the component, so the label is what identifies it.
+  const button = walk(card).nodes.find(
+    (n) => n.props && (n.props.children === '运行实体检索' || n.props.children === '检索中…'),
+  );
+  assert(!!button, 'the entity-search card has no run button');
+  return button;
+};
+
+const searchCalls = (server) => server.calls.filter((call) => call.href.includes('/api/dsh-trivium/entity-search'));
+
+function candidate(id, name, text, extra = {}) {
+  return {
+    id: String(id),
+    type: 'decision',
+    name,
+    text,
+    score: 0.71,
+    scoreKind: 'lexical',
+    review: '',
+    path: { nodes: [String(id)], edges: [] },
+    ...extra,
+  };
+}
+
+function payload(over = {}) {
+  return {
+    source: 'live',
+    timeBasis: 'query-time',
+    asOf: '2026-11-16T10:00:00.000Z',
+    cwd: ALPHA,
+    entityId: '101',
+    state: 'ok',
+    answerability: 'not_assessed',
+    scope: { name: 'Alpha 服务', eligibleCount: 3, rawCount: 4, complete: true },
+    work: { examinedNodes: 4, examinedEdges: 3, cpuMs: 12, embeddingCalls: 0 },
+    channels: {
+      text: { status: 'ran', truncated: false, calls: 0 },
+      semantic: { status: 'not_requested', calls: 0 },
+    },
+    textCandidates: [],
+    semanticCandidates: [],
+    warnings: [],
+    degraded: false,
+    ...over,
+  };
+}
+
+const edit = (app, label, value) => {
+  const control = labeledControl(entityCard(app.tree()), label);
+  control.props.onChange({ target: { value } });
+  return app.render();
+};
+
+/** Run one search: click, answer the pending request, then render the settled tree. */
+async function runSearch(app, { status = 200, reply }) {
+  const before = app.server.searches.length;
+  const pending = runButton(entityCard(app.tree())).props.onClick();
+  await settle(1);
+  assert(app.server.searches.length === before + 1, 'the run button did not issue exactly one request');
+  app.server.searches[before].reply(status, reply);
+  await pending;
+  await settle();
+  return { tree: app.render(), request: app.server.searches[before] };
+}
+
+const openContext = (app) => {
+  pageTab(app.tree(), '上下文').props.onClick();
+  return app.render();
+};
+
+try {
+  const app = await mount();
+  openContext(app);
+
+  await check(() => {
+    const card = entityCard(app.tree());
+    const text = textOf(card);
+    assert(text.includes('实体范围检索'), 'card title missing');
+    assert(text.includes('有候选不等于有答案'), 'the card does not warn that a neighbour is not an answer');
+    assert(text.includes('填写实体 ID 和问题，再运行检索。'), 'the idle hint is missing');
+    const box = walk(card).nodes.find((n) => n.props && n.props.type === 'checkbox');
+    assert(box && box.props.checked === false, 'semantic must be off by default');
+    assert(runButton(card).props.disabled === true, 'run must stay disabled without an entity id');
+  }, 'the card opens idle with semantic off and the run button disabled');
+
+  await check(async () => {
+    edit(app, '实体节点 ID', '101');
+    edit(app, '问题', '游标能复用多久？');
+    const box = walk(entityCard(app.tree())).nodes.find((n) => n.props && n.props.type === 'checkbox');
+    await check(() => assert(box.props.checked === false, 'semantic flipped on by itself'), 'semantic stays off while typing');
+    const before = searchCalls(app.server).length;
+    const pending = runButton(entityCard(app.tree())).props.onClick();
+    await settle(1);
+    app.render();
+    assert(runButton(entityCard(app.tree())).props.disabled === true, 'the run button stays enabled while busy');
+    assert(textOf(entityCard(app.tree())).includes('检索中…'), 'the busy label is missing');
+    const entry = app.server.searches.at(-1);
+    assert(entry, 'no request was sent');
+    assert(entry.cwd === ALPHA, `request bound to ${entry.cwd}`);
+    assert(JSON.stringify(entry.body) === JSON.stringify({ entityId: 101, query: '游标能复用多久？', limit: 5, semantic: false }), `unexpected body ${JSON.stringify(entry.body)}`);
+    entry.reply(200, payload({
+      textCandidates: [candidate(201, '报告游标', '报告游标可以复用 24 小时。', {
+        // The backend orients the path from the scope anchor to the candidate;
+        // the card must echo whatever the endpoint sent, not re-orient it.
+        path: { nodes: ['101', '201'], edges: [{ from: 101, to: 201, label: 'about' }] },
+      })],
+    }));
+    await pending;
+    await settle();
+    app.render();
+    assert(searchCalls(app.server).length === before + 1, 'a single run sent more than one request');
+    assert(app.server.calls.every((call) => !call.href.includes('/embedding')), 'the panel called an embedding endpoint');
+  }, 'a default search sends only endpoint fields to the current workspace and costs no embedding call');
+
+  await check(() => {
+    const text = textOf(entityCard(app.tree()));
+    assert(text.includes('词面候选 · 1'), 'the lexical channel header is missing');
+    assert(text.includes('语义候选 · 0'), 'the semantic channel is not listed separately');
+    assert(text.includes('#201 · 报告游标'), 'the candidate row is missing');
+    assert(text.includes('报告游标可以复用 24 小时。'), 'the candidate body is missing');
+    assert(text.includes('#101 —about→ #201'), 'the relationship path is missing');
+    assert(text.includes('lexical'), 'the score scale is not named');
+    assert(text.includes('分数 0.7100'), 'the score value is missing');
+    assert(text.includes('未请求语义通道（默认）。'), 'the semantic-off note is missing');
+    assert(text.includes('候选不是答案：answerability 固定为 not_assessed'), 'answerability is not shown');
+    assert(text.includes('范围：Alpha 服务 · 可读 3 / 记录 4 条'), 'the scope line is missing');
+    assert(text.includes('embedding 0 次'), 'the work line does not report zero embedding calls');
+    assert(text.includes('这一路没有候选。'), 'the empty semantic channel is silent');
+  }, 'candidates, path, scope, work and answerability are shown, channels stay separate');
+
+  await check(async () => {
+    const { tree } = await runSearch(app, {
+      reply: payload({
+        state: 'no_candidates',
+        scope: { name: 'Alpha 服务', eligibleCount: 2, rawCount: 2, complete: true },
+      }),
+    });
+    const text = textOf(entityCard(tree));
+    assert(text.includes('本次范围内没有候选。'), 'the empty-scope note is missing');
+    assert(text.includes('answerability 固定为 not_assessed'), 'an empty result dropped the answerability line');
+    assert(!text.includes('检索未完成'), 'an empty scope was reported as a failure');
+    assert(text.includes('词面候选 · 0') && text.includes('语义候选 · 0'), 'both channels should be empty');
+  }, 'a no_candidates result is explained, not shown as a found answer');
+
+  await check(async () => {
+    const box = walk(entityCard(app.tree())).nodes.find((n) => n.props && n.props.type === 'checkbox');
+    box.props.onChange({ target: { checked: true } });
+    app.render();
+    const { tree, request } = await runSearch(app, {
+      reply: payload({
+        state: 'scope_anchor_only',
+        scope: { name: 'Alpha 服务', eligibleCount: 1, rawCount: 1, complete: true },
+        channels: { text: { status: 'ran', truncated: false, calls: 0 }, semantic: { status: 'skipped', calls: 0 } },
+      }),
+    });
+    assert(request.body.semantic === true, 'the opt-in did not reach the request body');
+    const text = textOf(entityCard(tree));
+    assert(text.includes('这个实体在记录里没有业务关系，范围只有它自己。'), 'the anchor-only note is missing');
+    assert(text.includes('范围只有实体自身，语义通道已跳过。'), 'the skipped semantic channel is not explained');
+    box.props.onChange({ target: { checked: false } });
+    app.render();
+  }, 'an anchor-only scope explains that the semantic channel was skipped');
+
+  await check(async () => {
+    const { tree, request } = await runSearch(app, {
+      reply: payload({ degraded: true, channels: { text: { status: 'ran', truncated: false, calls: 0 }, semantic: { status: 'disabled', calls: 0 } }, textCandidates: [candidate(201, '报告游标', '旧正文')] }),
+    });
+    assert(request.body.semantic === false, 'semantic was still requested');
+    const text = textOf(entityCard(tree));
+    assert(text.includes('语义通道不可用（disabled），已保留同范围词面结果。'), 'the degraded note is missing');
+    assert(text.includes('#201 · 报告游标'), 'the lexical candidates were dropped on degradation');
+  }, 'a degraded semantic channel keeps the same-scope lexical result and names the reason');
+
+  /* --- workspace isolation and late replies --------------------------------- */
+  await check(async () => {
+    // Fill entity 101 in alpha and start a search that will answer after the switch.
+    edit(app, '实体节点 ID', '101');
+    edit(app, '问题', 'alpha 私有问题');
+    const pending = runButton(entityCard(app.tree())).props.onClick();
+    await settle(1);
+    const alphaRequest = app.server.searches.at(-1);
+    assert(alphaRequest.cwd === ALPHA, `alpha request bound to ${alphaRequest.cwd}`);
+    app.render();
+    assert(textOf(entityCard(app.tree())).includes('检索中…'), 'alpha search did not start');
+
+    // Switch to beta while the alpha reply is still outstanding.
+    const picker = nodesOf(app.tree()).find((n) => n.props && n.props['aria-label'] === '选择已知工作区');
+    assert(!!picker, 'the workspace picker is missing');
+    picker.props.onChange({ target: { value: BETA } });
+    for (let i = 0; i < 6; i += 1) { await settle(2); app.render(); }
+    const switched = app.render();
+    const pickerNow = nodesOf(switched).find((n) => n.props && n.props['aria-label'] === '选择已知工作区');
+    assert(pickerNow.props.value === BETA, `the picker still shows ${pickerNow.props.value}`);
+    const card = entityCard(switched);
+    assert(labeledControl(card, '实体节点 ID').props.value === '', 'the old entity id survived the switch');
+    assert(labeledControl(card, '问题').props.value === '', 'the old question survived the switch');
+    assert(textOf(card).includes('填写实体 ID 和问题，再运行检索。'), 'the card kept a stale result or error');
+
+    // Beta's own search starts before alpha's reply arrives, so the two responses
+    // really are interleaved: the beta request is newer, not merely different.
+    edit(app, '实体节点 ID', '202');
+    edit(app, '问题', 'beta 问题');
+    const betaPending = runButton(entityCard(app.tree())).props.onClick();
+    await settle(1);
+    const betaRequest = app.server.searches.at(-1);
+    assert(betaRequest.cwd === BETA, `beta request bound to ${betaRequest.cwd}`);
+
+    // The late alpha reply arrives now: it must not touch the beta panel.
+    alphaRequest.reply(200, payload({ cwd: ALPHA, textCandidates: [candidate(201, 'ALPHA-ONLY', 'alpha 私有事实，不应出现在 beta')] }));
+    await pending;
+    await settle(4);
+    const after = app.render();
+    const late = textOf(entityCard(after));
+    assert(!late.includes('ALPHA-ONLY'), 'a late alpha candidate landed in the beta panel');
+    assert(!late.includes('alpha 私有事实'), 'a late alpha body landed in the beta panel');
+    assert(!textOf(after).includes('ALPHA-ONLY'), 'a late alpha candidate leaked onto the page');
+    assert(!nodesOf(after).some((n) => n.props && n.props.role === 'alert'), 'the late alpha reply produced an alert');
+    assert(late.includes('检索中…'), 'the beta search was cancelled by the late alpha reply');
+
+    betaRequest.reply(200, payload({ cwd: BETA, entityId: '202', scope: { name: 'Beta 服务', eligibleCount: 1, rawCount: 1, complete: true }, textCandidates: [candidate(301, 'BETA-ONLY', 'beta 的合成事实')] }));
+    await betaPending;
+    await settle();
+    const betaText = textOf(entityCard(app.render()));
+    assert(betaText.includes('BETA-ONLY'), 'the beta result is missing');
+    assert(!betaText.includes('ALPHA-ONLY'), 'the alpha result came back in beta');
+  }, 'switching workspaces clears the old input/result and a late reply cannot land in the new one');
+
+  await check(async () => {
+    // A -> B -> A: the cwd string matches again, but the stale reply stays stale
+    // because switching cleared the inputs and invalidated the request sequence.
+    // Only the sequence guard can reject this one, so the cwd check cannot hide a
+    // regression here.
+    const pickerTo = (value) => {
+      const picker = nodesOf(app.tree()).find((n) => n.props && n.props['aria-label'] === '选择已知工作区');
+      picker.props.onChange({ target: { value } });
+    };
+    pickerTo(ALPHA);
+    for (let i = 0; i < 6; i += 1) { await settle(2); app.render(); }
+    assert(nodesOf(app.tree()).find((n) => n.props && n.props['aria-label'] === '选择已知工作区').props.value === ALPHA, 'alpha did not load');
+    edit(app, '实体节点 ID', '101');
+    edit(app, '问题', '离开前的问题');
+    const stale = runButton(entityCard(app.tree())).props.onClick();
+    await settle(1);
+    const staleRequest = app.server.searches.at(-1);
+    assert(staleRequest.cwd === ALPHA, `stale request bound to ${staleRequest.cwd}`);
+    pickerTo(BETA);
+    for (let i = 0; i < 6; i += 1) { await settle(2); app.render(); }
+    pickerTo(ALPHA);
+    for (let i = 0; i < 6; i += 1) { await settle(2); app.render(); }
+    const back = nodesOf(app.render()).find((n) => n.props && n.props['aria-label'] === '选择已知工作区');
+    assert(back.props.value === ALPHA, `the picker did not return to alpha (${back.props.value})`);
+    // Same library, same entity id: only the sequence guard can reject this reply.
+    staleRequest.reply(200, payload({ cwd: ALPHA, entityId: '101', textCandidates: [candidate(306, 'STALE-AFTER-RETURN', '返回后不应出现的旧结果')] }));
+    await stale.catch(() => {});
+    await settle(4);
+    const text = textOf(entityCard(app.render()));
+    assert(!text.includes('STALE-AFTER-RETURN'), 'a reply from before the round trip resurrected');
+    assert(text.includes('填写实体 ID 和问题，再运行检索。'), 'the card is not idle after the round trip');
+  }, 'a reply started before an A->B->A round trip is still rejected on return');
+
+  await check(async () => {
+    // Slow #1, then a newer #2; answer #2 first and #1 last (inverted completion).
+    edit(app, '实体节点 ID', '202');
+    edit(app, '问题', '慢请求');
+    const slow = runButton(entityCard(app.tree())).props.onClick();
+    await settle(1);
+    const slowRequest = app.server.searches.at(-1);
+    // Editing the question is the documented way to invalidate the in-flight result.
+    edit(app, '问题', '快请求');
+    edit(app, '问题', '快请求');
+    const fast = runButton(entityCard(app.tree())).props.onClick();
+    await settle(1);
+    const fastRequest = app.server.searches.at(-1);
+    assert(fastRequest !== slowRequest, 'the second run did not reach the server');
+    assert(fastRequest.body.query === '快请求', `second body query ${fastRequest.body.query}`);
+    fastRequest.reply(200, payload({ cwd: BETA, textCandidates: [candidate(302, 'FAST-RESULT', '较新的结果')] }));
+    await fast;
+    await settle();
+    const afterFast = textOf(entityCard(app.render()));
+    assert(afterFast.includes('FAST-RESULT'), 'the newer result is missing');
+    slowRequest.reply(200, payload({ cwd: BETA, textCandidates: [candidate(303, 'SLOW-RESULT', '较旧的迟到结果')] }));
+    await slow.catch(() => {});
+    await settle(4);
+    const afterSlow = textOf(entityCard(app.render()));
+    assert(!afterSlow.includes('SLOW-RESULT'), 'the older late reply overwrote the newer result');
+    assert(afterSlow.includes('FAST-RESULT'), 'the newer result was replaced');
+    assert(!afterSlow.includes('检索中…'), 'the card stayed busy after both replies settled');
+  }, 'an older reply cannot overwrite a newer search in the same workspace');
+
+  await check(async () => {
+    // A late error must be dropped the same way a late success is.
+    edit(app, '问题', '迟到错误');
+    const slow = runButton(entityCard(app.tree())).props.onClick();
+    await settle(1);
+    const slowRequest = app.server.searches.at(-1);
+    edit(app, '问题', '新的问题');
+    edit(app, '问题', '新的问题');
+    const fast = runButton(entityCard(app.tree())).props.onClick();
+    await settle(1);
+    const fastRequest = app.server.searches.at(-1);
+    fastRequest.reply(200, payload({ cwd: BETA, textCandidates: [candidate(304, 'NEWEST', '最新结果')] }));
+    await fast;
+    await settle();
+    slowRequest.reply(409, { ok: false, code: 'ENTITY_SEARCH_SCOPE_CHANGED', message: 'changed' });
+    await slow.catch(() => {});
+    await settle(4);
+    const tree = app.render();
+    const text = textOf(entityCard(tree));
+    assert(!text.includes('相关正文、关系、库句柄或 embedding 配置发生变化'), 'a late error was displayed');
+    assert(!nodesOf(tree).some((n) => n.props && n.props.role === 'alert'), 'a late error produced an alert');
+    assert(text.includes('NEWEST'), 'the newest result was lost');
+  }, 'a late error is dropped instead of replacing a newer result');
+
+  /* --- source isolation ----------------------------------------------------- */
+  await check(async () => {
+    edit(app, '问题', '游标');
+    edit(app, '实体节点 ID', '202');
+    const sourceSelect = labeledControl(entityCard(app.tree()), '数据来源');
+    sourceSelect.props.onChange({ target: { value: 'snapshot' } });
+    app.render();
+    const card = entityCard(app.tree());
+    const snapshotInput = labeledControl(card, '快照 ID（留空选最新）');
+    assert(!!snapshotInput, 'the snapshot id field did not appear');
+    assert(textOf(card).includes('留空选最新快照'), 'the snapshot hint is missing');
+
+    const { tree, request } = await runSearch(app, {
+      reply: payload({
+        source: 'snapshot',
+        timeBasis: 'snapshot-capture',
+        asOf: '2026-11-14T08:00:00.000Z',
+        snapshotId: 'snap-alpha-1',
+        cwd: BETA,
+        scope: { name: 'Beta 服务', eligibleCount: 1, rawCount: 1, complete: true },
+        textCandidates: [candidate(301, '捕获时正文', '快照保留捕获时的旧正文')],
+      }),
+    });
+    assert(request.body.snapshotId === 'latest', `snapshot body carried ${JSON.stringify(request.body.snapshotId)}`);
+    const text = textOf(entityCard(tree));
+    assert(text.includes('snapshot · Beta 服务'), 'the snapshot source is not shown');
+    assert(text.includes('快照时间（有效期按此时判断） · 2026-11-14T08:00:00.000Z'), 'the captured time is not shown');
+    assert(text.includes('snap-alpha-1'), 'the snapshot id is not echoed');
+    assert(text.includes('快照保留捕获时的旧正文'), 'the captured body is missing');
+  }, 'a fixed snapshot request carries the snapshot and shows the captured time');
+
+  await check(async () => {
+    const before = searchCalls(app.server).length;
+    const { tree } = await runSearch(app, {
+      status: 404,
+      reply: { ok: false, code: 'SNAPSHOT_NOT_FOUND', message: 'No snapshot snap-missing.' },
+    });
+    const card = entityCard(tree);
+    assert(textOf(card).includes('还没有可用快照，请先创建。'), 'a missing snapshot is not explained');
+    assert(nodesOf(card).some((n) => n.props && n.props.role === 'alert'), 'a missing snapshot has no alert');
+    assert(searchCalls(app.server).length === before + 1, 'the panel retried or fell back to live');
+    assert(!textOf(card).includes('词面候选 ·'), 'a missing snapshot still rendered candidates');
+  }, 'a missing snapshot fails clearly and does not silently fall back to live');
+
+  await check(async () => {
+    // Back to live: the same question must not inherit the snapshot answer.
+    const sourceSelect = labeledControl(entityCard(app.tree()), '数据来源');
+    sourceSelect.props.onChange({ target: { value: 'live' } });
+    app.render();
+    assert(labeledControl(entityCard(app.tree()), '数据来源').props.value === 'live', 'the source did not switch back');
+    assert(!textOf(entityCard(app.tree())).includes('还没有可用快照'), 'the snapshot error survived the source change');
+    const { tree, request } = await runSearch(app, {
+      reply: payload({ cwd: BETA, textCandidates: [candidate(305, 'LIVE-正文', '编辑后的新正文')] }),
+    });
+    assert(!('snapshotId' in request.body), 'a live request still carried a snapshot id');
+    const text = textOf(entityCard(tree));
+    assert(text.includes('编辑后的新正文'), 'the live body is missing');
+    assert(!text.includes('快照保留捕获时的旧正文'), 'the snapshot body leaked into live');
+  }, 'switching back to live clears the snapshot result and sends no snapshot id');
+
+  /* --- error matrix --------------------------------------------------------- */
+  const errorCases = [
+    { status: 400, code: 'ENTITY_SEARCH_INVALID', expect: '实体 ID 必须是正整数，问题不能为空，每路条数 1–20。' },
+    { status: 404, code: 'ENTITY_SEARCH_ENTITY_NOT_FOUND', expect: '这个实体 ID 不存在。' },
+    { status: 409, code: 'ENTITY_SEARCH_SCOPE_CHANGED', expect: '检索期间相关正文、关系、库句柄或 embedding 配置发生变化，请重试。不会自动重试。' },
+    { status: 422, code: 'ENTITY_SEARCH_WORK_LIMIT', expect: '检索超出共享工作预算，没有返回部分候选。请减少条数或换一个实体。' },
+    { status: 429, code: 'READ_BUSY', expect: '读取通道正忙（全局最多两个只读请求），请稍后重试。' },
+    { status: 408, code: 'ENTITY_SEARCH_TIMEOUT', expect: '检索超时或已取消，没有返回部分候选。' },
+  ];
+  for (const item of errorCases) {
+    await check(async () => {
+      const before = searchCalls(app.server).length;
+      const { tree } = await runSearch(app, { status: item.status, reply: { ok: false, code: item.code, message: 'controlled failure' } });
+      const card = entityCard(tree);
+      const alert = nodesOf(card).find((n) => n.props && n.props.role === 'alert');
+      assert(!!alert, `no alert for ${item.code}`);
+      const text = textOf(alert);
+      assert(text.includes(item.expect), `${item.code} shows ${JSON.stringify(text)}`);
+      assert(text.includes(String(item.status)) && text.includes(item.code), `${item.code} does not echo status and code`);
+      assert(text.includes('实体范围检索') === false, 'the alert swallowed the card');
+      assert(!textOf(card).includes('词面候选 ·'), 'a failed search rendered candidates');
+      assert(searchCalls(app.server).length === before + 1, `${item.code} triggered a retry`);
+      const runnable = runButton(card);
+      assert(runnable.props.disabled === false, `the run button stayed disabled after ${item.code}`);
+    }, `${item.status} ${item.code} renders one distinct state without retrying`);
+  }
+
+  await check(async () => {
+    // Invalid input never leaves the panel: no request, and the reason is on the title.
+    edit(app, '实体节点 ID', '');
+    const card = entityCard(app.tree());
+    const button = runButton(card);
+    assert(button.props.disabled === true, 'an empty entity id can still be submitted');
+    assert(button.props.title === '实体 ID 必须是正整数，问题不能为空，每路条数 1–20。', 'the invalid-input title is missing');
+    const before = searchCalls(app.server).length;
+    edit(app, '实体节点 ID', '0');
+    assert(runButton(entityCard(app.tree())).props.disabled === true, 'entity id 0 can still be submitted');
+    edit(app, '实体节点 ID', '101');
+    edit(app, '每路最多条数（1–20）', '21');
+    assert(runButton(entityCard(app.tree())).props.disabled === true, 'limit 21 can still be submitted');
+    edit(app, '每路最多条数（1–20）', '5');
+    assert(searchCalls(app.server).length === before, 'an invalid form still reached the server');
+  }, 'invalid input is blocked before any request is sent');
+} catch (err) {
+  failures += 1;
+  console.error('FAIL unexpected throw: ' + (err && err.stack ? err.stack : err));
+}
+
+console.log(`P101: ${checks - failures}/${checks}`);
+if (failures) process.exitCode = 1;
