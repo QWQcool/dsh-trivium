@@ -13,6 +13,7 @@ npm run test:list
 npm test -- p93
 npm test -- p99
 npm test -- p100
+npm test -- p101
 npm test -- retrieval
 npm run test:docs
 ```
@@ -44,6 +45,7 @@ npm run test:docs
 | 回归与文档 | `npm test -- <selector>`、`npm run test:docs` |
 | 成品干净消费 | `node scripts/verify-package.mjs <installed-directory>` |
 | 本地向量、范围检索、缓存重放 | `verify-local-embedding.mjs`，参数见[结果](reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
+| 记忆离线基线（零模型调用） | `node scripts/memory-eval.mjs --out FILE --reps N`（`--split dev` 或 `--split holdout` 可只跑一组），夹具 `scripts/fixtures/memory-eval-v1.json`，见[基线](reviews/MEMORY-EVAL-BASELINE-2026-11-16.md) |
 | TQL 负载、写延迟 | `bench-live-tql.mjs`，见[方法](reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
 | 原始证据完整性 | `node scripts/verify-evidence.mjs` |
 | Router / 并发 | `bench-router-queue.mjs`、`bench-lock-contention.mjs` |

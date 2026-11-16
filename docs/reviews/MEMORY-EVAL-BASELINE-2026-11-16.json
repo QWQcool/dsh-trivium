@@ -1,0 +1,1380 @@
+{
+  "meta": {
+    "evaluator": "memory-eval-evaluator-1",
+    "fixture": "memory-eval-v1-2026-11-16",
+    "fixtureHash": "4f5bf88d0c08757f7e20915c8191c68d1fd59666b8358350a71eb863dbef335e",
+    "fixturePath": "scripts/fixtures/memory-eval-v1.json",
+    "split": "all",
+    "reps": 3,
+    "scenarios": 26,
+    "runs": 78,
+    "node": "v24.15.0",
+    "platform": "win32-x64",
+    "startedAt": "2026-11-16T12:44:31.143Z",
+    "durationMs": 12465,
+    "realModelCalls": 0,
+    "realEmbeddingCalls": 0,
+    "tokens": "not measured",
+    "billing": "not measured",
+    "finalAnswerAccuracy": "not measured (no answer is generated)"
+  },
+  "timing": {
+    "samples": 78,
+    "p50": 43.401,
+    "p95": 345.9195,
+    "max": 385.1267
+  },
+  "aggregate": {
+    "scenarios": 26,
+    "writes": {
+      "expected": 9,
+      "correct": 9,
+      "duplicate": 0,
+      "needsReview": 0,
+      "missed": 0,
+      "absentChecked": 1,
+      "unsourcedNew": 1,
+      "intactChecked": 6,
+      "intactBroken": 0,
+      "echoExpected": 3,
+      "echoLeaked": 0,
+      "duplicateGroups": 0,
+      "redundantNew": 3,
+      "inserted": 15,
+      "merged": 2,
+      "echoSkipped": 2
+    },
+    "retrieval": {
+      "answerable": 12,
+      "top1": 5,
+      "top5": 10,
+      "top1ExcludingAnchor": 9,
+      "unanswerable": 5,
+      "unanswerableCandidateTotal": 3,
+      "forbiddenViolations": 0
+    }
+  },
+  "bySplit": {
+    "dev": {
+      "scenarios": 18,
+      "writes": {
+        "expected": 7,
+        "correct": 7,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "absentChecked": 1,
+        "unsourcedNew": 1,
+        "intactChecked": 4,
+        "intactBroken": 0,
+        "echoExpected": 3,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 3,
+        "inserted": 12,
+        "merged": 2,
+        "echoSkipped": 2
+      },
+      "retrieval": {
+        "answerable": 8,
+        "top1": 4,
+        "top5": 7,
+        "top1ExcludingAnchor": 7,
+        "unanswerable": 3,
+        "unanswerableCandidateTotal": 2,
+        "forbiddenViolations": 0
+      }
+    },
+    "holdout": {
+      "scenarios": 8,
+      "writes": {
+        "expected": 2,
+        "correct": 2,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 2,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 3,
+        "merged": 0,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 4,
+        "top1": 1,
+        "top5": 3,
+        "top1ExcludingAnchor": 2,
+        "unanswerable": 2,
+        "unanswerableCandidateTotal": 1,
+        "forbiddenViolations": 0
+      }
+    }
+  },
+  "byCategory": {
+    "same-name-cross-workspace": {
+      "scenarios": 5,
+      "writes": {
+        "expected": 2,
+        "correct": 2,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "absentChecked": 1,
+        "unsourcedNew": 1,
+        "intactChecked": 0,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 1,
+        "inserted": 3,
+        "merged": 2,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 4,
+        "top1": 2,
+        "top5": 4,
+        "top1ExcludingAnchor": 4,
+        "unanswerable": 1,
+        "unanswerableCandidateTotal": 1,
+        "forbiddenViolations": 0
+      }
+    },
+    "numeric-negation": {
+      "scenarios": 4,
+      "writes": {
+        "expected": 4,
+        "correct": 4,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 4,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 1,
+        "inserted": 7,
+        "merged": 0,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 0,
+        "top1": 0,
+        "top5": 0,
+        "top1ExcludingAnchor": 0,
+        "unanswerable": 0,
+        "unanswerableCandidateTotal": 0,
+        "forbiddenViolations": 0
+      }
+    },
+    "history-supersede-expiry": {
+      "scenarios": 4,
+      "writes": {
+        "expected": 0,
+        "correct": 0,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 0,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 0,
+        "merged": 0,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 4,
+        "top1": 3,
+        "top5": 4,
+        "top1ExcludingAnchor": 3,
+        "unanswerable": 0,
+        "unanswerableCandidateTotal": 0,
+        "forbiddenViolations": 0
+      }
+    },
+    "tool-echo": {
+      "scenarios": 4,
+      "writes": {
+        "expected": 2,
+        "correct": 2,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 1,
+        "intactBroken": 0,
+        "echoExpected": 3,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 1,
+        "inserted": 3,
+        "merged": 0,
+        "echoSkipped": 2
+      },
+      "retrieval": {
+        "answerable": 0,
+        "top1": 0,
+        "top5": 0,
+        "top1ExcludingAnchor": 0,
+        "unanswerable": 0,
+        "unanswerableCandidateTotal": 0,
+        "forbiddenViolations": 0
+      }
+    },
+    "no-answer-out-of-scope": {
+      "scenarios": 4,
+      "writes": {
+        "expected": 0,
+        "correct": 0,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 0,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 0,
+        "merged": 0,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 0,
+        "top1": 0,
+        "top5": 0,
+        "top1ExcludingAnchor": 0,
+        "unanswerable": 4,
+        "unanswerableCandidateTotal": 2,
+        "forbiddenViolations": 0
+      }
+    },
+    "identifier-zh-en": {
+      "scenarios": 5,
+      "writes": {
+        "expected": 1,
+        "correct": 1,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 1,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 2,
+        "merged": 0,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 4,
+        "top1": 0,
+        "top5": 2,
+        "top1ExcludingAnchor": 2,
+        "unanswerable": 0,
+        "unanswerableCandidateTotal": 0,
+        "forbiddenViolations": 0
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "A1",
+      "split": "dev",
+      "category": "same-name-cross-workspace",
+      "writes": {
+        "present": [
+          {
+            "text": "AuthGateway 的备用入口是 gateway-b.internal。",
+            "verdict": "correct",
+            "ids": [
+              203
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "另外记住：AuthGateway 的备用入口是 gateway-b.internal。"
+          }
+        ],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 2,
+          "merged": 1
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "另外记住：AuthGateway 的备用入口是 gateway-b.internal。",
+            "source": "extract"
+          },
+          {
+            "id": 203,
+            "type": "decision",
+            "text": "AuthGateway 的备用入口是 gateway-b.internal。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 1
+        }
+      },
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          101,
+          201
+        ],
+        "top1": false,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "A2",
+      "split": "dev",
+      "category": "same-name-cross-workspace",
+      "writes": {
+        "present": [
+          {
+            "text": "SyncService 的批大小是 500 条。",
+            "verdict": "correct",
+            "ids": [
+              201
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 0,
+          "merged": 1
+        },
+        "newNodes": [],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          101,
+          201
+        ],
+        "top1": false,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "A3",
+      "split": "dev",
+      "category": "same-name-cross-workspace",
+      "writes": {
+        "present": [],
+        "absent": [
+          {
+            "text": "导出格式固定为 XLSX。",
+            "verdict": "unsourced-new",
+            "ids": [
+              202
+            ]
+          }
+        ],
+        "intact": [],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 1,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "decision",
+            "text": "导出格式固定为 XLSX。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 0,
+          "correct": 0,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 1,
+          "unsourcedNew": 1,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201,
+          101
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "A4",
+      "split": "holdout",
+      "category": "same-name-cross-workspace",
+      "writes": null,
+      "retrieval": {
+        "kind": "unanswerable",
+        "state": "scope_anchor_only",
+        "answerability": "not_assessed",
+        "candidates": [
+          101
+        ],
+        "top1": null,
+        "top5": null,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "A5",
+      "split": "holdout",
+      "category": "same-name-cross-workspace",
+      "writes": null,
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "textCheck": {
+          "id": 201,
+          "present": true,
+          "contains": "5%",
+          "ok": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "B1",
+      "split": "dev",
+      "category": "numeric-negation",
+      "writes": {
+        "present": [
+          {
+            "text": "失败后重试 5 次。",
+            "verdict": "correct",
+            "ids": [
+              202
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "3 次",
+            "verdict": "intact",
+            "actual": "失败后重试 3 次。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 1,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "decision",
+            "text": "失败后重试 5 次。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "B2",
+      "split": "dev",
+      "category": "numeric-negation",
+      "writes": {
+        "present": [
+          {
+            "text": "现在允许写入。",
+            "verdict": "correct",
+            "ids": [
+              203
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "不允许写入",
+            "verdict": "intact",
+            "actual": "只允许只读访问，不允许写入。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "记住：现在允许写入。"
+          }
+        ],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 2,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "记住：现在允许写入。",
+            "source": "extract"
+          },
+          {
+            "id": 203,
+            "type": "decision",
+            "text": "现在允许写入。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 1
+        }
+      },
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "B3",
+      "split": "dev",
+      "category": "numeric-negation",
+      "writes": {
+        "present": [
+          {
+            "text": "TICKET-8841 的超时是 45 秒。",
+            "verdict": "correct",
+            "ids": [
+              203
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "30 秒",
+            "verdict": "intact",
+            "actual": "TICKET-8841 的超时是 30 秒。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 2,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "记住：TICKET-8841 的超时改为 45 秒。",
+            "source": "extract"
+          },
+          {
+            "id": 203,
+            "type": "decision",
+            "text": "TICKET-8841 的超时是 45 秒。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "B4",
+      "split": "holdout",
+      "category": "numeric-negation",
+      "writes": {
+        "present": [
+          {
+            "text": "报表游标可以复用 90 分钟。",
+            "verdict": "correct",
+            "ids": [
+              203
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "24 小时",
+            "verdict": "intact",
+            "actual": "报表游标可以复用 24 小时。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 2,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "以后都用 90 分钟作为报表游标的有效期。",
+            "source": "extract"
+          },
+          {
+            "id": 203,
+            "type": "preference",
+            "text": "报表游标可以复用 90 分钟。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "C1",
+      "split": "dev",
+      "category": "history-supersede-expiry",
+      "writes": null,
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          202,
+          101
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "C2",
+      "split": "dev",
+      "category": "history-supersede-expiry",
+      "writes": null,
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          202
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "C3",
+      "split": "dev",
+      "category": "history-supersede-expiry",
+      "writes": null,
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          202
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "C4",
+      "split": "holdout",
+      "category": "history-supersede-expiry",
+      "writes": null,
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201,
+          202
+        ],
+        "top1": false,
+        "top5": true,
+        "top1ExcludingAnchor": false,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "D1",
+      "split": "dev",
+      "category": "tool-echo",
+      "writes": {
+        "present": [],
+        "absent": [],
+        "intact": [],
+        "echoes": [
+          {
+            "text": "测试代号是 BLUE-OTTER-741。",
+            "verdict": "not-written",
+            "ids": []
+          }
+        ],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 1,
+        "skippedReasons": [
+          "memory-read-echo"
+        ],
+        "applied": {
+          "inserted": 0,
+          "merged": 0
+        },
+        "newNodes": [],
+        "counts": {
+          "expected": 0,
+          "correct": 0,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 1,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "D2",
+      "split": "dev",
+      "category": "tool-echo",
+      "writes": {
+        "present": [],
+        "absent": [],
+        "intact": [],
+        "echoes": [
+          {
+            "text": "数据库端口是 6543。",
+            "verdict": "not-written",
+            "ids": []
+          }
+        ],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 1,
+        "skippedReasons": [
+          "memory-read-echo"
+        ],
+        "applied": {
+          "inserted": 0,
+          "merged": 0
+        },
+        "newNodes": [],
+        "counts": {
+          "expected": 0,
+          "correct": 0,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 1,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "D3",
+      "split": "dev",
+      "category": "tool-echo",
+      "writes": {
+        "present": [
+          {
+            "text": "构建缓存的清理周期是 7 天。",
+            "verdict": "correct",
+            "ids": [
+              203
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [],
+        "echoes": [
+          {
+            "text": "构建缓存目录是 .build/cache。",
+            "verdict": "not-written",
+            "ids": []
+          }
+        ],
+        "duplicateGroups": [],
+        "redundantNew": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "请读一下构建缓存那条记忆；另外记住：构建缓存的清理周期是 7 天。"
+          }
+        ],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 2,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "请读一下构建缓存那条记忆；另外记住：构建缓存的清理周期是 7 天。",
+            "source": "extract"
+          },
+          {
+            "id": 203,
+            "type": "preference",
+            "text": "构建缓存的清理周期是 7 天。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 1,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 1
+        }
+      },
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "D4",
+      "split": "holdout",
+      "category": "tool-echo",
+      "writes": {
+        "present": [
+          {
+            "text": "并发上限是 12。",
+            "verdict": "correct",
+            "ids": [
+              202
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "8",
+            "verdict": "intact",
+            "actual": "并发上限是 8。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 1,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "decision",
+            "text": "并发上限是 12。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "E1",
+      "split": "dev",
+      "category": "no-answer-out-of-scope",
+      "writes": null,
+      "retrieval": {
+        "kind": "unanswerable",
+        "state": "scope_anchor_only",
+        "answerability": "not_assessed",
+        "candidates": [],
+        "top1": null,
+        "top5": null,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "E2",
+      "split": "dev",
+      "category": "no-answer-out-of-scope",
+      "writes": null,
+      "retrieval": {
+        "kind": "unanswerable",
+        "state": "scope_anchor_only",
+        "answerability": "not_assessed",
+        "candidates": [
+          101
+        ],
+        "top1": null,
+        "top5": null,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "E3",
+      "split": "dev",
+      "category": "no-answer-out-of-scope",
+      "writes": null,
+      "retrieval": {
+        "kind": "unanswerable",
+        "state": "scope_anchor_only",
+        "answerability": "not_assessed",
+        "candidates": [
+          101
+        ],
+        "top1": null,
+        "top5": null,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "E4",
+      "split": "holdout",
+      "category": "no-answer-out-of-scope",
+      "writes": null,
+      "retrieval": {
+        "kind": "unanswerable",
+        "state": "no_candidates",
+        "answerability": "not_assessed",
+        "candidates": [],
+        "top1": null,
+        "top5": null,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "F1",
+      "split": "dev",
+      "category": "identifier-zh-en",
+      "writes": null,
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          101,
+          201
+        ],
+        "top1": false,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "F2",
+      "split": "dev",
+      "category": "identifier-zh-en",
+      "writes": null,
+      "retrieval": {
+        "kind": "answerable",
+        "state": "no_candidates",
+        "answerability": "not_assessed",
+        "candidates": [],
+        "top1": null,
+        "top5": false,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "F3",
+      "split": "dev",
+      "category": "identifier-zh-en",
+      "writes": {
+        "present": [
+          {
+            "text": "关联工单是 OPS-4411。",
+            "verdict": "correct",
+            "ids": [
+              203
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "OPS-4410",
+            "verdict": "intact",
+            "actual": "关联工单是 OPS-4410。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 2,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "记住：关联工单改为 OPS-4411。",
+            "source": "extract"
+          },
+          {
+            "id": 203,
+            "type": "decision",
+            "text": "关联工单是 OPS-4411。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "F4",
+      "split": "holdout",
+      "category": "identifier-zh-en",
+      "writes": null,
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          101,
+          201
+        ],
+        "top1": false,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "F5",
+      "split": "holdout",
+      "category": "identifier-zh-en",
+      "writes": null,
+      "retrieval": {
+        "kind": "answerable",
+        "state": "no_candidates",
+        "answerability": "not_assessed",
+        "candidates": [],
+        "top1": null,
+        "top5": false,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "textCheck": null
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    }
+  ]
+}

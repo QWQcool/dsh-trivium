@@ -16,6 +16,7 @@
 |---|---|
 | 现在到哪一步、哪些结论作废 | [CURRENT-STATE](CURRENT-STATE.md) |
 | 低成本记忆、Super Agent、TDB 开发顺序 | [ROADMAP](ROADMAP.md) |
+| 实体面板与记忆评测的任务交接 | [AI-TASK-HANDOFF](AI-TASK-HANDOFF.md) |
 | 产品契约、模块与并发 | [PLAN](../PLAN.md) · [芯片与会话层](../PLAN-session-map.md) |
 | 环境、按主题回归、实验入口 | [DEVELOPMENT](DEVELOPMENT.md) |
 | HTTP、TQL、快照、实体搜索 | [read-api](read-api.md) |
@@ -35,4 +36,4 @@
 | 旧计划、实验修正、原文位置 | [HISTORY](HISTORY.md) |
 | 原始测量 | [evidence](evidence/README.md) · [写入/宿主证据](next-memory/evidence-write-provenance) |
 
-一个结论维护一个入口。任务写 ROADMAP，完成后更新状态；不再复制开工提示词和机器交接稿。历史发布回执和失败数据按原日期保留，现状在 HISTORY 说明。本地链接和版本声明由 `npm run test:docs` 检查。
+一个结论维护一个入口。任务写 ROADMAP，完成后更新状态；本轮两项任务的执行说明集中在一份交接文件，不再分散复制。历史发布回执和失败数据按原日期保留，现状在 HISTORY 说明。本地链接和版本声明由 `npm run test:docs` 检查。

@@ -1,0 +1,523 @@
+{
+  "version": "memory-eval-v1-2026-11-16",
+  "frozenAt": "2026-11-16",
+  "notes": [
+    "Synthetic only. Expectations were fixed before the first run and must not be edited to make results look better.",
+    "DEV scenarios are for developing/regressing the evaluator; HOLDOUT scenarios are the ones a later change has to hold.",
+    "No scenario in the holdout split is a paraphrase of a dev scenario; each uses its own entity, facts and question.",
+    "expect.present is the fact the corpus says must exist after the write; expect.absent is a candidate that must NOT become a current fact;",
+    "expect.echoes are the tool-read bodies that must not be re-written as new nodes; expect.intact is an older fact that a merge must not overwrite.",
+    "retrieval.relevant is the frozen set of facts that answer the question; retrieval.forbidden is a set that must not be returned as a current candidate."
+  ],
+  "categories": {
+    "same-name-cross-workspace": "同名实体、同名事实与跨工作区同 ID 不同内容",
+    "numeric-negation": "数值改动、否定、单位变化与标识符",
+    "history-supersede-expiry": "替代链、过期与归档记录不能当作当前事实",
+    "tool-echo": "自有工具回显与同轮新事实的区分",
+    "no-answer-out-of-scope": "无答案、范围外与同名旁支",
+    "identifier-zh-en": "精确标识符与中英文表达"
+  },
+  "scenarios": [
+    {
+      "id": "A1",
+      "split": "dev",
+      "category": "same-name-cross-workspace",
+      "prompt": "AuthGateway 的令牌多久轮换一次？另外记住：AuthGateway 的备用入口是 gateway-b.internal。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "AuthGateway", "text": "本工作区的认证网关。" },
+          { "id": 201, "type": "decision", "name": "令牌轮换", "text": "AuthGateway 的令牌每 90 天轮换一次。" }
+        ],
+        "edges": [[201, 101, "about"]],
+        "foreign": {
+          "nodes": [
+            { "id": 101, "type": "entity", "name": "AuthGateway", "text": "另一个工作区的认证网关。" },
+            { "id": 201, "type": "decision", "name": "令牌轮换", "text": "AuthGateway 的令牌每 7 天轮换一次。" }
+          ],
+          "edges": [[201, 101, "about"]]
+        }
+      },
+      "candidates": [
+        { "type": "decision", "name": "备用入口", "text": "AuthGateway 的备用入口是 gateway-b.internal。", "quote": "AuthGateway 的备用入口是 gateway-b.internal。", "linkName": "AuthGateway" }
+      ],
+      "expect": {
+        "present": [{ "type": "decision", "text": "AuthGateway 的备用入口是 gateway-b.internal。" }],
+        "absent": [],
+        "echoes": []
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "AuthGateway 的令牌多久轮换一次", "relevant": [201], "forbidden": [] }
+    },
+    {
+      "id": "A2",
+      "split": "dev",
+      "category": "same-name-cross-workspace",
+      "prompt": "顺便再记一次：SyncService 的批大小是 500 条。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "SyncService", "text": "同步服务 A 实例。" },
+          { "id": 102, "type": "entity", "name": "SyncService", "text": "同名同步服务 B 实例。" },
+          { "id": 201, "type": "decision", "name": "批大小", "text": "SyncService 的批大小是 500 条。" },
+          { "id": 301, "type": "decision", "name": "批大小", "text": "SyncService 的批大小是 2000 条。" }
+        ],
+        "edges": [[201, 101, "about"], [301, 102, "about"]]
+      },
+      "candidates": [
+        { "type": "decision", "name": "批大小", "text": "SyncService 的批大小是 500 条。", "quote": "SyncService 的批大小是 500 条。" }
+      ],
+      "expect": {
+        "present": [{ "type": "decision", "text": "SyncService 的批大小是 500 条。" }],
+        "absent": [],
+        "echoes": []
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "SyncService 的批大小是多少", "relevant": [201], "forbidden": [301] }
+    },
+    {
+      "id": "A3",
+      "split": "dev",
+      "category": "same-name-cross-workspace",
+      "prompt": "导出格式是什么？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Exporter", "text": "导出服务。" },
+          { "id": 201, "type": "decision", "name": "导出格式", "text": "导出格式固定为 CSV。" }
+        ],
+        "edges": [[201, 101, "about"]],
+        "foreign": {
+          "nodes": [
+            { "id": 101, "type": "entity", "name": "Exporter", "text": "导出服务（另一工作区）。" },
+            { "id": 201, "type": "decision", "name": "导出格式", "text": "导出格式固定为 XLSX。" }
+          ],
+          "edges": [[201, 101, "about"]]
+        }
+      },
+      "candidates": [
+        { "type": "decision", "name": "导出格式", "text": "导出格式固定为 XLSX。", "quote": "" }
+      ],
+      "expect": {
+        "present": [],
+        "absent": [{ "text": "导出格式固定为 XLSX。" }],
+        "echoes": []
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "导出格式是什么", "relevant": [201], "forbidden": [] }
+    },
+    {
+      "id": "A4",
+      "split": "holdout",
+      "category": "same-name-cross-workspace",
+      "prompt": "Router 的路由规则是什么？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Router", "text": "本工作区的路由服务。" },
+          { "id": 102, "type": "entity", "name": "Router", "text": "另一个同名路由服务。" },
+          { "id": 301, "type": "decision", "name": "路由规则", "text": "路由规则是先按主机名。" }
+        ],
+        "edges": [[301, 102, "about"]]
+      },
+      "retrieval": { "kind": "unanswerable", "anchor": 101, "question": "Router 的路由规则是什么", "relevant": [], "forbidden": [301] }
+    },
+    {
+      "id": "A5",
+      "split": "holdout",
+      "category": "same-name-cross-workspace",
+      "prompt": "灰度比例是多少？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Rollout", "text": "本工作区的灰度配置。" },
+          { "id": 201, "type": "decision", "name": "灰度", "text": "灰度比例是 5%。" }
+        ],
+        "edges": [[201, 101, "about"]],
+        "foreign": {
+          "nodes": [
+            { "id": 101, "type": "entity", "name": "Rollout", "text": "另一个工作区的灰度配置。" },
+            { "id": 201, "type": "decision", "name": "灰度", "text": "灰度比例是 50%。" }
+          ],
+          "edges": [[201, 101, "about"]]
+        }
+      },
+      "retrieval": {
+        "kind": "answerable", "anchor": 101, "question": "灰度比例是多少", "relevant": [201], "forbidden": [],
+        "textCheck": { "id": 201, "contains": "5%" }
+      }
+    },
+    {
+      "id": "B1",
+      "split": "dev",
+      "category": "numeric-negation",
+      "prompt": "更正：失败后重试 5 次。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "RetryPolicy", "text": "重试策略实体。" },
+          { "id": 201, "type": "decision", "name": "重试策略", "text": "失败后重试 3 次。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "candidates": [
+        { "type": "decision", "name": "重试策略", "text": "失败后重试 5 次。", "quote": "失败后重试 5 次。" }
+      ],
+      "expect": {
+        "present": [{ "type": "decision", "text": "失败后重试 5 次。" }],
+        "absent": [],
+        "echoes": [],
+        "intact": [{ "id": 201, "contains": "3 次" }]
+      }
+    },
+    {
+      "id": "B2",
+      "split": "dev",
+      "category": "numeric-negation",
+      "prompt": "记住：现在允许写入。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "AccessPolicy", "text": "访问策略实体。" },
+          { "id": 201, "type": "decision", "name": "访问策略", "text": "只允许只读访问，不允许写入。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "candidates": [
+        { "type": "decision", "name": "访问策略", "text": "现在允许写入。", "quote": "现在允许写入。" }
+      ],
+      "expect": {
+        "present": [{ "type": "decision", "text": "现在允许写入。" }],
+        "absent": [],
+        "echoes": [],
+        "intact": [{ "id": 201, "contains": "不允许写入" }]
+      }
+    },
+    {
+      "id": "B3",
+      "split": "dev",
+      "category": "numeric-negation",
+      "prompt": "记住：TICKET-8841 的超时改为 45 秒。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Gateway", "text": "网关实体。" },
+          { "id": 201, "type": "decision", "name": "超时设置", "text": "TICKET-8841 的超时是 30 秒。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "candidates": [
+        { "type": "decision", "name": "超时设置", "text": "TICKET-8841 的超时是 45 秒。", "quote": "TICKET-8841 的超时改为 45 秒。" }
+      ],
+      "expect": {
+        "present": [{ "type": "decision", "text": "TICKET-8841 的超时是 45 秒。" }],
+        "absent": [],
+        "echoes": [],
+        "intact": [{ "id": 201, "contains": "30 秒" }]
+      }
+    },
+    {
+      "id": "B4",
+      "split": "holdout",
+      "category": "numeric-negation",
+      "prompt": "以后都用 90 分钟作为报表游标的有效期。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "ReportCursor", "text": "报表游标实体。" },
+          { "id": 201, "type": "preference", "name": "游标有效期", "text": "报表游标可以复用 24 小时。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "candidates": [
+        { "type": "preference", "name": "游标有效期", "text": "报表游标可以复用 90 分钟。", "quote": "以后都用 90 分钟作为报表游标的有效期。" }
+      ],
+      "expect": {
+        "present": [{ "type": "preference", "text": "报表游标可以复用 90 分钟。" }],
+        "absent": [],
+        "echoes": [],
+        "intact": [{ "id": 201, "contains": "24 小时" }]
+      }
+    },
+    {
+      "id": "C1",
+      "split": "dev",
+      "category": "history-supersede-expiry",
+      "prompt": "发布策略现在是什么？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "ReleaseFlow", "text": "发布流程实体。" },
+          { "id": 201, "type": "decision", "name": "发布策略", "text": "发布策略为手动审批。" },
+          { "id": 202, "type": "decision", "name": "发布策略", "text": "发布策略改为自动审批。" }
+        ],
+        "edges": [[201, 101, "about"], [202, 101, "about"]],
+        "supersede": { "oldId": 201, "successorId": 202 }
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "发布策略是什么", "relevant": [202], "forbidden": [201] }
+    },
+    {
+      "id": "C2",
+      "split": "dev",
+      "category": "history-supersede-expiry",
+      "prompt": "限流窗口是多少？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "RateLimiter", "text": "限流实体。" },
+          { "id": 201, "type": "decision", "name": "限流窗口", "text": "限流窗口是每分钟 60 次。", "untilAt": "2020-01-01T00:00:00.000Z" },
+          { "id": 202, "type": "decision", "name": "限流窗口", "text": "限流窗口调整为每分钟 120 次。" }
+        ],
+        "edges": [[201, 101, "about"], [202, 101, "about"]]
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "限流窗口是多少", "relevant": [202], "forbidden": [201] }
+    },
+    {
+      "id": "C3",
+      "split": "dev",
+      "category": "history-supersede-expiry",
+      "prompt": "回滚方案是什么？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Rollback", "text": "回滚实体。" },
+          { "id": 201, "type": "decision", "name": "回滚方案", "text": "回滚使用快照 A。" },
+          { "id": 202, "type": "decision", "name": "回滚方案", "text": "回滚使用快照 B。" }
+        ],
+        "edges": [[201, 101, "about"], [202, 101, "about"]],
+        "archive": [201]
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "回滚方案是什么", "relevant": [202], "forbidden": [201] }
+    },
+    {
+      "id": "C4",
+      "split": "holdout",
+      "category": "history-supersede-expiry",
+      "prompt": "审计记录保留多久？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "AuditStore", "text": "审计存储实体。" },
+          { "id": 201, "type": "decision", "name": "审计留存", "text": "审计记录保留 30 天。", "createdAt": "2025-01-05T00:00:00.000Z" },
+          { "id": 202, "type": "decision", "name": "审计留存", "text": "审计记录保留 90 天。", "createdAt": "2026-06-01T00:00:00.000Z" }
+        ],
+        "edges": [[201, 101, "about"], [202, 101, "about"]]
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "审计记录保留多久", "relevant": [202], "forbidden": [] }
+    },
+    {
+      "id": "D1",
+      "split": "dev",
+      "category": "tool-echo",
+      "prompt": "请调用 ctx_find 查找记忆里的测试代号。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "BuildCache", "text": "构建缓存实体。" },
+          { "id": 201, "type": "preference", "name": "测试代号", "text": "测试代号是 BLUE-OTTER-741。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "readBack": [{ "tool": "ctx_find", "nodeId": 201 }],
+      "candidates": [
+        { "type": "entity", "name": "测试代号", "text": "测试代号是 BLUE-OTTER-741。", "quote": "测试代号是 BLUE-OTTER-741。", "origin": "echo" }
+      ],
+      "expect": {
+        "present": [],
+        "absent": [],
+        "echoes": [{ "text": "测试代号是 BLUE-OTTER-741。" }]
+      }
+    },
+    {
+      "id": "D2",
+      "split": "dev",
+      "category": "tool-echo",
+      "prompt": "请用 ctx_read 读一下 id=201 的记忆。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Database", "text": "数据库实体。" },
+          { "id": 201, "type": "decision", "name": "数据库端口", "text": "数据库端口是 6543。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "readBack": [{ "tool": "ctx_read", "nodeId": 201 }],
+      "candidates": [
+        { "type": "decision", "name": "数据库端口", "text": "数据库端口是 6543。", "quote": "", "origin": "echo" }
+      ],
+      "expect": {
+        "present": [],
+        "absent": [],
+        "echoes": [{ "text": "数据库端口是 6543。" }]
+      }
+    },
+    {
+      "id": "D3",
+      "split": "dev",
+      "category": "tool-echo",
+      "prompt": "请读一下构建缓存那条记忆；另外记住：构建缓存的清理周期是 7 天。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "BuildCache", "text": "构建缓存实体。" },
+          { "id": 201, "type": "preference", "name": "构建缓存", "text": "构建缓存目录是 .build/cache。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "readBack": [{ "tool": "ctx_read", "nodeId": 201 }],
+      "candidates": [
+        { "type": "preference", "name": "构建缓存", "text": "构建缓存目录是 .build/cache。", "quote": "构建缓存目录是 .build/cache。", "origin": "echo" },
+        { "type": "preference", "name": "清理周期", "text": "构建缓存的清理周期是 7 天。", "quote": "记住：构建缓存的清理周期是 7 天。", "origin": "user" }
+      ],
+      "expect": {
+        "present": [{ "type": "preference", "text": "构建缓存的清理周期是 7 天。" }],
+        "absent": [],
+        "echoes": [{ "text": "构建缓存目录是 .build/cache。" }]
+      }
+    },
+    {
+      "id": "D4",
+      "split": "holdout",
+      "category": "tool-echo",
+      "prompt": "先查一下并发上限，然后把上限改成 12。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "WorkerPool", "text": "工作进程池实体。" },
+          { "id": 201, "type": "decision", "name": "并发上限", "text": "并发上限是 8。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "readBack": [{ "tool": "ctx_find", "nodeId": 201 }],
+      "candidates": [
+        { "type": "decision", "name": "并发上限", "text": "并发上限是 12。", "quote": "把上限改成 12", "origin": "user" }
+      ],
+      "expect": {
+        "present": [{ "type": "decision", "text": "并发上限是 12。" }],
+        "absent": [],
+        "echoes": [],
+        "intact": [{ "id": 201, "contains": "8" }]
+      }
+    },
+    {
+      "id": "E1",
+      "split": "dev",
+      "category": "no-answer-out-of-scope",
+      "prompt": "账单周期是什么？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Billing", "text": "本工作区的账单服务。" }
+        ],
+        "edges": [],
+        "foreign": {
+          "nodes": [
+            { "id": 101, "type": "entity", "name": "Billing", "text": "另一个工作区的账单服务。" },
+            { "id": 201, "type": "decision", "name": "账单周期", "text": "账单周期是每月 5 日。" }
+          ],
+          "edges": [[201, 101, "about"]]
+        }
+      },
+      "retrieval": { "kind": "unanswerable", "anchor": 101, "question": "账单周期是多少", "relevant": [], "forbidden": [] }
+    },
+    {
+      "id": "E2",
+      "split": "dev",
+      "category": "no-answer-out-of-scope",
+      "prompt": "Orphan 的配置是什么？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Orphan", "text": "没有任何业务关系的实体。" }
+        ],
+        "edges": []
+      },
+      "retrieval": { "kind": "unanswerable", "anchor": 101, "question": "Orphan 的配置是什么", "relevant": [], "forbidden": [] }
+    },
+    {
+      "id": "E3",
+      "split": "dev",
+      "category": "no-answer-out-of-scope",
+      "prompt": "导出队列名是什么？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Exporter", "text": "本工作区的导出实体。" },
+          { "id": 102, "type": "entity", "name": "Exporter", "text": "同名导出实体。" },
+          { "id": 301, "type": "decision", "name": "导出队列", "text": "导出队列名是 csv-queue。" }
+        ],
+        "edges": [[301, 102, "about"]]
+      },
+      "retrieval": { "kind": "unanswerable", "anchor": 101, "question": "导出队列名是什么", "relevant": [], "forbidden": [301] }
+    },
+    {
+      "id": "E4",
+      "split": "holdout",
+      "category": "no-answer-out-of-scope",
+      "prompt": "队列的重试策略是什么？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Queue", "text": "队列实体。" },
+          { "id": 201, "type": "decision", "name": "队列", "text": "队列名是 orders。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "retrieval": { "kind": "unanswerable", "anchor": 101, "question": "重试策略是什么", "relevant": [], "forbidden": [] }
+    },
+    {
+      "id": "F1",
+      "split": "dev",
+      "category": "identifier-zh-en",
+      "prompt": "本批次号是什么？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Batch", "text": "批次实体。" },
+          { "id": 201, "type": "preference", "name": "批次号", "text": "本批次号是 LOT-7781-A。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "本批次号是什么", "relevant": [201], "forbidden": [] }
+    },
+    {
+      "id": "F2",
+      "split": "dev",
+      "category": "identifier-zh-en",
+      "prompt": "每个 key 每秒允许多少次请求？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Upstream", "text": "上游服务实体。" },
+          { "id": 201, "type": "decision", "name": "限流", "text": "Upstream rate limit is 60 rps per key。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "每个 key 每秒允许多少次请求", "relevant": [201], "forbidden": [] }
+    },
+    {
+      "id": "F3",
+      "split": "dev",
+      "category": "identifier-zh-en",
+      "prompt": "记住：关联工单改为 OPS-4411。",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Ticket", "text": "工单实体。" },
+          { "id": 201, "type": "decision", "name": "工单", "text": "关联工单是 OPS-4410。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "candidates": [
+        { "type": "decision", "name": "工单", "text": "关联工单是 OPS-4411。", "quote": "关联工单改为 OPS-4411。" }
+      ],
+      "expect": {
+        "present": [{ "type": "decision", "text": "关联工单是 OPS-4411。" }],
+        "absent": [],
+        "echoes": [],
+        "intact": [{ "id": 201, "contains": "OPS-4410" }]
+      }
+    },
+    {
+      "id": "F4",
+      "split": "holdout",
+      "category": "identifier-zh-en",
+      "prompt": "grayscale rollout 对多少用户开放？",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Rollout", "text": "灰度实体。" },
+          { "id": 201, "type": "decision", "name": "灰度", "text": "Grayscale rollout 只对 5% 用户开放。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "grayscale rollout 对多少用户开放", "relevant": [201], "forbidden": [] }
+    },
+    {
+      "id": "F5",
+      "split": "holdout",
+      "category": "identifier-zh-en",
+      "prompt": "How long are backups retained?",
+      "seed": {
+        "nodes": [
+          { "id": 101, "type": "entity", "name": "Backup", "text": "备份实体。" },
+          { "id": 201, "type": "decision", "name": "保留期", "text": "备份保留 14 天。" }
+        ],
+        "edges": [[201, 101, "about"]]
+      },
+      "retrieval": { "kind": "answerable", "anchor": 101, "question": "How long are backups retained?", "relevant": [201], "forbidden": [] }
+    }
+  ]
+}
