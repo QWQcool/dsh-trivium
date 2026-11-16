@@ -78,17 +78,19 @@ Restart **dsh web**. For a source checkout, `git pull` then run `node scripts/li
 
 ## Uninstall
 
-Stop **dsh web** first so the `.tdb` is not locked, then:
+> **Published npm 0.8.9 still has the old destructive uninstall hook.** Do not remove that published build until it has been replaced by a fixed build. The current source and builds made from it retain memory by default; this change has not yet been published to npm.
+
+For a fixed build, stop the host, then remove the plugin from its profile:
 
 ```sh
 dsh plugin --profile web remove dsh-trivium
 ```
 
-`remove` deletes `~/.dsh/trivium.json` and the known `.dsh/trivium.tdb*`, `trivium.jsonl*`, and `trivium-pending.json` files in workspaces the plugin has opened. **It does not remove** the 0.8.2 preference-export directory `.dsh/consumer-preferences/`; the post-0.8.2 source also leaves `.dsh/trivium-changes.jsonl` and its incomplete-history marker. These can contain memory-derived information. Inspect and remove them manually if desired. Other files under `.dsh/` stay. Updating with `dsh plugin add dsh-trivium` does **not** wipe memory. If `trivium.jsonl` was committed, `git checkout` brings it back.
+The fixed build retains `~/.dsh/trivium.json` and workspace memory, pending items, sidecars, snapshots, history, and preference exports. Reinstalling can reuse the retained memory. If you explicitly want to erase data, inspect the relevant workspace and settings files and remove only what you intend to erase.
 
 Restart **dsh web** afterward: Settings no longer shows **Trivium memory**, the title bar no longer shows **Chips**, and the four tools are unregistered.
 
-Workspaces never opened after this version may still have an old `.tdb`; delete that file by hand if you find one. Disable without uninstall (data stays): in that profile’s `cordis.patch.yml` add:
+To disable without uninstalling, add this to the profile’s `cordis.patch.yml`:
 
 ```yaml
 - id: dsh-trivium
@@ -407,7 +409,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 | `ctx_find` returns nothing | A new session injects the short map only; the model must call the tool. You can also **Add** on the chip strip or tell the model “remember: …”. Chitchat and one-off file edits are not auto-written. |
 | `.tdb` is locked / will not open | Run one `dsh web`. Do not run two Node processes that both linked this plugin. |
 | Embedding is filled but search is no more accurate | Failures fall back to keyword + graph. Check that `~/.dsh/trivium.json` has an OpenAI-compatible URL (the `/v1` kind). Restart after changing it. |
-| Memory still there after uninstall | Stop `dsh web` before `dsh plugin remove`. Leftover `.tdb` is a workspace never opened on 0.4.10+; delete `.dsh/trivium.tdb` in that folder. Committed `trivium.jsonl` comes back with `git checkout`. Disable-in-place does not wipe. |
+| Memory still there after uninstall | This is intentional for a fixed source build. Keep it for a future reinstall, or inspect and remove selected files yourself if you explicitly want to erase them. The published npm 0.8.9 still has the old uninstall behavior. |
 | Check for updates fails | That request only hits the npm registry for the latest version. Memory is unaffected; try again later. |
 | Old conversations will not open after rc.8 | That is DSH’s own session-store format change, not a broken `.tdb`. Graph memory still works via `ctx_find`; leftover boxes on unmatched old sessions are plot residue. |
 | Desktop shows “A JavaScript error occurred in the main process” with `EPIPE: broken pipe, write` | Host-side, not the plugin: `electron-updater` writes a log line to a console pipe whose parent process has exited (typical when the app was started by a test launcher with `--inspect`). No `dsh-trivium` frame is in that stack. Click OK and start the app from the Start menu; avoid launching it from a terminal or harness that closes. |

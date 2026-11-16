@@ -42,8 +42,8 @@ try {
   assert(gitSidecarEnabledOf({ gitSidecarEnabled: true }) === true, "sidecar write can be turned on");
   assert(pluginLocaleOf({}) === "host", "plugin locale follows host when missing");
   assert(configPanelOpenOf({}) === false, "config fold starts collapsed");
-  assert(isTriviumArtifactName("trivium.jsonl") === true, "jsonl is an uninstall artifact");
-  assert(isTriviumArtifactName("trivium.jsonl.tmp") === true, "jsonl tmp is an uninstall artifact");
+  assert(isTriviumArtifactName("trivium.jsonl") === true, "jsonl is an explicit cleanup artifact");
+  assert(isTriviumArtifactName("trivium.jsonl.tmp") === true, "jsonl tmp is an explicit cleanup artifact");
 
   writeUiSettings({ gitSidecarEnabled: true });
   const db = await openWorkspaceDb(cwd);

@@ -45,7 +45,6 @@
     "test:list": "node scripts/run-all.mjs --list",
     "test:docs": "node scripts/smoke-p91.mjs",
     "link-dsh": "node scripts/link-dsh.mjs",
-    "preuninstall": "node ./lib/purge.js",
     "verify-live-p2": "node scripts/verify-live-p2.mjs"
   },
   "engines": {

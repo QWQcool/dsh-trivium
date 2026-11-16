@@ -77,17 +77,19 @@ dsh plugin --profile web add dsh-trivium
 
 ## 卸载
 
-先停掉 **dsh web**，避免 `.tdb` 被占用，然后：
+> **已发布的 npm 0.8.9 仍带有旧的卸载清理脚本，卸载时可能删除记忆。** 在替换为修复后的构建前，请勿卸载该发布包。当前源码及其构建默认保留记忆；此修复尚未发布到 npm。
+
+确认已使用修复后的构建，先停止宿主，再从对应 profile 卸载：
 
 ```sh
 dsh plugin --profile web remove dsh-trivium
 ```
 
-`remove` 会删掉 `~/.dsh/trivium.json`，以及它打开过的每个工作区里的 `.dsh/trivium.tdb*`、`trivium.jsonl*` 和 `trivium-pending.json`。**偏好导出的 `.dsh/consumer-preferences/` 会保留**；源码中尚未发布的变更记录 `.dsh/trivium-changes.jsonl` 及其历史不完整标记也不会由卸载程序删除。如果不再需要，应自行检查并清理这些文件，连同导出到其他位置的人设副本。用 `dsh plugin add dsh-trivium` 升级**不会**清记忆。若 `trivium.jsonl` 已提交，`git checkout` 可以找回。
+修复后的构建会保留 `~/.dsh/trivium.json` 和工作区中的记忆库、待处理条目、旁路文件、快照、变更记录及偏好导出；重新安装后可继续使用。确实需要清除时，请先核对相应工作区和设置，再自行删除选定文件。
 
 然后再重启 **dsh web**：设置里不再有「Trivium 记忆」，标题栏不再有「芯片」，四个工具不再注册。
 
-从未用本版打开过的工作区，可能还留着旧 `.tdb`；看到就手动删那个文件。只想停用、不卸载（数据还在）：在该 profile 的 `cordis.patch.yml` 里加：
+只想停用、不卸载：在该 profile 的 `cordis.patch.yml` 里加：
 
 ```yaml
 - id: dsh-trivium
@@ -410,7 +412,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 | `ctx_find` 什么都没有 | 新会话默认只注入短地图，模型要自己调工具。也可以在芯片条「新增」或对模型说「记住：…」。闲聊和一次性改文件不会自动入库。 |
 | 报 `.tdb` 被占用 / 打不开 | 只开一个 `dsh web`。不要同时跑两份链接了本插件的 Node 进程。 |
 | embedding 填了但检索没变准 | 失败会退回关键词 + 图。检查 `~/.dsh/trivium.json` 中保存的 URL 是否为 OpenAI 兼容的 embeddings endpoint；保存后仍未生效时重启宿主再检查。 |
-| 卸载后记忆还在 | 先停 `dsh web` 再 `dsh plugin remove`。剩下的 `.tdb` 是从未用 0.4.10 打开过的工作区，到该文件夹删 `.dsh/trivium.tdb`。已提交的 `trivium.jsonl` 用 `git checkout` 找回。只在配置里 disabled 不会清文件。 |
+| 卸载后记忆还在 | 修复后的源码构建默认保留记忆，方便以后重新安装；确需清除时自行核对并删除选定文件。已发布的 npm 0.8.9 仍是旧卸载行为。 |
 | 检查更新失败 | 只请求 npm registry 拿最新版本号，不影响记忆；过一会儿再点即可。 |
 | rc.8 之后旧对话打不开 | 那是 DSH 自己的会话库格式变了，不是 `.tdb` 坏了。图记忆仍可 `ctx_find`；对不上号的旧方框可当情节残留。 |
 | 桌面端弹出「A JavaScript error occurred in the main process / EPIPE: broken pipe, write」 | 宿主侧问题，不是插件：`electron-updater` 往一个已经断开的控制台管道写日志（常见于用 `--inspect` 的测试启动器拉起、父进程随后退出）。栈里没有 `dsh-trivium`。点确定后从开始菜单正常启动；不要从会关闭的终端/测试器拉起。 |
