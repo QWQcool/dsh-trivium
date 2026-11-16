@@ -14,6 +14,8 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 The published npm package is **0.8.9**. Workspace switches discard stale memory actions, proposal tokens use canonical paths, and chip writes share the workspace lock. Read-only live TQL and independently captured snapshots let you inspect memory while DSH owns the writer. [English release notes](docs/release-0.8.9.en.md)
 
+The current source is ahead of that package and pins TriviumDB **0.9.1**; the published package still uses **0.9.0**. Opening and checkpointing an existing library with the newer writer may advance its format (0.9.1 uses `.tdb` v13 / WAL v6); returning to an older kernel requires a pre-upgrade copy of the complete file group. The migration regression uses synthetic data; it does not prove every existing library is compatible. [Current status](docs/CURRENT-STATE.md)
+
 > **Back up the whole `.dsh` directory (with the plugin closed) before upgrading from 0.8.4 or earlier** (0.8.5 through 0.8.9 already ship `0.9.0`, so there is nothing to convert if you are on any of them).
 > 0.9.0 raises the library format to **v10** and the previous kernel cannot read it
 > (`TDB_UNSUPPORTED_DATABASE_VERSION`), so **downgrading the plugin is not a rollback** — restoring a backup is,
@@ -25,7 +27,7 @@ The published npm package is **0.8.9**. Workspace switches discard stale memory 
 
 ## Installation
 
-> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. Current Web verification uses `0.2.2-rc.1` (2026-11-10, real host launch); see the [baseline and evidence index](docs/README.md) for desktop `0.2.1-rc.3` coverage and limitations. Node must satisfy `^22.19.0 || >=24`; `triviumdb` is pinned to `0.9.0`.
+> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. Current Web verification uses `0.2.2-rc.1` (2026-11-10, real host launch); see the [baseline and evidence index](docs/README.md) for desktop coverage and limitations. Node must satisfy `^22.19.0 || >=24`; the npm package pins `triviumdb@0.9.0` and current source pins `0.9.1`.
 
 ```sh
 dsh plugin --profile web add dsh-trivium

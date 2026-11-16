@@ -10,6 +10,8 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 >
 > 当前 npm 发布版是 **0.8.9**。切库会丢弃旧条目的操作，提案令牌使用规范路径，芯片写入共用工作区锁。新增在线只读 TQL、独立快照与查询 CLI，可在 DSH 持有写句柄时检查记忆。[发布说明](docs/release-0.8.9.md)
 >
+> 当前源码已领先发布包，运行内核锁定 **0.9.1**；npm 发布包仍使用 **0.9.0**。旧库由新写者打开并 checkpoint 后可能升格式（0.9.1 为 `.tdb` v13 / WAL v6），旧内核回退需要升级前完整文件组。当前迁移回归使用合成数据，不代表所有实际旧库均已验证。[当前状态](docs/CURRENT-STATE.md)
+>
 > **从 ≤0.8.4 升级到 0.8.9 前请备份整个 `.dsh` 目录（插件关闭状态下）**；已经在 0.8.5 到 0.8.9 任一版上则无需再转换，内核同为 0.9.0。 0.9.0 把库格式升到 **v10**，旧内核读不了
 > （`TDB_UNSUPPORTED_DATABASE_VERSION`），所以**降级插件不是回退**，恢复备份才是；而恢复备份会回到备份时刻，
 > **备份之后写入的内容会丢失**。备份要复制**整个文件组**（`trivium.tdb` 及同前缀的 `.gidx` `.pidx` `.pld.*`
@@ -21,7 +23,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前使用 Web `0.2.2-rc.1` 验证（2026-11-10 实机启动）；桌面 `0.2.1-rc.3` 的验证层级和局限见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`，内核精确锁定 `triviumdb@0.9.0`。
+> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并至少启动过一次 `dsh web`。当前使用 Web `0.2.2-rc.1` 验证（2026-11-10 实机启动）；桌面验证范围见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`；npm 发布包锁定 `triviumdb@0.9.0`，当前源码锁定 `0.9.1`。
 
 ```sh
 dsh plugin --profile web add dsh-trivium

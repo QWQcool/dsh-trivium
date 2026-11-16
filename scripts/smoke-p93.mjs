@@ -167,6 +167,12 @@
       closed.close();
       rejects(() => executeReadQuery(closed, { kind: "nodes" }), 409, "READ_QUERY_UNAVAILABLE");
     });
+    check("native deadline errors become bounded read timeouts", () => {
+      const expired = { nodeCount: () => 1, consoleRequest() {
+        throw Object.assign(new Error("native deadline"), { code: "TDB_QUERY_DEADLINE_EXCEEDED" });
+      } };
+      rejects(() => executeReadQuery(expired, { kind: "nodes" }), 408, "READ_QUERY_TIMEOUT");
+    });
 
     const large = open("large");
     for (let id = 1; id <= READ_QUERY_MAX_NODES + 1; id++) {
@@ -958,7 +964,13 @@
     check("the native cooperative deadline is surfaced as an HTTP timeout", () => {
       const condition = Array.from({ length: 120 }, (_, index) => `n.rank == ${10000 + index}`).join(" OR ");
       assert.throws(() => executeLiveTql(large, { tql: `MATCH (n) WHERE ${condition} RETURN n.id AS id`, timeoutMs: 1 }),
-        (error) => error.status === 408 && ["TDB_QUERY_CANCELLED", "LIVE_TQL_TIMEOUT"].includes(error.code));
+        (error) => error.status === 408 && ["TDB_QUERY_CANCELLED", "TDB_QUERY_DEADLINE_EXCEEDED", "LIVE_TQL_TIMEOUT"].includes(error.code));
+    });
+    check("the new native deadline error remains a timeout even without timing races", () => {
+      const expired = { prepareTql() {}, consoleRequest() {
+        throw Object.assign(new Error("native deadline"), { code: "TDB_QUERY_DEADLINE_EXCEEDED" });
+      } };
+      rejects(() => executeLiveTql(expired, { tql: "MATCH (n) RETURN n", timeoutMs: 50 }), 408, "TDB_QUERY_DEADLINE_EXCEEDED");
     });
     check("completion checks reject a late synchronous result without pretending to interrupt it", () => {
       let returned = false;
@@ -1138,6 +1150,10 @@
       await assert.rejects(()=>searchEntity(db,{entityId:101,query:"retry"},{limits:{responseBytes:200}}),errorIs(413));
       let time=0;const original=db.getPayload;try{db.getPayload=id=>{time+=100;return original.call(db,id)};
         await assert.rejects(()=>searchEntity(db,{entityId:101,query:"retry"},{clock:()=>time}),errorIs(408));}finally{db.getPayload=original}
+    });
+    await check("native entity-search deadlines become timeouts",async()=>{
+      const expired={getPayload(){throw Object.assign(new Error("native deadline"),{code:"TDB_QUERY_DEADLINE_EXCEEDED"})}};
+      await assert.rejects(()=>searchEntity(expired,{entityId:101,query:"retry"}),errorIs(408,"ENTITY_SEARCH_TIMEOUT"));
     });
     await check("provider timeout preserves lexical results",async()=>{
       const r=await searchEntity(db,{entityId:101,query:"retry",semantic:true},{remainingMs:500,embedding:async()=>new Promise(()=>{})});

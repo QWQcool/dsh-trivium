@@ -4,13 +4,14 @@
 
 ## 环境与命令
 
-Node 满足 `^22.19.0 || >=24`。运行依赖固定 TDB 0.9.0；开发依赖固定真实 dsh-llm/dsh-tools 0.2.2-rc.1，直接从 registry 安装，不要求已有用户 DSH profile。旧 .npmrc 的 omit/legacy-peer-deps 绕过已移除，干净安装会解析所需的 Cordis 等 peer 依赖。
+Node 满足 `^22.19.0 || >=24`。源码运行依赖固定 TDB 0.9.1；开发依赖包含 0.9.0 的别名，仅用于合成旧库迁移回归，并固定真实 dsh-llm/dsh-tools 0.2.2-rc.1。依赖直接从 registry 安装，不要求已有用户 DSH profile。旧 .npmrc 的 omit/legacy-peer-deps 绕过已移除，干净安装会解析所需的 Cordis 等 peer 依赖。
 
 ```sh
 npm ci
 npm test
 npm run test:list
 npm test -- p93
+npm test -- p99
 npm test -- retrieval
 npm run test:docs
 ```
@@ -30,6 +31,7 @@ npm run test:docs
 | smoke-revisions | p31/48/64/67/69 | 版本链、提案、历史正文、重复事件、拒绝保护 |
 | smoke-audit-locks | p53/54/55/56 | 审计、工作区锁、双进程和真实 HTTP |
 | smoke-evaluation | p33/39 | 评分、实验隔离、请求前费用预留 |
+| smoke-kernel | p99 | 用真实 0.9.0 创建合成库，核对 0.9.1 打开、写入、重开前后的节点、向量和边 |
 | 其余 smoke-pN / p2-cases | 原编号 | 较大的端到端、UI、宿主、查询和发布契约 |
 
 自调用 worker、路径敏感用例和冻结 UI 测试本轮保留原文件。以后按职责合并，不为每次修复新建脚本，也不为文件数把所有测试塞进一个模块。
