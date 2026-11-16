@@ -12,6 +12,7 @@ npm test
 npm run test:list
 npm test -- p93
 npm test -- p99
+npm test -- p100
 npm test -- retrieval
 npm run test:docs
 ```
@@ -27,7 +28,7 @@ npm run test:docs
 | 集合 | 历史用例 | 覆盖 |
 |---|---|---|
 | smoke-retrieval | p30/34/35/37 | 精确名、廉价门控、业务路径、注入覆盖和尾部保底 |
-| smoke-extraction | p43/45/46/49/50/66 | 指令里的事实、推理降级、敏感值、日期、来源、空回答 |
+| smoke-extraction | p43/45/46/49/50/66/100 | 指令里的事实、推理降级、敏感值、日期、来源、空回答，以及记忆工具回显和新事实的区分 |
 | smoke-revisions | p31/48/64/67/69 | 版本链、提案、历史正文、重复事件、拒绝保护 |
 | smoke-audit-locks | p53/54/55/56 | 审计、工作区锁、双进程和真实 HTTP |
 | smoke-evaluation | p33/39 | 评分、实验隔离、请求前费用预留 |

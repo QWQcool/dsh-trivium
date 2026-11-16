@@ -1,7 +1,7 @@
 /** extraction: independent historical regression cases. Run with npm test -- extraction.
  * Each function runs in its own process through run-all; settings and modules never leak. */
 
-export const cases = Object.freeze({ p43, p45, p46, p49, p50, p66 });
+export const cases = Object.freeze({ p43, p45, p46, p49, p50, p66, p100 });
 
 async function p43() {
   const { default: assert } = await import("node:assert/strict");
@@ -1419,5 +1419,222 @@ async function p66() {
     rmSync(root, { recursive: true, force: true });
   }
   console.log(`P66: ${checks - failures}/${checks}`);
+  if (failures) process.exitCode = 1;
+}
+
+async function p100() {
+  const { default: assert } = await import("node:assert/strict");
+  const { mkdtempSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { dirname, join, resolve } = await import("node:path");
+  const root = mkdtempSync(join(tmpdir(), "trivium-p100-"));
+  process.env.DSH_HOME = join(root, "home");
+  process.env.DSH_TRIVIUM_SETTINGS = join(root, "settings.json");
+  const store = await import("../lib/store.js");
+  const extract = await import("../lib/extract.js");
+  const source = await import("../lib/source-events.js");
+  const NAME = "测试代号记忆";
+  const BODY = "测试代号是 BLUE-OTTER-741";
+  let count = 0, failures = 0, workspace = 0;
+  const check = async (label, fn) => {
+    count++;
+    try { await fn(); console.log(`ok ${label}`); }
+    catch (error) { failures++; console.error(`FAIL ${label}: ${error.stack || error}`); }
+    finally { store.closeAll(); }
+  };
+  const open = async (payload = {}) => {
+    const cwd = join(root, `ws-${++workspace}`);
+    const db = await store.openWorkspaceDb(cwd);
+    const id = store.insertNode(db, { type: "preference", name: NAME, text: BODY, ...payload });
+    return { db, cwd, id };
+  };
+  const user = (text, seq = 11) => source.turnFromEvent({ type: "user/message", seq, time: 1794820542000,
+    data: { id: `user-${seq}`, role: "user", source: { kind: "user" }, content: [{ type: "text", text }] } });
+  const tool = (name, text, seq = 24, isError = false) => source.turnFromEvent({ type: "tool/result", seq, time: 1794820543000,
+    data: { turn: 1, step: 1, message: { id: `tool-${seq}`, role: "tool", source: { kind: "tool", callId: `call-${seq}` },
+      isError, content: [{ type: "text", text }] } } }, { name });
+  const find = (id, text = BODY, type = "preference") => tool("ctx_find", `[4.000] id=${id} type=${type}\n${text}`);
+  const read = (id, payload = { type: "preference", name: NAME, text: BODY, status: "active" }) =>
+    tool("ctx_read", JSON.stringify({ id, payload, edges: [], incoming: [] }), 30);
+  const answer = (text = BODY) => ({ role: "assistant", text: `已查到：${text}`, seq: 34, messageId: "assistant-34" });
+  const question = () => user(`在本测试工作区，请调用 ctx_find 查找“${NAME}”，准确告诉我记忆里的测试代号。`);
+  const echo = (overrides = {}) => ({ type: "entity", name: NAME, text: BODY, quote: BODY, ...overrides });
+  const run = async (db, turns, candidates) => {
+    let prompt = "";
+    const result = await extract.distill({ db, turns, sessionId: "synthetic-session", llmCall: async value => {
+      prompt = value; return JSON.stringify({ candidates });
+    } });
+    return { ...result, prompt };
+  };
+  const graph = db => JSON.stringify(db.allNodeIds().sort((a, b) => a - b).map(id => db.get(id)));
+  const has = (db, type, text) => db.allNodeIds().some(id => {
+    const p = db.get(id)?.payload; return p?.type === type && p?.text === text;
+  });
+
+  try {
+    await check("real host ctx_find echo cannot create a cross-type copy or touch the existing graph", async () => {
+      const { db, id } = await open();
+      const before = graph(db);
+      const result = await run(db, [question(), find(id), answer()], [echo()]);
+      assert.equal(result.llmFailed, false);
+      assert.equal(result.applied.length, 0);
+      assert.ok(result.skipped.some(row => row.reason === "memory-read-echo"));
+      assert.equal(graph(db), before);
+      assert.match(result.prompt, /ctx_find/);
+    });
+    await check("ctx_read echo is recognised even when the model omits a quote", async () => {
+      const { db, id } = await open();
+      const before = graph(db);
+      const result = await run(db, [question(), read(id), answer()], [echo({ quote: "" })]);
+      assert.equal(result.applied.length, 0);
+      assert.equal(graph(db), before);
+    });
+    await check("multiple find results bind each body to the correct node id", async () => {
+      const { db, id } = await open();
+      const other = store.insertNode(db, { type: "preference", name: "other", text: "Other distinct fact." });
+      const turns = [question(), tool("ctx_find", `[8.000] id=${other} type=preference\nOther distinct fact.\n\n[4.000] id=${id} type=preference\n${BODY}`), answer()];
+      const before = graph(db);
+      const result = await run(db, turns, [echo()]);
+      assert.equal(result.applied.length, 0);
+      assert.equal(graph(db), before);
+    });
+    await check("a recalled fact and a new user decision in the same window are handled separately", async () => {
+      const { db, id } = await open();
+      const newText = "决定发布窗口调整为周四。";
+      const turns = [user(`请查询“${NAME}”。${newText}`), find(id), answer()];
+      const result = await run(db, turns, [echo(), { type: "decision", name: "发布窗口", text: newText, quote: newText }]);
+      assert.ok(result.skipped.some(row => row.reason === "memory-read-echo"));
+      assert.equal(has(db, "entity", BODY), false);
+      assert.equal(has(db, "decision", newText), true);
+      assert.equal(db.get(id).payload.text, BODY);
+    });
+    await check("the user explicitly states the same fact: it is not discarded as a tool echo", async () => {
+      const { db, id } = await open();
+      const turns = [user(`记住：${BODY}。`), find(id), answer()];
+      const result = await run(db, turns, [echo()]);
+      assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+      assert.equal(has(db, "entity", BODY), true);
+    });
+    await check("the user explicitly asks to create an entity from the read fact", async () => {
+      const { db, id } = await open();
+      const turns = [user(`请查找“${NAME}”，并将这条记忆创建为实体。`), find(id), answer()];
+      const result = await run(db, turns, [echo()]);
+      assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+      assert.equal(has(db, "entity", BODY), true);
+    });
+    await check("matching information from an unrelated tool remains independent evidence", async () => {
+      const { db, id } = await open();
+      const turns = [question(), find(id), tool("read_file", BODY, 31), answer()];
+      const result = await run(db, turns, [echo()]);
+      assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+      assert.equal(has(db, "entity", BODY), true);
+    });
+    await check("a changed number is a new fact, not an echo", async () => {
+      const { db, id } = await open();
+      const next = "测试代号是 BLUE-OTTER-742";
+      const result = await run(db, [user(`新的值是：${next}`), find(id), answer(next)], [echo({ text: next, quote: next })]);
+      assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+      assert.equal(has(db, "entity", next), true);
+      assert.equal(db.get(id).payload.text, BODY);
+    });
+    await check("a candidate with a new relation is retained", async () => {
+      const { db, id } = await open();
+      const result = await run(db, [question(), find(id), answer()], [echo({ linkName: "ReleaseGateway" })]);
+      assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+      assert.equal(has(db, "entity", BODY), true);
+    });
+    await check("unknown legacy tool names and failed reads are never assumed to be memory echoes", async () => {
+      for (const turn of [tool("tool", `[4.000] id=2 type=preference ${BODY}`), tool("ctx_find", `[4.000] id=2 type=preference ${BODY}`, 24, true)]) {
+        const { db } = await open();
+        const result = await run(db, [question(), turn, answer()], [echo()]);
+        assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+        assert.equal(has(db, "entity", BODY), true);
+        store.closeAll();
+      }
+    });
+    await check("archived or changed stored facts do not suppress a new candidate", async () => {
+      for (const payload of [{ status: "archived" }, { text: "测试代号是 BLUE-OTTER-999" }]) {
+        const { db, id } = await open(payload);
+        const result = await run(db, [question(), find(id), answer()], [echo()]);
+        assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+        assert.equal(has(db, "entity", BODY), true);
+        store.closeAll();
+      }
+    });
+    await check("echoes do not exhaust the batch budget before a genuinely new fact", async () => {
+      const { db, id } = await open();
+      const turns = [user(`请查询“${NAME}”。新服务端口是 9443。`), find(id)];
+      const candidates = [echo()];
+      for (let i = 0; i < 9; i++) {
+        const name = `旧记录编号${i}`, text = `旧记录的测试值是编号${i}。`;
+        const oldId = store.insertNode(db, { type: "preference", name, text });
+        turns.push(tool("ctx_find", `[4.000] id=${oldId} type=preference\n${text}`, 40 + i));
+        candidates.push(echo({ name, text, quote: text }));
+      }
+      const fresh = "新服务端口是 9443。";
+      candidates.push({ type: "entity", name: "新服务", text: fresh, quote: fresh });
+      turns.push(answer());
+      const result = await run(db, turns, candidates);
+      assert.equal(result.skipped.filter(row => row.reason === "memory-read-echo").length, 10);
+      assert.equal(has(db, "entity", fresh), true);
+      assert.equal(db.get(id).payload.text, BODY);
+    });
+    await check("changed whitespace and changed identifiers are never classed as exact echoes", async () => {
+      for (const next of ["测试代号是  BLUE-OTTER-741", "测试代号是 BLUE-otter-741", "测试代号不是 BLUE-OTTER-741"]) {
+        const { db, id } = await open();
+        const result = await run(db, [question(), find(id), answer()], [echo({ text: next, quote: "" })]);
+        assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+        assert.equal(db.get(id).payload.text, BODY);
+        store.closeAll();
+      }
+    });
+    await check("an explicit request to classify the retrieved fact is retained across clauses", async () => {
+      for (const request of ["把它归类为实体。", "请将该内容存为一个实体。", "把上一条当作一个实体。", "将上面内容单独建一项记忆。", "Classify it as an entity.", "Make this an entity."]) {
+        const { db, id } = await open();
+        const result = await run(db, [user(`请查找“${NAME}”。${request}`), find(id), answer()], [echo()]);
+        assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+        assert.equal(has(db, "entity", BODY), true);
+        store.closeAll();
+      }
+    });
+    await check("a mismatched node id, type or incomplete read cannot prove an echo", async () => {
+      for (const mode of ["id", "type", "truncated"]) {
+        const { db, id } = await open();
+        const wrongId = store.insertNode(db, { type: "preference", name: "另一条", text: "另一条内容。" });
+        const observed = mode === "id" ? find(wrongId) : mode === "type" ? find(id, BODY, "entity")
+          : tool("ctx_read", `{"id":${id},"payload":{"type":"preference","name":"${NAME}","text":"测试代号是`);
+        const result = await run(db, [question(), observed, answer()], [echo()]);
+        assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+        assert.equal(has(db, "entity", BODY), true);
+        assert.equal(db.get(id).payload.text, BODY);
+        store.closeAll();
+      }
+    });
+    await check("reviewed or time-bounded memories are left to the normal write path", async () => {
+      for (const payload of [{ review: true }, { until: "2099-01-01" }]) {
+        const { db, id } = await open(payload);
+        const result = await run(db, [question(), find(id), answer()], [echo()]);
+        assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+        assert.equal(has(db, "entity", BODY), true);
+        store.closeAll();
+      }
+    });
+    await check("pending replay retains tool identity and applies the same echo guard", async () => {
+      const { db, id, cwd } = await open();
+      const turns = [question(), find(id), answer()];
+      await extract.savePending(cwd, { sessionId: "synthetic-session", turns });
+      const replayed = extract.loadPending(cwd).turns;
+      assert.equal(replayed.find(t => t.role === "tool")?.name, "ctx_find");
+      const before = graph(db);
+      const result = await run(db, replayed, [echo()]);
+      assert.equal(result.applied.length, 0);
+      assert.equal(graph(db), before);
+    });
+  } finally {
+    store.closeAll();
+    if (dirname(resolve(root)) !== resolve(tmpdir())) throw new Error("Refusing cleanup outside temp directory");
+    rmSync(root, { recursive: true, force: true });
+  }
+  console.log(`P100: ${count - failures}/${count}`);
   if (failures) process.exitCode = 1;
 }
