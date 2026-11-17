@@ -1,0 +1,426 @@
+{
+  "host": "desktop-bundled CLI 0.2.2-rc.3, isolated Web UI; native desktop window not claimed",
+  "checkedAt": "2026-11-17T06:10:50.511Z",
+  "modelCalls": 0,
+  "embeddingCalls": 0,
+  "observations": [
+    "Unsupported Alpha evidence remained pending; no active fact added.",
+    "Supporting Alpha evidence saved one manual/user-supplement fact; old CSV fact remained.",
+    "Switch to Beta cleared Alpha content and showed independent source.",
+    "Cancel manual confirmation performed no write.",
+    "Explicit Beta confirmation saved manual/user-confirmation content; old JSON fact remained.",
+    "Final rebuilt host confirmed a second Beta candidate. Latest audit has null source sequence; original JSON, earlier PDF and new concurrency fact are all present.",
+    "Browser tab was closed after screenshot."
+  ],
+  "rows": [
+    {
+      "name": "ui-a",
+      "status": {
+        "nodeCount": 3,
+        "embeddingEnabled": false,
+        "lastExtract": null
+      },
+      "nodes": {
+        "ok": true,
+        "cwd": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\ui-a",
+        "nodes": [
+          {
+            "id": 3,
+            "type": "decision",
+            "name": "导出格式",
+            "text": "Alpha 导出格式固定为 XLSX。",
+            "aliases": [],
+            "until": "",
+            "stale": false,
+            "revision": "current",
+            "currentId": 3,
+            "supersededBy": null,
+            "replacesId": null,
+            "dirty": false,
+            "status": "active",
+            "edges": 1,
+            "path": [
+              "in_workspace->1(C:\\Users\\v_chchsli\\Deskt)"
+            ],
+            "incoming": [],
+            "outgoing": [],
+            "sourceSession": "ui-review",
+            "createdAt": "2026-11-17T05:45:52.519Z",
+            "updatedAt": "2026-11-17T05:45:52.519Z",
+            "history": [],
+            "historyCount": 0
+          },
+          {
+            "id": 2,
+            "type": "decision",
+            "name": "导出格式",
+            "text": "Alpha 原有记忆：格式为 CSV。",
+            "aliases": [],
+            "until": "",
+            "stale": false,
+            "revision": "current",
+            "currentId": 2,
+            "supersededBy": null,
+            "replacesId": null,
+            "dirty": false,
+            "status": "active",
+            "edges": 1,
+            "path": [
+              "in_workspace->1(C:\\Users\\v_chchsli\\Deskt)"
+            ],
+            "incoming": [],
+            "outgoing": [],
+            "sourceSession": "",
+            "createdAt": "2026-11-17T05:39:40.181Z",
+            "updatedAt": "2026-11-17T05:39:40.181Z",
+            "history": [],
+            "historyCount": 0
+          },
+          {
+            "id": 1,
+            "type": "workspace",
+            "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\ui-a",
+            "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\ui-a",
+            "aliases": [],
+            "until": "",
+            "stale": false,
+            "revision": "current",
+            "currentId": 1,
+            "supersededBy": null,
+            "replacesId": null,
+            "dirty": false,
+            "status": "active",
+            "edges": 0,
+            "path": [],
+            "incoming": [],
+            "outgoing": [],
+            "sourceSession": "",
+            "createdAt": "2026-11-17T05:39:40.179Z",
+            "updatedAt": "2026-11-17T05:39:40.179Z",
+            "history": [],
+            "historyCount": 0
+          }
+        ]
+      },
+      "pending": {
+        "ok": true,
+        "cwd": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\ui-a",
+        "windows": [],
+        "turns": 0,
+        "acknowledged": 0,
+        "updatedAt": "2026-11-17T05:45:52.616Z"
+      },
+      "changes": {
+        "ok": true,
+        "cwd": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\ui-a",
+        "limit": 50,
+        "trimmed": 0,
+        "total": 1,
+        "incomplete": false,
+        "entries": [
+          {
+            "at": "2026-11-17T05:45:52.617Z",
+            "reason": "source-reviewed",
+            "opId": "",
+            "nodeId": 3,
+            "byId": null,
+            "action": "pending-reviewed",
+            "type": "",
+            "preview": "",
+            "detail": "verify",
+            "source": {
+              "role": "user",
+              "messageId": null,
+              "seq": 0,
+              "quoteMatch": "exact"
+            }
+          }
+        ],
+        "labels": {
+          "source-reviewed": {
+            "en": "Source reviewed",
+            "zh": "来源已人工核对"
+          },
+          "written": {
+            "en": "Written",
+            "zh": "已写入"
+          },
+          "merged": {
+            "en": "Merged",
+            "zh": "已合并"
+          },
+          "superseded": {
+            "en": "Superseded",
+            "zh": "已替代"
+          },
+          "rejected": {
+            "en": "Refused",
+            "zh": "已拒绝"
+          },
+          "date-adjusted": {
+            "en": "Date adjusted",
+            "zh": "日期已调整"
+          },
+          "pending-review": {
+            "en": "Needs review",
+            "zh": "待确认"
+          },
+          "supersede-failed": {
+            "en": "Replace failed",
+            "zh": "替代失败"
+          },
+          "supersede-confirmed": {
+            "en": "Replacement confirmed",
+            "zh": "替代已确认"
+          },
+          "supersede-rejected": {
+            "en": "Replacement declined",
+            "zh": "替代已拒绝"
+          },
+          "replay-timeout": {
+            "en": "Recovery timed out",
+            "zh": "恢复超时"
+          },
+          "lock-busy": {
+            "en": "Another session is writing",
+            "zh": "另一会话正在写入"
+          },
+          "stuck": {
+            "en": "Stuck",
+            "zh": "卡住"
+          },
+          "recovered": {
+            "en": "Recovered",
+            "zh": "已自愈"
+          }
+        }
+      }
+    },
+    {
+      "name": "ui-b",
+      "status": {
+        "nodeCount": 4,
+        "embeddingEnabled": false,
+        "lastExtract": null
+      },
+      "nodes": {
+        "ok": true,
+        "cwd": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\ui-b",
+        "nodes": [
+          {
+            "id": 4,
+            "type": "decision",
+            "name": "并发上限",
+            "text": "Beta 并发上限是 13。",
+            "aliases": [],
+            "until": "",
+            "stale": false,
+            "revision": "current",
+            "currentId": 4,
+            "supersededBy": null,
+            "replacesId": null,
+            "dirty": false,
+            "status": "active",
+            "edges": 1,
+            "path": [
+              "in_workspace->1(C:\\Users\\v_chchsli\\Deskt)"
+            ],
+            "incoming": [],
+            "outgoing": [],
+            "sourceSession": "final-ui-review",
+            "createdAt": "2026-11-17T06:07:59.710Z",
+            "updatedAt": "2026-11-17T06:07:59.710Z",
+            "history": [],
+            "historyCount": 0
+          },
+          {
+            "id": 3,
+            "type": "decision",
+            "name": "导出格式",
+            "text": "Beta 导出格式固定为 PDF。",
+            "aliases": [],
+            "until": "",
+            "stale": false,
+            "revision": "current",
+            "currentId": 3,
+            "supersededBy": null,
+            "replacesId": null,
+            "dirty": false,
+            "status": "active",
+            "edges": 1,
+            "path": [
+              "in_workspace->1(C:\\Users\\v_chchsli\\Deskt)"
+            ],
+            "incoming": [],
+            "outgoing": [],
+            "sourceSession": "ui-review",
+            "createdAt": "2026-11-17T05:46:47.075Z",
+            "updatedAt": "2026-11-17T05:46:47.075Z",
+            "history": [],
+            "historyCount": 0
+          },
+          {
+            "id": 2,
+            "type": "decision",
+            "name": "导出格式",
+            "text": "Beta 原有记忆：格式为 JSON。",
+            "aliases": [],
+            "until": "",
+            "stale": false,
+            "revision": "current",
+            "currentId": 2,
+            "supersededBy": null,
+            "replacesId": null,
+            "dirty": false,
+            "status": "active",
+            "edges": 1,
+            "path": [
+              "in_workspace->1(C:\\Users\\v_chchsli\\Deskt)"
+            ],
+            "incoming": [],
+            "outgoing": [],
+            "sourceSession": "",
+            "createdAt": "2026-11-17T05:39:40.262Z",
+            "updatedAt": "2026-11-17T05:39:40.262Z",
+            "history": [],
+            "historyCount": 0
+          },
+          {
+            "id": 1,
+            "type": "workspace",
+            "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\ui-b",
+            "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\ui-b",
+            "aliases": [],
+            "until": "",
+            "stale": false,
+            "revision": "current",
+            "currentId": 1,
+            "supersededBy": null,
+            "replacesId": null,
+            "dirty": false,
+            "status": "active",
+            "edges": 0,
+            "path": [],
+            "incoming": [],
+            "outgoing": [],
+            "sourceSession": "",
+            "createdAt": "2026-11-17T05:39:40.260Z",
+            "updatedAt": "2026-11-17T05:39:40.260Z",
+            "history": [],
+            "historyCount": 0
+          }
+        ]
+      },
+      "pending": {
+        "ok": true,
+        "cwd": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\ui-b",
+        "windows": [],
+        "turns": 0,
+        "acknowledged": 0,
+        "updatedAt": "2026-11-17T06:07:59.857Z"
+      },
+      "changes": {
+        "ok": true,
+        "cwd": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\ui-b",
+        "limit": 50,
+        "trimmed": 0,
+        "total": 2,
+        "incomplete": false,
+        "entries": [
+          {
+            "at": "2026-11-17T06:07:59.859Z",
+            "reason": "source-reviewed",
+            "opId": "",
+            "nodeId": 4,
+            "byId": null,
+            "action": "pending-reviewed",
+            "type": "",
+            "preview": "",
+            "detail": "confirm",
+            "source": {
+              "role": "user",
+              "messageId": null,
+              "seq": null,
+              "quoteMatch": "exact"
+            }
+          },
+          {
+            "at": "2026-11-17T05:46:47.172Z",
+            "reason": "source-reviewed",
+            "opId": "",
+            "nodeId": 3,
+            "byId": null,
+            "action": "pending-reviewed",
+            "type": "",
+            "preview": "",
+            "detail": "confirm",
+            "source": {
+              "role": "user",
+              "messageId": null,
+              "seq": 0,
+              "quoteMatch": "exact"
+            }
+          }
+        ],
+        "labels": {
+          "source-reviewed": {
+            "en": "Source reviewed",
+            "zh": "来源已人工核对"
+          },
+          "written": {
+            "en": "Written",
+            "zh": "已写入"
+          },
+          "merged": {
+            "en": "Merged",
+            "zh": "已合并"
+          },
+          "superseded": {
+            "en": "Superseded",
+            "zh": "已替代"
+          },
+          "rejected": {
+            "en": "Refused",
+            "zh": "已拒绝"
+          },
+          "date-adjusted": {
+            "en": "Date adjusted",
+            "zh": "日期已调整"
+          },
+          "pending-review": {
+            "en": "Needs review",
+            "zh": "待确认"
+          },
+          "supersede-failed": {
+            "en": "Replace failed",
+            "zh": "替代失败"
+          },
+          "supersede-confirmed": {
+            "en": "Replacement confirmed",
+            "zh": "替代已确认"
+          },
+          "supersede-rejected": {
+            "en": "Replacement declined",
+            "zh": "替代已拒绝"
+          },
+          "replay-timeout": {
+            "en": "Recovery timed out",
+            "zh": "恢复超时"
+          },
+          "lock-busy": {
+            "en": "Another session is writing",
+            "zh": "另一会话正在写入"
+          },
+          "stuck": {
+            "en": "Stuck",
+            "zh": "卡住"
+          },
+          "recovered": {
+            "en": "Recovered",
+            "zh": "已自愈"
+          }
+        }
+      }
+    }
+  ]
+}

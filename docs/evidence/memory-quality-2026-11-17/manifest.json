@@ -1,0 +1,80 @@
+{
+  "createdAt": "2026-11-17T06:28:08.192Z",
+  "files": [
+    {
+      "name": "frozen-final.json",
+      "bytes": 47591,
+      "sha256": "82c861c9c2a2d56f35bcede0510c2dc7116ea8fb95d8d2f4bdcb617f77c1e3bc"
+    },
+    {
+      "name": "live-final.json",
+      "bytes": 181228,
+      "sha256": "449854ec7bcabd0a7dab6188361d69a61acc2b98f3767f2b600651dae182a01b"
+    },
+    {
+      "name": "live-final.json.calls.jsonl",
+      "bytes": 70884,
+      "sha256": "483eb378c60496c53ce9be0fa30dabb331ee99de1fc8756cc7d266628d9b9aa8"
+    },
+    {
+      "name": "live-initial.json",
+      "bytes": 184523,
+      "sha256": "ea13e8de22819369aee6d7f4c476bf2b0bbf98233d33ae4d146a5e7471ff9b13"
+    },
+    {
+      "name": "live-initial.json.calls.jsonl",
+      "bytes": 64884,
+      "sha256": "244ca008d64a6a2dfd8eddc2de03835a892c9a5e3866c65bb91c3bbb8661aad1"
+    },
+    {
+      "name": "package-check.json",
+      "bytes": 551,
+      "sha256": "eba3fee3e9d6933ccfb52da4140c41416fe045306a061919e79f3fe5aa490d02"
+    },
+    {
+      "name": "preflight-final-adapter.json",
+      "bytes": 2092,
+      "sha256": "900ce1075b0ee0794e95d04782aa85430f8a84b2faadfe82eee6b216e2c8810e"
+    },
+    {
+      "name": "preflight-final-adapter.json.calls.jsonl",
+      "bytes": 610,
+      "sha256": "35318a470d9b62242bfc83323be8170bb2aa26052268ca8208ae167b1161646b"
+    },
+    {
+      "name": "preflight-initial.json",
+      "bytes": 1404,
+      "sha256": "a313db37104e56204b7e9280692191d60f11144eb4791b4a652270ce06f79e8b"
+    },
+    {
+      "name": "preflight-initial.json.calls.jsonl",
+      "bytes": 611,
+      "sha256": "02d94849623ed3e01d6f3a4bb7d45531c04a971d4138ed500956fc49d8c057b2"
+    },
+    {
+      "name": "regression.log",
+      "bytes": 138662,
+      "sha256": "4a658e4246c14cddd95990aa805f6b6abae5c0f63bc09a4c6de7c4cabc21232e"
+    },
+    {
+      "name": "review-memory.jpg",
+      "bytes": 72889,
+      "sha256": "cdd744753c0635f264814203a0bd79236c24f248cc0d527119fb145e86b5cbe3"
+    },
+    {
+      "name": "summary.json",
+      "bytes": 28043,
+      "sha256": "1cc4174aeec9ab01155db21870f8f6686ebc985620cbc177b70fcf60cbbb7c2f"
+    },
+    {
+      "name": "ui-evidence.json",
+      "bytes": 12964,
+      "sha256": "5f0f5eb81e6e666e8e8867b4b346fe4eb5d2cda86868241c5a229328e9134ae3"
+    },
+    {
+      "name": "write-final-replay.json",
+      "bytes": 37402,
+      "sha256": "549c71d3f1c88609194db0f34d6a15b49628cb52772556f38fbeaa7a4a1c4a1f"
+    }
+  ]
+}

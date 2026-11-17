@@ -1,0 +1,50 @@
+{
+  "version": "memory-live-evaluator-1",
+  "startedAt": "2026-11-17T05:33:24.448Z",
+  "fixtureHash": "886e48e30829706c3830db9028b850f5ae709899e3262890ce9846352b56eb17",
+  "git": "eed3bef1ec7894ac44158ee1a0652be71e8f4898",
+  "dirty": true,
+  "provider": "deepseek-account",
+  "model": "deepseek-flash",
+  "limits": {
+    "calls": 48,
+    "maxOutputTokens": 900,
+    "contextTokens": 300
+  },
+  "method": "real extraction plus paired direct-answer context comparison; controlled seeded retrieval, not an end-to-end agent score",
+  "billing": "not measured: authoritative provider token counters are reported, monetary account receipts unavailable",
+  "embeddingCalls": 0,
+  "calls": [
+    {
+      "label": "preflight",
+      "httpStatus": 200,
+      "text": "READY",
+      "finish": {
+        "kind": "stop"
+      },
+      "usage": [
+        {
+          "inputTokens": 12,
+          "outputTokens": 2,
+          "cacheReadTokens": 0,
+          "cacheWriteTokens": 0,
+          "totalTokens": 14
+        }
+      ],
+      "elapsedMs": 1061,
+      "call": 1,
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "tokens": {
+        "inputTokens": 12,
+        "outputTokens": 2,
+        "cacheReadTokens": 0,
+        "cacheWriteTokens": 0,
+        "totalTokens": 14,
+        "aggregateInputTokens": 12
+      }
+    }
+  ],
+  "scenarios": [],
+  "completedAt": "2026-11-17T05:33:25.622Z"
+}

@@ -240,6 +240,8 @@ A memory knows where it came from only if the write recorded it (`kind`, session
 
 The recall check is read-only: it does not write, does not run a tool, and never requests an embedding. With no query vector it says the semantic channel did not run. Nothing on these tabs injects context or calls a model.
 
+Newer source adds source review under **Activity → Pending**: inspect bounded excerpts, add supporting wording for a local check, or explicitly confirm the content as manual memory. Unverified items remain pending. Confirmation retains original sources and existing facts, without merging, deleting or replacing them, and needs no model or embedding call. The [real-model comparison](docs/reviews/MEMORY-QUALITY-2026-11-17.md) records three eliminated rule copies and 12/12 answers with existing recall versus 10/12 with explicit entity packs at the same estimated context budget. These source changes are not in published npm 0.8.9.
+
 ### Querying while the host is running (released in 0.8.9)
 
 Send `{"tql":"MATCH (n)-[:about]->(hub) RETURN n, hub","params":{},"limit":200}`

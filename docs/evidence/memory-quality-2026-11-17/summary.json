@@ -1,0 +1,979 @@
+{
+  "version": 1,
+  "createdAt": "2026-11-17T06:28:08.188Z",
+  "source": {
+    "baseRevision": "eed3bef1ec7894ac44158ee1a0652be71e8f4898",
+    "branch": "codex/real-memory-quality",
+    "committed": false,
+    "pushed": false,
+    "sourceSnapshotHash": "c1cc8c87a45bcb0c934cb4b91bde3881c9ea37d76789beb3d2d7f99693594f5d",
+    "filesChecked": 54,
+    "scorerHash": "7b0869f3197793d8bb3bf01801ba0ac6dc8947b263c5e6b36d72026f75e4ada7"
+  },
+  "provider": "deepseek-account",
+  "model": "deepseek-flash",
+  "embeddingCalls": 0,
+  "offline": {
+    "scenarios": 26,
+    "pendingCandidates": 1,
+    "writes": {
+      "expected": 9,
+      "correct": 9,
+      "duplicate": 0,
+      "needsReview": 0,
+      "missed": 0,
+      "wrongType": 0,
+      "absentChecked": 1,
+      "unsourcedNew": 0,
+      "intactChecked": 6,
+      "intactBroken": 0,
+      "echoExpected": 3,
+      "echoLeaked": 0,
+      "duplicateGroups": 0,
+      "redundantNew": 0,
+      "inserted": 11,
+      "merged": 2,
+      "echoSkipped": 2
+    },
+    "retrieval": {
+      "answerable": 12,
+      "top1": 10,
+      "top5": 10,
+      "top1ExcludingAnchor": 10,
+      "unanswerable": 5,
+      "unanswerableCandidateTotal": 3,
+      "forbiddenViolations": 0,
+      "contentMismatchScenarios": 0,
+      "packAnswerable": 12,
+      "packHits": 10,
+      "packBudgetViolations": 0,
+      "packContentMismatchScenarios": 0,
+      "packForbiddenViolations": 0,
+      "packAnswerabilityViolations": 0
+    },
+    "timing": {
+      "samples": 78,
+      "p50": 45.357,
+      "p95": 265.3124,
+      "max": 310.0097
+    }
+  },
+  "paid": {
+    "effectiveCalls": 36,
+    "effective": {
+      "calls": 36,
+      "withUsage": 36,
+      "uncachedInput": 7808,
+      "cacheRead": 2557,
+      "cacheWrite": 0,
+      "output": 1050
+    },
+    "arms": {
+      "extract": {
+        "calls": 12,
+        "withUsage": 12,
+        "uncachedInput": 2337,
+        "cacheRead": 2432,
+        "cacheWrite": 0,
+        "output": 729
+      },
+      "legacy": {
+        "calls": 12,
+        "withUsage": 12,
+        "uncachedInput": 2725,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "output": 161
+      },
+      "pack": {
+        "calls": 12,
+        "withUsage": 12,
+        "uncachedInput": 2746,
+        "cacheRead": 125,
+        "cacheWrite": 0,
+        "output": 160
+      }
+    },
+    "totalIncludingInvalidRunAndPreflights": {
+      "calls": 74,
+      "withUsage": 74,
+      "uncachedInput": 15157,
+      "cacheRead": 4093,
+      "cacheWrite": 0,
+      "output": 2085,
+      "totalTokens": 21335
+    },
+    "invalidInitialAnswerRun": "excluded: legacy context was accidentally a token count; all requests/responses and consumption retained",
+    "billing": "not measured",
+    "answerScores": [
+      {
+        "id": "L01",
+        "split": "dev",
+        "answers": {
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "cedar-b.internal",
+              "ids": [
+                3
+              ]
+            }
+          },
+          "pack": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "cedar-b.internal",
+              "ids": [
+                3
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "L02",
+        "split": "dev",
+        "answers": {
+          "pack": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "不允许",
+              "ids": [
+                3
+              ]
+            }
+          },
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "不允许",
+              "ids": [
+                3
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "L03",
+        "split": "dev",
+        "answers": {
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "11",
+              "ids": [
+                3
+              ]
+            }
+          },
+          "pack": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "11",
+              "ids": [
+                3
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "L04",
+        "split": "dev",
+        "answers": {
+          "pack": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "简体中文",
+              "ids": [
+                3
+              ]
+            }
+          },
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "简体中文",
+              "ids": [
+                3
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "L05",
+        "split": "dev",
+        "answers": {
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "unknown",
+              "value": null,
+              "ids": []
+            }
+          },
+          "pack": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "unknown",
+              "value": null,
+              "ids": []
+            }
+          }
+        }
+      },
+      {
+        "id": "L06",
+        "split": "dev",
+        "answers": {
+          "pack": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "19",
+              "ids": [
+                3
+              ]
+            }
+          },
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "19",
+              "ids": [
+                3
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "L07",
+        "split": "dev",
+        "answers": {
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "23",
+              "ids": [
+                3
+              ]
+            }
+          },
+          "pack": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "23",
+              "ids": [
+                3
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "L08",
+        "split": "dev",
+        "answers": {
+          "pack": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "unknown",
+              "value": null,
+              "ids": []
+            }
+          },
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "unknown",
+              "value": null,
+              "ids": []
+            }
+          }
+        }
+      },
+      {
+        "id": "L09",
+        "split": "holdout",
+        "answers": {
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "13",
+              "ids": [
+                3
+              ]
+            }
+          },
+          "pack": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "13",
+              "ids": [
+                3
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "L10",
+        "split": "holdout",
+        "answers": {
+          "pack": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "不允许",
+              "ids": [
+                3
+              ]
+            }
+          },
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "不允许",
+              "ids": [
+                3
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "L11",
+        "split": "holdout",
+        "answers": {
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "8461",
+              "ids": [
+                3
+              ]
+            }
+          },
+          "pack": {
+            "correct": false,
+            "valueCorrect": false,
+            "citationCorrect": false,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "unknown",
+              "value": null,
+              "ids": []
+            }
+          }
+        }
+      },
+      {
+        "id": "L12",
+        "split": "holdout",
+        "answers": {
+          "pack": {
+            "correct": false,
+            "valueCorrect": false,
+            "citationCorrect": false,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "unknown",
+              "value": null,
+              "ids": []
+            }
+          },
+          "legacy": {
+            "correct": true,
+            "valueCorrect": true,
+            "citationCorrect": true,
+            "invalidCitations": [],
+            "parsed": {
+              "status": "answered",
+              "value": "4",
+              "ids": [
+                3
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "answerTotals": {
+      "legacy": 12,
+      "pack": 10
+    },
+    "method": "paired direct-model answers using independent preseeded DBs, not complete end-to-end agent sessions"
+  },
+  "finalWriteReplay": {
+    "realModelCalls": 0,
+    "embeddingCalls": 0,
+    "scores": [
+      {
+        "id": "L01",
+        "score": {
+          "expected": true,
+          "correct": true,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": [
+            {
+              "id": 2,
+              "aliases": [],
+              "createdAt": "2026-11-17T06:05:29.982Z",
+              "name": "CedarRelay 备用入口",
+              "source": {
+                "at": "2026-11-17T00:00:00.000Z",
+                "capturedAt": "2026-11-17T06:05:30.053Z",
+                "hostText": "unavailable",
+                "kind": "extract",
+                "messageId": "live-L01",
+                "quote": "另外记住：CedarRelay 的备用入口是 cedar-b.internal。",
+                "quoteMatch": "exact",
+                "recorded": true,
+                "role": "user",
+                "seq": 11,
+                "sessionId": "live-L01",
+                "via": "model"
+              },
+              "status": "active",
+              "text": "另外记住：CedarRelay 的备用入口是 cedar-b.internal。",
+              "type": "preference",
+              "updatedAt": "2026-11-17T06:05:30.056Z",
+              "uri": "ctx://preference/1794895530056"
+            }
+          ]
+        }
+      },
+      {
+        "id": "L02",
+        "score": {
+          "expected": true,
+          "correct": true,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": [
+            {
+              "id": 2,
+              "aliases": [],
+              "createdAt": "2026-11-17T06:05:30.150Z",
+              "name": "BirchWriter write policy",
+              "source": {
+                "at": "2026-11-17T00:00:00.000Z",
+                "capturedAt": "2026-11-17T06:05:30.220Z",
+                "hostText": "unavailable",
+                "kind": "extract",
+                "messageId": "live-L02",
+                "quote": "记住：BirchWriter 现在不允许写入。",
+                "quoteMatch": "exact",
+                "recorded": true,
+                "role": "user",
+                "seq": 11,
+                "sessionId": "live-L02",
+                "via": "model"
+              },
+              "status": "active",
+              "text": "记住：BirchWriter 现在不允许写入。",
+              "type": "preference",
+              "updatedAt": "2026-11-17T06:05:30.221Z",
+              "uri": "ctx://preference/1794895530220"
+            }
+          ]
+        }
+      },
+      {
+        "id": "L03",
+        "score": {
+          "expected": true,
+          "correct": true,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": [
+            {
+              "id": 2,
+              "createdAt": "2026-11-17T06:05:30.313Z",
+              "name": "MapleCache cleanup cycle",
+              "source": {
+                "at": "2026-11-17T00:00:00.000Z",
+                "capturedAt": "2026-11-17T06:05:30.312Z",
+                "hostText": "unavailable",
+                "kind": "extract",
+                "messageId": "live-L03",
+                "quote": "记住：MapleCache 的清理周期是 11 天。",
+                "quoteMatch": "exact",
+                "recorded": true,
+                "role": "user",
+                "seq": 11,
+                "sessionId": "live-L03",
+                "via": "model"
+              },
+              "status": "active",
+              "text": "MapleCache 的清理周期是 11 天。",
+              "type": "preference",
+              "updatedAt": "2026-11-17T06:05:30.313Z",
+              "uri": "ctx://preference/1794895530313"
+            }
+          ]
+        }
+      },
+      {
+        "id": "L04",
+        "score": {
+          "expected": true,
+          "correct": true,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": [
+            {
+              "id": 2,
+              "aliases": [],
+              "createdAt": "2026-11-17T06:05:30.434Z",
+              "name": "SpruceUI 配置用简体中文解释",
+              "source": {
+                "at": "2026-11-17T00:00:00.000Z",
+                "capturedAt": "2026-11-17T06:05:30.505Z",
+                "hostText": "unavailable",
+                "kind": "extract",
+                "messageId": "live-L04",
+                "quote": "以后都用简体中文解释 SpruceUI 的配置。",
+                "quoteMatch": "exact",
+                "recorded": true,
+                "role": "user",
+                "seq": 11,
+                "sessionId": "live-L04",
+                "via": "model"
+              },
+              "status": "active",
+              "text": "以后都用简体中文解释 SpruceUI 的配置。",
+              "type": "preference",
+              "updatedAt": "2026-11-17T06:05:30.505Z",
+              "uri": "ctx://preference/1794895530505"
+            }
+          ]
+        }
+      },
+      {
+        "id": "L05",
+        "score": {
+          "expected": false,
+          "correct": false,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": []
+        }
+      },
+      {
+        "id": "L06",
+        "score": {
+          "expected": false,
+          "correct": false,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": []
+        }
+      },
+      {
+        "id": "L07",
+        "score": {
+          "expected": true,
+          "correct": true,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": [
+            {
+              "id": 2,
+              "createdAt": "2026-11-17T06:05:30.754Z",
+              "name": "ElmGateway",
+              "source": {
+                "at": "2026-11-17T00:00:00.000Z",
+                "capturedAt": "2026-11-17T06:05:30.754Z",
+                "hostText": "unavailable",
+                "kind": "extract",
+                "messageId": "live-L07",
+                "quote": "记住：ElmGateway 的超时是 23 秒。",
+                "quoteMatch": "exact",
+                "recorded": true,
+                "role": "user",
+                "seq": 11,
+                "sessionId": "live-L07",
+                "via": "model"
+              },
+              "status": "active",
+              "text": "ElmGateway 的超时是 23 秒。",
+              "type": "preference",
+              "updatedAt": "2026-11-17T06:05:30.754Z",
+              "uri": "ctx://preference/1794895530754"
+            }
+          ]
+        }
+      },
+      {
+        "id": "L08",
+        "score": {
+          "expected": true,
+          "correct": true,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": [
+            {
+              "id": 2,
+              "aliases": [],
+              "createdAt": "2026-11-17T06:05:30.881Z",
+              "name": "OakAgent 工具权限上限",
+              "source": {
+                "at": "2026-11-17T00:00:00.000Z",
+                "capturedAt": "2026-11-17T06:05:30.952Z",
+                "hostText": "unavailable",
+                "kind": "extract",
+                "messageId": "live-L08",
+                "quote": "记住：OakAgent 的工具权限上限是 6。",
+                "quoteMatch": "exact",
+                "recorded": true,
+                "role": "user",
+                "seq": 11,
+                "sessionId": "live-L08",
+                "via": "model"
+              },
+              "status": "active",
+              "text": "记住：OakAgent 的工具权限上限是 6。",
+              "type": "preference",
+              "updatedAt": "2026-11-17T06:05:30.953Z",
+              "uri": "ctx://preference/1794895530952"
+            }
+          ]
+        }
+      },
+      {
+        "id": "L09",
+        "score": {
+          "expected": true,
+          "correct": true,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": [
+            {
+              "id": 2,
+              "createdAt": "2026-11-17T06:05:31.045Z",
+              "name": "AspenTask 并发上限",
+              "source": {
+                "at": "2026-11-17T00:00:00.000Z",
+                "capturedAt": "2026-11-17T06:05:31.045Z",
+                "hostText": "unavailable",
+                "kind": "extract",
+                "messageId": "live-L09",
+                "quote": "另外记住：AspenTask 的并发上限是 13。",
+                "quoteMatch": "exact",
+                "recorded": true,
+                "role": "user",
+                "seq": 11,
+                "sessionId": "live-L09",
+                "via": "model"
+              },
+              "status": "active",
+              "text": "AspenTask 的并发上限是 13。",
+              "type": "preference",
+              "updatedAt": "2026-11-17T06:05:31.045Z",
+              "uri": "ctx://preference/1794895531045"
+            }
+          ]
+        }
+      },
+      {
+        "id": "L10",
+        "score": {
+          "expected": true,
+          "correct": true,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": [
+            {
+              "id": 2,
+              "createdAt": "2026-11-17T06:05:31.166Z",
+              "name": "FirLedger 访问权限",
+              "source": {
+                "at": "2026-11-17T00:00:00.000Z",
+                "capturedAt": "2026-11-17T06:05:31.165Z",
+                "hostText": "unavailable",
+                "kind": "extract",
+                "messageId": "live-L10",
+                "quote": "记住：FirLedger 允许读取但不允许删除。",
+                "quoteMatch": "exact",
+                "recorded": true,
+                "role": "user",
+                "seq": 11,
+                "sessionId": "live-L10",
+                "via": "model"
+              },
+              "status": "active",
+              "text": "FirLedger 允许读取但不允许删除。",
+              "type": "preference",
+              "updatedAt": "2026-11-17T06:05:31.166Z",
+              "uri": "ctx://preference/1794895531166"
+            }
+          ]
+        }
+      },
+      {
+        "id": "L11",
+        "score": {
+          "expected": true,
+          "correct": true,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": [
+            {
+              "id": 2,
+              "createdAt": "2026-11-17T06:05:31.295Z",
+              "name": "LarchService port",
+              "source": {
+                "at": "2026-11-17T00:00:00.000Z",
+                "capturedAt": "2026-11-17T06:05:31.295Z",
+                "hostText": "unavailable",
+                "kind": "extract",
+                "messageId": "live-L11",
+                "quote": "Remember that LarchService uses port 8461.",
+                "quoteMatch": "exact",
+                "recorded": true,
+                "role": "user",
+                "seq": 11,
+                "sessionId": "live-L11",
+                "via": "model"
+              },
+              "status": "active",
+              "text": "LarchService uses port 8461.",
+              "type": "preference",
+              "updatedAt": "2026-11-17T06:05:31.295Z",
+              "uri": "ctx://preference/1794895531295"
+            }
+          ]
+        }
+      },
+      {
+        "id": "L12",
+        "score": {
+          "expected": true,
+          "correct": true,
+          "wrongType": 0,
+          "duplicates": 0,
+          "pending": 0,
+          "pendingCandidates": 0,
+          "missed": false,
+          "unsourced": [],
+          "other": [],
+          "added": [
+            {
+              "id": 2,
+              "aliases": [],
+              "createdAt": "2026-11-17T06:05:31.416Z",
+              "name": "HazelWorker 重试次数",
+              "source": {
+                "at": "2026-11-17T00:00:00.000Z",
+                "capturedAt": "2026-11-17T06:05:31.487Z",
+                "hostText": "unavailable",
+                "kind": "extract",
+                "messageId": "live-L12",
+                "quote": "记住：HazelWorker 的重试次数是 4。",
+                "quoteMatch": "exact",
+                "recorded": true,
+                "role": "user",
+                "seq": 11,
+                "sessionId": "live-L12",
+                "via": "model"
+              },
+              "status": "active",
+              "text": "记住：HazelWorker 的重试次数是 4。",
+              "type": "preference",
+              "updatedAt": "2026-11-17T06:05:31.488Z",
+              "uri": "ctx://preference/1794895531487"
+            }
+          ]
+        }
+      }
+    ],
+    "method": "Captured real-model outputs, exact original prompts asserted, final deterministic write path. These are observed development cases, not new blind holdout evidence."
+  },
+  "checks": {
+    "fullRegression": "93/93",
+    "component": "30/30",
+    "p105": "13/13",
+    "p106": "passed including stricter all-citations/schema scoring and bounded adapter",
+    "p103": "passed after final completed-window recovery-status fix",
+    "package": "passed",
+    "packageChecks": 13,
+    "installedRuntimeFilesMatched": 53
+  },
+  "preservation": {
+    "scope": "two originally registered workspace .dsh trees plus original Trivium settings; hashes only, no memory content copied",
+    "checkpoint": {
+      "beforeUserDesktopRestart": true,
+      "files": 39,
+      "allUnchanged": true
+    },
+    "final": {
+      "readableFiles": 38,
+      "readableChanged": 0,
+      "lockedFiles": 1,
+      "allFilesVerified": false,
+      "reason": "Native desktop was launched from Explorer at 14:09 local time; one active store file is locked. Existing desktop and its memory were left running."
+    }
+  },
+  "delivery": {
+    "version": "0.8.9 local source build",
+    "kernel": "0.9.1",
+    "preparedPackage": ".tmp/real-memory-quality-20261117/ready-build/dsh-trivium-0.8.9.tgz",
+    "sha256": "840f20d7fcc889619fcc10df7511a369e4fa038022c92a203abad1b7649a6f53",
+    "sha1": "a576c5ab22f5bbfef76f5e03dd4c4a130e27a2bd",
+    "bytes": 328229,
+    "formalDesktopUpdated": false,
+    "reason": "Formal desktop is running. The prepared build was installed and validated only in the isolated UI profile; no forced restart.",
+    "formalCurrentBuild": "20261117-memory-8f397e7fc899/dsh-trivium-0.8.9.tgz",
+    "testBrowserClosed": true,
+    "testListenerPortsStopped": [
+      18743,
+      18744,
+      18745
+    ]
+  },
+  "limitations": [
+    "Original dev/holdout split is visible and now exposed; no blind generalisation claim.",
+    "Live answer DBs were seeded independently from real extraction results.",
+    "Final deterministic source/type fixes replay actual captured model outputs; no claim of a fresh independent model rerun.",
+    "English/cross-language entity-pack misses L11/L12 remain. No default recall/tool change.",
+    "One formal store file could not be rehashed while the user desktop is running."
+  ]
+}

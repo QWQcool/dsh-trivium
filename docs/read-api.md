@@ -334,6 +334,14 @@ Before installation, use `node scripts/query-snapshot.mjs ...` and
 `readOnly` open and can still conflict with an active writer; select a captured
 snapshot explicitly for concurrent checking. Help commands do not open a store.
 
+## 来源候选核对（管理写入，未发布源码）
+
+`GET /api/dsh-trivium/pending?cwd=...` 对来源待核对窗口返回候选 `id`、窗口 `etag` 和最多 6 条、每条 360 字符的脱敏来源片段；普通失败窗口仍只返回计数与短预览。
+
+`POST /api/dsh-trivium/pending/review?cwd=...` 是管理界面的**写入**接口，不是只读查询。请求体仅接受 `sessionId`、`candidateId`、`etag`、`action`（`verify` / `confirm`）及可选 `evidence`。verify 必须提供不超过 2000 字符的依据；confirm 代表用户明确确认候选内容。两者不调用模型/embedding；服务端从磁盘取候选而不接受客户端自拟正文。必须显式指定已知工作区，取得工作区锁并核对物理工作区 ETag。过期返回 409；非法输入 400；过大请求体 413；疑似敏感值/无效候选 422。核对未通过返回 200、`settled:false`、`SOURCE_STILL_UNVERIFIED`，候选和补充依据仍保留。
+
+成功只插入所确认的内容，来源为 manual，`evidenceKind` 区分 `user-supplement` / `user-confirmation`，不伪造已记录宿主消息，不改旧节点或推测关系。落盘后持久确认 pending，并保留原窗口及最近 1024 条核对回执；旧窗口仍有未处理新事件时不能标为完成。中断重试按稳定 URI 复用同一次已写节点；若该节点已更改或归档则 409，需人工检查。审计写入失败会单独返回 warning，不掩盖已完成的事实写入。[验收](reviews/MEMORY-QUALITY-2026-11-17.md)。
+
 ## 中文速览
 
 - 发送 `tql`、`params` 和 `limit` 可以查询宿主已有句柄上的最新数据，支持引擎的只读查询语法。

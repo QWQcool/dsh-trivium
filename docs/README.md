@@ -22,6 +22,7 @@
 | HTTP、TQL、快照、实体搜索 | [read-api](read-api.md) |
 | 请求、token 与费用 | [COST-MODEL](COST-MODEL.md) |
 | 来源待核对、任务记忆包与 C4 对照 | [2026-11-17 结果](reviews/MEMORY-EVAL-2026-11-17.md) |
+| 真实模型对照、写入去冗余与来源核对入口 | [本轮结果与消耗](reviews/MEMORY-QUALITY-2026-11-17.md) |
 | 自动合并为何仍默认关 | [IDENTITY-CORPUS](IDENTITY-CORPUS.md) |
 | 小型可重复示例 | [guide-example](guide-example.md) |
 | 发布步骤 | [release-checklist](release-checklist.md) |

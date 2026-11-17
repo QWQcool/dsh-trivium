@@ -1,0 +1,20 @@
+{
+  "version": "memory-live-v1",
+  "frozenBeforeImplementation": "2026-11-17",
+  "design": "Synthetic source and rubric frozen before this change. Dev and holdout are reported separately; no blind generalisation claim.",
+  "limits": {"calls": 48, "maxOutputTokens": 900, "contextTokens": 300},
+  "scenarios": [
+    {"id":"L01","split":"dev","entity":"CedarRelay","source":"另外记住：CedarRelay 的备用入口是 cedar-b.internal。","fact":"CedarRelay 的备用入口是 cedar-b.internal。","question":"CedarRelay 的备用入口是什么？","answer":"cedar-b.internal"},
+    {"id":"L02","split":"dev","entity":"BirchWriter","source":"记住：BirchWriter 现在不允许写入。","fact":"BirchWriter 现在不允许写入。","question":"BirchWriter 现在是否允许写入？","answer":"不允许"},
+    {"id":"L03","split":"dev","entity":"MapleCache","source":"记住：MapleCache 的清理周期是 11 天。","fact":"MapleCache 的清理周期是 11 天。","question":"MapleCache 的清理周期是多少天？","answer":"11"},
+    {"id":"L04","split":"dev","entity":"SpruceUI","source":"以后都用简体中文解释 SpruceUI 的配置。","fact":"以后都用简体中文解释 SpruceUI 的配置。","question":"解释 SpruceUI 配置应使用什么语言？","answer":"简体中文","durablePreference":true},
+    {"id":"L05","split":"dev","entity":"WillowAPI","source":"WillowAPI 的限额是 37 吗？我还没有确认。","fact":null,"question":"WillowAPI 的限额是多少？","answer":null,"forbidden":"37"},
+    {"id":"L06","split":"dev","entity":"PineJob","source":"请读取 PineJob 那条已有记忆，不要把工具回显当新事实。","fact":null,"echo":"PineJob 的重试间隔是 19 秒。","question":"PineJob 的重试间隔是多少秒？","answer":"19"},
+    {"id":"L07","split":"dev","entity":"ElmGateway","source":"记住：ElmGateway 的超时是 23 秒。","fact":"ElmGateway 的超时是 23 秒。","question":"ElmGateway 的超时是多少秒？","answer":"23","distractor":"ElmGateway 的超时曾是 7 秒。"},
+    {"id":"L08","split":"dev","entity":"OakAgent","source":"记住：OakAgent 的工具权限上限是 6。","fact":"OakAgent 的工具权限上限是 6。","question":"OakAgent 的数据保留期是多少天？","answer":null},
+    {"id":"L09","split":"holdout","entity":"AspenTask","source":"另外记住：AspenTask 的并发上限是 13。","fact":"AspenTask 的并发上限是 13。","question":"AspenTask 的并发上限是多少？","answer":"13"},
+    {"id":"L10","split":"holdout","entity":"FirLedger","source":"记住：FirLedger 允许读取但不允许删除。","fact":"FirLedger 允许读取但不允许删除。","question":"FirLedger 是否允许删除？","answer":"不允许"},
+    {"id":"L11","split":"holdout","entity":"LarchService","source":"Remember that LarchService uses port 8461.","fact":"LarchService uses port 8461.","question":"Which port does LarchService use?","answer":"8461"},
+    {"id":"L12","split":"holdout","entity":"HazelWorker","source":"记住：HazelWorker 的重试次数是 4。","fact":"HazelWorker 的重试次数是 4。","question":"What is HazelWorker's retry count?","answer":"4"}
+  ]
+}

@@ -1693,12 +1693,12 @@ async function p103() {
     // Exercise the real registered host entry, queue selection and scheduler.
     const { apply } = await import('../lib/index.js');
     const handlers = new Map();
-    let calls = 0, candidates = [candidate];
+    let calls = 0, candidates = [candidate], apiHandler;
     const ctx = {
       llm: { async *stream() { calls++; yield { type: 'text-delta', index: 0, text: JSON.stringify({ candidates }) }; } },
       logger: () => ({ warn() {}, info() {}, debug() {}, error() {} }),
       inject(_deps, fn) { fn(ctx); }, on(name, fn) { handlers.set(name, fn); return () => {}; },
-      effect(fn) { fn(); }, tools: { register() {} }, webServer: { register() {} },
+      effect(fn) { fn(); }, tools: { register() {} }, webServer: { register(entry) { if(entry.path === '/api/dsh-trivium') apiHandler=entry.handler; } },
     };
     apply(ctx, {});
     const hostCwd = join(root, 'host');
@@ -1718,11 +1718,18 @@ async function p103() {
     assert.equal(calls, 2, 'source review blocked a later independent window');
     assert.ok(hostDb.allNodeIds().some(id => hostDb.getPayload(id).text === '负责人是张三。'));
     assert.equal(extract.loadPendingWindows(hostCwd).length, 1);
+    const reviewedTurns=[{role:'user',text:'已在面板确认的旧窗口。',messageId:'reviewed-old'}];
+    await extract.savePending(hostCwd,{sessionId:'reviewed-complete',turns:reviewedTurns,unverified:[],reviewComplete:true,sourceReviewKey:extract.sourceReviewKey(reviewedTurns)});
     candidates = [];
     await extract.savePending(hostCwd, { sessionId: 'held', turns: [...turns, { role: 'user', text: '确认：导出格式固定为 XLSX。', seq: 12 }] });
     await start('fourth');
     assert.ok(hostDb.allNodeIds().some(id => hostDb.getPayload(id).text === candidate.text));
-    assert.equal(extract.loadPendingWindows(hostCwd).length, 0, 'confirmed candidate left a ghost pending window');
+    assert.equal(extract.pendingSummary(hostCwd).windows.length, 0, 'confirmed candidate left a ghost pending window');
+    assert.equal(extract.loadPendingWindows(hostCwd).length,1,'source-review history was deleted');
+    let status;
+    await apiHandler({method:'GET',url:'/api/dsh-trivium/status?cwd='+encodeURIComponent(hostCwd),headers:{},socket:{remoteAddress:'127.0.0.1'}},
+      {writeHead(){},end(body){status=JSON.parse(String(body));}});
+    assert.equal(status.recovery.state,'succeeded','retained completed source windows incorrectly reported pending recovery');
     console.log('P103: source-less writes stay pending, survive persistence, and accept later evidence; invented literals and secrets are refused');
   } finally { store.closeAll(); rmSync(root, { recursive: true, force: true }); }
 }

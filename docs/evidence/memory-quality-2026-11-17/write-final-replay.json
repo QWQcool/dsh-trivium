@@ -1,0 +1,1171 @@
+{
+  "version": "real-output-write-replay-1",
+  "fromHash": "449854ec7bcabd0a7dab6188361d69a61acc2b98f3767f2b600651dae182a01b",
+  "fixtureHash": "886e48e30829706c3830db9028b850f5ae709899e3262890ce9846352b56eb17",
+  "sourceHash": "17d6078e7657e870c7127f7a8f18affc5ee2d0576d8d71c5852ca599beb11cf6",
+  "realModelCalls": 0,
+  "embeddingCalls": 0,
+  "method": "Captured real-model outputs, exact original prompts asserted, final deterministic write path. These are observed development cases, not new blind holdout evidence.",
+  "scenarios": [
+    {
+      "id": "L01",
+      "split": "dev",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "另外记住：CedarRelay 的备用入口是 cedar-b.internal。"
+          },
+          {
+            "id": 2,
+            "action": "merge",
+            "type": "preference",
+            "text": "CedarRelay 的备用入口是 cedar-b.internal。"
+          }
+        ],
+        "skipped": [],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 1,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:29.974Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L01",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L01",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:29.975Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "aliases": [],
+          "createdAt": "2026-11-17T06:05:29.982Z",
+          "name": "CedarRelay 备用入口",
+          "source": {
+            "at": "2026-11-17T00:00:00.000Z",
+            "capturedAt": "2026-11-17T06:05:30.053Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "live-L01",
+            "quote": "另外记住：CedarRelay 的备用入口是 cedar-b.internal。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 11,
+            "sessionId": "live-L01",
+            "via": "model"
+          },
+          "status": "active",
+          "text": "另外记住：CedarRelay 的备用入口是 cedar-b.internal。",
+          "type": "preference",
+          "updatedAt": "2026-11-17T06:05:30.056Z",
+          "uri": "ctx://preference/1794895530056"
+        }
+      ],
+      "score": {
+        "expected": true,
+        "correct": true,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": [
+          {
+            "id": 2,
+            "aliases": [],
+            "createdAt": "2026-11-17T06:05:29.982Z",
+            "name": "CedarRelay 备用入口",
+            "source": {
+              "at": "2026-11-17T00:00:00.000Z",
+              "capturedAt": "2026-11-17T06:05:30.053Z",
+              "hostText": "unavailable",
+              "kind": "extract",
+              "messageId": "live-L01",
+              "quote": "另外记住：CedarRelay 的备用入口是 cedar-b.internal。",
+              "quoteMatch": "exact",
+              "recorded": true,
+              "role": "user",
+              "seq": 11,
+              "sessionId": "live-L01",
+              "via": "model"
+            },
+            "status": "active",
+            "text": "另外记住：CedarRelay 的备用入口是 cedar-b.internal。",
+            "type": "preference",
+            "updatedAt": "2026-11-17T06:05:30.056Z",
+            "uri": "ctx://preference/1794895530056"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L02",
+      "split": "dev",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "记住：BirchWriter 现在不允许写入。"
+          },
+          {
+            "id": 2,
+            "action": "merge",
+            "type": "preference",
+            "text": "BirchWriter 现在不允许写入。"
+          }
+        ],
+        "skipped": [],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 1,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:30.147Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L02",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L02",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:30.147Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "aliases": [],
+          "createdAt": "2026-11-17T06:05:30.150Z",
+          "name": "BirchWriter write policy",
+          "source": {
+            "at": "2026-11-17T00:00:00.000Z",
+            "capturedAt": "2026-11-17T06:05:30.220Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "live-L02",
+            "quote": "记住：BirchWriter 现在不允许写入。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 11,
+            "sessionId": "live-L02",
+            "via": "model"
+          },
+          "status": "active",
+          "text": "记住：BirchWriter 现在不允许写入。",
+          "type": "preference",
+          "updatedAt": "2026-11-17T06:05:30.221Z",
+          "uri": "ctx://preference/1794895530220"
+        }
+      ],
+      "score": {
+        "expected": true,
+        "correct": true,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": [
+          {
+            "id": 2,
+            "aliases": [],
+            "createdAt": "2026-11-17T06:05:30.150Z",
+            "name": "BirchWriter write policy",
+            "source": {
+              "at": "2026-11-17T00:00:00.000Z",
+              "capturedAt": "2026-11-17T06:05:30.220Z",
+              "hostText": "unavailable",
+              "kind": "extract",
+              "messageId": "live-L02",
+              "quote": "记住：BirchWriter 现在不允许写入。",
+              "quoteMatch": "exact",
+              "recorded": true,
+              "role": "user",
+              "seq": 11,
+              "sessionId": "live-L02",
+              "via": "model"
+            },
+            "status": "active",
+            "text": "记住：BirchWriter 现在不允许写入。",
+            "type": "preference",
+            "updatedAt": "2026-11-17T06:05:30.221Z",
+            "uri": "ctx://preference/1794895530220"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L03",
+      "split": "dev",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "MapleCache 的清理周期是 11 天。"
+          }
+        ],
+        "skipped": [
+          {
+            "reason": "rule-model-redundant",
+            "type": "preference",
+            "length": 26,
+            "preview": "<covered-by-admitted-fact>"
+          }
+        ],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 1,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:30.310Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L03",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L03",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:30.310Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "createdAt": "2026-11-17T06:05:30.313Z",
+          "name": "MapleCache cleanup cycle",
+          "source": {
+            "at": "2026-11-17T00:00:00.000Z",
+            "capturedAt": "2026-11-17T06:05:30.312Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "live-L03",
+            "quote": "记住：MapleCache 的清理周期是 11 天。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 11,
+            "sessionId": "live-L03",
+            "via": "model"
+          },
+          "status": "active",
+          "text": "MapleCache 的清理周期是 11 天。",
+          "type": "preference",
+          "updatedAt": "2026-11-17T06:05:30.313Z",
+          "uri": "ctx://preference/1794895530313"
+        }
+      ],
+      "score": {
+        "expected": true,
+        "correct": true,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": [
+          {
+            "id": 2,
+            "createdAt": "2026-11-17T06:05:30.313Z",
+            "name": "MapleCache cleanup cycle",
+            "source": {
+              "at": "2026-11-17T00:00:00.000Z",
+              "capturedAt": "2026-11-17T06:05:30.312Z",
+              "hostText": "unavailable",
+              "kind": "extract",
+              "messageId": "live-L03",
+              "quote": "记住：MapleCache 的清理周期是 11 天。",
+              "quoteMatch": "exact",
+              "recorded": true,
+              "role": "user",
+              "seq": 11,
+              "sessionId": "live-L03",
+              "via": "model"
+            },
+            "status": "active",
+            "text": "MapleCache 的清理周期是 11 天。",
+            "type": "preference",
+            "updatedAt": "2026-11-17T06:05:30.313Z",
+            "uri": "ctx://preference/1794895530313"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L04",
+      "split": "dev",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "以后都用简体中文解释 SpruceUI 的配置。"
+          },
+          {
+            "id": 2,
+            "action": "merge",
+            "type": "preference",
+            "text": "以后都用简体中文解释 SpruceUI 的配置。"
+          }
+        ],
+        "skipped": [],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 1,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:30.432Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L04",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L04",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:30.432Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "aliases": [],
+          "createdAt": "2026-11-17T06:05:30.434Z",
+          "name": "SpruceUI 配置用简体中文解释",
+          "source": {
+            "at": "2026-11-17T00:00:00.000Z",
+            "capturedAt": "2026-11-17T06:05:30.505Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "live-L04",
+            "quote": "以后都用简体中文解释 SpruceUI 的配置。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 11,
+            "sessionId": "live-L04",
+            "via": "model"
+          },
+          "status": "active",
+          "text": "以后都用简体中文解释 SpruceUI 的配置。",
+          "type": "preference",
+          "updatedAt": "2026-11-17T06:05:30.505Z",
+          "uri": "ctx://preference/1794895530505"
+        }
+      ],
+      "score": {
+        "expected": true,
+        "correct": true,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": [
+          {
+            "id": 2,
+            "aliases": [],
+            "createdAt": "2026-11-17T06:05:30.434Z",
+            "name": "SpruceUI 配置用简体中文解释",
+            "source": {
+              "at": "2026-11-17T00:00:00.000Z",
+              "capturedAt": "2026-11-17T06:05:30.505Z",
+              "hostText": "unavailable",
+              "kind": "extract",
+              "messageId": "live-L04",
+              "quote": "以后都用简体中文解释 SpruceUI 的配置。",
+              "quoteMatch": "exact",
+              "recorded": true,
+              "role": "user",
+              "seq": 11,
+              "sessionId": "live-L04",
+              "via": "model"
+            },
+            "status": "active",
+            "text": "以后都用简体中文解释 SpruceUI 的配置。",
+            "type": "preference",
+            "updatedAt": "2026-11-17T06:05:30.505Z",
+            "uri": "ctx://preference/1794895530505"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L05",
+      "split": "dev",
+      "result": {
+        "applied": [],
+        "skipped": [],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 0,
+        "modelCount": 0,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:30.596Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L05",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L05",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:30.596Z",
+          "uri": "ctx://workspace"
+        }
+      ],
+      "score": {
+        "expected": false,
+        "correct": false,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": []
+      }
+    },
+    {
+      "id": "L06",
+      "split": "dev",
+      "result": {
+        "applied": [],
+        "skipped": [],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 0,
+        "modelCount": 0,
+        "gate": {
+          "skipped": false,
+          "reason": "tool-evidence"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:30.629Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L06",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L06",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:30.629Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "createdAt": "2026-11-17T05:40:12.870Z",
+          "name": "PineJob",
+          "status": "active",
+          "text": "PineJob 的重试间隔是 19 秒。",
+          "type": "decision",
+          "updatedAt": "2026-11-17T05:40:12.870Z"
+        }
+      ],
+      "score": {
+        "expected": false,
+        "correct": false,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": []
+      }
+    },
+    {
+      "id": "L07",
+      "split": "dev",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "ElmGateway 的超时是 23 秒。"
+          }
+        ],
+        "skipped": [
+          {
+            "reason": "rule-model-redundant",
+            "type": "preference",
+            "length": 24,
+            "preview": "<covered-by-admitted-fact>"
+          }
+        ],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 1,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:30.751Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L07",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L07",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:30.751Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "createdAt": "2026-11-17T06:05:30.754Z",
+          "name": "ElmGateway",
+          "source": {
+            "at": "2026-11-17T00:00:00.000Z",
+            "capturedAt": "2026-11-17T06:05:30.754Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "live-L07",
+            "quote": "记住：ElmGateway 的超时是 23 秒。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 11,
+            "sessionId": "live-L07",
+            "via": "model"
+          },
+          "status": "active",
+          "text": "ElmGateway 的超时是 23 秒。",
+          "type": "preference",
+          "updatedAt": "2026-11-17T06:05:30.754Z",
+          "uri": "ctx://preference/1794895530754"
+        }
+      ],
+      "score": {
+        "expected": true,
+        "correct": true,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": [
+          {
+            "id": 2,
+            "createdAt": "2026-11-17T06:05:30.754Z",
+            "name": "ElmGateway",
+            "source": {
+              "at": "2026-11-17T00:00:00.000Z",
+              "capturedAt": "2026-11-17T06:05:30.754Z",
+              "hostText": "unavailable",
+              "kind": "extract",
+              "messageId": "live-L07",
+              "quote": "记住：ElmGateway 的超时是 23 秒。",
+              "quoteMatch": "exact",
+              "recorded": true,
+              "role": "user",
+              "seq": 11,
+              "sessionId": "live-L07",
+              "via": "model"
+            },
+            "status": "active",
+            "text": "ElmGateway 的超时是 23 秒。",
+            "type": "preference",
+            "updatedAt": "2026-11-17T06:05:30.754Z",
+            "uri": "ctx://preference/1794895530754"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L08",
+      "split": "dev",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "记住：OakAgent 的工具权限上限是 6。"
+          },
+          {
+            "id": 2,
+            "action": "merge",
+            "type": "preference",
+            "text": "OakAgent 的工具权限上限是 6。"
+          }
+        ],
+        "skipped": [],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 1,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:30.879Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L08",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L08",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:30.879Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "aliases": [],
+          "createdAt": "2026-11-17T06:05:30.881Z",
+          "name": "OakAgent 工具权限上限",
+          "source": {
+            "at": "2026-11-17T00:00:00.000Z",
+            "capturedAt": "2026-11-17T06:05:30.952Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "live-L08",
+            "quote": "记住：OakAgent 的工具权限上限是 6。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 11,
+            "sessionId": "live-L08",
+            "via": "model"
+          },
+          "status": "active",
+          "text": "记住：OakAgent 的工具权限上限是 6。",
+          "type": "preference",
+          "updatedAt": "2026-11-17T06:05:30.953Z",
+          "uri": "ctx://preference/1794895530952"
+        }
+      ],
+      "score": {
+        "expected": true,
+        "correct": true,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": [
+          {
+            "id": 2,
+            "aliases": [],
+            "createdAt": "2026-11-17T06:05:30.881Z",
+            "name": "OakAgent 工具权限上限",
+            "source": {
+              "at": "2026-11-17T00:00:00.000Z",
+              "capturedAt": "2026-11-17T06:05:30.952Z",
+              "hostText": "unavailable",
+              "kind": "extract",
+              "messageId": "live-L08",
+              "quote": "记住：OakAgent 的工具权限上限是 6。",
+              "quoteMatch": "exact",
+              "recorded": true,
+              "role": "user",
+              "seq": 11,
+              "sessionId": "live-L08",
+              "via": "model"
+            },
+            "status": "active",
+            "text": "记住：OakAgent 的工具权限上限是 6。",
+            "type": "preference",
+            "updatedAt": "2026-11-17T06:05:30.953Z",
+            "uri": "ctx://preference/1794895530952"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L09",
+      "split": "holdout",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "AspenTask 的并发上限是 13。"
+          }
+        ],
+        "skipped": [
+          {
+            "reason": "rule-model-redundant",
+            "type": "preference",
+            "length": 25,
+            "preview": "<covered-by-admitted-fact>"
+          }
+        ],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 1,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:31.043Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L09",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L09",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:31.043Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "createdAt": "2026-11-17T06:05:31.045Z",
+          "name": "AspenTask 并发上限",
+          "source": {
+            "at": "2026-11-17T00:00:00.000Z",
+            "capturedAt": "2026-11-17T06:05:31.045Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "live-L09",
+            "quote": "另外记住：AspenTask 的并发上限是 13。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 11,
+            "sessionId": "live-L09",
+            "via": "model"
+          },
+          "status": "active",
+          "text": "AspenTask 的并发上限是 13。",
+          "type": "preference",
+          "updatedAt": "2026-11-17T06:05:31.045Z",
+          "uri": "ctx://preference/1794895531045"
+        }
+      ],
+      "score": {
+        "expected": true,
+        "correct": true,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": [
+          {
+            "id": 2,
+            "createdAt": "2026-11-17T06:05:31.045Z",
+            "name": "AspenTask 并发上限",
+            "source": {
+              "at": "2026-11-17T00:00:00.000Z",
+              "capturedAt": "2026-11-17T06:05:31.045Z",
+              "hostText": "unavailable",
+              "kind": "extract",
+              "messageId": "live-L09",
+              "quote": "另外记住：AspenTask 的并发上限是 13。",
+              "quoteMatch": "exact",
+              "recorded": true,
+              "role": "user",
+              "seq": 11,
+              "sessionId": "live-L09",
+              "via": "model"
+            },
+            "status": "active",
+            "text": "AspenTask 的并发上限是 13。",
+            "type": "preference",
+            "updatedAt": "2026-11-17T06:05:31.045Z",
+            "uri": "ctx://preference/1794895531045"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L10",
+      "split": "holdout",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "FirLedger 允许读取但不允许删除。"
+          }
+        ],
+        "skipped": [
+          {
+            "reason": "rule-model-redundant",
+            "type": "preference",
+            "length": 24,
+            "preview": "<covered-by-admitted-fact>"
+          }
+        ],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 1,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:31.164Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L10",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L10",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:31.164Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "createdAt": "2026-11-17T06:05:31.166Z",
+          "name": "FirLedger 访问权限",
+          "source": {
+            "at": "2026-11-17T00:00:00.000Z",
+            "capturedAt": "2026-11-17T06:05:31.165Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "live-L10",
+            "quote": "记住：FirLedger 允许读取但不允许删除。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 11,
+            "sessionId": "live-L10",
+            "via": "model"
+          },
+          "status": "active",
+          "text": "FirLedger 允许读取但不允许删除。",
+          "type": "preference",
+          "updatedAt": "2026-11-17T06:05:31.166Z",
+          "uri": "ctx://preference/1794895531166"
+        }
+      ],
+      "score": {
+        "expected": true,
+        "correct": true,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": [
+          {
+            "id": 2,
+            "createdAt": "2026-11-17T06:05:31.166Z",
+            "name": "FirLedger 访问权限",
+            "source": {
+              "at": "2026-11-17T00:00:00.000Z",
+              "capturedAt": "2026-11-17T06:05:31.165Z",
+              "hostText": "unavailable",
+              "kind": "extract",
+              "messageId": "live-L10",
+              "quote": "记住：FirLedger 允许读取但不允许删除。",
+              "quoteMatch": "exact",
+              "recorded": true,
+              "role": "user",
+              "seq": 11,
+              "sessionId": "live-L10",
+              "via": "model"
+            },
+            "status": "active",
+            "text": "FirLedger 允许读取但不允许删除。",
+            "type": "preference",
+            "updatedAt": "2026-11-17T06:05:31.166Z",
+            "uri": "ctx://preference/1794895531166"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L11",
+      "split": "holdout",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "LarchService uses port 8461."
+          }
+        ],
+        "skipped": [
+          {
+            "reason": "rule-model-redundant",
+            "type": "preference",
+            "length": 42,
+            "preview": "<covered-by-admitted-fact>"
+          }
+        ],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 1,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:31.292Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L11",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L11",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:31.293Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "createdAt": "2026-11-17T06:05:31.295Z",
+          "name": "LarchService port",
+          "source": {
+            "at": "2026-11-17T00:00:00.000Z",
+            "capturedAt": "2026-11-17T06:05:31.295Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "live-L11",
+            "quote": "Remember that LarchService uses port 8461.",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 11,
+            "sessionId": "live-L11",
+            "via": "model"
+          },
+          "status": "active",
+          "text": "LarchService uses port 8461.",
+          "type": "preference",
+          "updatedAt": "2026-11-17T06:05:31.295Z",
+          "uri": "ctx://preference/1794895531295"
+        }
+      ],
+      "score": {
+        "expected": true,
+        "correct": true,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": [
+          {
+            "id": 2,
+            "createdAt": "2026-11-17T06:05:31.295Z",
+            "name": "LarchService port",
+            "source": {
+              "at": "2026-11-17T00:00:00.000Z",
+              "capturedAt": "2026-11-17T06:05:31.295Z",
+              "hostText": "unavailable",
+              "kind": "extract",
+              "messageId": "live-L11",
+              "quote": "Remember that LarchService uses port 8461.",
+              "quoteMatch": "exact",
+              "recorded": true,
+              "role": "user",
+              "seq": 11,
+              "sessionId": "live-L11",
+              "via": "model"
+            },
+            "status": "active",
+            "text": "LarchService uses port 8461.",
+            "type": "preference",
+            "updatedAt": "2026-11-17T06:05:31.295Z",
+            "uri": "ctx://preference/1794895531295"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L12",
+      "split": "holdout",
+      "result": {
+        "applied": [
+          {
+            "id": 2,
+            "action": "insert",
+            "type": "preference",
+            "text": "记住：HazelWorker 的重试次数是 4。"
+          },
+          {
+            "id": 2,
+            "action": "merge",
+            "type": "preference",
+            "text": "HazelWorker 的重试次数是 4"
+          }
+        ],
+        "skipped": [],
+        "superseded": [],
+        "adjusted": [],
+        "unverified": [],
+        "llmFailed": false,
+        "emptySuspicious": false,
+        "ruleCount": 1,
+        "modelCount": 1,
+        "gate": {
+          "skipped": false,
+          "reason": "window-content"
+        }
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "createdAt": "2026-11-17T06:05:31.414Z",
+          "name": "C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L12",
+          "status": "active",
+          "text": "workspace C:\\Users\\v_chchsli\\Desktop\\dsh-trivium\\.tmp\\real-memory-quality-20261117\\write-verified-replay.json.workspaces\\L12",
+          "type": "workspace",
+          "updatedAt": "2026-11-17T06:05:31.414Z",
+          "uri": "ctx://workspace"
+        },
+        {
+          "id": 2,
+          "aliases": [],
+          "createdAt": "2026-11-17T06:05:31.416Z",
+          "name": "HazelWorker 重试次数",
+          "source": {
+            "at": "2026-11-17T00:00:00.000Z",
+            "capturedAt": "2026-11-17T06:05:31.487Z",
+            "hostText": "unavailable",
+            "kind": "extract",
+            "messageId": "live-L12",
+            "quote": "记住：HazelWorker 的重试次数是 4。",
+            "quoteMatch": "exact",
+            "recorded": true,
+            "role": "user",
+            "seq": 11,
+            "sessionId": "live-L12",
+            "via": "model"
+          },
+          "status": "active",
+          "text": "记住：HazelWorker 的重试次数是 4。",
+          "type": "preference",
+          "updatedAt": "2026-11-17T06:05:31.488Z",
+          "uri": "ctx://preference/1794895531487"
+        }
+      ],
+      "score": {
+        "expected": true,
+        "correct": true,
+        "wrongType": 0,
+        "duplicates": 0,
+        "pending": 0,
+        "pendingCandidates": 0,
+        "missed": false,
+        "unsourced": [],
+        "other": [],
+        "added": [
+          {
+            "id": 2,
+            "aliases": [],
+            "createdAt": "2026-11-17T06:05:31.416Z",
+            "name": "HazelWorker 重试次数",
+            "source": {
+              "at": "2026-11-17T00:00:00.000Z",
+              "capturedAt": "2026-11-17T06:05:31.487Z",
+              "hostText": "unavailable",
+              "kind": "extract",
+              "messageId": "live-L12",
+              "quote": "记住：HazelWorker 的重试次数是 4。",
+              "quoteMatch": "exact",
+              "recorded": true,
+              "role": "user",
+              "seq": 11,
+              "sessionId": "live-L12",
+              "via": "model"
+            },
+            "status": "active",
+            "text": "记住：HazelWorker 的重试次数是 4。",
+            "type": "preference",
+            "updatedAt": "2026-11-17T06:05:31.488Z",
+            "uri": "ctx://preference/1794895531487"
+          }
+        ]
+      }
+    }
+  ]
+}

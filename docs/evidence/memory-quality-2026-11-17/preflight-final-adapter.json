@@ -1,0 +1,59 @@
+{
+  "version": "memory-live-evaluator-1",
+  "startedAt": "2026-11-17T05:57:48.413Z",
+  "fixtureHash": "886e48e30829706c3830db9028b850f5ae709899e3262890ce9846352b56eb17",
+  "sourceHashes": {
+    "lib/extract.js": "17d6078e7657e870c7127f7a8f18affc5ee2d0576d8d71c5852ca599beb11cf6",
+    "lib/source-events.js": "14e99a64c20d6b6d5580bcf13d83f7a878bff0f01406c196d18f3469493dc1ff",
+    "lib/store.js": "59cad53367180ac59d00dac1886ace9f6035088160517e48732843ab7f75381d",
+    "lib/entity-search.js": "fcf7a946833005f9dad5b57efcdedf0562a3954bedea9691c799abc029599444",
+    "lib/memory-pack.js": "22d7695bffa9b45da64c1d019c9bf97dfc3fe161353bc3e7d48676d77c636ae7",
+    "lib/recall-preview.js": "8c000ff5244eae2982cf5fb71e30a236dbed8b2ef51bb379d78ac2e16a0e21ab",
+    "scripts/memory-eval-live.mjs": "68ac4647e2871bc208aeb404f46ccb65bdea3508563922ed89182ce0b4284c7d"
+  },
+  "git": "eed3bef1ec7894ac44158ee1a0652be71e8f4898",
+  "dirty": true,
+  "provider": "deepseek-account",
+  "model": "deepseek-flash",
+  "limits": {
+    "calls": 48,
+    "maxOutputTokens": 900,
+    "contextTokens": 300
+  },
+  "method": "real extraction plus paired direct-answer context comparison; controlled seeded retrieval, not an end-to-end agent score",
+  "billing": "not measured: authoritative provider token counters are reported, monetary account receipts unavailable",
+  "embeddingCalls": 0,
+  "calls": [
+    {
+      "label": "preflight",
+      "httpStatus": 200,
+      "text": "READY",
+      "finish": {
+        "kind": "stop"
+      },
+      "usage": [
+        {
+          "inputTokens": 12,
+          "outputTokens": 2,
+          "cacheReadTokens": 0,
+          "cacheWriteTokens": 0,
+          "totalTokens": 14
+        }
+      ],
+      "elapsedMs": 881,
+      "call": 1,
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "tokens": {
+        "inputTokens": 12,
+        "outputTokens": 2,
+        "cacheReadTokens": 0,
+        "cacheWriteTokens": 0,
+        "totalTokens": 14,
+        "aggregateInputTokens": 12
+      }
+    }
+  ],
+  "scenarios": [],
+  "completedAt": "2026-11-17T05:57:49.395Z"
+}

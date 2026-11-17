@@ -1,0 +1,25 @@
+{
+  "package": "dsh-trivium",
+  "version": "0.8.9",
+  "kernel": "0.9.1",
+  "hostPeers": {
+    "llm": "0.2.2-rc.1",
+    "tools": "0.2.2-rc.1"
+  },
+  "checks": [
+    "package version",
+    "native binding",
+    "host module import",
+    "v4 source shape",
+    "four tool registrations",
+    "explicit expiry",
+    "history/current-only search",
+    "multiword search",
+    "clear expiry",
+    "runtime pre-step injection",
+    "same-turn de-duplication",
+    "cumulative turn budget",
+    "current version in runtime recall"
+  ],
+  "status": "passed"
+}

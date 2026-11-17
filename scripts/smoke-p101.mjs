@@ -93,13 +93,17 @@ function response(status, payload) {
 }
 
 /** A reply-controlled HTTP layer: entity-search requests stay pending until the test answers. */
-function createServer() {
+function createServer({withPending=false}={}) {
   const calls = [];
   const searches = [];
+  const reviews = [];
+  const pendingRows = Object.fromEntries([ALPHA,BETA].map((cwd,index)=>[cwd,withPending ? [{sessionId:'same-session',turns:1,preview:cwd,
+    etag:String(index+1).repeat(64),evidence:[{role:'user',text:'格式是什么？'}],unverified:[{id:'a'.repeat(64),type:'decision',name:'格式',text:cwd+' 格式是 XLSX。',quote:'格式是什么？'}]}] : []]));
   let liveText = '报告游标可以复用 24 小时。';
   const fetchImpl = async (url, opts) => {
     const href = String(url);
     calls.push({ href, opts });
+    if(href.includes('/api/dsh-trivium/pending/review')) return new Promise(resolve=>reviews.push({href,body:JSON.parse(opts.body),reply(status,payload){resolve(response(status,payload));}}));
     if (href.includes('/api/dsh-trivium/entity-search')) {
       return new Promise((resolve) => {
         searches.push({
@@ -119,14 +123,14 @@ function createServer() {
     }
     if (href.includes('/api/dsh-trivium/external')) return response(200, { ok: true, files: [] });
     if (href.includes('/api/dsh-trivium/changes')) return response(200, { ok: true, entries: [], labels: {} });
-    if (href.includes('/api/dsh-trivium/pending')) return response(200, { ok: true, windows: [], turns: 0, acknowledged: 0 });
+    if (href.includes('/api/dsh-trivium/pending')) {const rows=pendingRows[cwdOf(href) || ALPHA];return response(200, { ok: true, windows:rows, turns:rows.length, acknowledged: 0 });}
     if (href.includes('/api/dsh-trivium/recall-traces')) return response(200, { ok: true, entries: [] });
     if (href.includes('/api/dsh-trivium/turn')) return response(200, { ok: true, sessions: [] });
     if (href.includes('/api/dsh-trivium/corrections')) return response(200, { ok: true, sessions: [] });
     if (href.includes('/api/dsh-trivium/embedding')) return response(200, { ok: true, calls: 0 });
     return response(200, { ok: true });
   };
-  return { fetchImpl, calls, searches, text: () => liveText, setText: (next) => { liveText = next; } };
+  return { fetchImpl, calls, searches,reviews,pendingRows, text: () => liveText, setText: (next) => { liveText = next; } };
 }
 
 function createRuntime() {
@@ -146,10 +150,11 @@ function createRuntime() {
       return hooks[i];
     },
     useMemo(fn) { cursor += 1; return fn(); },
-    useCallback(fn) {
+    useCallback(fn,deps) {
       const i = cursor++;
-      if (!(i in hooks)) hooks[i] = fn;
-      return hooks[i];
+      const prior=hooks[i];
+      if (!prior || !Array.isArray(deps) || !Array.isArray(prior.deps) || deps.length !== prior.deps.length || deps.some((value,j)=>!Object.is(value,prior.deps[j]))) hooks[i]={fn,deps};
+      return hooks[i].fn;
     },
     useEffect(fn, deps) { effects.push({ index: cursor++, fn, deps }); },
     Fragment: 'Fragment',
@@ -206,8 +211,8 @@ const settle = async (rounds = 8) => {
   for (let i = 0; i < rounds; i += 1) await new Promise((resolve) => setImmediate(resolve));
 };
 
-async function mount() {
-  const server = createServer();
+async function mount(options) {
+  const server = createServer(options);
   const runtime = createRuntime();
   const table = {
     react: runtime.react,
@@ -751,6 +756,63 @@ try {
   failures += 1;
   console.error('FAIL unexpected throw: ' + (err && err.stack ? err.stack : err));
 }
+
+try {
+  const reviewApp=await mount({withPending:true});
+  const button=(label)=>nodesOf(reviewApp.tree()).find(n=>n.props?.children===label && n.props?.onClick);
+  const refresh=async()=>{for(let i=0;i<5;i++){await settle(2);reviewApp.render();}};
+  pageTab(reviewApp.tree(),'运行记录').props.onClick();reviewApp.render();await refresh();
+  await check(()=>{
+    assert(textOf(reviewApp.tree()).includes('格式是什么？'),'source excerpt is absent');
+    assert(button('补充依据并核对').props.disabled,'empty supplement can submit');
+    assert(!!button('确认记住'),'manual review action missing');
+  },'pending review exposes actual source and requires evidence before checking');
+  await check(async()=>{
+    const field=nodesOf(reviewApp.tree()).find(n=>n.props?.['aria-label']==='补充依据（不调用模型）');
+    field.props.onChange({target:{value:'尚未确定。'}});reviewApp.render();
+    const pending=button('补充依据并核对').props.onClick();reviewApp.render();
+    const req=reviewApp.server.reviews.at(-1);assert(req.body.evidence==='尚未确定。' && req.body.action==='verify','supplement payload missing');
+    assert(cwdOf(req.href)===ALPHA,'explicit scope missing');
+    req.reply(200,{ok:true,settled:false});await pending;await refresh();
+    assert(textOf(reviewApp.tree()).includes('已保留待核对'),'unsupported evidence looked like success');
+    assert(!!button('确认记住'),'unsupported evidence lost candidate');
+  },'unverified evidence leaves the candidate available and reports the result');
+  await check(async()=>{
+    const before=reviewApp.server.reviews.length;
+    const pending=button('确认记住').props.onClick();reviewApp.render();
+    assert(textOf(reviewApp.tree()).includes('不会替换、合并或删除旧记忆'),'manual confirmation boundary missing');
+    assert(reviewApp.server.reviews.length===before,'confirmation wrote before explicit acceptance');
+    button('取消').props.onClick();await pending;await refresh();
+    assert(reviewApp.server.reviews.length===before,'cancel wrote a memory');
+  },'manual confirmation requires deliberate acceptance and cancel performs no write');
+  await check(async()=>{
+    const before=reviewApp.server.reviews.length;
+    const pending=button('确认记住').props.onClick();reviewApp.render();
+    const picker=nodesOf(reviewApp.tree()).find(n=>n.props?.['aria-label']==='选择已知工作区');
+    picker.props.onChange({target:{value:BETA}});reviewApp.render();await pending;await refresh();
+    assert(reviewApp.server.reviews.length===before,'workspace switch submitted the old confirmation');
+    assert(!textOf(reviewApp.tree()).includes(ALPHA+' 格式是 XLSX。'),'old candidate remains in B');
+  },'workspace switch cancels an open confirmation and clears the old candidate');
+  await check(async()=>{
+    const pending=button('确认记住').props.onClick();reviewApp.render();
+    const accept=nodesOf(reviewApp.tree()).filter(n=>n.props?.children==='确认记住' && n.props?.onClick).at(-1);
+    accept.props.onClick();await settle();reviewApp.render();
+    const req=reviewApp.server.reviews.at(-1);assert(cwdOf(req.href)===BETA && req.body.etag==='2'.repeat(64),'manual request uses stale source');
+    req.reply(409,{ok:false,message:'This source window changed.'});await pending;await refresh();
+    assert(textOf(reviewApp.tree()).includes('This source window changed.'),'stale response is hidden');
+    assert(!!button('确认记住'),'stale response lost pending candidate');
+  },'stale review is shown as a failure and leaves the candidate for refresh');
+  await check(async()=>{
+    const pending=button('确认记住').props.onClick();reviewApp.render();
+    nodesOf(reviewApp.tree()).filter(n=>n.props?.children==='确认记住' && n.props?.onClick).at(-1).props.onClick();
+    await settle();reviewApp.render();const req=reviewApp.server.reviews.at(-1);
+    const picker=nodesOf(reviewApp.tree()).find(n=>n.props?.['aria-label']==='选择已知工作区');
+    picker.props.onChange({target:{value:ALPHA}});reviewApp.render();await refresh();
+    req.reply(200,{ok:true,settled:true,nodeId:99});await pending;await refresh();
+    assert(!textOf(reviewApp.tree()).includes('已保存为手动确认的记忆'),'late B success appeared in A');
+    assert(textOf(reviewApp.tree()).includes(ALPHA+' 格式是 XLSX。'),'late B success cleared A');
+  },'late review success cannot overwrite the selected workspace or clear its candidate');
+}catch(err){failures++;console.error('FAIL review UI: '+err.stack);}
 
 console.log(`P101: ${checks - failures}/${checks}`);
 if (failures) process.exitCode = 1;
