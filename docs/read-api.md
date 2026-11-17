@@ -136,7 +136,9 @@ work receives `429 READ_BUSY`. Native live-query deadlines are cooperative:
 they do not provide hard real-time interruption of Node's synchronous binding.
 Replies are bounded to 512 KiB. Invalid fields and operations are rejected.
 
-## Explicit entity search (unreleased source)
+<a id="explicit-entity-search-unreleased-source"></a>
+
+## Explicit entity search (0.9.0)
 
 ```http
 POST /api/dsh-trivium/entity-search?cwd=<URL-encoded-workspace>
@@ -334,7 +336,7 @@ Before installation, use `node scripts/query-snapshot.mjs ...` and
 `readOnly` open and can still conflict with an active writer; select a captured
 snapshot explicitly for concurrent checking. Help commands do not open a store.
 
-## 来源候选核对（管理写入，未发布源码）
+## 来源候选核对（管理写入，0.9.0）
 
 `GET /api/dsh-trivium/pending?cwd=...` 对来源待核对窗口返回候选 `id`、窗口 `etag` 和最多 6 条、每条 360 字符的脱敏来源片段；普通失败窗口仍只返回计数与短预览。
 

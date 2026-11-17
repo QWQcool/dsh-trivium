@@ -12,22 +12,18 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.8.9**. Workspace switches discard stale memory actions, proposal tokens use canonical paths, and chip writes share the workspace lock. Read-only live TQL and independently captured snapshots let you inspect memory while DSH owns the writer. [English release notes](docs/release-0.8.9.en.md)
+The published npm package is **0.9.0**. Uninstall retains memory by default. Automatic extraction checks sources, keeps unverified candidates for review, and suppresses admitted same-turn rule copies. Entity-scoped search and explicit task memory packs are available in Settings. [English release notes](docs/release-0.9.0.en.md)
 
-The current source is ahead of that package and pins TriviumDB **0.9.1**; the published package still uses **0.9.0**. Opening and checkpointing an existing library with the newer writer may advance its format (0.9.1 uses `.tdb` v13 / WAL v6); returning to an older kernel requires a pre-upgrade copy of the complete file group. The migration regression uses synthetic data; it does not prove every existing library is compatible. [Current status](docs/CURRENT-STATE.md)
+Plugin 0.9.0 pins TriviumDB **0.9.1**; published plugin 0.8.5–0.8.9 used kernel 0.9.0. Kernel 0.9.1 can advance a library to `.tdb` v13 / WAL v6, which an older kernel cannot read. Existing migration evidence uses synthetic libraries and does not establish compatibility with every damaged or historical library. [Current status](docs/CURRENT-STATE.md)
 
-> **Back up the whole `.dsh` directory (with the plugin closed) before upgrading from 0.8.4 or earlier** (0.8.5 through 0.8.9 already ship `0.9.0`, so there is nothing to convert if you are on any of them).
-> 0.9.0 raises the library format to **v10** and the previous kernel cannot read it
-> (`TDB_UNSUPPORTED_DATABASE_VERSION`), so **downgrading the plugin is not a rollback** — restoring a backup is,
-> and a restore returns the library to the moment of the backup, losing everything written after it.
-> Copy the **whole file group** (`trivium.tdb` plus `.gidx` `.pidx` `.pld.*` `.text` `.text.meta` `.vec` `.wal`
-> `.lock` `.flush_ok`); copying only `.tdb` yields `TDB_CORRUPTED_FILE`.
+> **Upgrading published 0.8.9: fully stop the host and replace the package directly; do not uninstall the old build first.** Its old uninstall hook can delete memory. Use the version-pinned commands under [Updating](#updating).
+> Before the first open with the newer kernel, retain the complete workspace `.dsh` file group if rollback is required. Downgrading the package alone does not undo a storage-format upgrade. A restore returns to the saved point and does not preserve later writes. The group includes `trivium.tdb` and sidecars such as `.gidx`, `.pidx`, `.pld.*`, `.text`, `.text.meta`, `.vec`, `.wal`, `.lock` and `.flush_ok`; `.tdb` alone is not a complete copy.
 
 ---
 
 ## Installation
 
-> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and start `dsh web` at least once. Current Web verification uses `0.2.2-rc.1` (2026-11-10, real host launch); see the [baseline and evidence index](docs/README.md) for desktop coverage and limitations. Node must satisfy `^22.19.0 || >=24`; the npm package pins `triviumdb@0.9.0` and current source pins `0.9.1`.
+> Prerequisite: install [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) and initialize the intended profile. Existing evidence covers Web `0.2.2-rc.1` and desktop `0.2.2-rc.3`; see the [evidence index](docs/README.md) for scope and dates. Node must satisfy `^22.19.0 || >=24`; this package pins `triviumdb@0.9.1`.
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -68,25 +64,27 @@ Then restart `dsh web`.
 
 ## Updating
 
-Before upgrading, stop DSH and back up the entire workspace `.dsh/trivium.tdb*` file group. Default mmap storage also uses `.vec`, `.wal`, `.text`, and other sidecars. Git JSONL omits local-only data and is not a complete backup.
+Fully exit the desktop application, including its tray process, or stop `dsh web`. Replace the plugin in its existing profile; **do not remove the old 0.8.9 package first**. The desktop CLI update is:
 
 ```sh
-dsh plugin --profile web add dsh-trivium
+dsh plugin --profile desktop add dsh-trivium@0.9.0 --ignore-scripts
 ```
 
-Restart **dsh web**. For a source checkout, `git pull` then run `node scripts/link-dsh.mjs` again.
+For Web, use `dsh plugin --profile web add dsh-trivium@0.9.0 --ignore-scripts`. Restart the same host/profile afterward. These commands retain the existing memory paths; do not delete `.dsh` or initialize a new workspace to upgrade. The fixed 0.9.0 package has no uninstall cleanup hook.
+
+Published 0.8.9 used an older kernel: see the file-group and rollback warning above before the first open. A local source build that already uses TDB 0.9.1 does not introduce a second kernel-version upgrade. Git JSONL omits vectors and other local data and is not a complete backup. For a source checkout, `git pull` then run `node scripts/link-dsh.mjs` again. [Detailed upgrade instructions](docs/release-0.9.0.en.md#upgrade-and-data-retention)
 
 ## Uninstall
 
-> **Published npm 0.8.9 still has the old destructive uninstall hook.** Do not remove that published build until it has been replaced by a fixed build. The current source and builds made from it retain memory by default; this change has not yet been published to npm.
+> **0.9.0 retains memory by default.** The old published 0.8.9 package still contains a destructive uninstall hook; replace it using the update command above before uninstalling.
 
-For a fixed build, stop the host, then remove the plugin from its profile:
+With 0.9.0 installed, stop the host, then remove the plugin from its profile:
 
 ```sh
 dsh plugin --profile web remove dsh-trivium
 ```
 
-The fixed build retains `~/.dsh/trivium.json` and workspace memory, pending items, sidecars, snapshots, history, and preference exports. Reinstalling can reuse the retained memory. If you explicitly want to erase data, inspect the relevant workspace and settings files and remove only what you intend to erase.
+Uninstall retains `~/.dsh/trivium.json` and workspace memory, pending items, sidecars, snapshots, history, and preference exports. Reinstalling can reuse the retained memory. If you explicitly want to erase data, inspect the relevant workspace and settings files and remove only what you intend to erase.
 
 Restart **dsh web** afterward: Settings no longer shows **Trivium memory**, the title bar no longer shows **Chips**, and the four tools are unregistered.
 
@@ -240,7 +238,7 @@ A memory knows where it came from only if the write recorded it (`kind`, session
 
 The recall check is read-only: it does not write, does not run a tool, and never requests an embedding. With no query vector it says the semantic channel did not run. Nothing on these tabs injects context or calls a model.
 
-Newer source adds source review under **Activity → Pending**: inspect bounded excerpts, add supporting wording for a local check, or explicitly confirm the content as manual memory. Unverified items remain pending. Confirmation retains original sources and existing facts, without merging, deleting or replacing them, and needs no model or embedding call. The [real-model comparison](docs/reviews/MEMORY-QUALITY-2026-11-17.md) records three eliminated rule copies and 12/12 answers with existing recall versus 10/12 with explicit entity packs at the same estimated context budget. These source changes are not in published npm 0.8.9.
+Version 0.9.0 adds source review under **Activity → Pending**: inspect bounded excerpts, add supporting wording for a local check, or explicitly confirm the content as manual memory. Unverified items remain pending. Confirmation retains original sources and existing facts, without merging, deleting or replacing them, and needs no model or embedding call. The [real-model comparison](docs/reviews/MEMORY-QUALITY-2026-11-17.md) records three eliminated rule copies and 12/12 answers with existing recall versus 10/12 with explicit entity packs at the same estimated context budget. These changes are included in 0.9.0.
 
 ### Querying while the host is running (released in 0.8.9)
 
@@ -361,7 +359,7 @@ These results describe distinct test layers; they are not one overall accuracy s
 | Extraction baseline, one real model | Five synthetic scenarios × five repetitions: **25/25** facts matched and entered the store; **21/25** subsequent-session answers passed in that earlier baseline. See [A5](docs/HISTORY.md). |
 | Correction and negation, one real model | Two fixed synthetic scenarios each produced **10/10** correct new-session answers after fixes. Three negation setup runs hit a request cap, and some runs used agent-initiated writes; these are not a general automatic-extraction success rate. See [A10](docs/HISTORY.md). |
 | Change record and recovery | The October 30 run covered loopback HTTP, contention between processes, and browser component fixtures. [Results and limits](docs/HISTORY.md) |
-| Local embedding, newer source | On 36 hand-labelled synthetic memories and 32 questions, Top-1/Top-5 hits rose from **22/32, 25/32** (keyword + graph) to **27/32, 31/32** (local GTE vectors with query instructions). A separate real 5000-node backfill completed **5000/5000** in 117.7s, with 313 flushes and ¥0 cost. [Runtime setup, failures and limits](docs/reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
+| Historical local-embedding experiment; weights/runtime not bundled | On 36 hand-labelled synthetic memories and 32 questions, Top-1/Top-5 hits rose from **22/32, 25/32** (keyword + graph) to **27/32, 31/32** (local GTE vectors with query instructions). A separate real 5000-node backfill completed **5000/5000** in 117.7s, with 313 flushes and ¥0 cost. [Runtime setup, failures and limits](docs/reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 
 The write-path optimization measured at source commit `6d28ed5` follows the published npm 0.8.9 package. On one Windows machine with a synthetic 5000-node, 1536-dimensional store, 30 batches of eight archives produced:
 
@@ -374,17 +372,19 @@ The write-path optimization measured at source commit `6d28ed5` follows the publ
 
 The plugin batches persistence, skips unchanged archive text indexing, and reads payloads for the chip response. These measurements apply to batch archiving. Single-write flush spikes remain under investigation as F-LAT-01. The native kernel and default budgets are unchanged. The report includes the commands, traces, failed-batch durability checks and the original 807 ms write breakdown. [Write-latency results](docs/reviews/WRITE-LATENCY-RESULTS-2026-11-12.md)
 
-The newer source also batches derived vector writes in groups of 16. In three alternating rounds on identical 5000-node stores, updating 128 cached real vectors took a median **17.466s → 0.920s**, with **128 → 8** flushes. This isolates persistence work; it is not a before/after full 5000-request embedding run. Local weights improved this small retrieval sample but did not separate same-fact from conflicting-fact similarities, so automatic semantic merging remains off. These changes and the **Context → Fact queries** card (current facts, one-hop relationships and orphan entities, with live/snapshot provenance) are source changes after npm 0.8.9. [Acceptance and evidence](docs/reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md)
+Version 0.9.0 also batches derived vector writes in groups of 16. In three alternating rounds on identical 5000-node stores, updating 128 cached real vectors took a median **17.466s → 0.920s**, with **128 → 8** flushes. This isolates persistence work; it is not a before/after full 5000-request embedding run. Local weights improved this small retrieval sample but did not separate same-fact from conflicting-fact similarities, so automatic semantic merging remains off. These changes and the **Context → Fact queries** card (current facts, one-hop relationships and orphan entities, with live/snapshot provenance) are included in 0.9.0. [Acceptance and evidence](docs/reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md)
 
 The one mixed-retrieval Top-5 miss was traced to generic text matches in weighted rank fusion: the relevant document fell from dense rank 1 to fused rank 19 before the plugin's 16-candidate cut. A larger pool alone did not restore Top-5; disabling the native text channel also regressed some Top-1 results. This is attribution, with production ranking unchanged. [Controlled evaluation](docs/reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md)
 
 Follow-up [scoped-text experiments](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) distinguish conditional native payload filtering from arbitrary ID-set text ranking, and evaluate payload fallbacks on declared relation truth. These are isolated diagnostics; tools and default retrieval remain unchanged.
 
-Newer source adds an explicit [entity-search HTTP backend](docs/read-api.md#explicit-entity-search-unreleased-source): choose an entity/workspace, receive separate lexical and semantic candidates, and opt in to query embeddings. The Context card has passed synthetic desktop interaction checks. A positive memory-pack budget selects whole facts, actual paths and stored source locators; the default budget is 0. Same-name alternatives remain current and marked for review. Automatic model candidates without a verifiable source stay pending rather than becoming active facts. See [results and limits](docs/reviews/MEMORY-EVAL-2026-11-17.md). These source changes are not connected to tools or automatic recall and are not in published npm 0.8.9.
+Version 0.9.0 includes an explicit [entity-search HTTP backend](docs/read-api.md#explicit-entity-search-unreleased-source): choose an entity/workspace, receive separate lexical and semantic candidates, and opt in to query embeddings. The Context card has passed synthetic desktop interaction checks. A positive memory-pack budget selects whole facts, actual paths and stored source locators; the default budget is 0. Same-name alternatives remain current and marked for review. Automatic model candidates without a verifiable source stay pending rather than becoming active facts. See [results and limits](docs/reviews/MEMORY-EVAL-2026-11-17.md). These features are not connected to tools or automatic recall.
 
 The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/HISTORY.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 
 ## Changelog
+
+- [0.9.0](docs/release-0.9.0.en.md): memory-preserving uninstall, TDB 0.9.1, source-checked extraction and same-turn redundancy suppression, pending-source review, explicit entity search/task packs, and previously measured write batching. Existing evidence is reused for this version/documentation release.
 
 - [0.8.9](docs/release-0.8.9.en.md): workspace write ownership, distinct proposal tokens, chip write locking, host peer compatibility, live read TQL, independent snapshots and CLI queries, configurable per-turn budgets and tool-recovery extraction.
 
@@ -411,7 +411,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 | `ctx_find` returns nothing | A new session injects the short map only; the model must call the tool. You can also **Add** on the chip strip or tell the model “remember: …”. Chitchat and one-off file edits are not auto-written. |
 | `.tdb` is locked / will not open | Run one `dsh web`. Do not run two Node processes that both linked this plugin. |
 | Embedding is filled but search is no more accurate | Failures fall back to keyword + graph. Check that `~/.dsh/trivium.json` has an OpenAI-compatible URL (the `/v1` kind). Restart after changing it. |
-| Memory still there after uninstall | This is intentional for a fixed source build. Keep it for a future reinstall, or inspect and remove selected files yourself if you explicitly want to erase them. The published npm 0.8.9 still has the old uninstall behavior. |
+| Memory still there after uninstall | This is intentional in 0.9.0. Reinstallation can reuse it. The old 0.8.9 package must be replaced before removing it; see Updating. |
 | Check for updates fails | That request only hits the npm registry for the latest version. Memory is unaffected; try again later. |
 | Old conversations will not open after rc.8 | That is DSH’s own session-store format change, not a broken `.tdb`. Graph memory still works via `ctx_find`; leftover boxes on unmatched old sessions are plot residue. |
 | Desktop shows “A JavaScript error occurred in the main process” with `EPIPE: broken pipe, write` | Host-side, not the plugin: `electron-updater` writes a log line to a console pipe whose parent process has exited (typical when the app was started by a test launcher with `--inspect`). No `dsh-trivium` frame is in that stack. Click OK and start the app from the Start menu; avoid launching it from a terminal or harness that closes. |
@@ -428,7 +428,7 @@ Local source checkout: `npm ci`, then `node scripts/link-dsh.mjs`, then restart 
 ## Release info
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Published package: `0.8.9` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Published package: `0.9.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.2-rc.1` (launched and exercised on 2026-11-10: panel renders, `/status` and the proposal routes answer, zero console errors; earlier releases were verified on 0.2.1-rc.4/rc.5). The peer range also admits the 0.1.x lines.
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

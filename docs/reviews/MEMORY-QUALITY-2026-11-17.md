@@ -1,5 +1,7 @@
 # 真实模型对照、写入去冗余与来源核对（2026-11-17）
 
+> 本文保留发布前的测量、提交和交付状态。相关功能已随 [0.9.0](../release-0.9.0.md) 交付；原始证据不改写，当前发布状态见 [CURRENT-STATE](../CURRENT-STATE.md)。
+
 本轮保留原 26 场景夹具及历史结果，另冻结 12 个合成场景，使用已登录账号的 `deepseek-account / deepseek-flash`（宿主目录名 DeepSeek-V4.1-Flash），通过官方桌面 0.2.2-rc.3 随附宿主的 `ctx.llm.stream` 实际请求，推理等级 off。评测进程 Node 24.15.0，TDB 0.9.1。未安装本地模型，未请求 embedding。
 
 原始证据、逐次请求/响应和汇总见 [证据目录](../evidence/memory-quality-2026-11-17/summary.json)。结果文件中的源码哈希标识实际测量版本；原始文件未为提高分数而重写。

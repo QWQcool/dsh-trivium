@@ -1,5 +1,7 @@
 # 来源检查、任务记忆包与 C4（2026-11-17）
 
+> 本文保留发布前的测量、提交和交付状态。相关功能已随 [0.9.0](../release-0.9.0.md) 交付；原始证据不改写，当前发布状态见 [CURRENT-STATE](../CURRENT-STATE.md)。
+
 本轮在 `task/handoff-ab-2026-11-16` 的两项交付之上实施，实现提交为 `3b78709`，已推送 `origin/codex/memory-evidence-pack`，TDB 仍为 `0.9.1`，包版本仍为 `0.8.9`，未发布 npm。原始结果见 [JSON](MEMORY-EVAL-2026-11-17-verified.json)；`meta.revision` 记录测量时的 HEAD，`sourceDirty` 如实标记测量时尚未提交的状态，`sourceHashes/sourceSnapshotHash` 标识实际测量源码及依赖。53 个源码/依赖文件哈希均已与最终工作区核对；同轮两次全量运行的逐场景判定与汇总完全一致。
 
 ## 实现与边界

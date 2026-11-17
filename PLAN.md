@@ -1,6 +1,6 @@
 # dsh-trivium 产品与架构
 
-更新：2026-11-16。当前源码运行内核 `triviumdb@0.9.1`；npm 发布包仍是 `0.9.0`，宿主验证基线见当前状态。发布/源码差异见 [CURRENT-STATE](docs/CURRENT-STATE.md)，后续任务统一在 [ROADMAP](docs/ROADMAP.md)维护。
+更新：2026-11-17。插件发布版为 `dsh-trivium@0.9.0`，运行内核固定 `triviumdb@0.9.1`。宿主与验证范围见 [CURRENT-STATE](docs/CURRENT-STATE.md)，后续任务统一在 [ROADMAP](docs/ROADMAP.md)维护；升级步骤见 [0.9.0 发布说明](docs/release-0.9.0.md)。
 
 ## 产品定位
 
