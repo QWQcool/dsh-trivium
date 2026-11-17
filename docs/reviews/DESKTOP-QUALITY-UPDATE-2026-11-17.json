@@ -1,0 +1,118 @@
+{
+  "recordedAt": "2026-11-17T07:11:53.229Z",
+  "sourceCommit": "10e09acd1bc7e6fb79fdf2fa611aaf3ad0e730f1",
+  "branch": "codex/real-memory-quality",
+  "codePushedBeforeInstall": true,
+  "package": {
+    "version": "0.8.9",
+    "build": "20261117-quality-a576c5ab22f5",
+    "kernel": "0.9.1",
+    "sha1": "a576c5ab22f5bbfef76f5e03dd4c4a130e27a2bd",
+    "sha256": "840f20d7fcc889619fcc10df7511a369e4fa038022c92a203abad1b7649a6f53",
+    "archiveFiles": 62,
+    "runtimeFilesMatched": 53,
+    "profile": "desktop",
+    "location": "~/.dsh/profiles/desktop/local-packages/20261117-quality-a576c5ab22f5/dsh-trivium-0.8.9.tgz",
+    "destructiveUninstallHook": false,
+    "paidEvaluationAdapterShipped": false
+  },
+  "install": {
+    "method": "Official desktop-bundled CLI: plugin --profile desktop add <verified-local-tarball> --ignore-scripts",
+    "exitCode": 0
+  },
+  "memory": {
+    "phase": "after",
+    "at": "2026-11-17T06:49:49.276Z",
+    "workspaces": 2,
+    "files": 39,
+    "databases": 3,
+    "bytes": 121814,
+    "removed": 0,
+    "added": 0,
+    "changed": 0,
+    "unchanged": true,
+    "scope": "Both registered workspace .dsh trees and memory file groups under DSH_HOME, plus original Trivium settings. Hash inventory only; no credentials or transcript contents read.",
+    "verifiedBeforeNativeRestart": true
+  },
+  "verification": {
+    "fullRegression": "93/93",
+    "fullRegressionRepeatedAfterFinalRuntimeChange": true,
+    "cleanConsumer": {
+      "outsideRepository": true,
+      "install": "npm install <tarball> @deepseek-ai/dsh-llm@0.2.2-rc.1 @deepseek-ai/dsh-tools@0.2.2-rc.1",
+      "registry": "https://registry.npmjs.org",
+      "forceOrLegacyPeerBypass": false,
+      "package": {
+        "package": "dsh-trivium",
+        "version": "0.8.9",
+        "kernel": "0.9.1",
+        "hostPeers": {
+          "llm": "0.2.2-rc.1",
+          "tools": "0.2.2-rc.1"
+        },
+        "checks": [
+          "package version",
+          "native binding",
+          "host module import",
+          "v4 source shape",
+          "four tool registrations",
+          "explicit expiry",
+          "history/current-only search",
+          "multiword search",
+          "clear expiry",
+          "runtime pre-step injection",
+          "same-turn de-duplication",
+          "cumulative turn budget",
+          "current version in runtime recall"
+        ],
+        "status": "passed"
+      }
+    },
+    "nativeDesktop": {
+      "at": "2026-11-17T06:58:26.405Z",
+      "transport": "actual native desktop loopback API",
+      "status": 200,
+      "ok": true,
+      "version": "0.8.9",
+      "nodeCount": 4,
+      "pendingReadable": true,
+      "pendingWindows": 0,
+      "nodeIds": [
+        4,
+        3,
+        2,
+        1
+      ],
+      "nodeTypes": [
+        "preference",
+        "preference",
+        "preference",
+        "workspace"
+      ],
+      "embeddingEnabled": false,
+      "modelCallsInitiatedByVerification": 0,
+      "embeddingCallsInitiatedByVerification": 0
+    },
+    "hostEnvironmentNotes": [
+      "Plain Node cannot load host-provided SDK packages from the formal desktop profile; this was not counted as a successful standalone check.",
+      "The desktop profile rejects non-plugin CLI schema loading by design. Actual Electron desktop startup and loopback memory APIs were verified instead."
+    ]
+  },
+  "desktopRestarted": true,
+  "desktopLeftRunning": true,
+  "existingMemoryModifiedByVerification": false,
+  "npm": {
+    "latestChecked": "0.8.9",
+    "publishedKernel": "0.9.0",
+    "publishedPreuninstall": "node ./lib/purge.js",
+    "newPackagePublished": false,
+    "accountIdentityChecked": "qwqcool",
+    "recommendation": "Prepare 0.9.0-rc.1 with the next tag, then 0.9.0 stable after release validation; do not reuse published 0.8.9."
+  },
+  "boundaries": [
+    "Formal native verification was read-only; review writes and error/race cases were previously exercised in isolated synthetic libraries.",
+    "The memory hash comparison completed while the desktop was closed; the application was subsequently restarted for read verification.",
+    "The legacy damaged library is retained unchanged; no repair or data migration was attempted.",
+    "No new paid model or embedding calls were initiated for this delivery."
+  ]
+}
