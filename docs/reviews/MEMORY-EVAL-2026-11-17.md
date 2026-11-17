@@ -1,6 +1,6 @@
 # 来源检查、任务记忆包与 C4（2026-11-17）
 
-本轮在 `task/handoff-ab-2026-11-16` 的两项交付之上实施，开发分支为 `codex/memory-evidence-pack`，TDB 仍为 `0.9.1`，包版本仍为 `0.8.9`，未发布 npm。原始结果见 [JSON](MEMORY-EVAL-2026-11-17-verified.json)；`meta.revision` 记录测量时的 HEAD，`sourceDirty` 如实标记未提交状态，`sourceHashes/sourceSnapshotHash` 标识实际测量源码及依赖。53 个源码/依赖文件哈希均已与最终工作区核对；同轮两次全量运行的逐场景判定与汇总完全一致。
+本轮在 `task/handoff-ab-2026-11-16` 的两项交付之上实施，实现提交为 `3b78709`，已推送 `origin/codex/memory-evidence-pack`，TDB 仍为 `0.9.1`，包版本仍为 `0.8.9`，未发布 npm。原始结果见 [JSON](MEMORY-EVAL-2026-11-17-verified.json)；`meta.revision` 记录测量时的 HEAD，`sourceDirty` 如实标记测量时尚未提交的状态，`sourceHashes/sourceSnapshotHash` 标识实际测量源码及依赖。53 个源码/依赖文件哈希均已与最终工作区核对；同轮两次全量运行的逐场景判定与汇总完全一致。
 
 ## 实现与边界
 
@@ -68,4 +68,18 @@ node scripts/smoke-p102.mjs
 
 启动隔离桌面时仍会先选中宿主默认工作区，首次状态请求复现既有“检查点向量文件缺失”错误；本轮未修复该旧库。显式选择合成工作区后验收正常。真实桌面未重新覆盖本轮全部错误态、乱序、模型抽取质量或真实 embedding 降级，沿用既有受控回归证据。
 
-本轮只安装到隔离 profile，正式桌面 profile 尚未替换。隔离测试窗口暂留，最终本地产物位于 `.tmp/memory-desktop-20261117/final-package/dsh-trivium-0.8.9.tgz`（61 个文件，sha1 `8f397e7fc899ab81deeabf1d631ccb3158c61f36`）；未提交、推送或发版。临时 profile 和合成库位于同一 `.tmp` 子目录，仍有进程使用时不要清理它。
+首轮结束时仅安装到隔离 profile，随后按用户授权完成以下正式更新。验收产物位于 `.tmp/memory-desktop-20261117/final-package/dsh-trivium-0.8.9.tgz`（61 个文件，sha1 `8f397e7fc899ab81deeabf1d631ccb3158c61f36`）。
+
+## 正式桌面更新回执
+
+结构化记录：[DESKTOP-UPDATE-2026-11-17.json](DESKTOP-UPDATE-2026-11-17.json)。实现提交 `3b78709` 已推送至 `origin/codex/memory-evidence-pack`，包含此前任务 A/B 两个提交；未合并 main、未发布 npm 或移动发布标签。
+
+- 通过桌面应用菜单完全退出隔离测试实例，确认无残留桌面进程后更新。
+- 将已验收的 tarball 放入正式 profile 的 `local-packages/20261117-memory-8f397e7fc899/`，使用官方 `dsh plugin --profile desktop add <本地产物> --ignore-scripts` 更新；保留本地构建版本号 `0.8.9`，TDB 仍为 `0.9.1`。
+- 安装后的全部 61 个包文件与验收源码逐字节一致；包中没有卸载生命周期脚本。
+- **安装前后、正式桌面重启前**：对两个注册工作区的 `.dsh` 及用户数据目录核对（排除插件安装目录和日志），54 个文件、3 个数据库、291529 字节全部保留；移除/修改/新增均为 0。只记录大小和 sha256，没有复制项目、Git 或记忆数据；原始路径清单与哈希留在本机 `.tmp`，结构化公开回执仅含汇总。
+- 正式桌面 `0.2.2-rc.3` 已重新启动并保留原账号；原工作区仍显示 4 个节点，新记忆包预算输入可见且默认 0。实际正式 HTTP 服务对 `packTokens: 2001` 返回 `400 ENTITY_SEARCH_INVALID`，确认新后端已加载。全程未发模型或 embedding 请求，未新增测试事实到正式记忆库。
+- 运行中的数据库持有文件锁（额外磁盘重读收到 EBUSY），启动后没有绕过锁再次核对文件字节。数据不变结论来自重启前的完整核对，启动后另有宿主正常读取证据。
+- 安装器和独立 `pnpm peers check` 提示缺少两个宿主 peer 声明（dsh-llm、dsh-tools）；该独立检查未通过。正式宿主实际成功加载了插件后端和面板，未另装第二份宿主模块。
+
+隔离测试实例已关闭，正式桌面保持运行。临时合成库未清理，正式 profile 使用独立的持久产物路径，不依赖项目 `.tmp` 的 tarball。

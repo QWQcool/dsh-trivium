@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-17",
+  "branch": "codex/memory-evidence-pack",
+  "sourceCommit": "3b78709dd909543f288837756089b2452dbd2b43",
+  "package": "dsh-trivium",
+  "packageVersion": "0.8.9",
+  "buildSha1": "8f397e7fc899ab81deeabf1d631ccb3158c61f36",
+  "triviumdb": "0.9.1",
+  "installedProfile": "desktop",
+  "installedPackageFilesMatched": 61,
+  "uninstallLifecycle": false,
+  "installMethod": "official dsh plugin add --ignore-scripts",
+  "preservationBeforeLaunch": {
+    "verifiedAt": "2026-11-17T03:49:03.020Z",
+    "registeredWorkspaces": 2,
+    "files": 54,
+    "databases": 3,
+    "bytes": 291529,
+    "removed": 0,
+    "changed": 0,
+    "added": 0,
+    "contentUnchanged": true
+  },
+  "runtime": {
+    "checkedAt": "2026-11-17T03:52:38.034Z",
+    "formalProfile": true,
+    "pluginMounted": true,
+    "existingNodeCount": 4,
+    "registeredWorkspaces": 2,
+    "embeddingEnabled": false,
+    "budgetValidationHttp": 400,
+    "budgetValidationCode": "ENTITY_SEARCH_INVALID",
+    "modelCalls": 0,
+    "embeddingCalls": 0,
+    "desktopVersion": "0.2.2-rc.3",
+    "memoryPackBudgetControlVisible": true,
+    "memoryPackBudgetDefault": 0,
+    "postLaunchDiskHash": "not measured: active database file is locked (EBUSY)",
+    "formalDesktopLeftRunning": true
+  },
+  "peerCheck": {
+    "standaloneCheckPassed": false,
+    "reportedMissing": [
+      "@deepseek-ai/dsh-llm",
+      "@deepseek-ai/dsh-tools"
+    ],
+    "formalHostLoadPassed": true
+  },
+  "isolation": {
+    "testInstanceExited": true,
+    "userCredentialsCopied": false
+  },
+  "npmPublished": false
+}
