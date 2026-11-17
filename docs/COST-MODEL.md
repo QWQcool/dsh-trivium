@@ -36,7 +36,7 @@ node scripts/cost-normalize.mjs --out=.tmp/cost-normalized.json <ledger.json...>
 为了在改动前先有可重复的对照，新增一条**不调用模型、不请求 embedding**的离线路径：
 
 ```sh
-node scripts/memory-eval.mjs --out docs/reviews/MEMORY-EVAL-BASELINE-2026-11-16.json --reps 3
+node scripts/memory-eval.mjs --out .tmp/new-memory-eval.json --reps 3
 node scripts/smoke-p102.mjs   # 评分器与夹具自测
 ```
 
@@ -48,3 +48,5 @@ node scripts/smoke-p102.mjs   # 评分器与夹具自测
 - 重复性：同版本同输入两次全量运行，判定与计数一致，仅耗时字段不同。
 
 这条基线只覆盖"写入准确性 / 检索范围与相关性 / 候选成本"，不覆盖最终回答质量（未生成回答）。历史 2026-10-29 冻结实验继续按原口径重算，不被本基线覆盖。
+
+2026-11-17 的[后续对照](reviews/MEMORY-EVAL-2026-11-17.md)保持同一冻结语料，补齐评测器防误计分与证据保留，并验证无来源候选的 pending 和显式任务记忆包。新增的 `estimatedTokens` 只计算记忆包 `context`，使用项目现有估算器；完整 JSON、真实模型输入输出及费用仍未测，不把“预算未超”当作真实账单下降。来源待核对、正文不符、预算违规和无答案候选各自计数。

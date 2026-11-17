@@ -8,12 +8,14 @@
  * run end to end so the wiring between fixture, write path and retrieval is not
  * only exercised by hand.
  */
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { spawnSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const { scoreWrites, scoreRetrieval, aggregate, normalizeText, runEvaluation, FIXTURE_PATH } =
+const { scoreWrites, scoreRetrieval, scoreMemoryPack, aggregate, normalizeText, runEvaluation, FIXTURE_PATH } =
   await import('./memory-eval.mjs');
 
 let checks = 0;
@@ -43,6 +45,44 @@ const scenario = (extra) => ({
 });
 
 try {
+  await check(() => {
+    const spec = scenario({ retrieval: { kind: 'answerable', relevant: [201], forbidden: [301] },
+      seed: { nodes: [node(201, 'decision', '保留 5 天。'), node(301, 'decision', '保留 50 天。')] } });
+    const pack = scoreMemoryPack(spec, { facts: [node(201, 'decision', '保留 50 天。'), node(301, 'decision', '保留 50 天。')],
+      context: '保留 50 天。', budgetTokens: 1, estimatedTokens: 1, answerability: 'known' });
+    assert(pack.hit === false && pack.contentMismatches.includes(201), 'wrong body passed pack scoring');
+    assert(pack.withinBudget === false && pack.answerabilityValid === false && pack.forbiddenHits[0] === 301, 'pack safety violations disappeared');
+    const count = aggregate([{ retrieval: { kind: 'answerable', top1: false, top5: false, forbiddenHits: [], pack } }]).retrieval;
+    assert(count.packContentMismatchScenarios === 1 && count.packBudgetViolations === 1 && count.packForbiddenViolations === 1 && count.packAnswerabilityViolations === 1, 'aggregate lost pack violations');
+  }, 'memory pack scoring checks bodies, actual estimates, forbidden ids and answerability');
+  await check(() => {
+    const s = scenario({ expect: { present: [{ type: 'decision', text: '代码 A B。' }] } });
+    assert(scoreWrites(s, { nodes: [node(2, 'entity', '代码 A B。')] }).counts.wrongType === 1, 'wrong type passed');
+    assert(scoreWrites(s, { nodes: [node(2, 'decision', '代码 AB。')] }).counts.correct === 0, 'identifier whitespace was erased');
+    const retained = scoreWrites(scenario({ expect: { absent: [{ text: '旧事实。' }] } }), {
+      beforeIds: [2], beforeNodes: [node(2, 'decision', '旧事实。')], nodes: [node(2, 'decision', '旧事实。')],
+    });
+    assert(retained.counts.unsourcedNew === 0, 'pre-existing fact counted as new');
+  }, 'type and identifier changes fail scoring; unchanged existing facts are not new writes');
+
+  await check(() => {
+    const r = scoreRetrieval(scenario({ retrieval: { kind: 'answerable', anchor: 101, relevant: [201], textCheck: { id: 201, contains: '5%' } },
+      seed: { nodes: [node(201, 'decision', '灰度比例是 5%。')] } }), { textCandidates: [node(201, 'decision', '灰度比例是 50%。')] });
+    assert(r.top1 === false && r.top5 === false, 'wrong body with correct id was counted as relevant');
+    assert(aggregate([{ retrieval: r }]).retrieval.contentMismatchScenarios === 1, 'body mismatch disappeared in aggregate');
+  }, 'wrong-workspace content cannot pass by reusing a relevant id');
+
+  await check(() => {
+    const dir = mkdtempSync(join(tmpdir(), 'memory-eval-cli-'));
+    try {
+      const target = join(dir, 'evidence.json');
+      writeFileSync(target, 'preserve me');
+      const result = spawnSync(process.execPath, [join(ROOT, 'scripts', 'memory-eval.mjs'), '--out', target], { encoding: 'utf8' });
+      assert(result.status !== 0 && readFileSync(target, 'utf8') === 'preserve me', 'existing evidence overwritten');
+      const invalid = spawnSync(process.execPath, [join(ROOT, 'scripts', 'memory-eval.mjs'), '--reps', 'Infinity'], { encoding: 'utf8' });
+      assert(invalid.status !== 0, 'unbounded repetitions admitted');
+    } finally { rmSync(dir, { recursive: true, force: true }); }
+  }, 'CLI preserves existing evidence and refuses unbounded repetitions');
   await check(() => {
     const scored = scoreWrites(
       scenario({ expect: { present: [{ text: '失败后重试 5 次。' }] } }),
@@ -209,6 +249,7 @@ try {
   }, 'the frozen corpus has the required size, splits and referential integrity');
 
   await check(async () => {
+    const envBefore = { home: process.env.DSH_HOME, settings: process.env.DSH_TRIVIUM_SETTINGS, fetch: globalThis.fetch };
     const report = await runEvaluation({ only: ['E2'] });
     assert(report.meta.scenarios === 1, 'only= did not narrow the run');
     const row = report.results[0];
@@ -216,6 +257,9 @@ try {
     assert(report.meta.realModelCalls === 0 && report.meta.realEmbeddingCalls === 0, 'the baseline must not call a provider');
     assert(report.meta.finalAnswerAccuracy.startsWith('not measured'), 'final answer accuracy must stay unmeasured');
     assert(report.timing.samples === 1, `timing samples ${report.timing.samples}`);
+    assert(report.meta.sourceHashes['lib/index.js'] && report.meta.sourceHashes['package-lock.json'] && report.meta.sourceSnapshotHash.length === 64, 'source attribution is incomplete');
+    assert(report.meta.networkAttempts === 0, 'offline evaluation attempted provider work');
+    assert(process.env.DSH_HOME === envBefore.home && process.env.DSH_TRIVIUM_SETTINGS === envBefore.settings && globalThis.fetch === envBefore.fetch, 'evaluation leaked environment or network guard');
   }, 'the evaluator runs one scenario end to end with zero provider calls');
 
   await check(async () => {

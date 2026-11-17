@@ -1,7 +1,7 @@
 /** extraction: independent historical regression cases. Run with npm test -- extraction.
  * Each function runs in its own process through run-all; settings and modules never leak. */
 
-export const cases = Object.freeze({ p43, p45, p46, p49, p50, p66, p100 });
+export const cases = Object.freeze({ p43, p45, p46, p49, p50, p66, p100, p103 });
 
 async function p43() {
   const { default: assert } = await import("node:assert/strict");
@@ -382,7 +382,7 @@ async function p46() {
     turns: [
       {
         role: "user",
-        text: "我的部署密钥是 ghp_abcdefghijklmnopqrstuvwxyz0123456789，记住它。",
+        text: "我的部署密钥是 ghp_abcdefghijklmnopqrstuvwxyz0123456789，记住它。部署目标是预发环境。",
       },
     ],
     sessionId: "p46",
@@ -491,6 +491,7 @@ async function p49() {
       console.error("FAIL " + label + ": " + e.message);
     }
   }
+  const retained = result => result.applied[0]?.text || result.unverified?.[0]?.text || "";
   const one = (candidate) => async () =>
     JSON.stringify({ candidates: [candidate] });
 
@@ -508,10 +509,10 @@ async function p49() {
         text: "On 2026-04-06 (per conversation context), user corrected: switch from plan A to plan B.",
       }),
     });
-    const stored = String(invented.applied[0]?.text || "");
+    const stored = String(retained(invented));
     check(
-      () => assert.equal(invented.applied.length, 1),
-      "the fact is still written",
+      () => assert.equal(invented.applied.length + invented.unverified.length, 1),
+      "the scrubbed fact is retained as written or pending",
     );
     check(
       () => assert.doesNotMatch(stored, /2026-04-06/),
@@ -541,7 +542,7 @@ async function p49() {
         text: "2026-07-13 起采用方案 B",
       }),
     });
-    const residueText = String(residue.applied[0]?.text || "");
+    const residueText = String(retained(residue));
     check(
       () => assert.doesNotMatch(residueText, /2026-07-13/),
       "the date is gone",
@@ -567,7 +568,7 @@ async function p49() {
       }),
     });
     check(
-      () => assert.match(String(real.applied[0]?.text || ""), /2026-10-30/),
+      () => assert.match(String(retained(real)), /2026-10-30/),
       "a supported date is kept",
     );
     check(
@@ -588,7 +589,7 @@ async function p49() {
     });
     check(
       () =>
-        assert.match(String(otherFormat.applied[0]?.text || ""), /2026-12-31/),
+        assert.match(String(retained(otherFormat)), /2026-12-31/),
       "format differences do not count as invented",
     );
     check(
@@ -618,7 +619,7 @@ async function p49() {
     check(
       () =>
         assert.match(
-          String(englishReal.applied[0]?.text || ""),
+          String(retained(englishReal)),
           /Nov 20, 2026/,
         ),
       "and the fact keeps the date as written",
@@ -646,7 +647,7 @@ async function p49() {
     check(
       () =>
         assert.doesNotMatch(
-          String(englishInvented.applied[0]?.text || ""),
+          String(retained(englishInvented)),
           /November/,
         ),
       "and removed from the fact",
@@ -675,11 +676,11 @@ async function p49() {
       }),
     });
     check(() => {
-      assert.equal(englishMalformedSource.applied.length, 1);
+      assert.equal(englishMalformedSource.applied.length + englishMalformedSource.unverified.length, 1);
       assert.deepEqual(englishMalformedSource.adjusted[0]?.removed, [
         "2026-11-20",
       ]);
-      assert.doesNotMatch(englishMalformedSource.applied[0].text, /November/);
+      assert.doesNotMatch(retained(englishMalformedSource), /November/);
     }, "a malformed source date cannot authorise a date invented by the model");
 
     // 4. if the date was the whole content, refuse instead of storing a stub
@@ -717,13 +718,13 @@ async function p49() {
     check(
       () =>
         assert.doesNotMatch(
-          String(inlineDate.applied[0]?.text || ""),
+          String(retained(inlineDate)),
           /2025-01-01/,
         ),
       "an inline invented date is removed",
     );
     check(
-      () => assert.match(String(inlineDate.applied[0]?.text || ""), /李四/),
+      () => assert.match(String(retained(inlineDate)), /李四/),
       "the fact body still survives",
     );
 
@@ -750,7 +751,7 @@ async function p49() {
       }),
     });
     check(
-      () => assert.match(String(resolved.applied[0]?.text || ""), /2026-11-06/),
+      () => assert.match(String(retained(resolved)), /2026-11-06/),
       "a correctly resolved relative date is kept",
     );
     check(
@@ -774,7 +775,7 @@ async function p49() {
     check(
       () =>
         assert.doesNotMatch(
-          String(farOff.applied[0]?.text || ""),
+          String(retained(farOff)),
           /2020-01-01/,
         ),
       "a far-off date is still removed",
@@ -1541,14 +1542,14 @@ async function p100() {
       const { db, id } = await open();
       const result = await run(db, [question(), find(id), answer()], [echo({ linkName: "ReleaseGateway" })]);
       assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
-      assert.equal(has(db, "entity", BODY), true);
+      assert.ok(result.unverified.some(row => row.text === BODY && row.linkName === 'ReleaseGateway'));
     });
     await check("unknown legacy tool names and failed reads are never assumed to be memory echoes", async () => {
       for (const turn of [tool("tool", `[4.000] id=2 type=preference ${BODY}`), tool("ctx_find", `[4.000] id=2 type=preference ${BODY}`, 24, true)]) {
         const { db } = await open();
         const result = await run(db, [question(), turn, answer()], [echo()]);
         assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
-        assert.equal(has(db, "entity", BODY), true);
+        assert.ok(has(db, "entity", BODY) || result.unverified.some(row => row.text === BODY));
         store.closeAll();
       }
     });
@@ -1605,7 +1606,7 @@ async function p100() {
           : tool("ctx_read", `{"id":${id},"payload":{"type":"preference","name":"${NAME}","text":"测试代号是`);
         const result = await run(db, [question(), observed, answer()], [echo()]);
         assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
-        assert.equal(has(db, "entity", BODY), true);
+        assert.ok(has(db, "entity", BODY) || result.unverified.some(row => row.text === BODY));
         assert.equal(db.get(id).payload.text, BODY);
         store.closeAll();
       }
@@ -1637,4 +1638,91 @@ async function p100() {
   }
   console.log(`P100: ${count - failures}/${count}`);
   if (failures) process.exitCode = 1;
+}
+
+async function p103() {
+  const assert = (await import('node:assert/strict')).default;
+  const { mkdtempSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const root = mkdtempSync(join(tmpdir(), 'trivium-source-'));
+  process.env.DSH_HOME = join(root, 'home');
+  process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
+  const store = await import('../lib/store.js');
+  const extract = await import('../lib/extract.js');
+  const source = await import('../lib/source-events.js');
+  try {
+    const cwd = join(root, 'ws'), db = await store.openWorkspaceDb(cwd);
+    const turns = [{ role: 'user', text: '导出格式是什么？', seq: 11, recorded: true, messageId: 'm1' }];
+    const candidate = { type: 'decision', name: '导出格式', text: '导出格式固定为 XLSX。' };
+    const run = (input, item = candidate) => extract.distill({ db, turns: input, sessionId: 'proof', llmCall: async () => JSON.stringify({ candidates: [item] }) });
+    const pending = await run(turns);
+    assert.equal(pending.applied.length, 0);
+    assert.equal(pending.unverified.length, 1);
+    assert.equal(extract.extractOutcome(pending).consume, false);
+    await extract.savePending(cwd, { sessionId: 'proof', turns, unverified: pending.unverified, error: 'source-unverified' });
+    await extract.savePending(cwd, { sessionId: 'proof', turns });
+    assert.equal(extract.loadPending(cwd).unverified[0].text, candidate.text);
+    assert.equal(extract.pendingSummary(cwd).windows[0].unverified.length, 1);
+    const held = extract.loadPending(cwd).unverified;
+    const recheck = input => extract.distill({ db, turns: input, sessionId: 'proof', heldCandidates: held, llmCall: async () => '{"candidates":[]}' });
+    const silentReplay = await recheck(turns);
+    assert.equal(silentReplay.unverified[0].text, candidate.text, 'empty model output must not lose a held candidate');
+    await extract.savePending(cwd, { sessionId: 'proof', turns, unverified: silentReplay.unverified, sourceReviewKey: extract.sourceReviewKey(turns) });
+    assert.equal(extract.pendingNeedsExtraction(extract.loadPending(cwd)), false, 'unchanged review must not request paid retries');
+    const newTurns = [...turns, { role: 'user', text: '确认：导出格式固定为 XLSX。', seq: 12 }];
+    await extract.savePending(cwd, { sessionId: 'proof', turns: newTurns });
+    assert.equal(extract.pendingNeedsExtraction(extract.loadPending(cwd)), true, 'new source must reopen review');
+    const confirmed = await recheck(newTurns);
+    assert.equal(confirmed.unverified.length, 0);
+    assert.equal(confirmed.applied.length, 1);
+    assert.equal(extract.extractOutcome(confirmed).consume, true);
+    assert.equal(source.candidateEvidence({ text: '超时是 45 秒。', quote: '超时是 30 秒。' }, [{ role: 'user', text: '超时是 30 秒。' }]).supported, false);
+    assert.equal(source.candidateEvidence({ text: '负责人是张三。', quote: '负责人是谁' }, [{ role: 'user', text: '负责人是谁？' }]).supported, false);
+    for (const [text, evidence] of [
+      ['支持导出。', '不支持导出。'], ['允许写入。', '未允许写入。'],
+      ['超时是 45 秒。', '超时是 45 秒吗？'], ['超时是 45 秒。', '如果超时是 45 秒会怎样？'],
+      ['李四管理张三。', '张三管理李四。'], ['超时是 ４５ 秒。', '超时是 ３０ 秒。'],
+      ['实例 B 的超时是 45 秒。', '实例 A 的超时是 45 秒。实例 B 的超时是 30 秒。'],
+    ]) assert.equal(source.candidateEvidence({ text }, [{ role: 'user', text: evidence }]).supported, false, evidence);
+    const transformed = await run([{ role: 'user', text: '保留十四日。' }], { type: 'decision', name: '留存', text: 'Retention is fourteen days.' });
+    assert.equal(transformed.unverified.length, 1, 'unknown paraphrase must be retained, not silently dropped');
+    const secret = await run(turns, { type: 'decision', text: 'sk-' + 'a'.repeat(40) });
+    assert.equal(secret.unverified.length, 0);
+    assert.ok(secret.skipped.some(row => row.reason === 'secret'));
+    // Exercise the real registered host entry, queue selection and scheduler.
+    const { apply } = await import('../lib/index.js');
+    const handlers = new Map();
+    let calls = 0, candidates = [candidate];
+    const ctx = {
+      llm: { async *stream() { calls++; yield { type: 'text-delta', index: 0, text: JSON.stringify({ candidates }) }; } },
+      logger: () => ({ warn() {}, info() {}, debug() {}, error() {} }),
+      inject(_deps, fn) { fn(ctx); }, on(name, fn) { handlers.set(name, fn); return () => {}; },
+      effect(fn) { fn(); }, tools: { register() {} }, webServer: { register() {} },
+    };
+    apply(ctx, {});
+    const hostCwd = join(root, 'host');
+    const hostDb = await store.openWorkspaceDb(hostCwd);
+    const start = id => handlers.get('agent/created')({ agent: {
+      session: { id, header: { cwd: hostCwd }, requestHeader: () => ({ config: { provider: 'stub', model: 'stub' } }) }, inject() {},
+    } });
+    await extract.savePending(hostCwd, { sessionId: 'held', turns });
+    await start('first');
+    assert.equal(calls, 1);
+    assert.equal(extract.loadPending(hostCwd).unverified[0].text, candidate.text);
+    await start('second');
+    assert.equal(calls, 1, 'session restart paid for unchanged source review');
+    candidates = [{ type: 'decision', name: '负责人', text: '负责人是张三。' }];
+    await extract.savePending(hostCwd, { sessionId: 'other', turns: [{ role: 'user', text: '负责人是张三。', seq: 21 }] });
+    await start('third');
+    assert.equal(calls, 2, 'source review blocked a later independent window');
+    assert.ok(hostDb.allNodeIds().some(id => hostDb.getPayload(id).text === '负责人是张三。'));
+    assert.equal(extract.loadPendingWindows(hostCwd).length, 1);
+    candidates = [];
+    await extract.savePending(hostCwd, { sessionId: 'held', turns: [...turns, { role: 'user', text: '确认：导出格式固定为 XLSX。', seq: 12 }] });
+    await start('fourth');
+    assert.ok(hostDb.allNodeIds().some(id => hostDb.getPayload(id).text === candidate.text));
+    assert.equal(extract.loadPendingWindows(hostCwd).length, 0, 'confirmed candidate left a ghost pending window');
+    console.log('P103: source-less writes stay pending, survive persistence, and accept later evidence; invented literals and secrets are refused');
+  } finally { store.closeAll(); rmSync(root, { recursive: true, force: true }); }
 }

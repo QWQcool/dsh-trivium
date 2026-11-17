@@ -73,7 +73,7 @@ try {
     check(() => assert.equal(hasSuccessor(db2, aId), false), 'discussion does not retire the decision');
     // W2+ : a rejected attempt is reported on its own field, not silently dropped.
     check(() => assert.equal(out.superseded.every((row) => !row.to && !row.pending), true), 'discussion creates no link');
-    check(() => assert.equal(out.superseded.some((row) => row.skipped === 'discussion-or-question'), true), 'discussion is reported as the reason');
+    check(() => assert.equal(out.unverified.length, 1), 'discussion is retained for source review before revision processing');
     store.closeAll();
   }
 
@@ -147,7 +147,7 @@ try {
       llmCall: one({ type: 'decision', name: '方案 D', text: '方案 D 还有另一种用法。', quote: '方案 D 还有另一种用法。' }),
     });
     const before = db6.allNodeIds().filter((id) => String(db6.get(id)?.payload?.text || '').includes('方案 D'));
-    const sentence = '更正：不再使用方案 D。';
+    const sentence = '更正：不再使用方案 D，改用方案 E。';
     const out = await extract.distill({
       db: db6,
       turns: [userTurn(sentence, 10)],

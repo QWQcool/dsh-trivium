@@ -635,7 +635,8 @@ async function p67() {
           quote: "这次上线按方案 A 走。",
         }),
       });
-      const sentence = "上一个方案不要了，走新的，用方案 B。";
+      // Both formulations have real source text; this case isolates event identity.
+      const sentence = "上一个方案不要了，走新的，用方案 B。这次上线改走方案 B；之前定的方案 A 已废弃，不再沿用。这次上线改按方案 B 走，上一个方案（方案 A）已弃用";
       const shared = turn(sentence, 2);
       await extract.distill({
         db,
@@ -691,7 +692,7 @@ async function p67() {
           quote: "这次上线按方案 A 走。",
         }),
       });
-      const sentence = "上一个方案不要了，走新的，用方案 B。";
+      const sentence = "上一个方案不要了，走新的，用方案 B。本次上线改按方案 B 执行；方案 A 已废弃，不再采用。";
       const shared = turn(sentence, 2);
       await extract.distill({
         db,
@@ -810,7 +811,7 @@ async function p67() {
     // 4. the merge keeps what it replaced, so a wrong fold is recoverable
     {
       const db = await store.openWorkspaceDb(join(root, "ws-4"));
-      const shared = turn("上一个方案不要了，走新的，用方案 B。", 5);
+      const shared = turn("上一个方案不要了，走新的，用方案 B。这次上线改走方案 B，方案 A 作废", 5);
       await extract.distill({
         db,
         turns: [shared],
@@ -1028,7 +1029,7 @@ async function p69() {
           quoteMatch: "exact",
         },
       });
-      const sentence = "算了，不用 A 了，改 B";
+      const sentence = "本次上线改用方案 B 执行；算了，不用 A 了，改 B";
       const out = await extract.distill({
         db,
         turns: [turn(sentence, 1, { messageId: null })],
@@ -1109,7 +1110,7 @@ async function p69() {
     {
       const db = await store.openWorkspaceDb(join(root, "ws-r04b"));
       await seed(db);
-      const sentence = "不再使用方案 A，改用方案 B";
+      const sentence = "不再使用方案 A，改用方案 B；改用方案 B，部署前必须经过人工验证并完成备份";
       const first = await extract.distill({
         db,
         turns: [turn(sentence)],

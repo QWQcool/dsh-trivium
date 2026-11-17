@@ -1,6 +1,6 @@
 # 开发与验证
 
-更新：2026-11-16。功能状态和最近验证见 [CURRENT-STATE](CURRENT-STATE.md)，下一步见 [ROADMAP](ROADMAP.md)。本页替代按版本复制的开工提示词和机器交接稿。
+更新：2026-11-17。功能状态和最近验证见 [CURRENT-STATE](CURRENT-STATE.md)，下一步见 [ROADMAP](ROADMAP.md)。本页替代按版本复制的开工提示词和机器交接稿。
 
 ## 环境与命令
 
@@ -28,8 +28,8 @@ npm run test:docs
 
 | 集合 | 历史用例 | 覆盖 |
 |---|---|---|
-| smoke-retrieval | p30/34/35/37 | 精确名、廉价门控、业务路径、注入覆盖和尾部保底 |
-| smoke-extraction | p43/45/46/49/50/66/100 | 指令里的事实、推理降级、敏感值、日期、来源、空回答，以及记忆工具回显和新事实的区分 |
+| smoke-retrieval | p30/34/35/37/104 | 精确名、廉价门控、业务路径、注入覆盖、记忆包完整事实预算/C4/快照 |
+| smoke-extraction | p43/45/46/49/50/66/100/103 | 指令里的事实、推理降级、敏感值、日期、来源、空回答、记忆回显与无来源候选的持久复核和宿主重放 |
 | smoke-revisions | p31/48/64/67/69 | 版本链、提案、历史正文、重复事件、拒绝保护 |
 | smoke-audit-locks | p53/54/55/56 | 审计、工作区锁、双进程和真实 HTTP |
 | smoke-evaluation | p33/39 | 评分、实验隔离、请求前费用预留 |
@@ -52,6 +52,8 @@ npm run test:docs
 | 随包维护 CLI | check-integrity、clear-expired-until、prefs-export、query-snapshot |
 
 bench-c3/c4/d1、成本归一和评分工具仍被实验回归调用，继续保留。旧实验结论按 [HISTORY](HISTORY.md) 理解。先核对离线/联网参数，不批量运行带 `--run` 的历史实验。
+
+记忆评测须在独立进程运行，`--out` 选择不存在的新文件；`--reps` 为 1–20 整数。v2 同时记录源码/依赖哈希、冻结夹具哈希、待核对候选、同 ID 正文不符与记忆包预算违规。离线入口替换 `fetch` 拒绝意外 provider 请求，结束时恢复环境；token/账单和最终回答仍为未测。来源检查与只读记忆包的结果见 [2026-11-17 记录](reviews/MEMORY-EVAL-2026-11-17.md)。桌面隔离时同时设置 `DSH_HOME` 和 `DSH_TRIVIUM_SETTINGS`，后者用于隔离插件设置文件。
 
 ## 文档维护
 

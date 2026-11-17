@@ -381,7 +381,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 后续[范围文本实验](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md)区分了原生条件过滤与任意 ID 集合文本排名，并在有声明关系真值的隔离库中评测 payload 备选方案。这些仍是开发诊断，工具和默认检索保持原状。
 
-更新的源码增加独立[实体范围 HTTP 后端](docs/read-api.md#explicit-entity-search-unreleased-source)：显式选择工作区和实体，两路候选分别返回，query embedding 需要请求方主动开启。源码已增加「上下文」页只读卡片，仍待真实宿主操作验收；未接入工具或自动召回。[冻结新题验收与并发检查](docs/reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md)覆盖 live/snapshot 读取；npm 0.8.9 尚不包含该入口。
+更新的源码增加独立[实体范围 HTTP 后端](docs/read-api.md#explicit-entity-search-unreleased-source)：显式选择工作区和实体，两路候选分别返回，query embedding 需要请求方主动开启。「上下文」页只读卡片已通过合成库桌面操作；记忆包预算默认 0，填写正预算后生成完整事实、路径和已有来源，同名备选保留并提示核对。自动抽取中无法核对来源的模型候选留在待补写区，不直接进入有效记忆。[本轮结果及未测边界](docs/reviews/MEMORY-EVAL-2026-11-17.md)；未接入工具或自动召回，npm 0.8.9 尚不包含这些源码改进。
 
 上述真实模型样本不能证明模型总会调用工具、完整会话效果或普遍降低成本。旧 D0 部分对照臂重复种植，D1 的 `0.51×` 模拟未计入完整注入历史和短地图；应按[独立审查](docs/HISTORY.md)的限制解读。
 

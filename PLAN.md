@@ -25,7 +25,7 @@
 ## 读写流程
 
 1. 宿主事件经 source-events 归一，采集有限窗口；规则和模型抽取候选。快筛作观察，不凭旧白名单分数丢事实。
-2. 候选经过来源、敏感值、日期、身份守卫，抽取经 MemoryWriter 写入；失败保留 pending，重放成功再消费窗口，首启先恢复后建地图。
+2. 候选经过来源、敏感值、日期、身份守卫，抽取经 MemoryWriter 写入；失败保留 pending，重放成功再消费窗口，首启先恢复后建地图。自动模型候选无法核对来源时保存待核对候选，不进入有效记忆；后续模型遗漏不能丢弃它，来源不变的复核窗口不重复付费重放，也不阻塞其他窗口。
 3. 检索组合文本、可选向量与业务图关系，映射当前版本、检查期限/归档/坏链，按共享预算投递。更正、芯片和召回共用同轮账本。
 4. 管理读取、具名查询与实体检索显式指定工作区，复用宿主句柄或捕获的固定代际快照。
 
@@ -46,7 +46,7 @@ supersedes 是有界线性链，每点最多一个直接前驱和后继，拒绝
 | revisions / supersede-review / revision-graph | 当前版本、人工提案和链约束 |
 | provenance / change-log / recall-trace / recall-preview | 来源、持久变更与进程内诊断 |
 | read-api / read-query / live-tql / read-snapshots | 显式只读查询、预算和快照 |
-| entity-search 系列 / embed | 有界实体候选、可取消语义请求、快照 worker |
+| entity-search 系列 / memory-pack / embed | 有界实体候选、显式任务记忆包、可取消语义请求、快照 worker |
 | inherit / router | 可选继承与集中写原型，尚未常驻集成 |
 | pins / episode / client / server | 芯片、宿主压缩投影、设置页和 HTTP |
 | sidecar / integrity / consumer-preferences | JSONL 交换、只读体检与授权偏好导出 |
@@ -55,7 +55,7 @@ supersedes 是有界线性链，每点最多一个直接前驱和后继，拒绝
 
 ## 界面
 
-设置页按「记忆库／记忆变化／上下文／设置」组织，来源、历史和诊断按需读取，不补造引文或会话链接。源码新增事实查询和实体范围卡片位于上下文页，实体卡片还需真实宿主操作验收。芯片与会话层见[现行说明](PLAN-session-map.md)。
+设置页按「记忆库／上下文／运行记录／设置」组织，来源、历史和诊断按需读取，不补造引文或会话链接。事实查询和实体范围卡片位于上下文页，已有合成库桌面操作与受控回归。实体检索可显式选择记忆包预算（0 关闭，1–2000 为上下文估算 token）；完整同名备选成组保留或省略，不自动确认替代或注入模型。接口见 [read-api](docs/read-api.md)，证据与未测边界见 [2026-11-17 结果](docs/reviews/MEMORY-EVAL-2026-11-17.md)。芯片与会话层见[现行说明](PLAN-session-map.md)。
 
 前端由宿主 ModuleLoader 装载，拆分 client.js 前需验证装载契约，不能直接假设相对 require 可用。结构渲染、截图和真实键盘操作属于不同验证层。
 

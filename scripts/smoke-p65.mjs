@@ -48,7 +48,7 @@ try {
   {
     const db = await store.openWorkspaceDb(join(root, 'ws-1'));
     const oldId = await seed(db);
-    const sentence = '上一个方案不要了，走新的';
+    const sentence = '上一个方案不要了，走新的；上线改走方案 B';
     const out = await extract.distill({
       db,
       turns: [turn(sentence, 2)],
@@ -64,7 +64,7 @@ try {
   {
     const db = await store.openWorkspaceDb(join(root, 'ws-2'));
     await seed(db);
-    const sentence = '上一个方案不要了';
+    const sentence = '上一个方案不要了；上线改走方案 C';
     const out = await extract.distill({
       db,
       turns: [turn(sentence, 2)],
@@ -88,7 +88,7 @@ try {
       llmCall: one({ type: 'decision', name: '上线方案', text: '改用方案 B', quote: sentence, supersedes: '方案 A' }),
     });
     check(() => assert.equal(edgesOf(db).length, 0), 'a discussion retires nothing even when the model names a target');
-    check(() => assert.equal(out.superseded.some((row) => row.skipped === 'discussion-or-question'), true), 'the discussion is reported');
+    check(() => assert.equal(out.unverified.length, 1), 'the unsupported discussion candidate stays pending');
     store.closeAll();
   }
 
@@ -103,7 +103,7 @@ try {
       llmCall: one({ type: 'decision', name: '上线方案', text: '改用方案 B', supersedes: '方案 A' }),
     });
     check(() => assert.equal(edgesOf(db).length, 0), 'a claim without a quote retires nothing');
-    check(() => assert.equal(out.superseded.some((row) => row.skipped === 'no-quote'), true), 'the missing quote is reported');
+    check(() => assert.equal(out.unverified.length, 1), 'the unsupported replacement stays pending');
     store.closeAll();
   }
 
@@ -111,7 +111,7 @@ try {
   {
     const db = await store.openWorkspaceDb(join(root, 'ws-5'));
     const oldId = await seed(db);
-    const sentence = '上一个方案不要了';
+    const sentence = '上一个方案不要了；按方案 A 走，不过已经作废，改为方案 B';
     const out = await extract.distill({
       db,
       turns: [turn(sentence, 2)],
@@ -127,7 +127,7 @@ try {
   {
     const db = await store.openWorkspaceDb(join(root, 'ws-6a'));
     const oldId = await seed(db);
-    const sentence = '上一个方案不要了，走新的';
+    const sentence = '上一个方案不要了，走新的；上线改走方案 B';
     const out = await extract.distill({
       db,
       turns: [turn(sentence, 2)],
@@ -152,9 +152,9 @@ try {
     const before = edgesOf(db).length;
     const out = await extract.distill({
       db,
-      turns: [turn('上一个方案不要了', 3)],
+      turns: [turn('上一个方案不要了；改走方案 B', 3)],
       sessionId: 's',
-      llmCall: one({ type: 'decision', name: '上线方案', text: '改走方案 B', quote: '上一个方案不要了', supersedes: '上一个方案' }),
+      llmCall: one({ type: 'decision', name: '上线方案', text: '改走方案 B', quote: '上一个方案不要了；改走方案 B', supersedes: '上一个方案' }),
     });
     check(() => assert.equal(edgesOf(db).length, before), 'a deictic target retires nothing when several decisions are live');
     check(() => assert.equal(out.superseded.some((row) => row.skipped === 'supersedes-ambiguous'), true), 'the ambiguity is reported');
@@ -167,9 +167,9 @@ try {
     const oldId = await seed(db);
     await extract.distill({
       db,
-      turns: [turn('上一个方案不要了', 2)],
+      turns: [turn('上一个方案不要了；改走方案 B', 2)],
       sessionId: 's',
-      llmCall: one({ type: 'decision', name: '上线方案', text: '改走方案 B', quote: '上一个方案不要了', supersedes: '方案 A' }),
+      llmCall: one({ type: 'decision', name: '上线方案', text: '改走方案 B', quote: '上一个方案不要了；改走方案 B', supersedes: '方案 A' }),
     });
     const out = await extract.distill({
       db,

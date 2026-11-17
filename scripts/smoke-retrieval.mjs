@@ -1,7 +1,7 @@
 /** retrieval: independent historical regression cases. Run with npm test -- retrieval.
  * Each function runs in its own process through run-all; settings and modules never leak. */
 
-export const cases = Object.freeze({ p30, p34, p35, p37 });
+export const cases = Object.freeze({ p30, p34, p35, p37, p104 });
 
 async function p30() {
   const { default: assert } = await import("node:assert/strict");
@@ -691,4 +691,53 @@ async function p37() {
     console.log(`\nP37 S07 failure class: ${checks - failed}/${checks} passed`);
     assert.equal(failed, 0, `${failed} check(s) failed`);
   }
+}
+
+async function p104() {
+  const assert = (await import('node:assert/strict')).default;
+  const { mkdtempSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const root = mkdtempSync(join(tmpdir(), 'trivium-pack-'));
+  process.env.DSH_HOME = join(root, 'home');
+  process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
+  const store = await import('../lib/store.js');
+  const { searchEntity, validateEntitySearch } = await import('../lib/entity-search.js');
+  const { createReadSnapshot } = await import('../lib/read-snapshots.js');
+  const { searchEntitySnapshot } = await import('../lib/entity-search-snapshot.js');
+  const { estimateTokens } = await import('../lib/tokens.js');
+  try {
+    const cwd = join(root, 'ws'), db = await store.openWorkspaceDb(cwd);
+    const anchor = store.insertNode(db, { type: 'entity', name: '审计', text: '审计留存配置。' });
+    const older = store.insertNode(db, { type: 'decision', name: '审计留存', text: '审计记录保留 30 天。', createdAt: '2025-01-01T00:00:00Z' });
+    const newer = store.insertNode(db, { type: 'decision', name: '审计留存', text: '审计记录保留 90 天。', createdAt: '2026-06-01T00:00:00Z' });
+    const outside = store.insertNode(db, { type: 'decision', name: '旁支', text: '审计记录保留 999 天。' });
+    db.link(older, anchor, 'about', 1); db.link(newer, anchor, 'about', 1); db.flush();
+    const graph = () => JSON.stringify(db.allNodeIds().map(id => db.get(id)));
+    const before = graph();
+    const body = { entityId: anchor, query: '审计记录保留多久', packTokens: 500 };
+    const result = await searchEntity(db, body);
+    assert.equal(Number(result.textCandidates[0].id), newer, 'C4 tie should prefer newer recorded fact');
+    assert.ok(result.textCandidates.some(row => Number(row.id) === older), 'old active alternative was hidden');
+    assert.ok(result.warnings.some(row => row.code === 'MULTIPLE_CURRENT_FACTS'));
+    assert.deepEqual(new Set(result.memoryPack.facts.map(row => Number(row.id))), new Set([older, newer]));
+    assert.ok(result.memoryPack.context.includes('UNRESOLVED'));
+    assert.equal(result.memoryPack.estimatedTokens, estimateTokens(result.memoryPack.context));
+    assert.ok(result.memoryPack.estimatedTokens <= 500);
+    assert.ok(result.memoryPack.facts.every(row => row.path.edges.length === 1 && row.source === null));
+    assert.ok(!result.memoryPack.facts.some(row => Number(row.id) === outside));
+    const tiny = await searchEntity(db, { ...body, packTokens: 1 });
+    assert.equal(tiny.memoryPack.facts.length, 0, 'conflicting alternatives must fit together');
+    assert.ok(tiny.memoryPack.estimatedTokens <= 1);
+    assert.equal((await searchEntity(db, { entityId: anchor, query: body.query })).memoryPack, undefined);
+    assert.throws(() => validateEntitySearch({ ...body, packTokens: 2001 }));
+    assert.equal(graph(), before, 'read pack changed the graph');
+    const snapshot = createReadSnapshot(db, cwd);
+    store.updateNode(db, newer, { text: '审计记录保留 120 天。' });
+    const historical = await searchEntitySnapshot(cwd, snapshot.snapshotId, body);
+    assert.equal(historical.memoryPack.source, 'snapshot');
+    assert.ok(historical.memoryPack.facts.some(row => row.text.includes('90 天')));
+    assert.ok(!historical.memoryPack.context.includes('120 天'));
+    console.log('P104: whole-fact budget, source/path labels, C4 ambiguity, read-only graph, scope and pinned snapshots passed');
+  } finally { store.closeAll(); rmSync(root, { recursive: true, force: true }); }
 }

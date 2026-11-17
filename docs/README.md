@@ -1,6 +1,6 @@
 # 文档入口
 
-维护状态更新于 2026-11-16。安装和日常使用看[中文 README](../README.zh-CN.md) / [English README](../README.md)，接手开发先读 [CURRENT-STATE](CURRENT-STATE.md)。
+维护状态更新于 2026-11-17。安装和日常使用看[中文 README](../README.zh-CN.md) / [English README](../README.md)，接手开发先读 [CURRENT-STATE](CURRENT-STATE.md)。
 
 ## 发布状态
 
@@ -21,6 +21,7 @@
 | 环境、按主题回归、实验入口 | [DEVELOPMENT](DEVELOPMENT.md) |
 | HTTP、TQL、快照、实体搜索 | [read-api](read-api.md) |
 | 请求、token 与费用 | [COST-MODEL](COST-MODEL.md) |
+| 来源待核对、任务记忆包与 C4 对照 | [2026-11-17 结果](reviews/MEMORY-EVAL-2026-11-17.md) |
 | 自动合并为何仍默认关 | [IDENTITY-CORPUS](IDENTITY-CORPUS.md) |
 | 小型可重复示例 | [guide-example](guide-example.md) |
 | 发布步骤 | [release-checklist](release-checklist.md) |

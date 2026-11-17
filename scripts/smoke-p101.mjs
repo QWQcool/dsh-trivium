@@ -709,6 +709,44 @@ try {
     edit(app, '每路最多条数（1–20）', '5');
     assert(searchCalls(app.server).length === before, 'an invalid form still reached the server');
   }, 'invalid input is blocked before any request is sent');
+
+  await check(async () => {
+    edit(app, '记忆包预算（估算 token，0 关闭）', '300');
+    const { tree, request } = await runSearch(app, { reply: payload({ cwd: BETA,
+      warnings: [{ code: 'MULTIPLE_CURRENT_FACTS', name: '留存期', ids: ['201', '202'] }],
+      memoryPack: { estimatedTokens: 190, budgetTokens: 300,
+        context: 'UNRESOLVED 留存期: #201, #202\n#201 不允许写入，保留 30 天。\n#202 不允许写入，保留 90 天。', omittedIds: ['203'] },
+    }) });
+    assert(request.body.packTokens === 300 && request.body.semantic === false, 'pack opt-in changed semantic or lost budget');
+    const text = textOf(entityCard(tree));
+    assert(text.includes('任务相关记忆包 · 190 / 300'), 'pack accounting is hidden');
+    assert(text.includes('#201 不允许写入，保留 30 天。') && text.includes('#202 不允许写入，保留 90 天。'), 'one side or a negation was lost');
+    assert(text.includes('留存期') && text.includes('需核对'), 'ambiguity warning is hidden');
+    assert(text.includes('ctx_read: #203') && text.includes('不代表实际账单'), 'omission or estimated-token boundary is hidden');
+  }, 'an explicit pack budget renders whole alternatives, ambiguity and omitted ids without embedding');
+
+  await check(async () => {
+    const before = searchCalls(app.server).length;
+    for (const value of ['-1', '0.5', '2001', 'NaN']) {
+      edit(app, '记忆包预算（估算 token，0 关闭）', value);
+      const button = runButton(entityCard(app.tree()));
+      assert(button.props.disabled === true, 'invalid pack budget enabled run');
+      await button.props.onClick();
+    }
+    assert(searchCalls(app.server).length === before, 'invalid budget reached server');
+    edit(app, '记忆包预算（估算 token，0 关闭）', '0');
+    const { request } = await runSearch(app, { reply: payload({ cwd: BETA }) });
+    assert(!('packTokens' in request.body), 'disabled pack changed the default request');
+  }, 'invalid pack budgets cannot submit and zero keeps the original endpoint shape');
+
+  await check(async () => {
+    edit(app, '记忆包预算（估算 token，0 关闭）', '300');
+    const picker = nodesOf(app.tree()).find(n => n.props?.['aria-label'] === '选择已知工作区');
+    picker.props.onChange({ target: { value: picker.props.value === ALPHA ? BETA : ALPHA } });
+    for (let i = 0; i < 6; i++) { await settle(2); app.render(); }
+    assert(labeledControl(entityCard(app.tree()), '记忆包预算（估算 token，0 关闭）').props.value === '0', 'workspace switch retained pack opt-in');
+    assert(!textOf(entityCard(app.tree())).includes('UNRESOLVED'), 'previous workspace pack survived');
+  }, 'workspace changes reset pack opt-in and clear previous packed facts');
 } catch (err) {
   failures += 1;
   console.error('FAIL unexpected throw: ' + (err && err.stack ? err.stack : err));

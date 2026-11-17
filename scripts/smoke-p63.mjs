@@ -54,7 +54,7 @@ try {
   {
     const db = await store.openWorkspaceDb(join(root, 'ws-1'));
     const oldId = await seed(db);
-    const sentence = '算了，不用 A 了，改 B';
+    const sentence = '按方案 A 走，随后改 B；算了，不用 A 了，改 B';
     const out = await extract.distill({
       db,
       turns: [turn(sentence, 2)],
@@ -74,7 +74,7 @@ try {
   {
     const db = await store.openWorkspaceDb(join(root, 'ws-1b'));
     const oldId = await seed(db);
-    const sentence = '算了，不用 A 了，改 B';
+    const sentence = '按方案 A 走，随后改 B；算了，不用 A 了，改 B';
     const cand = { type: 'decision', name: '上线方案', text: '按方案 A 走，随后改 B', quote: sentence };
     await extract.distill({ db, turns: [turn(sentence, 2)], sessionId: 's', llmCall: one(cand) });
     await extract.distill({ db, turns: [turn(sentence, 2)], sessionId: 's', llmCall: one(cand) });
@@ -97,7 +97,7 @@ try {
       llmCall: one({ type: 'decision', name: '上线方案', text: '改用 B', quote: sentence }),
     });
     check(() => assert.equal(edgesOf(db).length, 0), 'a letter far from the cue does not match the label');
-    check(() => assert.equal(out.superseded.some((row) => row.skipped === 'no-target'), true), 'the miss is reported as no-target');
+    check(() => assert.equal(out.unverified.length, 1), 'invented B stays pending before target selection');
     store.closeAll();
   }
 
@@ -112,7 +112,7 @@ try {
       sessionId: 's',
       llmCall: one({ type: 'decision', name: '上线方案', text: '更正：改用方案 B' }),
     });
-    check(() => assert.equal(out.superseded.some((row) => row.skipped === 'no-quote'), true), 'a claim without a quote is reported');
+    check(() => assert.equal(out.unverified.length, 1), 'a claim without a matching source stays pending');
     store.closeAll();
   }
 
@@ -127,7 +127,7 @@ try {
       sessionId: 's',
       llmCall: one({ type: 'decision', name: '上线方案', text: '更正：改用方案 B', quote: sentence }),
     });
-    check(() => assert.equal(out.superseded.some((row) => row.skipped === 'replacement-not-in-user-sentence'), true), 'an unsupported claim is reported');
+    check(() => assert.equal(out.unverified.length, 1), 'an unsupported claim is retained outside current memory');
     check(() => assert.equal(edgesOf(db).length, 0), 'and it retires nothing');
     store.closeAll();
   }

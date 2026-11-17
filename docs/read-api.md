@@ -149,7 +149,25 @@ Content-Type: application/json
 does not open or synchronize a database and does not follow `activeCwd` after
 admission. `entityId` is a positive safe integer; `query` is nonempty, at most
 4096 UTF-8 bytes. `limit` defaults to 5 and accepts 1–20 **per channel**. Unknown
-fields, caller budgets, traversal depth overrides and arbitrary TQL are rejected.
+fields, execution-budget overrides, traversal depth overrides and arbitrary TQL are rejected.
+
+Optional `packTokens` is an integer in 0–2000, default 0 (disabled). A positive
+value adds `memoryPack` to this same read; it does not enable semantic search.
+The pack uses the admitted lexical candidates and their actual one-hop paths,
+without additional model/provider calls or changes to tools and automatic recall.
+It may include more facts than the candidate display `limit`: that limit is per
+channel, while the pack has its own context budget within the same work limits.
+
+`memoryPack.context` contains whole facts, IDs, paths, recorded time, expiry,
+review state and bounded stored source locators (`null` for missing provenance).
+`facts`, `omittedIds`, `ambiguities`, `source` and `asOf` explain the selection.
+`estimatedTokens` uses the existing CJK/ASCII estimate over **context only**;
+it is neither a tokenizer measurement nor a bound on the entire JSON response
+or a provider bill. Facts are omitted whole rather than cut through numbers or
+negation. Same-name current alternatives enter or leave the pack together.
+With a budget too small for the header, context is empty and its estimate is 0.
+The existing response-byte and execution limits still apply, without partial
+results on failure. A pack's `answerability` remains `not_assessed`.
 
 The default is `semantic: false`: no provider call. To use the configured,
 enabled embedding service, add `"semantic":true`. Only the question and existing
@@ -171,6 +189,13 @@ and neither is an answer probability. There is no merged ranking. `channels`
 reports execution/degradation and separate `truncated` flags. `state` is
 `candidates`, `no_candidates` or `scope_anchor_only`; `answerability` is always
 `not_assessed`. Nearest neighbours do not establish that a question is answerable.
+
+The lexical list puts the anchor itself after matching neighbours, then orders
+by lexical score, recorded creation time (newer first for equal scores), and ID.
+Creation time falls back to update time only when creation time is absent.
+This is a presentation rule, not a decision about truth or supersession.
+Different active bodies with the same type/name produce
+`MULTIPLE_CURRENT_FACTS` with `resolution: "not_resolved"`; both remain current.
 
 `scope.complete` means the recorded one-hop scope was fully examined. It does
 not claim all real-world associations are recorded; inspect `warnings` for

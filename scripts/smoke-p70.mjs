@@ -103,7 +103,7 @@ try {
     });
     check(() => assert.equal(edges(db).length, 0), 'a sentence without replacement wording retires nothing');
     check(() => assert.equal(store.currentHeadOf(db, oldId).id, oldId), 'and leaves the head alone');
-    check(() => assert.equal(out.superseded.some((row) => row.skipped === 'no-replacement-wording'), true), 'the limitation is reported, not silent');
+    check(() => assert.equal(out.unverified.length, 1), 'the unsupported target wording is retained for source review');
     store.closeAll();
   }
 
@@ -184,7 +184,7 @@ try {
 
       // a result-state candidate retires the plan the sentence drops
       await check71(
-        async () => assert.equal(await run('r1', '不再使用方案 A，改用方案 B。', '本次上线使用方案 B'), true),
+        async () => assert.equal(await run('r1', '不再使用方案 A，改用方案 B；本次上线使用方案 B。', '本次上线使用方案 B'), true),
         'a result-state candidate still retires the replaced plan',
       );
 

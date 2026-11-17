@@ -1,5 +1,7 @@
 # 记忆能力离线基线（2026-11-16）
 
+后续修正：2026-11-17 补上了错类型、同 ID 错正文、覆盖输出文件等评测器缺口，并修复 A3 来源引入、C4 排序与只读记忆包，见[新的对照](MEMORY-EVAL-2026-11-17.md)。下面保留首次测量的原结果及原始 JSON，不用今天的分数改写历史。
+
 基线 `main@39ef51c`，`triviumdb@0.9.1`，Node `v24.15.0`（win32-x64）。本轮只测量当前行为，**没有修改**生产记忆策略、抽取提示、写入守卫或排序。
 
 结果原始文件：[MEMORY-EVAL-BASELINE-2026-11-16.json](MEMORY-EVAL-BASELINE-2026-11-16.json)（夹具哈希见其中 `meta.fixtureHash`）。冻结语料：[`scripts/fixtures/memory-eval-v1.json`](../../scripts/fixtures/memory-eval-v1.json)，版本 `memory-eval-v1-2026-11-16`，sha256 前缀 `4f5bf88d0c08`。

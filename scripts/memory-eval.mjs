@@ -15,24 +15,26 @@
  *   - "final answer accuracy" is not measured (no answer is generated).
  *
  * Usage:
- *   node scripts/memory-eval.mjs --out docs/reviews/MEMORY-EVAL-BASELINE-2026-11-16.json
+ *   node scripts/memory-eval.mjs --out /path/to/new-evidence.json
  *   node scripts/memory-eval.mjs --split holdout --reps 3 --print
  */
 import { createHash } from 'node:crypto';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync, mkdirSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
+import { estimateTokens } from '../lib/tokens.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 export const ROOT = join(HERE, '..');
 export const FIXTURE_PATH = join(HERE, 'fixtures', 'memory-eval-v1.json');
-export const EVALUATOR_VERSION = 'memory-eval-evaluator-1';
+export const EVALUATOR_VERSION = 'memory-eval-evaluator-2';
 
 /** Whitespace and trailing punctuation are not facts; everything else is compared as written. */
 export function normalizeText(value) {
   return String(value || '')
-    .replace(/\s+/g, '')
+    .replace(/\r\n/g, '\n').trim()
     .replace(/[。；;，,、]+$/g, '');
 }
 
@@ -55,11 +57,14 @@ export function scoreWrites(scenario, observed) {
   const expect = scenario.expect || {};
   const nodes = observed.nodes || [];
   const before = new Set((observed.beforeIds || []).map(Number));
+  const beforeNodes = observed.beforeNodes || [];
   const present = (expect.present || []).map((item) => {
-    const exact = nodes.filter((node) => sameText(node.text, item.text));
+    const matchingText = nodes.filter((node) => sameText(node.text, item.text));
+    const exact = matchingText.filter((node) => !item.type || node.type === item.type);
     if (exact.length) {
       return { text: item.text, verdict: exact.length > 1 ? 'duplicate' : 'correct', ids: exact.map((n) => Number(n.id)) };
     }
+    if (matchingText.length) return { text: item.text, verdict: 'wrong-type', ids: matchingText.map(n => Number(n.id)) };
     const near = nodes.filter((node) => overlaps(node.text, item.text));
     if (near.length) {
       return { text: item.text, verdict: 'needs-review', ids: near.map((n) => Number(n.id)), actual: near.map((n) => n.text) };
@@ -68,7 +73,12 @@ export function scoreWrites(scenario, observed) {
   });
   const absent = (expect.absent || []).map((item) => {
     const hit = nodes.filter((node) => overlaps(node.text, item.text));
-    return { text: item.text, verdict: hit.length ? 'unsourced-new' : 'ok', ids: hit.map((n) => Number(n.id)) };
+    const introduced = hit.filter(node => {
+      if (!before.has(Number(node.id))) return true;
+      const prior = beforeNodes.find(n => Number(n.id) === Number(node.id));
+      return prior && (!sameText(prior.text, node.text) || prior.type !== node.type);
+    });
+    return { text: item.text, verdict: introduced.length ? 'unsourced-new' : hit.length ? 'pre-existing' : 'ok', ids: hit.map((n) => Number(n.id)) };
   });
   const duplicateGroups = [];
   const buckets = new Map();
@@ -82,7 +92,8 @@ export function scoreWrites(scenario, observed) {
   }
   const intact = (expect.intact || []).map((item) => {
     const node = nodes.find((row) => Number(row.id) === Number(item.id));
-    const ok = !!node && String(node.text || '').includes(item.contains);
+    const prior = beforeNodes.find(row => Number(row.id) === Number(item.id));
+    const ok = !!node && (prior ? node.text === prior.text && node.type === prior.type : String(node.text || '').includes(item.contains));
     return { id: Number(item.id), contains: item.contains, verdict: ok ? 'intact' : 'overwritten', actual: node ? node.text : null };
   });
   const newNodes = nodes.filter((node) => !before.has(Number(node.id)));
@@ -125,6 +136,7 @@ export function scoreWrites(scenario, observed) {
       duplicate: present.filter((row) => row.verdict === 'duplicate').length,
       needsReview: present.filter((row) => row.verdict === 'needs-review').length,
       missed: present.filter((row) => row.verdict === 'missed').length,
+      wrongType: present.filter((row) => row.verdict === 'wrong-type').length,
       absentChecked: absent.length,
       unsourcedNew: absent.filter((row) => row.verdict === 'unsourced-new').length,
       intactChecked: intact.length,
@@ -138,15 +150,24 @@ export function scoreWrites(scenario, observed) {
 }
 
 /** Top-1 / Top-5 against the frozen relevant ids; forbidden ids are reported separately. */
-export function scoreRetrieval(scenario, result) {
+export function scoreRetrieval(scenario, result, { expectedNodes = scenario.seed?.nodes || [] } = {}) {
   const spec = scenario.retrieval;
   if (!spec) return null;
   const ids = (result?.textCandidates || []).map((row) => Number(row.id));
   const relevant = (spec.relevant || []).map(Number);
   const forbidden = (spec.forbidden || []).map(Number);
   const scored = spec.kind === 'answerable';
-  const top1 = scored && ids.length ? relevant.includes(ids[0]) : null;
-  const top5 = scored ? ids.slice(0, 5).some((id) => relevant.includes(id)) : null;
+  const contentMismatches = (result?.textCandidates || []).filter(row => {
+    const expected = expectedNodes.find(n => Number(n.id) === Number(row.id));
+    return expected && (!sameText(expected.text, row.text) || (expected.type && expected.type !== row.type));
+  }).map(row => Number(row.id));
+  if (spec.textCheck) {
+    const row = (result?.textCandidates || []).find(item => Number(item.id) === Number(spec.textCheck.id));
+    if (row && !String(row.text || '').includes(spec.textCheck.contains) && !contentMismatches.includes(Number(row.id))) contentMismatches.push(Number(row.id));
+  }
+  const valid = id => relevant.includes(id) && !contentMismatches.includes(id);
+  const top1 = scored ? ids.length > 0 && valid(ids[0]) : null;
+  const top5 = scored ? ids.slice(0, 5).some(valid) : null;
   const forbiddenHits = ids.filter((id) => forbidden.includes(id));
   /*
    * The scope anchor is itself returned as a candidate, and it is never the
@@ -154,7 +175,7 @@ export function scoreRetrieval(scenario, result) {
    * the frozen relevant set after seeing the result.
    */
   const nonAnchor = ids.filter((id) => id !== Number(spec.anchor));
-  const top1ExcludingAnchor = scored && nonAnchor.length ? relevant.includes(nonAnchor[0]) : null;
+  const top1ExcludingAnchor = scored ? nonAnchor.length > 0 && valid(nonAnchor[0]) : null;
   let textCheck = null;
   if (spec.textCheck) {
     const row = (result?.textCandidates || []).find((item) => Number(item.id) === Number(spec.textCheck.id));
@@ -174,6 +195,7 @@ export function scoreRetrieval(scenario, result) {
     top5,
     top1ExcludingAnchor,
     forbiddenHits,
+    contentMismatches,
     textCheck,
   };
 }
@@ -185,6 +207,24 @@ function percentile(values, p) {
   return sorted[index];
 }
 
+/** Pack ids alone cannot prove relevance: verify the actual delivered fact body. */
+export function scoreMemoryPack(scenario, pack, { expectedNodes = scenario.seed?.nodes || [] } = {}) {
+  const facts = pack?.facts || [];
+  const contentMismatches = facts.filter(row => {
+    const expected = expectedNodes.find(n => Number(n.id) === Number(row.id));
+    return !expected || !sameText(expected.text, row.text) || expected.type !== row.type
+      || !String(pack.context || '').includes(String(row.text || ''));
+  }).map(row => Number(row.id));
+  const actualEstimate = estimateTokens(pack?.context || '');
+  return { ids: facts.map(row => Number(row.id)), estimatedTokens: pack?.estimatedTokens,
+    budgetTokens: pack?.budgetTokens, omittedIds: pack?.omittedIds || [], ambiguities: pack?.ambiguities || [],
+    contentMismatches, forbiddenHits: facts.filter(row => scenario.retrieval.forbidden?.includes(Number(row.id))).map(row => Number(row.id)),
+    withinBudget: Number.isSafeInteger(pack?.budgetTokens) && pack.budgetTokens >= 0
+      && pack.estimatedTokens === actualEstimate && actualEstimate <= pack.budgetTokens,
+    answerabilityValid: pack?.answerability === 'not_assessed',
+    hit: scenario.retrieval.kind === 'answerable' ? facts.some(row => scenario.retrieval.relevant.includes(Number(row.id)) && !contentMismatches.includes(Number(row.id))) : null };
+}
+
 /** Aggregate scenario results into the reportable counters. */
 export function aggregate(results) {
   const sum = (rows, pick) => rows.reduce((total, row) => total + (pick(row) || 0), 0);
@@ -194,12 +234,14 @@ export function aggregate(results) {
   const unanswerable = retrievalRows.filter((row) => row.retrieval.kind !== 'answerable');
   return {
     scenarios: results.length,
+    pendingCandidates: sum(results, row => row.unverified?.length),
     writes: {
       expected: sum(writeRows, (row) => row.writes.counts.expected),
       correct: sum(writeRows, (row) => row.writes.counts.correct),
       duplicate: sum(writeRows, (row) => row.writes.counts.duplicate),
       needsReview: sum(writeRows, (row) => row.writes.counts.needsReview),
       missed: sum(writeRows, (row) => row.writes.counts.missed),
+      wrongType: sum(writeRows, (row) => row.writes.counts.wrongType),
       absentChecked: sum(writeRows, (row) => row.writes.counts.absentChecked),
       unsourcedNew: sum(writeRows, (row) => row.writes.counts.unsourcedNew),
       intactChecked: sum(writeRows, (row) => row.writes.counts.intactChecked || 0),
@@ -220,6 +262,13 @@ export function aggregate(results) {
       unanswerable: unanswerable.length,
       unanswerableCandidateTotal: sum(unanswerable, (row) => row.retrieval.candidates.length),
       forbiddenViolations: retrievalRows.filter((row) => row.retrieval.forbiddenHits.length).length,
+      contentMismatchScenarios: retrievalRows.filter(row => row.retrieval.contentMismatches?.length).length,
+      packAnswerable: answerable.filter(row => row.retrieval.pack).length,
+      packHits: answerable.filter(row => row.retrieval.pack?.hit === true).length,
+      packBudgetViolations: retrievalRows.filter(row => row.retrieval.pack?.withinBudget === false).length,
+      packContentMismatchScenarios: retrievalRows.filter(row => row.retrieval.pack?.contentMismatches?.length).length,
+      packForbiddenViolations: retrievalRows.filter(row => row.retrieval.pack?.forbiddenHits?.length).length,
+      packAnswerabilityViolations: retrievalRows.filter(row => row.retrieval.pack?.answerabilityValid === false).length,
     },
   };
 }
@@ -265,6 +314,7 @@ async function evaluateScenario({ scenario, store, extract, source, searchEntity
   db.flush();
 
   const beforeIds = db.allNodeIds().map(Number);
+  const beforeNodes = beforeIds.map(id => ({ id, ...db.getPayload(id) }));
   const turns = [
     source.turnFromEvent({
       type: 'user/message', seq: 11, time: 1794820542000,
@@ -308,8 +358,10 @@ async function evaluateScenario({ scenario, store, extract, source, searchEntity
       entityId: scenario.retrieval.anchor,
       query: scenario.retrieval.question,
       limit: scenario.retrieval.limit || 5,
-    });
-    retrieval = scoreRetrieval(scenario, search);
+      packTokens: 300,
+    }, { timeNow: () => new Date('2026-11-16T00:00:00.000Z') });
+    retrieval = scoreRetrieval(scenario, search, { expectedNodes: db.allNodeIds().map(id => ({ id, ...db.getPayload(id) })) });
+    retrieval.pack = scoreMemoryPack(scenario, search.memoryPack, { expectedNodes: db.allNodeIds().map(id => ({ id, ...db.getPayload(id) })) });
   }
 
   const nodesAfter = db.allNodeIds().map((id) => {
@@ -317,7 +369,7 @@ async function evaluateScenario({ scenario, store, extract, source, searchEntity
     return { id, type: payload.type, text: payload.text, source: payload.source };
   });
   const writes = scenario.expect
-    ? scoreWrites(scenario, { nodes: nodesAfter, beforeIds, applied: result.applied, skipped: result.skipped })
+    ? scoreWrites(scenario, { nodes: nodesAfter, beforeIds, beforeNodes, applied: result.applied, skipped: result.skipped })
     : null;
   const durationMs = Number(process.hrtime.bigint() - started) / 1e6;
   store.closeAll();
@@ -326,6 +378,7 @@ async function evaluateScenario({ scenario, store, extract, source, searchEntity
     split: scenario.split,
     category: scenario.category,
     writes,
+    unverified: result.unverified || [],
     retrieval,
     llmCalls,
     embedCalls: 0,
@@ -334,6 +387,8 @@ async function evaluateScenario({ scenario, store, extract, source, searchEntity
 }
 
 export async function runEvaluation({ fixturePath = FIXTURE_PATH, split = 'all', reps = 1, only = null } = {}) {
+  if (!['all', 'dev', 'holdout'].includes(split)) throw new Error('split must be all, dev or holdout');
+  if (!Number.isSafeInteger(reps) || reps < 1 || reps > 20) throw new Error('reps must be an integer in 1..20');
   const raw = readFileSync(fixturePath, 'utf8');
   const fixture = JSON.parse(raw);
   const fixtureHash = createHash('sha256').update(raw).digest('hex');
@@ -342,16 +397,20 @@ export async function runEvaluation({ fixturePath = FIXTURE_PATH, split = 'all',
   if (!selected.length) throw new Error(`no scenario matches split=${split}`);
 
   const root = mkdtempSync(join(tmpdir(), 'trivium-memory-eval-'));
+  const priorEnv = Object.fromEntries(['DSH_HOME', 'DSH_TRIVIUM_SETTINGS'].map(key => [key, process.env[key]]));
   process.env.DSH_HOME = join(root, 'home');
   process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
-  const store = await import(new URL('../lib/store.js', import.meta.url).href);
-  const extract = await import(new URL('../lib/extract.js', import.meta.url).href);
-  const source = await import(new URL('../lib/source-events.js', import.meta.url).href);
-  const { searchEntity } = await import(new URL('../lib/entity-search.js', import.meta.url).href);
-
   const results = [];
+  const priorFetch = globalThis.fetch;
+  let networkAttempts = 0;
+  globalThis.fetch = async () => { networkAttempts++; throw new Error('Offline evaluator forbids network requests'); };
   const started = Date.now();
+  let store;
   try {
+    store = await import(new URL('../lib/store.js', import.meta.url).href);
+    const extract = await import(new URL('../lib/extract.js', import.meta.url).href);
+    const source = await import(new URL('../lib/source-events.js', import.meta.url).href);
+    const { searchEntity } = await import(new URL('../lib/entity-search.js', import.meta.url).href);
     for (let rep = 0; rep < reps; rep += 1) {
       for (const [index, scenario] of selected.entries()) {
         const row = await evaluateScenario({ scenario, store, extract, source, searchEntity, root, index, rep });
@@ -359,7 +418,11 @@ export async function runEvaluation({ fixturePath = FIXTURE_PATH, split = 'all',
       }
     }
   } finally {
-    try { store.closeAll(); } catch { /* already closed */ }
+    try { store?.closeAll(); } catch { /* already closed */ }
+    globalThis.fetch = priorFetch;
+    for (const [key, value] of Object.entries(priorEnv)) {
+      if (value === undefined) delete process.env[key]; else process.env[key] = value;
+    }
     const rel = relative(resolve(tmpdir()), resolve(root));
     if (rel && rel !== '..' && !rel.startsWith(`..${sep}`) && !isAbsolute(rel)) {
       rmSync(root, { recursive: true, force: true });
@@ -376,9 +439,24 @@ export async function runEvaluation({ fixturePath = FIXTURE_PATH, split = 'all',
     byCategory[name] = aggregate(lastRep.filter((row) => row.category === name));
   }
   const durations = results.map((row) => row.ms);
+  if (networkAttempts) throw new Error(`Offline evaluator attempted ${networkAttempts} network request(s)`);
+  const sourceFiles = ['scripts/memory-eval.mjs', 'package.json', 'package-lock.json',
+    ...readdirSync(join(ROOT, 'lib'), { recursive: true }).filter(file => file.endsWith('.js')).sort().map(file => 'lib/' + file.split(sep).join('/'))];
+  const sourceHashes = Object.fromEntries(sourceFiles.map(file => [file, createHash('sha256').update(readFileSync(join(ROOT, file))).digest('hex')]));
+  let revision = null, sourceDirty = null;
+  try {
+    revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8', windowsHide: true }).trim();
+    sourceDirty = Boolean(execFileSync('git', ['status', '--porcelain', '--', 'lib', 'scripts', 'package.json', 'package-lock.json'], { cwd: ROOT, encoding: 'utf8', windowsHide: true }).trim());
+  } catch { /* hashes remain available in a source archive */ }
   return {
     meta: {
       evaluator: EVALUATOR_VERSION,
+      sourceHashes,
+      sourceSnapshotHash: createHash('sha256').update(JSON.stringify(sourceHashes)).digest('hex'),
+      revision,
+      sourceDirty,
+      networkAttempts,
+      packBudgetTokens: 300,
       fixture: fixture.version,
       fixtureHash,
       fixturePath: relative(ROOT, fixturePath).split(sep).join('/'),
@@ -413,9 +491,10 @@ function parseArgs(argv) {
   const out = { split: 'all', reps: 1, out: '', print: false, only: null, fixturePath: FIXTURE_PATH };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
+    if (['--out', '--split', '--reps', '--only', '--fixture'].includes(arg) && (!argv[i + 1] || argv[i + 1].startsWith('--'))) throw new Error(`${arg} requires a value`);
     if (arg === '--out') out.out = argv[++i];
     else if (arg === '--split') out.split = argv[++i];
-    else if (arg === '--reps') out.reps = Math.max(1, Number(argv[++i]) || 1);
+    else if (arg === '--reps') out.reps = Number(argv[++i]);
     else if (arg === '--only') out.only = String(argv[++i] || '').split(',').filter(Boolean);
     else if (arg === '--fixture') out.fixturePath = resolve(argv[++i]);
     else if (arg === '--print') out.print = true;
@@ -430,8 +509,9 @@ const fmtRate = (hit, total) => (total ? `${hit}/${total} (${((hit / total) * 10
 export function printSummary(report) {
   const a = report.aggregate;
   console.log(`Memory eval ${report.meta.fixture} · ${report.meta.split} · ${report.meta.scenarios} scenarios × ${report.meta.reps} rep(s)`);
-  console.log(`fact writes   : correct ${fmtRate(a.writes.correct, a.writes.expected)} · missed ${a.writes.missed} · needs-review ${a.writes.needsReview} · duplicate ${a.writes.duplicate}`);
+  console.log(`fact writes   : correct ${fmtRate(a.writes.correct, a.writes.expected)} · missed ${a.writes.missed} · wrong-type ${a.writes.wrongType} · needs-review ${a.writes.needsReview} · duplicate ${a.writes.duplicate}`);
   console.log(`unsourced new : ${fmtRate(a.writes.unsourcedNew, a.writes.absentChecked)} (lower is better)`);
+  console.log(`source review : ${a.pendingCandidates} candidate(s) held outside active memory`);
   console.log(`old fact kept : ${a.writes.intactChecked - a.writes.intactBroken}/${a.writes.intactChecked} (overwritten ${a.writes.intactBroken})`);
   console.log(`tool echoes   : leaked ${fmtRate(a.writes.echoLeaked, a.writes.echoExpected)} · echo rows skipped ${a.writes.echoSkipped}`);
   console.log(`duplicates    : ${a.writes.duplicateGroups} group(s) · redundant new ${a.writes.redundantNew} · inserts ${a.writes.inserted} · merges ${a.writes.merged}`);
@@ -439,7 +519,10 @@ export function printSummary(report) {
     + ` · Top-1 without anchor ${fmtRate(a.retrieval.top1ExcludingAnchor, a.retrieval.answerable)}`);
   console.log(`unanswerable  : ${a.retrieval.unanswerable} scenario(s), ${a.retrieval.unanswerableCandidateTotal} candidate(s) listed (not scored as answers)`);
   console.log(`forbidden hits: ${a.retrieval.forbiddenViolations} scenario(s)`);
-  console.log('cost          : real model calls 0 · embedding calls 0 · tokens not measured · final answer accuracy not measured');
+  console.log(`body mismatch : ${a.retrieval.contentMismatchScenarios} scenario(s)`);
+  console.log(`memory pack   : hit ${fmtRate(a.retrieval.packHits, a.retrieval.packAnswerable)} · budget violations ${a.retrieval.packBudgetViolations} (estimated context tokens only)`);
+  console.log(`pack guards   : body mismatch ${a.retrieval.packContentMismatchScenarios} · forbidden ${a.retrieval.packForbiddenViolations} · answerability violations ${a.retrieval.packAnswerabilityViolations}`);
+  console.log(`cost          : real model calls ${report.meta.realModelCalls} · embedding calls ${report.meta.realEmbeddingCalls} · blocked network attempts ${report.meta.networkAttempts} · tokens not measured · final answer accuracy not measured`);
   console.log(`timing        : p50 ${report.timing.p50.toFixed(1)} ms · p95 ${report.timing.p95.toFixed(1)} ms · n=${report.timing.samples}`);
   for (const row of report.results) {
     const w = row.writes
@@ -457,11 +540,12 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   if (args.help) {
     console.log('node scripts/memory-eval.mjs [--out FILE] [--split all|dev|holdout] [--reps N] [--only ID,ID] [--fixture FILE] [--print]');
   } else {
+    if (args.out && existsSync(resolve(args.out))) throw new Error('Output already exists; choose a new path to preserve evidence');
     const report = await runEvaluation({ fixturePath: args.fixturePath, split: args.split, reps: args.reps, only: args.only });
     if (args.out) {
       const target = resolve(args.out);
       mkdirSync(dirname(target), { recursive: true });
-      writeFileSync(target, JSON.stringify(report, null, 2) + '\n');
+      writeFileSync(target, JSON.stringify(report, null, 2) + '\n', { flag: 'wx' });
       console.log(`wrote ${relative(ROOT, target)}`);
     }
     if (args.print || !args.out) printSummary(report);

@@ -39,7 +39,8 @@ async function run(db, sentence, when, candidateText, seq = 1) {
     llmCall: one({ type: 'decision', name: '日期条目', text: candidateText, quote: sentence }),
   });
 }
-const storedText = (out) => String(out.applied[0]?.text || '');
+// Date sanitization applies before either active writes or durable source review.
+const storedText = (out) => String(out.applied[0]?.text || out.unverified?.[0]?.text || '');
 
 try {
   const db = await store.openWorkspaceDb(join(root, 'ws'));
@@ -84,7 +85,7 @@ try {
     sessionId: 's',
     llmCall: one({ type: 'decision', name: '复盘日期', text: '2026-10-31 复盘。', quote: '明天复盘工作。' }),
   });
-  check(() => assert.match(String(replay.applied[0]?.text || ''), /2026-10-31/), 'replay resolves 明天 from the source time');
+  check(() => assert.match(storedText(replay), /2026-10-31/), 'replay resolves 明天 from the source time');
 
   // 8. undeterminate wording stays undeterminate
   const vague = await run(db, '以后再说上线时间。', '2026-10-30T09:00:00+08:00', '上线时间是 2027-01-01。', 11);
