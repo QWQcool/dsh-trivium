@@ -22,6 +22,13 @@
    ```
 
    Web 使用 `dsh plugin --profile web add dsh-trivium@0.9.0 --ignore-scripts`。`--ignore-scripts` 用于跳过包生命周期脚本；命令不要求删除原 `.dsh` 或新建工作区。
+
+   Windows 若找不到 `dsh`，可使用桌面版自带的命令行：
+
+   ```powershell
+   & "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd" plugin --profile desktop add dsh-trivium@0.9.0 --ignore-scripts
+   ```
+
 3. 重启原宿主，仍选择原工作区。0.9.0 普通卸载保留数据；若以后确实要清除，需用户自行明确选择文件。
 
 **插件版本与内核版本不同**：发布插件 0.8.5–0.8.9 使用 TDB 0.9.0，本版使用 TDB 0.9.1。新内核打开并 checkpoint 后可能推进到 `.tdb` v13 / WAL v6，旧内核不能直接读取。若需要回退，在首次打开前保留完整 `.dsh` 文件组（含 `.vec`、`.wal`、`.text`、索引和 payload 附属文件）；单独 `.tdb` 或 Git JSONL 都不是完整副本。回退旧副本不包含保存后新增的记忆。不要用旧内核直接写新格式库。
@@ -35,4 +42,13 @@
 - 按用户要求，本次沿用上述证据，不重跑发布回归、干净安装、实机或模型对照；只核对版本/文档、实际 tarball 和发布后的 registry 记录。版本号变化没有被描述为新一轮运行验证。
 - 已有证据主要来自本机 Windows/Node 24；声明的其他 Node/平台没有因此得到新增验证。英文/跨语言词面覆盖仍有缺口，任意改写的语义蕴含、多模型泛化和完整 Agent 多轮效果仍有限制。不宣称记忆包普遍提质降费；金额账单未测。
 
-发布后的时间、包校验值、源码/tag 和 `latest` 记录在本节追加；既有实验原始文件保持不变。
+## 发布回执
+
+- npm 已发布 **0.9.0**，dist-tag **latest**；registry 时间 **2026-11-17T07:43:32.372Z**（北京时间 2026-11-17 15:43:32）。[npm 版本页](https://www.npmjs.com/package/dsh-trivium/v/0.9.0)
+- 发布源码和已推送的 annotated tag `v0.9.0` 均指向 **a3d39ceec3ec223b98db1d618373d333883162f6**。main 已快进纳入此前功能和本次版本/文档变更；回执随后单独提交，不移动 tag。
+- 实际发布包 **328452 字节、62 文件**，内核 TDB **0.9.1**。53 个运行文件与此前已验收的本机正式桌面包逐字节相同；不含破坏性卸载钩子、评测桥接或记忆库。
+- SHA-1：`1f7ef805c9b96fb97d9e91af22662d3e2f2f5755`。
+- SHA-256：`8b08b3e204969ab8f20f221eb0eb12498ff406d040c06e6aae4f5e774e587cb8`。
+- Integrity：`sha512-aFL4S9krbYugUbGA3RHi/93dh12/gV8MDNtv7Mn5DQXZilgJ72TEzb3GDvY0Gtxbw6nX8cIOhR6hhQFnoOHnPg==`。
+- registry 的版本、依赖、latest 和校验值均已核对；带缓存绕过参数重新下载的 tarball 与本地产物一致。普通下载 URL 的初期 404 缓存已过期，当前返回 200，下载校验同样一致。[结构化回执](reviews/NPM-RELEASE-0.9.0-2026-11-17.json)
+- 本次没有重跑运行验证或调用模型，也没有操作正式桌面和现有记忆文件；既有实验原始文件保持不变。

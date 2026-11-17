@@ -1,0 +1,77 @@
+{
+  "recordedAt": "2026-11-17T07:46:28.813Z",
+  "package": "dsh-trivium",
+  "version": "0.9.0",
+  "registry": "https://registry.npmjs.org",
+  "publishedAt": "2026-11-17T07:43:32.372Z",
+  "distTags": {
+    "latest": "0.9.0"
+  },
+  "sourceCommit": "a3d39ceec3ec223b98db1d618373d333883162f6",
+  "tag": "v0.9.0",
+  "kernel": "0.9.1",
+  "artifact": {
+    "tarball": "https://registry.npmjs.org/dsh-trivium/-/dsh-trivium-0.9.0.tgz",
+    "bytes": 328452,
+    "files": 62,
+    "sha1": "1f7ef805c9b96fb97d9e91af22662d3e2f2f5755",
+    "sha256": "8b08b3e204969ab8f20f221eb0eb12498ff406d040c06e6aae4f5e774e587cb8",
+    "integrity": "sha512-aFL4S9krbYugUbGA3RHi/93dh12/gV8MDNtv7Mn5DQXZilgJ72TEzb3GDvY0Gtxbw6nX8cIOhR6hhQFnoOHnPg==",
+    "downloadedBytesMatch": true,
+    "cacheBypassQueryUsedForDownload": true
+  },
+  "verification": {
+    "thisPublication": [
+      "version and lock synchronization",
+      "documentation 13/13",
+      "actual tarball contents and byte hashes",
+      "53 runtime files byte-identical to the previously verified desktop package",
+      "registry latest, version, dependency, time, shasum and integrity",
+      "downloaded registry tarball byte-equivalent to the local artifact"
+    ],
+    "reusedRuntimeEvidence": {
+      "sourceCommit": "10e09acd1bc7e6fb79fdf2fa611aaf3ad0e730f1",
+      "receipt": "DESKTOP-QUALITY-UPDATE-2026-11-17.json",
+      "fullRegression": "93/93",
+      "panel": "30/30",
+      "cleanConsumer": "13/13",
+      "nativeDesktopRead": true
+    },
+    "runtimeRegressionRerun": false,
+    "cleanInstallRerun": false,
+    "nativeDesktopRerun": false,
+    "modelCalls": 0,
+    "embeddingCalls": 0,
+    "environmentLimit": "Prior runtime evidence primarily covers Windows/Node 24. No new platform, Node, model or Agent-generalization claims."
+  },
+  "memory": {
+    "filesOperatedOn": 0,
+    "migrationPerformed": false,
+    "desktopReinstalledOrRestarted": false,
+    "installedLocalVersion": "0.8.9",
+    "installedLocalBuild": "20261117-quality-a576c5ab22f5",
+    "sameRuntimeFiles": 53,
+    "note": "This publication leaves the already verified local desktop package and existing memory files in place."
+  },
+  "lifecycle": {
+    "destructiveUninstallHook": false
+  },
+  "policy": {
+    "stableDirectlyAuthorizedByUser": true,
+    "skipRepeatedRuntimeValidationExplicitlyRequested": true,
+    "oldVersionsDeprecated": false
+  },
+  "registryPropagation": {
+    "canonicalUrlStatus": 200,
+    "canonicalDownloadSha256Matches": true,
+    "checkedAt": "2026-11-17T07:48:59.289Z",
+    "initialNegativeCache": "A canonical 404 was cached for max-age=300; a cache-bypassed download already matched, and the canonical URL now also serves the same artifact."
+  },
+  "git": {
+    "releasedMainCommit": "a3d39ceec3ec223b98db1d618373d333883162f6",
+    "annotatedTagObject": "e09fa2488bbe107e5b61562320d34238dcae3d6d",
+    "annotatedTagTarget": "a3d39ceec3ec223b98db1d618373d333883162f6",
+    "remoteVerified": true,
+    "receiptCommittedSeparatelyWithoutMovingTag": true
+  }
+}
