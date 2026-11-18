@@ -1553,12 +1553,13 @@ async function p100() {
         store.closeAll();
       }
     });
-    await check("archived or changed stored facts do not suppress a new candidate", async () => {
+    await check("archived or changed stored facts leave a read-only candidate pending", async () => {
       for (const payload of [{ status: "archived" }, { text: "测试代号是 BLUE-OTTER-999" }]) {
         const { db, id } = await open(payload);
         const result = await run(db, [question(), find(id), answer()], [echo()]);
         assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
-        assert.equal(has(db, "entity", BODY), true);
+        assert.equal(has(db, "entity", BODY), false);
+        assert.ok(result.unverified.some(row => row.text === BODY));
         store.closeAll();
       }
     });
@@ -1611,12 +1612,13 @@ async function p100() {
         store.closeAll();
       }
     });
-    await check("reviewed or time-bounded memories are left to the normal write path", async () => {
+    await check("reviewed or time-bounded memories need independent support rather than a read-only copy", async () => {
       for (const payload of [{ review: true }, { until: "2099-01-01" }]) {
         const { db, id } = await open(payload);
         const result = await run(db, [question(), find(id), answer()], [echo()]);
         assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
-        assert.equal(has(db, "entity", BODY), true);
+        assert.equal(has(db, "entity", BODY), false);
+        assert.ok(result.unverified.some(row => row.text === BODY));
         store.closeAll();
       }
     });

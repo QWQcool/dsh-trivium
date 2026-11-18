@@ -89,10 +89,14 @@ async function p105() {
     });
     await check('interrupted pending commit retries reuse the already persisted URI',async()=>{
       const req=request(other),original=fs.readFileSync(e.pendingPath(other));
+      const archive=e.pendingReviewPath(other);
+      const history=fs.existsSync(archive)?fs.readFileSync(archive):JSON.stringify({version:1,reviews:[]});
       const first=await reviewPending(other,dbB,req),count=dbB.allNodeIds().length;
-      // Simulate a crash after the TDB commit, before the pending-file rename.
+      fs.writeFileSync(archive,history);
       fs.writeFileSync(e.pendingPath(other),original);
       const retry=await reviewPending(other,dbB,req);assert.equal(retry.reused,true);assert.equal(retry.nodeId,first.nodeId);assert.equal(dbB.allNodeIds().length,count);
+      fs.writeFileSync(e.pendingPath(other),original);
+      const replay=await reviewPending(other,dbB,req);assert.equal(replay.replayed,true);assert.equal(replay.nodeId,first.nodeId);assert.equal(dbB.allNodeIds().length,count);
     });
     await check('a failed writer leaves pending candidates and unrelated windows untouched',async()=>{
       const req=request(other),original=fs.readFileSync(e.pendingPath(other),'utf8');

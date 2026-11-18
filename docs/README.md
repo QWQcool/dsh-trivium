@@ -15,6 +15,7 @@
 | 目的 | 文档 |
 |---|---|
 | 开发中新增、改进、删除与升级影响 | [UNRELEASED](UNRELEASED.md) · [五项统一结果](reviews/NEXT-MEMORY-2026-11-17.md) · [回退、桌面和真实对照](reviews/NEXT-DELIVERY-2026-11-18.md) |
+| 按需工具、抽取恢复及文档片段 | [实现与测量](reviews/TASK-RETRIEVAL-WRITE-DOCS-2026-11-18.md) |
 | Super Agent 项目/工单交接协议 | [handoff-protocol](handoff-protocol.md) |
 | 现在到哪一步、哪些结论作废 | [CURRENT-STATE](CURRENT-STATE.md) |
 | 低成本记忆、Super Agent、TDB 开发顺序 | [ROADMAP](ROADMAP.md) |

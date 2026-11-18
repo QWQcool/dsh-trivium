@@ -271,14 +271,16 @@ try {
   );
   for (const [i, tool] of projection.entries()) {
     const want = baseline.tools[i];
+    const optional = tool.name === 'ctx_find' ? ['entity_id','pack_tokens','since'] : [];
     check(
-      JSON.stringify(Object.keys(tool.parameters.properties)) === JSON.stringify(Object.keys(want.parameters.properties)),
-      `CTX-09 ${tool.name} parameter set is unchanged`,
+      JSON.stringify(Object.keys(tool.parameters.properties)) === JSON.stringify([...Object.keys(want.parameters.properties),...optional])
+        && JSON.stringify(tool.parameters.required) === JSON.stringify(want.parameters.required),
+      `CTX-09 ${tool.name} preserves existing parameters and requirements`,
     );
   }
   check(
-    estimatedSchemaTokens() <= baseline.estimatedTokens,
-    `CTX-09 schema estimate ${estimatedSchemaTokens()} <= baseline ${baseline.estimatedTokens}`,
+    estimatedSchemaTokens() <= baseline.estimatedTokens + 32,
+    `CTX-09 schema estimate ${estimatedSchemaTokens()} <= baseline ${baseline.estimatedTokens} + 32 for scoped options`,
   );
 
   /* ---------------------------------------------------------------- CTX-10 */

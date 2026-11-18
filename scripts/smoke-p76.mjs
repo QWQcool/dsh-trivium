@@ -14,9 +14,9 @@
  *   5. the lock TTL default is unchanged.
  */
 import assert from 'node:assert/strict';
-import { mkdirSync, mkdtempSync, rmSync, utimesSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, realpathSync, rmSync, utimesSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 
 const root = mkdtempSync(join(tmpdir(), 'trivium-p76-'));
 process.env.DSH_HOME = join(root, 'home');
@@ -178,15 +178,27 @@ try {
   const store = await import('../lib/store.js');
   const extract = await import('../lib/extract.js');
   const wsSlow = join(root, 'slow');
-  await store.openWorkspaceDb(wsSlow);
+  const db = await store.openWorkspaceDb(wsSlow);
+  const content='慢窗口标记 SLOW-2026-11-10。';
+  const candidate={type:'decision',name:'慢窗口标记',text:content};
+  const source={role:'user',text:'记住：'+content,seq:1,messageId:'m-slow',recorded:true};
   await extract.savePending(wsSlow, {
     sessionId: 'session-slow',
-    turns: [{ role: 'user', text: '记住：慢窗口标记 SLOW-2026-11-10。', seq: 1, messageId: 'm-slow', recorded: true }],
+    turns:[source],unverified:[candidate],
   });
   const handlers = new Map();
+  let resumeLate, calls=0, firstSignal;
+  const late=new Promise(resolve=>{resumeLate=resolve;});
   const ctx = {
-    // Never yields: the run stays inside the extraction call for the whole test.
-    llm: { async *stream() { await new Promise(() => {}); } },
+    llm: { async *stream({signal}) {
+      if (++calls===1) {
+        firstSignal=signal;
+        await late;
+        yield {type:'text-delta',index:0,text:JSON.stringify({candidates:[{...candidate,name:'迟到输出'}]})};
+      } else {
+        yield {type:'text-delta',index:0,text:JSON.stringify({candidates:[candidate]})};
+      }
+    } },
     logger: () => ({ warn() {}, info() {}, error() {}, debug() {} }),
     inject(_deps, fn) { fn(ctx); },
     on(name, fn) { handlers.set(name, fn); return () => {}; },
@@ -241,7 +253,30 @@ try {
     () => assert.equal(extract.pendingSummary(wsSlow).windows.length, 1),
     'the timed-out window stays pending instead of being consumed',
   );
+  await check(() => {
+    assert.ok(firstSignal.aborted);
+    assert.deepEqual(extract.loadPending(wsSlow).unverified,[candidate]);
+    assert.deepEqual(extract.loadPending(wsSlow).turns,[source]);
+    assert.equal(db.allNodeIds().filter(id => db.getPayload(id)?.text===content).length,0);
+    const lock = locks.acquireWorkspaceLock(wsSlow);
+    assert.equal(lock.ok,true);lock.release();
+  },'the expired provider releases the write lock and retains the source and candidate');
+  await check(async () => {
+    const session = {...agent.session,id:'retry-slow'};
+    await handlers.get('agent/created')({agent:{...agent,session}});
+    assert.equal(calls,2);
+    assert.equal(extract.pendingSummary(wsSlow).windows.length,0);
+    assert.equal(db.allNodeIds().filter(id => db.getPayload(id)?.text===content).length,1);
+    const before = db.allNodeIds().map(id => db.getPayload(id));
+    resumeLate();
+    await new Promise(resolve=>setTimeout(resolve,30));
+    assert.deepEqual(db.allNodeIds().map(id => db.getPayload(id)),before);
+    assert.equal(plugin.workspaceStatus(wsSlow).recovery.state,'succeeded');
+  },'a retry writes once before the old provider answers; the late result cannot change facts');
 } finally {
+  (await import('../lib/store.js')).closeAll();
+  assert.equal(dirname(realpathSync(root)),realpathSync(tmpdir()));
+  assert.ok(basename(root).startsWith('trivium-p76-'));
   rmSync(root, { recursive: true, force: true });
 }
 console.log(`P76: ${checks - failures}/${checks}`);

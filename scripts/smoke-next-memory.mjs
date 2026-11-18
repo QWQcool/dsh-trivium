@@ -6,7 +6,7 @@ import {join,resolve,basename} from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {spawn} from 'node:child_process';
-export const cases=Object.freeze({p107,p108,p109,p110,p111});
+export const cases=Object.freeze({p107,p108,p109,p110,p111,p112,p113});
 const reportDir=resolve('.tmp/next-memory-20261117');
 async function environment(fn) {
   const root=mkdtempSync(join(tmpdir(),'trivium-next-'));
@@ -218,6 +218,8 @@ async function p111(){await environment(async({root,s,check})=>{
     assert.throws(()=>d.saveEvidenceDocument(db,{sourceId:'docs/storage.md',content:'备份保留 34 天。'}),e=>e.status===409);
     const next=d.saveEvidenceDocument(db,{sourceId:'docs/storage.md',content:'备份保留 34 天。',documentId:doc.document_id,expectedRevision:doc.revision}).document;
     const link=d.documentEvidenceStatus(db,{factId}).links[0];assert.equal(link.status,'source_changed');assert.equal(link.needsReview,true);assert.equal(link.quote,'备份保留 21 天。');assert.deepEqual(db.getPayload(factId),fact);
+    assert.equal(link.comparison.previous.text,'备份保留 21 天。');assert.equal(link.comparison.previous.location.start.line,2);
+    assert.equal(link.comparison.current.text,'备份保留 34 天。');assert.equal(link.comparison.current.match,'near-previous-byte');
     assert.throws(()=>d.attachDocumentEvidence(db,{factId,documentId:doc.document_id,revision:doc.revision,quote:'备份保留 34 天。'}),e=>e.status===409);doc=next;
   });
   await check('deleting a source leaves the original fact and association reviewable after reopen',async()=>{
@@ -235,6 +237,30 @@ async function p111(){await environment(async({root,s,check})=>{
     assert.throws(()=>d.saveEvidenceDocument(active,{sourceId:'too-large',content:'x'.repeat(65537)}),e=>e.status===400);
     assert.throws(()=>d.saveEvidenceDocument(active,{sourceId:'secret',content:'api_key=sk-'+'z'.repeat(48)}),e=>e.status===422);
     assert.throws(()=>d.getEvidenceDocument(active,factId),e=>e.status===404);
+    const width=Buffer.byteLength('重复片段。','utf8'),reference={document_id:sample.document_id,revision:sample.revision,start_byte:width,end_byte:width*2};
+    const located=d.attachDocumentEvidence(active,{factId,documentId:sample.document_id,revision:sample.revision,quote:'重复片段。',reference});
+    assert.equal(located.reference.start_byte,width);
+    assert.throws(()=>d.attachDocumentEvidence(active,{factId,documentId:sample.document_id,revision:sample.revision,quote:'重复片段。',reference:{...reference,start_byte:width+1}}),e=>e.code==='DOCUMENT_REFERENCE_INVALID');
+  });
+  await check('native BM25 locates an exact bounded excerpt without returning the whole document or a different source',async()=>{
+    const active=s.getOpenWorkspaceDb(cwd),{estimateTokens}=await import('../lib/tokens.js');
+    const body=[...Array.from({length:36},(_,index)=>`## Note ${index}\r\nRoutine maintenance windows are scheduled locally.\r\n`),
+      '## 部署计划🙂\r\nZephyrLatch 审批后冷却期为 19 分钟。\r\n'].join('\r\n');
+    const {document}=d.saveEvidenceDocument(active,{sourceId:'docs/release.md',content:body});
+    d.saveEvidenceDocument(active,{sourceId:'docs/sandbox.md',content:'ZephyrLatch 沙盒时长 99 分钟。'});
+    const result=d.searchEvidenceFragments(active,{documentId:Number(document.document_id),revision:document.revision,query:'ZephyrLatch',budgetTokens:300});
+    assert.ok(document.blocks.length>1);assert.ok(result.fragments.length>0);assert.match(result.context,/审批后冷却期为 19/);assert.doesNotMatch(result.context,/99 分钟/);
+    assert.ok(result.estimatedTokens<=300&&result.estimatedTokens<estimateTokens(body));
+    const fragment=result.fragments[0],resolved=JSON.parse(active.documentRequest(JSON.stringify({operation:'resolve',reference:fragment.reference})));
+    assert.equal(resolved.text,fragment.text);assert.ok(fragment.start.line>1);
+    assert.throws(()=>d.searchEvidenceFragments(active,{documentId:Number(document.document_id),revision:'stale',query:'ZephyrLatch'}),e=>e.status===409);
+    const {zeroVector}=await import('../lib/schema.js'),legacyId=Math.max(...active.allNodeIds())+1;
+    const v1=JSON.parse(active.documentRequest(JSON.stringify({operation:'put',document:{source_id:'docs/legacy.md',source_revision:'first',parser_id:'dsh-explicit-text-v1',
+      content:body,root:{id:String(legacyId),vector:zeroVector(),payload:{type:'trivium-document-source',sourceId:'docs/legacy.md'}},
+      blocks:[{key:'body',kind:'body',start_byte:0,end_byte:Buffer.byteLength(body,'utf8'),node:{id:String(legacyId+1),vector:zeroVector(),payload:{type:'trivium-document-fragment'}}}]}})));
+    const legacy=d.searchEvidenceFragments(active,{documentId:legacyId,revision:v1.revision,query:'ZephyrLatch',budgetTokens:300});
+    assert.match(legacy.context,/审批后冷却期为 19/);assert.ok(legacy.estimatedTokens<estimateTokens(body));assert.equal(d.getEvidenceDocument(active,legacyId).revision,v1.revision);
+    console.log('document budget evidence '+JSON.stringify({whole:estimateTokens(body),excerpts:result.estimatedTokens,embeddingCalls:0}));
   });
   await check('real HTTP API is scoped, origin-protected, bounded and participates in the write lock',async()=>{
     const {createServer}=await import('node:http'),{registerMemoryApi}=await import('../lib/server.js'),{acquireWorkspaceLock}=await import('../lib/workspace-lock.js');let handler;
@@ -245,9 +271,87 @@ async function p111(){await environment(async({root,s,check})=>{
       const body={action:'save',sourceId:'docs/http.md',content:'HTTP 证据。'};assert.equal((await post(base,body)).status,400);
       const scoped=base+'?cwd='+encodeURIComponent(cwd);assert.equal((await post(scoped,body,{origin:'https://evil.invalid'})).status,403);
       const lock=acquireWorkspaceLock(cwd);try{assert.equal((await post(scoped,body)).status,409);}finally{lock.release();}
-      const r=await post(scoped,body);assert.equal(r.status,200);assert.ok((await r.json()).document.revision);
+      const r=await post(scoped,body);assert.equal(r.status,200);const {document}=await r.json();assert.ok(document.revision);
+      const query=scoped+'&'+new URLSearchParams({documentId:document.document_id,revision:document.revision,query:'HTTP'});
+      const clips=await fetch(query);assert.equal(clips.status,200);const clipBody=await clips.json();assert.match(clipBody.context,/HTTP 证据/);
+      assert.equal(clipBody.document,undefined);assert.equal(clipBody.answerability,'not_assessed');
       assert.equal((await post(scoped,{...body,unknown:true})).status,400);assert.equal((await post(scoped,{...body,content:'x'.repeat(200000)})).status,413);
       const get=await fetch(scoped);assert.equal(get.status,200);assert.ok((await get.json()).documents.some(r=>r.sourceId==='docs/http.md'));
     }finally{server.closeAllConnections();await new Promise(done=>server.close(done));}
+  });
+});}
+
+async function p112(){await environment(async({root,s,check})=>{
+  const {registerTools}=await import('../lib/tools.js'),{searchEntity}=await import('../lib/entity-search.js'),{estimateTokens}=await import('../lib/tokens.js');
+  const cwd=join(root,'task-a'),other=join(root,'task-b'),tools=new Map();
+  const makeExec=(dir,id)=>({agent:{session:{id,header:{cwd:dir}}}});
+  const taskMemory=registerTools({effect:fn=>fn(),on(){},tools:{register(tool){tools.set(tool.name,tool);return ()=>{};}}},{});
+  const find=tools.get('ctx_find'),exec=makeExec(cwd,'ticket'),args={query:'backup retention',entity_id:101,pack_tokens:300};
+  const db=await seedScope(s,cwd,{entity:'QuartzVault',fact:'QuartzVault backup retention is 21 days.',distractor:'QuartzVault mirror backup retention is 9 days.'});
+  db.updatePayload(202,{...db.getPayload(202),name:'mirror retention'});
+  await seedScope(s,other,{entity:'OtherVault',fact:'OtherVault backup retention is 99 days.',distractor:'Unrelated port.'});
+  const cursorOf=output=>/Cursor: ([\w-]{12})/.exec(output)?.[1];
+  let scoped,cursor,unchanged,delta,verbose;
+  await check('real tool default is unchanged; opt-in packs contain full same-scope facts at lower estimated cost',async()=>{
+    const legacy=await find.execute({query:args.query},exec);
+    assert.match(legacy,/^\[[.\d]+\] id=/);assert.doesNotMatch(legacy,/Cursor:/);
+    scoped=await find.execute(args,exec);cursor=cursorOf(scoped);
+    assert.ok(cursor);assert.match(scoped,/21 days\./);assert.match(scoped,/9 days\./);assert.doesNotMatch(scoped,/id=302/);
+    const full=await searchEntity(db,{entityId:101,query:args.query,packTokens:300});verbose=full.memoryPack.context;
+    assert.deepEqual(full.memoryPack.facts.map(row=>row.id).sort(),['201','202']);
+    assert.ok(estimateTokens(scoped)<estimateTokens(verbose));assert.ok(estimateTokens(scoped)<=300);
+  });
+  await check('unchanged and unrelated writes send no fact text; an edit sends only the changed fact',async()=>{
+    const first=await find.execute({...args,since:cursor},exec);
+    assert.match(first,/unchanged/);assert.doesNotMatch(first,/21 days|9 days/);
+    db.updatePayload(302,{...db.getPayload(302),text:'Unrelated backup retention is 600 days.'});
+    unchanged=await find.execute({...args,since:cursor},exec);assert.equal(unchanged,first);
+    db.updatePayload(201,{...db.getPayload(201),text:'QuartzVault backup retention is 28 days.'});
+    delta=await find.execute({...args,since:cursor},exec);
+    assert.match(delta,/28 days/);assert.doesNotMatch(delta,/21 days|9 days|600 days/);assert.ok(cursorOf(delta)&&cursorOf(delta)!==cursor);
+    assert.ok(estimateTokens(delta)<estimateTokens(scoped));
+    db.unlink(201,101,'about');
+    const removed=await find.execute({...args,since:cursorOf(delta)},exec);assert.match(removed,/No longer selected: #201/);assert.ok(db.getPayload(201));
+  });
+  await check('a receipt cannot cross a database, session, budget or changed query, and can be cleared',async()=>{
+    for (const [changed,context] of [[{},makeExec(other,'ticket')],[{},makeExec(cwd,'foreign')],[{pack_tokens:200},exec],[{query:'new context'},exec]]) {
+      const rejected=await find.execute({...args,since:cursor,...changed},context);assert.match(rejected,/cursor expired or belongs to another task/i);assert.doesNotMatch(rejected,/days/);
+    }
+    taskMemory.dropSession('ticket');assert.match(await find.execute({...args,since:cursor},exec),/Run ctx_find without since/);
+    assert.match(await find.execute({query:args.query,pack_tokens:300},exec),/entityId must be/);
+  });
+  console.log('task budget evidence '+JSON.stringify({verbose:estimateTokens(verbose),initial:estimateTokens(scoped),unchanged:estimateTokens(unchanged),delta:estimateTokens(delta),embeddingCalls:0}));
+});}
+
+async function p113(){await environment(async({root,s,check})=>{
+  const e=await import('../lib/extract.js'),{turnFromEvent}=await import('../lib/source-events.js');
+  const cwd=join(root,'attribution'),db=await s.openWorkspaceDb(cwd);
+  const name='重试次数',oldText='NileWorker 的重试次数是 4 次。',fresh='NileWorker 的重试次数是 7 次。';
+  const id=s.insertNode(db,{type:'decision',name,text:oldText}),old=db.getPayload(id);
+  const tool=(toolName,text,seq)=>turnFromEvent({type:'tool/result',seq,data:{message:{id:'tool-'+seq,role:'tool',content:[{type:'text',text}],isError:false}}},{name:toolName});
+  const recall=tool('ctx_read',JSON.stringify({id,payload:{name,type:'decision',text:oldText}}),2);
+  const user=(text,seq)=>({role:'user',text,seq,messageId:'user-'+seq,recorded:true});
+  const question=user('NileWorker 的重试次数是多少？',1);
+  const paraphrase={type:'decision',name,text:'NileWorker 最多允许重试 4 次。',quote:oldText};
+  const run=(turns,candidates,heldCandidates=[])=>e.distill({db,sessionId:'source-check',turns,heldCandidates,llmCall:async()=>JSON.stringify({candidates})});
+  await check('a paraphrase grounded only in memory stays pending under its observed read ID',async()=>{
+    const round=await run([question,recall,{role:'assistant',text:paraphrase.text}], [paraphrase]);
+    assert.ok(!round.applied.some(row=>row.text===paraphrase.text));assert.equal(round.unverified[0].reason,'memory-read-unverified');
+    assert.deepEqual(round.unverified[0].readIds,[id]);assert.deepEqual(db.getPayload(id),old);
+    const turns=[question,recall];await e.savePending(cwd,{sessionId:'source-check',turns,unverified:round.unverified,sourceReviewKey:e.sourceReviewKey(turns)});
+    assert.deepEqual(e.loadPending(cwd).unverified[0].readIds,[id]);
+  });
+  await check('an unrelated or unknown tool echo cannot supply a source, but a new user value can',async()=>{
+    const unknown=await run([question,tool('tool',fresh,3)],[{type:'decision',name,text:fresh}]);
+    assert.ok(unknown.unverified.some(row=>row.text===fresh));
+    const round=await run([question,recall,user(fresh,4)],[{type:'decision',name,text:fresh,quote:fresh}],e.loadPending(cwd).unverified);
+    const stored=round.applied.find(row=>row.text===fresh);assert.ok(stored);assert.equal(db.getPayload(stored.id).source.messageId,'user-4');
+    assert.equal(round.unverified[0].text,paraphrase.text);assert.deepEqual(db.getPayload(id),old);
+  });
+  await check('the exact supporting external tool, rather than our read or an assistant, owns the source locator',async()=>{
+    const value='NileWorker 的并发上限是 11。';
+    const round=await run([question,recall,{role:'assistant',text:value},tool('config_read',value,5)],[{type:'decision',name:'并发上限',text:value,quote:value}]);
+    const stored=round.applied.find(row=>row.text===value);assert.ok(stored);assert.equal(db.getPayload(stored.id).source.messageId,'tool-5');
+    assert.equal(db.getPayload(stored.id).source.role,'tool');
   });
 });}

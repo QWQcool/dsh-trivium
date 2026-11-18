@@ -203,6 +203,7 @@ function loadBundle(fetchImpl) {
     clearTimeout,
     console,
     URLSearchParams,
+    TextDecoder,
     document: { getElementById: () => null },
   };
   vm.createContext(sandbox);
@@ -853,8 +854,10 @@ try {
   },'document import is explicit and a late save cannot restore another workspace source');
   await check(async()=>{
     const pending=button('读取来源与关联').props.onClick();await settle();next.render();const req=next.server.documents.at(-1);
-    req.reply(200,{ok:true,documents:[],document:null,links:[{evidenceId:4,factId:2,sourceId:'docs/old.md',status:'source_changed',needsReview:true,quote:'旧证据'}]});await pending;await refresh();
+    req.reply(200,{ok:true,documents:[],document:null,links:[{evidenceId:4,factId:2,sourceId:'docs/old.md',status:'source_changed',needsReview:true,quote:'旧证据',
+      comparison:{previous:{text:'旧证据'},current:{text:'现行相邻文本',start:{line:3,column:2},match:'near-previous-byte'}}}]});await pending;await refresh();
     assert(textOf(next.tree()).includes('需要复核')&&textOf(next.tree()).includes('旧证据'),'changed source is not reviewable');
+    assert(textOf(next.tree()).includes('现行相邻文本')&&textOf(next.tree()).includes('不一定对应'),'revision comparison overstates the nearby excerpt');
     assert(!next.server.documents.some(r=>r.body?.action==='delete'),'document review unexpectedly deletes facts');
   },'changed document evidence displays review status and retained original excerpt');
   await check(async()=>{
@@ -870,6 +873,42 @@ try {
     req.reply(200,{ok:true,document:{document_id:'101',source_id:'docs/revisions.md',revision:'rev-2',content:'新依据'},review:{links:[{evidenceId:5,factId:2,sourceId:'docs/revisions.md',status:'source_changed',needsReview:true,quote:'旧依据'}]}});
     await save;await refresh();assert(textOf(next.tree()).includes('来源已更新')&&textOf(next.tree()).includes('旧依据'),'save did not refresh affected evidence');
   },'edited sources must be saved before linking and saving refreshes review warnings');
+  await check(async()=>{
+    const field=label=>nodesOf(next.tree()).find(n=>n.props?.['aria-label']===label);
+    const pick=async (name,bytes)=>{
+      await field('选择 Markdown 或文本文件').props.onChange({target:{files:[{name,size:bytes.length,arrayBuffer:async()=>bytes.buffer}],value:name}});
+      await refresh();
+    };
+    const before=next.server.documents.length;
+    await pick('notes.md',new Uint8Array([0xff]));
+    assert(textOf(next.tree()).includes('有效 UTF-8'),'invalid UTF-8 was accepted');
+    const raw='# 选中文件\r\n冷却期 19 分钟。\r\n';
+    await pick('notes.md',new TextEncoder().encode(raw));
+    assert(field('文档原文').props.value===raw,'the picker did not retain the original text');
+    assert(field('来源标识，例如 docs/config.md').props.value==='notes.md'&&next.server.documents.length===before,'choosing a file wrote before saving');
+    const save=button('保存来源版本').props.onClick();await settle();next.render();
+    const request=next.server.documents.at(-1);assert(request.body.content===raw&&request.body.sourceId==='notes.md','disk source was not passed verbatim');
+    request.reply(200,{ok:true,document:{document_id:'120',source_id:'notes.md',revision:'notes-rev',content:raw},review:{links:[]}});await save;await refresh();
+    field('在此来源中找片段').props.onChange({target:{value:'冷却期'}});next.render();
+    const search=button('检索片段').props.onClick();await settle();next.render();
+    const query=next.server.documents.at(-1),params=new URL(query.href,'http://local/').searchParams;
+    assert(params.get('documentId')==='120'&&params.get('revision')==='notes-rev'&&params.get('query')==='冷却期','fragment query is unscoped');
+    const reference={document_id:'120',revision:'notes-rev',start_byte:16,end_byte:39};
+    query.reply(200,{ok:true,context:'notes.md:2\n冷却期 19 分钟。',fragments:[{text:'冷却期 19 分钟。',start:{line:2,column:1},reference}]});await search;await refresh();
+    button('使用这段原文').props.onClick();next.render();
+    assert(field('可复制的证据片段').props.value.includes('notes.md:2'),'fragment context cannot be copied');
+    const attach=button('关联依据').props.onClick();await settle();next.render();const link=next.server.documents.at(-1);
+    assert(link.body.reference.start_byte===16&&link.body.quote==='冷却期 19 分钟。','link lost the selected byte range');
+    link.reply(200,{ok:true,review:{links:[]}});await attach;await refresh();
+  },'the explicit file picker, fragment query and byte range link work together without network reads on selection');
+  await check(async()=>{
+    let finish;
+    const file=nodesOf(next.tree()).find(n=>n.props?.['aria-label']==='选择 Markdown 或文本文件');
+    const slow=file.props.onChange({target:{files:[{name:'late.md',size:9,arrayBuffer:()=>new Promise(resolve=>{finish=resolve;})}],value:'late.md'}});
+    next.render();const picker=nodesOf(next.tree()).find(n=>n.type==='select'&&n.props?.value===ALPHA);picker.props.onChange({target:{value:BETA}});await refresh();
+    finish(new TextEncoder().encode('late text').buffer);await slow;await refresh();
+    assert(nodesOf(next.tree()).find(n=>n.props?.['aria-label']==='文档原文').props.value==='','late file content crossed into the selected workspace');
+  },'a slow local file selection cannot cross a workspace boundary');
 }catch(err){failures++;console.error('FAIL next memory UI: '+err.stack);}
 
 console.log(`P101: ${checks - failures}/${checks}`);

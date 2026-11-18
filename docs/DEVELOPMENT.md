@@ -34,7 +34,7 @@ npm run test:docs
 | smoke-audit-locks | p53/54/55/56 | 审计、工作区锁、双进程和真实 HTTP |
 | smoke-evaluation | p33/39 | 评分、实验隔离、请求前费用预留 |
 | smoke-memory-quality | p105/106 | 同轮规则去冗余、来源核对事务/HTTP、幂等/错库/落盘保护、真实模型评分与有界评测桥接（模型替身，不使用账号） |
-| smoke-next-memory | p107–111 | 独立中英检索、候选不采纳/历史、缓存失效与读取量、三进程持久交接/重启、真实 TDB 文档引用及 HTTP；零付费调用 |
+| smoke-next-memory | p107–113 | 中英检索、候选历史、缓存、持久交接、真实 TDB 片段及 HTTP、按需工具变化、来源归因；零付费调用 |
 | smoke-kernel | p99 | 用真实 0.9.0 创建合成库，核对 0.9.1 打开、写入、重开前后的节点、向量和边 |
 | 其余 smoke-pN / p2-cases | 原编号 | 较大的端到端、UI、宿主、查询和发布契约 |
 

@@ -357,15 +357,22 @@ snapshot explicitly for concurrent checking. Help commands do not open a store.
   `dsh-trivium-check --snapshot <目录> --json` 用于只读体检。
 - 快照占用磁盘且不自动清理。使用者退出后再清理对应代际，不要修改快照内容。
 
+## 开发中的按需任务记忆
+
+`ctx_find` 添加可选的 `entity_id`、`pack_tokens`、`since`；原调用不变。给出 `entity_id` 才启用当前工作区的实体范围包，`pack_tokens` 默认 300，范围 96–1200（估算，含工具正文和游标）。例如 `{"query":"AtlasWorker retry count","entity_id":101,"pack_tokens":300}`。不使用 embedding，也不返回过期事实。
+
+同会话拿到 `Cursor` 后，在相同问题、实体、`top_k` 和预算下将它传为 `since`。结果只发送变化的已选事实和退出选择的 ID；退出选择不表示删除原记忆。游标在进程内保留最多 5 分钟，重开库、压缩会话或换作用域后重新完整请求。对照冲突组一起呈现，超预算或游标无效不静默退回全域检索。没有新增工具或默认注入。
+
 ## 开发中的文档依据接口
 
 以下属于 [开发中变更](UNRELEASED.md)，不能据此推断当前 npm 包已有这些入口。请求继续受 loopback、Origin、显式已知 `cwd` 和工作区写锁保护。
 
 - `GET /api/dsh-trivium/document-evidence?cwd=...` 返回本功能管理的来源列表与关联状态；可选 `sourceId` 读取一份原文，可选 `factId` 缩小关联列表。当前原型检查最多 10000 节点、2 MiB payload，超限返回错误，不返回不完整的成功列表。
 - `POST` 同一路径保存来源：`{action:"save",sourceId,content,documentId?,expectedRevision?}`。原文上限 64 KiB；初次保存分配来源身份，相同内容重试复用，更新必须传当前修订。来源标识是逻辑键，不触发文件读取。
-- `POST` 建立关联：`{action:"attach",factId,documentId,revision,quote}`。原文片段最多 2000 字符，必须在该版本中唯一出现；后端转换为 UTF-8 范围并交由 TDB 解析，事务保存关联与身份边，flush 后应答。重试不重复创建。
+- `GET` 同一路径带 `documentId`、`revision`、`query` 检索保存的来源。可选 `limit`（1–8，默认 4）与 `budgetTokens`（64–1200，默认 300）。使用原生分组 BM25、明确来源过滤和查询工作上限。返回原文片段、字节范围、起止行列和预算内的 `context`；不返回全文。修订失配为 409。
+- `POST` 建立关联：`{action:"attach",factId,documentId,revision,quote,reference?}`。最多 2000 字符。手输的片段需唯一；从检索结果选中的 `reference` 按原字节范围定位，即使正文重复。TDB 核对该范围的实际原文，事务保存关联与身份边，flush 后应答。重试不重复创建。
 - 关联状态包括 `current`、`source_changed`、`source_missing`、`fact_changed`、`fact_missing`、`reference_unavailable`。`current` 仅表示来源/事实身份和修订未变，不证明该片段蕴含事实；其他状态 `needsReview=true`，旧原文片段仍可读，不自动修改事实。
-- UI 在「上下文 → 文档依据」显式粘贴、读取和关联。无自动扫描、无模型/embedding 调用；新入口不接默认召回。source/quote 继续经过内容守卫。
+- UI 在「上下文 → 文档依据」选择 UTF-8 Markdown/文本或粘贴原文，保存前只改草稿。修订不同时可对照旧引用和新原文；重复或找不到旧片段时，“旧位置附近”不表示原文等价。选择和检索不自动注入对话；不扫描文件目录或调用模型/embedding。
 
 开发中的候选核对增加 `action:"dismiss"`，成功时 `nodeId:null`。同请求重试返回原回执；旧页面、重启或旧调度快照不能复活该来源窗口中已处理的候选。`GET /pending` 增加 `history:{offset,limit,total,entries}`，分页参数为 `reviewOffset`（非负整数）、`reviewLimit`（1–50）；历史只读视图裁剪片段，磁盘仍保留原记录。`existingFacts` 仅提示相同正文，不触发合并或采纳。
 
