@@ -1,0 +1,21 @@
+{
+  "version": "memory-live-answers-v2",
+  "frozenBeforePaidRun": "2026-11-18",
+  "design": "Two repeat probes from v1 and six new synthetic work scenarios. Evidence, forbidden context and answer rubric fixed before paid requests.",
+  "repeat": ["L11", "L12"],
+  "limits": {"calls": 16, "maxOutputTokens": 256, "contextTokens": 300},
+  "scenarios": [
+    {"id":"R01","category":"english","entity":"QuartzIngress","question":"What port does QuartzIngress use for HTTPS traffic?",
+      "seeds":[{"key":"https","text":"QuartzIngress accepts HTTPS traffic on port 7443."},{"key":"metrics","text":"QuartzIngress exposes metrics on port 9100."}],"status":"answered","answer":"7443","relevant":["https"],"forbidden":[]},
+    {"id":"R02","category":"cross-language","entity":"JuniperWorker","question":"JuniperWorker 的重试次数是多少？",
+      "seeds":[{"key":"retries","text":"JuniperWorker allows 6 retries per job."},{"key":"workers","text":"JuniperWorker can run 9 jobs in parallel."}],"status":"answered","answer":"6","relevant":["retries"],"forbidden":[]},
+    {"id":"R03","category":"no-answer","entity":"MicaArchive","question":"How many days does MicaArchive keep audit records in production?",
+      "seeds":[{"key":"health","text":"MicaArchive runs a health check once a minute."},{"key":"staging","foreign":true,"text":"The staging instance of MicaArchive retains audit records for 18 days. This value is for staging only."}],"status":"unknown","answer":null,"relevant":[],"forbidden":["staging"]},
+    {"id":"R04","category":"unresolved-conflict","entity":"FlintQueue","question":"What is the current retry count for FlintQueue?",
+      "seeds":[{"key":"ops","text":"FlintQueue's current retry count is 3."},{"key":"release","text":"FlintQueue's current retry count is 5."}],"status":"conflict","answer":null,"relevant":["ops","release"],"forbidden":[]},
+    {"id":"R05","category":"confirmed-replacement","entity":"SlateVault","question":"SlateVault 当前的备份保留期是多少天？",
+      "seeds":[{"key":"old","text":"SlateVault 备份保留期为 45 天。"},{"key":"current","supersedes":"old","text":"SlateVault 当前的备份保留期是 28 天。"}],"status":"answered","answer":"28","relevant":["current"],"forbidden":["old"]},
+    {"id":"R06","category":"no-answer","entity":"CobaltGateway","question":"CobaltGateway 的生产环境部署是否允许跳过审批？",
+      "seeds":[{"key":"production","text":"CobaltGateway 的生产环境部署窗口是周三 22:00。"},{"key":"sandbox","foreign":true,"text":"CobaltGateway 的沙盒环境部署允许跳过审批；此规则不适用于生产。"}],"status":"unknown","answer":null,"relevant":[],"forbidden":["sandbox"]}
+  ]
+}

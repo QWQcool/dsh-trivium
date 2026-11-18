@@ -1,0 +1,23 @@
+{
+  "version": "retrieval-bilingual-1",
+  "frozenBeforeImplementation": "2026-11-17",
+  "purpose": "Independent deterministic bilingual lexical corpus, separate from the unchanged v1 and live fixtures. Holdout is scored separately; no model or embedding call.",
+  "scenarios": [
+    {"id":"N01","split":"dev","entity":"CedarDaemon","question":"Which port does CedarDaemon use?","fact":"CedarDaemon uses port 9137.","distractor":"CedarDaemon uses a green status indicator."},
+    {"id":"N02","split":"dev","entity":"BirchJob","question":"What is BirchJob's retry count?","fact":"BirchJob 的重试次数是 7。","distractor":"BirchJob 的负责人是 Iris。"},
+    {"id":"N03","split":"dev","entity":"Archive","question":"How long are backups retained?","fact":"Archive 的备份保留 21 天。","distractor":"Archive 的部署窗口是周二。"},
+    {"id":"N04","split":"dev","entity":"Gateway","question":"每个 key 每秒允许多少次请求？","fact":"Gateway rate limit is 45 rps per key.","distractor":"Gateway uses TLS encryption."},
+    {"id":"N05","split":"dev","entity":"PineService","question":"请求超时时间是多少？","fact":"PineService request timeout is 18 seconds.","distractor":"PineService logs are retained for 9 days."},
+    {"id":"N06","split":"dev","entity":"Auth","question":"Which header is X-Trace-Id?","fact":"Auth uses the X-Trace-Id header.","distractor":"Auth uses the X-Trace-Mode header."},
+    {"id":"N07","split":"dev","entity":"Quotas","question":"最大并发是多少？","fact":"Quotas concurrency limit is 12.","distractor":"Quotas timeout is 23 seconds."},
+    {"id":"N08","split":"dev","entity":"Shield","question":"Is encryption disabled?","fact":"Shield encryption is not disabled.","distractor":"Shield deploys on Wednesday."},
+    {"id":"N09","split":"holdout","entity":"MapleAgent","question":"Which ports does MapleAgent use?","fact":"MapleAgent 使用端口 7284。","distractor":"MapleAgent 使用蓝色标签。"},
+    {"id":"N10","split":"holdout","entity":"OakQueue","question":"How many retries are configured?","fact":"OakQueue 的重试次数配置为 6。","distractor":"OakQueue 的备份保留 17 天。"},
+    {"id":"N11","split":"holdout","entity":"MirrorVault","question":"What is the backup retention period?","fact":"MirrorVault 的备份保留期为 32 天。","distractor":"MirrorVault 的超时为 11 秒。"},
+    {"id":"N12","split":"holdout","entity":"EdgeProxy","question":"限流策略是什么？","fact":"EdgeProxy has a rate limit of 37 rps.","distractor":"EdgeProxy uses port 8192."},
+    {"id":"N13","split":"holdout","entity":"Hemlock","question":"重试次数是多少？","fact":"Hemlock allows 8 retries.","distractor":"Hemlock backups remain for 20 days."},
+    {"id":"N14","split":"holdout","entity":"Service","question":"X-Correlation-Token","fact":"The X-Correlation-Token value is CORR-583.","distractor":"The X-Correlation-Mode value is MODE-583."},
+    {"id":"N15","split":"holdout","entity":"Service","question":"Z-Unknown-Key","fact":"The X-Known-Key value is KEY-804.","distractor":"The X-Known-Mode value is MODE-804.","answerable":false},
+    {"id":"N16","split":"holdout","entity":"Spruce","question":"Spruce timeout","fact":"Spruce timeout is 29 seconds, not 92.","distractor":"Spruce backups are retained for 29 days."}
+  ]
+}

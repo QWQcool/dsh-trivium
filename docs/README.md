@@ -1,6 +1,6 @@
 # 文档入口
 
-维护状态更新于 2026-11-17。安装和日常使用看[中文 README](../README.zh-CN.md) / [English README](../README.md)，接手开发先读 [CURRENT-STATE](CURRENT-STATE.md)。
+维护状态更新于 2026-11-18。安装和日常使用看[中文 README](../README.zh-CN.md) / [English README](../README.md)，接手开发先读 [CURRENT-STATE](CURRENT-STATE.md)。
 
 ## 发布状态
 
@@ -14,6 +14,8 @@
 
 | 目的 | 文档 |
 |---|---|
+| 开发中新增、改进、删除与升级影响 | [UNRELEASED](UNRELEASED.md) · [五项统一结果](reviews/NEXT-MEMORY-2026-11-17.md) · [回退、桌面和真实对照](reviews/NEXT-DELIVERY-2026-11-18.md) |
+| Super Agent 项目/工单交接协议 | [handoff-protocol](handoff-protocol.md) |
 | 现在到哪一步、哪些结论作废 | [CURRENT-STATE](CURRENT-STATE.md) |
 | 低成本记忆、Super Agent、TDB 开发顺序 | [ROADMAP](ROADMAP.md) |
 | 实体面板与记忆评测的任务交接 | [AI-TASK-HANDOFF](AI-TASK-HANDOFF.md) |

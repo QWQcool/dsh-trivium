@@ -97,12 +97,15 @@ function createServer({withPending=false}={}) {
   const calls = [];
   const searches = [];
   const reviews = [];
+  const documents = [];
+  const historyRows = {[ALPHA]:[],[BETA]:[]};
   const pendingRows = Object.fromEntries([ALPHA,BETA].map((cwd,index)=>[cwd,withPending ? [{sessionId:'same-session',turns:1,preview:cwd,
     etag:String(index+1).repeat(64),evidence:[{role:'user',text:'格式是什么？'}],unverified:[{id:'a'.repeat(64),type:'decision',name:'格式',text:cwd+' 格式是 XLSX。',quote:'格式是什么？'}]}] : []]));
   let liveText = '报告游标可以复用 24 小时。';
   const fetchImpl = async (url, opts) => {
     const href = String(url);
     calls.push({ href, opts });
+    if(href.includes('/api/dsh-trivium/document-evidence'))return new Promise(resolve=>documents.push({href,body:opts?.body?JSON.parse(opts.body):null,reply(status,payload){resolve(response(status,payload));}}));
     if(href.includes('/api/dsh-trivium/pending/review')) return new Promise(resolve=>reviews.push({href,body:JSON.parse(opts.body),reply(status,payload){resolve(response(status,payload));}}));
     if (href.includes('/api/dsh-trivium/entity-search')) {
       return new Promise((resolve) => {
@@ -123,14 +126,15 @@ function createServer({withPending=false}={}) {
     }
     if (href.includes('/api/dsh-trivium/external')) return response(200, { ok: true, files: [] });
     if (href.includes('/api/dsh-trivium/changes')) return response(200, { ok: true, entries: [], labels: {} });
-    if (href.includes('/api/dsh-trivium/pending')) {const rows=pendingRows[cwdOf(href) || ALPHA];return response(200, { ok: true, windows:rows, turns:rows.length, acknowledged: 0 });}
+    if (href.includes('/api/dsh-trivium/pending')) {const scope=cwdOf(href)||ALPHA,rows=pendingRows[scope],offset=Number(new URL(href,'http://local.invalid').searchParams.get('reviewOffset')||0);
+      return response(200, { ok: true, windows:rows, turns:rows.length, acknowledged: 0,history:{offset,limit:20,total:historyRows[scope].length,entries:historyRows[scope].slice(offset,offset+20)} });}
     if (href.includes('/api/dsh-trivium/recall-traces')) return response(200, { ok: true, entries: [] });
     if (href.includes('/api/dsh-trivium/turn')) return response(200, { ok: true, sessions: [] });
     if (href.includes('/api/dsh-trivium/corrections')) return response(200, { ok: true, sessions: [] });
     if (href.includes('/api/dsh-trivium/embedding')) return response(200, { ok: true, calls: 0 });
     return response(200, { ok: true });
   };
-  return { fetchImpl, calls, searches,reviews,pendingRows, text: () => liveText, setText: (next) => { liveText = next; } };
+  return { fetchImpl, calls, searches,reviews,pendingRows,historyRows,documents, text: () => liveText, setText: (next) => { liveText = next; } };
 }
 
 function createRuntime() {
@@ -813,6 +817,60 @@ try {
     assert(textOf(reviewApp.tree()).includes(ALPHA+' 格式是 XLSX。'),'late B success cleared A');
   },'late review success cannot overwrite the selected workspace or clear its candidate');
 }catch(err){failures++;console.error('FAIL review UI: '+err.stack);}
+
+try {
+  const next=await mount({withPending:true});
+  const refresh=async()=>{for(let i=0;i<6;i++){await settle();next.render();}};
+  const button=label=>nodesOf(next.tree()).find(n=>n.props?.children===label&&typeof n.props?.onClick==='function');
+  await check(async()=>{
+    pageTab(next.tree(),'运行记录').props.onClick();await refresh();
+    assert(!!button('不采纳，保留记录'),'dismiss action is not rendered');
+    const pending=button('不采纳，保留记录').props.onClick();await settle();next.render();
+    const req=next.server.reviews.at(-1);assert(req.body.action==='dismiss','dismissal is not explicit');assert(cwdOf(req.href)===ALPHA,'dismissal lost its workspace');
+    next.server.pendingRows[ALPHA]=[];
+    next.server.historyRows[ALPHA]=Array.from({length:23},(_,i)=>({action:'dismiss',at:'2026-11-17',candidateId:String(i),candidate:{type:'decision',name:'记录',text:'保留原文 '+i},sourceTurns:[{role:'user',text:'来源 '+i}]}));
+    req.reply(200,{ok:true,settled:true,action:'dismiss',nodeId:null});await pending;await refresh();
+    assert(textOf(next.tree()).includes('原文、来源和回执')||textOf(next.tree()).includes('原文'), 'dismissal history is missing');
+    assert(textOf(next.tree()).includes('保留原文 0'),'history is hidden when pending is empty');
+    await button('下一页').props.onClick();await refresh();assert(textOf(next.tree()).includes('保留原文 22'),'history pagination did not load');
+    assert(!textOf(next.tree()).includes('保留原文 0'),'history pagination mixed pages');
+  },'dismiss UI retains readable history even with no pending windows, including pagination');
+  await check(async()=>{
+    const picker=nodesOf(next.tree()).find(n=>n.props?.['aria-label']==='工作区');
+    const actual=picker||nodesOf(next.tree()).find(n=>n.type==='select'&&n.props?.value===ALPHA);
+    actual.props.onChange({target:{value:BETA}});await refresh();assert(!textOf(next.tree()).includes('保留原文 22'),'history crossed workspace');
+  },'review history is cleared by workspace switch');
+  await check(async()=>{
+    pageTab(next.tree(),'上下文').props.onClick();await refresh();
+    const source=nodesOf(next.tree()).find(n=>n.props?.['aria-label']==='来源标识，例如 docs/config.md');source.props.onChange({target:{value:'docs/example.md'}});next.render();
+    nodesOf(next.tree()).find(n=>n.props?.['aria-label']==='文档原文').props.onChange({target:{value:'明确的原文。'}});next.render();
+    const pending=button('保存来源版本').props.onClick();await settle();next.render();const req=next.server.documents.at(-1);
+    assert(req.body.action==='save'&&req.body.sourceId==='docs/example.md','document save schema is wrong');assert(cwdOf(req.href)===BETA,'document save escaped workspace');
+    const picker=nodesOf(next.tree()).find(n=>n.type==='select'&&n.props?.value===BETA);picker.props.onChange({target:{value:ALPHA}});await refresh();
+    req.reply(200,{ok:true,document:{document_id:'99',revision:'old-B',content:'B 原文'}});await pending;await refresh();
+    const input=nodesOf(next.tree()).find(n=>n.props?.['aria-label']==='文档原文');assert(input.props.value==='','late document save restored another scope');
+    assert(button('关联依据').props.disabled,'old document remains linkable');
+  },'document import is explicit and a late save cannot restore another workspace source');
+  await check(async()=>{
+    const pending=button('读取来源与关联').props.onClick();await settle();next.render();const req=next.server.documents.at(-1);
+    req.reply(200,{ok:true,documents:[],document:null,links:[{evidenceId:4,factId:2,sourceId:'docs/old.md',status:'source_changed',needsReview:true,quote:'旧证据'}]});await pending;await refresh();
+    assert(textOf(next.tree()).includes('需要复核')&&textOf(next.tree()).includes('旧证据'),'changed source is not reviewable');
+    assert(!next.server.documents.some(r=>r.body?.action==='delete'),'document review unexpectedly deletes facts');
+  },'changed document evidence displays review status and retained original excerpt');
+  await check(async()=>{
+    const load=button('读取来源与关联').props.onClick();await settle();next.render();
+    next.server.documents.at(-1).reply(200,{ok:true,documents:[],document:{document_id:'101',source_id:'docs/revisions.md',revision:'rev-1',content:'旧依据'},links:[]});await load;await refresh();
+    nodesOf(next.tree()).find(n=>n.props?.['aria-label']==='已有记忆 ID').props.onChange({target:{value:'2'}});next.render();
+    nodesOf(next.tree()).find(n=>n.props?.['aria-label']==='依据片段（须在原文中唯一出现）').props.onChange({target:{value:'旧依据'}});next.render();
+    assert(!button('关联依据').props.disabled,'saved source cannot be linked');
+    nodesOf(next.tree()).find(n=>n.props?.['aria-label']==='文档原文').props.onChange({target:{value:'新依据'}});next.render();
+    assert(button('关联依据').props.disabled&&textOf(next.tree()).includes('先保存来源版本'),'unsaved source can be mistaken for a persisted revision');
+    const save=button('保存来源版本').props.onClick();await settle();next.render();const req=next.server.documents.at(-1);
+    assert(req.body.expectedRevision==='rev-1'&&req.body.documentId===101,'source update lost its revision guard');
+    req.reply(200,{ok:true,document:{document_id:'101',source_id:'docs/revisions.md',revision:'rev-2',content:'新依据'},review:{links:[{evidenceId:5,factId:2,sourceId:'docs/revisions.md',status:'source_changed',needsReview:true,quote:'旧依据'}]}});
+    await save;await refresh();assert(textOf(next.tree()).includes('来源已更新')&&textOf(next.tree()).includes('旧依据'),'save did not refresh affected evidence');
+  },'edited sources must be saved before linking and saving refreshes review warnings');
+}catch(err){failures++;console.error('FAIL next memory UI: '+err.stack);}
 
 console.log(`P101: ${checks - failures}/${checks}`);
 if (failures) process.exitCode = 1;

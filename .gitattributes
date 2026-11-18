@@ -18,3 +18,7 @@ docs/next-memory/evidence-bili/*.json text eol=lf
 docs/next-memory/evidence-r3/a2/*.json text eol=lf
 docs/next-memory/evidence-r3/a3/*.json text eol=lf
 docs/next-memory/evidence-r3/a5/*.json text eol=lf
+
+# Consolidated memory evidence is byte-verified.
+docs/evidence/next-memory-2026-11-17/** -text
+docs/evidence/next-memory-2026-11-17/regression.log whitespace=-blank-at-eol,cr-at-eol

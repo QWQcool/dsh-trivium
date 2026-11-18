@@ -23,3 +23,6 @@ article/
 
 # Local bench artefacts and temp consumer dirs — not for the public repo
 .tmp/
+
+# Intentional, synthetic-only regression evidence.
+!docs/evidence/next-memory-2026-11-17/regression.log

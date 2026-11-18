@@ -427,6 +427,8 @@ Local source checkout: `npm ci`, then `node scripts/link-dsh.mjs`, then restart 
 
 ## Release info
 
+See [Unreleased changes and rollback steps](docs/UNRELEASED.md) for development additions, improvements, removals, and data compatibility. Each published version has its own bilingual notes.
+
 - GitHub: https://github.com/QWQcool/dsh-trivium
 - Published package: `0.9.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.2-rc.1` (launched and exercised on 2026-11-10: panel renders, `/status` and the proposal routes answer, zero console errors; earlier releases were verified on 0.2.1-rc.4/rc.5). The peer range also admits the 0.1.x lines.

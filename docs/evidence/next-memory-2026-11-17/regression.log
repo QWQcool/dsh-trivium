@@ -1,0 +1,2933 @@
+
+> dsh-trivium@0.9.0 test
+> node scripts/run-all.mjs
+
+Running 98 logical cases in separate processes.
+
+== p0 (smoke-p0.mjs)
+session A wrote entity=2 preference=3
+ok  session B ctx_find(鉴权) returned hits
+[2.361] id=3 type=preference
+本仓库鉴权走 header X
+path: about->2(dsh-trivium) | in_workspace->1(C:\Users\V_CHCH~1\AppDat)
+
+[1.000] id=2 type=entity
+this repository
+path: <-about-3(auth-header) | in_workspace->1(C:\Users\V_CHCH~1\AppDat)
+ok  preference node is among hits
+ok  path mentions entity (got: about->2(dsh-trivium) | in_workspace->1(C:\Users\V_CHCH~1\AppDat))
+ok  hybrid text channel survives reopen (got 3 hits)
+ok  hybrid text channel indexes the entity name too (got 2 hits)
+P0 store A/B passed
+
+== p1 (smoke-p1.mjs)
+ok  记住… → preference
+ok  single-sentence 鉴权 pref has no TriviumDB linkName
+ok  鉴权 pref does not steal adjacent TriviumDB
+ok  preference in-span proper name becomes about-link
+ok  experience linkName from fail text
+ok  wrapped 记住 still extracts
+ok  preference keeps the cue sentence only
+ok  multi-cue turn keeps header X preference
+ok  multi-cue turn keeps pnpm preference
+ok  multi-cue turn still drops oneshot
+ok  multi-cue turn still drops secret span
+ok  packed turn keeps four decisions (got 先别动 AuthGateway，下周再改。 | 采用方案 A 做登录。 | 就用这个 TriviumDB 单文件，不要另起服务。 | postpone the migration until Friday.)
+ok  packed turn keeps two preferences
+ok  one-off file edit is not a preference
+ok  chitchat is not a preference
+ok  secret candidate rejected
+ok  repeated proper name → entity
+ok  decision with an object
+ok  tool fail then success → experience
+ok  experience linkName from preceding user entity
+ok  find-dump assistant text does not mint path-noise entities
+ok  model JSON fence parsed
+ok  first preference inserted
+ok  duplicate preference merged
+ok  decision links once (got 1)
+ok  pending saved
+ok  pending replay extracted
+ok  pending cleared after success
+ok  short map tokens 78 <= 400
+ok  token estimate matches report
+ok  find hits before archive
+ok  archived node hidden from find
+P1 extract/merge/archive/token passed
+
+== p2 (p2-cases.mjs)
+ok  quoted 鉴权 is not an entity
+distill applied 16 entity:方案 A | entity:TriviumDB | entity:AuthGateway | entity:dsh-trivium | entity:DeepSeek_Harness | entity:X-Request-Id | preference:以后都用 pnpm，不要用 npm。 | preference:别再把 README 改成英文。 | preference:记住，本仓库鉴权走 header X。 | preference:从现在起回复用中文。 | preference:Remember to run tests before commit. | decision:先别动 AuthGateway，下周再改。 | decision:采用方案 A 做登录。 | decision:就用这个 TriviumDB 单文件，不要另起服务。 | decision:postpone the migration until Friday. | experience:bash failed then succeeded
+ok  short map 113 <= 400
+ok  short map lists preferences first
+ok  automatic extraction does not infer expiry from dates in prose
+ok  vanilla analogue: empty workspace has no preference for 鉴权
+ok  N4: no entity named 鉴权 after reopen
+ok  no singleton ALLCAPS entity minted from a preference mention
+ok  no duplicate in_workspace (got 1)
+ok  P1 find(鉴权) preference /header X/ (got [preference] 记住，本仓库鉴权走 header X。 path=in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=preference
+ok  P1 鉴权 pref is not about adjacent TriviumDB
+ok  P2 find(pnpm) preference /pnpm/ (got [preference] 以后都用 pnpm，不要用 npm。 path=in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=preference
+ok  P3 find(README) preference /README|英文/ (got [preference] 别再把 README 改成英文。 path=in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=preference
+ok  P4 find(中文) preference /中文/ (got [preference] 从现在起回复用中文。 path=in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=preference
+ok  P5 find(tests) preference /tests/i (got [preference] Remember to run tests before commit. path=in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=preference
+ok  E1 find(TriviumDB) entity /TriviumDB/ (got [entity] TriviumDB path=<-decided-15(TriviumDB),in_workspace->1(C:\Users\V_CHCH~1\AppDat) ;; [decision] 就用这个 TriviumDB 单文件，不要另起服务。 path=decided->3(TriviumDB),in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=entity,decision
+ok  E2 find(AuthGateway) entity /AuthGateway/ (got [entity] AuthGateway path=<-decided-13(AuthGateway),in_workspace->1(C:\Users\V_CHCH~1\AppDat) ;; [decision] 先别动 AuthGateway，下周再改。 path=decided->4(AuthGateway),in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=entity,decision
+ok  E3 find(dsh-trivium) entity /dsh-trivium/ (got [entity] dsh-trivium path=in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=entity
+ok  E4 find(DeepSeek_Harness) entity /DeepSeek_Harness/ (got [entity] DeepSeek_Harness path=in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=entity
+ok  E5 find(X-Request-Id) entity /X-Request-Id/ (got [entity] X-Request-Id path=in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=entity
+ok  D1 find(下周) decision /AuthGateway|下周/ (got [decision] 先别动 AuthGateway，下周再改。 path=decided->4(AuthGateway),in_workspace->1(C:\Users\V_CHCH~1\AppDat) ;; [entity] AuthGateway path=<-decided-13(AuthGateway),in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=decision,entity
+ok  D1 keeps 下周 in the fact without assigning expiry
+ok  D2 find(方案 A) decision /方案 A|登录/ (got [entity] 方案 A path=<-decided-14(方案 A),in_workspace->1(C:\Users\V_CHCH~1\AppDat) ;; [decision] 采用方案 A 做登录。 path=decided->2(方案 A),in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=entity,decision
+ok  D3 find(单文件) decision /单文件|TriviumDB/ (got [decision] 就用这个 TriviumDB 单文件，不要另起服务。 path=decided->3(TriviumDB),in_workspace->1(C:\Users\V_CHCH~1\AppDat) ;; [entity] TriviumDB path=<-decided-15(TriviumDB),in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=decision,entity
+ok  D4 find(Friday) decision /Friday|migration/i (got [decision] postpone the migration until Friday. path=in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=decision
+ok  X1 find(mkdir) experience /fail|mkdir|bash/i (got [experience] bash failed then succeeded path=in_workspace->1(C:\Users\V_CHCH~1\AppDat)) types=experience
+ok  N1 miss durable hit for 天气 (got none)
+ok  N2 no preference for 把这个文件
+ok  N3 miss durable hit for api_key (got none)
+ok  N5 no preference for 嗯好的
+P2 20 cross-session cases passed
+
+== p3 (smoke-p3.mjs)
+ok  extracted date is not implicitly an expiry
+ok  list includes until=下周
+ok  list path shows decided->
+ok  Settings q=鉴权 hits preference
+ok  Settings q=鉴权 does not list pnpm pref
+ok  type=decision + q=下周
+ok  list includes AuthGateway entity
+ok  entity row carries incoming decided for expand-in-place
+ok  about=AuthGateway includes the entity
+ok  about=AuthGateway includes decided neighbor
+ok  about=AuthGateway does not pull unlinked pnpm pref
+ok  Settings list hides stale decisions by default
+ok  Settings list shows stale when includeStale
+ok  Settings q=周五 still lists the stale decision
+ok  about=AuthGateway still hides stale neighbor by default
+ok  about=AuthGateway + includeStale shows the stale neighbor
+ok  short map 97 <= 400
+ok  short map still names preferences
+ok  short map reserves an unexpired until decision (got dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for full text.
+entities=3 preferences=2 decisions=2 experiences=0
+named: preference:记住，本仓库鉴权走 header X。; preference:以后都用 pnpm，不要用 npm。; decision:AuthGateway until 下周; entity:AuthGateway; entity:X-Request-Id; entity:方案 A; decision:方案 A)
+ok  find(X-Request-Id) still hits entity
+ok  find(X-Request-Id) does not drag in header X pref (got entity:X-Request-Id)
+ok  find(方案 A) hits decision
+ok  方案 A decision links decided-> (got decided->2(方案 A)|in_workspace->1(C:\Users\V_CHCH~1\AppDat))
+ok  find(下周) hits decision
+ok  find(下周) still expands decided neighbor AuthGateway
+P3 settings search / find ranking passed
+
+== p4 (smoke-p4.mjs)
+ok  Friday untilAt is in the future from Monday
+ok  past untilAt is stale
+ok  下周 from yesterday is not stale yet
+ok  Chinese date resolves to end of day
+ok  slash separator resolves
+ok  dot separator resolves
+ok  month-first English date resolves
+ok  day-first abbreviated English date resolves
+ok  whitespace separates an English day and year
+ok  a comma separates an English day and year
+ok  an ordinal with a separator resolves
+ok  a month abbreviation with a separator resolves
+ok  ambiguous year-last numeric dates are not guessed
+ok  the year-last numeric grammar stays unsupported even when one order is impossible
+ok  an English date without a year separator is refused: November 202026
+ok  an English date without a year separator is refused: November 22026
+ok  an English date without a year separator is refused: November 20th2026
+ok  an English date without a year separator is refused: 20 November2026
+ok  an English date without a year separator is refused: 20 Nov.2026
+ok  an impossible date does not resolve
+ok  find(AuthGateway) hits entity
+ok  find(AuthGateway) keeps unexpired decided neighbor
+ok  find(AuthGateway) retains the expired decision with its stale flag
+ok  find(周五) still returns the stale decision because the query is the deadline
+ok  live decision path decided->
+ok  entity path includes incoming about (got <-about-6(日志走 header X。)|<-decided-3(AuthGateway)|<-decided-4(AuthGateway)|<-decided-7(先别动，下周再改。)|in_workspace->1(C:\Users\V_CHCH~1\AppDat))
+ok  entity path includes incoming decided (got <-about-6(日志走 header X。)|<-decided-3(AuthGateway)|<-decided-4(AuthGateway)|<-decided-7(先别动，下周再改。)|in_workspace->1(C:\Users\V_CHCH~1\AppDat))
+ok  explicit search paths retain the expired incoming decision
+ok  find(周五) entity path still shows stale incoming
+ok  business-edge decision ranks before in_workspace-only pref (order=3,2,7,6,5,4)
+ok  incoming business edges rank entity above in_workspace-only pref (order=3,2,7,6,5,4)
+ok  find(AuthGateway) expands about-neighbor whose text omits the entity name
+ok  find(AuthGateway) expands decided-neighbor whose text omits the entity name
+ok  find(AuthGateway) does not pull unlinked pnpm pref
+ok  find(AuthGateway 的决策) still anchors the entity
+ok  find(AuthGateway 的决策) returns unexpired decided neighbor
+ok  find(AuthGateway 的决策) returns about preference neighbor
+ok  find(AuthGateway 的决策) retains relevant history
+ok  find(AuthGateway 的决策) does not pull unlinked pnpm pref
+ok  find(pnpm) still hits the unlinked preference
+ok  find(pnpm) does not expand AuthGateway neighbors
+ok  listIncomingBusiness includes about
+ok  listIncomingBusiness includes decided
+ok  find(AuthGateway) expands fixed experience neighbor
+ok  entity path includes incoming fixed (got <-about-6(日志走 header X。)|<-decided-3(AuthGateway)|<-decided-4(AuthGateway)|<-decided-7(先别动，下周再改。)|<-fixed-9(mkdir 失败后改用 fs.mkdir。)|in_workspace->1(C:\Users\V_CHCH~1\AppDat))
+ok  find(周五) includes ISO-until stale decision
+ok  find(周五) entity path shows ISO stale incoming
+ok  find(用 cookie) still hits the old node
+ok  find follows same_as to the canonical node
+ok  about edge exists before labeled unlink
+ok  in_workspace exists before labeled unlink
+ok  labeled unlink drops about only
+ok  about edge gone after labeled unlink
+ok  labeled unlink keeps in_workspace
+P4 find edge-type / until ranking passed
+
+== p5 (smoke-p5.mjs)
+ok  default recall off
+ok  legacy autoRecall boolean
+ok  anchor boolean
+ok  both booleans → off
+ok  recallMode wins
+ok  auto excludes anchor
+ok  anchor excludes auto
+ok  off clears both
+ok  wrong-dimensional vectors are rejected
+ok  zero vectors are rejected
+ok  non-finite vectors are rejected
+ok  updateNode writes text
+ok  mergeNodes ok
+ok  dropped entity archived
+ok  merge rewires about edge onto keep
+ok  merge keeps the keep-node text
+ok  merge copies drop name/aliases
+ok  refuse merge across types
+ok  export has nodes
+ok  export includes rewired edge
+ok  import creates nodes in a new workspace
+ok  import restores about-neighbor for AuthGateway
+ok  re-import merges by uri instead of duplicating
+ok  named recall hits keep entity
+ok  named recall expands about neighbor
+ok  no entity name → no named recall
+ok  test embed returns vector
+ok  searchNodes still hits with queryVector
+ok  query instructions never contaminate document embeddings
+ok  explicit empty credentials suppress inherited keys and HTTP prefixes are query-only
+ok  a provider's short vector degrades to keyword retrieval
+ok  HTTP provider failure degrades without throwing
+ok  each changed fact reserves a separate embedding job
+ok  an older HTTP completion cannot overwrite the latest text vector
+ok  late embedding does not resurrect a deleted fact
+ok  configuration revision invalidates old-model completions
+ok  embedding lock fixture owns the workspace
+ok  derived vector writes respect the workspace lock
+ok  closed handles invalidate pending embedding jobs
+ok  34 business embeddings use three durable batches; workspace and episode metadata are excluded
+ok  batched vectors survive database reopen
+smoke-p5 ok
+
+== p6 (smoke-p6.mjs)
+ok  export carries dsh-trivium-export marker
+ok  preference line includes about edge
+ok  entity section lists AuthGateway
+ok  refuse round-trip of our export
+ok  WorkBuddy parse ok
+ok  Use tabs not spaces → preference
+ok  ESLint: … → entity + preference about it
+ok  AuthGateway: 鉴权走 header X → about AuthGateway
+ok  chitchat / oneshot / secret / narrative / dated section skipped
+ok  skipped count is non-zero
+ok  one-shot import creates nodes
+ok  imported preference is 1-hop from AuthGateway
+ok  second import merges, does not duplicate
+ok  write batch drops the tail
+ok  write batch stays within 3000 chars
+smoke-p6 ok
+
+== p7 (smoke-p7.mjs)
+ok  NODE_TYPES includes episode
+ok  plot edges stay out of BUSINESS_EDGES
+ok  continues / forks_from labels
+ok  checkpoint episode inserted
+ok  same uri reuses the checkpoint node
+ok  at most one tail per session
+ok  checkpoint kept
+ok  searchNodes skips episode
+ok  namedRecallHits skips episode
+ok  short map skips episode
+ok  listNodes default skips episode
+ok  listNodes type=episode returns episodes
+ok  fork at checkpoint atSeq does not double-write
+ok  fork at existing checkpoint does not insert a dummy fork box
+ok  fork from a single tail does not insert a cut box
+ok  single-box fork has no dummy fork episode
+ok  single-box fork attaches to the existing tail
+ok  map snapshot has continues and forks_from
+ok  backfill writes one checkpoint per atSeq
+ok  backfill projects the fork link
+ok  backfill is idempotent on the same atSeq
+ok  backfill fork hangs off the reconstructed checkpoint
+ok  chips are unarchived preference/decision/entity, not experience
+ok  pins clip when over 300 tokens
+ok  clipped pin inject stays within ~300 tokens
+ok  pin inject text is labeled
+ok  ensureTail still one tail
+ok  manual cut creates a checkpoint
+ok  cut writes historical box
+ok  cut keeps a tail box
+ok  same atSeq does not add another box
+ok  manual cut is idempotent on atSeq
+ok  later atSeq extends the chain
+ok  second cut adds another historical box
+smoke-p7 ok
+
+== p8 (smoke-p8.mjs)
+ok  CHIP_TYPES stay preference/decision/entity
+ok  chips default off when key missing
+ok  session layer off unless chips on
+ok  session layer on only with chips
+ok  session layer preference kept while chips off
+ok  runtime still treats nested layer as off
+ok  about-neighbor of named entity is suggested
+ok  decided-neighbor of named entity is suggested
+ok  named entity itself is not a neighbor suggestion
+ok  unrelated chip is not suggested
+ok  experience stays out of chips
+ok  suggested flags do not write pins
+ok  GET-style q= filters chips by text/name
+ok  q= also matches chip type
+ok  parent pins are explicit ids only
+ok  copyPins copies live parent pin ids
+ok  child has copied pins after copyPins
+ok  child without inherit stays empty
+ok  POST {sessionId, ids} without inherit still replaces
+ok  inherit:true copies from inheritFrom
+ok  inherit:true then merges optional ids
+ok  inherit:true without inheritFrom uses graph parent
+ok  markdown emphasis is stripped, words kept
+ok  list paste is still one chip
+ok  multi-paragraph paste is one chip
+ok  one paragraph is one chip
+ok  plain/md paragraph inserts a chip
+ok  new chip is pinned on this session
+ok  inserted chip text keeps words after stripping md
+ok  md list paste still inserts one chip
+ok  long paste writes one chip not many
+ok  explicit chip keeps more than extract's 240-char line cap
+ok  chip add refuses secret-looking text
+ok  batch archive one chip
+ok  archived chip leaves the chip list
+ok  archive prunes pins
+ok  batch delete one chip
+ok  deleted node is gone from tdb
+smoke-p8 ok
+
+== p9 (smoke-p9.mjs)
+ok  checkpoint episode inserted
+ok  checkpoint summary is DSH text
+ok  checkpoint text mirrors summary
+ok  GET-style snapshot includes name
+ok  snapshot summary unchanged before rename
+ok  renameEpisode writes name
+ok  payload.name is the hand title
+ok  rename does not change summary
+ok  rename does not change text
+ok  same uri reuses checkpoint
+ok  compaction upsert keeps the hand name
+ok  compaction upsert keeps summary
+ok  settings list still hides episodes
+ok  renameEpisode rejects non-episode id
+ok  rejected rename does not touch preference
+ok  GET /map 200
+ok  GET /map returns name
+ok  GET /map summary still DSH text
+ok  POST /episodes/:id 200
+ok  POST returns the new name
+ok  POST persists name
+ok  POST with text/summary in body does not overwrite summary
+ok  POST with text in body does not overwrite text
+ok  POST non-episode id is rejected
+ok  rejected POST does not overwrite preference text
+smoke-p9 ok
+
+== p10 (smoke-p10.mjs)
+ok  clean fact passes write gate
+ok  secret refused
+ok  stutter refused
+ok  CJK stutter detected
+ok  JSON envelope refused
+ok  duplicate lines refused
+ok  settings list still shows dirty node
+ok  clean node is not marked dirty
+ok  payloadLooksDirty true on stutter
+ok  find skips dirty, keeps clean
+ok  short map skips dirty
+ok  chips skip dirty
+ok  chip add refuses stutter
+ok  discovers workspace CLAUDE.md and AGENTS.md
+ok  CLAUDE.md parses
+ok  paragraph with always/use…not becomes a preference
+ok  chitchat and secret skipped from CLAUDE.md
+ok  strict import creates nodes
+ok  Codex AGENTS.md preference is findable
+ok  0.4.8 > 0.4.7
+ok  equal versions
+ok  0.4.6 < 0.4.7
+smoke-p10 ok
+
+== p11 (smoke-p11.mjs)
+ok  tdb is an artifact
+ok  tdb sidecar is an artifact
+ok  pending is an artifact
+ok  jsonl is an artifact
+ok  other .dsh files stay
+ok  package has no uninstall lifecycle hook
+ok  pnpm remove retains data
+ok  npm uninstall retains data
+ok  remove command alone never opts into deletion
+ok  legacy uninstall arguments never opt into deletion
+ok  upgrade/install keeps data
+ok  pnpm add keeps data
+ok  bare node lib/purge.js does not wipe
+ok  --force-purge wipes
+ok  even explicit cleanup is blocked inside a lifecycle event
+ok  tdb created
+ok  workspace remembered
+ok  install lifecycle skips cleanup
+ok  add lifecycle skips cleanup
+ok  remove lifecycle skips cleanup
+ok  uninstall lifecycle skips cleanup
+ok  lifecycle process exits successfully (default)
+ok  lifecycle process exits successfully (--force-purge)
+ok  uninstall preserves every synthetic database, sidecar, pending and settings byte
+ok  saved memory remains readable after uninstall lifecycle
+ok  explicit direct cleanup reports ok
+ok  tdb deleted
+ok  pending deleted
+ok  jsonl deleted
+ok  unrelated .dsh file kept
+ok  home trivium.json deleted
+ok  can record again after wipe
+ok  later settings save keeps chipsEnabled
+ok  later settings save keeps sessionLayerEnabled
+ok  rememberWorkspace does not drop chipsEnabled
+smoke-p11 ok
+
+== p12 (smoke-p12.mjs)
+ok  sidecar write defaults off when key missing
+ok  sidecar write can be turned on
+ok  plugin locale follows host when missing
+ok  config fold starts collapsed
+ok  jsonl is an explicit cleanup artifact
+ok  jsonl tmp is an explicit cleanup artifact
+ok  open bootstraps trivium.jsonl when sidecar is on
+ok  debounce has not written the new fact yet
+ok  sidecar parses
+ok  jsonl has the preference uri
+ok  jsonl minted a uri for the entity
+ok  jsonl has the about edge
+ok  workspace edges stay out of jsonl
+ok  episodes stay out of jsonl
+ok  generate overwrites from tdb
+ok  generate keeps the same jsonl path
+ok  generated jsonl matches tdb
+ok  turning off does not delete jsonl
+ok  generate refuses while sidecar is off
+ok  delete reports delete
+ok  delete removes jsonl
+ok  delete keeps tdb facts
+ok  generate after re-enable restores jsonl
+ok  restored jsonl matches tdb
+ok  clone imports preference from jsonl
+ok  clone imports entity from jsonl
+ok  clone restores about edge
+ok  local edit is written to jsonl
+ok  changed jsonl re-imports
+ok  node missing from git sidecar is archived
+ok  git facts remain after import
+ok  archived row is the local-only node
+ok  cleared sidecar deadline is re-imported
+ok  sidecar reconciliation clears both deadline fields
+ok  corrupt sidecar is not applied
+ok  corrupt sidecar does not wipe the graph
+ok  write switch persists off
+ok  write-off does not bootstrap jsonl
+ok  write-off does not emit jsonl after mutate
+ok  write-off still imports a pulled jsonl
+ok  imported facts land while write is off
+smoke-p12 ok
+
+== p13 (smoke-p13.mjs)
+ok  bundle registers under the plugin id
+ok  locale stays an injected (not declared) dependency, so a host without it still loads
+ok  plugin fallback is en, matching the host
+ok  apply is exported
+ok  a fresh bundle starts in English, not Chinese
+ok  normalizeLocale: only zh* is Chinese; every other resolved language falls to English
+ok  host zh is followed
+ok  an unregistered host language never lands on Chinese
+ok  an explicit English choice outranks a Chinese host
+ok  an explicit Chinese choice outranks an English host
+ok  a dirty preference degrades to follow-host
+ok  resolved locale honours the stored preference
+ok  apply follows a directly readable zh host
+ok  apply also waits on ctx.inject(["locale"])
+ok  the settings section renders Chinese under a zh host
+ok  apply follows a directly readable en host
+ok  the settings section renders English under an en host
+ok  the late locale service is actually read, not silently defaulted
+ok  a late-arriving locale service still switches to English
+ok  issue #2: English host no longer renders a Chinese card
+ok  a late-arriving zh service is followed too
+ok  a late zh host still renders the Chinese card
+ok  a ru host is read and mapped to English
+ok  host resolving to ru shows English, not Chinese
+ok  the reader least likely to read Chinese gets English
+ok  no locale service leaves the host language unread
+ok  no locale service at all falls back to English
+ok  the card still registers without any locale service
+ok  a throwing getLocale() does not break apply
+ok  the card still registers after a locale read throw
+ok  a ctx.inject that throws is swallowed
+ok  apply subscribes to locale/change
+ok  switching the host language updates the plugin live
+ok  a stored Chinese preference is not overwritten by apply
+ok  the stored preference drives the rendered card
+smoke-p13 ok
+
+== p14 (smoke-p14.mjs)
+ok  format switch: v4 starts at 0.2.0; an unreadable version assumes the current format
+ok  v4 source uses the producer-owned kind
+ok  v4 source drops the plugin field
+ok  v4 source keeps extra fields
+ok  0.1.x source keeps the shared kind
+ok  0.1.x source carries the plugin name
+ok  0.1.x source keeps extra fields
+ok  producerSourceFor does not mutate the extra fields
+ok  registers agent/created (DSH 0.1.6+)
+ok  keeps agent/session-start for older hosts
+ok  guards against a host emitting both start events
+ok  no message source bypasses the format helper
+ok  live switch matches the installed host 0.2.2-rc.1
+ok  producerSource follows the live switch
+smoke-p14 ok
+
+== p15 (smoke-p15.mjs)
+ok  a historical ISO date does not set expiry
+ok  the historical-date decision is searchable by name
+ok  下周 is an event date, not an expiry
+ok  周五 is an event date, not an expiry
+ok  11月09日 is an event date, not an expiry
+ok  rule extraction does not infer expiry
+ok  Markdown import does not infer expiry
+ok  chip with a historical date is accepted
+ok  chip writes do not infer expiry
+ok  model output cannot assign inferred expiry
+ok  explicit past expiry is recognized
+ok  legacy expiry stays searchable and marked stale
+ok  current-only search excludes stale history
+ok  existing settings expiry toggle still reveals the node
+ok  cleared expiry stays cleared after editing dated prose
+ok  an unresolved label cannot keep the old expiry timestamp
+ok  a newly edited relative expiry is anchored to the edit
+ok  saving an unchanged label does not extend expiry
+ok  automatic merge without expiry preserves the explicit deadline
+ok  merge changes the label and instant together
+ok  merge can explicitly clear expiry
+ok  two-Han-character entities anchor natural-language queries
+ok  entity search can retrieve connected historical decisions
+ok  live decisions rank ahead of stale decisions
+ok  explicit search explains the historical relation
+ok  current-only paths do not leak expired decisions
+ok  automatic anchor recall excludes expired decisions even for date queries
+ok  the automatic short map excludes expired decisions
+ok  an explicitly pinned historical decision is labeled stale
+ok  the native text channel recalls the multiword query
+ok  the plugin keeps the native multiword candidate
+ok  aliases are searchable for non-entity memories
+ok  Chinese multiword fallback works when native retrieval fails
+ok  Latin word fallback works without a contiguous phrase
+ok  fallback rejects unrelated words
+ok  native vector candidate exists without lexical overlap
+ok  the plugin retains a vector-only candidate
+ok  native recall does not bypass archive or write-hygiene filters
+ok  identifier search does not accept a partial X token
+ok  obsolete native keywords cannot revive a removed name
+ok  the replacement name remains searchable
+ok  explicit deadlines round-trip through JSON export/import
+ok  import preserves explicit historical expiry
+ok  re-importing a cleared deadline clears the existing destination deadline
+ok  merging nodes never combines one label with another node's timestamp
+ok  cleared expiry survives reopening
+ok  multiword recall survives reopening
+ok  legacy historical memory remains discoverable after reopening
+P15 issue #3 regressions passed (48 checks)
+
+== p16 (smoke-p16.mjs)
+ok  CTX-01 the session map budget is still 400
+ok  CTX-01 the map stays within 400 estimated tokens
+ok  CTX-01 both channels off returns before any pin/recall planning
+ok  CTX-01 the settings/API surface never injects context
+ok  CTX-02 pins become structured candidates, not a rendered string
+ok  CTX-02 pins + recall stay within 300 (got 223)
+ok  CTX-02 a node in both channels is injected once
+ok  CTX-02 recall only gets the remaining budget, not its own 300
+ok  CTX-02 the reason for dropping C is recorded
+ok  CTX-02 rendered blocks share one allowance
+ok  CTX-02 the pin block keeps its label and its own measured size
+ok  CTX-03 the first pre-step of a turn delivers the pin
+ok  CTX-03 later steps in the same turn inject nothing new
+ok  CTX-04 identical text with different host ids is two turns
+ok  CTX-04 the turn key never contains the message text
+ok  CTX-04 a host without ids keeps one key per message object
+ok  CTX-04 a different message object is a different turn
+ok  CTX-04 no user message means no turn
+ok  CTX-04 a new turn re-selects instead of replaying the old dedupe
+ok  CTX-05 a failed send marks nothing delivered
+ok  CTX-05 a failed send spends no budget
+ok  CTX-05 the retry still has content
+ok  CTX-05 after the successful retry nothing repeats
+ok  CTX-05 the pre-step wires reserve -> assemble -> commit with a rollback path
+ok  CTX-06 something was delivered before compaction
+ok  CTX-06 compaction allows the next turn to rebuild
+ok  CTX-06 a fork starts with an empty ledger
+ok  CTX-06 a fork inherits no spent budget
+ok  CTX-06 a fork inherits no pins
+ok  CTX-06 an in-flight reservation cannot commit across compaction
+ok  CTX-07 250 spent leaves 50, not a fresh 300 (got 50)
+ok  CTX-07 a correction uses the remaining budget
+ok  CTX-07 a correction that does not fit is deferred, not given a new 300
+ok  CTX-08 new provenance/revision metadata does not grow the default ctx_read output
+ok  CTX-08 provenance fields stay out of tool output
+ok  CTX-08 ctx_read still returns the full body
+ok  CTX-08 ctx_find stays within 1200 estimated tokens (got 1048)
+ok  CTX-08 over-budget hits are omitted, not sliced
+ok  CTX-08 every kept record is complete — no half JSON, no truncated id
+ok  CTX-08 truncation is announced
+ok  CTX-08 a small result is untouched
+ok  CTX-09 still exactly four tools
+ok  CTX-09 tool names are unchanged
+ok  CTX-09 ctx_find parameter set is unchanged
+ok  CTX-09 ctx_read parameter set is unchanged
+ok  CTX-09 ctx_remember parameter set is unchanged
+ok  CTX-09 ctx_link parameter set is unchanged
+ok  CTX-09 schema estimate 529 <= baseline 529
+ok  CTX-10 a pinned historical node is not rewritten to its successor
+ok  CTX-10 the pin is marked historical with a pointer to the current version
+ok  CTX-10 the explicit historical pin is kept as pinned
+ok  CTX-10 automatic recall maps the old hit to the current head
+ok  CTX-10 the historical node is still injected only once
+ok  CTX-10 the historical pin and the mapped candidate share 300
+ok  CTX-10 an archived successor does not resurrect the old node
+
+P16 context budget regressions passed (55 checks)
+
+== p17 (smoke-p17.mjs)
+ok  SRC-01 a stored source is reported as recorded
+ok  SRC-01 the stable kind survives the legacy via field
+ok  SRC-01 the quote preview is capped at 240
+ok  SRC-01 no deep link is invented
+ok  SRC-01 an over-long quote is truncated, not silently dropped
+ok  SRC-01 detail reports source availability
+ok  SRC-01 detail does not expand the quote
+ok  SRC-01 detail carries an opaque etag
+ok  SRC-01 GET /nodes/:id/detail answers
+ok  SRC-01 GET /nodes/:id/provenance answers
+ok  SRC-02 a record without source says so
+ok  SRC-02 nothing is guessed for a missing source
+ok  SRC-02 a session we cannot confirm is unavailable
+ok  SRC-02 the stored excerpt is kept even when the session is gone
+ok  SRC-02 no other workspace path leaks through provenance
+ok  SRC-03 an over-long quote is capped
+ok  SRC-03 control characters and bidi overrides are stripped
+ok  SRC-03 markup is preserved as text, not executed
+ok  SRC-03 plainText removes control characters
+ok  SRC-03 untrusted source text is still served as JSON
+ok  TRACE-01 the preview answers
+ok  TRACE-01 the preview never claims a semantic run
+ok  TRACE-01 the anchor branch that actually ran is recorded
+ok  TRACE-01 no fabricated BM25/vector contribution is reported
+ok  TRACE-01 a trace stores no vectors, prompts or keys
+ok  TRACE-01 the auto preview answers
+ok  TRACE-01 a real retrieval branch is named
+ok  TRACE-02 no query vector means semantic=not_run
+ok  TRACE-02 the preview does not write to the database
+ok  TRACE-02 the preview does not mutate a node
+ok  TRACE-02 the preview shows the exact text that would be sent
+ok  TRACE-02 the preview reports the shared 300 budget
+ok  TRACE-02 an over-long preview query is rejected
+ok  TRACE-02 POST /recall-preview answers
+ok  TRACE-03 at most 20 traces are kept (got 20)
+ok  TRACE-03 the newest trace is first
+ok  TRACE-03 a stage keeps at most 100 node summaries
+ok  TRACE-03 a capped stage says truncated
+ok  TRACE-03 a trace stays within 64 KiB (got 27945)
+ok  TRACE-03 traces expire after the TTL
+ok  TRACE-03 an expired trace id answers 410
+ok  TRACE-03 the route returns 410 for an expired trace
+ok  TRACE-04 another session cannot read this trace
+ok  TRACE-04 another workspace cannot read this trace
+ok  TRACE-04 listing is scoped to one workspace+session
+ok  TRACE-04 the route leaks nothing
+ok  history returns just this node while no chain exists
+ok  history marks the current node
+ok  GET /nodes/:id/history answers
+ok  detail answers 404 for an unknown node
+ok  a node with no chain is its own current version
+
+P17 provenance and recall traces passed (51 checks)
+
+== p18 (smoke-p18.mjs)
+ok  the bundle keeps two locale blocks
+ok  the zh dictionary is parsed (488 keys)
+ok  every zh key exists in en (missing: none)
+ok  every en key exists in zh (missing: none)
+ok  no surface reads an undefined key (bad: none)
+ok  the panel splits into memory, context, activity and settings pages
+ok  a node detail splits into content, source and decision history
+ok  the panel uses /detail
+ok  the panel uses /provenance
+ok  the panel uses /history
+ok  the panel uses /recall-traces
+ok  the panel uses /recall-preview
+ok  the panel uses /corrections
+ok  the panel uses /integrity
+ok  the panel uses /turn
+ok  the source pane is fetched only when the source tab is opened
+ok  the history pane is fetched only when the history tab is opened
+ok  detail is fetched on expand, not on list load
+ok  delivery records, traces, corrections, the deferred queue and replacement proposals are fetched only while the context or activity page is open
+ok  the proposal read remembers which workspace it was for
+ok  a late proposal response is discarded instead of repainting the list
+ok  switching workspaces drops the proposals and invalidates the request in flight
+ok  a submit refuses a proposal read from another workspace
+ok  a completed proposal action reports an audit write failure instead of a clean success
+ok  a partial import reports the landed count, and distinguishes zero from unknown
+ok  tabs expose role and selection state
+ok  the budget bar exposes its value
+ok  tab buttons are real buttons, keyboard reachable
+ok  the changes block reads the bounded audit endpoint
+ok  the changes block has bilingual labels
+ok  trimmed history is reported, not hidden
+ok  each change row shows its source when present
+ok  the node row has a label for the body it replaced
+ok  the node row renders merged history
+ok  the cap is disclosed instead of pretending completeness
+ok  a missing source has its own message
+ok  a dead session has its own message
+ok  an empty history has its own message
+ok  no diagnostics has its own message
+ok  an empty turn has its own message
+ok  deferred content is surfaced for the next turn
+ok  a failed read has its own message
+ok  no prototype demo toolbar leaked into the bundle
+ok  the shipped bundle does not reference the prototype file
+ok  every budget number is labelled as an estimate
+ok  the confirm dialog is a modal dialog
+ok  the revision dialog handles its own keyboard events (behavior in p24)
+ok  focus can return to the connected trigger or the panel after a filtered trigger disappears
+ok  the confirm button is disabled while saving and without a target
+ok  a 409 is shown as a conflict, not a generic failure
+ok  a conflict keeps the user's selection
+ok  a retry reuses the same operationId
+ok  the dialog shows both existing decisions
+ok  replaced and expired have separate switches
+ok  the replaced switch is a distinct request parameter
+ok  a current version can undo its replacement
+ok  no candidate decision has its own message
+
+P18 client UI contract passed (57 checks)
+
+== p19 (smoke-p19.mjs)
+ok  REV-01 the replacement is confirmed
+ok  REV-01 the edge points new -> old
+ok  REV-01 the reverse lookup agrees
+ok  REV-01 exactly one relation exists
+ok  REV-01 the old body and deadline are untouched
+ok  REV-01 the old decision is not archived
+ok  REV-01 the reason is stored on the edge
+ok  REV-01 the new decision is the current version
+ok  REV-01 automatic recall resolves to the current head
+ok  REV-01 ctx_read can still read the old body
+ok  REV-02 an old-version hit maps to the head
+ok  REV-02 the record carries a short history pointer
+ok  REV-02 old and new hits collapse into one record
+ok  REV-03 C is expired by deadline
+ok  REV-03 the list hides a replaced version by default
+ok  REV-03 the list also hides an expired decision by default
+ok  REV-03 showing replaced versions reveals A
+ok  REV-03 showing replaced versions does not reveal expired C
+ok  REV-03 showing expired reveals C
+ok  REV-03 showing expired does not reveal replaced A
+ok  REV-03 the two states are reported separately
+ok  REV-03 the row names its current version
+ok  REV-04 a self replacement is refused
+ok  REV-04 a cycle is refused
+ok  REV-04 a second successor is refused
+ok  REV-04 a successor with its own predecessor is refused (linear chain only)
+ok  REV-04 only decisions can be replaced
+ok  REV-04 a foreign id is absent from this workspace
+ok  REV-04 resolution stays inside the workspace
+ok  REV-04 an unregistered workspace is refused by the route
+ok  REV-04 the head of the long chain resolves
+ok  REV-04 a chain beyond the hop limit is refused, not half-resolved
+ok  REV-04 short chains still resolve after the refusal
+ok  REV-05 the first window succeeds
+ok  REV-05 a stale etag cannot overwrite another window
+ok  REV-05 the original relation survives
+ok  REV-05 the same operationId is idempotent
+ok  REV-05 a retry does not create a parallel edge
+ok  REV-05 re-reading recognises an applied relation
+ok  REV-05 still exactly one edge
+ok  REV-06 a native transaction failure is reported
+ok  REV-06 a failed transaction leaves both ends unchanged
+ok  REV-07 the graph keeps the relation even though the JSONL file is written later
+ok  REV-07 the derived sidecar state is reported separately
+ok  REV-08 an in-place body rewrite is refused
+ok  REV-08 the history body is unchanged
+ok  REV-08 non-factual fields remain editable
+ok  REV-08 auto-extraction will not merge into a chain node
+ok  REV-08 mergeInto protects the chain body
+ok  REV-08 the body still matches history
+ok  REV-09 a plain about edge exists between the same two nodes
+ok  REV-09 the relation is revoked
+ok  REV-09 A has no successor again
+ok  REV-09 the unrelated about edge survives
+ok  REV-09 only the supersedes edge was removed
+ok  REV-09 revoking below a newer version is refused
+ok  REV-10 an archived successor does not resurrect the old node
+ok  REV-10 the UI can still show the history state
+ok  REV-10 an expired successor does not revive the old decision
+ok  REV-11 deleting a chain node is refused
+ok  REV-11 merging a chain node is refused with 409
+ok  REV-11 the route answers 409 REVISION_LINKED
+ok  REV-11 the merge route answers 409
+ok  the supersede route accepts a valid request
+ok  a repeated relation is never duplicated by the route
+ok  the revoke route answers
+ok  an incomplete request is rejected with 400
+ok  an unknown node answers 404
+ok  history returns the whole chain
+ok  history is newest first
+ok  history marks the requested node
+ok  history carries the relation reason
+ok  history paginates with a cursor
+ok  detail reports the current version
+ok  detail keeps expiry on its own axis
+ok  withWorkspaceQueue serialises read-validate-commit per workspace
+
+P19 revision relations passed (76 checks)
+
+== p20 (smoke-p20.mjs)
+ok  IO-01 the legacy node really has no source
+ok  IO-01 a legacy node reports a missing source
+ok  IO-01 a legacy node reads as its own current version
+ok  IO-01 the legacy deadline is still honoured
+ok  IO-01 detail does not invent a source
+ok  IO-01 reading old data performs no migration
+ok  IO-01 the old node is not rewritten or archived by reading it
+ok  IO-02 the export is version 2
+ok  IO-02 the export keeps its format marker
+ok  IO-02 the revision edge is exported
+ok  IO-02 the relation reason travels with the edge
+ok  IO-02 a full export keeps provenance (it is an explicit user action)
+ok  IO-02 the import accepts a v2 graph
+ok  IO-02 one revision edge was rebuilt
+ok  IO-02 URIs are the cross-store identity
+ok  IO-02 a legacy node can still have no URI
+ok  IO-02 a graph with URI-less nodes still imports
+ok  IO-02 the direction survives the remap
+ok  IO-02 the reverse direction survives too
+ok  IO-02 the edge metadata survives
+ok  the JSONL format is version 2
+ok  the JSONL header announces v2
+ok  the JSONL carries revision relations
+ok  the JSONL carries the relation metadata
+ok  local provenance never enters the committable JSONL
+ok  a v2 file parses
+ok  the parsed v2 relation keeps its metadata
+ok  a v1 file is still readable
+ok  a v1 edge simply has no metadata
+ok  IO-03 a cyclic chain is rejected before any write
+ok  IO-03 a fork is rejected
+ok  IO-03 a non-decision endpoint is rejected
+ok  IO-03 a missing middle node is rejected
+ok  IO-03 a broken chain import is refused with 409
+ok  IO-03 the refusal has a code the UI can show
+ok  IO-03 a refused import writes nothing
+ok  IO-03 no half-written node remains
+ok  IO-03 overwriting a chain body is refused
+ok  IO-03 the conflict names the body overwrite
+ok  IO-03 the live chain body is unchanged
+ok  IO-03 a file without relations still imports the nodes
+ok  IO-03 an import never silently revokes an existing relation
+ok  an archived endpoint is refused
+ok  the refusal leaves no relation behind
+ok  the sidecar reports itself as disabled when the switch is off
+
+P20 data compatibility passed (45 checks)
+
+== p21 (smoke-p21.mjs)
+ok  CTX-21-01 step 1 records carry their real token cost
+ok  CTX-21-01 step 1 per-record tokens add up to the plan total
+ok  CTX-21-01 step 1 the rendered text equals the plan
+ok  CTX-21-01 step 1 the reservation books the rendered total
+ok  CTX-21-01 step 2 the reservation books the rendered total
+ok  CTX-21-01 step 3 the reservation books the rendered total
+ok  CTX-21-01 the first step really delivers a record
+ok  CTX-21-01 three steps stay within one 300 budget (sent=192)
+ok  CTX-21-01 the first step is booked, not free
+ok  CTX-21-01 the ledger only grows within the turn
+ok  CTX-21-01 spent never exceeds the budget
+ok  CTX-21-01 commit is idempotent
+ok  CTX-21-01 an explicit zero budget stays zero
+ok  CTX-21-01 a zero budget selects nothing
+ok  CTX-21-01 compaction keeps the same-turn spend
+ok  CTX-21-02 the fixture really linked the two decisions
+ok  CTX-21-02 the old body is still findable by its own text
+ok  CTX-21-02 the superseded hit produces one record
+ok  CTX-21-02 the record points at the current id
+ok  CTX-21-02 the injected body is the current body
+ok  CTX-21-02 the replaced body is never shown under the new id
+ok  CTX-21-02 the pointer keeps the real old id
+ok  CTX-21-02 preview succeeds
+ok  CTX-21-02 preview returns a record
+ok  CTX-21-02 preview points at the current id
+ok  CTX-21-02 preview shows the current body
+ok  CTX-21-02 preview reports a real token cost
+ok  CTX-21-02 pin candidates remain a structured list
+ok  CTX-21-02 a manual pin keeps its own id
+ok  CTX-21-02 a manual pin keeps its own body
+ok  CTX-21-02 a manual pin is marked historical
+ok  CTX-21-03 the old fact was delivered first
+ok  CTX-21-03 the fixture really linked the two decisions
+ok  CTX-21-03 supersession queues one correction
+ok  CTX-21-03 the notice names the successor
+ok  CTX-21-03 the notice does not resend the old body
+ok  CTX-21-03 the correction is selected
+ok  CTX-21-03 it has its own channel
+ok  CTX-21-03 the correction gets a dedicated message block
+ok  CTX-21-03 it is not mixed into the recall block
+ok  CTX-21-03 the rendered notice still carries no old body
+ok  CTX-21-03 a delivered correction is consumed
+ok  CTX-21-03 the fixture could revoke the relation
+ok  CTX-21-03 revoke queues a new correction
+ok  CTX-21-03 a zero budget defers the correction
+ok  CTX-21-03 a deferred correction is not consumed
+ok  CTX-21-04 a deadline change changes the fingerprint
+ok  CTX-21-04 a state change is not a same-turn duplicate
+ok  CTX-21-05 the fixture linked again
+ok  CTX-21-05 the same-workspace session is notified
+ok  CTX-21-05 another workspace with the same id is not
+ok  IO-21-01 the two-version import is accepted
+ok  IO-21-01 both URI identities survive as separate nodes
+ok  IO-21-01 both stable URIs are present after import
+ok  IO-21-01 the two versions were not merged
+ok  IO-21-01 the new version supersedes the old one
+ok  IO-21-01 no self loop was written
+ok  IO-21-02 a failed transaction is reported, not swallowed
+ok  IO-21-02 a failed import wrote no nodes
+ok  IO-21-02 a failed import did not overwrite a live body
+ok  IO-21-02 a failed import left no revision edge
+ok  IO-21-03 a URI-less v1 graph still imports
+ok  IO-21-03 the legacy node is created once
+ok  IO-21-03 re-importing the same v1 graph is accepted
+ok  IO-21-03 re-importing the same v1 graph creates nothing
+ok  IO-21-03 re-importing the same v1 graph merges into the existing node
+ok  IO-21-05 the JSONL is applied on open
+ok  IO-21-05 a new URI becomes a new node, not a text merge
+ok  IO-21-05 the existing identity is unchanged
+ok  IO-21-04 an insert after an import gets an unused id
+ok  IO-21-04 imported and later ids are all distinct
+ok  IO-21-04 an imported node survives a reopen
+ok  IO-21-04 the imported chain survives a reopen
+ok  IO-21-04 the later insert survives a reopen
+ok  IO-21-06 a busy workspace is reported as a lock
+ok  IO-21-06 the message names the other host
+ok  IO-21-06 the raw TDB error is not the user-facing text
+ok  IO-21-06 other errors keep their own message
+ok  IO-21-07 a healthy chain was created
+ok  IO-21-07 a healthy chain passes the check
+ok  IO-21-07 only the revision edge is counted
+ok  IO-21-07 damaged chains are reported
+ok  IO-21-07 duplicate URIs are reported
+ok  IO-21-07 a fork on the old node is reported
+ok  IO-21-07 a cycle is reported
+ok  IO-21-07 a self loop is reported
+ok  IO-21-07 the checker does not modify the graph
+ok  IO-21-07 the report carries the scanned size
+ok  IO-21-07 a read-only open sees the same damage
+
+P21 0.5.1 correctness gate passed (89 checks)
+
+== p22 (smoke-p22.mjs)
+ok  PKG-22 the checker has a bin entry
+ok  PKG-22 the cleaner has a bin entry
+ok  PKG-22 the checker ships in the package
+ok  PKG-22 the cleaner ships in the package
+ok  TURN-22 a rebuilt object with the same id is the same turn
+ok  TURN-22 a nested source id is used too
+ok  TURN-22 the same object stays the same turn
+ok  TURN-22 two anonymous objects stay separate turns
+ok  CORR-22 a pending correction is visible
+ok  CORR-22 the pending list has the correction
+ok  CORR-22 the pending id is reported
+ok  CORR-22 delivery removes the pending entry
+ok  CORR-22 delivery records a sent entry
+ok  CORR-22 the sent id is reported
+ok  CORR-22 another workspace sees nothing
+ok  UNTIL-22 dry run exits 0
+ok  UNTIL-22 only stale decisions with a deadline are listed
+ok  UNTIL-22 a dry run clears nothing
+ok  UNTIL-22 the prose deadline is marked
+ok  UNTIL-22 the explicit deadline is not marked
+ok  UNTIL-22 apply exits 0
+ok  UNTIL-22 apply clears only the prose deadline
+ok  UNTIL-22 the prose deadline is gone
+ok  UNTIL-22 the explicit deadline is kept
+ok  UNTIL-22 a future deadline is untouched
+ok  UNTIL-22 a node without a deadline is untouched
+ok  UNTIL-23 apply --all exits 0
+ok  UNTIL-23 apply --all clears the remaining explicit deadline
+ok  UNTIL-23 the explicit deadline is gone
+ok  B3-22 the sidecar is written before the failure
+ok  B3-22 a derived-write failure is visible, not silent
+ok  B3-22 reopening rebuilds the missing sidecar
+ok  B3-22 health returns to ok after the rebuild
+ok  B3-22 the text index is rebuilt on reopen
+ok  B3-22 both facts survive in the rebuilt sidecar
+ok  PKG-23 the shipped checker runs from a child process
+ok  PKG-23 a healthy workspace passes
+ok  PKG-23 the checker sees the workspace root and four decisions
+
+P22 maintenance gate passed (38 checks)
+
+== p23 (smoke-p23.mjs)
+ok  IO-23-01 JSONL rejects a cycle against the live graph
+ok  IO-23-01 rejected JSONL leaves the entire graph unchanged
+ok  IO-23-01 a rejected input is not marked synchronized
+ok  IO-23-01 a rejected import is visible in health
+ok  IO-23-01 automatic flush preserves the rejected input
+ok  IO-23-04 removing rejected input allows a real bootstrap write
+ok  IO-23-04 bootstrap actually restores the valid database snapshot
+ok  IO-23-04 reverting to the last synchronized file clears rejection
+ok  IO-23-04 automatic writes resume after restoring a valid input
+ok  IO-23-02 a native JSONL transaction failure is rejected
+ok  IO-23-02 failed JSONL writes no payload, node, edge or archive
+ok  IO-23-02 failed JSONL can retry the same file
+ok  IO-23-02 unchanged input retries successfully after the failure clears
+ok  IO-23-02 the retry commits the intended revision
+ok  IO-23-02 the successful retry has a healthy chain
+ok  IO-23-02 snapshot removals commit with the successful retry
+ok  IO-23-03 duplicate JSONL identities leave the graph unchanged
+ok  IO-23-03 a missing JSONL version endpoint leaves the graph unchanged
+ok  CTX-23-01 pending correction reflects the latest state
+ok  CTX-23-02 a later change is not suppressed as an already-delivered notice
+ok  CTX-23-02 committing an older notice cannot consume a later pending change
+ok  CTX-23-03 a stale same-id projection is excluded from automatic context
+ok  REV-23-01 a 32-hop chain resolves consistently
+ok  REV-23-01 all 33 nodes of the 32-hop history are readable
+ok  REV-23-01 the 33rd edge is rejected
+ok  REV-23-01 rejecting overflow leaves the head unchanged
+ok  REV-23-02 joining chains cannot exceed the combined hop limit
+ok  REV-23-03 archived history is valid retained history
+ok  REV-23-03 JSON round-trips archived history
+ok  REV-23-03 JSON retains the archived history state
+ok  REV-23-03 JSONL keeps both ends and the relation with archived history
+ok  REV-23-03 JSONL retains the archived history state
+ok  REV-23-03 restored history respects current-state automatic injection
+ok  REV-23-03 new replacements still reject archived history
+ok  REV-23-03 archived head is valid retained history
+ok  REV-23-03 JSON round-trips archived head
+ok  REV-23-03 JSON retains the archived head state
+ok  REV-23-03 JSONL keeps both ends and the relation with archived head
+ok  REV-23-03 JSONL retains the archived head state
+ok  REV-23-03 restored head respects current-state automatic injection
+ok  REV-23-03 new replacements still reject archived head
+ok  CLI-23-01 dry-run lists the existing database without applying changed JSONL
+ok  CLI-23-01 dry-run leaves facts and relations unchanged
+ok  CLI-23-01 dry-run leaves all database and sidecar file bytes unchanged
+ok  CLI-23-01 dry-run does not register workspaces or sync hashes
+ok  CLI-23-02 clear-expired-until.mjs --help succeeds without accessing a database
+ok  CLI-23-02 check-integrity.mjs --help succeeds without accessing a database
+
+P23 audit: 47/47 checks passed
+
+== p24 (smoke-p24.mjs)
+ok  a conflict preserves a disappeared target as a disabled comparison, not a valid new submission
+ok  409 refreshes the filtered list and history without losing the dialog selection or retrying
+ok  Escape closes only the inner revision dialog and consumes the event
+ok  a real revision history does not claim the node has no history
+ok  pending corrections explain disabled injection and insufficient budget
+ok  the settings panel surfaces a failed workspace sidecar
+ok  late list response cannot replace the latest search results
+ok  late external-discovery error cannot overwrite a newer successful load
+ok  list, discovery, refresh and archive stay bound to the displayed workspace
+ok  node details expose a keyboard-operable native button
+ok  cancelled permanent deletion does not send a write
+ok  mutation completion refreshes the current search rather than an older closure
+P24 client behavior: 12/12 passed
+
+== p25 (smoke-p25.mjs)
+ok  HEALTH-25 A failure survives B success
+ok  HEALTH-25 B keeps its own success
+ok  HEALTH-25 status reports the requested workspace's health
+ok  HEALTH-25 health identifies its workspace
+ok  HEALTH-25 an explicit generation failure is recorded for that workspace
+ok  HEALTH-25 recovering a generated sidecar cannot clear another workspace's error
+ok  CORR-25 corrections are selected before recurring pins
+ok  CORR-25 recurring pins cannot starve a fitting correction
+ok  CORR-25 priority still honors the shared budget
+ok  EXPIRY-25 the actual pre-step first delivered the live fact
+ok  EXPIRY-25 clock-only expiry reaches the same user turn's actual pre-step as a correction
+ok  EXPIRY-25 observing expiry does not rewrite the fact
+ok  EXPIRY-25 same-turn expiry shares the already-spent allowance
+ok  EXPIRY-25 repeated pre-step does not resend the same expiry
+ok  EXPIRY-25 later user turns do not repeat an acknowledged expiry
+ok  CORR-25 channels off retains pending correction without injecting
+ok  CORR-25 disabled injection has a truthful pending reason
+ok  CORR-25 unknown explicit workspace cannot expose other workspaces' corrections
+ok  CORR-25 re-enabling injection delivers the retained correction
+ok  CORR-25 insufficient remaining budget is reported without consuming the notice
+ok  CORR-25 blocked correction cannot reset a turn budget
+ok  STATUS-25 another workspace cannot inherit the last plan
+ok  STATUS-25 another workspace cannot inherit map counters
+ok  STATUS-25 diagnostics scope is explicit
+ok  EXPIRY-25 old expiry cannot replace the current-version correction
+ok  EXPIRY-25 paused injection still observes expiry and explains the pending state
+ok  EXPIRY-25 resuming injection delivers expiry queued while disabled
+ok  EXPIRY-25 an explicit stale pin is delivered with its stale state
+ok  EXPIRY-25 a fact first received stale does not gain a redundant expiry notice
+ok  EXPIRY-25 renewal reaches the session after the stale pin is removed
+ok  EXPIRY-25 a renewed fact gets its later clock-only expiry correction
+ok  EXPIRY-25 renewed expiry is acknowledged once rather than repeated
+P25 reliability: 32/32 passed
+
+== p26 (smoke-p26.mjs)
+ok  backend: planImportGraph is a real dry run and a stale fingerprint writes nothing
+ok  recovery status is truthful for running, timeout, failure and success and can be refreshed
+ok  the changes panel shows record details, retention, empty and failed states
+ok  a persisted audit gap stays visible after a process restart and later successful write
+ok  switching workspaces clears changes and ignores delayed responses and errors
+ok  the workspace picker lists every known workspace and switching rebinds every request
+ok  an unsaved draft blocks the switch until the user chooses what to do
+ok  save-and-switch commits the draft first and only then reloads the new library
+ok  memory tabs are a real tablist: roving tabindex and arrow keys
+ok  a successful archive produces one committed receipt naming the object
+ok  a rejected write keeps the server code instead of reporting success
+ok  import previews first, commits only on confirm, and reports real counts
+ok  cancelling a preview sends no commit and no write receipt
+ok  a stale preview is refused and asks for a fresh one
+ok  a rejected import keeps the server code and writes nothing
+ok  invalid JSON never reaches the server
+ok  this turn shows only delivered blocks and explains its own emptiness
+ok  an empty ledger says so instead of inventing history
+ok  permanent deletion confirms the exact object before any request
+ok  an explicit settings save produces its own receipt
+
+P26 B-batch behaviour: 19/19 passed
+
+== p27 (smoke-p27.mjs)
+ok  idle 窗口从 12 s 改为 60 s
+ok  累积 12 条 turns 直接抽取（batch）
+ok  5 分钟冷却期内不立即抽取，改为排下一次窗口
+
+P27 extraction scheduling passed
+
+== p28 (smoke-p28.mjs)
+ok  首次批量抽取调用模型并落盘
+ok  失败批次可重试
+ok  内容变化后重试并保留先前失败消息
+
+P28 failed extraction retry passed
+
+== p29 (smoke-p29.mjs)
+ok  单字符检索词不再产生命中
+ok  两字符以上的词、数字、中文词仍然命中
+ok  完整标识符查询不受单字符过滤影响
+
+P29 short-term recall guard passed
+
+== p30 (smoke-retrieval.mjs)
+ok  RANK-30 exact target really entered the candidate pipeline
+ok  RANK-30 exact unlinked name outranks twelve connected partial names
+ok  RANK-30 top-K remains bounded
+ok  RANK-30 adding a target edge cannot change its exact-match rank
+ok  RANK-30 case/whitespace normalization preserves the exact hit
+ok  RANK-30 exact target also survives the lexical fallback
+ok  RANK-30 the public find tool returns the target body
+ok  RANK-30 reopening keeps exact-name recall
+ok  RANK-30 exact-name priority cannot promote stale history above a live match
+ok  RANK-30 explicit historical search retains the stale label
+ok  RANK-30 current-only filtering stays unchanged
+P30 exact-name recall: 11/11
+
+== p31 (smoke-revisions.mjs)
+ok  REV-31 ctx_remember cannot bypass human confirmation through link_label
+ok  REV-31 rejected remember leaves no payload, node or edge behind
+ok  REV-31 normal remember-and-link still works
+ok  REV-31 ctx_link keeps its existing revision guard
+ok  REV-31 cycle is unavailable from every affected node
+ok  REV-31 cycle does not enter automatic context
+ok  REV-31 cycle is not exposed as a current fact by ctx_find
+ok  REV-31 fork is unavailable from every affected node
+ok  REV-31 fork does not enter automatic context
+ok  REV-31 fork is not exposed as a current fact by ctx_find
+ok  REV-31 too-long is unavailable from every affected node
+ok  REV-31 too-long does not enter automatic context
+ok  REV-31 too-long is not exposed as a current fact by ctx_find
+ok  REV-31 non-decision is unavailable from every affected node
+ok  REV-31 non-decision does not enter automatic context
+ok  REV-31 non-decision is not exposed as a current fact by ctx_find
+ok  REV-31 missing-node is unavailable from every affected node
+ok  REV-31 missing-node does not enter automatic context
+P31 revision gates: 18/18
+
+== p33 (smoke-evaluation.mjs)
+P33 rubric passed: all gold, negation, generic answer, missing/extra/duplicate fields, unknown and order-independent set
+P40 extraction rubric passed: body-only, whole facts, subject/value/polarity/time, missing, duplicate, extra and manual-review cases
+
+== p34 (smoke-retrieval.mjs)
+P34 cost guards passed: acknowledgements only, implicit/tool facts retained, business paths and full read preserved
+
+== p35 (smoke-retrieval.mjs)
+ok  UNIT-35 clipped body never exceeds the cap
+ok  UNIT-35 the tail (the answer) survives
+ok  UNIT-35 the head is still there for context
+ok  UNIT-35 the omission is visible, not silent
+ok  UNIT-35 short bodies are untouched
+ok  S07-35 all six parallel facts reach the model when the budget allows
+ok  S07-35 the shared 300-token turn budget still holds
+ok  S07-35 unrelated rows are not dragged in
+ok  S05-35 a tail-only answer is delivered without ctx_read
+ok  S05-35 the long fact is the record that arrived (not another row)
+ok  S05-35 one record still cannot eat the whole turn budget
+ok  BUDGET-35 a long fact still fits the 300-token turn
+ok  BUDGET-35 the cap is honoured
+ok  BUDGET-35 selected bodies end on a record boundary, not mid-word
+ok  BUDGET-35 the rest are dropped whole, with an explicit reason
+ok  BUDGET-35 the selected record still carries its conclusion
+P35 injection integrity: 16/16 passed
+
+== p36 (smoke-p36.mjs)
+ok  UNIT-36 a nontrivial continuation is uncertain
+ok  UNIT-36 a progress-summary request is uncertain
+ok  UNIT-36 a bare next-step is filler
+ok  UNIT-36 whitespace is filler
+ok  UNIT-36 the fact-bearing turn is not filler
+ok  UNIT-36 an explicit decision cue is not filler
+ok  UNIT-36 an explicit preference cue is not filler
+ok  UNIT-36 a name-bearing turn is not filler
+ok  UNIT-36 an id-like token is not filler even when the rule layer calls it noise
+ok  UNIT-36 a long turn is not filler
+ok  GATE-36 the D2 window is worth one call
+ok  GATE-36 a filler-only window is skipped
+ok  GATE-36 a tool failure still calls the model
+ok  GATE-36 successful tool evidence is retained
+ok  INT-36 the D2 window costs exactly one model call
+ok  INT-36 the call is not reported as skipped
+ok  INT-36 the model fact is still written
+ok  INT-36 a filler-only window makes no call
+ok  INT-36 the skip is reported, not silent
+ok  INT-36 a skipped window is not a failure
+ok  INT-36 a gated window does not treat the missing call as a failure
+ok  INT-36 the gated window reports why
+ok  INT-36 a model failure is reported even when rules wrote something
+ok  INT-36 rules still write while the model is down
+ok  INT-36 a failed call is still reported as failed
+ok  INT-36 a failed call is not reported as a gate skip
+ok  INT-36 no llmCall means nothing was skipped
+
+P36 extraction gate: 27/27 passed
+
+== p37 (smoke-retrieval.mjs)
+ok  OLD-37 the legacy topK=3 yields only three candidates
+ok  OLD-37 three records reach the injection
+ok  OLD-37 the budget was never the limiter
+ok  OLD-37 nothing was deduplicated away; the cap sat before the budget
+ok  NOW-37 all six candidates are produced
+ok  NOW-37 all six are selected
+ok  NOW-37 the shared budget still holds
+ok  NOW-37 every code is in the rendered text
+ok  NOW-37 no record is dropped at the current shape
+ok  NOW-37 six distinct ids, no content folding
+
+P37 S07 failure class: 10/10 passed
+
+== p38 (smoke-p38.mjs)
+ok retain 继续，重试次数改为 5 次。
+ok retain 下一步，项目负责人是张三。
+ok retain 先别管性能，生产端口是 9443。
+ok retain 继续，预算上限改为 5000 元。
+ok retain 继续，不再使用旧方案。
+ok retain 照旧
+ok retain 就按那个来
+ok retain continue, use port 9443
+ok inspect entire window assistant
+ok inspect entire window tool
+ok inspect entire window tool
+ok exact filler may skip
+ok uncertain fact reaches model
+ok fact persisted before consuming window
+ok successful extraction clears pending
+ok failed extraction keeps pending
+ok long pin retains tail
+ok alias-only edit is not a content correction
+ok middle-only change is tracked
+ok distinct middle changes have distinct identity
+ok no repeat notice after delivery
+ok deadline edits still notify
+ok historical pin keeps original identity
+ok historical pin is labelled
+ok historical pin keeps original tail
+P38: 25/25
+
+== p39 (smoke-evaluation.mjs)
+P39 passed: isolated identities, fixture checks, pre-request reservation, failure latch, unknown usage/price and budget stop
+
+== p41 (smoke-p41.mjs)
+P41 passed: actual C4 order/isolation, D1 persistent map/history, 9 immutable manifests, 622-call accounting and persisted extraction grading
+
+== p42 (smoke-p42.mjs)
+ok export succeeds with approved scope
+ok only exportable facts survive (3 of 7)
+ok secret-looking fact is not exported
+ok expired fact is not exported
+ok archived fact is not exported
+ok every skipped entry is reported
+ok block stays inside the 300 token budget
+ok model block carries the approved text
+ok model block does not carry machine-layer ids
+ok same facts give the same digest
+ok each run mints a new snapshot id
+ok over-budget export is refused
+ok refusal names the budget code
+ok refusal explains the limit
+ok refusal shows a preview, not a silent cut
+ok binding over 8 entries is rejected
+ok supersede lands
+ok export still succeeds after an update
+ok new task sees the successor text
+ok old decision no longer appears as current
+ok digest changes with the content
+ok source revision changes with the store
+ok fork fixture: first successor lands
+ok a forked decision is reported as a conflict, not picked
+ok a fork-only binding exports nothing
+ok binding is refused from another workspace
+ok binding is refused for another consumer
+ok original persona file is untouched
+ok composed file keeps the original persona
+ok composed file appends the preference block
+ok machine layer declares the schema version
+ok machine layer lists the exported facts
+ok digest is an explicit sha256
+ok revoked block contains no preference text
+ok revoked persona copy contains no preference text
+ok revocation keeps the original persona
+ok snapshot records the revocation
+ok revoked binding cannot export again
+P42: 38/38
+
+== p43 (smoke-extraction.mjs)
+ok mixed tool cue keeps the fact: 按顺序调用工具，生产端口是 9443。
+ok mixed tool cue keeps the fact: 只用 ctx_find，负责人是张三。
+ok mixed tool cue keeps the fact: 贴工具原文：预算上限改成 5000 元。
+ok mixed tool cue keeps the fact: 按顺序调用工具。生产端口是 9443。
+ok mixed tool cue keeps the fact: 只用 ctx_read 读一下，别再推荐看过的视频。
+ok count fact survives the cue
+ok pure operation wording may skip: 只用 ctx_find。
+ok pure operation wording may skip: 按顺序调用工具。
+ok pure operation wording may skip: 贴工具原文
+ok assistant fact still opens the window
+ok rule candidate still produced for a mixed turn
+ok extraction prompt carries the fact text
+ok gate does not report a skip for a mixed turn
+ok extracted fact is applied to the database
+ok no extraction failure
+ok fact is readable back from the workspace database
+ok pure operation turn applies nothing
+P43: 17/17
+
+== p44 (smoke-p44.mjs)
+ok blank model answer is a failure
+ok blank answer applies nothing
+ok blank answer leaves only the workspace node
+ok whitespace-only answer is a failure too
+ok explicit empty candidate list is not a failure
+ok explicit empty list applies nothing
+ok scheduler reports the failure
+ok scheduler keeps the turn for a later retry
+ok pending file still holds the fact
+ok pending text is the original fact
+ok a real answer is a success
+ok a real answer is applied
+ok the fact is readable from the database
+ok an empty content list is a blank answer
+ok an empty text block is a blank answer
+ok whitespace only is a blank answer
+ok real text is not blank
+ok a tool-only step is not a blank answer
+ok a tool step that also carries an empty text block is still a tool step
+P44: 19/19
+P32 scheduler passed: snapshot isolation, single flight, eventual wakeup, bounded failure, retry, successful dedupe, disposal
+
+== p45 (smoke-extraction.mjs)
+ok one attempt when the host accepts the effort
+ok extraction asks for reasoning off
+ok extraction keeps the 900-token budget
+ok provider comes from the session header
+ok the retry error still propagates
+ok exactly one fallback attempt
+ok the fallback drops the effort
+ok the fallback keeps the budget
+ok the fallback keeps the model
+ok unrelated errors propagate
+ok unrelated errors are not retried
+P45: 11/11
+
+== p46 (smoke-extraction.mjs)
+ok refuses github pat
+ok refuses github fine-grained
+ok refuses aws access key
+ok refuses google api key
+ok refuses npm token
+ok refuses slack token
+ok refuses jwt
+ok refuses pem
+ok refuses chinese password
+ok refuses chinese code word
+ok keeps project code name
+ok keeps port
+ok keeps person
+ok keeps password topic without a value
+ok keeps budget
+ok keeps hash in prose
+ok keeps token budget
+ok keeps password policy
+ok keeps api key location
+ok still refuses token assignment
+ok still refuses password is
+ok still refuses api key colon
+ok still refuses sk prefix alone
+ok still refuses bearer header
+ok the clean candidate is written
+ok the written candidate is the clean one
+ok the secret candidate is reported as skipped
+ok skip reason is secret
+ok the skip report does not echo the secret
+ok the skip report keeps only a length
+ok no credential reached the database
+ok the clean fact did reach the database
+ok ctx_remember gate refuses the same value
+ok ctx_remember gate keeps the clean fact
+P46: 34/34
+
+== p47 (smoke-p47.mjs)
+ok a healthy export verifies
+ok digest is recomputed and matches
+ok consumer is checked against the binding
+ok every fact is present in the block
+ok an expired snapshot fails verification
+ok expiry names itself
+ok --allow-expired is explicit, not silent
+ok a tampered block fails
+ok the missing fact is named
+ok a forged digest fails
+ok restoring the digest restores the verdict
+ok a revoked binding fails
+ok a consumer file without the block fails
+ok verify exits 0 on a healthy export (got 0)
+ok verify prints a machine-readable verdict
+ok verify exits 3 on failure (got 3)
+P47: 16/16
+
+== p48 (smoke-revisions.mjs)
+ok the first decision is written
+ok the replacement decision is written
+ok the replacement is linked to the old decision
+ok the old decision now resolves to the new one
+ok exactly one successor, no fork
+ok the retired decision leaves the short map
+ok the current decision stays in the short map
+ok the map counts current decisions only
+ok no replacement word, no retirement
+ok an ambiguous replacement is reported as pending
+ok ambiguous targets keep their current status
+ok the unconfirmed decision is not offered as current
+P48: 12/12
+
+== p49 (smoke-extraction.mjs)
+ok the scrubbed fact is retained as written or pending
+ok the invented date is gone from the stored text
+ok the fact body survives
+ok the removal is reported
+ok the removed date is named
+ok the date is gone
+ok the connector that belonged to the date is gone too
+ok what remains is the fact itself
+ok a supported date is kept
+ok nothing is reported when the date is supported
+ok format differences do not count as invented
+ok no adjustment for a cross-format match
+ok an English date in the window authorises the abbreviated form
+ok and the fact keeps the date as written
+ok an invented English date is reported
+ok it is named by the same key
+ok and removed from the fact
+ok the body parser rejects a missing year separator: November 202026
+ok the body parser rejects a missing year separator: November 20th2026
+ok the body parser rejects a missing year separator: 20 Nov2026
+ok the body parser rejects a missing year separator: 20 Nov.2026
+ok a malformed source date cannot authorise a date invented by the model
+ok a date-only candidate is not stored
+ok the refusal is named unsupported-date
+ok an inline invented date is removed
+ok the fact body still survives
+ok a correctly resolved relative date is kept
+ok the resolved date is not reported as invented
+ok a far-off date is still removed
+ok the far-off removal is reported
+P49: 30/30
+
+== p50 (smoke-extraction.mjs)
+ok user event becomes a user turn
+ok event sequence is kept
+ok message id is kept
+ok source time is kept as an absolute timestamp
+ok a turn with a locator reports itself as recorded
+ok plugin-injected message is not buffered
+ok assistant event keeps its role
+ok tool event keeps its role
+ok tool result keeps its ok flag
+ok missing sequence is null
+ok missing message id is null
+ok missing time is null
+ok a turn without locators reports itself as not recorded
+ok an exact quote is recognised as exact
+ok the source role is user
+ok the source carries the matched message id
+ok the source carries the matched sequence
+ok a matched user quote counts as user evidence
+ok assistant wording keeps the assistant role
+ok assistant wording is not user evidence
+ok an unmatched quote is reported as none
+ok an unmatched quote has an unknown role
+ok the quote is still displayed
+ok an unmatched quote is not user evidence
+ok pending keeps the message id
+ok pending keeps the original source time
+ok pending keeps the sequence
+ok legacy pending still loads
+ok legacy turn reports an unknown locator
+ok two identical sentences stay two turns
+ok identical text does not collapse two events
+ok a retried event is not registered twice
+ok reused locator keeps changed text, role, and tool outcome
+ok reused sequence keeps changed text while exact retry deduplicates
+ok the written node keeps the source message id
+ok the written node keeps the source sequence
+ok the written node keeps the source role
+ok the written node keeps the quote match result
+ok replay keeps the original source time
+ok replay keeps the original message id
+ok replay time and source time are separate fields
+ok a fresh node reports a known locator
+ok the projection reports the source role
+ok the projection reports the quote match
+ok the projection admits the host text cannot be re-read
+ok a node without a source reports missing
+ok a missing source is null, not fabricated
+ok a source without a locator says so
+ok the quote is still displayed
+P50: 49/49
+
+== p51 (smoke-p51.mjs)
+ok an explicit replacement still retires the old decision
+ok discussion does not retire the decision
+ok discussion creates no link
+ok discussion is retained for source review before revision processing
+ok a decision that stays as is is not retired
+ok negated replacement does not retire the decision
+ok hypothesis does not retire the decision
+ok quoted document does not retire the decision
+ok question does not retire the decision
+ok a model-invented quote cannot retire a decision
+ok ambiguous targets are not retired
+ok no node id is chained for ambiguous targets
+ok the ambiguous intent is reported as pending
+ok the unconfirmed new decision is not offered as current
+ok repeating the same correction does not fork the chain
+P51: 15/15
+
+== p52 (smoke-p52.mjs)
+ok F-W02: 明天 no longer authorises a date seven months away
+ok F-W02: the removal is reported with a reason
+ok 明天 resolves to the next calendar day
+ok a correctly resolved date is not reported
+ok 下周五 resolves to 2026-11-06
+ok a neighbouring date is not accepted for 下周五
+ok 明天 crosses the month boundary correctly
+ok 明天 lands on the leap day
+ok an impossible date is removed
+ok invalid dates get their own reason
+ok two expressions in one sentence do not authorise a date
+ok a date written in the window is kept
+ok replay resolves 明天 from the source time
+ok 以后 does not authorise a concrete date
+ok resolver: 明天
+ok resolver: 下周一 is Monday of next week
+ok resolver: 本周一 is Monday of this week
+ok resolver: 月底前 is not made precise
+ok resolver: 2026-02-30 is not a date
+ok resolver: 2024-02-29 is a date
+P52: 20/20
+
+== p53 (smoke-audit-locks.mjs)
+ok both entries are stored
+ok the newest entry comes first
+ok the source locator is kept
+ok the reason code is preserved
+ok label exists for written
+ok label exists for merged
+ok label exists for superseded
+ok label exists for rejected
+ok label exists for date-adjusted
+ok label exists for pending-review
+ok label exists for source-reviewed
+ok label exists for supersede-failed
+ok label exists for supersede-confirmed
+ok label exists for supersede-rejected
+ok label exists for replay-timeout
+ok label exists for lock-busy
+ok label exists for stuck
+ok label exists for recovered
+ok the secret is redacted before the file is written
+ok the redaction marker is stored
+ok a repeated opId does not create a second entry
+ok the read limit is honoured
+ok trimming is reported, not hidden
+ok the log stays inside its cap
+ok the newest entry survives trimming
+ok the other workspace has its own log
+ok entries do not leak across workspaces
+ok a failed audit write is reported
+ok an insert maps to written
+ok a merge maps to merged
+ok a retirement maps to superseded
+ok an unconfirmed replacement maps to pending-review
+ok a refusal maps to rejected
+ok a date removal maps to date-adjusted
+ok the applied row carries the stored source
+ok every row has a distinct opId
+P53: 36/36
+
+== p54 (smoke-audit-locks.mjs)
+ok the first process takes the lock
+ok the lock file exists while held
+ok the second process does not get the lock
+ok the second process is told it is busy
+ok taking the lock never waits
+ok the holder is described without failing
+ok release removes the lock file
+ok a second release is harmless
+ok a lock older than the TTL is taken over
+ok a fresh lock is respected
+ok an old lock owned by a live process is not stolen
+ok release refuses a lock it no longer owns
+ok the other holder keeps its lock
+ok the reason code exists
+ok the reason has bilingual labels
+ok a busy outcome is recorded, not dropped
+ok a leftover lock is eventually reclaimed
+ok the new holder owns the file
+P54: 18/18
+
+== p55 (smoke-audit-locks.mjs)
+ok the first process exits cleanly: 
+ok the second process exits cleanly: 
+ok exactly one process writes
+ok the other reports locked instead of writing
+ok the fact is readable after the race
+ok a later process is not blocked by a leaked lock
+ok a later run still writes (lock is not sticky)
+ok no lock file is left behind
+P55: 8/8
+
+== p56 (smoke-audit-locks.mjs)
+ok first batch is written
+ok second batch triggers another trim
+ok second workspace has its own log
+ok HTTP response succeeds and is not cached
+ok requested response limit is applied
+ok newest rows are first
+ok multiple trims preserve the cumulative dropped count
+ok response contains bilingual labels
+ok workspace B rows do not leak into workspace A
+ok workspace B returns only its own entry
+ok large limits are capped at the retention bound
+ok fractional limits are normalized to whole entries
+ok unregistered workspaces are rejected
+ok change window is written
+ok change window is written
+ok change window is written
+ok insert-to-merge replay deduplicates while a later edit remains visible
+ok sensitive-looking audit input is handled
+ok sensitive-looking values are absent from all persisted fields
+ok extraction operation IDs are opaque digests
+ok preview and detail are redacted in the HTTP result
+ok filesystem read failure is not presented as an empty log
+ok filesystem failure does not expose a local path
+ok corrupt rows are reported instead of silently dropped
+ok registered handler rejects a non-loopback address
+P56: 25/25
+
+== p57 (smoke-p57.mjs)
+ok ctx_remember reports busy before opening the engine
+ok ctx_link reports busy before opening the engine
+ok all three real HTTP import routes report busy
+ok busy attempts leave the graph unchanged
+ok busy attempts preserve pending data
+ok busy imports preserve both source files
+ok cached native writer gives ctx_remember a recoverable error
+ok cached native writer gives ctx_link a recoverable error
+ok cached native writer gives all HTTP import routes DB_LOCKED
+ok native contention leaves the graph unchanged
+ok ctx_remember succeeds after the other host closes
+ok ctx_link succeeds after the other host closes
+ok all three import endpoints succeed after close
+ok curated discovery probes only paths inside the test root
+ok both selected Markdown imports report new facts
+ok successful import persists its fact
+ok WorkBuddy fact persists after reopen
+ok Claude fact persists after reopen
+ok successful imports do not modify their source files
+ok successful retries do not consume extraction pending data
+P57: 20/20
+
+== p58 (smoke-p58.mjs)
+ok an operation longer than the TTL keeps its live owner's lock
+ok a live recovery owner is not displaced even after TTL
+ok a killed recovery owner and dead operation owner can be reclaimed
+ok six concurrent processes produce one stale-lock winner
+ok other reclaimers fail closed without opening a database
+ok a later operation succeeds after the winner releases
+P58: 6/6
+P59: event extraction, audit and pending consumption passed
+
+== p60 (smoke-p60.mjs)
+ok no observed replay is unknown in each workspace
+ok running replay is visible while the model is blocked
+ok recovery status remains scoped to its workspace
+ok eight-second timeout leaves pending and reports background work
+ok a second session using an equivalent path does not claim the still-running replay
+ok background failure becomes visible and preserves pending
+ok later session retries successfully and consumes pending
+ok another timed-out replay remains running
+ok a timed-out replay can finish successfully in the background
+ok test acquires the independent audit lock
+ok audit contention is visible per workspace without local paths
+ok audit failure does not contaminate another workspace
+ok a fresh process does not invent a recovery result or retain live audit state
+P60: 13/13
+
+== p61 (smoke-p61.mjs)
+ok audit lock can be acquired independently
+ok contended audit write reports failure without writing
+ok concurrent processes preserve all rows or report exact trimming
+ok retained rows remain distinct and readable
+ok audit lock is released after both writers finish
+ok a stale dead-owner audit lock is recovered
+ok stale recovery keeps the trim count and releases the lock
+ok an unrelated workspace has no audit-gap marker
+ok a competing process records a durable audit gap
+ok gap marker has fixed size and contains no event data
+ok a fresh process sees the gap even when no log exists
+ok later writes can succeed
+ok later success does not erase evidence of missing history
+ok the gap does not leak to another workspace
+P61: 14/14
+
+== p62 (smoke-p62.mjs)
+ok legacy single-window data migrates without losing its first entry
+ok two processes merge unique turns for the same session
+ok recorded host sequences are ordered even when processes write them backwards
+ok unknown-locator turns remain barriers to inferred ordering
+ok success removes only the consumed turns of the shared session
+ok stale saves from another process cannot resurrect acknowledged event IDs
+ok a blocked older save cannot run after a newer settlement in this process
+ok changed content is not dropped when a locator is reused
+ok a corrupt pending file is preserved instead of overwritten
+ok unreadable pending data is visible to the workspace status
+ok failed startup leaves corrupt pending bytes intact
+ok invalid windows metadata is not overwritten
+ok invalid acknowledged metadata is not overwritten
+ok distinct unlocated events get local identities without fabricated host locators
+ok real buffered events retain changed text for a reused locator and deduplicate an exact retry
+ok prolonged pending-lock contention is visible to the user
+ok the failed turn-end persistence retries after the lock is released
+ok first recovery begins with a blocked controlled model
+ok replay continues after its startup timeout
+ok new session turn/end appends a second durable pending window
+ok failed recovery and new session both retain their original facts
+ok fresh process restores both queued windows and can find both facts
+P62: 22/22
+
+== p63 (smoke-p63.mjs)
+ok the old decision keeps its original text (no overwrite)
+ok the replacement is written as its own node
+ok the replacement is a new node, not the old one
+ok a supersedes edge links them
+ok the link is reported
+ok a repeated replacement write is idempotent
+ok and does not fork the chain
+ok the single edge still points at the old decision
+ok a letter far from the cue does not match the label
+ok invented B stays pending before target selection
+ok a claim without a matching source stays pending
+ok an unsupported claim is retained outside current memory
+ok and it retires nothing
+ok a non-replacement decision reports nothing
+P63: 14/14
+
+== p64 (smoke-revisions.mjs)
+ok the live text is the new one
+ok one previous body is kept
+ok the previous body is the old text
+ok the previous body keeps its own timestamp
+ok the previous body keeps its source locator
+ok the live text follows the newest merge
+ok history is capped
+ok the newest replaced body comes first
+ok merging identical text records no history
+ok a credential-shaped previous body is redacted
+ok the credential never reaches history
+ok the merge updated the stored body
+ok the stored node kept the previous body
+ok a new node has no history
+ok the node list exposes the previous body
+ok the node list counts the previous bodies
+ok an unmerged node reports zero
+P64: 17/17
+
+== p65 (smoke-p65.mjs)
+ok the named decision is retired
+ok the link records that the model proposed it
+ok an unknown target retires nothing
+ok the miss is reported
+ok a discussion retires nothing even when the model names a target
+ok the unsupported discussion candidate stays pending
+ok a claim without a quote retires nothing
+ok the unsupported replacement stays pending
+ok the replacement is inserted instead of merged
+ok the old body is still intact
+ok a deictic target resolves when it is the only live decision
+ok the deictic resolution is marked in the report
+ok a deictic target retires nothing when several decisions are live
+ok the ambiguity is reported
+ok an already replaced target is reported
+ok the old decision still has exactly one successor
+P65: 16/16
+
+== p66 (smoke-extraction.mjs)
+ok the model is asked a second time
+ok the second question says why it is being asked
+ok the decision is written after the retry
+ok a recovered window is not reported as suspicious
+ok the retry happens exactly once
+ok nothing is written when the model insists
+ok the suspicious empty window is reported
+ok a window with no decision is asked only once
+ok and is not flagged
+ok the rule layer handled this window
+ok no retry when a rule already found the fact
+ok an empty answer is a failure so the window stays pending
+ok a failure is not reported as a suspicious empty
+P66: 13/13
+
+== p67 (smoke-revisions.mjs)
+ok a paraphrase of the same write does not create a second node
+ok the replaced decision is untouched
+ok a renamed paraphrase is kept separately, not merged
+ok the renamed node is stored under its own name
+ok identical text from another message still folds
+ok the first fact is kept
+ok a different name from the same message is kept separately
+ok the richer text wins
+ok the folded body is kept as history
+P67: 9/9
+
+== p69 (smoke-revisions.mjs)
+ok a claim without replacement wording retires nothing
+ok the old decision is still current
+ok the reason is reported
+ok a deictic name alone does not authorise a retirement
+ok and the head stays put
+ok a negated replacement word retires nothing
+ok the head survives a negated cue
+ok a quoted replacement word retires nothing
+ok the head survives a quoted cue
+ok a cross-session sequence collision inserts instead of merging
+ok the old body is not overwritten
+ok the budget fact is written
+ok and it keeps its own body
+ok only the correction creates a link
+ok the link points at the replaced decision
+ok a repeat with a longer body does not throw REVISION_PROTECTED
+ok the longer body is stored
+ok and the chain is not forked
+P69: 18/18
+
+== p70 (smoke-p70.mjs)
+ok a self-worded candidate cannot retire a decision (label)
+ok the head survives the self-worded claim (label)
+ok the refusal is reported (label)
+ok a self-worded candidate cannot retire a decision (deictic)
+ok the head survives the self-worded claim (deictic)
+ok the refusal is reported (deictic)
+ok "别用方案 A，改用方案 B。" retires the old plan
+ok "不要用方案 A，改用方案 B。" retires the old plan
+ok a keep-as-is clause elsewhere in the sentence does not veto
+ok the old plan is retired
+ok a sentence without replacement wording retires nothing
+ok and leaves the head alone
+ok the unsupported target wording is retained for source review
+ok only the correction creates an edge
+ok the new plan stays current
+ok the budget keeps its own head
+ok the short map still lists current decisions
+ok the budget is never reported as a retirement
+ok a trailing question mark blocks retirement
+ok "…吗？" blocks retirement
+ok a quoted instruction being translated is not an instruction
+ok a nested quotation does not become an instruction
+ok a comma-separated keep clause does not veto
+ok an ASCII period separates the clauses
+ok a semicolon keeps the correction
+ok the explicit path applies the same clause scope
+ok a result-state candidate still retires the replaced plan
+ok a later "continue using" retracts the retirement
+ok naming the plan being switched to does not retire it
+ok the plan the sentence drops is still retired
+ok mid-question: the implicit path retires nothing
+ok mid-question: the explicit path retires nothing either
+ok reported-speech: the implicit path retires nothing
+ok reported-speech: the explicit path retires nothing either
+ok reported-unapproved: the implicit path retires nothing
+ok reported-unapproved: the explicit path retires nothing either
+ok "A 不再继续使用" does not count as keeping it
+ok the implicit path honours the retraction
+ok the explicit path honours the retraction too
+ok plan-first retires the replaced plan
+ok budget-first retires it as well
+ok plan-first leaves the plan as the head
+ok budget-first leaves the same head
+P70: 43/43
+
+== p74 (smoke-p74.mjs)
+ok the first turn injects the map
+ok the startup injection has its own counter
+ok the last injection names its session
+ok the startup record is a full injection
+ok the startup record says why
+ok the full map names the facts
+ok the first injection is the full map, not a diff
+ok quiet turns inject nothing
+ok each quiet turn is reported as a skip
+ok the skip reason is "unchanged"
+ok three quiet turns drop injection tokens by >= 50% (225 -> 0)
+ok the facts are still named in the session context that was already injected
+ok a repeated pre-step in the same turn does nothing
+ok the repeated pre-step injects nothing
+ok a changed fact set injects a diff
+ok exactly one new message is injected
+ok the diff names the new fact (got dsh-trivium memory map changed: +1 new, -0 retired, ~0 relabeled; 1 more entries stay unexpanded (ctx_find to read them).
++decision:release-train)
+ok the diff starts with a summary line
+ok the summary says how many entries are not expanded
+ok the diff is smaller than the full map (37 vs 75)
+ok the diff did not write anything
+ok a retired fact injects a diff
+ok the retired fact is listed as removed (got dsh-trivium memory map changed: +0 new, -1 retired, ~0 relabeled; 0 more entries stay unexpanded (ctx_find to read them).
+-decision:release-train)
+ok the summary counts the removal
+ok a full map is forced once N turns have passed
+ok the forced full injection says why
+ok N is six turns
+ok N-1 turns still skips
+ok a map without a version is injected in full
+ok the version includes the budget
+ok fixture: the entry list is mutable for the comparison
+ok the version is a fingerprint + count + budget (mapv-fnv1a-b88f301a-8-400)
+ok a version-only change does not buy a diff
+ok pre-steps without a user message do not move the counter
+ok those pre-steps inject nothing
+ok the next real turn still refreshes
+ok a key-less host still gets its first refresh
+ok repeated empty observations do not move the counter
+ok six empty pre-steps never force a full refresh
+ok a real key still starts a new turn after empty observations
+ok the diff reports how many rows it left out
+ok a large diff is clipped to the map budget
+ok a small diff is not clipped
+ok fixture: ent-000 is outside the map before any reference
+ok fixture: x00 is outside the map before any reference
+ok the throttled sidecar flushes on demand
+ok rebuilt map names the found entity (got experience:x00 | entity:ent-001 | entity:ent-000 | preference:p19 | preference:p18 | preference:p17 | preference:p16 | entity:ent-019)
+ok rebuilt map names the read entity
+ok rebuilt map names the read experience
+ok map stays within 400 estimated tokens (70)
+ok injection tokens do not rise (70 -> 70)
+ok the map still names at most eight facts
+ok reported tokens match the text
+ok the map carries a version fingerprint
+ok the report knows how many facts stay unexpanded (42)
+ok listNodes and track:false renders leave the counters untouched
+ok a hit on a retired node credits the current head
+ok the retired node is not charged
+ok the first reference writes the sidecar immediately
+ok a second reference inside the window is coalesced
+ok the coalesced reference reports itself as throttled
+ok the next reference after 60 s writes again
+ok the flushed file keeps the coalesced reference
+ok the throttle is 60 s
+ok graph payloads carry no heat fields
+ok the sidecar lives beside the database
+ok DIM is untouched
+ok deleting a node drops its heat entry
+ok a reference without a workspace is ignored
+ok reading heat without a workspace returns nothing
+ok a corrupt usage file degrades to no heat
+P74: 71/71
+
+== p75 (smoke-p75.mjs)
+ok 0: 继续。
+ok 0: 好的
+ok 0: ok
+ok 1: /compact
+ok 1: git status
+ok 1: npm test
+ok 1: C:\proj\readme.md
+ok 1: ~/proj
+ok 1: /tmp/build.sh
+ok 1: https://example.com/a?b=1
+ok 2: 记住，以后都用 pnpm。
+ok 2: 采用方案 A 做登录。
+ok 2: 从现在起回复用中文。
+ok 1: 这个接口为什么超时？
+ok 1: we should look at the logs
+ok 1: 继续用方案 A
+ok 0: empty text
+ok 0: whitespace only
+ok 1: long text is never a zero
+ok not-0: greeting prefix + fact (好的，但是以后不要用 npm 装依赖)
+ok not-0: filler prefix + decision (继续用方案 A)
+ok not-0: command prefix + fact (git status 之后再改成方案 B)
+ok not-0: path prefix + instruction (C:\proj\web 的 README 改成英文)
+ok not-0: slash command + fact (/compact 之前先把预算改成 5000)
+ok not-0: ack + preference cue (ok 但记住用 pnpm)
+ok not-0: url + statement (https://example.com 这个接口超时了)
+ok not-0: command + question mark (npm test -- --watch 吗？)
+ok a greeting with a real cue still scores 2
+ok every zero names the rule it matched
+ok the greeting whitelist is auditable
+ok a zero user turn with tool evidence is retained and scored as evidence
+ok a 2 never displaces an earlier event
+ok a reply stays attached to the turn it answers
+ok the complete input chronology is preserved across every score
+ok tool results keep their original position
+ok a mixed window keeps its greeting instead of deleting it
+ok an all-zero window is retained; only wouldDrop describes the retired policy
+ok score-only mode keeps the model call count unchanged
+   corpus calls: 30 -> 30 (0.0% saved on a command-heavy corpus)
+ok a filler-only window is retained for the existing content gate
+ok the extracted facts are identical
+ok the corpus really produced hits (10)
+ok screening never adds a model call
+ok the same number of nodes is written
+ok an English sentence that starts with a command name is not a zero
+ok commands, slash commands, paths and URLs score 1, not 0
+ok only the filler lists produce a zero, everything else is content
+ok only empty input is a zero on its own
+ok a mixed window keeps the zero groups instead of deleting them
+ok an all-zero window is retained without a scoring-side consumption
+ok an observed zero leaves a hypothetical audit record with rule and text
+ok score-only replay preserves zero events, chronology and the existing content gate
+ok a group promoted by tool evidence is counted where a reader can see it
+P75: 52/52
+
+== p76 (smoke-p76.mjs)
+ok a run that never returns is reported as timed out
+ok the extraction budget is 30 seconds
+ok a normal run keeps its value
+ok a throwing run keeps its error instead of looking like a timeout
+ok a rejection that arrives after the timeout is absorbed
+ok the first stuck mark is accepted
+ok status carries the stuck kind
+ok status says which session is stuck
+ok one stuck row is written
+ok the same kind is recorded once per session
+ok the second mark writes nothing
+ok recovering a kind that was never open writes nothing
+ok a successful run recovers the open kind
+ok status carries the recovered kind
+ok the recovery records how long it was stuck
+ok the open set is empty after recovery
+ok exactly one recovered row is written
+ok stuck and recovered rows have different opIds
+ok the stuck reason has a bilingual label
+ok the recovered reason has a bilingual label
+ok the change log really receives both stuck rows
+ok the log says both kinds are still open
+ok a later session inherits the open kinds from the log
+ok the later session can close an inherited kind
+ok closing it twice is a no-op
+ok the newest row per kind decides what is still open
+ok no lock file means nothing to say
+ok a fresh lock is never stale
+ok an old lock held by a live process is not stale
+ok an old lock whose owner is gone is stale
+ok an unreadable lock file counts as a dead owner
+ok the lock TTL default is untouched
+ok the existing reclaim path still takes a stale lock
+ok a pending replay gives up inside its budget instead of blocking the session start
+ok the replay timeout is recorded in the change log
+ok the replay timeout is also an open stuck kind
+ok a model call that never returns is reported as an extraction timeout
+ok the extraction timeout is an open stuck kind too
+ok the timed-out window stays pending instead of being consumed
+P76: 39/39
+
+== p77 (smoke-p77.mjs)
+ok the default scope is workspace and points at <cwd>/.dsh/trivium.tdb
+ok an explicit workspace scope resolves the same path
+ok parent resolves but is not implemented
+ok inherit resolves to read-parent with a local write path
+ok the scope name is case-insensitive
+ok an empty scope falls back to workspace
+ok an unknown scope throws UNKNOWN_SCOPE instead of being treated as workspace
+ok dbPathFor(cwd) is unchanged
+ok dbPathFor(cwd, workspace) is the same
+ok dbPathFor refuses an unimplemented scope
+ok openWorkspaceDb refuses parent scope before creating anything
+ok the bare-string scope form is refused the same way
+ok the read-only opener refuses an unimplemented scope too
+ok inherit opens the local store instead of throwing
+ok the database is created at the default path
+ok a fact is written through the default open
+ok the open workspace reports the default path
+ok opening the same workspace twice keeps one entry per path
+ok SCOPES lists exactly the three names
+ok scopeOf defaults to workspace
+ok scopeOf accepts a bare string
+P77: 21/21
+
+== p78 (smoke-p78.mjs)
+ok four page tabs render
+ok the tabs are the four designed pages
+ok memory is selected by default
+ok the card still renders as one page
+ok the list page shows the loaded facts
+ok the list page drops the update card
+ok the list page drops diagnostics
+ok context page lost the read-only probe
+ok context page lost the delivered-records card
+ok context page shows the audit log
+ok runs page does not open with diagnostics
+ok runs page lost the change log
+ok runs page lost the recovery state
+ok runs page mixes in the probe
+ok settings page keeps 维护
+ok settings page keeps 检查更新
+ok settings page keeps 配置设置
+ok settings page keeps 界面语言
+ok settings page keeps Markdown 投影
+ok settings page keeps 外部记忆
+ok settings page drops the memory list
+ok the page strip has no key handler
+ok arrow key did not call preventDefault
+ok arrow right moves forward one page
+ok the activity page shows the deferred windows that are on disk
+ok the pending card stays on the activity page
+ok no lost entry: 维护
+ok no lost entry: 检查更新
+ok no lost entry: 配置设置
+ok no lost entry: 界面语言
+ok no lost entry: 外部记忆
+ok no lost entry: 记忆变化
+ok no lost entry: 运行诊断
+ok no lost entry: 这一轮实际发送
+ok no lost entry: 发布窗口
+ok returning to memory did not restore the list
+ok the tab strip lost a tab
+ok 1440px: the detail renders beside the list
+ok the wide pane keeps the detail tabs
+ok the wide layout does not open the dialog
+ok 1000px: the detail opens as a dialog
+ok the dialog keeps the detail tabs
+ok the medium layout does not render the side pane
+ok Escape closes the detail dialog
+ok the narrow layout expands inline
+ok the narrow layout keeps the inline detail
+ok Ctrl+K opens the palette
+ok the palette lists all four pages
+ok the palette lists section entries
+ok the filtered palette finds 恢复
+ok the filtered palette drops unrelated entries
+ok the filtered palette keeps selectable rows
+ok Enter navigates to the section page
+ok the palette closes after choosing a row
+ok the palette reopens after a navigation
+ok Escape closes the palette
+P78: 56/56
+
+== p79 (smoke-p79.mjs)
+ok the local writer implements exactly the four methods
+ok an incomplete writer is refused before any write
+ok no writer means the local database
+ok applyCandidates writes the fact
+ok the insert went through the writer
+ok the default (delegating) writer really wrote it
+ok a repeat folds through writer.merge
+ok fixture: the link target exists
+ok a named neighbour links through writer.link
+ok the stub run still reports applied facts
+ok the ids came from the stub
+ok the stub wrote nothing to the database
+ok the stub received the insert
+ok review marking stayed out of the stub run
+ok distill without a writer still writes to the database
+ok a refusal from the writer surfaces instead of being swallowed
+P79: 16/16
+
+== p80 (smoke-p80.mjs)
+ok inherit resolves to read-parent with a local write path
+ok dbPathFor(inherit) is the child store
+ok parent still refuses
+ok an unknown scope is still an error
+ok a parent with no library returns no-parent-db
+ok reading did not create the parent .dsh
+ok inheritedParent reports the missing library without throwing
+ok the parent library is reported as available
+ok the parent map is readable
+ok the parent map names its facts (dsh-trivium memory map: ctx_find(entity) for current neighbors; ctx_read(id) for)
+ok the inherited map stays inside the budget (49)
+ok the result names the parent it read
+ok the parent file is byte-identical after the read
+ok the parent file mtime did not move
+ok reading the parent did not create the child store either
+ok the child store holds its own fact plus the workspace root
+ok the parent library did not grow
+ok the write path is still the child
+ok a parent already open in this process degrades instead of throwing
+ok an unreadable parent degrades to no context
+ok a sibling tree with no parent library degrades quietly
+ok a smaller budget is honoured down to the header floor
+P80: 22/22
+
+== p81 (smoke-p81.mjs)
+ok no router means ROUTER_UNAVAILABLE, with no silent local write
+ok the router writer satisfies the memory writer port
+ok every insert returns its own id
+ok ids increase for a caller that waits
+ok 20 concurrent writes get 20 distinct ids
+ok all 25 facts landed exactly once (got 25)
+ok the applied ids are exactly the ones the callers were told
+ok the router reports its queue depth and applied count
+ok an unknown operation comes back as a coded failure
+ok a malformed request is answered, not ignored
+ok a batch is durable
+ok 20 writes are batched into a few flushes
+ok every batched write is present
+ok a closed router stops accepting clients
+ok the endpoint is stable per workspace
+ok different workspaces get different endpoints
+P81: 16/16
+
+== p82 (smoke-p82.mjs)
+ok a workspace with no pending file answers with zeros
+ok no workspace is a reason, not a throw
+ok two windows are reported
+ok events are summed across windows
+ok the acknowledged count is carried
+ok each window keeps its id, its size and a one-line preview
+ok a long body is clipped, not shipped whole
+ok the payload carries counts, not transcripts
+ok updatedAt comes from the file itself
+ok a corrupt pending file degrades instead of throwing
+ok reading the queue never rewrites it
+ok GET /pending serves the summary for a known workspace
+ok GET /pending refuses an unknown workspace
+ok GET /pending fails loudly on a corrupt file (F86-02)
+P82: 14/14
+
+== p83 (smoke-p83.mjs)
+ok the import reports success
+ok the import writes most of the file
+ok the import is one batch
+ok flushes do not scale with facts
+ok a repeat import does not duplicate
+ok merges are batched too
+ok the repeat import reports success
+ok a chip paste is accepted
+ok the paste and its pin are one batch
+ok the pins land with the batch
+ok the failure still surfaces
+ok a write that already happened survives a later failure (after reopen)
+ok a failed import reports a partial commit instead of a bare throw
+ok the partial commit really is durable after reopen
+ok chip archives flush once and preserve current search visibility
+ok chip deletes keep their semantics with one final flush
+ok empty or missing-only chip batches do not add a flush
+ok protected-only chip batches keep the revision guard without adding a flush
+ok archive batch reports a later mutation failure
+ok archive completed before failure survives reopening
+ok delete batch reports a later mutation failure
+ok delete completed before failure survives reopening
+P83: 22/22
+
+== p84 (smoke-p84.mjs)
+ok all three workers ran
+ok every worker sees the baseline facts
+ok the inherited map is empty
+   inherit path per worker: [{"ok":true,"via":"router","reason":null},{"ok":true,"via":"router","reason":null},{"ok":true,"via":"router","reason":null}]
+ok inherit failed for a worker
+ok a worker did not read through the router (["router","router","router"])
+ok the shared fact was stored 1 times
+ok each worker's own fact landed (3/3)
+ok the seeded fact was not duplicated
+ok a work-item directory created its own library
+ok expected 4 inserts (1 shared + 3 own), got 4
+ok expected 2 merges of the shared fact, got 2
+ok the workers were told about four distinct nodes
+ok an unrelated directory inherited a library
+ok unexpected reason no-parent-db
+P84: 14/14
+
+== p85 (smoke-p85.mjs)
+ok the switch is off when the key is missing
+ok only a real boolean enables it
+ok inheritance is off by default
+ok the router refuses to start while the switch is off
+ok a router client refuses while the switch is off
+ok the refused paths created no directory
+ok the switch reads the setting file
+ok the router writes once enabled
+ok the apply operation works once enabled
+ok the map operation works once enabled
+ok inheritance works once enabled (router)
+ok with a router running, the inherited map comes from it
+ok allow:false overrides an enabled file
+ok the router honours an explicit refusal
+ok allow:true overrides a missing setting
+ok the default scope still resolves to the workspace library
+ok the default write path is unaffected by the switch
+P85: 17/17
+
+== p86 (smoke-p86.mjs)
+ok a host id wins
+ok a source messageId also counts as an id
+ok the same user text keeps one key across pre-steps
+ok truncating the history does not start a new turn
+ok a fixed-length window with identical text does not fake new turns
+ok another user message is another turn
+ok turn counters are per session
+ok a new user message is a new turn
+ok two user messages never collapse into one key
+ok a plugin-injected message does not start a new turn
+ok injections alone are not a turn
+ok tool results do not start a new turn
+ok a pre-step without a user message does not restart the turn budget
+ok id-less content[] messages keep distinct turn keys (F86-01)
+ok no messages means no turn
+ok assistant-only is not a turn
+P86: 16/16
+
+== p87 (smoke-p87.mjs)
+ok identical text scores 1
+ok a reordered paraphrase is the same fact
+ok a different weekday is a correction, not a duplicate
+ok a different number is never folded
+ok a negation flip is never folded
+ok a preference never folds into a decision
+ok entities keep their name-based rule
+ok short bodies only merge when they are literally the same
+ok name family tolerates a qualifier and rejects an unrelated name
+ok latin bodies work too
+ok a decimal change is a different fact
+ok a generic name token ("环境") does not make two subjects the same
+ok 十六 and 六十 are different numbers, not the same characters
+ok an apostrophe negation is recognised before normalisation
+ok CJK numerals are read as one number
+ok by default a paraphrase is stored separately, like 0.8.4
+ok a correction that changes the day inserts instead of merging
+ok the correction is stored as its own fact
+ok fixture: fuzzy merging is enabled
+ok fixture: only one wording is seeded
+ok with identityMerge on, a different wording merges through the extraction pipeline
+ok the merge added no node
+ok the calibration corpus produces no false merges and recall does not regress
+P87: 23/23
+
+== p89 (smoke-p89.mjs)
+ok the default route writes no supersedes edge
+ok the old decision is still the head
+ok the correction is marked as a proposal
+ok the proposal keeps the target ids
+ok the decision being replaced stays eligible for the map
+ok the proposed correction is eligible too
+ok one proposal is waiting
+ok the proposal names the target
+ok the target is reported as still live
+ok the list carries the ETag the panel must echo
+ok a proposal can be rejected
+ok rejecting writes no edge
+ok rejecting leaves a tombstone for that pair
+ok a rejected proposal leaves the queue
+ok a rejected pair cannot be confirmed afterwards
+ok the generic revision endpoint is blocked for the refused pair
+ok a replay of the same event is reported as a rejected replay
+ok the replay does not put the proposal back
+ok the replay keeps the tombstone
+ok the second attempt proposes as well ([{"from":3,"to":null,"proposed":[2],"label":"方案 A"}])
+ok GET /supersede-proposals lists the waiting proposal with its ETag
+ok a stale proposal ETag is refused (F87-01)
+ok a candidate that changed after the page loaded also invalidates the ETag
+ok confirming through the proposal endpoint writes the edge
+ok exactly one edge exists
+ok the confirmed correction becomes the head
+ok confirming clears the proposal mark
+ok the surface is recorded, not a claimed identity
+ok a confirmed proposal leaves the queue
+ok a confirmation leaves its own change-log row
+ok a second confirmation is refused
+ok a confirmation without the ETag is refused instead of racing a stale page
+ok a rejection without the ETag is refused
+ok a stale rejection is refused
+ok a rejection with the current ETag is accepted
+ok a rejection leaves its own change-log row
+ok a token minted for one library is refused by another
+ok distinct directory names with equal lowercase spellings retain separate proposal tokens
+ok reject is refused while another process holds the workspace lock
+ok editing a fact is refused while the workspace lock is held
+ok merging two facts is refused while the workspace lock is held
+ok fixture: a separate process holds the workspace lock
+ok edit answers 409 while another process holds the lock
+ok merge answers 409 while another process holds the lock
+ok archive answers 409 while another process holds the lock
+ok delete answers 409 while another process holds the lock
+ok confirm answers 409 while another process holds the lock
+ok reject answers 409 while another process holds the lock
+ok chip insert answers 409 while another process holds the lock
+ok chip archive answers 409 while another process holds the lock
+ok chip delete answers 409 while another process holds the lock
+ok an ambiguous replacement is still one proposal
+ok the ambiguous proposal keeps both candidates
+ok a target that is not a candidate is refused
+ok one of the candidates can be chosen
+ok only the chosen candidate is retired
+ok the other candidate stays current
+ok a second confirmation on the same node is refused
+ok confirm delegates to the revision validator, so no cycle can be created
+ok the refused cycle wrote nothing
+ok a proposal that cannot be marked is reported as failed, not as proposed
+ok the failed attempt is not reported as proposed
+ok the panel list stays truthful after the failure
+ok extractOutcome keeps the window when a proposal could not be stored
+ok the replay after the fault stores the proposal
+ok the proposal is visible after the replay
+ok the fact was merged, not duplicated
+ok message: a real-entry proposal failure retains the identical historical window
+ok message: the consumer reports failure instead of recovery
+ok message: the same window is consumed only after one proposal is stored without duplicating the fact
+ok message: recovery succeeds only after the storage fault is removed
+ok sequence: a real-entry proposal failure retains the identical historical window
+ok sequence: the consumer reports failure instead of recovery
+ok sequence: the same window is consumed only after one proposal is stored without duplicating the fact
+ok sequence: recovery succeeds only after the storage fault is removed
+ok unlocated: a real-entry proposal failure retains the identical historical window
+ok unlocated: the consumer reports failure instead of recovery
+ok unlocated: the same window is consumed only after one proposal is stored without duplicating the fact
+ok unlocated: recovery succeeds only after the storage fault is removed
+ok the first proposal really has neither messageId nor seq and can be rejected
+ok the unlocated rejection replay uses the same saved window
+ok an initially unlocated event cannot reopen a refusal through the real replay entry
+ok a locator arriving later cannot prove a new generation against an unlocated refusal
+ok supersedeMode "auto" restores the immediate edge
+ok the automatic path still retires
+P89: 85/85
+ok GET /status answers with the documented shape
+ok the embedding key never appears in /status
+ok POST /settings never echoes the stored key
+ok GET /status reports an unknown workspace as empty, not as the active one
+ok GET /supersede-proposals refuses an unknown workspace
+ok GET /supersede-proposals answers an empty list for a known workspace
+ok GET /nodes stays a graph payload, not a settings dump
+P90: 7/7
+P98 write ownership: 5/5
+
+== p91 (smoke-p91.mjs)
+ok English banner names 0.9.0
+ok English release-info line names 0.9.0
+ok Chinese banner names 0.9.0
+ok Chinese release-info line names 0.9.0
+ok documentation index table names 0.9.0
+ok documentation index tag names 0.9.0
+ok the release notes for the current version exist
+ok the English release notes exist when the previous release had them
+ok no living document still advertises an older published version
+ok the current-state page names the published version
+ok the current version is not described as unpublished
+ok the release notes are written as a record, not a plan
+ok all local Markdown links and image targets exist
+P91: 13/13
+
+== p92 (smoke-p92.mjs)
+ok  the recovery row is produced by default
+ok  the default rule set still writes the durable preference
+ok  toolRecovery:false writes no recovery row
+ok  toolRecovery:false keeps every other candidate in the same window
+ok  toolRecovery:false removes exactly the recovery row
+ok  an explicit toolRecovery:true is the same as the default
+ok  a missing key means the historical behaviour (on)
+ok  an explicit false is off
+ok  an explicit true is on
+ok  the switch is persisted, not only accepted
+ok  turning it back on is persisted too
+ok  a missing budget is the engine default
+ok  a blank budget is the engine default
+ok  a null budget is the engine default
+ok  an unparsable budget is the engine default
+ok  an explicit budget is honoured
+ok  a numeric string is honoured
+ok  a fractional budget is floored
+ok  a negative budget clamps to zero
+ok  an oversized budget clamps to the cap
+ok  an explicit zero is a real budget, not the default
+ok  the budget is persisted, not only accepted
+ok  the persisted value is clamped as well
+ok  an unparsable write leaves the stored value alone
+ok  a toolRecovery patch does not reset the recall mode
+ok  a toolRecovery patch does not reset the budget
+ok  /status succeeds through the real HTTP handler
+ok  /turn succeeds through the real HTTP handler
+ok  /recall-preview succeeds through the real HTTP handler
+ok  status, turn and preview share the default 300 budget
+ok  the preview selects records within its 300 budget
+ok  /status succeeds through the real HTTP handler
+ok  /turn succeeds through the real HTTP handler
+ok  /recall-preview succeeds through the real HTTP handler
+ok  status, turn and preview share the 0 budget
+ok  a zero budget previews no injected records or text
+ok  /status succeeds through the real HTTP handler
+ok  /turn succeeds through the real HTTP handler
+ok  /recall-preview succeeds through the real HTTP handler
+ok  status, turn and preview share the 900 budget
+ok  the preview selects records within its 900 budget
+ok  a 900-token preview admits neighbours that the default cap defers
+
+P92 switches passed (42 checks)
+
+== p93 (smoke-p93.mjs)
+ok default nodes query identifies live source, result limit and complete output
+ok a requested result limit reports truncation
+ok type and name are exact, bound query parameters
+ok neighbors honor outgoing, incoming and both directions at exactly one hop
+ok a business label narrows neighbors and result truncation stays explicit
+ok orphan checks ignore workspace/revision edges and recognize self-links
+ok a missing neighbor anchor is reported explicitly
+ok invalid input, arbitrary TQL, writes and unknown fields are rejected
+ok live reads preserve facts, relations and persisted file state
+ok no handle and closed handles are explicit failures
+ok native deadline errors become bounded read timeouts
+ok raw scans and excessive orphan candidates retain their work limits
+ok current facts exclude archived, expired and replaced history, and preserve pending proposals
+ok 5000-node local reads use payloads and bounded native relationships
+ok native response budgeting rejects oversized payload output
+ok orphan projections span multiple bounded batches without losing truncation
+
+P93: 16/16 checks passed
+ok capture reports a verified independent generation
+ok latest resolves the successfully published capture
+ok snapshot contains its own database file group
+ok a separate query process reads the old snapshot while the writer continues
+ok snapshot queries do not change source facts
+ok result rows are explicitly truncated to the requested limit
+ok named selectors preserve captured generation, reference time and truncation
+ok snapshot named orphan semantics match the live selector
+ok native Console binds query parameters
+ok write TQL is rejected by the read-only query path
+ok wall-clock deadline terminates a query worker
+ok non-object parameters are rejected before worker admission
+ok oversized result limits are rejected
+ok callers cannot pass extra native policy fields
+ok worker admission refuses a third concurrent query
+ok a rejected mutation leaves the source untouched
+ok traversal IDs are rejected
+ok unknown generation IDs are rejected
+ok failed capture verification preserves the last valid pointer
+ok snapshot-root symlinks cannot cross workspace boundaries
+ok CLI directory queries reject symlink ancestors
+ok packaged CLI reads an independent snapshot in another process
+ok native response-byte budget rejects an oversized row
+ok snapshot remains queryable after source shutdown
+ok corrupt snapshot manifests are rejected by the isolated reader
+ok CLI help does not require opening any database
+P94: 26/26
+ok  snapshot help describes the mode without opening or creating anything
+ok  invalid CLI arguments are rejected: ["--snapshot"]
+ok  invalid CLI arguments are rejected: ["--snapshot","--json"]
+ok  invalid CLI arguments are rejected: ["--snapshot","C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\dsh-trivium-p95-UGGOdq","C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\dsh-trivium-p95-UGGOdq"]
+ok  invalid CLI arguments are rejected: ["C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\dsh-trivium-p95-UGGOdq","--snapshot","C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\dsh-trivium-p95-UGGOdq"]
+ok  invalid CLI arguments are rejected: ["--snapshot","C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\dsh-trivium-p95-UGGOdq","--snapshot","C:\\Users\\V_CHCH~1\\AppData\\Local\\Temp\\dsh-trivium-p95-UGGOdq"]
+ok  invalid CLI arguments are rejected: ["--unknown-option"]
+ok  a separate CLI verifies an immutable snapshot while its source writer remains open
+ok  later source writes leave the captured generation and its bytes unchanged
+ok  text output labels the snapshot generation and integrity result
+ok  a snapshot remains checkable after the source host closes
+ok  a corrupt snapshot fails verification without repairing or changing it
+ok  a snapshot directory symlink or junction is refused
+ok  a missing snapshot is reported without creating a replacement
+ok  snapshot integrity findings preserve the existing exit code 2
+ok  the checker maps the native f16 manifest type to the Node constructor dtype
+ok  workspace mode still reports a live writer lock rather than bypassing it
+ok  the existing positional workspace command and JSON shape remain compatible
+ok  the existing default-current-workspace command remains compatible
+ok  read-only checks do not create workspaces or modify UI settings
+P95 snapshot integrity passed (20 checks)
+ok live nodes query works with the writer open
+ok a live query finds the one-hop business neighbor
+ok orphan query ignores workspace membership but respects business links
+ok a result cap explicitly reports truncation
+ok the original issue request runs on the live host and returns native node columns
+ok the live TQL endpoint rejects mutations
+ok an unopened workspace is rejected without creating it
+ok an unopened workspace is rejected without creating it
+ok live queries leave facts and links unchanged
+ok live queries do not rewrite workspace settings
+ok request bytes are bounded before native execution
+ok the new endpoint retains the existing origin guard
+ok read API requires JSON content type
+ok test holds the workspace operation lock
+ok snapshot capture respects ongoing writer work
+ok the writer publishes an independent snapshot
+ok latest returns publication metadata without claiming a fresh health check
+ok snapshot queries retain the captured source version after further writes
+ok the live path sees the newer fact
+ok parameterized live TQL sees the committed write after snapshot capture
+ok isolated TQL explicitly caps output despite a larger native LIMIT
+ok HTTP cannot escape the workspace snapshot directory
+ok snapshot queries reject mutation syntax
+ok a separate client can query while the host owns the writer: 
+ok read admission rejects concurrent work instead of accumulating a queue
+ok an unfinished request releases admission at its body deadline
+ok body timeout releases capacity for the next query
+P96 HTTP read path: 27/27
+ok the issue's original free JOIN runs on the writer with the default output contract
+ok native parameter binding preserves literal strings and supported scalar values
+ok aggregates consume complete native input even when the client wants one output row
+ok sorting finishes before client truncation and native LIMIT remains unchanged
+ok documented native graph algorithms are accepted without a template allowlist
+ok write keywords inside a read literal do not trigger a hand-written filter
+ok native-validated output caps match complete sorted, grouped, distinct and graph results
+ok EXPLAIN and EXPLAIN ANALYZE retain the original full-query plans
+ok invalid original syntax is rejected before any output-cap candidate can complete it
+ok the current writer's new fact is immediately visible without a snapshot
+ok native mutation syntax is rejected and the writer remains usable
+ok unsupported request fields and invalid limits, deadlines and params fail explicitly
+ok the entire JSON request has an inclusive 16 KiB byte cap
+ok read execution and rejected requests leave all facts and edges unchanged
+ok missing and closed writers return explicit availability errors
+ok native lookahead avoids the default row budget for a 2000-row unpaged read
+ok a store over 1000 nodes has no admission gate and still supports bound point reads
+ok explicit native LIMIT cannot bypass the client's maximum 1000 returned rows
+ok a large full-input aggregate fails its native budget instead of returning a partial count
+ok the native cooperative deadline is surfaced as an HTTP timeout
+ok the new native deadline error remains a timeout even without timing races
+ok completion checks reject a late synchronous result without pretending to interrupt it
+ok native preparation time belongs to the total deadline
+ok only a candidate parse failure may fall back, not resource or closed-instance errors
+ok response-size retries are finite and other native errors are never retried
+wide Issue JOIN: 12 returned rows, 76679 bytes, limit 200
+ok wide 585-node, 1536-dimension Issue JOIN works for small and default display limits
+ok native encoded-response budgeting rejects oversize results before any client slice
+
+P97: 27/27 checks passed
+ok entity-search strict input and opt-in
+ok entity-search one-hop current scope, gaps, proposals and typed channels
+ok entity-search provider disabled, exceptions and invalid native vectors degrade
+ok entity-search module-level config binding begins before provider scheduling
+ok entity-search anchor-only and invalid anchors spend no provider calls
+ok entity-search shared nodes, edges, payload, CPU and response budgets
+ok entity-search native entity-search deadlines become timeouts
+ok entity-search provider timeout preserves lexical results
+ok entity-search successful queries preserve persisted bytes
+ok entity-search changed body rejects late semantic results
+ok entity-search removed business edge rejects late semantic results
+ok entity-search new business membership rejects late semantic results
+ok entity-search entity deletion during embedding is a conflict, not a fresh missing-entity lookup
+ok entity-search deleted/reused IDs cannot restore earlier identity
+ok entity-search replacement binding rejects in-flight result
+ok entity-search cancel settles a provider ignoring its signal
+ok entity-search unrelated edits preserve an unchanged scope
+ok entity-search expiry during embedding changes live scope but snapshot time stays fixed
+ok entity-search revision self-cycle fails closed
+ok entity-search large store uses only bounded payload and native relationships
+ok entity-search snapshot returns captured time and separate candidates
+ok entity-search latest snapshot stays pinned across live edits and recapture
+ok entity-search snapshot wall deadline kills before provider
+ok entity-search snapshot cancellation aborts its provider and releases the worker
+ok entity-search corrupt artifact refuses provider work
+ok entity-search snapshot UTF-8 crosses pipe chunk boundaries intact
+ok entity-search HTTP explicit workspace, body schema and no lazy open
+ok entity-search HTTP disabled semantic mode clearly degrades
+ok entity-search HTTP active-workspace change cannot redirect explicit request
+ok entity-search HTTP concurrent edit returns 409 without partial candidates
+ok entity-search HTTP configuration switch invalidates query vector
+ok entity-search HTTP snapshot broker returns pinned channels through the real transport
+ok entity-search HTTP cancellation releases bounded admission
+ok entity-search HTTP origin fence is retained
+ok entity-search actual provider failures, response byte limit and cancellation are bounded
+ok entity-search HTTP close and reopen rejects the old handle
+Entity search: 36/36 contract checks
+
+== p99 (smoke-kernel.mjs)
+ok: 0.9.0 graph, vectors, payloads and relations survive 0.9.1 read, write and reopen; old kernel rejects the new format
+
+== p100 (smoke-extraction.mjs)
+ok real host ctx_find echo cannot create a cross-type copy or touch the existing graph
+ok ctx_read echo is recognised even when the model omits a quote
+ok multiple find results bind each body to the correct node id
+ok a recalled fact and a new user decision in the same window are handled separately
+ok the user explicitly states the same fact: it is not discarded as a tool echo
+ok the user explicitly asks to create an entity from the read fact
+ok matching information from an unrelated tool remains independent evidence
+ok a changed number is a new fact, not an echo
+ok a candidate with a new relation is retained
+ok unknown legacy tool names and failed reads are never assumed to be memory echoes
+ok archived or changed stored facts do not suppress a new candidate
+ok echoes do not exhaust the batch budget before a genuinely new fact
+ok changed whitespace and changed identifiers are never classed as exact echoes
+ok an explicit request to classify the retrieved fact is retained across clauses
+ok a mismatched node id, type or incomplete read cannot prove an echo
+ok reviewed or time-bounded memories are left to the normal write path
+ok pending replay retains tool identity and applies the same echo guard
+P100: 17/17
+
+== p101 (smoke-p101.mjs)
+ok the card opens idle with semantic off and the run button disabled
+ok semantic stays off while typing
+ok a default search sends only endpoint fields to the current workspace and costs no embedding call
+ok candidates, path, scope, work and answerability are shown, channels stay separate
+ok a no_candidates result is explained, not shown as a found answer
+ok an anchor-only scope explains that the semantic channel was skipped
+ok a degraded semantic channel keeps the same-scope lexical result and names the reason
+ok switching workspaces clears the old input/result and a late reply cannot land in the new one
+ok a reply started before an A->B->A round trip is still rejected on return
+ok an older reply cannot overwrite a newer search in the same workspace
+ok a late error is dropped instead of replacing a newer result
+ok a fixed snapshot request carries the snapshot and shows the captured time
+ok a missing snapshot fails clearly and does not silently fall back to live
+ok switching back to live clears the snapshot result and sends no snapshot id
+ok 400 ENTITY_SEARCH_INVALID renders one distinct state without retrying
+ok 404 ENTITY_SEARCH_ENTITY_NOT_FOUND renders one distinct state without retrying
+ok 409 ENTITY_SEARCH_SCOPE_CHANGED renders one distinct state without retrying
+ok 422 ENTITY_SEARCH_WORK_LIMIT renders one distinct state without retrying
+ok 429 READ_BUSY renders one distinct state without retrying
+ok 408 ENTITY_SEARCH_TIMEOUT renders one distinct state without retrying
+ok invalid input is blocked before any request is sent
+ok an explicit pack budget renders whole alternatives, ambiguity and omitted ids without embedding
+ok invalid pack budgets cannot submit and zero keeps the original endpoint shape
+ok workspace changes reset pack opt-in and clear previous packed facts
+ok pending review exposes actual source and requires evidence before checking
+ok unverified evidence leaves the candidate available and reports the result
+ok manual confirmation requires deliberate acceptance and cancel performs no write
+ok workspace switch cancels an open confirmation and clears the old candidate
+ok stale review is shown as a failure and leaves the candidate for refresh
+ok late review success cannot overwrite the selected workspace or clear its candidate
+ok dismiss UI retains readable history even with no pending windows, including pagination
+ok review history is cleared by workspace switch
+ok document import is explicit and a late save cannot restore another workspace source
+ok changed document evidence displays review status and retained original excerpt
+ok edited sources must be saved before linking and saving refreshes review warnings
+P101: 35/35
+
+== p102 (smoke-p102.mjs)
+ok memory pack scoring checks bodies, actual estimates, forbidden ids and answerability
+ok type and identifier changes fail scoring; unchanged existing facts are not new writes
+ok wrong-workspace content cannot pass by reusing a relevant id
+ok CLI preserves existing evidence and refuses unbounded repetitions
+ok a written fact that exists exactly is counted correct
+ok a vanished fact is counted as missed, not as absent
+ok two nodes with the same body are counted as a duplicate write
+ok a candidate the corpus says is unsupported is reported as unsourced-new
+ok a paraphrase is queued for human review instead of correct or missed
+ok an echo written as a new node is a leak; a skipped echo is not
+ok the intact check detects a merge that replaced an older fact
+ok a rule copy of the same sentence is counted as redundant, not as another correct fact
+ok retrieval scores Top-1/Top-5, the anchor as a non-answer, and forbidden ids
+ok an unanswerable question lists candidates without a correctness verdict
+ok a cross-workspace body check fails when the other workspace text comes back
+   corpus: 26 scenarios (18 dev / 8 holdout) in 6 categories
+ok the frozen corpus has the required size, splits and referential integrity
+ok the evaluator runs one scenario end to end with zero provider calls
+ok two identical runs produce identical scenario verdicts and counts
+P102: 18/18
+
+== p103 (smoke-extraction.mjs)
+P103: source-less writes stay pending, survive persistence, and accept later evidence; invented literals and secrets are refused
+
+== p104 (smoke-retrieval.mjs)
+P104: whole-fact budget, source/path labels, C4 ambiguity, read-only graph, scope and pinned snapshots passed
+
+== p105 (smoke-memory-quality.mjs)
+ok only complete admitted facts suppress instruction copies
+ok model failures, empty/invalid/unsupported output preserve rule fallback
+ok asserted read permissions are facts; reading requests are not new evidence
+ok ETag binds identical source and candidate IDs to a physical workspace
+ok unsupported supplements remain pending with refreshed source and etag
+ok supplement is attributed to the panel and writes only its confirmed content
+ok manual confirmation retains source, does not supersede or merge old facts
+ok stale buffers cannot resurrect reviewed candidates or consume new facts
+ok secret evidence and forged candidate content are refused without writes
+ok interrupted pending commit retries reuse the already persisted URI
+ok a failed writer leaves pending candidates and unrelated windows untouched
+ok real HTTP route requires explicit known cwd and rejects hostile origin/schema/oversize
+ok real HTTP route participates in workspace locking and records success
+P105: 13/13
+
+== p106 (smoke-memory-quality.mjs)
+P106: rubric, factual/citation scoring, usage counters, actual legacy text and bounded loopback adapter; no real-model or external-provider calls
+
+== p107 (smoke-next-memory.mjs)
+ok independent frozen corpus is split, scored, and cannot escape the entity scope
+ok unchanged F2/F5 and real-evaluation L11/L12 questions retrieve the recorded fact
+ok concept words inside compound identifiers cannot expand or match a longer identifier
+checks: 3/3
+
+== p108 (smoke-next-memory.mjs)
+ok dismiss retains candidate/source, writes no fact and retries idempotently
+ok stale scheduler data cannot resurrect a dismissal; new evidence is not vetoed
+ok exact existing text is a hint, with no implicit merge across types
+ok history paginates without dropping old receipts beyond the former 1024 cap
+checks: 4/4
+
+== p109 (smoke-next-memory.mjs)
+ok repeated scoped reads avoid DB reads and isolate caller mutations
+ok body-only native edits, edge changes, delete/ID reuse invalidate cached scope
+ok cache never hides cancellation, replaced sources or budget errors
+ok expiry, workspace handles and closed/reopened databases are independent
+ok map cache keeps identical injection decisions and skips repeated map DB queries
+checks: 5/5
+
+== p110 (smoke-next-memory.mjs)
+ok three processes persist candidates while the router is offline, then exit
+ok central owner writes once, receipts survive restart and event conflicts are refused
+ok source uncertainty and tool echoes stay durable without active writes
+ok failed graph flush keeps queued candidates, retry recovers stable URI without duplication
+ok the opt-in Router consumes centrally queued facts after owner restart
+checks: 5/5
+
+== p111 (smoke-next-memory.mjs)
+ok native TDB source and UTF-8/CRLF excerpt links leave the memory fact unchanged
+ok source revisions require CAS, keep the original quote and request review
+ok deleting a source leaves the original fact and association reviewable after reopen
+ok fact deletion/ID reuse does not inherit the deleted fact evidence
+ok ambiguous quotes, oversized/secret text, and unrelated native roots are refused
+ok real HTTP API is scoped, origin-protected, bounded and participates in the write lock
+checks: 6/6
+
+== summary
+pass p0       375 ms smoke-p0.mjs
+pass p1       822 ms smoke-p1.mjs
+pass p2      1750 ms p2-cases.mjs
+pass p3      1031 ms smoke-p3.mjs
+pass p4      2063 ms smoke-p4.mjs
+pass p5      4628 ms smoke-p5.mjs
+pass p6       395 ms smoke-p6.mjs
+pass p7      2905 ms smoke-p7.mjs
+pass p8      1167 ms smoke-p8.mjs
+pass p9       640 ms smoke-p9.mjs
+pass p10      353 ms smoke-p10.mjs
+pass p11      503 ms smoke-p11.mjs
+pass p12      956 ms smoke-p12.mjs
+pass p13       63 ms smoke-p13.mjs
+pass p14       95 ms smoke-p14.mjs
+pass p15     2493 ms smoke-p15.mjs
+pass p16      772 ms smoke-p16.mjs
+pass p17      797 ms smoke-p17.mjs
+pass p18       48 ms smoke-p18.mjs
+pass p19     8414 ms smoke-p19.mjs
+pass p20      870 ms smoke-p20.mjs
+pass p21     2918 ms smoke-p21.mjs
+pass p22     3748 ms smoke-p22.mjs
+pass p23     8328 ms smoke-p23.mjs
+pass p24       90 ms smoke-p24.mjs
+pass p25      870 ms smoke-p25.mjs
+pass p26      215 ms smoke-p26.mjs
+pass p27      708 ms smoke-p27.mjs
+pass p28     1193 ms smoke-p28.mjs
+pass p29      411 ms smoke-p29.mjs
+pass p30     2590 ms smoke-retrieval.mjs
+pass p31     6004 ms smoke-revisions.mjs
+pass p33       64 ms smoke-evaluation.mjs
+pass p34      458 ms smoke-retrieval.mjs
+pass p35     1993 ms smoke-retrieval.mjs
+pass p36      297 ms smoke-p36.mjs
+pass p37      701 ms smoke-retrieval.mjs
+pass p38      664 ms smoke-p38.mjs
+pass p39       65 ms smoke-evaluation.mjs
+pass p41    10473 ms smoke-p41.mjs
+pass p42     1771 ms smoke-p42.mjs
+pass p43      215 ms smoke-extraction.mjs
+pass p44      235 ms smoke-p44.mjs
+pass p45      116 ms smoke-extraction.mjs
+pass p46      213 ms smoke-extraction.mjs
+pass p47      438 ms smoke-p47.mjs
+pass p48      980 ms smoke-revisions.mjs
+pass p49      449 ms smoke-extraction.mjs
+pass p50      437 ms smoke-extraction.mjs
+pass p51     3379 ms smoke-p51.mjs
+pass p52      649 ms smoke-p52.mjs
+pass p53       95 ms smoke-audit-locks.mjs
+pass p54       67 ms smoke-audit-locks.mjs
+pass p55     1698 ms smoke-audit-locks.mjs
+pass p56      162 ms smoke-audit-locks.mjs
+pass p57     1124 ms smoke-p57.mjs
+pass p58     1368 ms smoke-p58.mjs
+pass p60    16553 ms smoke-p60.mjs
+pass p61      460 ms smoke-p61.mjs
+pass p62    16403 ms smoke-p62.mjs
+pass p63     1390 ms smoke-p63.mjs
+pass p64      337 ms smoke-revisions.mjs
+pass p65     1931 ms smoke-p65.mjs
+pass p66      435 ms smoke-extraction.mjs
+pass p67     1306 ms smoke-revisions.mjs
+pass p69     2039 ms smoke-revisions.mjs
+pass p70     6953 ms smoke-p70.mjs
+pass p74     6163 ms smoke-p74.mjs
+pass p75     2092 ms smoke-p75.mjs
+pass p76    31165 ms smoke-p76.mjs
+pass p77      676 ms smoke-p77.mjs
+pass p78       91 ms smoke-p78.mjs
+pass p79      561 ms smoke-p79.mjs
+pass p80      468 ms smoke-p80.mjs
+pass p81      973 ms smoke-p81.mjs
+pass p82      178 ms smoke-p82.mjs
+pass p83     1498 ms smoke-p83.mjs
+pass p84      807 ms smoke-p84.mjs
+pass p85      486 ms smoke-p85.mjs
+pass p86       48 ms smoke-p86.mjs
+pass p87      547 ms smoke-p87.mjs
+pass p89     9822 ms smoke-p89.mjs
+pass p91       71 ms smoke-p91.mjs
+pass p92     1064 ms smoke-p92.mjs
+pass p93    12426 ms smoke-p93.mjs
+pass p99      161 ms smoke-kernel.mjs
+pass p100    7372 ms smoke-extraction.mjs
+pass p101      92 ms smoke-p101.mjs
+pass p102    1301 ms smoke-p102.mjs
+pass p103     490 ms smoke-extraction.mjs
+pass p104     728 ms smoke-retrieval.mjs
+pass p105    1740 ms smoke-memory-quality.mjs
+pass p106     202 ms smoke-memory-quality.mjs
+pass p107    1894 ms smoke-next-memory.mjs
+pass p108     275 ms smoke-next-memory.mjs
+pass p109     240 ms smoke-next-memory.mjs
+pass p110    1070 ms smoke-next-memory.mjs
+pass p111     623 ms smoke-next-memory.mjs
+
+98/98 passed

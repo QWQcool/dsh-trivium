@@ -1,0 +1,1814 @@
+{
+  "meta": {
+    "evaluator": "memory-eval-evaluator-2",
+    "sourceHashes": {
+      "scripts/memory-eval.mjs": "b699cfb7ba1c26903d279d8118af4928c396e6aaaf98b4698ab1ee35369e718a",
+      "package.json": "bab15c86347e45627eaba7b62b6408d26d2f5bc1de8d876f7896f78b3930018d",
+      "package-lock.json": "4d3c76a767a281948a99cab4c3533b3095e3512911a09404a83cc51e1bd52eeb",
+      "lib/atomic.js": "019e8a1369dd4c5624a0bbe1c6daae73fea366d39d1d3278d783de318f39c0c3",
+      "lib/change-log.js": "7eb994f901a48c66b6f827ab21739b6fcd9ea4364d5e80106aeaed3d4812e322",
+      "lib/client.js": "d49b906ad516132dfbc34845ee20130ec271c79862092a91f85103149b0a5a95",
+      "lib/consumer-preferences.js": "e31dd4544416f9eb03cb3900beab8373af3066cb15f37c28d5ee6825234e454a",
+      "lib/context-budget.js": "7f7b57de61aab3460005cc7c98720a0e99babd9e0b8ab7a2302cfccd42dce248",
+      "lib/date-parse.js": "bbaddad70782026b9f30293eb907a90f6d31ae4004a3cecf3726385e21285570",
+      "lib/derived-cache.js": "c7ffdc300a0a742e00ec5ebfec601c5c5928cfaf94f8e39be9e2c40f72975cc8",
+      "lib/document-evidence.js": "f6dd8dd22a1418d61fa6bfeb0ee117253b5e97919707c0c224c7a3680852b97a",
+      "lib/embed.js": "00fae37c27b3bddd0177b9bfc9fefcd3e971a5dc091162f5fd9ad2f0a57f1083",
+      "lib/entity-search-snapshot.js": "0e5ea7971420769d8cb12563b66b0af9e6240aa2e16e616a5a06308601bb9646",
+      "lib/entity-search.js": "6eec4dba6e2b8dd780074ae378e332cd6381572706cf5d0ce6f3b171b45830cc",
+      "lib/episode.js": "73776d315d5f49f820aa02f24ac1c7ac47af99b85768d111d196ac2890c8f3e8",
+      "lib/extract-scheduler.js": "a09c162fcdccd68797f35148bdb28bb4bd873bb2d94ccc520af3d573fa9ed315",
+      "lib/extract.js": "514a46279bbf1fff4f3e5034d389ce535e0f10aedf8a40fa404210e663062199",
+      "lib/handoff.js": "8002a5c618f003b736869fad7ec8e1b2d7e932d88bd863c90a9f0770097bfcc7",
+      "lib/host-format.js": "eee8ca38e3989fc8688e7760da1a65a9f64a0ad1577c8dd0b41b6f694e0039b4",
+      "lib/hygiene.js": "c6bbdba60d6285e313284503809b537328eab161d82975b4df2473645a798a67",
+      "lib/identity.js": "0b1b0a2a97818951caa45f7d1228e3866b432b4443bba53222c476e34be0808e",
+      "lib/index.js": "aa176951c0358516777d32ff0f87757b726e14839ccf1ff2737c030b77ed3989",
+      "lib/inherit.js": "2fac799b4d1424a4e5dde7301f74c169c4f96482e47105d688f154a91b5da108",
+      "lib/integrity.js": "d5ebeb179cd2d0fc83dfed90e263eb74717424aeaba44c83cd4198c9a07c6c38",
+      "lib/live-tql.js": "7495059dafa1ed39c2e5f5c1bff1bf87cec87707e4f70cd4a2a5284920b34da3",
+      "lib/markdown.js": "1f32a1455918584d73c94a1fa07fdd040d40535a3333a62daaffdea59464f4e9",
+      "lib/memory-pack.js": "497aed16166edee0e035a9424b37fdfc042d07585a2b40c6c24687c913840a85",
+      "lib/memory-writer.js": "c7ab0f899a5bec193616c7d8a4219916f4b1559f89971b35a6ab4f10d7b8b67c",
+      "lib/pending-review.js": "df4373ed0e8fd0f6bbd3ee41a3a05dd0dc3f318bcbf994e61c0218e8294c1a26",
+      "lib/pins.js": "f08f5c3a8f284241e5168c2fa08fb2c1e670e9a0eeb0094ca5cfa7e7ebfcc1fc",
+      "lib/provenance.js": "4bc8b2734fe0e18e7c802e4ad98ca6f329a8d83c0bbab7216f6af9ad7caf9909",
+      "lib/purge.js": "318da7a779e43fb210b83172add85783d8a38fd54ff04704f138b7cab3e6a4a4",
+      "lib/query-terms.js": "b738eca7aca1ef194d9b05c4552756baa37e872a4811651b5c4cc0757863c9a3",
+      "lib/read-api.js": "a6722afd5b48811719765c136ca91ef8186ae1028dc2a71eb706fcfdf79fa62a",
+      "lib/read-query.js": "ffc8724076acacb9b734b2e2e6251c7873ed7b2156604bbbddc9e7f5b9fabf50",
+      "lib/read-snapshots.js": "5d1189a3f3ccadbbe6278072f55180580043b2d0c39fe279c8dfe775248c5866",
+      "lib/recall-preview.js": "8c000ff5244eae2982cf5fb71e30a236dbed8b2ef51bb379d78ac2e16a0e21ab",
+      "lib/recall-trace.js": "42ce8322e05e4ec071aad55af7c434f335f29d87c3cdfaf29e49d0f0b7414fdc",
+      "lib/review-marks.js": "3eb7c6ad66c1ef4ee1c770c177acf483a829a2ec225a160fedcb8a57c9da6650",
+      "lib/revision-graph.js": "23dc6dba221356a5096b802d504f671f858a98c6cb96a714ba3d935b408c6aa4",
+      "lib/revisions.js": "838891e458a2458847f8f28449154b9c39a3ec1da7710ec61bc028e6c11fbfd9",
+      "lib/router.js": "d336c4ac3e3ed8207f9e88523fb7867792cdd3a43f6bd73063ebf656bf56eb69",
+      "lib/schema.js": "fdf847c8f8980b8137c6d139125096ea5ca56eebe2f18c25c3685de76538cbfb",
+      "lib/server.js": "2d23de5e31455595b62f439ff50d30a6a2dadcc0c45a8b6465387ea4a6298305",
+      "lib/settings.js": "9980a1b1c994c858454ced9e6e7387c101dcfad5ee91c63881a6f99bdec78d4f",
+      "lib/sidecar.js": "844a1be3d5a5e91976e046d6657a0bdba2bfa3e482969e8295b9cbb7c6aa13df",
+      "lib/source-events.js": "14e99a64c20d6b6d5580bcf13d83f7a878bff0f01406c196d18f3469493dc1ff",
+      "lib/store.js": "7129cd680cb103130a485795761343ffeef498be85f0a7cd16afb5241c723684",
+      "lib/supersede-review.js": "ca261351fe7fc05f702f9c9ac9295cbeb2ba5390aa9880cbf7b174e5de39919e",
+      "lib/tokens.js": "41d0b0ead07fb4f86572dcc7a5dcf96670113f33c0102bd3b7d4ef8950a17abd",
+      "lib/tool-defs.js": "a1dcce8c6b7812275f4900abda18d0be5b5311473324745ce61fa6862eec4297",
+      "lib/tool-output.js": "88a6b7dc35cd279ac599da20167b8f15a9238252aa1c2f5bb4b11fa1e9ec0af5",
+      "lib/tools.js": "db50fa871fa772b4e4a9bf3b8aac588aea5df69ee9306d730b3f9be58481bc5a",
+      "lib/turn-ledger.js": "4e819047d9ab43e762511e295c35c01cb853300101ca5bd9fa9bb8ee101f60e3",
+      "lib/until.js": "9cab04e7881bc36fd605e7aebec8cc455ceab5647937d124c3d24f733912164c",
+      "lib/update.js": "766ffca3f90ebc753cc37d3197d2a53a1f85e7501f9052ed25441152c8f91a02",
+      "lib/usage.js": "7a9217cbb2c442e20af803254eccea21db5b0931c020e11d459fe5227ed0b47d",
+      "lib/workspace-lock.js": "d02ebad0fba458962274773b1eef3c3667aeb73b7045430f06419296517147f4"
+    },
+    "sourceSnapshotHash": "a623a56ed20ab4cc118ebb5e8577a079a73a4dc629e12ec63b5ee55fb75d447c",
+    "revision": "3711aca3f51d086844881b3d9c17e1a586837f89",
+    "sourceDirty": true,
+    "networkAttempts": 0,
+    "packBudgetTokens": 300,
+    "fixture": "memory-eval-v1-2026-11-16",
+    "fixtureHash": "4f5bf88d0c08757f7e20915c8191c68d1fd59666b8358350a71eb863dbef335e",
+    "fixturePath": "scripts/fixtures/memory-eval-v1.json",
+    "split": "all",
+    "reps": 3,
+    "scenarios": 26,
+    "runs": 78,
+    "node": "v24.15.0",
+    "platform": "win32-x64",
+    "startedAt": "2026-11-17T10:15:16.513Z",
+    "durationMs": 12139,
+    "realModelCalls": 0,
+    "realEmbeddingCalls": 0,
+    "tokens": "not measured",
+    "billing": "not measured",
+    "finalAnswerAccuracy": "not measured (no answer is generated)"
+  },
+  "timing": {
+    "samples": 78,
+    "p50": 50.2133,
+    "p95": 283.389,
+    "max": 515.4333
+  },
+  "aggregate": {
+    "scenarios": 26,
+    "pendingCandidates": 1,
+    "writes": {
+      "expected": 9,
+      "correct": 9,
+      "duplicate": 0,
+      "needsReview": 0,
+      "missed": 0,
+      "wrongType": 0,
+      "absentChecked": 1,
+      "unsourcedNew": 0,
+      "intactChecked": 6,
+      "intactBroken": 0,
+      "echoExpected": 3,
+      "echoLeaked": 0,
+      "duplicateGroups": 0,
+      "redundantNew": 0,
+      "inserted": 11,
+      "merged": 2,
+      "echoSkipped": 2
+    },
+    "retrieval": {
+      "answerable": 12,
+      "top1": 12,
+      "top5": 12,
+      "top1ExcludingAnchor": 12,
+      "unanswerable": 5,
+      "unanswerableCandidateTotal": 4,
+      "forbiddenViolations": 0,
+      "contentMismatchScenarios": 0,
+      "packAnswerable": 12,
+      "packHits": 12,
+      "packBudgetViolations": 0,
+      "packContentMismatchScenarios": 0,
+      "packForbiddenViolations": 0,
+      "packAnswerabilityViolations": 0
+    }
+  },
+  "bySplit": {
+    "dev": {
+      "scenarios": 18,
+      "pendingCandidates": 1,
+      "writes": {
+        "expected": 7,
+        "correct": 7,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "wrongType": 0,
+        "absentChecked": 1,
+        "unsourcedNew": 0,
+        "intactChecked": 4,
+        "intactBroken": 0,
+        "echoExpected": 3,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 8,
+        "merged": 2,
+        "echoSkipped": 2
+      },
+      "retrieval": {
+        "answerable": 8,
+        "top1": 8,
+        "top5": 8,
+        "top1ExcludingAnchor": 8,
+        "unanswerable": 3,
+        "unanswerableCandidateTotal": 3,
+        "forbiddenViolations": 0,
+        "contentMismatchScenarios": 0,
+        "packAnswerable": 8,
+        "packHits": 8,
+        "packBudgetViolations": 0,
+        "packContentMismatchScenarios": 0,
+        "packForbiddenViolations": 0,
+        "packAnswerabilityViolations": 0
+      }
+    },
+    "holdout": {
+      "scenarios": 8,
+      "pendingCandidates": 0,
+      "writes": {
+        "expected": 2,
+        "correct": 2,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "wrongType": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 2,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 3,
+        "merged": 0,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 4,
+        "top1": 4,
+        "top5": 4,
+        "top1ExcludingAnchor": 4,
+        "unanswerable": 2,
+        "unanswerableCandidateTotal": 1,
+        "forbiddenViolations": 0,
+        "contentMismatchScenarios": 0,
+        "packAnswerable": 4,
+        "packHits": 4,
+        "packBudgetViolations": 0,
+        "packContentMismatchScenarios": 0,
+        "packForbiddenViolations": 0,
+        "packAnswerabilityViolations": 0
+      }
+    }
+  },
+  "byCategory": {
+    "same-name-cross-workspace": {
+      "scenarios": 5,
+      "pendingCandidates": 1,
+      "writes": {
+        "expected": 2,
+        "correct": 2,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "wrongType": 0,
+        "absentChecked": 1,
+        "unsourcedNew": 0,
+        "intactChecked": 0,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 1,
+        "merged": 2,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 4,
+        "top1": 4,
+        "top5": 4,
+        "top1ExcludingAnchor": 4,
+        "unanswerable": 1,
+        "unanswerableCandidateTotal": 1,
+        "forbiddenViolations": 0,
+        "contentMismatchScenarios": 0,
+        "packAnswerable": 4,
+        "packHits": 4,
+        "packBudgetViolations": 0,
+        "packContentMismatchScenarios": 0,
+        "packForbiddenViolations": 0,
+        "packAnswerabilityViolations": 0
+      }
+    },
+    "numeric-negation": {
+      "scenarios": 4,
+      "pendingCandidates": 0,
+      "writes": {
+        "expected": 4,
+        "correct": 4,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "wrongType": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 4,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 6,
+        "merged": 0,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 0,
+        "top1": 0,
+        "top5": 0,
+        "top1ExcludingAnchor": 0,
+        "unanswerable": 0,
+        "unanswerableCandidateTotal": 0,
+        "forbiddenViolations": 0,
+        "contentMismatchScenarios": 0,
+        "packAnswerable": 0,
+        "packHits": 0,
+        "packBudgetViolations": 0,
+        "packContentMismatchScenarios": 0,
+        "packForbiddenViolations": 0,
+        "packAnswerabilityViolations": 0
+      }
+    },
+    "history-supersede-expiry": {
+      "scenarios": 4,
+      "pendingCandidates": 0,
+      "writes": {
+        "expected": 0,
+        "correct": 0,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "wrongType": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 0,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 0,
+        "merged": 0,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 4,
+        "top1": 4,
+        "top5": 4,
+        "top1ExcludingAnchor": 4,
+        "unanswerable": 0,
+        "unanswerableCandidateTotal": 0,
+        "forbiddenViolations": 0,
+        "contentMismatchScenarios": 0,
+        "packAnswerable": 4,
+        "packHits": 4,
+        "packBudgetViolations": 0,
+        "packContentMismatchScenarios": 0,
+        "packForbiddenViolations": 0,
+        "packAnswerabilityViolations": 0
+      }
+    },
+    "tool-echo": {
+      "scenarios": 4,
+      "pendingCandidates": 0,
+      "writes": {
+        "expected": 2,
+        "correct": 2,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "wrongType": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 1,
+        "intactBroken": 0,
+        "echoExpected": 3,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 2,
+        "merged": 0,
+        "echoSkipped": 2
+      },
+      "retrieval": {
+        "answerable": 0,
+        "top1": 0,
+        "top5": 0,
+        "top1ExcludingAnchor": 0,
+        "unanswerable": 0,
+        "unanswerableCandidateTotal": 0,
+        "forbiddenViolations": 0,
+        "contentMismatchScenarios": 0,
+        "packAnswerable": 0,
+        "packHits": 0,
+        "packBudgetViolations": 0,
+        "packContentMismatchScenarios": 0,
+        "packForbiddenViolations": 0,
+        "packAnswerabilityViolations": 0
+      }
+    },
+    "no-answer-out-of-scope": {
+      "scenarios": 4,
+      "pendingCandidates": 0,
+      "writes": {
+        "expected": 0,
+        "correct": 0,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "wrongType": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 0,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 0,
+        "merged": 0,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 0,
+        "top1": 0,
+        "top5": 0,
+        "top1ExcludingAnchor": 0,
+        "unanswerable": 4,
+        "unanswerableCandidateTotal": 3,
+        "forbiddenViolations": 0,
+        "contentMismatchScenarios": 0,
+        "packAnswerable": 0,
+        "packHits": 0,
+        "packBudgetViolations": 0,
+        "packContentMismatchScenarios": 0,
+        "packForbiddenViolations": 0,
+        "packAnswerabilityViolations": 0
+      }
+    },
+    "identifier-zh-en": {
+      "scenarios": 5,
+      "pendingCandidates": 0,
+      "writes": {
+        "expected": 1,
+        "correct": 1,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "wrongType": 0,
+        "absentChecked": 0,
+        "unsourcedNew": 0,
+        "intactChecked": 1,
+        "intactBroken": 0,
+        "echoExpected": 0,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 2,
+        "merged": 0,
+        "echoSkipped": 0
+      },
+      "retrieval": {
+        "answerable": 4,
+        "top1": 4,
+        "top5": 4,
+        "top1ExcludingAnchor": 4,
+        "unanswerable": 0,
+        "unanswerableCandidateTotal": 0,
+        "forbiddenViolations": 0,
+        "contentMismatchScenarios": 0,
+        "packAnswerable": 4,
+        "packHits": 4,
+        "packBudgetViolations": 0,
+        "packContentMismatchScenarios": 0,
+        "packForbiddenViolations": 0,
+        "packAnswerabilityViolations": 0
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "A1",
+      "split": "dev",
+      "category": "same-name-cross-workspace",
+      "writes": {
+        "present": [
+          {
+            "text": "AuthGateway 的备用入口是 gateway-b.internal。",
+            "verdict": "correct",
+            "ids": [
+              202
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [
+          "rule-model-redundant"
+        ],
+        "applied": {
+          "inserted": 1,
+          "merged": 1
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "decision",
+            "text": "AuthGateway 的备用入口是 gateway-b.internal。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201,
+          101
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            201
+          ],
+          "estimatedTokens": 94,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "A2",
+      "split": "dev",
+      "category": "same-name-cross-workspace",
+      "writes": {
+        "present": [
+          {
+            "text": "SyncService 的批大小是 500 条。",
+            "verdict": "correct",
+            "ids": [
+              201
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 0,
+          "merged": 1
+        },
+        "newNodes": [],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201,
+          101
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            201
+          ],
+          "estimatedTokens": 129,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "A3",
+      "split": "dev",
+      "category": "same-name-cross-workspace",
+      "writes": {
+        "present": [],
+        "absent": [
+          {
+            "text": "导出格式固定为 XLSX。",
+            "verdict": "ok",
+            "ids": []
+          }
+        ],
+        "intact": [],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [
+          "source-unverified"
+        ],
+        "applied": {
+          "inserted": 0,
+          "merged": 0
+        },
+        "newNodes": [],
+        "counts": {
+          "expected": 0,
+          "correct": 0,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 1,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [
+        {
+          "type": "decision",
+          "name": "导出格式",
+          "text": "导出格式固定为 XLSX。",
+          "quote": "",
+          "linkName": "",
+          "linkLabel": "",
+          "supersedes": "",
+          "fail": "",
+          "fix": "",
+          "aliases": [],
+          "reason": "source-unverified"
+        }
+      ],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201,
+          101
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            201
+          ],
+          "estimatedTokens": 89,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "A4",
+      "split": "holdout",
+      "category": "same-name-cross-workspace",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "unanswerable",
+        "state": "scope_anchor_only",
+        "answerability": "not_assessed",
+        "candidates": [
+          101
+        ],
+        "top1": null,
+        "top5": null,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            101
+          ],
+          "estimatedTokens": 76,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": null
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "A5",
+      "split": "holdout",
+      "category": "same-name-cross-workspace",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": {
+          "id": 201,
+          "present": true,
+          "contains": "5%",
+          "ok": true
+        },
+        "pack": {
+          "ids": [
+            201
+          ],
+          "estimatedTokens": 85,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "B1",
+      "split": "dev",
+      "category": "numeric-negation",
+      "writes": {
+        "present": [
+          {
+            "text": "失败后重试 5 次。",
+            "verdict": "correct",
+            "ids": [
+              202
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "3 次",
+            "verdict": "intact",
+            "actual": "失败后重试 3 次。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 1,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "decision",
+            "text": "失败后重试 5 次。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "B2",
+      "split": "dev",
+      "category": "numeric-negation",
+      "writes": {
+        "present": [
+          {
+            "text": "现在允许写入。",
+            "verdict": "correct",
+            "ids": [
+              202
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "不允许写入",
+            "verdict": "intact",
+            "actual": "只允许只读访问，不允许写入。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [
+          "rule-model-redundant"
+        ],
+        "applied": {
+          "inserted": 1,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "decision",
+            "text": "现在允许写入。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "B3",
+      "split": "dev",
+      "category": "numeric-negation",
+      "writes": {
+        "present": [
+          {
+            "text": "TICKET-8841 的超时是 45 秒。",
+            "verdict": "correct",
+            "ids": [
+              203
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "30 秒",
+            "verdict": "intact",
+            "actual": "TICKET-8841 的超时是 30 秒。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 2,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "记住：TICKET-8841 的超时改为 45 秒。",
+            "source": "extract"
+          },
+          {
+            "id": 203,
+            "type": "decision",
+            "text": "TICKET-8841 的超时是 45 秒。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "B4",
+      "split": "holdout",
+      "category": "numeric-negation",
+      "writes": {
+        "present": [
+          {
+            "text": "报表游标可以复用 90 分钟。",
+            "verdict": "correct",
+            "ids": [
+              203
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "24 小时",
+            "verdict": "intact",
+            "actual": "报表游标可以复用 24 小时。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 2,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "以后都用 90 分钟作为报表游标的有效期。",
+            "source": "extract"
+          },
+          {
+            "id": 203,
+            "type": "preference",
+            "text": "报表游标可以复用 90 分钟。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "C1",
+      "split": "dev",
+      "category": "history-supersede-expiry",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          202,
+          101
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            202
+          ],
+          "estimatedTokens": 91,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "C2",
+      "split": "dev",
+      "category": "history-supersede-expiry",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          202,
+          101
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            202
+          ],
+          "estimatedTokens": 94,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "C3",
+      "split": "dev",
+      "category": "history-supersede-expiry",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          202
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            202
+          ],
+          "estimatedTokens": 88,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "C4",
+      "split": "holdout",
+      "category": "history-supersede-expiry",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          202,
+          201
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            202,
+            201
+          ],
+          "estimatedTokens": 160,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [
+            {
+              "code": "MULTIPLE_CURRENT_FACTS",
+              "name": "审计留存",
+              "ids": [
+                "201",
+                "202"
+              ],
+              "resolution": "not_resolved",
+              "order": "relevance_then_recorded_time"
+            }
+          ],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "D1",
+      "split": "dev",
+      "category": "tool-echo",
+      "writes": {
+        "present": [],
+        "absent": [],
+        "intact": [],
+        "echoes": [
+          {
+            "text": "测试代号是 BLUE-OTTER-741。",
+            "verdict": "not-written",
+            "ids": []
+          }
+        ],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 1,
+        "skippedReasons": [
+          "memory-read-echo"
+        ],
+        "applied": {
+          "inserted": 0,
+          "merged": 0
+        },
+        "newNodes": [],
+        "counts": {
+          "expected": 0,
+          "correct": 0,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 1,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "D2",
+      "split": "dev",
+      "category": "tool-echo",
+      "writes": {
+        "present": [],
+        "absent": [],
+        "intact": [],
+        "echoes": [
+          {
+            "text": "数据库端口是 6543。",
+            "verdict": "not-written",
+            "ids": []
+          }
+        ],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 1,
+        "skippedReasons": [
+          "memory-read-echo"
+        ],
+        "applied": {
+          "inserted": 0,
+          "merged": 0
+        },
+        "newNodes": [],
+        "counts": {
+          "expected": 0,
+          "correct": 0,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 1,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "D3",
+      "split": "dev",
+      "category": "tool-echo",
+      "writes": {
+        "present": [
+          {
+            "text": "构建缓存的清理周期是 7 天。",
+            "verdict": "correct",
+            "ids": [
+              202
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [],
+        "echoes": [
+          {
+            "text": "构建缓存目录是 .build/cache。",
+            "verdict": "not-written",
+            "ids": []
+          }
+        ],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [
+          "rule-model-redundant"
+        ],
+        "applied": {
+          "inserted": 1,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "构建缓存的清理周期是 7 天。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 0,
+          "intactBroken": 0,
+          "echoExpected": 1,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "D4",
+      "split": "holdout",
+      "category": "tool-echo",
+      "writes": {
+        "present": [
+          {
+            "text": "并发上限是 12。",
+            "verdict": "correct",
+            "ids": [
+              202
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "8",
+            "verdict": "intact",
+            "actual": "并发上限是 8。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 1,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "decision",
+            "text": "并发上限是 12。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "E1",
+      "split": "dev",
+      "category": "no-answer-out-of-scope",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "unanswerable",
+        "state": "scope_anchor_only",
+        "answerability": "not_assessed",
+        "candidates": [
+          101
+        ],
+        "top1": null,
+        "top5": null,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            101
+          ],
+          "estimatedTokens": 76,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": null
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "E2",
+      "split": "dev",
+      "category": "no-answer-out-of-scope",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "unanswerable",
+        "state": "scope_anchor_only",
+        "answerability": "not_assessed",
+        "candidates": [
+          101
+        ],
+        "top1": null,
+        "top5": null,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            101
+          ],
+          "estimatedTokens": 78,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": null
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "E3",
+      "split": "dev",
+      "category": "no-answer-out-of-scope",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "unanswerable",
+        "state": "scope_anchor_only",
+        "answerability": "not_assessed",
+        "candidates": [
+          101
+        ],
+        "top1": null,
+        "top5": null,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            101
+          ],
+          "estimatedTokens": 76,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": null
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "E4",
+      "split": "holdout",
+      "category": "no-answer-out-of-scope",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "unanswerable",
+        "state": "no_candidates",
+        "answerability": "not_assessed",
+        "candidates": [],
+        "top1": null,
+        "top5": null,
+        "top1ExcludingAnchor": null,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [],
+          "estimatedTokens": 34,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": null
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "F1",
+      "split": "dev",
+      "category": "identifier-zh-en",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201,
+          101
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            201
+          ],
+          "estimatedTokens": 89,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "F2",
+      "split": "dev",
+      "category": "identifier-zh-en",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            201
+          ],
+          "estimatedTokens": 89,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "F3",
+      "split": "dev",
+      "category": "identifier-zh-en",
+      "writes": {
+        "present": [
+          {
+            "text": "关联工单是 OPS-4411。",
+            "verdict": "correct",
+            "ids": [
+              203
+            ]
+          }
+        ],
+        "absent": [],
+        "intact": [
+          {
+            "id": 201,
+            "contains": "OPS-4410",
+            "verdict": "intact",
+            "actual": "关联工单是 OPS-4410。"
+          }
+        ],
+        "echoes": [],
+        "duplicateGroups": [],
+        "redundantNew": [],
+        "echoSkipped": 0,
+        "skippedReasons": [],
+        "applied": {
+          "inserted": 2,
+          "merged": 0
+        },
+        "newNodes": [
+          {
+            "id": 202,
+            "type": "preference",
+            "text": "记住：关联工单改为 OPS-4411。",
+            "source": "extract"
+          },
+          {
+            "id": 203,
+            "type": "decision",
+            "text": "关联工单是 OPS-4411。",
+            "source": "extract"
+          }
+        ],
+        "counts": {
+          "expected": 1,
+          "correct": 1,
+          "duplicate": 0,
+          "needsReview": 0,
+          "missed": 0,
+          "wrongType": 0,
+          "absentChecked": 0,
+          "unsourcedNew": 0,
+          "intactChecked": 1,
+          "intactBroken": 0,
+          "echoExpected": 0,
+          "echoLeaked": 0,
+          "duplicateGroups": 0,
+          "redundantNew": 0
+        }
+      },
+      "unverified": [],
+      "retrieval": null,
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "F4",
+      "split": "holdout",
+      "category": "identifier-zh-en",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201,
+          101
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            201
+          ],
+          "estimatedTokens": 91,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    },
+    {
+      "id": "F5",
+      "split": "holdout",
+      "category": "identifier-zh-en",
+      "writes": null,
+      "unverified": [],
+      "retrieval": {
+        "kind": "answerable",
+        "state": "candidates",
+        "answerability": "not_assessed",
+        "candidates": [
+          201,
+          101
+        ],
+        "top1": true,
+        "top5": true,
+        "top1ExcludingAnchor": true,
+        "forbiddenHits": [],
+        "contentMismatches": [],
+        "textCheck": null,
+        "pack": {
+          "ids": [
+            201
+          ],
+          "estimatedTokens": 86,
+          "budgetTokens": 300,
+          "omittedIds": [],
+          "ambiguities": [],
+          "contentMismatches": [],
+          "forbiddenHits": [],
+          "withinBudget": true,
+          "answerabilityValid": true,
+          "hit": true
+        }
+      },
+      "llmCalls": 1,
+      "embedCalls": 0,
+      "rep": 2
+    }
+  ]
+}

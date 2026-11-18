@@ -139,6 +139,10 @@ async function p106() {
   assert.equal(scoreLiveAnswer({answer:null},'{"status":"unknown","value":null,"ids":"[]"}',[],[]).correct,false);
   assert.equal(scoreLiveAnswer(scenario,'{"status":"unknown","value":null,"ids":[]}',[3],[3]).correct,false);
   assert.equal(scoreLiveAnswer({answer:null},'{"status":"unknown","value":null,"ids":[]}',[],[]).correct,true);
+  const conflict={status:'conflict',answer:null};
+  assert.equal(scoreLiveAnswer(conflict,'{"status":"conflict","value":null,"ids":[3,4]}',[3,4],[3,4]).correct,true);
+  assert.equal(scoreLiveAnswer(conflict,'{"status":"conflict","value":null,"ids":[3]}',[3,4],[3,4]).correct,false);
+  assert.equal(scoreLiveAnswer(conflict,'{"status":"conflict","value":null,"ids":[3,4]}',[3],[3,4]).correct,false);
   assert.equal(scoreLiveAnswer(scenario,'no JSON',[],[]).correct,false);
   assert.equal(usageOf({usage:[]}),null);
   assert.equal(usageOf({usage:[{inputTokens:10,outputTokens:1},{inputTokens:20,outputTokens:4,cacheReadTokens:8}]}).aggregateInputTokens,28);

@@ -8,6 +8,8 @@
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
+    "./handoff": "./lib/handoff.js",
+    "./documents": "./lib/document-evidence.js",
     "./package.json": "./package.json"
   },
   "files": [

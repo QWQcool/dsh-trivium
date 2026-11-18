@@ -1,0 +1,23 @@
+{
+  "entityPayloadReads": {
+    "cold": 6,
+    "warm": 0
+  },
+  "mapQueries": {
+    "cold": 4,
+    "warm": 0
+  },
+  "stats": {
+    "enabled": true,
+    "entries": 2,
+    "bytes": 2216,
+    "hits": 3,
+    "misses": 10,
+    "invalidations": 22,
+    "epoch": 22
+  },
+  "unchangedInjection": "skip",
+  "modelCalls": 0,
+  "embeddingCalls": 0,
+  "billedTokens": "not measured"
+}

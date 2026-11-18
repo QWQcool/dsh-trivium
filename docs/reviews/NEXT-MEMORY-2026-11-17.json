@@ -1,0 +1,188 @@
+{
+  "recordedAt": "2026-11-17T10:23:17.116Z",
+  "branch": "codex/low-cost-memory-next",
+  "baseCommit": "3711aca3f51d086844881b3d9c17e1a586837f89",
+  "uncommittedDuringMeasurement": true,
+  "sourceHashManifest": "../evidence/next-memory-2026-11-17/manifest.json",
+  "environment": {
+    "node": "v24.15.0",
+    "platform": "win32",
+    "arch": "x64",
+    "kernel": "0.9.1"
+  },
+  "verification": {
+    "sequencing": "All five implementations preceded the first test run. Failures were fixed in the same consolidated validation phase.",
+    "initialFull": {
+      "passed": 95,
+      "total": 98
+    },
+    "cacheEnabledCompatibilityRun": {
+      "passed": 96,
+      "total": 98
+    },
+    "finalFull": {
+      "passed": 98,
+      "total": 98
+    },
+    "panel": {
+      "passed": 35,
+      "total": 35
+    },
+    "newChecks": {
+      "p107": {
+        "passed": 3,
+        "total": 3
+      },
+      "p108": {
+        "passed": 4,
+        "total": 4
+      },
+      "p109": {
+        "passed": 5,
+        "total": 5
+      },
+      "p110": {
+        "passed": 5,
+        "total": 5
+      },
+      "p111": {
+        "passed": 6,
+        "total": 6
+      }
+    },
+    "corrections": [
+      "Activated cache despite the SDK non-writable dispose alias",
+      "Retained candidate quote in bounded history view",
+      "Matched the actual localized dismiss label in the UI test",
+      "Preserved multi-identifier recall while rejecting identifier fragments",
+      "Bypassed cache for injected test clocks so CPU limits remain exercised",
+      "Released closed Router handles from the owner registry"
+    ]
+  },
+  "frozen": {
+    "fixtureHash": "4f5bf88d0c08757f7e20915c8191c68d1fd59666b8358350a71eb863dbef335e",
+    "unchangedFixture": true,
+    "reps": 3,
+    "scenarios": 26,
+    "aggregate": {
+      "scenarios": 26,
+      "pendingCandidates": 1,
+      "writes": {
+        "expected": 9,
+        "correct": 9,
+        "duplicate": 0,
+        "needsReview": 0,
+        "missed": 0,
+        "wrongType": 0,
+        "absentChecked": 1,
+        "unsourcedNew": 0,
+        "intactChecked": 6,
+        "intactBroken": 0,
+        "echoExpected": 3,
+        "echoLeaked": 0,
+        "duplicateGroups": 0,
+        "redundantNew": 0,
+        "inserted": 11,
+        "merged": 2,
+        "echoSkipped": 2
+      },
+      "retrieval": {
+        "answerable": 12,
+        "top1": 12,
+        "top5": 12,
+        "top1ExcludingAnchor": 12,
+        "unanswerable": 5,
+        "unanswerableCandidateTotal": 4,
+        "forbiddenViolations": 0,
+        "contentMismatchScenarios": 0,
+        "packAnswerable": 12,
+        "packHits": 12,
+        "packBudgetViolations": 0,
+        "packContentMismatchScenarios": 0,
+        "packForbiddenViolations": 0,
+        "packAnswerabilityViolations": 0
+      }
+    },
+    "timing": {
+      "samples": 78,
+      "p50": 50.2133,
+      "p95": 283.389,
+      "max": 515.4333
+    },
+    "before": {
+      "top1": 10,
+      "top5": 10,
+      "packHits": 10,
+      "unanswerableCandidateTotal": 3
+    },
+    "newUnanswerableCandidate": {
+      "scenario": "E1",
+      "id": 101,
+      "state": "scope_anchor_only",
+      "answerability": "not_assessed",
+      "note": "Entity anchor only, not an answer fact."
+    }
+  },
+  "independentRetrieval": {
+    "fixtureHash": "ea8151c2b17e70d0c6d51589147595fd8853b4a42cfd72412a3e93e14a4e25eb",
+    "dev": {
+      "n": 8,
+      "top1": 8,
+      "top5": 8
+    },
+    "holdout": {
+      "n": 7,
+      "top1": 7,
+      "top5": 7
+    },
+    "unanswerableScenarios": 1,
+    "unanswerableCandidates": 0,
+    "firstRunOutcomesUnchanged": true,
+    "forbiddenScopeHits": 0
+  },
+  "cache": {
+    "entityPayloadReads": {
+      "cold": 6,
+      "warm": 0
+    },
+    "mapQueries": {
+      "cold": 4,
+      "warm": 0
+    },
+    "stats": {
+      "enabled": true,
+      "entries": 2,
+      "bytes": 2216,
+      "hits": 3,
+      "misses": 10,
+      "invalidations": 22,
+      "epoch": 22
+    },
+    "unchangedInjection": "skip",
+    "modelCalls": 0,
+    "embeddingCalls": 0,
+    "billedTokens": "not measured"
+  },
+  "models": {
+    "realCalls": 0,
+    "embeddingCalls": 0,
+    "blockedNetworkAttempts": 0,
+    "finalAnswerAccuracy": "not measured",
+    "billing": "not measured"
+  },
+  "delivery": {
+    "npmPublished": false,
+    "desktopUpdated": false,
+    "formalDesktopVersion": "0.9.0",
+    "formalDesktopAcceptance": "User reported version and existing memory readability before this development task.",
+    "existingMemoryFilesOperatedOn": 0
+  },
+  "boundaries": [
+    "Bounded Chinese/English lexical groups, not general translation",
+    "Small deterministic corpus, not end-to-end Agent accuracy",
+    "Source review history is preserved, no semantic automatic merge",
+    "Handoff is a trusted local host protocol, not remote authentication or a stable Super Agent SDK integration",
+    "Document evidence is explicit small-text import and versioned manual association; no automatic file scanning, PDF/Office parsing or semantic entailment judgment",
+    "No model-answer or monetary-cost superiority claim"
+  ]
+}
