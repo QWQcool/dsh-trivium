@@ -8,7 +8,7 @@ import {join,resolve,basename} from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {spawn} from 'node:child_process';
-export const cases=Object.freeze({p107,p108,p109,p110,p111,p112,p113,p114,p115});
+export const cases=Object.freeze({p107,p108,p109,p110,p111,p112,p113,p114,p115,p116});
 const reportDir=resolve('.tmp/next-memory-20261117');
 async function environment(fn) {
   const root=mkdtempSync(join(tmpdir(),'trivium-next-'));
@@ -188,7 +188,7 @@ async function p110(){await environment(async({root,s,check})=>{
     await h.submitHandoff(cwd,oneShot);await h.drainHandoff(cwd,db);assert.equal(h.handoffReceipt(cwd,oneShot).status,'needs_review');assert.equal(db.nodeCount(),n);
   });
   await check('failed graph flush keeps queued candidates, retry recovers stable URI without duplication',async()=>{
-    const row={...envelope(1),eventId:'flush-recovery'};await h.submitHandoff(cwd,row);const n=db.nodeCount(),flush=db.flush.bind(db);db.flush=()=>{throw Error('synthetic flush failure');};
+    const row={...envelope(1),eventId:'flush-recovery',sourceTurns:[{...envelope(1).sourceTurns[0],seq:2}]};await h.submitHandoff(cwd,row);const n=db.nodeCount(),flush=db.flush.bind(db);db.flush=()=>{throw Error('synthetic flush failure');};
     try{await assert.rejects(h.drainHandoff(cwd,db));assert.equal(h.handoffReceipt(cwd,row).status,'queued');}finally{db.flush=flush;}
     await h.drainHandoff(cwd,db);assert.equal(db.nodeCount(),n+1);assert.equal(h.handoffReceipt(cwd,row).status,'committed');
   });
@@ -631,5 +631,221 @@ async function p115() {
       assert.match(await read({...args,since}), /Run ctx_find without since/);
       assert.equal((await search(db,'Relay')).entityId, 301);
     });
+  });
+}
+
+async function p116() {
+  await environment(async ({root,s,check}) => {
+    const h = await import('../lib/handoff.js');
+    const {createServer} = await import('node:http');
+    const {registerMemoryApi} = await import('../lib/server.js');
+    const {pendingPath,savePending} = await import('../lib/extract.js');
+    const cwd = join(root,'central'), other = join(root,'other');
+    let db = await s.openWorkspaceDb(cwd);
+    const otherDb = await s.openWorkspaceDb(other);
+    const old = s.insertNode(db,{type:'decision',name:'旧记录',text:'审计日志保留 30 天。'});
+    const oldPayload = db.getPayload(old);
+    const assignments = ['A','B'].map(id => ({ticketId:'ticket-'+id,assignmentId:'assignment-'+id,workerId:'worker-'+id}));
+    const projectScopeId = 'central-test';
+    await h.configureHandoff(cwd,{projectScopeId,assignments});
+    const envelope = (worker,eventId,value,turn={}) => {
+      const text = `合成中继端口是 ${value}。`;
+      return {version:1,projectScopeId,...assignments[worker],eventId,sessionId:'executor-'+worker,
+        sourceTurns:[{role:'user',text:`记住：${text}`,messageId:'source-'+value,recorded:true,...turn}],
+        candidates:[{type:'decision',name:'中继端口',text,quote:text}]};
+    };
+    const receipt = row => h.handoffReceipt(cwd,row);
+    const outcome = row => receipt(row).outcomes[0];
+    const submit = (...rows) => Promise.all(rows.map(row => h.submitHandoff(cwd,row)));
+    const drain = () => h.drainHandoff(cwd,db);
+    const ids = (...rows) => rows.map(row => outcome(row).nodeId);
+
+    await check('two processes share one recorded fact and keep distinct durable receipts', async () => {
+      const a = envelope(0,'same-a',7431), b = envelope(1,'same-b',7431);
+      const module = new URL('../lib/handoff.js',import.meta.url).href;
+      await Promise.all([a,b].map(row => new Promise((resolve,reject) => {
+        const source = `import {submitHandoff} from ${JSON.stringify(module)}; await submitHandoff(process.argv[1],JSON.parse(process.argv[2]));`;
+        const child = spawn(process.execPath,['--input-type=module','-e',source,cwd,JSON.stringify(row)],{stdio:['ignore','ignore','pipe']});
+        let err = '';
+        child.stderr.on('data',chunk => {err += chunk;});
+        child.on('error',reject);
+        child.on('exit',code => code === 0 ? resolve() : reject(Error(err || `Worker exit ${code}`)));
+      })));
+      const before = db.nodeCount();
+      assert.equal((await drain()).processed,2);
+      assert.equal(db.nodeCount(),before+1);
+      assert.notEqual(receipt(a).key,receipt(b).key);
+      assert.equal(outcome(a).nodeId,outcome(b).nodeId);
+      assert.deepEqual([outcome(a).reused,outcome(b).reused].sort(),[false,true]);
+      assert.ok(outcome(a).factKey && outcome(a).factKey === outcome(b).factKey);
+      s.closeWorkspaceDb(cwd,db);
+      db = await s.openWorkspaceDb(cwd);
+      assert.equal(db.getPayload(outcome(a).nodeId).text,a.candidates[0].text);
+      assert.deepEqual(await h.submitHandoff(cwd,b),{...receipt(b),replayed:true});
+    });
+
+    await check('only the same recorded source and exact fact share a node', async () => {
+      const a = envelope(0,'seq-a',7432,{messageId:undefined,seq:7});
+      const b = envelope(1,'seq-b',7432,{messageId:undefined,seq:7});
+      const c = envelope(0,'origin-a',7433,{messageId:undefined,seq:7,sourceSessionId:'original-session'});
+      const d = envelope(1,'origin-b',7433,{messageId:undefined,seq:7,sourceSessionId:'original-session'});
+      const e = envelope(0,'independent',7431,{messageId:'separate-message'});
+      const f = envelope(0,'unrecorded',7431,{recorded:false});
+      const g = envelope(1,'changed-source',7431,{text:'现明确确认：合成中继端口是 7431。'});
+      const x = envelope(0,'facts',7434,{text:'合成中继端口是 7434。合成中继端口是 7435。'});
+      x.candidates.push(envelope(1,'irrelevant',7435).candidates[0]);
+      await submit(a,b,c,d,e,f,g,x);
+      await drain();
+      assert.notEqual(outcome(a).nodeId,outcome(b).nodeId);
+      assert.equal(outcome(c).nodeId,outcome(d).nodeId);
+      assert.equal(new Set(ids(envelope(0,'same-a',7431),e,f,g)).size,4);
+      assert.equal(new Set(receipt(x).outcomes.map(row => row.nodeId)).size,2);
+      assert.equal(new Set(receipt(x).outcomes.map(row => row.factKey)).size,2);
+    });
+
+    await check('a pre-existing v1 receipt is reused without rewriting its memory', async () => {
+      const a = envelope(0,'legacy',7436), b = envelope(1,'legacy-reuse',7436);
+      const accepted = await h.submitHandoff(cwd,a);
+      const legacy = s.insertNode(db,{...a.candidates[0],uri:`trivium:handoff:${accepted.key}:0`,source:{handoff:{key:accepted.key}}});
+      const original = db.getPayload(legacy);
+      const file = h.handoffPath(cwd), state = JSON.parse(readFileSync(file,'utf8'));
+      const stored = state.entries.find(row => row.key === accepted.key);
+      Object.assign(stored,{status:'committed',completedAt:accepted.acceptedAt,outcomes:[{index:0,status:'committed',nodeId:legacy,reused:false}]});
+      fs.writeFileSync(file,JSON.stringify(state));
+      await submit(b);
+      await drain();
+      assert.equal(outcome(b).nodeId,legacy);
+      assert.equal(outcome(b).reused,true);
+      assert.equal(outcome(a).factKey,undefined);
+      assert.deepEqual(db.getPayload(legacy),original);
+    });
+
+    await check('a failed flush never advances either receipt and retries write the fact once', async () => {
+      const a = envelope(0,'flush-a',7437), b = envelope(1,'flush-b',7437);
+      const before = db.nodeCount(), flush = db.flush;
+      await submit(a,b);
+      try {
+        db.flush = () => {throw Error('synthetic failure');};
+        await assert.rejects(drain(),/synthetic failure/);
+        assert.equal(receipt(a).status,'queued');
+        assert.equal(receipt(b).status,'queued');
+      } finally { db.flush = flush; }
+      await drain();
+      assert.equal(db.nodeCount(),before+1);
+      assert.equal(outcome(a).nodeId,outcome(b).nodeId);
+    });
+
+    const archived = envelope(1,'archived-origin',7431);
+    await check('archived facts are not resurrected and become reviewable', async () => {
+      const oldHandoff = outcome(envelope(0,'same-a',7431)).nodeId;
+      assert.ok(s.archiveNode(db,oldHandoff));
+      const before = db.nodeCount();
+      await submit(archived);
+      await drain();
+      assert.equal(db.nodeCount(),before);
+      assert.equal(outcome(archived).reason,'previous-memory-changed');
+      assert.equal(db.getPayload(oldHandoff).status,'archived');
+    });
+
+    const tool = (worker,eventId,value) => {
+      const row = envelope(worker,eventId,value);
+      Object.assign(row.sourceTurns[0],{role:'tool',toolName:'ctx_read',text:row.candidates[0].text});
+      return row;
+    };
+    const first = tool(0,'review-one',7438), second = tool(1,'review-two',7438), ignore = tool(1,'review-ignore',7438);
+    const recovery = tool(0,'review-recovery',7439);
+    await submit(first,second,ignore,recovery);
+    await drain();
+    const extractionText = '普通抽取待核对。';
+    await savePending(cwd,{sessionId:'regular-extraction',turns:[{role:'user',text:'普通对话。'}],
+      unverified:[{type:'decision',name:'普通抽取',text:extractionText}]});
+    const extractionBytes = readFileSync(pendingPath(cwd));
+    const unrelatedCount = otherDb.nodeCount();
+    let handler;
+    registerMemoryApi({webServer:{register(route) {handler = route.handler;}}},{liveOptions:() => ({}),status:{}});
+    const server = createServer(handler);
+    await new Promise(resolve => server.listen(0,'127.0.0.1',resolve));
+    const request = async (path,workspace=cwd,body,params={}) => {
+      const response = await fetch(`http://127.0.0.1:${server.address().port}/api/dsh-trivium/pending${path}?${new URLSearchParams({cwd:workspace,...params})}`,{
+        headers:{connection:'close','content-type':'application/json'},
+        ...(body ? {method:'POST',body:JSON.stringify(body)} : {}),
+      });
+      return {status:response.status,data:await response.json()};
+    };
+    const readPanel = async params => (await request('',cwd,null,params)).data;
+    const panelAction = async (eventId,action,evidence) => {
+      const win = (await readPanel()).windows.find(row => row.handoff?.eventId === eventId);
+      assert.ok(win,`missing ${eventId}`);
+      return {origin:'handoff',sessionId:win.sessionId,candidateId:win.unverified[0].id,etag:win.etag,action,evidence};
+    };
+    const review = (body,workspace) => request('/review',workspace,body);
+    try {
+      await check('existing review API keeps original sources, evidence and independent handoff outcomes', async () => {
+        const before = db.nodeCount();
+        assert.ok((await readPanel()).windows.some(row => !row.handoff && row.unverified[0].text === extractionText));
+        const accept = await panelAction(first.eventId,'confirm');
+        assert.equal((await review(accept,other)).data.code,'PENDING_REVIEW_STALE');
+        assert.equal((await review(accept)).status,200);
+        assert.equal((await review(accept)).data.replayed,true);
+        assert.equal((await review({...accept,action:'dismiss'})).status,409);
+        const row = (await readPanel()).windows.find(row => row.handoff?.eventId === second.eventId);
+        assert.equal(row.evidence[0].role,'tool');
+        assert.equal(row.unverified[0].existingFacts[0].id,outcome(first).nodeId);
+        assert.equal((await review(await panelAction(second.eventId,'verify','不相关的材料。'))).data.settled,false);
+        const verified = await review(await panelAction(second.eventId,'verify',second.candidates[0].text));
+        assert.equal(verified.data.reused,true);
+        assert.equal(verified.data.nodeId,outcome(first).nodeId);
+        const dismissed = await review(await panelAction(ignore.eventId,'dismiss'));
+        assert.equal(dismissed.data.nodeId,null);
+        assert.equal(receipt(ignore).status,'reviewed');
+        assert.equal(outcome(ignore).status,'dismissed');
+        assert.equal((await review(await panelAction(archived.eventId,'confirm'))).data.code,'PENDING_REVIEW_NODE_CHANGED');
+        assert.equal(db.nodeCount(),before+1);
+        const history = (await readPanel({reviewLimit:2})).history;
+        assert.equal(history.total,3);
+        assert.equal(history.entries.length,2);
+        assert.equal((await readPanel({reviewLimit:2,reviewOffset:2})).history.entries[0].handoff.workerId,'worker-A');
+        assert.deepEqual(readFileSync(pendingPath(cwd)),extractionBytes);
+      });
+
+      await check('a failed review receipt rename keeps the candidate and retries its original write only', async () => {
+        const accept = await panelAction(recovery.eventId,'confirm');
+        const before = db.nodeCount();
+        const file = h.handoffPath(cwd), bytes = readFileSync(file), rename = fs.renameSync;
+        try {
+          fs.renameSync = (from,to) => {
+            if (to === file) throw Error('synthetic rename failure');
+            return rename(from,to);
+          };
+          syncBuiltinESMExports();
+          assert.equal((await review(accept)).status,500);
+          assert.deepEqual(readFileSync(file),bytes);
+          assert.equal(receipt(recovery).status,'needs_review');
+        } finally { fs.renameSync = rename; syncBuiltinESMExports(); }
+        assert.equal((await review({...accept,action:'dismiss'})).data.code,'PENDING_REVIEW_ALREADY_WRITTEN');
+        assert.equal((await review(accept)).status,200);
+        assert.equal((await review(accept)).data.replayed,true);
+        assert.equal(db.nodeCount(),before+1);
+        assert.equal(receipt(recovery).status,'committed');
+      });
+
+      await check('handoff paging keeps all candidates reachable and unreadable inboxes leave extraction visible', async () => {
+        await submit(...Array.from({length:12},(_,i) => tool(0,`page-${i}`,7440+i)));
+        await drain();
+        const page = await readPanel({handoffOffset:12});
+        assert.deepEqual(page.handoffPage,{offset:12,limit:12,total:13});
+        assert.equal(page.windows.filter(row => row.handoff).length,1);
+        assert.equal((await request('',other)).data.windows.length,0);
+        const file = h.handoffPath(cwd), original = readFileSync(file);
+        fs.writeFileSync(file,'{');
+        try {
+          const data = await readPanel();
+          assert.equal(data.handoffError,'HANDOFF_UNREADABLE');
+          assert.ok(data.windows.some(row => !row.handoff && row.unverified[0].text === extractionText));
+        } finally { fs.writeFileSync(file,original); }
+        assert.deepEqual(db.getPayload(old),oldPayload);
+        assert.equal(otherDb.nodeCount(),unrelatedCount);
+      });
+    } finally { await new Promise(resolve => server.close(resolve)); }
   });
 }
