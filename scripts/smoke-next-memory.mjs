@@ -8,7 +8,7 @@ import {join,resolve,basename} from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {spawn} from 'node:child_process';
-export const cases=Object.freeze({p107,p108,p109,p110,p111,p112,p113,p114});
+export const cases=Object.freeze({p107,p108,p109,p110,p111,p112,p113,p114,p115});
 const reportDir=resolve('.tmp/next-memory-20261117');
 async function environment(fn) {
   const root=mkdtempSync(join(tmpdir(),'trivium-next-'));
@@ -568,5 +568,68 @@ async function p114() {
     } finally {
       await new Promise(resolve => server.close(resolve));
     }
+  });
+}
+
+async function p115() {
+  await environment(async ({root, s, check}) => {
+    const {searchEntity, validateEntitySearch} = await import('../lib/entity-search.js');
+    const {searchEntitySnapshot} = await import('../lib/entity-search-snapshot.js');
+    const {createReadSnapshot} = await import('../lib/read-snapshots.js');
+    const {createTaskMemoryReader, scopedToolRequest} = await import('../lib/task-memory.js');
+    const cwd = join(root, 'named'), other = join(root, 'other');
+    const db = await seedScope(s, cwd, {entity:'Ridge Relay', fact:'Ridge Relay retry limit is 4 attempts.', distractor:'Ridge Relay runs on Tuesdays.'});
+    const foreignDb = await seedScope(s, other, {entity:'Ridge Relay', fact:'Ridge Relay retry limit is 17 attempts.', distractor:'Ridge Relay runs on Sundays.'});
+    const alias = (handle, id, aliases, status) => handle.updatePayload(id, {...handle.getPayload(id), aliases, ...(status ? {status} : {})});
+    alias(db, 101, ['Relay', '山脊中继']);
+    alias(foreignDb, 101, ['Relay']);
+    const query = 'Ridge Relay retry limit attempts';
+    const search = (handle, entityName, opts) => searchEntity(handle, {entityName, query, packTokens: 300}, opts);
+
+    await check('exact names and aliases normalize case and width within the selected database', async () => {
+      for (const name of ['ridge relay', ' ＲＥＬＡＹ ', '山脊中继']) {
+        const result = await search(db, name);
+        assert.equal(result.entityId, 101);
+        assert.equal(result.work.embeddingCalls, 0);
+        assert.match(result.memoryPack.context, /4 attempts/);
+        assert.doesNotMatch(result.memoryPack.context, /17 attempts/);
+      }
+      assert.match((await search(foreignDb, 'Relay')).memoryPack.context, /17 attempts/);
+      await assert.rejects(search(db, 'Ridg'), {code: 'ENTITY_SEARCH_NAME_NOT_FOUND'});
+      assert.throws(() => validateEntitySearch({entityId:101, entityName:'Relay', query}), {code:'ENTITY_SEARCH_INVALID'});
+      await assert.rejects(search(db, 'Relay', {limits: {nodes:1}}), {code:'ENTITY_SEARCH_WORK_LIMIT'});
+    });
+
+    await check('same-name conflicts expose choices without embedding and snapshots resolve their own names', async () => {
+      const prior = createReadSnapshot(db, cwd);
+      alias(db, 301, ['Relay']);
+      let embeddingCalls = 0;
+      await assert.rejects(searchEntity(db, {entityName:'Relay', query, semantic:true}, {embedding:async () => {embeddingCalls++;}}),
+        error => error.code === 'ENTITY_SEARCH_NAME_AMBIGUOUS' && error.choiceCount === 2 && JSON.stringify(error.choices.map(row=>row.id)) === '[101,301]');
+      assert.equal(embeddingCalls, 0);
+      const frozen = await searchEntitySnapshot(cwd, prior.snapshotId, {entityName:'Relay', query, packTokens:300});
+      assert.equal(frozen.entityId, 101);
+      assert.equal(frozen.source, 'snapshot');
+      const ambiguous = createReadSnapshot(db, cwd);
+      await assert.rejects(searchEntitySnapshot(cwd, ambiguous.snapshotId, {entityName:'Relay', query}),
+        error => error.code === 'ENTITY_SEARCH_NAME_AMBIGUOUS' && error.choices.length === 2);
+      alias(db, 301, ['Relay'], 'archived');
+      assert.equal((await search(db, 'Relay')).entityId, 101);
+    });
+
+    await check('named compact cursors cannot follow an alias reassigned to another entity', async () => {
+      const reader = createTaskMemoryReader();
+      const args = {entity_name:'Relay', query, pack_tokens:300};
+      const read = (input) => reader.read(db, scopedToolRequest(input, 5), {sessionId:'same-task'});
+      const before = await read(args);
+      assert.match(before, /4 attempts/);
+      const since = before.match(/^Cursor: (.+)$/m)?.[1];
+      assert.ok(since);
+      assert.match(await read({...args,since}), /facts unchanged/);
+      alias(db, 101, ['山脊中继']);
+      alias(db, 301, ['Relay'], 'active');
+      assert.match(await read({...args,since}), /Run ctx_find without since/);
+      assert.equal((await search(db,'Relay')).entityId, 301);
+    });
   });
 }

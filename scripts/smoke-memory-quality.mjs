@@ -162,8 +162,10 @@ async function p106() {
     assert.throws(()=>prepareEvalBridge(generated.directory),/new bridge/);
     const {apply}=await import('./eval-host-bridge.mjs');let handler,calls=0;
     process.env.TRIVIUM_EVAL_TOKEN='synthetic-test-token';
+    const modelHistories = [];
     await apply({webServer:{register(entry){handler=entry.handler;}},llm:{listModels:async()=>[{id:'test-model'}],async *stream(options){
       calls++;assert.equal(options.maxTokens,32);assert.equal(options.reasoningEffort,'off');assert.ok(options.signal);
+      modelHistories.push(options.messages.map(message => [message.role,message.content[0].text]));
       yield {type:'text-delta',index:0,text:'READY'};
       yield {type:'usage',usage:{inputTokens:5,outputTokens:1,cacheReadTokens:3,totalTokens:9}};
       yield {type:'finish',reason:{kind:'stop'}};
@@ -176,8 +178,12 @@ async function p106() {
     assert.equal((await post(request,{origin:'https://evil.invalid'})).status,403);
     assert.equal((await post({...request,maxTokens:901})).status,400);
     assert.equal((await post({...request,provider:'other'})).status,400);
+    assert.equal((await post({...request,history:[{role:'assistant',text:'Wrong order'}]})).status,400);
     assert.equal((await post('x'.repeat(32769))).status,413);assert.equal(calls,0);
-    for(let i=0;i<48;i++) {const response=await post(request);assert.equal(response.status,200);const row=await response.json();assert.equal(row.text,'READY');assert.equal(row.usage[0].totalTokens,9);}
+    const multi = {...request,history:[{role:'user',text:'Prior synthetic prompt'},{role:'assistant',text:'Prior synthetic answer'}]};
+    for(let i=0;i<48;i++) {const response=await post(i === 0 ? multi : request);assert.equal(response.status,200);const row=await response.json();assert.equal(row.text,'READY');assert.equal(row.usage[0].totalTokens,9);}
+    assert.deepEqual(modelHistories[0], [['user','Prior synthetic prompt'],['assistant','Prior synthetic answer'],['user',request.prompt]]);
+    assert.deepEqual(modelHistories[1], [['user',request.prompt]]);
     assert.equal((await post(request)).status,429);assert.equal(calls,48);
   } finally {if(server)await new Promise(done=>server.close(done));rmSync(root,{recursive:true,force:true});if(priorToken===undefined)delete process.env.TRIVIUM_EVAL_TOKEN;else process.env.TRIVIUM_EVAL_TOKEN=priorToken;}
   console.log('P106: rubric, factual/citation scoring, usage counters, actual legacy text and bounded loopback adapter; no real-model or external-provider calls');

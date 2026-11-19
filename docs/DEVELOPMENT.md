@@ -36,7 +36,7 @@ npm run test:docs
 | smoke-audit-locks | p53/54/55/56 | 审计、工作区锁、双进程和真实 HTTP |
 | smoke-evaluation | p33/39 | 评分、实验隔离、请求前费用预留 |
 | smoke-memory-quality | p105/106 | 同轮规则去冗余、来源核对事务/HTTP、幂等/错库/落盘保护、真实模型评分与有界评测桥接（模型替身，不使用账号） |
-| smoke-next-memory | p107–114 | 中英检索、候选历史、缓存、持久交接、真实 TDB 片段及 HTTP、按需工具变化、来源归因、隔离设置、写入故障和文档分页。零付费调用 |
+| smoke-next-memory | p107–115 | 中英检索、候选历史、缓存、持久交接、真实 TDB 片段及 HTTP、按需工具变化、来源归因、数据可靠性、名称和快照定位。零付费调用 |
 | smoke-kernel | p99 | 用真实 0.9.0 创建合成库，核对 0.9.1 打开、写入、重开前后的节点、向量和边 |
 | 其余 smoke-pN / p2-cases | 原编号 | 较大的端到端、UI、宿主、查询和发布契约 |
 
@@ -51,6 +51,7 @@ npm run test:docs
 | 本地向量、范围检索、缓存重放 | `verify-local-embedding.mjs`，参数见[结果](reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 | 记忆离线基线（零模型调用） | `node scripts/memory-eval.mjs --out FILE --reps N`（`--split dev` 或 `--split holdout` 可只跑一组），夹具 `scripts/fixtures/memory-eval-v1.json`，见[基线](reviews/MEMORY-EVAL-BASELINE-2026-11-16.md) |
 | 真实模型对照 / 捕获响应离线回放 | `node scripts/memory-eval-live.mjs --help`；付费入口须显式提供本地宿主桥接及一次性 token，见[方法与失败运行](reviews/MEMORY-QUALITY-2026-11-17.md) |
+| 多轮记忆对照 | `node scripts/memory-eval-tasks.mjs --plan-only --out NEW.json` 先离线核对证据。实跑使用同一回环桥接，见[固定题集和真实结果](reviews/MEMORY-MULTITURN-2026-11-19.md) |
 | TQL 负载、写延迟 | `bench-live-tql.mjs`，见[方法](reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
 | 原始证据完整性 | `node scripts/verify-evidence.mjs` |
 | Router / 并发 | `bench-router-queue.mjs`、`bench-lock-contention.mjs` |

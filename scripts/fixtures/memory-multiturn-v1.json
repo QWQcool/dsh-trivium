@@ -1,0 +1,77 @@
+{
+  "version": "memory-multiturn-v1",
+  "limits": {"calls": 36, "contextTokens": 300, "maxOutputTokens": 256},
+  "cases": [
+    {
+      "id": "T01",
+      "category": "stable-alias",
+      "entity": "Aster Relay",
+      "alias": "星湾中继",
+      "query": "Aster Relay backup retention days",
+      "otherEntity": "Mica Relay",
+      "facts": [
+        {"id": 201, "name": "backup retention", "text": "Aster Relay backup retention is 21 days."},
+        {"id": 301, "name": "backup retention", "text": "Mica Relay backup retention is 30 days. It is measured separately from Aster Relay.", "foreign": true}
+      ],
+      "turns": [
+        {"question": "How many days does Aster Relay retain backups?", "answer": "21", "relevant": [201], "forbidden": [301]},
+        {"question": "For the same relay, confirm the backup retention in days.", "answer": "21", "relevant": [201], "forbidden": [301]},
+        {"question": "星湾中继的备份保留期是多少天？请给最终确认。", "answer": "21", "relevant": [201], "forbidden": [301]}
+      ]
+    },
+    {
+      "id": "T02",
+      "category": "confirmed-replacement",
+      "entity": "Ivory Queue",
+      "alias": "象牙队列",
+      "query": "Ivory Queue retry limit attempts",
+      "otherEntity": "Juniper Queue",
+      "facts": [
+        {"id": 201, "name": "retry limit", "text": "Ivory Queue retry limit is 4 attempts."},
+        {"id": 301, "name": "retry limit", "text": "Juniper Queue retry limit is 9 attempts. Ivory Queue is a different queue.", "foreign": true}
+      ],
+      "turns": [
+        {"question": "What is the current retry limit for Ivory Queue?", "answer": "4", "relevant": [201], "forbidden": [301]},
+        {"question": "Confirm the retry limit for this queue before I note it down.", "answer": "4", "relevant": [201], "forbidden": [301]},
+        {"question": "The configuration was revised. What is this queue's retry limit now?", "answer": "7", "relevant": [202], "forbidden": [201, 301],
+         "add": [{"id": 202, "name": "retry limit", "text": "Ivory Queue retry limit is 7 attempts.", "supersedes": 201}]}
+      ]
+    },
+    {
+      "id": "T03",
+      "category": "conflict-then-archive",
+      "entity": "Fogline",
+      "alias": "雾线服务",
+      "query": "Fogline maintenance window minutes duration",
+      "otherEntity": "Hollowline",
+      "facts": [
+        {"id": 201, "name": "maintenance window duration", "text": "Fogline maintenance window lasts 20 minutes."},
+        {"id": 202, "name": "maintenance window duration", "text": "Fogline maintenance window lasts 35 minutes."},
+        {"id": 301, "name": "maintenance window duration", "text": "Hollowline maintenance window lasts 55 minutes. Fogline is a separate service.", "foreign": true}
+      ],
+      "turns": [
+        {"question": "What is the current maintenance-window duration for Fogline?", "status": "conflict", "answer": null, "relevant": [201, 202], "forbidden": [301]},
+        {"question": "Recheck the same service. Is there a single supported duration?", "status": "conflict", "answer": null, "relevant": [201, 202], "forbidden": [301]},
+        {"question": "One decision was archived. What is the surviving duration now?", "answer": "35", "relevant": [202], "forbidden": [201, 301], "archive": [201]}
+      ]
+    },
+    {
+      "id": "T04",
+      "category": "unanswered-then-new-evidence",
+      "entity": "Umber Portal",
+      "alias": "赭色门户",
+      "query": "Umber Portal maintenance window UTC start time",
+      "otherEntity": "Boreal Portal",
+      "facts": [
+        {"id": 201, "name": "on-call rotation", "text": "Umber Portal on-call rotation changes weekly."},
+        {"id": 301, "name": "maintenance window start time", "text": "Boreal Portal maintenance window starts at 04:00 UTC. It is a separate site from Umber Portal.", "foreign": true}
+      ],
+      "turns": [
+        {"question": "At what UTC time does the Umber Portal maintenance window start?", "status": "unknown", "answer": null, "relevant": [], "forbidden": [301]},
+        {"question": "Check again for that portal's start time without borrowing another site's time.", "status": "unknown", "answer": null, "relevant": [], "forbidden": [301]},
+        {"question": "A new maintenance decision is available. What UTC start time is recorded now?", "answer": "06:00", "relevant": [202], "forbidden": [301],
+         "add": [{"id": 202, "name": "maintenance window start time", "text": "Umber Portal maintenance window starts at 06:00 UTC."}]}
+      ]
+    }
+  ]
+}

@@ -387,7 +387,7 @@ try {
     const text = textOf(card);
     assert(text.includes('实体范围检索'), 'card title missing');
     assert(text.includes('有候选不等于有答案'), 'the card does not warn that a neighbour is not an answer');
-    assert(text.includes('填写实体 ID 和问题，再运行检索。'), 'the idle hint is missing');
+    assert(text.includes('填写实体 ID 或名称，再输入问题运行检索。'), 'the idle hint is missing');
     const box = walk(card).nodes.find((n) => n.props && n.props.type === 'checkbox');
     assert(box && box.props.checked === false, 'semantic must be off by default');
     assert(runButton(card).props.disabled === true, 'run must stay disabled without an entity id');
@@ -504,7 +504,7 @@ try {
     const card = entityCard(switched);
     assert(labeledControl(card, '实体节点 ID').props.value === '', 'the old entity id survived the switch');
     assert(labeledControl(card, '问题').props.value === '', 'the old question survived the switch');
-    assert(textOf(card).includes('填写实体 ID 和问题，再运行检索。'), 'the card kept a stale result or error');
+    assert(textOf(card).includes('填写实体 ID 或名称，再输入问题运行检索。'), 'the card kept a stale result or error');
 
     // Beta's own search starts before alpha's reply arrives, so the two responses
     // really are interleaved: the beta request is newer, not merely different.
@@ -565,7 +565,7 @@ try {
     await settle(4);
     const text = textOf(entityCard(app.render()));
     assert(!text.includes('STALE-AFTER-RETURN'), 'a reply from before the round trip resurrected');
-    assert(text.includes('填写实体 ID 和问题，再运行检索。'), 'the card is not idle after the round trip');
+    assert(text.includes('填写实体 ID 或名称，再输入问题运行检索。'), 'the card is not idle after the round trip');
   }, 'a reply started before an A->B->A round trip is still rejected on return');
 
   await check(async () => {
@@ -681,9 +681,43 @@ try {
     assert(!text.includes('快照保留捕获时的旧正文'), 'the snapshot body leaked into live');
   }, 'switching back to live clears the snapshot result and sends no snapshot id');
 
+  await check(async () => {
+    const named = await mount();
+    openContext(named);
+    edit(named, '实体节点 ID', '101');
+    edit(named, '实体名称或别名', '报告中继');
+    edit(named, '问题', '游标能复用多久？');
+    const choice = await runSearch(named, {status: 409, reply: {ok:false, code:'ENTITY_SEARCH_NAME_AMBIGUOUS', choiceCount:2,
+      choices:[{id:101, name:'Alpha 中继'},{id:301, name:'备用中继'}]}});
+    assert(choice.request.body.entityName === '报告中继' && !('entityId' in choice.request.body), 'name was sent with an ID');
+    assert(choice.request.body.semantic === false, 'the name lookup opted into embedding');
+    const candidates = entityCard(choice.tree);
+    assert(textOf(candidates).includes('名称匹配多个实体'), 'the ambiguity is missing');
+    const pick = nodesOf(candidates).find(node => node.props?.children === '#101 · Alpha 中继');
+    assert(!!pick, 'the matching entity is not selectable');
+    pick.props.onClick();
+    named.render();
+    assert(named.server.searches.length === 1, 'selecting a choice automatically searched');
+    const {request} = await runSearch(named, {reply:payload()});
+    assert(request.body.entityId === 101 && !('entityName' in request.body), 'the retry did not use the selected ID');
+
+    edit(named, '实体名称或别名', '仅在 Alpha 的别名');
+    const pending = runButton(entityCard(named.tree())).props.onClick();
+    await settle();
+    const stale = named.server.searches.at(-1);
+    const workspace = nodesOf(named.render()).find(node => node.type === 'select' && node.props.value === ALPHA);
+    workspace.props.onChange({target:{value:BETA}});
+    for (let i=0;i<6;i++) {await settle(); named.render();}
+    stale.reply(409, {ok:false, code:'ENTITY_SEARCH_NAME_AMBIGUOUS', choiceCount:2, choices:[{id:404,name:'旧库候选'}]});
+    await pending;
+    const switched = entityCard(named.render());
+    assert(labeledControl(switched,'实体名称或别名').props.value === '', 'the name followed the request to another library');
+    assert(!textOf(switched).includes('旧库候选'), 'the old response offered choices in another workspace');
+  }, 'the name entry resolves through explicit choices and drops late choices from another workspace');
+
   /* --- error matrix --------------------------------------------------------- */
   const errorCases = [
-    { status: 400, code: 'ENTITY_SEARCH_INVALID', expect: '实体 ID 必须是正整数，问题不能为空，每路条数 1–20。' },
+    { status: 400, code: 'ENTITY_SEARCH_INVALID', expect: '请填写有效的实体 ID 或名称、非空问题和每路条数（1–20）。' },
     { status: 404, code: 'ENTITY_SEARCH_ENTITY_NOT_FOUND', expect: '这个实体 ID 不存在。' },
     { status: 409, code: 'ENTITY_SEARCH_SCOPE_CHANGED', expect: '检索期间相关正文、关系、库句柄或 embedding 配置发生变化，请重试。不会自动重试。' },
     { status: 422, code: 'ENTITY_SEARCH_WORK_LIMIT', expect: '检索超出共享工作预算，没有返回部分候选。请减少条数或换一个实体。' },
@@ -714,7 +748,7 @@ try {
     const card = entityCard(app.tree());
     const button = runButton(card);
     assert(button.props.disabled === true, 'an empty entity id can still be submitted');
-    assert(button.props.title === '实体 ID 必须是正整数，问题不能为空，每路条数 1–20。', 'the invalid-input title is missing');
+    assert(button.props.title === '请填写有效的实体 ID 或名称、非空问题和每路条数（1–20）。', 'the invalid-input title is missing');
     const before = searchCalls(app.server).length;
     edit(app, '实体节点 ID', '0');
     assert(runButton(entityCard(app.tree())).props.disabled === true, 'entity id 0 can still be submitted');

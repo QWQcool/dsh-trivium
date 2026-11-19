@@ -359,7 +359,9 @@ snapshot explicitly for concurrent checking. Help commands do not open a store.
 
 ## 开发中的按需任务记忆
 
-`ctx_find` 添加可选的 `entity_id`、`pack_tokens`、`since`；原调用不变。给出 `entity_id` 才启用当前工作区的实体范围包，`pack_tokens` 默认 300，范围 96–1200（估算，含工具正文和游标）。例如 `{"query":"AtlasWorker retry count","entity_id":101,"pack_tokens":300}`。不使用 embedding，也不返回过期事实。
+`ctx_find` 给出 `entity_id` 或 `entity_name` 时启用当前工作区的实体范围包。可用名称或别名，最多 160 字符。`pack_tokens` 默认 300，范围 96–1200（估算，含工具正文和游标）。例如 `{"query":"AtlasWorker retry count","entity_name":"AtlasWorker","pack_tokens":300}`。只读词面及当前事实。
+
+开发中的 `POST /api/dsh-trivium/entity-search` 也接受 `entityName`，与 `entityId` 二选一。名称做 Unicode NFKC 归一和不分大小写的精确匹配，可用别名。没有命中时为 404 `ENTITY_SEARCH_NAME_NOT_FOUND`。多个当前实体命中时为 409 `ENTITY_SEARCH_NAME_AMBIGUOUS`，返回 `choiceCount` 及最多八个 `choices`（ID 和名称）。面板可选 ID 后重查。快照请求使用快照中的名称和别名。
 
 同会话拿到 `Cursor` 后，在相同问题、实体、`top_k` 和预算下将它传为 `since`。结果只发送变化的已选事实和退出选择的 ID；退出选择不表示删除原记忆。游标在进程内保留最多 5 分钟，重开库、压缩会话或换作用域后重新完整请求。对照冲突组一起呈现，超预算或游标无效不静默退回全域检索。没有新增工具或默认注入。
 
