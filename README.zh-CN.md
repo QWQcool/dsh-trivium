@@ -43,6 +43,7 @@ dsh plugin --profile web add dsh-trivium
 .dsh/trivium-pending.json
 .dsh/trivium-pending-reviews.json
 .dsh/trivium-handoff.json
+.dsh-trivium-upgrade/
 .dsh/consumer-preferences/
 .dsh/trivium-changes.jsonl*
 ```
@@ -76,6 +77,8 @@ dsh plugin --profile desktop add dsh-trivium@0.9.1 --ignore-scripts
 Web 使用 `dsh plugin --profile web add dsh-trivium@0.9.1 --ignore-scripts`。装完重启同一宿主，保留 `.dsh` 原样，重新打开原工作区。
 
 从 npm 0.8.9 升级涉及内核变化，首次打开前请阅读上面的文件组和回退说明。源码联调可在 `git pull` 后运行 `node scripts/link-dsh.mjs`。[详细升级说明](docs/release-0.9.1.md#升级与数据保留)
+
+当前源码使用 TDB 0.9.2。把它联入已有工作区前，需要先离线迁移整组数据库。升级命令会保留旧库供回退。 [TDB 0.9.2 升级、回退与恢复](docs/kernel-upgrade.md)
 
 ## 卸载
 

@@ -9,6 +9,7 @@ pnpm-debug.log*
 *.tdb
 *.tdb.*
 .dsh/
+.dsh-trivium-upgrade/
 .DS_Store
 Thumbs.db
 coverage/

@@ -4,7 +4,7 @@
 
 ## 环境与命令
 
-Node 满足 `^22.19.0 || >=24`。源码运行依赖固定 TDB 0.9.1；开发依赖包含 0.9.0 的别名，仅用于合成旧库迁移回归，并固定真实 dsh-llm/dsh-tools 0.2.2-rc.1。依赖直接从 registry 安装，不要求已有用户 DSH profile。旧 .npmrc 的 omit/legacy-peer-deps 绕过已移除，干净安装会解析所需的 Cordis 等 peer 依赖。
+Node 满足 `^22.19.0 || >=24`。源码运行依赖固定 TDB 0.9.2。开发依赖中的 0.9.0、0.9.1 别名用于旧版迁移回归，dsh-llm 和 dsh-tools 固定为 0.2.2-rc.1。依赖从 registry 安装，干净安装会解析 Cordis 等 peer 依赖。 [内核升级](kernel-upgrade.md)
 
 ```sh
 npm ci
@@ -55,7 +55,7 @@ npm run test:docs
 | TQL 负载、写延迟 | `bench-live-tql.mjs`，见[方法](reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
 | 原始证据完整性 | `node scripts/verify-evidence.mjs` |
 | Router / 并发 | `bench-router-queue.mjs`、`bench-lock-contention.mjs` |
-| 随包维护 CLI | check-integrity、clear-expired-until、prefs-export、query-snapshot |
+| 随包维护 CLI | check-integrity、clear-expired-until、prefs-export、query-snapshot、upgrade-kernel |
 
 bench-c3/c4/d1、成本归一和评分工具仍被实验回归调用，继续保留。旧实验结论按 [HISTORY](HISTORY.md) 理解。先核对离线/联网参数，不批量运行带 `--run` 的历史实验。
 

@@ -377,7 +377,7 @@ snapshot explicitly for concurrent checking. Help commands do not open a store.
 
 请求继续受 loopback、Origin、显式已知 `cwd` 和工作区写锁保护。
 
-`GET /api/dsh-trivium/status` 返回当前或选定工作区的 `dbHealth.state`。可用值为 `ready`、`unselected`、`corrupt`、`locked` 和 `unavailable`。库损坏、占用或无法打开时，状态响应仍为 HTTP 200，`nodeCount` 为 `null`，保留工作区列表供切换。实际读写操作继续报告自身的失败状态。
+`GET /api/dsh-trivium/status` 返回当前或选定工作区的 `dbHealth.state`。已有状态为 `ready`、`unselected`、`corrupt`、`locked` 和 `unavailable`。TDB 0.9.2 源码构建增加 `migrationRequired` 和 `upgradePending`，分别提示旧格式和未完成的整组切换。库无法打开时，状态仍返回 HTTP 200，`nodeCount` 为 `null`，工作区列表仍可用。实际读取和写入报告各自的失败状态。 [升级恢复](kernel-upgrade.md)
 
 - `GET /api/dsh-trivium/document-evidence?cwd=...` 按节点 ID 返回来源元数据和关联，每类每页最多 20 条。指定 `sourceId` 时只读取该来源及关联，指定 `factId` 时只查对应的关联。两个参数同时传入时按交集筛选关联。
 - 分别传递 `nextDocumentAfter` 或 `nextEvidenceAfter` 作为下一次请求的 `documentAfter` 或 `evidenceAfter`。前者只续读未筛选的来源列表，后者在相同筛选条件下只续读关联。`null` 表示该列表已结束，`needsReview` 为本页数量。每次续页仅返回所请求的列表字段。

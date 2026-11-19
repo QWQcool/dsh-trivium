@@ -44,6 +44,7 @@ Commit `trivium.jsonl`. Ignore the binary store:
 .dsh/trivium-pending.json
 .dsh/trivium-pending-reviews.json
 .dsh/trivium-handoff.json
+.dsh-trivium-upgrade/
 .dsh/consumer-preferences/
 .dsh/trivium-changes.jsonl*
 ```
@@ -75,6 +76,8 @@ dsh plugin --profile desktop add dsh-trivium@0.9.1 --ignore-scripts
 For Web, use `dsh plugin --profile web add dsh-trivium@0.9.1 --ignore-scripts`. Restart the same host and reopen the existing workspace with its `.dsh` directory in place.
 
 For upgrades from 0.8.9, see the file-group and rollback instructions before first open. For a source checkout, run `git pull` and then `node scripts/link-dsh.mjs`. [Detailed upgrade instructions](docs/release-0.9.1.en.md#upgrade-and-data-retention)
+
+The current source checkout uses TDB 0.9.2. Before linking it to an existing workspace, migrate the complete database group with the offline upgrade command. The flow retains the original library for rollback. [TDB 0.9.2 migration and recovery](docs/kernel-upgrade.md)
 
 ## Uninstall
 

@@ -1,4 +1,4 @@
-/** Exercise an actual 0.9.0 on-disk graph with the current native kernel. */
+/** Exercise the supported in-place upgrade from TDB 0.9.0 to 0.9.1. */
 import assert from "node:assert/strict";
 import { mkdtempSync, rmSync } from "node:fs";
 import { createRequire } from "node:module";
@@ -7,7 +7,7 @@ import { dirname, join, resolve } from "node:path";
 
 const require = createRequire(import.meta.url);
 const Old = require("triviumdb-090").TriviumDB;
-const Current = require("triviumdb").TriviumDB;
+const Current = require("triviumdb-091").TriviumDB;
 const options = { dim: 2, syncMode: "off", autoBuildQuiver: false };
 
 function snapshot(db) {
@@ -24,7 +24,7 @@ function snapshot(db) {
 
 async function upgradeFrom090() {
   assert.equal(require("triviumdb-090/package.json").version, "0.9.0");
-  assert.equal(require("triviumdb/package.json").version, "0.9.1");
+  assert.equal(require("triviumdb-091/package.json").version, "0.9.1");
   const root = mkdtempSync(join(tmpdir(), "dsh-kernel-upgrade-"));
   const path = join(root, "synthetic.tdb");
   let db;

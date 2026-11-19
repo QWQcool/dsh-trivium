@@ -7,7 +7,7 @@
 | 范围 | 记录 |
 |---|---|
 | 已发布包 | `dsh-trivium@0.9.1`，tag `v0.9.1`。[中文发布说明与升级步骤](release-0.9.1.md) · [English](release-0.9.1.en.md) |
-| 运行依赖 | 当前源码和 npm 发布包均为 `triviumdb@0.9.1` |
+| 运行依赖 | 源码固定 `triviumdb@0.9.2`。当前 npm 发布包固定 `triviumdb@0.9.1`。 [内核升级与回退](kernel-upgrade.md) |
 | 已验证宿主 | Web `0.2.2-rc.1`；桌面 `0.2.2-rc.3` 隔离宿主已验证源码包，具体边界见当前状态 |
 
 ## 日常维护
@@ -30,6 +30,7 @@
 | 自动合并为何仍默认关 | [IDENTITY-CORPUS](IDENTITY-CORPUS.md) |
 | 小型可重复示例 | [guide-example](guide-example.md) |
 | 发布步骤 | [release-checklist](release-checklist.md) |
+| 工作区整组迁移与失败恢复 | [内核升级与回退](kernel-upgrade.md) |
 
 ## 按需追溯
 
