@@ -46,4 +46,8 @@ To roll back to plugin 0.9.0, quit the host and directly replace the plugin usin
 
 ## Publication
 
-The npm version is `0.9.1` with dist-tag `latest`, corresponding to Git tag `v0.9.1`. [npm version page](https://www.npmjs.com/package/dsh-trivium/v/0.9.1)
+- npm published `0.9.1` at **2026-11-19T10:54:10.464Z** with dist-tag `latest`. The kernel is TDB 0.9.1. [npm version page](https://www.npmjs.com/package/dsh-trivium/v/0.9.1)
+- Git tag `v0.9.1` points to release source `1b93983c9adcf186f4343f3fd47883afc1418ead`. The tarball has 67 files and 357603 bytes. The public download matches the local release artifact byte for byte.
+- SHA-1 `a4873464eccc0d101f454ba818468837b11a4f1b`
+- SHA-256 `6a2dd5a2b2afcc52e8151416f7fdcb0352de7e8ae656068ba923686c2fcc191b`
+- Documentation and clean-install verification each passed 13 checks. The release reuses the feature acceptance evidence above and uses a synthetic store for package verification.

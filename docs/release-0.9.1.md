@@ -46,4 +46,8 @@
 
 ## 发布回执
 
-npm 版本为 `0.9.1`，发布标记为 `latest`，对应 Git tag `v0.9.1`。[npm 版本页](https://www.npmjs.com/package/dsh-trivium/v/0.9.1)
+- npm 于 **2026-11-19T10:54:10.464Z** 发布 `0.9.1`，发布标记为 `latest`。运行内核为 TDB 0.9.1。 [npm 版本页](https://www.npmjs.com/package/dsh-trivium/v/0.9.1)
+- Git tag `v0.9.1` 指向发布源码 `1b93983c9adcf186f4343f3fd47883afc1418ead`。发布包共 67 个文件、357603 字节。公开下载的包与本地发布产物逐字节一致。
+- SHA-1 `a4873464eccc0d101f454ba818468837b11a4f1b`
+- SHA-256 `6a2dd5a2b2afcc52e8151416f7fdcb0352de7e8ae656068ba923686c2fcc191b`
+- 文档检查和独立目录成品安装各通过 13 项检查。功能验收沿用上文证据，本轮发布使用合成库完成成品检查。
