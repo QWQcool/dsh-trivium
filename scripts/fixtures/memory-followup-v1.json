@@ -1,0 +1,92 @@
+{
+  "version": "memory-followup-v1",
+  "limits": {"contextTokens": 300, "maxOutputTokens": 256, "calls": 20},
+  "cases": [
+    {
+      "id": "F01",
+      "category": "english-fact-chinese-followup",
+      "entity": {"id": 101, "name": "Cerulean Relay", "alias": "蓝岬中继"},
+      "facts": [{"id": 201, "name": "backup retention", "text": "Cerulean Relay retains its backups for 23 days."}],
+      "foreign": {"id": 102, "name": "Coral Relay", "factId": 301, "text": "Coral Relay retains its backups for 41 days."},
+      "history": [
+        {"role": "user", "text": "We need to confirm backup retention for Cerulean Relay and Coral Relay."},
+        {"role": "assistant", "text": "Which relay do you want to confirm first?"}
+      ],
+      "query": "backup retention days",
+      "question": "先确认蓝岬中继。它的备份留存是多少天？",
+      "answer": "23",
+      "relevant": [201],
+      "forbidden": [301]
+    },
+    {
+      "id": "F02",
+      "category": "chinese-fact-english-followup",
+      "entity": {"id": 111, "name": "青砾队列", "alias": "Slategrain Queue"},
+      "facts": [{"id": 211, "name": "自动重试次数", "text": "青砾队列最多自动重试 6 次。"}],
+      "foreign": {"id": 112, "name": "黑岩队列", "factId": 311, "text": "黑岩队列最多自动重试 12 次。"},
+      "history": [
+        {"role": "user", "text": "青砾队列与黑岩队列的自动重试配置不同。"},
+        {"role": "assistant", "text": "你要核对哪一条队列？"}
+      ],
+      "query": "自动重试次数",
+      "question": "For Slategrain Queue, how many automatic retry attempts are configured?",
+      "answer": "6",
+      "relevant": [211],
+      "forbidden": [311]
+    },
+    {
+      "id": "F03",
+      "category": "pronoun-with-explicit-scope",
+      "entity": {"id": 121, "name": "Orchid Ledger", "alias": "兰舟账本"},
+      "facts": [{"id": 221, "name": "flush deadline", "text": "Orchid Ledger has a flush deadline of 57 seconds."}],
+      "foreign": {"id": 122, "name": "Iris Ledger", "factId": 321, "text": "Iris Ledger has a flush deadline of 79 seconds."},
+      "history": [
+        {"role": "user", "text": "接下来只看兰舟账本。"},
+        {"role": "assistant", "text": "你接下来想确认它的哪项配置？"}
+      ],
+      "query": "flush deadline seconds",
+      "recallQuery": "兰舟账本的刷新截止时间",
+      "question": "And how many seconds is its flush deadline?",
+      "answer": "57",
+      "relevant": [221],
+      "forbidden": [321]
+    },
+    {
+      "id": "F04",
+      "category": "missing-property",
+      "entity": {"id": 131, "name": "Cobalt Gate", "alias": "钴蓝网关"},
+      "facts": [{"id": 231, "name": "liveness interval", "text": "Cobalt Gate checks liveness every 17 seconds."}],
+      "foreign": {"id": 132, "name": "Saltwind Gate", "factId": 331, "text": "Saltwind Gate has a session timeout of 90 seconds."},
+      "history": [
+        {"role": "user", "text": "Cobalt Gate and Saltwind Gate have different timing settings."},
+        {"role": "assistant", "text": "Which gateway and setting should I check?"}
+      ],
+      "query": "liveness interval seconds",
+      "question": "钴蓝网关的会话超时是几秒？",
+      "status": "unknown",
+      "answer": null,
+      "relevant": [],
+      "forbidden": [331]
+    },
+    {
+      "id": "F05",
+      "category": "conflicting-current-values",
+      "entity": {"id": 141, "name": "Bramble Vault", "alias": "棘枝保管库"},
+      "facts": [
+        {"id": 241, "name": "snapshot retention", "text": "Bramble Vault retains snapshots for 14 days."},
+        {"id": 242, "name": "snapshot retention", "text": "Bramble Vault retains snapshots for 28 days."}
+      ],
+      "foreign": {"id": 142, "name": "Mallow Vault", "factId": 341, "text": "Mallow Vault retains snapshots for 60 days."},
+      "history": [
+        {"role": "user", "text": "Please check the snapshot retention policy for Bramble Vault and Mallow Vault."},
+        {"role": "assistant", "text": "Which vault should I check first?"}
+      ],
+      "query": "snapshot retention days",
+      "question": "先查棘枝保管库。当前快照保留多少天？",
+      "status": "conflict",
+      "answer": null,
+      "relevant": [241, 242],
+      "forbidden": [341]
+    }
+  ]
+}

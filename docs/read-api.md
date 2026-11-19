@@ -367,6 +367,8 @@ snapshot explicitly for concurrent checking. Help commands do not open a store.
 
 `POST /api/dsh-trivium/entity-search` 也接受 `entityName`，与 `entityId` 二选一。名称做 Unicode NFKC 归一和不分大小写的精确匹配，可用别名。没有命中时为 404 `ENTITY_SEARCH_NAME_NOT_FOUND`。多个当前实体命中时为 409 `ENTITY_SEARCH_NAME_AMBIGUOUS`，返回 `choiceCount` 及最多八个 `choices`（ID 和名称）。面板可选 ID 后重查。快照请求使用快照中的名称和别名。
 
+当前源码会随已选事实附上匹配的已存别名和规范名。自动召回从当前事实的业务关系取名称，实体包从已解析的实体取名称。此行只说明实体身份；回答仍引用支持问题的事实 ID。预算优先保留事实和完整冲突组，剩余预算不足时省略别名行。游标所见别名失效时重新取完整包。 [隔离 Web 对照](reviews/FOLLOWUP-DOCUMENT-REVIEW-2026-11-19.md)
+
 同会话拿到 `Cursor` 后，在相同问题、实体、`top_k` 和预算下将它传为 `since`。结果只发送变化的已选事实和退出选择的 ID；退出选择不表示删除原记忆。游标在进程内保留最多 5 分钟，重开库、压缩会话或换作用域后重新完整请求。对照冲突组一起呈现，超预算或游标无效不静默退回全域检索。没有新增工具或默认注入。
 
 派生缓存用于插件跟踪的活句柄和确定性词面、地图结果。实体 `work.cache` 报告命中及避免的 payload 读取量，查询预算、取消和来源变更仍需校验。差异地图和投递账本决定是否注入。缓存命中是查库工作量指标。
@@ -380,10 +382,11 @@ snapshot explicitly for concurrent checking. Help commands do not open a store.
 `GET /api/dsh-trivium/status` 返回当前或选定工作区的 `dbHealth.state`。已有状态为 `ready`、`unselected`、`corrupt`、`locked` 和 `unavailable`。TDB 0.9.2 源码构建增加 `migrationRequired` 和 `upgradePending`，分别提示旧格式和未完成的整组切换。库无法打开时，状态仍返回 HTTP 200，`nodeCount` 为 `null`，工作区列表仍可用。实际读取和写入报告各自的失败状态。 [升级恢复](kernel-upgrade.md)
 
 - `GET /api/dsh-trivium/document-evidence?cwd=...` 按节点 ID 返回来源元数据和关联，每类每页最多 20 条。指定 `sourceId` 时只读取该来源及关联，指定 `factId` 时只查对应的关联。两个参数同时传入时按交集筛选关联。
-- 分别传递 `nextDocumentAfter` 或 `nextEvidenceAfter` 作为下一次请求的 `documentAfter` 或 `evidenceAfter`。前者只续读未筛选的来源列表，后者在相同筛选条件下只续读关联。`null` 表示该列表已结束，`needsReview` 为本页数量。每次续页仅返回所请求的列表字段。
+- 分别传递 `nextDocumentAfter` 或 `nextEvidenceAfter` 作为下一次请求的 `documentAfter` 或 `evidenceAfter`。前者只续读未筛选的来源列表，后者在相同筛选条件下只续读关联。`null` 表示该列表已结束。`needsReview` 为本页待复核关联数，`reviewFactIds` 是本页去重后的待复核事实 ID。每次续页仅返回所请求的列表字段。
 - 来源列表在 TDB 内投影文档元数据并缓存目录，关联用已有类型、事实 ID 和来源 ID 索引。匹配范围仍有工作和响应预算，无关业务节点的正文不计入证据读取预算。已保存的事实与文档格式兼容。
 - `POST` 同一路径保存来源：`{action:"save",sourceId,content,documentId?,expectedRevision?}`。原文上限 64 KiB；初次保存分配来源身份，相同内容重试复用，更新必须传当前修订。来源标识是逻辑键，不触发文件读取。
 - `GET` 同一路径带 `documentId`、`revision`、`query` 检索保存的来源。可选 `limit`（1–8，默认 4）与 `budgetTokens`（64–1200，默认 300）。使用原生分组 BM25、明确来源过滤和查询工作上限。返回原文片段、字节范围、起止行列和预算内的 `context`；不返回全文。修订失配为 409。
 - `POST` 建立关联：`{action:"attach",factId,documentId,revision,quote,reference?}`。最多 2000 字符。手输的片段需唯一；从检索结果选中的 `reference` 按原字节范围定位，即使正文重复。TDB 核对该范围的实际原文，事务保存关联与身份边，flush 后应答。重试不重复创建。
-- 关联状态包括 `current`、`source_changed`、`source_missing`、`fact_changed`、`fact_missing`、`reference_unavailable`。`current` 仅表示来源/事实身份和修订未变，不证明该片段蕴含事实；其他状态 `needsReview=true`，旧原文片段仍可读，不自动修改事实。
+- `current` 表示来源修订和事实未变。`source_unchanged` 表示来源修订变化后，旧引用仍唯一匹配，覆盖的整行及 Markdown `#` 标题路径一致。这两种状态无需复核。`source_changed`、`source_missing`、`fact_changed`、`fact_missing`、`reference_unavailable` 需要复核。旧链接在原修订仍可核对时补录上下文摘要，早已失去原修订或无法唯一定位的引用继续待复核。
+- 关联始终保留原修订号、原字节范围、位置及摘录。比较结果可显示新修订中的对应位置；引用与事实更新仍由人确认。状态比较限于引用覆盖的整行和标题路径，对跨段落含义的判断仍需人工复核。
 - UI 在「上下文 → 文档依据」选择 UTF-8 Markdown 或文本，也可粘贴原文。保存前只改草稿。修订不同时可对照旧引用和新原文。重复或找不到旧片段时，“旧位置附近”不表示原文等价。选择和检索保持本地，范围限于用户选中的来源。

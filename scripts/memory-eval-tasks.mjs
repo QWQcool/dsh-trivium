@@ -14,6 +14,7 @@ import {legacyContext, scoreLiveAnswer, usageOf} from './memory-eval-live.mjs';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const FIXTURE = new URL('./fixtures/memory-multiturn-v1.json', import.meta.url);
+export const FOLLOWUP_FIXTURE = new URL('./fixtures/memory-followup-v1.json', import.meta.url);
 const ARMS = ['recall', 'pack', 'delta'];
 const DESCRIPTIONS = {
   recall: 'Existing lexical and one-hop auto recall preview, matching the previous baseline',
@@ -28,6 +29,15 @@ const MODEL = 'deepseek-flash';
 const PROVIDER = 'deepseek-account';
 const sha = value => createHash('sha256').update(value).digest('hex');
 const rounded = value => Number(value.toFixed(3));
+
+function localBridge(bridge) {
+  const endpoint = new URL(bridge);
+  if (endpoint.protocol !== 'http:' || !['127.0.0.1', '[::1]'].includes(endpoint.hostname) || endpoint.username || endpoint.password
+    || endpoint.pathname !== '/api/trivium-quality-eval' || endpoint.search || endpoint.hash) {
+    throw new Error('The model bridge must be the local evaluation endpoint.');
+  }
+  return endpoint;
+}
 
 async function measureReads(db, read) {
   const methods = READ_METHODS.filter(name => typeof db[name] === 'function');
@@ -134,9 +144,7 @@ function summarize(report) {
 
 export async function runTaskEvaluation({out, planOnly = false, bridge, tokenFile} = {}) {
   if (!out || (!planOnly && (!bridge || !tokenFile))) throw new Error('Provide a fresh --out and either --plan-only or --bridge and --token-file.');
-  const endpoint = planOnly ? null : new URL(bridge);
-  if (endpoint && (endpoint.protocol !== 'http:' || !['127.0.0.1', '[::1]'].includes(endpoint.hostname) || endpoint.username || endpoint.password
-    || endpoint.pathname !== '/api/trivium-quality-eval' || endpoint.search || endpoint.hash)) throw new Error('The model bridge must be the local evaluation endpoint.');
+  const endpoint = planOnly ? null : localBridge(bridge);
   const raw = readFileSync(FIXTURE, 'utf8');
   const fixture = JSON.parse(raw);
   const planned = fixture.cases.reduce((total, row) => total + row.turns.length * ARMS.length, 0);
@@ -273,13 +281,90 @@ export async function runTaskEvaluation({out, planOnly = false, bridge, tokenFil
   }
 }
 
+/** Paired answer check on the exact context captured from the isolated Web APIs. */
+export async function runFollowupEvaluation({out, contexts, bridge, tokenFile} = {}) {
+  if (!out || !contexts || !bridge || !tokenFile) throw new Error('Provide fresh --out, --followup-contexts, --bridge and --token-file.');
+  const endpoint = localBridge(bridge);
+  const auth = {'x-eval-token': readFileSync(tokenFile, 'utf8').trim(), 'content-type': 'application/json'};
+  const raw = readFileSync(FOLLOWUP_FIXTURE, 'utf8');
+  const fixture = JSON.parse(raw);
+  const channels = ['recall', 'pack'];
+  const variants = ['withoutAlias', 'withAlias'];
+  const planned = fixture.cases.length * channels.length * variants.length;
+  if (planned !== fixture.limits.calls || planned > 48) throw new Error('Unexpected follow-up call budget.');
+  const cases = fixture.cases.map(scenario => {
+    const {id, category, entity, question, history, answer, relevant, forbidden} = scenario;
+    const expected = {status: scenario.status || 'answered', value: answer, relevant, forbidden};
+    const inputs = Object.fromEntries(channels.map(channel => {
+      const input = contexts[id]?.[channel];
+      const alias = `Stored entity alias (identity only): #${entity.id} ${JSON.stringify(entity.name)} is also called ${JSON.stringify(entity.alias)}.`;
+      if (!input || !Array.isArray(input.ids) || scenario.facts.some(fact => !input.ids.includes(fact.id))
+        || forbidden.some(id => input.ids.includes(id)) || input.embeddingCalls !== 0
+        || estimateTokens(input.text) > fixture.limits.contextTokens || typeof input.text !== 'string'
+        || input.text.split('\n').filter(line => line === alias).length !== 1) {
+        throw new Error(`${id} ${channel}: unexpected evidence, alias, or budget. No calls sent.`);
+      }
+      return [channel, {ids: input.ids, withAlias: input.text, withoutAlias: input.text.split('\n').filter(line => line !== alias).join('\n')}];
+    }));
+    return {id, category, question, history, expected, inputs, results: {}};
+  });
+  const report = {version: fixture.version, fixtureHash: sha(raw), startedAt: new Date().toISOString(),
+    model: MODEL, provider: PROVIDER, source: 'isolated Web recall-preview and entity-search', cases,
+    limits: fixture.limits, billing: 'not measured', attempts: []};
+  writeFileSync(out, JSON.stringify(report, null, 2), {flag: 'wx'});
+  const persist = () => atomicWriteFile(out, JSON.stringify(report, null, 2) + '\n');
+  const health = await fetch(endpoint, {headers: auth, redirect: 'error', signal: AbortSignal.timeout(10000)});
+  if (!health.ok) throw new Error(`Model bridge health returned HTTP ${health.status}.`);
+  const status = await health.json();
+  if (status.provider !== PROVIDER || status.calls !== 0 || status.limit < planned) throw new Error('Start a dedicated model bridge with enough unused calls.');
+  for (const [index, task] of cases.entries()) {
+    for (const channel of index % 2 === 0 ? channels : [...channels].reverse()) {
+      const input = task.inputs[channel];
+      task.results[channel] = {};
+      for (const variant of index % 2 === 0 ? variants : [...variants].reverse()) {
+        const call = {id: task.id, channel, variant, status: 'started'};
+        report.attempts.push(call);
+        persist();
+        const request = {provider: PROVIDER, model: MODEL, prompt: answerPrompt(task.question, input[variant], 'FULL'),
+          history: task.history, maxTokens: fixture.limits.maxOutputTokens};
+        const response = await fetch(endpoint, {method: 'POST', headers: auth, body: JSON.stringify(request), redirect: 'error', signal: AbortSignal.timeout(125000)});
+        const payload = await response.json();
+        call.httpStatus = response.status;
+        call.status = payload.finish?.kind || 'failed';
+        const {status: expectedStatus, value, relevant} = task.expected;
+        const score = scoreLiveAnswer({status: expectedStatus, answer: value}, payload.text, input.ids, relevant);
+        if (score.parsed && new Set(score.parsed.ids).size !== score.parsed.ids.length) score.correct = score.citationCorrect = false;
+        if (call.status !== 'stop') score.correct = score.valueCorrect = score.citationCorrect = false;
+        task.results[channel][variant] = {reply: payload.text ?? '', score, usage: usageOf(payload), modelMs: payload.elapsedMs ?? null};
+        persist();
+        if (!response.ok || !['stop', 'max-tokens'].includes(call.status)) {
+          throw new Error(`Model call failed for ${task.id} ${channel} ${variant} (HTTP ${response.status}). Partial evidence was saved.`);
+        }
+      }
+    }
+  }
+  report.completedAt = new Date().toISOString();
+  report.summary = Object.fromEntries(channels.map(channel => [channel, Object.fromEntries(variants.map(variant => {
+    const rows = cases.map(task => task.results[channel][variant]);
+    return [variant, {correct: rows.filter(row => row.score.correct).length,
+      citations: rows.filter(row => row.score.citationCorrect && !row.score.invalidCitations?.length).length,
+      unknownOnSupported: cases.filter(task => task.expected.status !== 'unknown' && task.results[channel][variant].score.parsed?.status === 'unknown').length,
+      aggregateInputTokens: rows.every(row => row.usage) ? rows.reduce((sum, row) => sum + row.usage.aggregateInputTokens, 0) : null}];
+  }))]));
+  persist();
+  return report;
+}
+
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
   try {
     const args = process.argv.slice(2);
     const value = flag => args.includes(flag) ? args[args.indexOf(flag) + 1] : undefined;
-    if (args.includes('--help')) console.log('--out NEW.json --plan-only | --out NEW.json --bridge LOCAL_URL --token-file LOCAL_FILE');
+    if (args.includes('--help')) console.log('--out NEW.json --plan-only | --out NEW.json --bridge LOCAL_URL --token-file LOCAL_FILE [--followup-contexts WEB_CAPTURE.json]');
     else {
-      const report = await runTaskEvaluation({out: value('--out'), planOnly: args.includes('--plan-only'), bridge: value('--bridge'), tokenFile: value('--token-file')});
+      const opts = {out: value('--out'), bridge: value('--bridge'), tokenFile: value('--token-file')};
+      const report = args.includes('--followup-contexts')
+        ? await runFollowupEvaluation({...opts, contexts: JSON.parse(readFileSync(value('--followup-contexts'), 'utf8'))})
+        : await runTaskEvaluation({...opts, planOnly: args.includes('--plan-only')});
       console.log(JSON.stringify({attempts: report.attempts.length, summary: report.summary}, null, 2));
     }
   } catch (error) {

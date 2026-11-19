@@ -52,6 +52,7 @@ npm run test:docs
 | 记忆离线基线（零模型调用） | `node scripts/memory-eval.mjs --out FILE --reps N`（`--split dev` 或 `--split holdout` 可只跑一组），夹具 `scripts/fixtures/memory-eval-v1.json`，见[基线](reviews/MEMORY-EVAL-BASELINE-2026-11-16.md) |
 | 真实模型对照 / 捕获响应离线回放 | `node scripts/memory-eval-live.mjs --help`；付费入口须显式提供本地宿主桥接及一次性 token，见[方法与失败运行](reviews/MEMORY-QUALITY-2026-11-17.md) |
 | 多轮记忆对照 | `node scripts/memory-eval-tasks.mjs --plan-only --out NEW.json` 先离线核对证据。实跑使用同一回环桥接，见[固定题集和真实结果](reviews/MEMORY-MULTITURN-2026-11-19.md) |
+| 跨语言追问配对 | `node scripts/memory-eval-tasks.mjs --followup-contexts WEB_CAPTURE.json --bridge LOCAL_URL --token-file LOCAL_FILE --out NEW.json`。基于隔离 Web 捕获的实际证据，有上限地对照别名说明，见[题集与验收](reviews/FOLLOWUP-DOCUMENT-REVIEW-2026-11-19.md) |
 | TQL 负载、写延迟 | `bench-live-tql.mjs`，见[方法](reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
 | 原始证据完整性 | `node scripts/verify-evidence.mjs` |
 | Router / 并发 | `bench-router-queue.mjs`、`bench-lock-contention.mjs` |
