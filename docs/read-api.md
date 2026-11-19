@@ -162,6 +162,9 @@ channel, while the pack has its own context budget within the same work limits.
 
 `memoryPack.context` contains whole facts, IDs, paths, recorded time, expiry,
 review state and bounded stored source locators (`null` for missing provenance).
+In full packs each fact occupies one JSON line. Cite the numeric top-level `id`.
+Path IDs inside those lines are also numbers. The structured response keeps
+the existing string IDs in `facts`, paths and candidate lists.
 `facts`, `omittedIds`, `ambiguities`, `source` and `asOf` explain the selection.
 `estimatedTokens` uses the existing CJK/ASCII estimate over **context only**;
 it is neither a tokenizer measurement nor a bound on the entire JSON response

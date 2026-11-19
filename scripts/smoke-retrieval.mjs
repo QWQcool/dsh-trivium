@@ -722,6 +722,12 @@ async function p104() {
     assert.ok(result.warnings.some(row => row.code === 'MULTIPLE_CURRENT_FACTS'));
     assert.deepEqual(new Set(result.memoryPack.facts.map(row => Number(row.id))), new Set([older, newer]));
     assert.ok(result.memoryPack.context.includes('UNRESOLVED'));
+    const citedRows = result.memoryPack.context.split('\n').filter(line => line.startsWith('{')).map(line => JSON.parse(line));
+    assert.deepEqual(citedRows.map(row => row.id), [newer, older], 'full context must expose numeric fact IDs');
+    assert.ok(citedRows.every(row => row.path.nodes.every(Number.isSafeInteger)
+      && row.path.edges.every(edge => Number.isSafeInteger(edge.from) && Number.isSafeInteger(edge.to))));
+    assert.ok(result.memoryPack.facts.every(row => typeof row.id === 'string' && row.path.nodes.every(id => typeof id === 'string')),
+      'structured API keeps string IDs');
     assert.equal(result.memoryPack.estimatedTokens, estimateTokens(result.memoryPack.context));
     assert.ok(result.memoryPack.estimatedTokens <= 500);
     assert.ok(result.memoryPack.facts.every(row => row.path.edges.length === 1 && row.source === null));

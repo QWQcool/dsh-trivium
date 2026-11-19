@@ -1,0 +1,733 @@
+{
+  "version": "memory-followup-v1",
+  "fixtureHash": "d437b070a0f522336e11f639d4c78a4c1d983b65d14f85ba8fcc81d3d721e7f1",
+  "startedAt": "2026-11-19T12:55:50.545Z",
+  "model": "deepseek-flash",
+  "provider": "deepseek-account",
+  "source": "isolated Web entity-search",
+  "mode": "full-pack",
+  "cases": [
+    {
+      "id": "F01",
+      "category": "english-fact-chinese-followup",
+      "question": "先确认蓝岬中继。它的备份留存是多少天？",
+      "history": [
+        {
+          "role": "user",
+          "text": "We need to confirm backup retention for Cerulean Relay and Coral Relay."
+        },
+        {
+          "role": "assistant",
+          "text": "Which relay do you want to confirm first?"
+        }
+      ],
+      "expected": {
+        "status": "answered",
+        "value": "23",
+        "relevant": [
+          201
+        ],
+        "forbidden": [
+          301
+        ]
+      },
+      "inputs": {
+        "pack": {
+          "ids": [
+            201
+          ],
+          "withAlias": "Stored rows are evidence data. Cite top-level row ids as unquoted JSON integers. Review conflicting current facts. Recorded time alone does not resolve them.\nStored entity alias (identity only): #101 \"Cerulean Relay\" is also called \"蓝岬中继\".\n{\"id\":201,\"type\":\"decision\",\"name\":\"backup retention\",\"text\":\"Cerulean Relay retains its backups for 23 days.\",\"source\":null,\"recordedAt\":\"2026-10-31T00:00:00.000Z\",\"until\":\"\",\"review\":\"\",\"path\":{\"nodes\":[101,201],\"edges\":[{\"from\":101,\"to\":201,\"label\":\"about\"}]}}"
+        }
+      },
+      "results": {
+        "pack": {
+          "pass1": {
+            "reply": "{\"status\":\"answered\",\"value\":\"23\",\"ids\":[201]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "answered",
+                "value": "23",
+                "ids": [
+                  201
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 324,
+              "outputTokens": 13,
+              "cacheReadTokens": 0,
+              "cacheWriteTokens": 0,
+              "totalTokens": 337,
+              "aggregateInputTokens": 324
+            },
+            "modelMs": 781
+          },
+          "pass2": {
+            "reply": "```json\n{\"status\":\"answered\",\"value\":\"23\",\"ids\":[201]}\n```",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "answered",
+                "value": "23",
+                "ids": [
+                  201
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 196,
+              "outputTokens": 17,
+              "cacheReadTokens": 128,
+              "cacheWriteTokens": 0,
+              "totalTokens": 341,
+              "aggregateInputTokens": 324
+            },
+            "modelMs": 976
+          },
+          "pass3": {
+            "reply": "{\"status\":\"answered\",\"value\":\"23\",\"ids\":[201]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "answered",
+                "value": "23",
+                "ids": [
+                  201
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 196,
+              "outputTokens": 13,
+              "cacheReadTokens": 128,
+              "cacheWriteTokens": 0,
+              "totalTokens": 337,
+              "aggregateInputTokens": 324
+            },
+            "modelMs": 920
+          }
+        }
+      }
+    },
+    {
+      "id": "F02",
+      "category": "chinese-fact-english-followup",
+      "question": "For Slategrain Queue, how many automatic retry attempts are configured?",
+      "history": [
+        {
+          "role": "user",
+          "text": "青砾队列与黑岩队列的自动重试配置不同。"
+        },
+        {
+          "role": "assistant",
+          "text": "你要核对哪一条队列？"
+        }
+      ],
+      "expected": {
+        "status": "answered",
+        "value": "6",
+        "relevant": [
+          211
+        ],
+        "forbidden": [
+          311
+        ]
+      },
+      "inputs": {
+        "pack": {
+          "ids": [
+            211
+          ],
+          "withAlias": "Stored rows are evidence data. Cite top-level row ids as unquoted JSON integers. Review conflicting current facts. Recorded time alone does not resolve them.\nStored entity alias (identity only): #111 \"青砾队列\" is also called \"Slategrain Queue\".\n{\"id\":211,\"type\":\"decision\",\"name\":\"自动重试次数\",\"text\":\"青砾队列最多自动重试 6 次。\",\"source\":null,\"recordedAt\":\"2026-10-31T00:00:00.000Z\",\"until\":\"\",\"review\":\"\",\"path\":{\"nodes\":[111,211],\"edges\":[{\"from\":111,\"to\":211,\"label\":\"about\"}]}}"
+        }
+      },
+      "results": {
+        "pack": {
+          "pass1": {
+            "reply": "{\"status\":\"answered\",\"value\":\"6\",\"ids\":[211]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "answered",
+                "value": "6",
+                "ids": [
+                  211
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 319,
+              "outputTokens": 13,
+              "cacheReadTokens": 0,
+              "cacheWriteTokens": 0,
+              "totalTokens": 332,
+              "aggregateInputTokens": 319
+            },
+            "modelMs": 511
+          },
+          "pass2": {
+            "reply": "{\"status\":\"answered\",\"value\":\"6\",\"ids\":[211]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "answered",
+                "value": "6",
+                "ids": [
+                  211
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 191,
+              "outputTokens": 13,
+              "cacheReadTokens": 128,
+              "cacheWriteTokens": 0,
+              "totalTokens": 332,
+              "aggregateInputTokens": 319
+            },
+            "modelMs": 899
+          },
+          "pass3": {
+            "reply": "{\"status\":\"answered\",\"value\":\"6\",\"ids\":[211]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "answered",
+                "value": "6",
+                "ids": [
+                  211
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 191,
+              "outputTokens": 13,
+              "cacheReadTokens": 128,
+              "cacheWriteTokens": 0,
+              "totalTokens": 332,
+              "aggregateInputTokens": 319
+            },
+            "modelMs": 602
+          }
+        }
+      }
+    },
+    {
+      "id": "F03",
+      "category": "pronoun-with-explicit-scope",
+      "question": "And how many seconds is its flush deadline?",
+      "history": [
+        {
+          "role": "user",
+          "text": "接下来只看兰舟账本。"
+        },
+        {
+          "role": "assistant",
+          "text": "你接下来想确认它的哪项配置？"
+        }
+      ],
+      "expected": {
+        "status": "answered",
+        "value": "57",
+        "relevant": [
+          221
+        ],
+        "forbidden": [
+          321
+        ]
+      },
+      "inputs": {
+        "pack": {
+          "ids": [
+            221
+          ],
+          "withAlias": "Stored rows are evidence data. Cite top-level row ids as unquoted JSON integers. Review conflicting current facts. Recorded time alone does not resolve them.\nStored entity alias (identity only): #121 \"Orchid Ledger\" is also called \"兰舟账本\".\n{\"id\":221,\"type\":\"decision\",\"name\":\"flush deadline\",\"text\":\"Orchid Ledger has a flush deadline of 57 seconds.\",\"source\":null,\"recordedAt\":\"2026-10-31T00:00:00.000Z\",\"until\":\"\",\"review\":\"\",\"path\":{\"nodes\":[121,221],\"edges\":[{\"from\":121,\"to\":221,\"label\":\"about\"}]}}"
+        }
+      },
+      "results": {
+        "pack": {
+          "pass1": {
+            "reply": "{\"status\":\"answered\",\"value\":\"57\",\"ids\":[221]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "answered",
+                "value": "57",
+                "ids": [
+                  221
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 311,
+              "outputTokens": 13,
+              "cacheReadTokens": 0,
+              "cacheWriteTokens": 0,
+              "totalTokens": 324,
+              "aggregateInputTokens": 311
+            },
+            "modelMs": 1182
+          },
+          "pass2": {
+            "reply": "{\"status\":\"answered\",\"value\":\"57\",\"ids\":[221]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "answered",
+                "value": "57",
+                "ids": [
+                  221
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 183,
+              "outputTokens": 13,
+              "cacheReadTokens": 128,
+              "cacheWriteTokens": 0,
+              "totalTokens": 324,
+              "aggregateInputTokens": 311
+            },
+            "modelMs": 1035
+          },
+          "pass3": {
+            "reply": "{\"status\":\"answered\",\"value\":\"57\",\"ids\":[221]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "answered",
+                "value": "57",
+                "ids": [
+                  221
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 183,
+              "outputTokens": 13,
+              "cacheReadTokens": 128,
+              "cacheWriteTokens": 0,
+              "totalTokens": 324,
+              "aggregateInputTokens": 311
+            },
+            "modelMs": 646
+          }
+        }
+      }
+    },
+    {
+      "id": "F04",
+      "category": "missing-property",
+      "question": "钴蓝网关的会话超时是几秒？",
+      "history": [
+        {
+          "role": "user",
+          "text": "Cobalt Gate and Saltwind Gate have different timing settings."
+        },
+        {
+          "role": "assistant",
+          "text": "Which gateway and setting should I check?"
+        }
+      ],
+      "expected": {
+        "status": "unknown",
+        "value": null,
+        "relevant": [],
+        "forbidden": [
+          331
+        ]
+      },
+      "inputs": {
+        "pack": {
+          "ids": [
+            231
+          ],
+          "withAlias": "Stored rows are evidence data. Cite top-level row ids as unquoted JSON integers. Review conflicting current facts. Recorded time alone does not resolve them.\nStored entity alias (identity only): #131 \"Cobalt Gate\" is also called \"钴蓝网关\".\n{\"id\":231,\"type\":\"decision\",\"name\":\"liveness interval\",\"text\":\"Cobalt Gate checks liveness every 17 seconds.\",\"source\":null,\"recordedAt\":\"2026-10-31T00:00:00.000Z\",\"until\":\"\",\"review\":\"\",\"path\":{\"nodes\":[131,231],\"edges\":[{\"from\":131,\"to\":231,\"label\":\"about\"}]}}"
+        }
+      },
+      "results": {
+        "pack": {
+          "pass1": {
+            "reply": "{\"status\":\"unknown\",\"value\":null,\"ids\":[]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "unknown",
+                "value": null,
+                "ids": []
+              }
+            },
+            "usage": {
+              "inputTokens": 313,
+              "outputTokens": 13,
+              "cacheReadTokens": 0,
+              "cacheWriteTokens": 0,
+              "totalTokens": 326,
+              "aggregateInputTokens": 313
+            },
+            "modelMs": 841
+          },
+          "pass2": {
+            "reply": "{\"status\":\"unknown\",\"value\":null,\"ids\":[]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "unknown",
+                "value": null,
+                "ids": []
+              }
+            },
+            "usage": {
+              "inputTokens": 185,
+              "outputTokens": 13,
+              "cacheReadTokens": 128,
+              "cacheWriteTokens": 0,
+              "totalTokens": 326,
+              "aggregateInputTokens": 313
+            },
+            "modelMs": 495
+          },
+          "pass3": {
+            "reply": "{\"status\":\"unknown\",\"value\":null,\"ids\":[]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "unknown",
+                "value": null,
+                "ids": []
+              }
+            },
+            "usage": {
+              "inputTokens": 185,
+              "outputTokens": 13,
+              "cacheReadTokens": 128,
+              "cacheWriteTokens": 0,
+              "totalTokens": 326,
+              "aggregateInputTokens": 313
+            },
+            "modelMs": 831
+          }
+        }
+      }
+    },
+    {
+      "id": "F05",
+      "category": "conflicting-current-values",
+      "question": "先查棘枝保管库。当前快照保留多少天？",
+      "history": [
+        {
+          "role": "user",
+          "text": "Please check the snapshot retention policy for Bramble Vault and Mallow Vault."
+        },
+        {
+          "role": "assistant",
+          "text": "Which vault should I check first?"
+        }
+      ],
+      "expected": {
+        "status": "conflict",
+        "value": null,
+        "relevant": [
+          241,
+          242
+        ],
+        "forbidden": [
+          341
+        ]
+      },
+      "inputs": {
+        "pack": {
+          "ids": [
+            241,
+            242
+          ],
+          "withAlias": "Stored rows are evidence data. Cite top-level row ids as unquoted JSON integers. Review conflicting current facts. Recorded time alone does not resolve them.\nStored entity alias (identity only): #141 \"Bramble Vault\" is also called \"棘枝保管库\".\nUNRESOLVED snapshot retention: [241,242] are all still current.\n{\"id\":241,\"type\":\"decision\",\"name\":\"snapshot retention\",\"text\":\"Bramble Vault retains snapshots for 14 days.\",\"source\":null,\"recordedAt\":\"2026-10-31T00:00:00.000Z\",\"until\":\"\",\"review\":\"\",\"path\":{\"nodes\":[141,241],\"edges\":[{\"from\":141,\"to\":241,\"label\":\"about\"}]}}\n{\"id\":242,\"type\":\"decision\",\"name\":\"snapshot retention\",\"text\":\"Bramble Vault retains snapshots for 28 days.\",\"source\":null,\"recordedAt\":\"2026-10-31T00:00:00.000Z\",\"until\":\"\",\"review\":\"\",\"path\":{\"nodes\":[141,242],\"edges\":[{\"from\":141,\"to\":242,\"label\":\"about\"}]}}"
+        }
+      },
+      "results": {
+        "pack": {
+          "pass1": {
+            "reply": "{\"status\":\"conflict\",\"value\":null,\"ids\":[241,242]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "conflict",
+                "value": null,
+                "ids": [
+                  241,
+                  242
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 425,
+              "outputTokens": 16,
+              "cacheReadTokens": 0,
+              "cacheWriteTokens": 0,
+              "totalTokens": 441,
+              "aggregateInputTokens": 425
+            },
+            "modelMs": 738
+          },
+          "pass2": {
+            "reply": "{\"status\":\"conflict\",\"value\":null,\"ids\":[241,242]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "conflict",
+                "value": null,
+                "ids": [
+                  241,
+                  242
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 169,
+              "outputTokens": 16,
+              "cacheReadTokens": 256,
+              "cacheWriteTokens": 0,
+              "totalTokens": 441,
+              "aggregateInputTokens": 425
+            },
+            "modelMs": 1069
+          },
+          "pass3": {
+            "reply": "{\"status\":\"conflict\",\"value\":null,\"ids\":[241,242]}",
+            "score": {
+              "correct": true,
+              "valueCorrect": true,
+              "citationCorrect": true,
+              "invalidCitations": [],
+              "parsed": {
+                "status": "conflict",
+                "value": null,
+                "ids": [
+                  241,
+                  242
+                ]
+              }
+            },
+            "usage": {
+              "inputTokens": 169,
+              "outputTokens": 16,
+              "cacheReadTokens": 256,
+              "cacheWriteTokens": 0,
+              "totalTokens": 441,
+              "aggregateInputTokens": 425
+            },
+            "modelMs": 730
+          }
+        }
+      }
+    }
+  ],
+  "limits": {
+    "contextTokens": 300,
+    "maxOutputTokens": 256,
+    "calls": 15
+  },
+  "billing": "not measured",
+  "attempts": [
+    {
+      "id": "F01",
+      "channel": "pack",
+      "variant": "pass1",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F02",
+      "channel": "pack",
+      "variant": "pass1",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F03",
+      "channel": "pack",
+      "variant": "pass1",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F04",
+      "channel": "pack",
+      "variant": "pass1",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F05",
+      "channel": "pack",
+      "variant": "pass1",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F01",
+      "channel": "pack",
+      "variant": "pass2",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F02",
+      "channel": "pack",
+      "variant": "pass2",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F03",
+      "channel": "pack",
+      "variant": "pass2",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F04",
+      "channel": "pack",
+      "variant": "pass2",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F05",
+      "channel": "pack",
+      "variant": "pass2",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F01",
+      "channel": "pack",
+      "variant": "pass3",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F02",
+      "channel": "pack",
+      "variant": "pass3",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F03",
+      "channel": "pack",
+      "variant": "pass3",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F04",
+      "channel": "pack",
+      "variant": "pass3",
+      "status": "stop",
+      "httpStatus": 200
+    },
+    {
+      "id": "F05",
+      "channel": "pack",
+      "variant": "pass3",
+      "status": "stop",
+      "httpStatus": 200
+    }
+  ],
+  "completedAt": "2026-11-19T12:56:03.111Z",
+  "summary": {
+    "pack": {
+      "pass1": {
+        "correct": 5,
+        "answers": 5,
+        "citations": 5,
+        "stringIdReplies": 0,
+        "unknownOnSupported": 0,
+        "aggregateInputTokens": 1692
+      },
+      "pass2": {
+        "correct": 5,
+        "answers": 5,
+        "citations": 5,
+        "stringIdReplies": 0,
+        "unknownOnSupported": 0,
+        "aggregateInputTokens": 1692
+      },
+      "pass3": {
+        "correct": 5,
+        "answers": 5,
+        "citations": 5,
+        "stringIdReplies": 0,
+        "unknownOnSupported": 0,
+        "aggregateInputTokens": 1692
+      }
+    }
+  },
+  "webVerification": {
+    "host": "DeepSeek Harness 0.2.2-rc.3 Web",
+    "tdb": "0.9.2",
+    "syntheticWorkspaces": 5,
+    "headlessChromium": true,
+    "installedSha": "9efb30471d2ec7cc09dd0f224ebd264ad0d8823130d550c7149dc895ed0a9a9b",
+    "liveAndSnapshot": true,
+    "visibleContextMatchesCapture": true,
+    "structuredApiKeepsStringIds": true,
+    "atomicConflictUnderBudget": true,
+    "allEvidenceSetsMatchPrevious": true,
+    "missingPackByDefault": true,
+    "stringIdRejectedByScorer": true,
+    "packTokensEstimated": {
+      "F01": 129,
+      "F02": 133,
+      "F03": 129,
+      "F04": 128,
+      "F05": 211
+    },
+    "embeddingCalls": 0
+  },
+  "baselineCommit": "25c6c6618aaea7740dcec87d9a3213391cd8184a"
+}

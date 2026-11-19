@@ -281,17 +281,17 @@ export async function runTaskEvaluation({out, planOnly = false, bridge, tokenFil
   }
 }
 
-/** Paired answer check on the exact context captured from the isolated Web APIs. */
-export async function runFollowupEvaluation({out, contexts, bridge, tokenFile} = {}) {
+/** Strict answer check on the exact context captured from the isolated Web APIs. */
+export async function runFollowupEvaluation({out, contexts, bridge, tokenFile, fullPackOnly = false} = {}) {
   if (!out || !contexts || !bridge || !tokenFile) throw new Error('Provide fresh --out, --followup-contexts, --bridge and --token-file.');
   const endpoint = localBridge(bridge);
   const auth = {'x-eval-token': readFileSync(tokenFile, 'utf8').trim(), 'content-type': 'application/json'};
   const raw = readFileSync(FOLLOWUP_FIXTURE, 'utf8');
   const fixture = JSON.parse(raw);
-  const channels = ['recall', 'pack'];
-  const variants = ['withoutAlias', 'withAlias'];
+  const channels = fullPackOnly ? ['pack'] : ['recall', 'pack'];
+  const variants = fullPackOnly ? ['pass1', 'pass2', 'pass3'] : ['withoutAlias', 'withAlias'];
   const planned = fixture.cases.length * channels.length * variants.length;
-  if (planned !== fixture.limits.calls || planned > 48) throw new Error('Unexpected follow-up call budget.');
+  if ((!fullPackOnly && planned !== fixture.limits.calls) || planned > 48) throw new Error('Unexpected follow-up call budget.');
   const cases = fixture.cases.map(scenario => {
     const {id, category, entity, question, history, answer, relevant, forbidden} = scenario;
     const expected = {status: scenario.status || 'answered', value: answer, relevant, forbidden};
@@ -300,54 +300,59 @@ export async function runFollowupEvaluation({out, contexts, bridge, tokenFile} =
       const alias = `Stored entity alias (identity only): #${entity.id} ${JSON.stringify(entity.name)} is also called ${JSON.stringify(entity.alias)}.`;
       if (!input || !Array.isArray(input.ids) || scenario.facts.some(fact => !input.ids.includes(fact.id))
         || forbidden.some(id => input.ids.includes(id)) || input.embeddingCalls !== 0
-        || estimateTokens(input.text) > fixture.limits.contextTokens || typeof input.text !== 'string'
+        || typeof input.text !== 'string' || estimateTokens(input.text) > fixture.limits.contextTokens
         || input.text.split('\n').filter(line => line === alias).length !== 1) {
         throw new Error(`${id} ${channel}: unexpected evidence, alias, or budget. No calls sent.`);
       }
-      return [channel, {ids: input.ids, withAlias: input.text, withoutAlias: input.text.split('\n').filter(line => line !== alias).join('\n')}];
+      return [channel, {ids: input.ids, withAlias: input.text,
+        ...(fullPackOnly ? {} : {withoutAlias: input.text.split('\n').filter(line => line !== alias).join('\n')})}];
     }));
     return {id, category, question, history, expected, inputs, results: {}};
   });
   const report = {version: fixture.version, fixtureHash: sha(raw), startedAt: new Date().toISOString(),
-    model: MODEL, provider: PROVIDER, source: 'isolated Web recall-preview and entity-search', cases,
-    limits: fixture.limits, billing: 'not measured', attempts: []};
+    model: MODEL, provider: PROVIDER, source: fullPackOnly ? 'isolated Web entity-search' : 'isolated Web recall-preview and entity-search',
+    mode: fullPackOnly ? 'full-pack' : 'paired-alias', cases,
+    limits: {...fixture.limits, calls: planned}, billing: 'not measured', attempts: []};
   writeFileSync(out, JSON.stringify(report, null, 2), {flag: 'wx'});
   const persist = () => atomicWriteFile(out, JSON.stringify(report, null, 2) + '\n');
   const health = await fetch(endpoint, {headers: auth, redirect: 'error', signal: AbortSignal.timeout(10000)});
   if (!health.ok) throw new Error(`Model bridge health returned HTTP ${health.status}.`);
   const status = await health.json();
   if (status.provider !== PROVIDER || status.calls !== 0 || status.limit < planned) throw new Error('Start a dedicated model bridge with enough unused calls.');
-  for (const [index, task] of cases.entries()) {
-    for (const channel of index % 2 === 0 ? channels : [...channels].reverse()) {
-      const input = task.inputs[channel];
-      task.results[channel] = {};
-      for (const variant of index % 2 === 0 ? variants : [...variants].reverse()) {
-        const call = {id: task.id, channel, variant, status: 'started'};
-        report.attempts.push(call);
-        persist();
-        const request = {provider: PROVIDER, model: MODEL, prompt: answerPrompt(task.question, input[variant], 'FULL'),
-          history: task.history, maxTokens: fixture.limits.maxOutputTokens};
-        const response = await fetch(endpoint, {method: 'POST', headers: auth, body: JSON.stringify(request), redirect: 'error', signal: AbortSignal.timeout(125000)});
-        const payload = await response.json();
-        call.httpStatus = response.status;
-        call.status = payload.finish?.kind || 'failed';
-        const {status: expectedStatus, value, relevant} = task.expected;
-        const score = scoreLiveAnswer({status: expectedStatus, answer: value}, payload.text, input.ids, relevant);
-        if (score.parsed && new Set(score.parsed.ids).size !== score.parsed.ids.length) score.correct = score.citationCorrect = false;
-        if (call.status !== 'stop') score.correct = score.valueCorrect = score.citationCorrect = false;
-        task.results[channel][variant] = {reply: payload.text ?? '', score, usage: usageOf(payload), modelMs: payload.elapsedMs ?? null};
-        persist();
-        if (!response.ok || !['stop', 'max-tokens'].includes(call.status)) {
-          throw new Error(`Model call failed for ${task.id} ${channel} ${variant} (HTTP ${response.status}). Partial evidence was saved.`);
-        }
-      }
+  const order = (items, index) => index % 2 === 0 ? items : [...items].reverse();
+  const plan = fullPackOnly
+    ? variants.flatMap(variant => cases.map(task => ({task, channel: 'pack', variant})))
+    : cases.flatMap((task, index) => order(channels, index)
+      .flatMap(channel => order(variants, index).map(variant => ({task, channel, variant}))));
+  for (const {task, channel, variant} of plan) {
+    const input = task.inputs[channel];
+    const call = {id: task.id, channel, variant, status: 'started'};
+    report.attempts.push(call);
+    persist();
+    const context = input[fullPackOnly ? 'withAlias' : variant];
+    const request = {provider: PROVIDER, model: MODEL, prompt: answerPrompt(task.question, context, 'FULL'),
+      history: task.history, maxTokens: fixture.limits.maxOutputTokens};
+    const response = await fetch(endpoint, {method: 'POST', headers: auth, body: JSON.stringify(request), redirect: 'error', signal: AbortSignal.timeout(125000)});
+    const payload = await response.json();
+    call.httpStatus = response.status;
+    call.status = payload.finish?.kind || 'failed';
+    const {status: expectedStatus, value, relevant} = task.expected;
+    const score = scoreLiveAnswer({status: expectedStatus, answer: value}, payload.text, input.ids, relevant);
+    if (score.parsed && new Set(score.parsed.ids).size !== score.parsed.ids.length) score.correct = score.citationCorrect = false;
+    if (call.status !== 'stop') score.correct = score.valueCorrect = score.citationCorrect = false;
+    (task.results[channel] ??= {})[variant] = {reply: payload.text ?? '', score, usage: usageOf(payload), modelMs: payload.elapsedMs ?? null};
+    persist();
+    if (!response.ok || !['stop', 'max-tokens'].includes(call.status)) {
+      throw new Error(`Model call failed for ${task.id} ${channel} ${variant} (HTTP ${response.status}). Partial evidence was saved.`);
     }
   }
   report.completedAt = new Date().toISOString();
   report.summary = Object.fromEntries(channels.map(channel => [channel, Object.fromEntries(variants.map(variant => {
     const rows = cases.map(task => task.results[channel][variant]);
     return [variant, {correct: rows.filter(row => row.score.correct).length,
+      answers: rows.filter(row => row.score.valueCorrect).length,
       citations: rows.filter(row => row.score.citationCorrect && !row.score.invalidCitations?.length).length,
+      stringIdReplies: rows.filter(row => row.score.parsed?.ids.some(id => typeof id === 'string')).length,
       unknownOnSupported: cases.filter(task => task.expected.status !== 'unknown' && task.results[channel][variant].score.parsed?.status === 'unknown').length,
       aggregateInputTokens: rows.every(row => row.usage) ? rows.reduce((sum, row) => sum + row.usage.aggregateInputTokens, 0) : null}];
   }))]));
@@ -359,11 +364,12 @@ if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.m
   try {
     const args = process.argv.slice(2);
     const value = flag => args.includes(flag) ? args[args.indexOf(flag) + 1] : undefined;
-    if (args.includes('--help')) console.log('--out NEW.json --plan-only | --out NEW.json --bridge LOCAL_URL --token-file LOCAL_FILE [--followup-contexts WEB_CAPTURE.json]');
+    if (args.includes('--help')) console.log('--out NEW.json --plan-only | --out NEW.json --bridge LOCAL_URL --token-file LOCAL_FILE [--followup-contexts WEB_CAPTURE.json [--followup-full-pack]]');
     else {
       const opts = {out: value('--out'), bridge: value('--bridge'), tokenFile: value('--token-file')};
       const report = args.includes('--followup-contexts')
-        ? await runFollowupEvaluation({...opts, contexts: JSON.parse(readFileSync(value('--followup-contexts'), 'utf8'))})
+        ? await runFollowupEvaluation({...opts, contexts: JSON.parse(readFileSync(value('--followup-contexts'), 'utf8')),
+          fullPackOnly: args.includes('--followup-full-pack')})
         : await runTaskEvaluation({...opts, planOnly: args.includes('--plan-only')});
       console.log(JSON.stringify({attempts: report.attempts.length, summary: report.summary}, null, 2));
     }

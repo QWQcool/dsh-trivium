@@ -19,6 +19,7 @@
 | 运行依赖 | 当前源码固定 `triviumdb@0.9.2`，npm 发布包固定 `triviumdb@0.9.1`。 [内核升级、恢复与回退](kernel-upgrade.md) |
 | TDB 0.9.2 升级专项 | 整组迁移、隔离 Web 读写与重启、原库回退均通过。两个切换中断可续跑，旧库的 12 个文件校验一致。保留一份文档引用和四份合成交接回执。 [验收范围](kernel-upgrade.md#隔离-web-验收) |
 | 跨语言追问、文档定向复核 | 20 次真实模型配对中，两路有支持证据却回答 `unknown` 均从 1 次降到 0 次。文档修订只提醒 22 条关联中受影响的 5 条，原引用在隔离 Web 重开后仍可读。 [用量、格式失分与原始结果](reviews/FOLLOWUP-DOCUMENT-REVIEW-2026-11-19.md) |
+| 全量包数字引用 | 同一题集在隔离 Web 实跑三轮，答案和数字引用均 15/15。有证据误答 `unknown` 及字符串引用均为 0。 [严格复验与原回复](reviews/FOLLOWUP-DOCUMENT-REVIEW-2026-11-19.md#全量包数字引用复验) |
 | 宿主基线 | Web `0.2.2-rc.1`；桌面 `0.2.2-rc.3` 已实际打开面板并完成合成检索和模型工具调用；开发回归固定 dsh-llm/dsh-tools `0.2.2-rc.1` |
 | 本地 Git | 2026-11-16 恢复 main、release/0.8.4、release/0.8.5、codex/issue-5-read-path 和远端 tags；整理前 main 与 origin/main 一致 |
 
