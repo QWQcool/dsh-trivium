@@ -1,10 +1,10 @@
-# 项目记忆交接协议（开发中）
+# 项目记忆交接协议（本机）
 
 协议先独立于宿主实现。主宿主显式给出 projectScopeId、主工作区和 ticketId/assignmentId/workerId 映射；不从临时目录父级、工单文本或模型输出推导授权。现有继承和 Router 默认开关保持关闭。公开 Super Agent 扩展点稳定后再接入宿主生命周期。
 
 ## 本机接入
 
-源码新增 `dsh-trivium/handoff` 入口（npm 尚不包含本轮变更）：
+npm 0.9.1 提供 `dsh-trivium/handoff` 入口。
 
 ```js
 import {configureHandoff,submitHandoff,handoffReceipt} from 'dsh-trivium/handoff';

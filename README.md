@@ -12,9 +12,9 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.9.0**. Uninstall retains memory by default. Automatic extraction checks sources, keeps unverified candidates for review, and suppresses admitted same-turn rule copies. Entity-scoped search and explicit task memory packs are available in Settings. [English release notes](docs/release-0.9.0.en.md)
+The published npm package is **0.9.1**. It adds entity name and alias search, compact task memory with change cursors, document evidence, and local Worker handoff with shared review. Uninstall retains memory by default. [English release notes](docs/release-0.9.1.en.md)
 
-Plugin 0.9.0 pins TriviumDB **0.9.1**; published plugin 0.8.5–0.8.9 used kernel 0.9.0. Kernel 0.9.1 can advance a library to `.tdb` v13 / WAL v6, which an older kernel cannot read. Existing migration evidence uses synthetic libraries and does not establish compatibility with every damaged or historical library. [Current status](docs/CURRENT-STATE.md)
+Plugin versions 0.9.0 and 0.9.1 both pin TriviumDB **0.9.1**. An update between these plugin versions requires no database format migration. Published plugin versions 0.8.5–0.8.9 used kernel 0.9.0. Kernel 0.9.1 can advance a library to `.tdb` v13 / WAL v6, which an older kernel cannot read. [Current status](docs/CURRENT-STATE.md)
 
 > **Upgrading published 0.8.9: fully stop the host and replace the package directly; do not uninstall the old build first.** Its old uninstall hook can delete memory. Use the version-pinned commands under [Updating](#updating).
 > Before the first open with the newer kernel, retain the complete workspace `.dsh` file group if rollback is required. Downgrading the package alone does not undo a storage-format upgrade. A restore returns to the saved point and does not preserve later writes. The group includes `trivium.tdb` and sidecars such as `.gidx`, `.pidx`, `.pld.*`, `.text`, `.text.meta`, `.vec`, `.wal`, `.lock` and `.flush_ok`; `.tdb` alone is not a complete copy.
@@ -42,6 +42,8 @@ Commit `trivium.jsonl`. Ignore the binary store:
 .dsh/trivium.tdb
 .dsh/trivium.tdb*
 .dsh/trivium-pending.json
+.dsh/trivium-pending-reviews.json
+.dsh/trivium-handoff.json
 .dsh/consumer-preferences/
 .dsh/trivium-changes.jsonl*
 ```
@@ -67,24 +69,24 @@ Then restart `dsh web`.
 Fully exit the desktop application, including its tray process, or stop `dsh web`. Replace the plugin in its existing profile; **do not remove the old 0.8.9 package first**. The desktop CLI update is:
 
 ```sh
-dsh plugin --profile desktop add dsh-trivium@0.9.0 --ignore-scripts
+dsh plugin --profile desktop add dsh-trivium@0.9.1 --ignore-scripts
 ```
 
-For Web, use `dsh plugin --profile web add dsh-trivium@0.9.0 --ignore-scripts`. Restart the same host/profile afterward. These commands retain the existing memory paths; do not delete `.dsh` or initialize a new workspace to upgrade. The fixed 0.9.0 package has no uninstall cleanup hook.
+For Web, use `dsh plugin --profile web add dsh-trivium@0.9.1 --ignore-scripts`. Restart the same host and reopen the existing workspace with its `.dsh` directory in place.
 
-Published 0.8.9 used an older kernel: see the file-group and rollback warning above before the first open. A local source build that already uses TDB 0.9.1 does not introduce a second kernel-version upgrade. Git JSONL omits vectors and other local data and is not a complete backup. For a source checkout, `git pull` then run `node scripts/link-dsh.mjs` again. [Detailed upgrade instructions](docs/release-0.9.0.en.md#upgrade-and-data-retention)
+For upgrades from 0.8.9, see the file-group and rollback instructions before first open. For a source checkout, run `git pull` and then `node scripts/link-dsh.mjs`. [Detailed upgrade instructions](docs/release-0.9.1.en.md#upgrade-and-data-retention)
 
 ## Uninstall
 
-> **0.9.0 retains memory by default.** The old published 0.8.9 package still contains a destructive uninstall hook; replace it using the update command above before uninstalling.
+> **0.9.1 retains memory by default.** The published 0.8.9 package contains a destructive uninstall hook. Replace it using the update command above before uninstalling.
 
-With 0.9.0 installed, stop the host, then remove the plugin from its profile:
+With 0.9.1 installed, stop the host and remove the plugin from its profile.
 
 ```sh
 dsh plugin --profile web remove dsh-trivium
 ```
 
-Uninstall retains `~/.dsh/trivium.json` and workspace memory, pending items, sidecars, snapshots, history, and preference exports. Reinstalling can reuse the retained memory. If you explicitly want to erase data, inspect the relevant workspace and settings files and remove only what you intend to erase.
+Uninstall retains the settings file and workspace memory, pending items, review history, handoff records, sidecars, snapshots, and preference exports. Reinstalling can reuse the retained memory. If you explicitly want to erase data, inspect the relevant workspace and settings files and remove only what you intend to erase.
 
 Restart **dsh web** afterward: Settings no longer shows **Trivium memory**, the title bar no longer shows **Chips**, and the four tools are unregistered.
 
@@ -105,7 +107,7 @@ The plugin loads inside the `dsh web` process. It does not open its own port or 
 |---|---|---|
 | Workspace `.dsh/trivium.tdb` | read/write | Memory store. Do not open the same file from two Node processes at once |
 | Workspace `.dsh/trivium.jsonl` | read/write | Git sidecar (off by default). Business nodes/edges only; no embeddings |
-| `~/.dsh/trivium.json` | read/write | Settings and chip pins; may contain an embedding API key you typed |
+| Active settings file | read/write | Settings and chip pins, including an embedding API key if supplied. The path is `DSH_TRIVIUM_SETTINGS`, then `$DSH_HOME/trivium.json`, then `~/.dsh/trivium.json`. |
 | `.dsh/trivium-pending.json` | read/write | Local queue when extract fails |
 | `.dsh/consumer-preferences/` | optional | 0.8.2 preference bindings, snapshots and generated persona copies; retained after uninstall |
 | `.dsh/trivium-changes.jsonl` | written as needed | Local change history, retained after uninstall |
@@ -135,7 +137,7 @@ Trivium is a memory kernel, not a journal, calendar, or chat companion. It store
 
 - **Cross-session graph** — session A stores “auth goes in header X”; session B calls `ctx_find("auth")` and gets the hit plus who it links to (`about` / `decided` / `broke` / `fixed`).
 - **Default quiet** — a new session injects one short map (≤400 tokens). The model calls tools when it needs more. Nothing is dumped every step. No extra title-bar tab until you turn **Chips** on.
-- **Chips / memory whitelist (off by default)** — Settings → Trivium memory. Toggle saves to `~/.dsh/trivium.json` immediately and survives restart. The title bar then shows **Chips** next to Conversation / Trajectory. Checked items pin into the next turn (L0, ≤300 tokens). Under it, **Session layer** (also off) draws compaction / forks as boxes.
+- **Chips / memory whitelist (off by default)** — Settings → Trivium memory. The toggle saves immediately and survives restart. The title bar then shows **Chips** next to Conversation / Trajectory. Checked items pin into the next turn (L0, ≤300 tokens). Under it, **Session layer** (also off) draws compaction / forks as boxes.
 - **Human-editable** — chips can add, archive, or delete; Settings search, rename, merge, import/export, and global switches.
 - **Selective extraction** — rules aim to exclude chitchat and one-off file edits; extraction can miss or misclassify facts. Chip “Add” stores one paste as one node, subject to the write hygiene gate.
 - **Write hygiene** — `ctx_remember`, chip add, extract, and external import reject several kinds of malformed content and rule-detectable suspected credentials. Rules cannot identify every secret, especially an arbitrary value without identifying context. Do not rely on this gate as complete secret protection. Dirty nodes already in `.tdb` stay visible in Settings so you can archive them; they are hidden from find / short map / chips.
@@ -171,7 +173,7 @@ Dates in prose stay in prose. Set expiry in Settings or the separate `ctx_rememb
 
 ### Chips (memory whitelist)
 
-Off by default. In Settings, turn on **Chips (memory whitelist)** — no extra Save click, no restart. The title bar shows **Conversation / Trajectory / Chips** at once, and the choice is stored in `~/.dsh/trivium.json` so it survives restart. This is a pin whitelist, not the memory editor. Rename, merge, and global switches stay on the Settings page.
+Off by default. Turn on **Chips (memory whitelist)** in Settings to show **Conversation / Trajectory / Chips** at once. The saved choice survives restart. Rename, merge, and global switches stay on the Settings page.
 
 Lists unarchived preference / decision / entity (experience stays out). Check to pin into the next turn (L0, ≤300 tokens). Add / archive / delete on the strip.
 
@@ -199,7 +201,7 @@ Settings → **Trivium memory** manages the store. The host gives a plugin exact
 | **Activity** | What the plugin has been doing: last extraction, stuck/recovered, map injection, revision check, pending corrections, recovery, change log, recall traces | the second half of the recall tab + the old diagnostics block |
 | **Settings** | Memory behaviour, display, data, vector, about | the always-visible tail of the old page |
 
-Toggles still write `~/.dsh/trivium.json` as soon as you flip them; only the embedding fields use **Save**. The command palette navigates and focuses — it never writes a setting. When the panel is wide enough (≥1000 px of card width) a node's detail opens beside the list; at 720–999 px it opens as a dialog; below that it expands inline as before.
+Toggles save immediately to the active settings file. Embedding fields use **Save**. The command palette navigates and focuses. When the panel is wide enough (≥1000 px of card width) a node's detail opens beside the list. At 720–999 px it opens as a dialog. Below that it expands inline.
 
 At the top of **Activity**, four rows say what the last run did. An unobserved value reads **no record** — it is never rendered as `0` or as success.
 
@@ -378,12 +380,13 @@ The one mixed-retrieval Top-5 miss was traced to generic text matches in weighte
 
 Follow-up [scoped-text experiments](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) distinguish conditional native payload filtering from arbitrary ID-set text ranking, and evaluate payload fallbacks on declared relation truth. These are isolated diagnostics; tools and default retrieval remain unchanged.
 
-Version 0.9.0 includes an explicit [entity-search HTTP backend](docs/read-api.md#explicit-entity-search-unreleased-source): choose an entity/workspace, receive separate lexical and semantic candidates, and opt in to query embeddings. The Context card has passed synthetic desktop interaction checks. A positive memory-pack budget selects whole facts, actual paths and stored source locators; the default budget is 0. Same-name alternatives remain current and marked for review. Automatic model candidates without a verifiable source stay pending rather than becoming active facts. See [results and limits](docs/reviews/MEMORY-EVAL-2026-11-17.md). These features are not connected to tools or automatic recall.
+The entity-search panel uses separate lexical and semantic channels with query embeddings opt-in. Its memory-pack budget defaults to 0. In 0.9.1, the panel can resolve a name or alias, with an explicit choice for ambiguous matches. `ctx_find` accepts an explicit entity and can return a compact pack or its changes from a cursor. [Read API and tool options](docs/read-api.md#按需任务记忆091)
 
 The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/HISTORY.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 
 ## Changelog
 
+- [0.9.1](docs/release-0.9.1.en.md) adds named entity lookup, compact task memory with change cursors, document excerpts and evidence links, and local Worker handoff. It also improves settings isolation, write recovery, candidate review, and scoped reads.
 - [0.9.0](docs/release-0.9.0.en.md): memory-preserving uninstall, TDB 0.9.1, source-checked extraction and same-turn redundancy suppression, pending-source review, explicit entity search/task packs, and previously measured write batching. Existing evidence is reused for this version/documentation release.
 
 - [0.8.9](docs/release-0.8.9.en.md): workspace write ownership, distinct proposal tokens, chip write locking, host peer compatibility, live read TQL, independent snapshots and CLI queries, configurable per-turn budgets and tool-recovery extraction.
@@ -410,8 +413,8 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 | Session layer shows only a **Next** box | Expected when the nested session layer is on. Boxes follow DSH compaction; a long session is not the same as already compacted (auto-compact is around 80% of the window). To split: `/compact` in the conversation, or **Create checkpoint** (plot only, does not compact the window). Older sessions can use **Update checkpoints** to backfill past compaction / forks. |
 | `ctx_find` returns nothing | A new session injects the short map only; the model must call the tool. You can also **Add** on the chip strip or tell the model “remember: …”. Chitchat and one-off file edits are not auto-written. |
 | `.tdb` is locked / will not open | Run one `dsh web`. Do not run two Node processes that both linked this plugin. |
-| Embedding is filled but search is no more accurate | Failures fall back to keyword + graph. Check that `~/.dsh/trivium.json` has an OpenAI-compatible URL (the `/v1` kind). Restart after changing it. |
-| Memory still there after uninstall | This is intentional in 0.9.0. Reinstallation can reuse it. The old 0.8.9 package must be replaced before removing it; see Updating. |
+| Embedding is filled but search is no more accurate | Failures fall back to keyword + graph. Check the OpenAI-compatible URL in the active settings file. Restart after changing it. |
+| Memory still there after uninstall | 0.9.1 retains it for reinstallation. Replace the old 0.8.9 package before uninstalling it. See Updating. |
 | Check for updates fails | That request only hits the npm registry for the latest version. Memory is unaffected; try again later. |
 | Old conversations will not open after rc.8 | That is DSH’s own session-store format change, not a broken `.tdb`. Graph memory still works via `ctx_find`; leftover boxes on unmatched old sessions are plot residue. |
 | Desktop shows “A JavaScript error occurred in the main process” with `EPIPE: broken pipe, write` | Host-side, not the plugin: `electron-updater` writes a log line to a console pipe whose parent process has exited (typical when the app was started by a test launcher with `--inspect`). No `dsh-trivium` frame is in that stack. Click OK and start the app from the Start menu; avoid launching it from a terminal or harness that closes. |
@@ -430,7 +433,7 @@ Local source checkout: `npm ci`, then `node scripts/link-dsh.mjs`, then restart 
 See [Unreleased changes and rollback steps](docs/UNRELEASED.md) for development additions, improvements, removals, and data compatibility. Each published version has its own bilingual notes.
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Published package: `0.9.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- Published package: `0.9.1` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - Tested host: `@deepseek-ai/dsh@0.2.2-rc.1` (launched and exercised on 2026-11-10: panel renders, `/status` and the proposal routes answer, zero console errors; earlier releases were verified on 0.2.1-rc.4/rc.5). The peer range also admits the 0.1.x lines.
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

@@ -8,9 +8,9 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 > **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
 >
-> 当前 npm 发布版是 **0.9.0**。卸载默认保留记忆；自动抽取核对来源、保留待核对候选并抑制同轮规则副本；设置页提供实体范围检索和显式任务记忆包。[发布说明](docs/release-0.9.0.md)
+> 当前 npm 发布版是 **0.9.1**。支持按实体名称和别名检索、紧凑任务记忆与变化游标、文档依据，以及本机 Worker 交接和中央复核。卸载默认保留记忆。[发布说明](docs/release-0.9.1.md)
 >
-> 插件 0.9.0 锁定 TriviumDB **0.9.1**；已发布的插件 0.8.5–0.8.9 使用内核 0.9.0。新内核可能把库推进到 `.tdb` v13 / WAL v6，旧内核无法读取。已有迁移回归使用合成库，不代表全部历史或损坏库均已验证。[当前状态](docs/CURRENT-STATE.md)
+> 插件 0.9.0 和 0.9.1 都锁定 TriviumDB **0.9.1**，两版之间更新无需迁移数据库格式。已发布的插件 0.8.5–0.8.9 使用内核 0.9.0。内核 0.9.1 可能把库推进到 `.tdb` v13 / WAL v6，旧内核无法读取。[当前状态](docs/CURRENT-STATE.md)
 >
 > **从已发布的 0.8.9 升级时，先完全退出宿主，再直接替换插件，不要先卸载旧包。** 旧卸载脚本可能删除记忆，具体命令见[更新](#更新)。
 > 如果需要回退保障，请在首次用新内核打开前保留完整工作区 `.dsh` 文件组。单纯降级插件不能撤销格式升级；恢复旧副本会回到保存时刻，之后的新写入不在其中。文件组包括 `trivium.tdb` 及 `.gidx`、`.pidx`、`.pld.*`、`.text`、`.text.meta`、`.vec`、`.wal`、`.lock`、`.flush_ok` 等附属文件，只复制 `.tdb` 不完整。
@@ -41,6 +41,8 @@ dsh plugin --profile web add dsh-trivium
 .dsh/trivium.tdb
 .dsh/trivium.tdb*
 .dsh/trivium-pending.json
+.dsh/trivium-pending-reviews.json
+.dsh/trivium-handoff.json
 .dsh/consumer-preferences/
 .dsh/trivium-changes.jsonl*
 ```
@@ -68,24 +70,24 @@ npm test              # 可选：跑全部离线 smoke
 先完全退出桌面程序（包括托盘），或停止 `dsh web`，再在原 profile 直接替换插件。**不要先卸载旧的 0.8.9 包**。桌面版命令：
 
 ```sh
-dsh plugin --profile desktop add dsh-trivium@0.9.0 --ignore-scripts
+dsh plugin --profile desktop add dsh-trivium@0.9.1 --ignore-scripts
 ```
 
-Web 使用 `dsh plugin --profile web add dsh-trivium@0.9.0 --ignore-scripts`。装完重新启动同一宿主/profile；记忆继续使用原路径，不要删除 `.dsh` 或为升级重新初始化工作区。0.9.0 已移除卸载清理钩子。
+Web 使用 `dsh plugin --profile web add dsh-trivium@0.9.1 --ignore-scripts`。装完重启同一宿主，保留 `.dsh` 原样，重新打开原工作区。
 
-从 npm 0.8.9 升级涉及内核变化，首次打开前请阅读上面的文件组和回退说明；已经使用 TDB 0.9.1 的本地源码构建不会再次改变内核版本。Git JSONL 不包含向量等全部本机数据，不能代替完整副本。源码联调则在 `git pull` 后再跑 `node scripts/link-dsh.mjs`。[详细升级说明](docs/release-0.9.0.md#升级与数据保留)
+从 npm 0.8.9 升级涉及内核变化，首次打开前请阅读上面的文件组和回退说明。源码联调可在 `git pull` 后运行 `node scripts/link-dsh.mjs`。[详细升级说明](docs/release-0.9.1.md#升级与数据保留)
 
 ## 卸载
 
-> **0.9.0 卸载默认保留记忆。** 旧的 npm 0.8.9 仍带有破坏性卸载钩子，请先按上面的更新命令替换后再卸载。
+> **0.9.1 卸载默认保留记忆。** 旧的 npm 0.8.9 带有破坏性卸载钩子，请先按上面的更新命令替换后再卸载。
 
-确认已安装 0.9.0，先停止宿主，再从对应 profile 卸载：
+确认已安装 0.9.1，停止宿主后可从对应 profile 卸载。
 
 ```sh
 dsh plugin --profile web remove dsh-trivium
 ```
 
-卸载会保留 `~/.dsh/trivium.json` 和工作区中的记忆库、待处理条目、旁路文件、快照、变更记录及偏好导出；重新安装后可继续使用。确实需要清除时，请先核对相应工作区和设置，再自行删除选定文件。
+卸载会保留配置文件和工作区中的记忆库、待处理条目、旁路文件、快照、变更记录及偏好导出。重新安装后可继续使用。确实需要清除时，请先核对相应工作区和设置，再自行删除选定文件。
 
 然后再重启 **dsh web**：设置里不再有「Trivium 记忆」，标题栏不再有「芯片」，四个工具不再注册。
 
@@ -106,7 +108,7 @@ dsh plugin --profile web remove dsh-trivium
 |---|---|---|
 | 工作区 `.dsh/trivium.tdb` | 读写 | 记忆库。同一文件不要两个 Node 进程同时打开 |
 | 工作区 `.dsh/trivium.jsonl` | 读写 | Git 旁路（默认关）。只含业务节点和边，不含向量 |
-| `~/.dsh/trivium.json` | 读写 | 设置和芯片钉选；可含你手填的 embedding API key |
+| 当前设置文件 | 读写 | 保存设置和芯片钉选，也可保存手填的 embedding API key。路径依次为 `DSH_TRIVIUM_SETTINGS`、`$DSH_HOME/trivium.json`、`~/.dsh/trivium.json`。 |
 | `.dsh/trivium-pending.json` | 读写 | 抽取失败时的本地队列 |
 | `.dsh/consumer-preferences/` | 按需读写 | 授权绑定、偏好快照及人设副本；可能包含已批准的记忆，卸载后保留 |
 | `.dsh/trivium-changes.jsonl` | 按需写入 | 本地记忆变更记录，卸载后保留 |
@@ -134,7 +136,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 - **跨会话** — 会话 A 记下「鉴权走 header X」，会话 B 调用 `ctx_find("鉴权")` 命中，并带上它连着谁（`about` / `decided` / `broke` / `fixed`）。
 - **默认安静** — 新会话只注入一张短地图（≤400 token）。模型要用再调工具，不会每一步灌满。标题栏默认也不加第三标签。
-- **芯片 / 记忆白名单（默认关）** — 设置里打开后，标题栏「对话 / 轨迹」旁出现 **芯片**。拨一下即写入 `~/.dsh/trivium.json`，重启后仍保持。勾选的条目从下一轮注入（L0，≤300 token）。其下还有 **会话层**（也默认关）：把 compaction / 分叉画成方框。
+- **芯片 / 记忆白名单（默认关）** — 设置里打开后，标题栏「对话 / 轨迹」旁出现 **芯片**。开关立即保存，重启后仍保持。勾选的条目从下一轮注入（L0，≤300 token）。其下的 **会话层**（默认关）可显示 compaction 和分叉。
 - **人能改错** — 芯片条可新增、归档、删除；设置页管搜、改名 / 正文、合并、导入导出、全局开关。
 - **抽取偏严** — 闲聊和一次性改文件通常不会从对话自动入库。芯片「新增」按你写的存（点一次整段一条），同样过写入卫生闸门。
 - **写入卫生** — `ctx_remember`、芯片新增、抽取、外部导入会拒绝规则可识别的乱码、复读、JSON envelope、base64 残骸和疑似凭据。规则无法识别所有敏感值，不应将其视为完整的秘密保护。已经进 `.tdb` 的脏节点仍可在设置里看见以便归档；find / 短地图 / 芯片不再带它们。
@@ -170,7 +172,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 ### 芯片（记忆白名单）
 
-默认关。在设置里打开 **芯片（记忆白名单）**：不必再点「保存设置」，也不必重启。标题栏立刻出现 **对话 / 轨迹 / 芯片**，选择写入 `~/.dsh/trivium.json`，重启后仍在。这是钉选白名单，不是记忆编辑器；改名、合并、全局开关仍走设置页。
+默认关。在设置里打开 **芯片（记忆白名单）** 后，标题栏立刻出现 **对话 / 轨迹 / 芯片**。选择立即保存，重启后仍在。改名、合并和全局开关在设置页处理。
 
 列出未归档的 preference / decision / entity（experience 不进芯片）。勾选后从下一轮注入（L0，≤300 token）。条上可新增、归档、删除。
 
@@ -198,7 +200,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 | **运行记录** | 上次抽取、卡住 / 已自愈、上次地图注入、版本链检查、待处理更正、恢复状态、记忆变化、召回轨迹 | 召回标签后半 + 原来无处安放的诊断 |
 | **设置** | 记忆行为、显示、数据、向量、关于 | 长页面底部常驻卡片 |
 
-开关拨一下就写入 `~/.dsh/trivium.json`，只有 embedding 字段要按「保存设置」。命令面板只做导航与聚焦，不写任何设置。卡片宽度 ≥1000px 时节点详情在列表右侧；720–999px 弹窗；更窄仍是行内展开。
+开关立即写入当前设置文件，embedding 字段需要按「保存设置」。命令面板只做导航与聚焦。卡片宽度 ≥1000px 时在列表右侧显示节点详情，720–999px 用弹窗，低于 720px 行内展开。
 
 「运行记录」顶部四行写上一轮实际做了什么；没有观测到的值显示「没有记录」，不渲染成 `0`，也不当成成功。
 
@@ -383,12 +385,13 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 后续[范围文本实验](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md)区分了原生条件过滤与任意 ID 集合文本排名，并在有声明关系真值的隔离库中评测 payload 备选方案。这些仍是开发诊断，工具和默认检索保持原状。
 
-0.9.0 增加独立[实体范围 HTTP 后端](docs/read-api.md#explicit-entity-search-unreleased-source)：显式选择工作区和实体，两路候选分别返回，query embedding 需要请求方主动开启。「上下文」页只读卡片已通过合成库桌面操作；记忆包预算默认 0，填写正预算后生成完整事实、路径和已有来源，同名备选保留并提示核对。自动抽取中无法核对来源的模型候选留在待补写区，不直接进入有效记忆。[本轮结果及未测边界](docs/reviews/MEMORY-EVAL-2026-11-17.md)；未接入工具或自动召回。
+实体范围面板分开返回词面和语义候选，查询 embedding 按需开启，记忆包预算默认 0。0.9.1 支持按名称或别名定位，有多个命中时可选定实体后再检索。`ctx_find` 可显式指定实体，返回紧凑记忆包，或按游标只取变化。[接口和参数](docs/read-api.md#按需任务记忆091)
 
 上述真实模型样本不能证明模型总会调用工具、完整会话效果或普遍降低成本。旧 D0 部分对照臂重复种植，D1 的 `0.51×` 模拟未计入完整注入历史和短地图；应按[独立审查](docs/HISTORY.md)的限制解读。
 
 ## 更新说明
 
+- [0.9.1](docs/release-0.9.1.md) 加入实体名称查找、紧凑记忆包和变化游标、文档依据、本机 Worker 交接，并改进设置隔离、写入恢复、候选复核和按范围读取。
 - [0.9.0](docs/release-0.9.0.md)：卸载保留数据、TDB 0.9.1、抽取来源检查和同轮去冗余、候选核对入口、实体范围检索/显式记忆包及已测写入批处理；版本和文档发布沿用既有验证证据。
 
 - [0.8.9](docs/release-0.8.9.md)：切库写入保护、规范路径令牌、芯片写锁、宿主 peer 兼容；在线只读 TQL、独立快照与查询 CLI；可配置每轮注入预算和工具恢复抽取。
@@ -415,8 +418,8 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 | 会话层只有一个「后续」方框 | 正常（在会话层已打开时）。方框跟 DSH 压缩走，会话长不等于已经压过（默认约窗口 80% 才自动压）。要分段：对话里 `/compact`，或点「生成检查点」（只切图，不压窗口）。旧会话可点「更新检查点」补已经发生过的压缩 / 分叉。 |
 | `ctx_find` 什么都没有 | 新会话默认只注入短地图，模型要自己调工具。也可以在芯片条「新增」或对模型说「记住：…」。闲聊和一次性改文件不会自动入库。 |
 | 报 `.tdb` 被占用 / 打不开 | 只开一个 `dsh web`。不要同时跑两份链接了本插件的 Node 进程。 |
-| embedding 填了但检索没变准 | 失败会退回关键词 + 图。检查 `~/.dsh/trivium.json` 中保存的 URL 是否为 OpenAI 兼容的 embeddings endpoint；保存后仍未生效时重启宿主再检查。 |
-| 卸载后记忆仍在 | 这是 0.9.0 的默认行为，可供重新安装继续使用。旧 0.8.9 应先按「更新」步骤替换，再执行卸载。 |
+| embedding 填了但检索没变准 | 失败会退回关键词 + 图。检查当前设置文件中的 URL 是否为 OpenAI 兼容的 embeddings endpoint。保存后仍未生效时重启宿主再检查。 |
+| 卸载后记忆仍在 | 0.9.1 保留数据供重新安装使用。旧 0.8.9 应先按「更新」步骤替换，再执行卸载。 |
 | 检查更新失败 | 只请求 npm registry 拿最新版本号，不影响记忆；过一会儿再点即可。 |
 | rc.8 之后旧对话打不开 | 那是 DSH 自己的会话库格式变了，不是 `.tdb` 坏了。图记忆仍可 `ctx_find`；对不上号的旧方框可当情节残留。 |
 | 桌面端弹出「A JavaScript error occurred in the main process / EPIPE: broken pipe, write」 | 宿主侧问题，不是插件：`electron-updater` 往一个已经断开的控制台管道写日志（常见于用 `--inspect` 的测试启动器拉起、父进程随后退出）。栈里没有 `dsh-trivium`。点确定后从开始菜单正常启动；不要从会关闭的终端/测试器拉起。 |
@@ -435,7 +438,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 开发分支的新增、改进、移除及数据兼容见[开发中变更与回退步骤](docs/UNRELEASED.md)。每个正式版本另有双语发布说明。
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 已发布包：`0.9.0` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- 已发布包：`0.9.1` · [npm](https://www.npmjs.com/package/dsh-trivium)
 - 测试宿主：`@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证：面板可开、`/status` 与提案接口应答、控制台零报错；更早版本在 0.2.1-rc.4/rc.5 上验证过）。peer 范围同时接受 0.1.x 各线。
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
