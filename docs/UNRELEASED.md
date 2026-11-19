@@ -1,6 +1,6 @@
 # 开发中变更
 
-本页记录发布后开发分支的改动，尚未进入 npm，也没有安装到用户的正式桌面。版本号在发布时单独确定。每次发布把本页经过验证的条目整理到对应双语 release 文档，保留新增、改进、删除和升级影响；历史证据按原日期保留。
+本页记录 npm 0.9.0 发布后的源码改动。版本号在发布时单独确定，发布说明按新增、改进、删除和升级影响整理。历史验收保留原日期和实际构建。
 
 ## 新增
 
@@ -17,17 +17,22 @@
 - 人工候选操作支持同一请求回执重试；图写入落盘后才结算候选，来源和旧记忆保留。
 - 后台抽取先持久化原窗口；模型等待超时后保留候选并允许重试。仅来自旧记忆的改写留待核对，独立来源的新事实仍可写入。两次真实抽取及专项证据见[本轮结果](reviews/TASK-RETRIEVAL-WRITE-DOCS-2026-11-18.md)。
 - 新增仅做回答对照的评测入口：先离线核对两组送入的正文，再按固定预算用真实模型作答，分别计量引用、范围错误和实际 token。
+- 设置、Git 旁路和使用记录使用各自的临时文件。写入或替换失败会保留原文件，无法解析的设置也不会被新默认值覆盖。
+- 工作区状态区分可读、损坏、占用和暂不可读。面板保留工作区列表，提示可切换到其他库继续使用。
+- 文档列表分批返回，指定来源才返回该份原文。按事实或来源查关联时使用现有字段筛选，旧关联在事实或来源删除后仍可复核。
 
 ## 删除与移除
 
 - 移除来源核对回执「只留最后 1024 条」的截断，避免旧处理记录消失后被陈旧任务恢复。
 - 移除若干英文问句虚词对词面覆盖分母的干扰。
 - 移除抽取超时后仍可接收迟到模型结果并写库的路径，以及把记忆读取返回当独立依据的路径。
+- 移除替换设置和旁路文件失败时先删除原文件的分支，以及文档证据读取的全库正文预扫描。
 - 没有删除公开工具、现有事实、用户记忆或旧评测夹具。没有自动清理历史重复节点。
 
 ## 兼容与数据影响
 
 - 依赖仍为 TDB 0.9.1，不改变内核版本；无需重建现有记忆或安装 Ollama。
+- 源码设置路径依次采用 `DSH_TRIVIUM_SETTINGS`、`$DSH_HOME/trivium.json` 和 `~/.dsh/trivium.json`。默认环境继续读取旧设置。自定义 `DSH_HOME` 有独立设置，需要沿用旧文件时可用 `DSH_TRIVIUM_SETTINGS` 明确指向它。
 - 完整历史单独存入 `.dsh/trivium-pending-reviews.json`；`.dsh/trivium-pending.json` 保持 0.9.0 的待补写格式。「不采纳」不伪装成已写入的记忆。旧版不显示完整历史，重新使用新版本后可查；旧有混写格式会在新版本下一次正常保存待办时转换。
 - 交接收件箱位于主项目 `.dsh/trivium-handoff.json`，不随临时 Worker 目录消失；达到 4096 事件上限时明确拒绝新接收，不静默清除旧记录。当前是本机受信任宿主的文件传输协议，尚无远程鉴权或稳定 Super Agent SDK 接线。
 - 文档功能只处理用户选择或粘贴的 UTF-8 原文（最多 64 KiB）。旧单块文档可检索，无需重建；新保存的文档按有界原文片段建立索引。不扫描目录或解析 Office/PDF。Git JSONL 不包含完整 TDB 文档证据数据。
@@ -38,3 +43,7 @@
 退出宿主后，用 `dsh plugin --profile desktop add dsh-trivium@0.9.0 --ignore-scripts` 直接替换；不要先卸载或清理 `.dsh`。原样保留数据库完整文件组、两份待补写/历史文件和 `trivium-handoff.json`（如有）。0.9.0 与本构建同用 TDB 0.9.1；不要用更旧的内核打开已升级的库。
 
 Quit the host, then install `dsh-trivium@0.9.0` directly with the command above. Keep the workspace `.dsh` file group, including both pending files and the handoff file if present. Pending work remains readable in 0.9.0; review history is retained for the newer build. This rollback keeps TDB at 0.9.1.
+
+自定义 `DSH_HOME` 回退时，将 `DSH_TRIVIUM_SETTINGS` 指向该目录内的 `trivium.json`，旧版即可沿用这些设置。
+
+When rolling back a custom `DSH_HOME`, point `DSH_TRIVIUM_SETTINGS` to its `trivium.json` so 0.9.0 uses the same settings.

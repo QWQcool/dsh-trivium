@@ -1,12 +1,14 @@
 /** Five-item regression, run only after the complete implementation. No paid/model requests. */
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {mkdtempSync,mkdirSync,readFileSync,writeFileSync,rmSync,realpathSync} from 'node:fs';
+import {syncBuiltinESMExports} from 'node:module';
 import {tmpdir} from 'node:os';
 import {join,resolve,basename} from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {spawn} from 'node:child_process';
-export const cases=Object.freeze({p107,p108,p109,p110,p111,p112,p113});
+export const cases=Object.freeze({p107,p108,p109,p110,p111,p112,p113,p114});
 const reportDir=resolve('.tmp/next-memory-20261117');
 async function environment(fn) {
   const root=mkdtempSync(join(tmpdir(),'trivium-next-'));
@@ -355,3 +357,216 @@ async function p113(){await environment(async({root,s,check})=>{
     assert.equal(db.getPayload(stored.id).source.role,'tool');
   });
 });}
+
+async function p114() {
+  await environment(async ({root, s, check}) => {
+    const settings = await import('../lib/settings.js');
+    const {atomicWriteFile} = await import('../lib/atomic.js');
+    const documents = await import('../lib/document-evidence.js');
+    const {zeroVector} = await import('../lib/schema.js');
+    const {createServer} = await import('node:http');
+    const {registerMemoryApi} = await import('../lib/server.js');
+    const isolatedHome = join(root, 'home');
+    const isolatedSettings = join(isolatedHome, 'trivium.json');
+    const originalSettings = join(root, 'legacy.json');
+    const good = join(root, 'healthy');
+    const bad = join(root, 'damaged');
+
+    await check('DSH_HOME isolates settings while the legacy file and explicit override still work', async () => {
+      delete process.env.DSH_TRIVIUM_SETTINGS;
+      delete process.env.DSH_HOME;
+      assert.equal(settings.settingsFilePath(), settings.SETTINGS_FILE);
+      process.env.DSH_HOME = isolatedHome;
+      process.env.DSH_TRIVIUM_SETTINGS = originalSettings;
+      writeFileSync(originalSettings, JSON.stringify({autoRecall: true, pinsBySession: {old: [3]}, legacyField: 'retain'}));
+      assert.equal(settings.settingsFilePath(), originalSettings);
+      assert.equal(settings.recallModeOf(settings.readUiSettings()), 'auto');
+      settings.writeUiSettings({recallMode: 'anchor'});
+      assert.deepEqual(settings.pinsOf('old'), [3]);
+      assert.equal(settings.readUiSettings().legacyField, 'retain');
+      const before = readFileSync(originalSettings);
+      delete process.env.DSH_TRIVIUM_SETTINGS;
+      assert.equal(settings.settingsFilePath(), isolatedSettings);
+      assert.deepEqual(settings.readUiSettings(), {});
+      settings.writeUiSettings({recallMode: 'off'});
+      settings.rememberWorkspace(good);
+      settings.rememberWorkspace(bad);
+      assert.deepEqual(settings.listedWorkspaces(), [good, bad]);
+      assert.deepEqual(readFileSync(originalSettings), before);
+    });
+
+    await check('a rename failure preserves settings and a partial write preserves the old sidecar', async () => {
+      const before = readFileSync(isolatedSettings);
+      const rename = fs.renameSync;
+      let attempts = 0;
+      fs.renameSync = (from, to) => {
+        if (to !== isolatedSettings) return rename(from, to);
+        attempts++;
+        throw Object.assign(new Error('Synthetic replacement failure'), {code: 'EPERM'});
+      };
+      syncBuiltinESMExports();
+      try {
+        assert.throws(() => settings.writeUiSettings({recallMode: 'auto'}), {code: 'EPERM'});
+      } finally {
+        fs.renameSync = rename;
+        syncBuiltinESMExports();
+      }
+      assert.equal(attempts, 1);
+      assert.deepEqual(readFileSync(isolatedSettings), before);
+      assert.deepEqual(fs.readdirSync(isolatedHome), ['trivium.json']);
+
+      const sidecar = join(root, 'previous.jsonl');
+      atomicWriteFile(sidecar, 'previous\n');
+      const write = fs.writeFileSync;
+      fs.writeFileSync = (target, data, ...args) => {
+        if (data !== 'replacement\n') return write(target, data, ...args);
+        write(target, 'incomplete', ...args);
+        throw Object.assign(new Error('Synthetic partial write'), {code: 'EIO'});
+      };
+      syncBuiltinESMExports();
+      try {
+        assert.throws(() => atomicWriteFile(sidecar, 'replacement\n'), {code: 'EIO'});
+      } finally {
+        fs.writeFileSync = write;
+        syncBuiltinESMExports();
+      }
+      assert.equal(readFileSync(sidecar, 'utf8'), 'previous\n');
+      assert.ok(!fs.readdirSync(root).some(name => name.startsWith('previous.jsonl.')));
+      atomicWriteFile(sidecar, 'retry\n');
+      assert.equal(readFileSync(sidecar, 'utf8'), 'retry\n');
+    });
+
+    await check('unreadable settings survive a failed settings update', async () => {
+      const broken = join(root, 'unreadable.json');
+      writeFileSync(broken, '{incomplete');
+      process.env.DSH_TRIVIUM_SETTINGS = broken;
+      try {
+        assert.throws(() => settings.writeUiSettings({recallMode: 'auto'}), SyntaxError);
+        assert.equal(readFileSync(broken, 'utf8'), '{incomplete');
+      } finally {
+        delete process.env.DSH_TRIVIUM_SETTINGS;
+      }
+    });
+
+    const db = await s.openWorkspaceDb(good);
+    const factId = s.insertNode(db, {type: 'decision', name: 'Retention', text: 'Backup retention is 21 days.'});
+    const otherFactId = s.insertNode(db, {type: 'decision', name: 'Secondary retention', text: 'Backup retention is 22 days.'});
+    mkdirSync(join(bad, '.dsh'), {recursive: true});
+    writeFileSync(s.dbPathFor(bad), 'synthetic damaged TDB header');
+    const pending = join(bad, '.dsh', 'trivium-pending.json');
+    writeFileSync(pending, '{"windows":[]}');
+    s.setActiveCwd(bad);
+    let handler;
+    registerMemoryApi({webServer: {register(route) { handler = route.handler; }}}, {liveOptions: () => ({}), status: {}});
+    const server = createServer(handler);
+    await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+    const get = async (route, args = {}) => {
+      const response = await fetch(`http://127.0.0.1:${server.address().port}/api/dsh-trivium/${route}?${new URLSearchParams(args)}`,
+        {headers: {connection: 'close'}});
+      return {status: response.status, ...await response.json()};
+    };
+
+    try {
+      await check('a corrupt default library returns a scoped health state and leaves other libraries usable', async () => {
+        const problem = await get('status');
+        assert.equal(problem.status, 200);
+        assert.equal(problem.cwd, bad);
+        assert.equal(problem.dbHealth.state, 'corrupt');
+        assert.equal(problem.dbHealth.code, 'DB_CORRUPTED');
+        assert.equal(problem.nodeCount, null);
+        assert.ok(problem.dbExists && problem.workspaces.some(row => row.cwd === good));
+        assert.equal(s.getOpenWorkspaceDb(bad), null);
+        const healthy = await get('status', {cwd: good});
+        assert.deepEqual(healthy.dbHealth, {state: 'ready'});
+        assert.equal(healthy.cwd, good);
+        assert.ok((await get('nodes', {cwd: good})).nodes.some(row => row.id === factId));
+        const unselected = await get('status', {cwd: join(root, 'unknown')});
+        assert.equal(unselected.dbHealth.state, 'unselected');
+        assert.equal(readFileSync(s.dbPathFor(bad), 'utf8'), 'synthetic damaged TDB header');
+        assert.equal(readFileSync(pending, 'utf8'), '{"windows":[]}');
+      });
+
+      const pageSize = documents.EVIDENCE_PAGE_SIZE;
+      const otherSource = `docs/test-${pageSize + 2}.md`;
+      for (let i = 0; i <= pageSize + 2; i++) {
+        const text = i === pageSize + 2 ? 'Backup retention is 22 days.' : 'Backup retention is 21 days.';
+        const {document} = documents.saveEvidenceDocument(db, {sourceId: `docs/test-${i}.md`, content: text});
+        documents.attachDocumentEvidence(db, {factId: i === pageSize + 2 ? otherFactId : factId,
+          documentId: document.document_id, revision: document.revision, quote: text});
+      }
+      const vector = zeroVector();
+      const firstUnrelatedId = 10000;
+      const irrelevant = Array.from({length: 4096}, (_, i) => ({type: 'insertWithId', id: firstUnrelatedId + i, vector, payload: {
+        type: 'decision', status: 'active', name: 'Unrelated decision ' + i,
+        text: ('Maintenance investigation documented an independent observation in this unrelated fixture. ').repeat(3).slice(0, 237),
+        createdAt: '2026-11-01T01:00:00.000Z', updatedAt: '2026-11-01T01:00:00.000Z',
+        source: {kind: 'message', role: 'user', sessionId: 'audit-workspace-session-' + i,
+          messageId: 'message-sequence-audit-' + i, seq: 2, quoteMatch: 'exact', recorded: true},
+        uri: 'trivium:audit:unrelated-decision:' + i,
+      }}));
+      assert.ok(irrelevant.reduce((n, row) => n + Buffer.byteLength(JSON.stringify(row.payload)), 0) > 2 * 1024 * 1024);
+      for (let i = 0; i < irrelevant.length; i += 128) db.commitTransaction(irrelevant.slice(i, i + 128));
+
+      await check('document and fact pages read matching records in a large mixed library', async () => {
+        const allNodeIds = db.allNodeIds;
+        const getPayload = db.getPayload;
+        const readIds = [];
+        db.allNodeIds = () => assert.fail('Scoped evidence read enumerated all node IDs');
+        db.getPayload = function (id) { readIds.push(id); return getPayload.call(this, id); };
+        try {
+          const overview = await get('document-evidence', {cwd: good});
+          assert.equal(overview.status, 200);
+          assert.equal(overview.documents.length, pageSize);
+          assert.equal(overview.links.length, pageSize);
+          assert.ok(overview.documents.every(row => !('content' in row)));
+          const second = await get('document-evidence', {cwd: good, documentAfter: overview.nextDocumentAfter});
+          assert.equal(second.status, 200);
+          assert.equal(second.documents.length, 3);
+          assert.equal(second.nextDocumentAfter, null);
+          assert.ok(!('links' in second));
+          assert.ok(second.documents.some(row => row.sourceId === otherSource));
+
+          const fact = await get('document-evidence', {cwd: good, factId});
+          assert.equal(fact.status, 200);
+          assert.deepEqual(fact.documents, []);
+          assert.ok(fact.links.every(row => row.factId === factId));
+          const rest = await get('document-evidence', {cwd: good, factId, evidenceAfter: fact.nextEvidenceAfter});
+          assert.equal(rest.status, 200);
+          assert.equal(rest.links.length, 2);
+          assert.equal(rest.nextEvidenceAfter, null);
+          assert.ok(!('documents' in rest));
+          assert.ok(rest.links.every(row => row.factId === factId && row.evidenceId > fact.nextEvidenceAfter));
+
+          const exact = await get('document-evidence', {cwd: good, sourceId: otherSource});
+          assert.equal(exact.status, 200);
+          assert.equal(exact.document.content, 'Backup retention is 22 days.');
+          assert.deepEqual(exact.documents.map(row => row.sourceId), [otherSource]);
+          assert.equal(exact.links[0].factId, otherFactId);
+          const intersection = await get('document-evidence', {cwd: good, sourceId: otherSource, factId});
+          assert.deepEqual(intersection.links, []);
+          const invalid = await get('document-evidence', {cwd: good, factId, documentAfter: overview.nextDocumentAfter});
+          assert.equal(invalid.status, 400);
+          assert.equal(invalid.code, 'DOCUMENT_PAGE_INVALID');
+          assert.ok(readIds.length && readIds.every(id => id < firstUnrelatedId));
+        } finally {
+          db.allNodeIds = allNodeIds;
+          db.getPayload = getPayload;
+        }
+      });
+
+      await check('the same scoped links remain readable through an existing read-only handle', async () => {
+        s.closeAll();
+        const readonly = s.openWorkspaceDbReadOnly(good);
+        try {
+          const view = documents.documentEvidenceStatus(readonly, {factId: otherFactId, sourceId: otherSource});
+          assert.equal(view.links.length, 1);
+          assert.equal(view.links[0].status, 'current');
+        } finally {
+          readonly.close();
+        }
+      });
+    } finally {
+      await new Promise(resolve => server.close(resolve));
+    }
+  });
+}

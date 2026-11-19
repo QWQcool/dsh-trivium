@@ -20,7 +20,9 @@ npm run test:docs
 
 筛选保持子串语义：`p8` 匹配 p8、p80 等，`p93` 只匹配该组；主题名匹配所属集合。`--list` 只列出匹配项。
 
-真实宿主验收另用对应版本 DSH 和独立 `DSH_HOME`。`node scripts/link-dsh.mjs` 会修改所选 profile、联入源码并对齐宿主 peer 模块，只在准备联调时运行。
+真实宿主验收另用对应版本 DSH 和独立 `DSH_HOME`。新源码默认将插件设置保存在该目录内。验收 npm 0.9.0 等旧构建时，仍需设置独立的 `DSH_TRIVIUM_SETTINGS`。`node scripts/link-dsh.mjs` 会修改所选 profile、联入源码并对齐宿主 peer 模块，只在准备联调时运行。
+
+桌面 0.2.2-rc.3 随附的 CLI 可启动只绑定回环地址的 Web 宿主。使用 `dsh web --patch <隔离配置> --host 127.0.0.1 --port 0 --no-open`，在补丁中把 `workspace-controller` 的 `documentsDirectory` 指向临时目录。宿主首启可能在系统文档目录建立默认工作区，仅指定 `DSH_HOME` 无法覆盖这个路径。验收前核对已登记的工作区都指向合成数据，再用无界面浏览器操作面板。
 
 ## 回归组织
 
@@ -34,7 +36,7 @@ npm run test:docs
 | smoke-audit-locks | p53/54/55/56 | 审计、工作区锁、双进程和真实 HTTP |
 | smoke-evaluation | p33/39 | 评分、实验隔离、请求前费用预留 |
 | smoke-memory-quality | p105/106 | 同轮规则去冗余、来源核对事务/HTTP、幂等/错库/落盘保护、真实模型评分与有界评测桥接（模型替身，不使用账号） |
-| smoke-next-memory | p107–113 | 中英检索、候选历史、缓存、持久交接、真实 TDB 片段及 HTTP、按需工具变化、来源归因；零付费调用 |
+| smoke-next-memory | p107–114 | 中英检索、候选历史、缓存、持久交接、真实 TDB 片段及 HTTP、按需工具变化、来源归因、隔离设置、写入故障和文档分页。零付费调用 |
 | smoke-kernel | p99 | 用真实 0.9.0 创建合成库，核对 0.9.1 打开、写入、重开前后的节点、向量和边 |
 | 其余 smoke-pN / p2-cases | 原编号 | 较大的端到端、UI、宿主、查询和发布契约 |
 
@@ -56,7 +58,7 @@ npm run test:docs
 
 bench-c3/c4/d1、成本归一和评分工具仍被实验回归调用，继续保留。旧实验结论按 [HISTORY](HISTORY.md) 理解。先核对离线/联网参数，不批量运行带 `--run` 的历史实验。
 
-记忆评测须在独立进程运行，`--out` 选择不存在的新文件；`--reps` 为 1–20 整数。v2 同时记录源码/依赖哈希、冻结夹具哈希、待核对候选、同 ID 正文不符与记忆包预算违规。离线入口替换 `fetch` 拒绝意外 provider 请求，结束时恢复环境；token/账单和最终回答仍为未测。来源检查与只读记忆包的结果见 [2026-11-17 记录](reviews/MEMORY-EVAL-2026-11-17.md)。桌面隔离时同时设置 `DSH_HOME` 和 `DSH_TRIVIUM_SETTINGS`，后者用于隔离插件设置文件。
+记忆评测须在独立进程运行，`--out` 选择不存在的新文件；`--reps` 为 1–20 整数。v2 同时记录源码/依赖哈希、冻结夹具哈希、待核对候选、同 ID 正文不符与记忆包预算违规。离线入口替换 `fetch` 拒绝意外 provider 请求，结束时恢复环境；token/账单和最终回答仍为未测。来源检查与只读记忆包的结果见 [2026-11-17 记录](reviews/MEMORY-EVAL-2026-11-17.md)。
 
 只做真实回答对照时，先以 `--answers-only --plan-only` 核对送入的上下文，再在仅有评测适配器的宿主中用 `--answers-only` 跑固定的 16 个请求。[命令、结果和判据](reviews/NEXT-DELIVERY-2026-11-18.md#真实模型配对对照)。
 

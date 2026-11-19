@@ -367,7 +367,11 @@ snapshot explicitly for concurrent checking. Help commands do not open a store.
 
 以下属于 [开发中变更](UNRELEASED.md)，不能据此推断当前 npm 包已有这些入口。请求继续受 loopback、Origin、显式已知 `cwd` 和工作区写锁保护。
 
-- `GET /api/dsh-trivium/document-evidence?cwd=...` 返回本功能管理的来源列表与关联状态；可选 `sourceId` 读取一份原文，可选 `factId` 缩小关联列表。当前原型检查最多 10000 节点、2 MiB payload，超限返回错误，不返回不完整的成功列表。
+`GET /api/dsh-trivium/status` 返回当前或选定工作区的 `dbHealth.state`。可用值为 `ready`、`unselected`、`corrupt`、`locked` 和 `unavailable`。库损坏、占用或无法打开时，状态响应仍为 HTTP 200，`nodeCount` 为 `null`，保留工作区列表供切换。实际读写操作继续报告自身的失败状态。
+
+- `GET /api/dsh-trivium/document-evidence?cwd=...` 按节点 ID 返回来源元数据和关联，每类每页最多 20 条。指定 `sourceId` 时只读取该来源及关联，指定 `factId` 时只查对应的关联。两个参数同时传入时按交集筛选关联。
+- 分别传递 `nextDocumentAfter` 或 `nextEvidenceAfter` 作为下一次请求的 `documentAfter` 或 `evidenceAfter`。前者只续读未筛选的来源列表，后者在相同筛选条件下只续读关联。`null` 表示该列表已结束，`needsReview` 为本页数量。每次续页仅返回所请求的列表字段。
+- 来源列表在 TDB 内投影文档元数据并缓存目录，关联用已有类型、事实 ID 和来源 ID 索引。匹配范围仍有工作和响应预算，无关业务节点的正文不计入证据读取预算。已保存的事实与文档格式兼容。
 - `POST` 同一路径保存来源：`{action:"save",sourceId,content,documentId?,expectedRevision?}`。原文上限 64 KiB；初次保存分配来源身份，相同内容重试复用，更新必须传当前修订。来源标识是逻辑键，不触发文件读取。
 - `GET` 同一路径带 `documentId`、`revision`、`query` 检索保存的来源。可选 `limit`（1–8，默认 4）与 `budgetTokens`（64–1200，默认 300）。使用原生分组 BM25、明确来源过滤和查询工作上限。返回原文片段、字节范围、起止行列和预算内的 `context`；不返回全文。修订失配为 409。
 - `POST` 建立关联：`{action:"attach",factId,documentId,revision,quote,reference?}`。最多 2000 字符。手输的片段需唯一；从检索结果选中的 `reference` 按原字节范围定位，即使正文重复。TDB 核对该范围的实际原文，事务保存关联与身份边，flush 后应答。重试不重复创建。

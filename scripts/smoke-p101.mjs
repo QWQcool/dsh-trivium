@@ -93,7 +93,7 @@ function response(status, payload) {
 }
 
 /** A reply-controlled HTTP layer: entity-search requests stay pending until the test answers. */
-function createServer({withPending=false}={}) {
+function createServer({withPending=false, damagedCwd}={}) {
   const calls = [];
   const searches = [];
   const reviews = [];
@@ -119,7 +119,12 @@ function createServer({withPending=false}={}) {
     }
     if (href.includes('/api/dsh-trivium/status')) {
       const cwd = cwdOf(href) || ALPHA;
-      return response(200, cwd === BETA ? workspaceStatus(BETA, ALPHA, 1) : workspaceStatus(ALPHA, BETA, 2));
+      const status = cwd === BETA ? workspaceStatus(BETA, ALPHA, 1) : workspaceStatus(ALPHA, BETA, 2);
+      if (cwd === damagedCwd) {
+        status.dbHealth = {state: 'corrupt', code: 'DB_CORRUPTED', detail: 'Synthetic damaged TDB header'};
+        status.nodeCount = null;
+      }
+      return response(200, status);
     }
     if (href.includes('/api/dsh-trivium/nodes')) {
       return response(200, NODES[cwdOf(href)] || NODES[ALPHA]);
@@ -909,6 +914,57 @@ try {
     finish(new TextEncoder().encode('late text').buffer);await slow;await refresh();
     assert(nodesOf(next.tree()).find(n=>n.props?.['aria-label']==='文档原文').props.value==='','late file content crossed into the selected workspace');
   },'a slow local file selection cannot cross a workspace boundary');
+  await check(async () => {
+    const broken = await mount({damagedCwd: ALPHA});
+    assert(textOf(broken.tree()).includes('这个工作区的记忆库已损坏'));
+    assert(nodesOf(broken.tree()).some(node => node.props?.role === 'alert' && node.props.title === 'Synthetic damaged TDB header'));
+    assert(!broken.server.calls.some(call => call.href.includes('/api/dsh-trivium/nodes')));
+    const picker = nodesOf(broken.tree()).find(node => node.type === 'select' && node.props.value === ALPHA);
+    picker.props.onChange({target: {value: BETA}});
+    for (let i = 0; i < 6; i++) { await settle(); broken.render(); }
+    assert(!textOf(broken.tree()).includes('这个工作区的记忆库已损坏'));
+    assert(textOf(broken.tree()).includes('Beta 的合成事实。'));
+  }, 'a damaged library shows a scoped alert and leaves the healthy workspace switch usable');
+  await check(async () => {
+    pageTab(next.tree(), '上下文').props.onClick();
+    await refresh();
+    const load = button('读取来源与关联').props.onClick();
+    await settle();
+    next.server.documents.at(-1).reply(200, {ok: true, document: null, documents: [{documentId:'20',sourceId:'first-source.md'}], nextDocumentAfter:20,
+      links: [{evidenceId:30,factId:2,sourceId:'first-source.md',quote:'First-page link'}], nextEvidenceAfter:30});
+    await load;
+    await refresh();
+    const nextSource = button('下一页来源').props.onClick();
+    await settle();
+    const sourceRequest = next.server.documents.at(-1);
+    const sourceParams = new URL(sourceRequest.href, 'http://local.invalid').searchParams;
+    assert(sourceParams.get('documentAfter') === '20', 'the source request lost its cursor');
+    assert(sourceParams.get('cwd') === BETA, 'the source request lost its workspace');
+    assert(!sourceParams.has('evidenceAfter'));
+    sourceRequest.reply(200, {ok:true,document:null,documents:[{documentId:'40',sourceId:'second-source.md'}],nextDocumentAfter:null});
+    await nextSource;
+    await refresh();
+    assert(textOf(next.tree()).includes('second-source.md'));
+    assert(textOf(next.tree()).includes('First-page link'));
+    assert(!button('下一页来源'));
+    const nextLink = button('下一页关联').props.onClick();
+    await settle();
+    const linkRequest = next.server.documents.at(-1);
+    const linkParams = new URL(linkRequest.href, 'http://local.invalid').searchParams;
+    assert(linkParams.get('evidenceAfter') === '30', 'the link request lost its cursor');
+    assert(linkParams.get('cwd') === BETA, 'the link request lost its workspace');
+    assert(!linkParams.has('documentAfter'));
+    linkRequest.reply(200, {ok:true,links:[{evidenceId:41,factId:2,sourceId:'second-source.md',quote:'Second-page link'}],nextEvidenceAfter:41});
+    await nextLink;
+    await refresh();
+    assert(textOf(next.tree()).includes('Second-page link'));
+    assert(!textOf(next.tree()).includes('First-page link'));
+    const fact = nodesOf(next.tree()).find(node => node.props?.['aria-label'] === '已有记忆 ID');
+    fact.props.onChange({target:{value:'2'}});
+    await refresh();
+    assert(!button('下一页关联'));
+    assert(!textOf(next.tree()).includes('Second-page link'));
+  }, 'document and link pages navigate separately and changing the fact clears old results');
 }catch(err){failures++;console.error('FAIL next memory UI: '+err.stack);}
 
 console.log(`P101: ${checks - failures}/${checks}`);
