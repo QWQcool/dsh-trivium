@@ -6,14 +6,11 @@
 
 DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注入，设置页可改可归档。内核贴近 DSH：不另起进程、默认不加导航。要钉住某些记忆片段，再在设置里打开 **芯片** 注入；情节画布是可选的自嗨层，嵌在芯片开关下。每个工作区一个 `.dsh/trivium.tdb`，不另起服务。
 
-> **快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
+> **新工作区快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
 >
-> 当前 npm 发布版是 **0.9.1**。支持按实体名称和别名检索、紧凑任务记忆与变化游标、文档依据，以及本机 Worker 交接和中央复核。卸载默认保留记忆。[发布说明](docs/release-0.9.1.md)
+> 当前 npm 发布版是 **0.9.2**。改进跨语言追问、全量包数字引用、文档定向复核和自动召回防回显。卸载默认保留记忆。[发布说明](docs/release-0.9.2.md)
 >
-> 插件 0.9.0 和 0.9.1 都锁定 TriviumDB **0.9.1**，两版之间更新无需迁移数据库格式。已发布的插件 0.8.5–0.8.9 使用内核 0.9.0。内核 0.9.1 可能把库推进到 `.tdb` v13 / WAL v6，旧内核无法读取。[当前状态](docs/CURRENT-STATE.md)
->
-> **从已发布的 0.8.9 升级时，先完全退出宿主，再直接替换插件，不要先卸载旧包。** 旧卸载脚本可能删除记忆，具体命令见[更新](#更新)。
-> 如果需要回退保障，请在首次用新内核打开前保留完整工作区 `.dsh` 文件组。单纯降级插件不能撤销格式升级；恢复旧副本会回到保存时刻，之后的新写入不在其中。文件组包括 `trivium.tdb` 及 `.gidx`、`.pidx`、`.pld.*`、`.text`、`.text.meta`、`.vec`、`.wal`、`.lock`、`.flush_ok` 等附属文件，只复制 `.tdb` 不完整。
+> **已有 TDB 0.9.1 记忆库需要先离线迁移，再升级到 0.9.2。** 升级命令将整组文件从格式 13 切换到 15，保留原库供回退。[迁移、失败恢复与回退](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.md#升级与数据保留)
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -21,7 +18,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-> 前提：已安装 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 并初始化所用 profile。已有证据覆盖 Web `0.2.2-rc.1` 和桌面 `0.2.2-rc.3`，范围与日期见[文档入口](docs/README.md)。Node 要求 `^22.19.0 || >=24`；本包锁定 `triviumdb@0.9.1`。
+先安装 DeepSeek Harness 并初始化所用 profile。Node 要求 `^22.19.0 || >=24`，本包固定 `triviumdb@0.9.2`。已有记忆库请按[更新](#更新)操作。[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) · [宿主验收范围](docs/README.md)
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -68,23 +65,21 @@ npm test              # 可选：跑全部离线 smoke
 
 ## 更新
 
-先完全退出桌面程序（包括托盘），或停止 `dsh web`，再在原 profile 直接替换插件。**不要先卸载旧的 0.8.9 包**。桌面版命令：
+退出所有使用该工作区的宿主，包括桌面托盘进程。安装 0.9.2 前，通过 npm 运行 `dsh-trivium-upgrade`，逐个预检并迁移已有旧库。工具将原 `.dsh` 保留在 `status` 指向的 `before`。确认 `phase: active` 且 `activeFormat: 15` 后再重启宿主。[命令、官方转换器准备和失败恢复](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.md#升级与数据保留)
+
+在原 profile 直接替换插件。旧 0.8.9 的卸载钩子可能删除记忆，也应直接用下列命令替换。
 
 ```sh
-dsh plugin --profile desktop add dsh-trivium@0.9.1 --ignore-scripts
+dsh plugin --profile desktop add dsh-trivium@0.9.2 --ignore-scripts
 ```
 
-Web 使用 `dsh plugin --profile web add dsh-trivium@0.9.1 --ignore-scripts`。装完重启同一宿主，保留 `.dsh` 原样，重新打开原工作区。
-
-从 npm 0.8.9 升级涉及内核变化，首次打开前请阅读上面的文件组和回退说明。源码联调可在 `git pull` 后运行 `node scripts/link-dsh.mjs`。[详细升级说明](docs/release-0.9.1.md#升级与数据保留)
-
-当前源码使用 TDB 0.9.2。把它联入已有工作区前，需要先离线迁移整组数据库。升级命令会保留旧库供回退。 [TDB 0.9.2 升级、回退与恢复](docs/kernel-upgrade.md)
+Web 使用 `--profile web`。成功迁移和替换后打开原工作区。需要降回 0.9.1 时，先通过 `rollback` 恢复原库，再替换插件。迁移后产生的新写入留在 `after`。[回退步骤](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.md#回退到-091)
 
 ## 卸载
 
-> **0.9.1 卸载默认保留记忆。** 旧的 npm 0.8.9 带有破坏性卸载钩子，请先按上面的更新命令替换后再卸载。
+> **0.9.2 卸载默认保留记忆。** 旧的 npm 0.8.9 带有破坏性卸载钩子，请先按上面的更新命令替换后再卸载。
 
-确认已安装 0.9.1，停止宿主后可从对应 profile 卸载。
+确认已安装 0.9.2，停止宿主后可从对应 profile 卸载。
 
 ```sh
 dsh plugin --profile web remove dsh-trivium
@@ -394,6 +389,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 ## 更新说明
 
+- [0.9.2](docs/release-0.9.2.md) 交付 TDB 0.9.2、离线迁移与回退，改进跨语言追问、数字引用、文档定向复核和后台抽取防回显。
 - [0.9.1](docs/release-0.9.1.md) 加入实体名称查找、紧凑记忆包和变化游标、文档依据、本机 Worker 交接，并改进设置隔离、写入恢复、候选复核和按范围读取。
 - [0.9.0](docs/release-0.9.0.md)：卸载保留数据、TDB 0.9.1、抽取来源检查和同轮去冗余、候选核对入口、实体范围检索/显式记忆包及已测写入批处理；版本和文档发布沿用既有验证证据。
 
@@ -422,7 +418,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 | `ctx_find` 什么都没有 | 新会话默认只注入短地图，模型要自己调工具。也可以在芯片条「新增」或对模型说「记住：…」。闲聊和一次性改文件不会自动入库。 |
 | 报 `.tdb` 被占用 / 打不开 | 只开一个 `dsh web`。不要同时跑两份链接了本插件的 Node 进程。 |
 | embedding 填了但检索没变准 | 失败会退回关键词 + 图。检查当前设置文件中的 URL 是否为 OpenAI 兼容的 embeddings endpoint。保存后仍未生效时重启宿主再检查。 |
-| 卸载后记忆仍在 | 0.9.1 保留数据供重新安装使用。旧 0.8.9 应先按「更新」步骤替换，再执行卸载。 |
+| 卸载后记忆仍在 | 0.9.2 保留数据供重新安装使用。旧 0.8.9 应先按「更新」步骤替换，再执行卸载。 |
 | 检查更新失败 | 只请求 npm registry 拿最新版本号，不影响记忆；过一会儿再点即可。 |
 | rc.8 之后旧对话打不开 | 那是 DSH 自己的会话库格式变了，不是 `.tdb` 坏了。图记忆仍可 `ctx_find`；对不上号的旧方框可当情节残留。 |
 | 桌面端弹出「A JavaScript error occurred in the main process / EPIPE: broken pipe, write」 | 宿主侧问题，不是插件：`electron-updater` 往一个已经断开的控制台管道写日志（常见于用 `--inspect` 的测试启动器拉起、父进程随后退出）。栈里没有 `dsh-trivium`。点确定后从开始菜单正常启动；不要从会关闭的终端/测试器拉起。 |
@@ -441,7 +437,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 开发分支的新增、改进、移除及数据兼容见[开发中变更与回退步骤](docs/UNRELEASED.md)。每个正式版本另有双语发布说明。
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 已发布包：`0.9.1` · [npm](https://www.npmjs.com/package/dsh-trivium)
+- 已发布包：`0.9.2` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.2)
 - 测试宿主：`@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证：面板可开、`/status` 与提案接口应答、控制台零报错；更早版本在 0.2.1-rc.4/rc.5 上验证过）。peer 范围同时接受 0.1.x 各线。
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

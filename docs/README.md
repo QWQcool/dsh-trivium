@@ -1,13 +1,13 @@
 # 文档入口
 
-维护状态更新于 2026-11-19。安装和日常使用看[中文 README](../README.zh-CN.md) / [English README](../README.md)，接手开发先读 [CURRENT-STATE](CURRENT-STATE.md)。
+维护状态更新于 2026-11-20。安装和日常使用看[中文 README](../README.zh-CN.md) / [English README](../README.md)，接手开发先读 [CURRENT-STATE](CURRENT-STATE.md)。
 
 ## 发布状态
 
 | 范围 | 记录 |
 |---|---|
-| 已发布包 | `dsh-trivium@0.9.1`，tag `v0.9.1`。[中文发布说明与升级步骤](release-0.9.1.md) · [English](release-0.9.1.en.md) |
-| 运行依赖 | 源码固定 `triviumdb@0.9.2`。当前 npm 发布包固定 `triviumdb@0.9.1`。 [内核升级与回退](kernel-upgrade.md) |
+| 已发布包 | `dsh-trivium@0.9.2`，tag `v0.9.2`。[中文发布说明与升级步骤](release-0.9.2.md) · [English](release-0.9.2.en.md) |
+| 运行依赖 | npm 包和源码固定 `triviumdb@0.9.2`。已有 TDB 0.9.1 库需先离线迁移。[内核升级、失败恢复与回退](kernel-upgrade.md) |
 | 已验证宿主 | Web `0.2.2-rc.1`；桌面 `0.2.2-rc.3` 隔离宿主已验证源码包，具体边界见当前状态 |
 
 ## 日常维护
@@ -39,7 +39,7 @@
 | 实体检索 | [后端](reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) · [面板](reviews/ENTITY-SEARCH-PANEL-2026-11-13.md) |
 | 向量与检索质量 | [结果](reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) · [融合归因](reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md) · [范围实验](reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) |
 | 写延迟和批处理 | [测量结果](reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
-| 发布/复审 | [0.9.1 发布说明](release-0.9.1.md) · [0.9.0 回执与沿用证据](release-0.9.0.md) · [0.8.9 验收](reviews/0.8.9-RESULTS-2026-11-12.md) |
+| 发布/复审 | [0.9.2 发布说明](release-0.9.2.md) · [0.9.1 发布说明](release-0.9.1.md) · [0.9.0 回执与沿用证据](release-0.9.0.md) · [0.8.9 验收](reviews/0.8.9-RESULTS-2026-11-12.md) |
 | 旧计划、实验修正、原文位置 | [HISTORY](HISTORY.md) |
 | 原始测量 | [evidence](evidence/README.md) · [写入/宿主证据](next-memory/evidence-write-provenance) |
 
