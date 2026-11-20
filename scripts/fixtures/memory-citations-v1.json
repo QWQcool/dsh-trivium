@@ -1,0 +1,176 @@
+{
+  "version": "memory-citations-v1-2026-11-20",
+  "frozenAt": "2026-11-20",
+  "notes": [
+    "32 frozen cases for citation-format and pack-scope checking. Synthetic only.",
+    "Every question names the facts that must reach the pack (relevant) and the facts that must not (forbidden).",
+    "The checker runs the real memory pack builder offline: no model, no embedding. Final answers are not generated.",
+    "Holdout cases are not paraphrases of dev cases; each uses its own entity and facts."
+  ],
+  "categories": {
+    "stable": "same fact across turns, numeric or identifier answer",
+    "replacement": "older fact retired by a confirmed successor",
+    "conflict": "two active facts, ambiguity must stay visible",
+    "no-answer": "nothing in scope supports the question",
+    "cross-language": "question language differs from the fact language",
+    "scope": "same-name sibling or foreign workspace fact must not enter the pack"
+  },
+  "cases": [
+    { "id": "C01", "split": "dev", "category": "stable", "entity": "Aster Relay", "alias": "星湾中继",
+      "facts": [{ "id": 201, "name": "retention", "text": "Aster Relay backup retention is 21 days." }],
+      "questions": [{ "q": "How many days does Aster Relay retain backups?", "relevant": [201], "forbidden": [] }] },
+    { "id": "C02", "split": "dev", "category": "stable", "entity": "Ivory Queue", "alias": "象牙队列",
+      "facts": [{ "id": 201, "name": "retry", "text": "Ivory Queue retry limit is 4 attempts." }],
+      "questions": [
+        { "q": "What is the retry limit for Ivory Queue?", "relevant": [201], "forbidden": [] },
+        { "q": "Confirm the same retry limit.", "relevant": [201], "forbidden": [] }
+      ] },
+    { "id": "C03", "split": "dev", "category": "stable", "entity": "Cobalt Batch", "alias": "钴蓝批次",
+      "facts": [{ "id": 201, "name": "batch id", "text": "The current batch id is LOT-7781-A." }],
+      "questions": [{ "q": "What is the current batch id for Cobalt Batch?", "relevant": [201], "forbidden": [] }] },
+    { "id": "C04", "split": "dev", "category": "stable", "entity": "Dune Proxy", "alias": "沙丘代理",
+      "facts": [{ "id": 201, "name": "timeout", "text": "Dune Proxy upstream timeout is 45 seconds." }],
+      "questions": [{ "q": "What is the upstream timeout for Dune Proxy?", "relevant": [201], "forbidden": [] }] },
+    { "id": "C05", "split": "dev", "category": "stable", "entity": "Echo Ledger", "alias": "回声账本",
+      "facts": [{ "id": 201, "name": "window", "text": "Echo Ledger closes its books at 18:30 local time." }],
+      "questions": [{ "q": "When does Echo Ledger close its books?", "relevant": [201], "forbidden": [] }] },
+
+    { "id": "C06", "split": "dev", "category": "replacement", "entity": "Frost Scheduler", "alias": "霜冻调度",
+      "facts": [
+        { "id": 201, "name": "window", "text": "Frost Scheduler deploy window is Friday 02:00." },
+        { "id": 202, "name": "window", "text": "Frost Scheduler deploy window moved to Tuesday 02:00.", "supersedes": 201 }
+      ],
+      "questions": [{ "q": "When is the Frost Scheduler deploy window now?", "relevant": [202], "forbidden": [201] }] },
+    { "id": "C07", "split": "dev", "category": "replacement", "entity": "Glass Limiter", "alias": "玻璃限流",
+      "facts": [
+        { "id": 201, "name": "rate", "text": "Glass Limiter allows 60 requests per minute." },
+        { "id": 202, "name": "rate", "text": "Glass Limiter allows 120 requests per minute.", "supersedes": 201 }
+      ],
+      "questions": [{ "q": "What is the current rate limit for Glass Limiter?", "relevant": [202], "forbidden": [201] }] },
+    { "id": "C08", "split": "dev", "category": "replacement", "entity": "Hollow Vault", "alias": "空心仓",
+      "facts": [
+        { "id": 201, "name": "cipher", "text": "Hollow Vault uses cipher AES-128." },
+        { "id": 202, "name": "cipher", "text": "Hollow Vault uses cipher AES-256.", "supersedes": 201 }
+      ],
+      "questions": [{ "q": "Which cipher does Hollow Vault use now?", "relevant": [202], "forbidden": [201] }] },
+    { "id": "C09", "split": "dev", "category": "replacement", "entity": "Iron Tally", "alias": "铁算盘",
+      "facts": [
+        { "id": 201, "name": "shard", "text": "Iron Tally runs on 3 shards." },
+        { "id": 202, "name": "shard", "text": "Iron Tally runs on 8 shards.", "supersedes": 201 }
+      ],
+      "questions": [
+        { "q": "How many shards does Iron Tally run on?", "relevant": [202], "forbidden": [201] },
+        { "q": "Confirm the shard count after the change.", "relevant": [202], "forbidden": [201] }
+      ] },
+
+    { "id": "C10", "split": "dev", "category": "conflict", "entity": "Jade Router", "alias": "翡翠路由",
+      "facts": [
+        { "id": 201, "name": "policy", "text": "Jade Router sends 20% of traffic to the new pool." },
+        { "id": 202, "name": "policy", "text": "Jade Router sends 50% of traffic to the new pool." }
+      ],
+      "questions": [{ "q": "What share of traffic does Jade Router send to the new pool?", "relevant": [201, 202], "forbidden": [] }] },
+    { "id": "C11", "split": "dev", "category": "conflict", "entity": "Kite Gateway", "alias": "风筝网关",
+      "facts": [
+        { "id": 201, "name": "region", "text": "Kite Gateway primary region is cn-east." },
+        { "id": 202, "name": "region", "text": "Kite Gateway primary region is cn-south." }
+      ],
+      "questions": [{ "q": "Which region is Kite Gateway primary in?", "relevant": [201, 202], "forbidden": [] }] },
+    { "id": "C12", "split": "dev", "category": "conflict", "entity": "Loom Sync", "alias": "织机同步",
+      "facts": [
+        { "id": 201, "name": "interval", "text": "Loom Sync runs every 5 minutes." },
+        { "id": 202, "name": "interval", "text": "Loom Sync runs every 15 minutes." }
+      ],
+      "questions": [{ "q": "How often does Loom Sync run?", "relevant": [201, 202], "forbidden": [] }] },
+
+    { "id": "C13", "split": "dev", "category": "no-answer", "entity": "Mica Beacon", "alias": "云母信标",
+      "facts": [{ "id": 201, "name": "owner", "text": "Mica Beacon owner is the platform team." }],
+      "questions": [{ "q": "What is the Mica Beacon disaster recovery plan?", "relevant": [], "forbidden": [] }] },
+    { "id": "C14", "split": "dev", "category": "no-answer", "entity": "Nimbus Cache", "alias": "雨云缓存",
+      "facts": [{ "id": 201, "name": "size", "text": "Nimbus Cache size is 12 GB." }],
+      "questions": [{ "q": "Which encryption key does Nimbus Cache use?", "relevant": [], "forbidden": [] }] },
+    { "id": "C15", "split": "dev", "category": "no-answer", "entity": "Onyx Mailer", "alias": "玄玉邮差",
+      "facts": [{ "id": 201, "name": "sender", "text": "Onyx Mailer sender domain is notify.example." }],
+      "questions": [{ "q": "What is the retry backoff for Onyx Mailer?", "relevant": [], "forbidden": [] }] },
+
+    { "id": "C16", "split": "dev", "category": "cross-language", "entity": "Pearl Indexer", "alias": "珍珠索引",
+      "facts": [{ "id": 201, "name": "retention", "text": "Pearl Indexer keeps search logs for 14 days." }],
+      "questions": [{ "q": "珍珠索引的搜索日志保留多少天？", "relevant": [201], "forbidden": [] }] },
+    { "id": "C17", "split": "dev", "category": "cross-language", "entity": "Quartz Exporter", "alias": "石英导出",
+      "facts": [{ "id": 201, "name": "format", "text": "Quartz Exporter writes UTF-8 CSV files." }],
+      "questions": [{ "q": "石英导出写入什么格式的文件？", "relevant": [201], "forbidden": [] }] },
+    { "id": "C18", "split": "dev", "category": "cross-language", "entity": "Raven Monitor", "alias": "渡鸦监控",
+      "facts": [{ "id": 201, "name": "interval", "text": "Raven Monitor probes endpoints every 30 seconds." }],
+      "questions": [{ "q": "渡鸦监控每隔多少秒探测一次？", "relevant": [201], "forbidden": [] }] },
+    { "id": "C19", "split": "dev", "category": "cross-language", "entity": "Slate Queue", "alias": "石板队列",
+      "facts": [{ "id": 201, "name": "retention", "text": "Slate Queue 的死信保留 7 天。" }],
+      "questions": [{ "q": "How long does Slate Queue keep dead letters?", "relevant": [201], "forbidden": [] }] },
+
+    { "id": "C20", "split": "dev", "category": "scope", "entity": "Topaz Router", "alias": "黄玉路由",
+      "facts": [
+        { "id": 201, "name": "policy", "text": "Topaz Router sends 10% of traffic to the canary pool." },
+        { "id": 301, "name": "policy", "text": "Topaz Router sends 90% of traffic to the canary pool.", "sibling": true }
+      ],
+      "questions": [{ "q": "What share does Topaz Router send to the canary pool?", "relevant": [201], "forbidden": [301] }] },
+    { "id": "C21", "split": "dev", "category": "scope", "entity": "Umber Vault", "alias": "赭石仓",
+      "facts": [
+        { "id": 201, "name": "cipher", "text": "Umber Vault uses cipher AES-128." },
+        { "id": 301, "name": "cipher", "text": "Umber Vault uses cipher AES-512.", "foreign": true }
+      ],
+      "questions": [{ "q": "Which cipher does Umber Vault use?", "relevant": [201], "forbidden": [301] }] },
+    { "id": "C22", "split": "dev", "category": "scope", "entity": "Violet Relay", "alias": "紫罗兰中继",
+      "facts": [
+        { "id": 201, "name": "ttl", "text": "Violet Relay ttl is 90 seconds." },
+        { "id": 301, "name": "ttl", "text": "Violet Relay ttl is 900 seconds.", "sibling": true }
+      ],
+      "questions": [{ "q": "What is the Violet Relay ttl?", "relevant": [201], "forbidden": [301] }] },
+
+    { "id": "C23", "split": "holdout", "category": "stable", "entity": "Willow Parser", "alias": "柳树解析",
+      "facts": [{ "id": 201, "name": "limit", "text": "Willow Parser rejects inputs above 4096 bytes." }],
+      "questions": [{ "q": "What input size does Willow Parser reject above?", "relevant": [201], "forbidden": [] }] },
+    { "id": "C24", "split": "holdout", "category": "replacement", "entity": "Xenon Sorter", "alias": "氙气分拣",
+      "facts": [
+        { "id": 201, "name": "workers", "text": "Xenon Sorter runs 2 workers." },
+        { "id": 202, "name": "workers", "text": "Xenon Sorter runs 6 workers.", "supersedes": 201 }
+      ],
+      "questions": [{ "q": "How many workers does Xenon Sorter run now?", "relevant": [202], "forbidden": [201] }] },
+    { "id": "C25", "split": "holdout", "category": "conflict", "entity": "Yarrow Bridge", "alias": "蓍草桥",
+      "facts": [
+        { "id": 201, "name": "mode", "text": "Yarrow Bridge runs in strict mode." },
+        { "id": 202, "name": "mode", "text": "Yarrow Bridge runs in permissive mode." }
+      ],
+      "questions": [{ "q": "Which mode does Yarrow Bridge run in?", "relevant": [201, 202], "forbidden": [] }] },
+    { "id": "C26", "split": "holdout", "category": "no-answer", "entity": "Zephyr Dock", "alias": "和风码头",
+      "facts": [{ "id": 201, "name": "port", "text": "Zephyr Dock listens on port 7443." }],
+      "questions": [{ "q": "What is the Zephyr Dock TLS certificate rotation period?", "relevant": [], "forbidden": [] }] },
+    { "id": "C27", "split": "holdout", "category": "cross-language", "entity": "Amber Sink", "alias": "琥珀汇聚",
+      "facts": [{ "id": 201, "name": "retention", "text": "Amber Sink 的事件保留 30 天。" }],
+      "questions": [{ "q": "How long does Amber Sink retain events?", "relevant": [201], "forbidden": [] }] },
+    { "id": "C28", "split": "holdout", "category": "cross-language", "entity": "Birch Crawler", "alias": "桦木抓取",
+      "facts": [{ "id": 201, "name": "rate", "text": "Birch Crawler fetches 5 pages per second." }],
+      "questions": [{ "q": "桦木抓取每秒抓取多少页？", "relevant": [201], "forbidden": [] }] },
+    { "id": "C29", "split": "holdout", "category": "scope", "entity": "Cedar Mirror", "alias": "雪松镜像",
+      "facts": [
+        { "id": 201, "name": "source", "text": "Cedar Mirror replicates from primary-a." },
+        { "id": 301, "name": "source", "text": "Cedar Mirror replicates from primary-b.", "foreign": true }
+      ],
+      "questions": [{ "q": "Which source does Cedar Mirror replicate from?", "relevant": [201], "forbidden": [301] }] },
+    { "id": "C30", "split": "holdout", "category": "stable", "entity": "Drift Sensor", "alias": "漂移传感器",
+      "facts": [{ "id": 201, "name": "threshold", "text": "Drift Sensor alerts above 3.5 sigma." }],
+      "questions": [
+        { "q": "What threshold does Drift Sensor alert above?", "relevant": [201], "forbidden": [] },
+        { "q": "Restate the same threshold.", "relevant": [201], "forbidden": [] }
+      ] },
+    { "id": "C31", "split": "holdout", "category": "replacement", "entity": "Ember Gate", "alias": "余烬门",
+      "facts": [
+        { "id": 201, "name": "quota", "text": "Ember Gate quota is 5000 requests per day." },
+        { "id": 202, "name": "quota", "text": "Ember Gate quota is 20000 requests per day.", "supersedes": 201 }
+      ],
+      "questions": [{ "q": "What is the Ember Gate daily quota now?", "relevant": [202], "forbidden": [201] }] },
+    { "id": "C32", "split": "holdout", "category": "scope", "entity": "Flint Index", "alias": "燧石索引",
+      "facts": [
+        { "id": 201, "name": "shards", "text": "Flint Index uses 12 shards." },
+        { "id": 301, "name": "shards", "text": "Flint Index uses 24 shards.", "sibling": true }
+      ],
+      "questions": [{ "q": "How many shards does Flint Index use?", "relevant": [201], "forbidden": [301] }] }
+  ]
+}

@@ -1,0 +1,484 @@
+{
+  "meta": {
+    "fixture": "memory-citations-v1-2026-11-20",
+    "fixtureHash": "10e58f09b2a0d48d33ef3b4b5b8a54d52921d872d67ae435ec8362f047ba6120",
+    "budgetTokens": 300,
+    "questions": 35,
+    "cases": 32,
+    "finalAnswerAccuracy": "not measured (no answer is generated)",
+    "realModelCalls": 0,
+    "realEmbeddingCalls": 0,
+    "at": "2026-11-20T10:44:30.774Z"
+  },
+  "summary": {
+    "packBuilt": 35,
+    "missingEvidence": 7,
+    "leakedEvidence": 0,
+    "nonNumericIds": 7,
+    "overBudget": 0,
+    "bySplit": {
+      "dev": {
+        "questions": 24,
+        "missing": 5,
+        "leaked": 0,
+        "nonNumeric": 5
+      },
+      "holdout": {
+        "questions": 11,
+        "missing": 2,
+        "leaked": 0,
+        "nonNumeric": 2
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "C01",
+      "split": "dev",
+      "category": "stable",
+      "q": "How many days does Aster Relay retain backups?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 102,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C02",
+      "split": "dev",
+      "category": "stable",
+      "q": "What is the retry limit for Ivory Queue?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 101,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C02",
+      "split": "dev",
+      "category": "stable",
+      "q": "Confirm the same retry limit.",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 101,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C03",
+      "split": "dev",
+      "category": "stable",
+      "q": "What is the current batch id for Cobalt Batch?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 101,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C04",
+      "split": "dev",
+      "category": "stable",
+      "q": "What is the upstream timeout for Dune Proxy?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 102,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C05",
+      "split": "dev",
+      "category": "stable",
+      "q": "When does Echo Ledger close its books?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 104,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C06",
+      "split": "dev",
+      "category": "replacement",
+      "q": "When is the Frost Scheduler deploy window now?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 105,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C07",
+      "split": "dev",
+      "category": "replacement",
+      "q": "What is the current rate limit for Glass Limiter?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 102,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C08",
+      "split": "dev",
+      "category": "replacement",
+      "q": "Which cipher does Hollow Vault use now?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 100,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C09",
+      "split": "dev",
+      "category": "replacement",
+      "q": "How many shards does Iron Tally run on?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 98,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C09",
+      "split": "dev",
+      "category": "replacement",
+      "q": "Confirm the shard count after the change.",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 40,
+      "missing": [
+        "202"
+      ],
+      "leaked": [],
+      "nonNumeric": [
+        202
+      ]
+    },
+    {
+      "id": "C10",
+      "split": "dev",
+      "category": "conflict",
+      "q": "What share of traffic does Jade Router send to the new pool?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 181,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C11",
+      "split": "dev",
+      "category": "conflict",
+      "q": "Which region is Kite Gateway primary in?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 176,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C12",
+      "split": "dev",
+      "category": "conflict",
+      "q": "How often does Loom Sync run?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 173,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C13",
+      "split": "dev",
+      "category": "no-answer",
+      "q": "What is the Mica Beacon disaster recovery plan?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 88,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C14",
+      "split": "dev",
+      "category": "no-answer",
+      "q": "Which encryption key does Nimbus Cache use?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 98,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C15",
+      "split": "dev",
+      "category": "no-answer",
+      "q": "What is the retry backoff for Onyx Mailer?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 102,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C16",
+      "split": "dev",
+      "category": "cross-language",
+      "q": "珍珠索引的搜索日志保留多少天？",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 89,
+      "missing": [
+        "201"
+      ],
+      "leaked": [],
+      "nonNumeric": [
+        201
+      ]
+    },
+    {
+      "id": "C17",
+      "split": "dev",
+      "category": "cross-language",
+      "q": "石英导出写入什么格式的文件？",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 90,
+      "missing": [
+        "201"
+      ],
+      "leaked": [],
+      "nonNumeric": [
+        201
+      ]
+    },
+    {
+      "id": "C18",
+      "split": "dev",
+      "category": "cross-language",
+      "q": "渡鸦监控每隔多少秒探测一次？",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 89,
+      "missing": [
+        "201"
+      ],
+      "leaked": [],
+      "nonNumeric": [
+        201
+      ]
+    },
+    {
+      "id": "C19",
+      "split": "dev",
+      "category": "cross-language",
+      "q": "How long does Slate Queue keep dead letters?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 88,
+      "missing": [
+        "201"
+      ],
+      "leaked": [],
+      "nonNumeric": [
+        201
+      ]
+    },
+    {
+      "id": "C20",
+      "split": "dev",
+      "category": "scope",
+      "q": "What share does Topaz Router send to the canary pool?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 105,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C21",
+      "split": "dev",
+      "category": "scope",
+      "q": "Which cipher does Umber Vault use?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 99,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C22",
+      "split": "dev",
+      "category": "scope",
+      "q": "What is the Violet Relay ttl?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 98,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C23",
+      "split": "holdout",
+      "category": "stable",
+      "q": "What input size does Willow Parser reject above?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 103,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C24",
+      "split": "holdout",
+      "category": "replacement",
+      "q": "How many workers does Xenon Sorter run now?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 99,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C25",
+      "split": "holdout",
+      "category": "conflict",
+      "q": "Which mode does Yarrow Bridge run in?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 173,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C26",
+      "split": "holdout",
+      "category": "no-answer",
+      "q": "What is the Zephyr Dock TLS certificate rotation period?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 88,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C27",
+      "split": "holdout",
+      "category": "cross-language",
+      "q": "How long does Amber Sink retain events?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 103,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C28",
+      "split": "holdout",
+      "category": "cross-language",
+      "q": "桦木抓取每秒抓取多少页？",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 89,
+      "missing": [
+        "201"
+      ],
+      "leaked": [],
+      "nonNumeric": [
+        201
+      ]
+    },
+    {
+      "id": "C29",
+      "split": "holdout",
+      "category": "scope",
+      "q": "Which source does Cedar Mirror replicate from?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 101,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C30",
+      "split": "holdout",
+      "category": "stable",
+      "q": "What threshold does Drift Sensor alert above?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 101,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C30",
+      "split": "holdout",
+      "category": "stable",
+      "q": "Restate the same threshold.",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 40,
+      "missing": [
+        "201"
+      ],
+      "leaked": [],
+      "nonNumeric": [
+        201
+      ]
+    },
+    {
+      "id": "C31",
+      "split": "holdout",
+      "category": "replacement",
+      "q": "What is the Ember Gate daily quota now?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 102,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    },
+    {
+      "id": "C32",
+      "split": "holdout",
+      "category": "scope",
+      "q": "How many shards does Flint Index use?",
+      "pack": true,
+      "budgetOk": true,
+      "tokens": 98,
+      "missing": [],
+      "leaked": [],
+      "nonNumeric": []
+    }
+  ]
+}
