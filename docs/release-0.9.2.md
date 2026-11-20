@@ -82,4 +82,8 @@ Web 使用 `--profile web`。上述回退版本对应由 TDB 0.9.1 创建的原�
 
 ## 发布回执
 
-- `dsh-trivium@0.9.2` 固定 TDB 0.9.2，源码标签为 `v0.9.2`。 [npm 版本页](https://www.npmjs.com/package/dsh-trivium/v/0.9.2)
+- npm 于 **2026-11-20T05:36:11.107Z** 发布 `0.9.2`，发布标记为 `latest`，运行内核为 TDB 0.9.2。 [npm 版本页](https://www.npmjs.com/package/dsh-trivium/v/0.9.2)
+- Git tag `v0.9.2` 指向发布源码 `3b8cbce1ca66cea99c8fd2f8dd102a4d33303827`。公开下载的 `dsh-trivium-0.9.2.tgz` 与本地包逐字节一致，共 70 个文件、367772 字节。
+- SHA-1 `6829cf449df75156fd23bd2b3506b7e22027ffbd`
+- SHA-256 `f03396faa05d2746db20e9c3cea24f9e81a4dc99dcdde36bcc7d1c8e5cbf19ab`
+- 13 项文档检查通过。实际打包文件中的升级命令在独立临时目录通过帮助与只读状态检查；功能验收沿用上述结果。

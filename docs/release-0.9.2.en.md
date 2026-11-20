@@ -82,4 +82,8 @@ Use `--profile web` for Web. The rollback version above is for a library from TD
 
 ## Publication
 
-- `dsh-trivium@0.9.2` pins TDB 0.9.2 and uses source tag `v0.9.2`. [npm version page](https://www.npmjs.com/package/dsh-trivium/v/0.9.2)
+- npm published `0.9.2` at **2026-11-20T05:36:11.107Z** with dist-tag `latest`. The runtime kernel is TDB 0.9.2. [npm version page](https://www.npmjs.com/package/dsh-trivium/v/0.9.2)
+- Git tag `v0.9.2` points to release source `3b8cbce1ca66cea99c8fd2f8dd102a4d33303827`. The public `dsh-trivium-0.9.2.tgz` matches the local archive byte for byte and contains 70 files in 367772 bytes.
+- SHA-1 `6829cf449df75156fd23bd2b3506b7e22027ffbd`
+- SHA-256 `f03396faa05d2746db20e9c3cea24f9e81a4dc99dcdde36bcc7d1c8e5cbf19ab`
+- All 13 documentation checks passed. The packaged upgrade command passed help and read-only status checks in a separate temporary directory. This release uses the feature acceptance results above.
