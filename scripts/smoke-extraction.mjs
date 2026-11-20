@@ -1451,9 +1451,9 @@ async function p100() {
   };
   const user = (text, seq = 11) => source.turnFromEvent({ type: "user/message", seq, time: 1794820542000,
     data: { id: `user-${seq}`, role: "user", source: { kind: "user" }, content: [{ type: "text", text }] } });
-  const tool = (name, text, seq = 24, isError = false) => source.turnFromEvent({ type: "tool/result", seq, time: 1794820543000,
+  const tool = (name, text, seq = 24, isError = false, readObservations) => source.turnFromEvent({ type: "tool/result", seq, time: 1794820543000,
     data: { turn: 1, step: 1, message: { id: `tool-${seq}`, role: "tool", source: { kind: "tool", callId: `call-${seq}` },
-      isError, content: [{ type: "text", text }] } } }, { name });
+      isError, content: [{ type: "text", text }] } } }, { name, readObservations });
   const find = (id, text = BODY, type = "preference") => tool("ctx_find", `[4.000] id=${id} type=${type}\n${text}`);
   const read = (id, payload = { type: "preference", name: NAME, text: BODY, status: "active" }) =>
     tool("ctx_read", JSON.stringify({ id, payload, edges: [], incoming: [] }), 30);
@@ -1471,6 +1471,19 @@ async function p100() {
   const has = (db, type, text) => db.allNodeIds().some(id => {
     const p = db.get(id)?.payload; return p?.type === type && p?.text === text;
   });
+  const registered = new Map();
+  const { registerTools } = await import("../lib/tools.js");
+  const memoryTools = registerTools({
+    effect: fn => fn(), on() {},
+    tools: { register(definition) { registered.set(definition.name, definition); return () => {}; } },
+  }, {});
+  const executeRead = async (cwd, name, args, seq) => {
+    const session = { id: `read-proof-${workspace}`, header: { cwd } };
+    const callId = `call-${seq}`;
+    const text = await registered.get(name).execute(args, { agent: { session }, callId });
+    const observation = value => memoryTools.takeRead(session, callId, value);
+    return { text, observation };
+  };
 
   try {
     await check("real host ctx_find echo cannot create a cross-type copy or touch the existing graph", async () => {
@@ -1509,6 +1522,63 @@ async function p100() {
       assert.equal(has(db, "decision", newText), true);
       assert.equal(db.get(id).payload.text, BODY);
     });
+    await check("a new fact about the same subject cannot authorize an old copy", async () => {
+      const { db, id } = await open();
+      const fresh = `${NAME}的复核周期是 7 天。`;
+      const turns = [user(`请读一下${NAME}；另外记住：${fresh}`), read(id), answer()];
+      const result = await run(db, turns, [echo(), { type: "decision", name: "复核周期", text: fresh, quote: fresh }]);
+      assert.equal(result.unverified.length, 0);
+      assert.ok(result.skipped.some(row => row.reason === "memory-read-echo"));
+      assert.equal(has(db, "entity", BODY), false);
+      assert.equal(has(db, "decision", fresh), true);
+      assert.equal(db.get(id).payload.text, BODY);
+    });
+    await check("the real mixed-turn model preference survives a verified standing-setting declaration", async () => {
+      const { db, id } = await open();
+      const fresh = "松石网关的冷备份校验间隔固定为 13 小时。";
+      const preference = { type: "preference", name: "松石网关冷备份校验间隔", text: fresh, quote: fresh,
+        linkName: "松石网关", linkLabel: "about" };
+      const replay = [user(`先复述旧记忆里的留存周期。另有一条已经确认的长期设置：${fresh}回复里同时列出两个值。`),
+        answer("审计日志留存 31 天。冷备份每隔 13 小时校验一次。")];
+      const result = await run(db, replay, [preference]);
+      assert.equal(result.applied.length, 1);
+      assert.equal(result.applied[0].text, fresh);
+      assert.equal(db.get(result.applied[0].id).payload.source.role, "user");
+      assert.equal(db.get(id).payload.text, BODY);
+      for (const input of [
+        user(`本次演练的临时设置：${fresh}`),
+        user(`长期设置：审计记录固定保留 31 天；本次测试的临时设置：${fresh}`),
+        tool("config_read", `已确认的长期设置：${fresh}`),
+      ]) {
+        assert.equal((await run(db, [input], [preference])).applied.length, 0);
+      }
+    });
+    await check("a request to recite quoted memory and an unrelated memory write do not supply evidence", async () => {
+      const { db, id } = await open();
+      const before = graph(db);
+      const turns = [user(`请复述「${BODY}」这条旧记忆。`), read(id),
+        tool("ctx_remember", "Remembered id=99 type=preference", 31), answer()];
+      const result = await run(db, turns, [echo()]);
+      assert.equal(result.unverified.length, 0);
+      assert.ok(result.skipped.some(row => row.reason === "memory-read-echo"));
+      assert.equal(graph(db), before);
+    });
+    await check("preference cues inside a quoted recall do not run the rule writer", async () => {
+      const text = "以后都使用保留索引。";
+      const fresh = "日志窗口为 7 天。";
+      const { db, id } = await open({ text });
+      const readOnly = `请复述「${text}」这条旧记忆。`;
+      const observed = read(id, { type: "preference", name: NAME, text, status: "active" });
+      const before = graph(db);
+      const only = await run(db, [user(readOnly), observed, answer(text)], [echo({ text, quote: text })]);
+      assert.equal(only.ruleCount, 0);
+      assert.equal(only.unverified.length, 0);
+      assert.equal(graph(db), before);
+      const mixed = await run(db, [user(`请复述「${text}」这条旧记忆；另外记住：${fresh}`), observed, answer(text)], []);
+      assert.equal(mixed.applied.filter(row => row.text.includes(fresh)).length, 1);
+      assert.equal(mixed.applied.some(row => row.text.includes(text)), false);
+      assert.equal(db.get(id).payload.text, text);
+    });
     await check("the user explicitly states the same fact: it is not discarded as a tool echo", async () => {
       const { db, id } = await open();
       const turns = [user(`记住：${BODY}。`), find(id), answer()];
@@ -1522,6 +1592,16 @@ async function p100() {
       const result = await run(db, turns, [echo()]);
       assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
       assert.equal(has(db, "entity", BODY), true);
+    });
+    await check("explicit save instructions remain reviewable when the read fact is their only source", async () => {
+      const { db, id } = await open();
+      for (const request of ["保存这条记忆。", "请把这条记忆单独保存下来。", "Please save the retrieved fact."]) {
+        const turns = [user(`请查找${NAME}。${request}`), read(id), answer()];
+        const result = await run(db, turns, [echo()]);
+        assert.ok(result.unverified.some(row => row.text === BODY));
+        assert.equal(result.skipped.some(row => row.reason === "memory-read-echo"), false);
+      }
+      assert.equal(db.get(id).payload.text, BODY);
     });
     await check("matching information from an unrelated tool remains independent evidence", async () => {
       const { db, id } = await open();
@@ -1633,6 +1713,66 @@ async function p100() {
       assert.equal(result.applied.length, 0);
       assert.equal(graph(db), before);
     });
+    await check("a long actual ctx_read proves the exact copy after restart without persisting its full output", async () => {
+      const text = "The release coordinator retains the dated inspection notes in the review queue until the designated operator acknowledges the handover and checks the original report. The queue is scoped to the selected service.";
+      const { db, id, cwd } = await open({ text });
+      const lookup = await executeRead(cwd, "ctx_read", { id }, 31);
+      const observed = tool("ctx_read", lookup.text, 31, false, lookup.observation);
+      assert.ok(observed.text.endsWith("…") && !observed.text.includes(text));
+      assert.deepEqual(observed.memoryReads.map(row => Object.keys(row).sort()), [["fingerprint", "id"]]);
+      assert.equal(observed.memoryReads[0].id, id);
+      const turns = [question(), observed, answer(text)];
+      await extract.savePending(cwd, { sessionId: "synthetic-session", turns });
+      store.closeAll();
+      const reopened = await store.openWorkspaceDb(cwd);
+      const result = await run(reopened, extract.loadPending(cwd).turns, [echo({ text, quote: "" })]);
+      assert.ok(result.skipped.some(row => row.reason === "memory-read-echo"));
+      assert.equal(result.unverified.length, 0);
+      assert.equal(reopened.get(id).payload.text, text);
+    });
+    await check("scoped ctx_find proves facts beyond the preview and an unchanged cursor proves no new delivery", async () => {
+      const body = "The retry queue allows exactly four retries before review.";
+      const { db, id, cwd } = await open({ text: body });
+      const anchor = store.insertNode(db, { type: "entity", name: "SyntheticQueue", text: "SyntheticQueue" });
+      const long = "Operational policy for the retry queue: keep a dated record in the service directory and retain the operator review notes for the entire deployment. Keep each acknowledgement attached to the original case instead of the later status summary.";
+      const first = store.insertNode(db, { type: "decision", name: "retry queue", text: long, createdAt: "2026-11-01T00:00:00Z" });
+      db.link(anchor, first, "about");
+      db.link(anchor, id, "about");
+      const args = { query: "retry queue", entity_id: anchor, pack_tokens: 600 };
+      const initial = await executeRead(cwd, "ctx_find", args, 32);
+      const observed = tool("ctx_find", initial.text, 32, false, initial.observation);
+      assert.match(initial.text, /\[scoped\]/u);
+      assert.ok(initial.text.includes(body) && !observed.text.includes(body), "fixture must put the copied row after the preview");
+      assert.ok(observed.memoryReads.some(row => row.id === id));
+      const old = db.getPayload(id);
+      const result = await run(db, [question(), observed, answer(body)], [echo({ text: body, quote: body })]);
+      assert.ok(result.skipped.some(row => row.reason === "memory-read-echo"));
+      assert.equal(result.unverified.length, 0);
+      const since = initial.text.match(/^Cursor: ([\w-]{12})$/m)?.[1];
+      assert.ok(since);
+      const same = await executeRead(cwd, "ctx_find", { ...args, since }, 33);
+      const unchanged = tool("ctx_find", same.text, 33, false, same.observation);
+      assert.deepEqual(unchanged.memoryReads, []);
+      const noProof = await run(db, [question(), unchanged, answer(body)], [echo({ text: body, quote: body })]);
+      assert.ok(noProof.unverified.some(row => row.text === body));
+      assert.deepEqual(db.getPayload(id), old);
+    });
+    await check("a mismatched result and a later edit cannot prove that a full read is a copy", async () => {
+      const { db, id, cwd } = await open();
+      const lookup = await executeRead(cwd, "ctx_read", { id }, 35);
+      const mismatched = tool("ctx_read", lookup.text + " ", 35, false, lookup.observation);
+      assert.deepEqual(mismatched.memoryReads, []);
+      const denied = await run(db, [question(), mismatched, answer()], [echo()]);
+      assert.ok(denied.unverified.some(row => row.text === BODY));
+      const second = await executeRead(cwd, "ctx_read", { id }, 36);
+      const observed = tool("ctx_read", second.text, 36, false, second.observation);
+      const updated = BODY + " PLUS";
+      store.updateNode(db, id, { text: updated });
+      const changed = await run(db, [question(), observed, answer(updated)], [echo({ text: updated, quote: "" })]);
+      assert.equal(changed.skipped.some(row => row.reason === "memory-read-echo"), false);
+      assert.ok(changed.unverified.some(row => row.text === updated));
+      assert.equal(db.getPayload(id).text, updated);
+    });
   } finally {
     store.closeAll();
     if (dirname(resolve(root)) !== resolve(tmpdir())) throw new Error("Refusing cleanup outside temp directory");
@@ -1694,13 +1834,14 @@ async function p103() {
     assert.ok(secret.skipped.some(row => row.reason === 'secret'));
     // Exercise the real registered host entry, queue selection and scheduler.
     const { apply } = await import('../lib/index.js');
-    const handlers = new Map();
+    const handlers = new Map(), registered = new Map();
     let calls = 0, candidates = [candidate], apiHandler;
     const ctx = {
       llm: { async *stream() { calls++; yield { type: 'text-delta', index: 0, text: JSON.stringify({ candidates }) }; } },
       logger: () => ({ warn() {}, info() {}, debug() {}, error() {} }),
       inject(_deps, fn) { fn(ctx); }, on(name, fn) { handlers.set(name, fn); return () => {}; },
-      effect(fn) { fn(); }, tools: { register() {} }, webServer: { register(entry) { if(entry.path === '/api/dsh-trivium') apiHandler=entry.handler; } },
+      effect(fn) { fn(); }, tools: { register(definition) { registered.set(definition.name, definition); return () => {}; } },
+      webServer: { register(entry) { if(entry.path === '/api/dsh-trivium') apiHandler=entry.handler; } },
     };
     apply(ctx, {});
     const hostCwd = join(root, 'host');
@@ -1732,6 +1873,28 @@ async function p103() {
     await apiHandler({method:'GET',url:'/api/dsh-trivium/status?cwd='+encodeURIComponent(hostCwd),headers:{},socket:{remoteAddress:'127.0.0.1'}},
       {writeHead(){},end(body){status=JSON.parse(String(body));}});
     assert.equal(status.recovery.state,'succeeded','retained completed source windows incorrectly reported pending recovery');
-    console.log('P103: source-less writes stay pending, survive persistence, and accept later evidence; invented literals and secrets are refused');
+    const {writeUiSettings} = await import('../lib/settings.js');
+    writeUiSettings({extractEnabled:false});
+    const session = {id:'observed-read',header:{cwd:hostCwd}};
+    const nodeId = hostDb.allNodeIds().find(id => hostDb.getPayload(id).text === candidate.text);
+    const callId = 'observed-read-call';
+    const event = value => handlers.get('session/event')(session,value);
+    const begin = {type:'tool/call',seq:41,data:{name:'ctx_read',callId}};
+    event(begin);
+    const output = await registered.get('ctx_read').execute({id:nodeId},{agent:{session},callId});
+    const delivered = {type:'tool/result',seq:42,data:{message:{id:'observed-read-result',source:{kind:'tool',callId},
+      content:[{type:'text',text:output}]}}};
+    event(delivered);
+    event(begin);
+    event(delivered);
+    event({type:'turn/end',seq:43,data:{}});
+    let recorded;
+    for(let attempt=0;attempt<50&&!recorded;attempt++) {
+      recorded=extract.loadPendingWindows(hostCwd).find(row=>row.sessionId===session.id);
+      if(!recorded)await new Promise(done=>setTimeout(done,10));
+    }
+    assert.deepEqual(recorded?.turns.map(turn=>turn.memoryReads?.map(read=>read.id)),[[nodeId]]);
+    assert.equal(calls,3,'recording a tool result must not start a model call');
+    console.log('P103: source review, later evidence, and host tool attribution all passed');
   } finally { store.closeAll(); rmSync(root, { recursive: true, force: true }); }
 }
