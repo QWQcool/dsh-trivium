@@ -10,7 +10,7 @@ npm 0.9.1 提供 `dsh-trivium/handoff` 入口。
 import {configureHandoff,submitHandoff,handoffReceipt} from 'dsh-trivium/handoff';
 
 // 只由主宿主配置；cwd 是持久主项目，不是 Worker 临时目录。
-const assignments=[{ticketId:'OPS-17',assignmentId:'assignment-1',workerId:'worker-1'}];
+const assignments=[{ticketId:'OPS-17',assignmentId:'assignment-1',workerId:'worker-1',canRead:false,canWrite:true}];
 await configureHandoff(cwd,{projectScopeId:'project-A',assignments});
 
 const envelope={
@@ -26,7 +26,8 @@ const current=handoffReceipt(cwd,envelope);
 
 ## 身份、确认与失败
 
-- 稳定事件键为 projectScopeId、ticketId、assignmentId、eventId 的规范哈希；登记的 workerId 也须相符。同键同内容返回原回执，同键不同内容拒绝，不能把不同内容伪装成一次重试。
+- **读与写分开授权**：`assignments` 的每一项可带 `canRead` / `canWrite`（布尔，缺省为 true）。只有写权限的 Worker 能提交候选、不能回读中央收件箱（`HANDOFF_READ_NOT_AUTHORIZED`）；只有读权限的 Worker 能读回执、不能提交（`HANDOFF_WRITE_NOT_AUTHORIZED`）。两者都为 false 在登记时直接拒绝（`HANDOFF_INVALID`），不改用默认值。
+- 稳定事件键为 projectScopeId、ticketId、assignmentId、eventId 的规范哈希；登记的 workerId 也须相符。同键同内容返回原回执，同键不同内容拒绝，不能把不同内容伪装成一次重试。被拒绝的提交不会写入队列，也不会创建节点。
 - 跨 Worker 去重使用同一主工作区内的项目、已记录来源定位、原文、事实类型、名称和正文。名称和正文去除首尾空白后精确比较。`messageId` 沿用宿主的原始消息标识。消息 ID 按会话分配或只提供 `seq` 时，各 Worker 应转交相同的原始 `sourceSessionId`。旧信封仍可使用，缺少原始会话的序号只在 `sessionId` 内比较。无法定位来源时，只对同一次交接重试去重。
 - `queued` 表示中央候选已持久接收。同来源的同一事实落盘后，各 Worker 的回执会返回同一个 `nodeId`，复用的结果标记 `reused: true`。`needs_review` 表示至少有一条尚需复核，`committed` 表示全部已写入或复用，`reviewed` 表示已处理完毕且至少一条被不采纳（`dismissed`）。
 - 当前只自动接收可由用户来源核对的候选。工具原文或无法核对的改写保留待复核；不追加判断模型，不猜替代关系，不合并或删除旧事实。
