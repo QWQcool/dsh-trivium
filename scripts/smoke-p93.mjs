@@ -946,10 +946,15 @@
       });
       assert.deepEqual(result.rows, [{ id: 1100 }]);
     });
-    check("explicit native LIMIT cannot bypass the client's maximum 1000 returned rows", () => {
-      const result = executeLiveTql(large, { tql: "MATCH (n) RETURN n.id AS id LIMIT 2000", limit: 1000, timeoutMs: 50 });
-      assert.equal(result.rows.length, 1000);
-      assert.equal(result.truncated, true);
+    check("a client display limit still caps rows, and the kernel now rejects an over-budget LIMIT itself", () => {
+      // 客户端上限仍然成立：库里更多行，只回 request 的条数并标记截断。
+      const capped = executeLiveTql(db, { tql: "MATCH (n) RETURN n.id AS id", limit: 3, timeoutMs: 50 });
+      assert.equal(capped.rows.length, 3);
+      assert.equal(capped.truncated, true);
+      // 内核 0.9.3 起自己就拒绝 OFFSET+LIMIT 超过行预算的查询，
+      // 所以"发 LIMIT 2000 让客户端截断"这条老路径已经不存在，改为钉住新边界。
+      rejects(() => executeLiveTql(large, { tql: "MATCH (n) RETURN n.id AS id LIMIT 2000", limit: 1000, timeoutMs: 50 }),
+        422, "TDB_QUERY_BUDGET");
     });
     check("a large full-input aggregate fails its native budget instead of returning a partial count", () => {
       rejects(() => executeLiveTql(large, {
