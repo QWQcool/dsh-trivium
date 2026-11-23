@@ -10,11 +10,12 @@ import { homedir } from "node:os";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { atomicWriteFile } from "../lib/atomic.js";
 import { DIM } from "../lib/schema.js";
-import { readUpgradeState, upgradeDirectory, upgradeStatePath, workspaceIdentity } from "../lib/upgrade-state.js";
+import { readUpgradeState, upgradeDirectory, upgradeStatePath, upgradingPhases, workspaceIdentity } from "../lib/upgrade-state.js";
 import { acquireWorkspaceLock } from "../lib/workspace-lock.js";
 
 const require = createRequire(import.meta.url);
 const databaseName = "trivium.tdb";
+const targetKernel = require("../package.json").dependencies.triviumdb;
 const targetFormat = 15;
 const options = { dim: DIM, accessMode: "readOnly" };
 const isDatabaseFile = name => name === databaseName || name.startsWith(databaseName + ".");
@@ -131,8 +132,21 @@ function paths(cwd, state) {
   return { live: join(cwd, ".dsh"), run, old: join(run, "before"), newer: join(run, "after"), ready: join(run, "ready") };
 }
 
+function startAttempt(cwd, previous, sourceFormat, mode) {
+  const state = { version: 1, workspace: workspaceIdentity(cwd), attempt: randomUUID(), sourceFormat, mode, targetKernel };
+  const run = join(upgradeDirectory(cwd), state.attempt);
+  mkdirSync(run, { mode: 0o700 });
+  if (previous) atomicWriteFile(join(run, "previous-state.json"), JSON.stringify(previous, null, 2) + "\n", { mode: 0o600 });
+  return save(cwd, state, "preparing");
+}
+
+function checkKernel() {
+  if (require("triviumdb/package.json").version !== targetKernel)
+    fail("UPGRADE_KERNEL_REQUIRED", `Install the TDB ${targetKernel} dependencies first.`);
+}
+
 function official({ upstream, tool, python }, source, destination, execute) {
-  if (!upstream) fail("UPGRADE_TOOL_REQUIRED", "Pass --upstream with a TriviumDB v0.9.2 checkout and its built migration tool.");
+  if (!upstream) fail("UPGRADE_TOOL_REQUIRED", `Pass --upstream with a TriviumDB v${targetKernel} checkout and its built migration tool.`);
   const script = join(resolve(upstream), "scripts", "migrate.py");
   const args = [script, "--source", source, "--destination", destination, execute ? "--execute" : "--check", "--storage", "mmap"];
   if (tool) args.push("--tool", resolve(tool));
@@ -171,9 +185,51 @@ function checkApplicationIdle(cwd) {
 
 function requireLegacy(path) {
   const version = format(path);
+  if (version === targetFormat) fail("UPGRADE_ALREADY_CURRENT", "This library opens directly. Use prepare to retain a complete copy before the first write with the new kernel.");
   if (version === null || version < 5 || version >= targetFormat)
     fail("UPGRADE_SOURCE_FORMAT", "Choose an existing legacy .dsh/trivium.tdb created by your previous TDB version.");
   return version;
+}
+
+function requireCurrent(path) {
+  if (format(path) !== targetFormat)
+    fail("UPGRADE_SOURCE_FORMAT", `Prepare requires an existing format ${targetFormat} library. Use check and migrate for legacy formats.`);
+}
+
+async function prepare(cwd, state) {
+  const live = join(cwd, ".dsh");
+  const resuming = state?.mode === "direct" && state.phase === "preparing";
+  if (!resuming && upgradingPhases.has(state?.phase))
+    fail("UPGRADE_OPERATION_PENDING", "Finish the recorded migration or rollback first. See status.");
+  requireCurrent(live);
+  if (state?.mode === "direct" && state.phase === "active" && state.targetKernel === targetKernel) {
+    await verify(paths(cwd, state).old, state.source);
+    return state;
+  }
+
+  checkKernel();
+  checkApplicationIdle(cwd);
+  // Hold the native read lease during the copy so a second writer cannot open
+  // the database. The journal also stops participating hosts and sidecar writes.
+  const db = readDatabase(live);
+  try {
+    if (!resuming) state = startAttempt(cwd, state, targetFormat, "direct");
+    const source = await fingerprint(live);
+    if (state.source && state.source !== source)
+      fail("UPGRADE_DATA_CHANGED", "The live library changed during preparation. Keep the files and inspect the upgrade state.");
+    state = save(cwd, state, "preparing", { source });
+    const { old, run } = paths(cwd, state);
+    if (directory(old)) {
+      await verify(old, source);
+    } else {
+      const captured = join(run, "capture-" + randomUUID());
+      copyTree(live, captured);
+      await verify(captured, source);
+      await verify(live, source);
+      move(cwd, captured, old);
+    }
+    return save(cwd, state, "active", { target: source });
+  } finally { db.close(); }
 }
 
 async function activate(cwd, state) {
@@ -193,16 +249,17 @@ async function migrate(cwd, state, args) {
   }
   if (state?.phase === "activating") return activate(cwd, state);
   if (state?.phase === "rolling-back") fail("UPGRADE_ROLLBACK_PENDING", "Resume rollback before starting an upgrade.");
+  if (state?.mode === "direct" && state.phase === "preparing")
+    fail("UPGRADE_OPERATION_PENDING", "Resume prepare or cancel it with rollback. See status.");
   const live = join(cwd, ".dsh");
   const sourceFormat = requireLegacy(live);
-  if (!args.upstream) fail("UPGRADE_TOOL_REQUIRED", "Pass --upstream with the official TriviumDB v0.9.2 migration checkout.");
-  if (require("triviumdb/package.json").version !== "0.9.2") fail("UPGRADE_KERNEL_REQUIRED", "Install the TDB 0.9.2 dependencies before migrating.");
+  if (!args.upstream) fail("UPGRADE_TOOL_REQUIRED", `Pass --upstream with the official TriviumDB v${targetKernel} migration checkout.`);
+  checkKernel();
   checkApplicationIdle(cwd);
-  state = save(cwd, { version: 1, workspace: workspaceIdentity(cwd), attempt: randomUUID(), sourceFormat }, "preparing");
-  const run = join(upgradeDirectory(cwd), state.attempt);
-  mkdirSync(run, { mode: 0o700 });
+  state = startAttempt(cwd, state, sourceFormat, "migration");
+  const { run, ready } = paths(cwd, state);
   const source = await fingerprint(live);
-  const native = join(run, "native"), ready = join(run, "ready");
+  const native = join(run, "native");
   const report = official(args, join(live, databaseName), native, true);
   if (report.source_format !== sourceFormat) fail("UPGRADE_SOURCE_FORMAT", "The source format changed while the migrator was running.");
   if (!directory(native)) fail("UPGRADE_TOOL_RESULT", "The official migrator did not publish a directory.");
@@ -228,7 +285,11 @@ async function rollback(cwd, state) {
   if (!state) fail("UPGRADE_NO_ROLLBACK", "This workspace has no recorded upgrade.");
   if (state.phase === "rolled-back") return state;
   if (state.phase === "preparing") {
-    requireLegacy(join(cwd, ".dsh"));
+    const live = join(cwd, ".dsh");
+    if (state.mode === "direct") {
+      requireCurrent(live);
+      if (state.source) await verify(live, state.source);
+    } else requireLegacy(live);
     return save(cwd, state, "rolled-back");
   }
   const { live, old, newer, run } = paths(cwd, state);
@@ -258,14 +319,31 @@ async function rollback(cwd, state) {
   return save(cwd, state, "rolled-back");
 }
 
-const help = `Usage: dsh-trivium-upgrade <status|check|migrate|rollback> <workspace> [--upstream <checkout>] [--tool <executable>] [--python <command>]
-Stop all workspace hosts first. The tool preserves the complete original .dsh directory.
-For an interrupted switch, rerun migrate or rollback according to status.`;
+function check(cwd, _state, args) {
+  const live = join(cwd, ".dsh");
+  if (format(live) === targetFormat) {
+    checkKernel();
+    const db = readDatabase(live);
+    try {
+      return { mode: "direct", source_format: targetFormat, target_format: targetFormat, checked: true, committed: false,
+        facts: { nodes: db.nodeCount() } };
+    } finally { db.close(); }
+  }
+  requireLegacy(live);
+  return official(args, join(live, databaseName), join(upgradeDirectory(cwd), "check-" + randomUUID()), false);
+}
+
+const help = `Usage: dsh-trivium-upgrade <status|check|prepare|migrate|rollback> <workspace> [--upstream <checkout>] [--tool <executable>] [--python <command>]
+Stop all workspace hosts first. Use prepare before upgrading an existing format ${targetFormat} library in place.
+For older formats, use check and migrate with the official TDB v${targetKernel} migration tool.
+Resume an interrupted operation with prepare, migrate, or rollback according to status.`;
+
+const operations = { check, prepare, migrate, rollback };
 
 async function run(argv) {
   if (!argv.length || argv.includes("--help") || argv.includes("-h")) { console.log(help); return; }
   const [command, workspace, ...rest] = argv;
-  if (!["status", "check", "migrate", "rollback"].includes(command) || !workspace || workspace.startsWith("-"))
+  if (!(command === "status" || Object.hasOwn(operations, command)) || !workspace || workspace.startsWith("-"))
     fail("UPGRADE_ARGUMENTS", help);
   const args = {};
   for (let i = 0; i < rest.length; i += 2) {
@@ -282,8 +360,11 @@ async function run(argv) {
     const live = join(cwd, ".dsh");
     let activeFormat;
     try { activeFormat = format(live); } catch (error) { activeFormat = error.code || "unreadable"; }
+    const previous = layout && join(layout.run, "previous-state.json");
     console.log(JSON.stringify({ workspace: cwd, phase: state?.phase || "none", activeFormat,
-      before: layout && directory(layout.old) ? layout.old : null, after: layout && directory(layout.newer) ? layout.newer : null }, null, 2));
+      mode: state ? (state.mode ?? "migration") : null, sourceFormat: state?.sourceFormat ?? null,
+      before: layout && directory(layout.old) ? layout.old : null, after: layout && directory(layout.newer) ? layout.newer : null,
+      previousRecord: previous && entry(previous)?.isFile() ? previous : null }, null, 2));
     return;
   }
   const live = join(cwd, ".dsh");
@@ -298,11 +379,7 @@ async function run(argv) {
   if (!lock.ok) fail("UPGRADE_BUSY", "Another upgrade operation owns the workspace.");
   try {
     const state = readUpgradeState(cwd);
-    let result;
-    if (command === "check") {
-      requireLegacy(live);
-      result = official(args, join(live, databaseName), join(base, "check-" + randomUUID()), false);
-    } else result = await (command === "migrate" ? migrate(cwd, state, args) : rollback(cwd, state));
+    const result = await operations[command](cwd, state, args);
     console.log(JSON.stringify(result, null, 2));
   } finally { lock.release(); }
 }

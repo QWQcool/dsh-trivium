@@ -4,7 +4,7 @@
 
 ## 环境与命令
 
-Node 满足 `^22.19.0 || >=24`。源码运行依赖固定 TDB 0.9.2。开发依赖中的 0.9.0、0.9.1 别名用于旧版迁移回归，dsh-llm 和 dsh-tools 固定为 0.2.2-rc.1。依赖从 registry 安装，干净安装会解析 Cordis 等 peer 依赖。 [内核升级](kernel-upgrade.md)
+Node 满足 `^22.19.0 || >=24`。源码运行依赖固定 TDB 0.9.3。开发依赖中的 0.9.0、0.9.1 别名用于旧版迁移回归，dsh-llm 和 dsh-tools 固定为 0.2.2-rc.1。依赖从 registry 安装，干净安装会解析 Cordis 等 peer 依赖。格式 15 留存与回退可单独运行 `node scripts/smoke-p120.mjs`。 [内核升级](kernel-upgrade.md)
 
 ```sh
 npm ci

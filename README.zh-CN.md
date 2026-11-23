@@ -49,7 +49,7 @@ clone / `git pull` 后若 jsonl 变了会自动导回。设置里 **Git 旁路**
 
 用 [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart) 的，双击启动就会装上，不必再执行上面这条。
 
-本地跟源码联调：
+当前源码使用 TDB 0.9.3。联入已有记忆库前，请先按对应格式完成升级步骤。 [源码升级说明](docs/kernel-upgrade.md)
 
 ```sh
 npm ci

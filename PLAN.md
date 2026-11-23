@@ -1,6 +1,6 @@
 # dsh-trivium 产品与架构
 
-更新于 2026-11-20。npm `dsh-trivium@0.9.2` 和源码均使用 TDB 0.9.2。宿主与验证范围见 [CURRENT-STATE](docs/CURRENT-STATE.md)，后续任务见 [ROADMAP](docs/ROADMAP.md)。 [TDB 0.9.2 升级与回退](docs/kernel-upgrade.md)
+更新于 2026-11-23。源码使用 TDB 0.9.3，npm `dsh-trivium@0.9.2` 使用 TDB 0.9.2。宿主与验证范围见 [CURRENT-STATE](docs/CURRENT-STATE.md)，后续任务见 [ROADMAP](docs/ROADMAP.md)。 [TDB 0.9.3 升级与回退](docs/kernel-upgrade.md)
 
 ## 产品定位
 

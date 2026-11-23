@@ -50,7 +50,7 @@ Clone / `git pull` re-imports when the jsonl changed. Settings → **Git sidecar
 
 If you launch DSH with [Dsh_BatStart](https://github.com/QWQcool/Dsh_BatStart), the plugin is installed for you — skip the command above.
 
-Local source checkout:
+The current source checkout uses TDB 0.9.3. Run the matching upgrade steps before linking it to an existing library. [Source upgrade guide](docs/kernel-upgrade.md#english)
 
 ```sh
 npm ci
