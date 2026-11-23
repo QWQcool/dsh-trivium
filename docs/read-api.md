@@ -404,7 +404,7 @@ In the current source, `ctx_find` accepts `followup_cursor` for a brief repeat o
 - 关联始终保留原修订号、原字节范围、位置及摘录。比较结果可显示新修订中的对应位置；引用与事实更新仍由人确认。状态比较限于引用覆盖的整行和标题路径，对跨段落含义的判断仍需人工复核。
 - UI 在「上下文 → 文档依据」选择 UTF-8 Markdown 或文本，也可粘贴原文。保存前只改草稿。修订不同时可对照旧引用和新原文。重复或找不到旧片段时，“旧位置附近”不表示原文等价。选择和检索保持本地，范围限于用户选中的来源。
 
-### 目录导入（开发中）
+### 目录导入（0.9.3）
 
 - `GET /api/dsh-trivium/document-evidence/directory?cwd=…&dir=…` 生成只读预览。显式选择已打开的工作区，并填写工作区内的相对目录，如 `docs/runbooks`。扫描 UTF-8 `.md` 和 `.txt`，最多检查 512 个条目，向下 3 层，计划最多 32 个文件，每个最多 64 KiB。隐藏目录、依赖目录及链接不会纳入导入。结果返回 `previewId`、`files`（相对路径、来源 ID 和 `add` / `update` / `unchanged`）、`counts` 和 `skipped`。
 - `POST /api/dsh-trivium/document-evidence/directory?cwd=…` 接收 `{dir,previewId}`。确认时重新核对该目录的文件和现有来源修订，有变化返回 409 `DOCUMENT_DIRECTORY_CHANGED`，需重新预览。已成功逐项保存的来源列于 `added`、`updated`，其余查看 `unchanged`、`skipped`。

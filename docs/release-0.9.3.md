@@ -1,6 +1,6 @@
 # dsh-trivium 0.9.3
 
-本地发布候选使用 `triviumdb@0.9.3`。已有格式 15 的工作区应在新版首次可写打开前，运行候选包的 `dsh-trivium-upgrade prepare` 留存旧库。 [English](release-0.9.3.en.md)
+npm 0.9.3 使用 `triviumdb@0.9.3`。已有格式 15 的工作区应在新版首次可写打开前，运行 0.9.3 的 `dsh-trivium-upgrade prepare` 留存旧库。 [English](release-0.9.3.en.md)
 
 ## 新增
 
@@ -18,12 +18,21 @@
 
 ## 升级、失败恢复与回退
 
-1. 完全退出使用各工作区的宿主。在原工作区用同一个 0.9.3 tarball 运行 `status` 和 `check`。格式 15 执行 `prepare`，格式 13 通过官方转换器执行 `migrate`。
+1. 完全退出使用各工作区的宿主。在原工作区用 npm `dsh-trivium@0.9.3` 的升级命令运行 `status` 和 `check`。格式 15 执行 `prepare`，格式 13 通过官方转换器执行 `migrate`。
 2. `status` 确认 `phase: active`、`targetKernel: "0.9.3"`、`activeFormat: 15` 和 `before` 后，在原 profile 用 `add` 直接替换插件，再重开工作区。格式 15 快照可按原 ID 查询。格式 13 快照原样保留，新内核可重新捕获当前库的快照。
-3. 如遇中断，保持宿主关闭，运行 `status` 后续跑相应子命令。回退时用 0.9.3 的 `rollback` 先恢复整组旧库，再装回原插件版本。候选包运行期间的新增写入保存在 `after`。
+3. 如遇中断，保持宿主关闭，运行 `status` 后续跑相应子命令。回退时用 0.9.3 的 `rollback` 先恢复整组旧库，再装回原插件版本。新版运行期间的新增写入保存在 `after`。
 
 完整命令、官方转换器准备及各状态恢复方式见 [升级、失败恢复与回退说明](kernel-upgrade.md)。
 
 ## 验收范围
 
-沿用先前的格式 13 官方迁移、跨语言检索与目录导入结果，模型样本限于上述 8 题。候选包的干净安装及格式 15 专项见 [验收记录](kernel-upgrade.md#093-候选包验收)。
+沿用先前的格式 13 官方迁移、跨语言检索与目录导入结果，模型样本限于上述 8 题。发布包的干净安装及格式 15 专项见 [验收记录](kernel-upgrade.md#093-候选包验收)。
+
+## 发布回执
+
+- npm 于 **2026-11-23 11:49:37.977（UTC+8）** 发布 `dsh-trivium@0.9.3`，设为 `latest`。registry 记录的 UTC 时间为 `2026-11-23T03:49:37.977Z`。 [npm 版本页](https://www.npmjs.com/package/dsh-trivium/v/0.9.3)
+- Git tag `v0.9.3` 指向已验收的源码 `1fe3c6e11be5f1a0610cb4114e863ec7f8858f64`。从 npm 和 GitHub 分别下载核对，两个 tarball 与本地验收包逐字节一致，共 70 个文件、377638 字节。 [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.3)
+- npm SHA-1 为 `6fb84f89384c81b014900aedc5007ba18966f6f7`。
+- npm SHA-512 integrity 为 `sha512-/GAtgGTNpu4d7uRqQgm73tFj+TzEWkbKHcgVPItZzrqTBhImNyUiOBSdXJfQNYGuBE/S5t35gA1eot+u56k4Sw==`。
+- tarball SHA-256 为 `e99554261538f0feca1dd8b8ee60089bf4c1a8e74de7fa247eae2216e96d7d37`。
+- 已验收包原样发布，包内 README 保留打包时的候选文案。当前 npm 升级命令见 [升级说明](kernel-upgrade.md)。
