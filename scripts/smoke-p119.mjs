@@ -6,7 +6,8 @@
  * deletion, idempotent re-import, and a revision notice that names the facts the
  * change affects instead of silently replacing their quotes.
  */
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import strict from 'node:assert/strict';
+import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -87,15 +88,16 @@ try {
     const { db, cwd } = await workspace('ws-revision');
     const docs = join(cwd, 'docs');
     plant(docs);
-    evidence.importEvidenceDirectory(db, { dir: docs, limit: 8, maxFileBytes: 1024, maxDepth: 2 });
-    const [document] = evidence.evidenceDocuments(db, { sourceId: 'a.md', limit: 1 });
+    const initial = evidence.importEvidenceDirectory(db, { dir: docs, limit: 8, maxFileBytes: 1024, maxDepth: 2 });
+    const {sourceId} = initial.added.find(row=>row.path==='a.md');
+    const [document] = evidence.evidenceDocuments(db, { sourceId, limit: 1 });
     const factId = store.insertNode(db, { type: 'decision', name: '灰度比例', text: '灰度比例固定为 5%。' });
     evidence.attachDocumentEvidence(db, { factId, documentId: Number(document.documentId), revision: document.revision, quote: '灰度比例固定为 5%。' });
     writeFileSync(join(docs, 'a.md'), '# 发布说明\n\n灰度比例固定为 9%。\n', 'utf8');
     const result = evidence.importEvidenceDirectory(db, { dir: docs, limit: 8, maxFileBytes: 1024, maxDepth: 2 });
     assert(result.counts.updated === 1, `updated ${result.counts.updated}`);
     const notice = result.updated[0];
-    assert(notice.sourceId === 'a.md', `notice source ${notice.sourceId}`);
+    assert(notice.sourceId === sourceId, `notice source ${notice.sourceId}`);
     assert(notice.affectedFactIds.includes(factId), `affected ${JSON.stringify(notice.affectedFactIds)}`);
     assert(notice.revision && notice.revision !== document.revision, 'the revision did not change');
   });
@@ -104,13 +106,14 @@ try {
     const { db, cwd } = await workspace('ws-delete');
     const docs = join(cwd, 'docs');
     plant(docs);
-    evidence.importEvidenceDirectory(db, { dir: docs, limit: 8, maxFileBytes: 1024, maxDepth: 2 });
+    const initial = evidence.importEvidenceDirectory(db, { dir: docs, limit: 8, maxFileBytes: 1024, maxDepth: 2 });
+    const {sourceId} = initial.added.find(row=>row.path==='b.txt');
     rmSync(join(docs, 'b.txt'));
     const result = evidence.importEvidenceDirectory(db, { dir: docs, limit: 8, maxFileBytes: 1024, maxDepth: 2 });
     assert(result.counts.unchanged === 2, `unchanged ${result.counts.unchanged}`);
     const listed = evidence.evidenceDocuments(db, { limit: 10 });
     assert(listed.length === 3, `documents ${listed.length}`);
-    assert(listed.some((row) => row.sourceId === 'b.txt'), 'the deleted file lost its stored source');
+    assert(listed.some((row) => row.sourceId === sourceId), 'the deleted file lost its stored source');
   });
 
   await check('the import limit truncates instead of growing without bound', async () => {
@@ -134,6 +137,74 @@ try {
     code = '';
     try { evidence.importEvidenceDirectory(db, { dir: cwd, limit: 0 }); } catch (error) { code = error.code; }
     assert(code === 'DOCUMENT_INVALID', `bad limit returned ${code}`);
+  });
+
+  await check('different roots with the same directory and file name retain independent sources and the legacy citation', async () => {
+    const {db,cwd}=await workspace('ws-independent');
+    const content='# Legacy\n\nThe original limit is 5 requests.\n';
+    const legacy=evidence.saveEvidenceDocument(db,{sourceId:'README.md',content}).document;
+    const factId=store.insertNode(db,{type:'decision',name:'Legacy limit',text:'The original limit is 5 requests.'});
+    const linked=evidence.attachDocumentEvidence(db,{factId,documentId:Number(legacy.document_id),revision:legacy.revision,quote:'The original limit is 5 requests.'});
+    const originalLinks=evidence.documentEvidenceStatus(db,{sourceId:'README.md'}).links;
+    const dirs=['a/manual','b/manual'];
+    for (const [index,dir] of dirs.entries()) {
+      mkdirSync(join(cwd,dir),{recursive:true});
+      writeFileSync(join(cwd,dir,'README.md'),index ? 'A separate source.\n' : content);
+    }
+    const receipts=dirs.map(dir=>{
+      const options={workspace:cwd,dir};
+      const saved=evidence.evidenceDocuments(db);
+      const preview=evidence.previewEvidenceDirectory(db,options);
+      strict.equal(preview.counts.added,1);
+      strict.deepEqual(evidence.evidenceDocuments(db),saved);
+      return evidence.importEvidenceDirectory(db,{...options,previewId:preview.previewId}).added[0];
+    });
+    strict.notEqual(receipts[0].sourceId,receipts[1].sourceId);
+    strict.equal(new Set(evidence.evidenceDocuments(db).map(row=>row.sourceId)).size,3);
+    strict.deepEqual(evidence.getEvidenceDocument(db,legacy.document_id),legacy);
+    strict.deepEqual(evidence.documentEvidenceStatus(db,{sourceId:'README.md'}).links,originalLinks);
+    strict.equal(originalLinks[0].evidenceId,linked.evidenceId);
+    strict.equal(evidence.importEvidenceDirectory(db,{dir:join(cwd,dirs[0])}).unchanged[0],receipts[0].sourceId);
+  });
+
+  await check('confirmation refuses disk and source changes before writing any file in the plan', async () => {
+    const {db,cwd}=await workspace('ws-preview');
+    const dir=join(cwd,'docs');
+    mkdirSync(dir);
+    writeFileSync(join(dir,'a.md'),'Initial revision.\n');
+    const {added:[first]}=evidence.importEvidenceDirectory(db,{dir});
+    writeFileSync(join(dir,'a.md'),'Proposed revision.\n');
+    writeFileSync(join(dir,'b.txt'),'New evidence.\n');
+    const options={workspace:cwd,dir:'docs'};
+    const preview=evidence.previewEvidenceDirectory(db,options);
+    const originals=evidence.evidenceDocuments(db);
+    strict.deepEqual(preview.counts,{added:1,updated:1,unchanged:0,skipped:0});
+    writeFileSync(join(dir,'b.txt'),'New Evidence.\n');
+    strict.throws(()=>evidence.importEvidenceDirectory(db,{...options,previewId:preview.previewId}),{code:'DOCUMENT_DIRECTORY_CHANGED'});
+    strict.deepEqual(evidence.evidenceDocuments(db),originals);
+    const refreshed=evidence.previewEvidenceDirectory(db,options);
+    const {revision}=evidence.getEvidenceDocument(db,first.documentId);
+    evidence.saveEvidenceDocument(db,{sourceId:first.sourceId,documentId:Number(first.documentId),expectedRevision:revision,content:'Manual revision.\n'});
+    strict.throws(()=>evidence.importEvidenceDirectory(db,{...options,previewId:refreshed.previewId}),{code:'DOCUMENT_DIRECTORY_CHANGED'});
+    strict.equal(evidence.getEvidenceDocument(db,first.documentId).content,'Manual revision.\n');
+    strict.equal(evidence.evidenceDocuments(db).length,1);
+  });
+
+  await check('workspace directory scanning refuses parent paths, private directories and linked folders', async () => {
+    const {db,cwd}=await workspace('ws-boundary');
+    const outside=join(root,'outside');
+    mkdirSync(outside);
+    writeFileSync(join(outside,'README.md'),'Outside workspace.\n');
+    const makePreview=dir=>evidence.previewEvidenceDirectory(db,{workspace:cwd,dir});
+    for (const dir of ['../outside',outside,'.dsh']) strict.throws(()=>makePreview(dir),{code:'DOCUMENT_DIRECTORY_SCOPE'});
+    symlinkSync(outside,join(cwd,'link'),process.platform==='win32'?'junction':'dir');
+    strict.throws(()=>makePreview('link'),{code:'DOCUMENT_DIRECTORY_SCOPE'});
+    const safe=makePreview('.');
+    strict.equal(safe.counts.added,0);
+    strict.ok(safe.skipped.some(row=>row.path==='link'&&row.reason==='link'));
+    const direct=evidence.previewEvidenceDirectory(db,{dir:outside});
+    const throughAlias=evidence.previewEvidenceDirectory(db,{dir:join(cwd,'link')});
+    strict.deepEqual(throughAlias,direct);
   });
 } finally {
   try { store.closeAll(); } catch { /* closed */ }
