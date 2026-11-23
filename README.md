@@ -8,19 +8,19 @@ In-process graph memory for DeepSeek Harness. One `.tdb` per workspace. No extra
 
 The kernel stays close to DSH: no extra process, no extra nav by default. Pin memory fragments with optional chip inject; the plot canvas is an optional extra, loaded from Settings.
 
+> **Upgrading an existing library to the 0.9.3 candidate?** Stop all workspace hosts and run `dsh-trivium-upgrade prepare` for a format 15 library. Use the offline migration for format 13. [Upgrade guide](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md#english)
+>
 > **Quick install for new workspaces**: `dsh plugin --profile web add dsh-trivium` → restart **dsh web** → open a workspace (Settings shows **Trivium memory**; the **Chips** tab stays off until you turn it on). Details in [Installation](#installation).
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.9.2**. It improves cross-language follow-ups, uses numeric citations in full memory packs, flags affected document evidence, and suppresses exact recall echoes. Uninstall retains memory by default. [English release notes](docs/release-0.9.2.en.md)
-
-> **Existing TDB 0.9.1 libraries require an offline migration before upgrading to 0.9.2.** The upgrade tool switches the workspace file group from format 13 to 15 and keeps the original files for rollback. [Migration, recovery, and rollback](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.en.md#upgrade-and-data-retention)
+The published npm package is **0.9.2**. The local 0.9.3 candidate adds a safe first open with TDB 0.9.3, bilingual evidence retrieval, and directory import. [0.9.2 release notes](docs/release-0.9.2.en.md) · [0.9.3 candidate notes](docs/release-0.9.3.en.md)
 
 ---
 
 ## Installation
 
-Install DeepSeek Harness and initialize the intended profile. This package requires Node `^22.19.0 || >=24` and pins `triviumdb@0.9.2`. Follow [Updating](#updating) for a workspace with an existing library. [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) · [Host validation](docs/README.md)
+Install DeepSeek Harness and initialize the intended profile. Node must satisfy `^22.19.0 || >=24`. The published 0.9.2 package uses TDB 0.9.2, and the local 0.9.3 candidate uses TDB 0.9.3. Follow [Updating](#updating) for an existing library. [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) · [Host validation](docs/README.md)
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -38,6 +38,7 @@ Commit `trivium.jsonl`. Ignore the binary store:
 ```gitignore
 .dsh/trivium.tdb
 .dsh/trivium.tdb*
+.dsh/trivium-kernel
 .dsh/trivium-pending.json
 .dsh/trivium-pending-reviews.json
 .dsh/trivium-handoff.json
@@ -64,21 +65,21 @@ Then restart `dsh web`.
 
 ## Updating
 
-Stop every host using the workspace, including the desktop tray process. Run `dsh-trivium-upgrade` from npm to check and migrate each existing legacy library before installing 0.9.2. The migration keeps the original `.dsh` in the `before` directory reported by `status`. Wait for `phase: active` and `activeFormat: 15` before restarting the host. [Commands, official converter setup, and failure recovery](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.en.md#upgrade-and-data-retention)
+For the 0.9.3 candidate, stop every host using the workspace, including the desktop tray process. Run `status` and `check` using the upgrade command from the same 0.9.3 tarball. Run `prepare` for format 15, or `migrate` with the official converter for format 13. Wait for `phase: active`, `targetKernel: 0.9.3` and a retained `before` directory before opening the workspace with the candidate. [Upgrade, recovery and rollback](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md#english)
 
-Replace the plugin directly in its existing profile. The old 0.8.9 uninstall hook can delete memory, so use the add command even when replacing that version.
+Use the add command to replace the plugin directly in its existing profile. This also avoids the memory-deleting uninstall hook in 0.8.9. Substitute the path to the candidate tarball.
 
 ```sh
-dsh plugin --profile desktop add dsh-trivium@0.9.2 --ignore-scripts
+dsh plugin --profile desktop add "D:/builds/dsh-trivium-0.9.3.tgz" --ignore-scripts
 ```
 
-For Web, use `--profile web`. After a successful migration and replacement, reopen the original workspace. To return to 0.9.1, restore the original library with `rollback` before replacing the plugin. The command archives post-upgrade writes in `after`. [Rollback steps](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.en.md#rolling-back-to-091)
+For Web, use `--profile web`. To roll back, run the candidate's `rollback` before reinstalling the original plugin. `after` retains post-upgrade writes. For an upgrade to the published 0.9.2 package, use its own guide. [0.9.2 upgrade guide](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.en.md#upgrade-and-data-retention)
 
 ## Uninstall
 
-> **0.9.2 retains memory by default.** The published 0.8.9 package contains a destructive uninstall hook. Replace it using the update command above before uninstalling.
+> **0.9.2 and 0.9.3 retain memory by default.** The published 0.8.9 package contains a destructive uninstall hook. Replace it directly with a newer package before uninstalling.
 
-With 0.9.2 installed, stop the host and remove the plugin from its profile.
+Stop the host and remove the plugin from its profile.
 
 ```sh
 dsh plugin --profile web remove dsh-trivium
@@ -384,6 +385,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 
 ## Changelog
 
+- [0.9.3 candidate](docs/release-0.9.3.en.md) protects the first writable open, adds bilingual evidence retrieval and scoped follow-ups, and brings directory import to the document panel.
 - [0.9.2](docs/release-0.9.2.en.md) ships TDB 0.9.2 with offline migration and rollback, improves cross-language follow-ups and numeric citations, flags affected document evidence, and suppresses exact memory echoes during extraction.
 - [0.9.1](docs/release-0.9.1.en.md) adds named entity lookup, compact task memory with change cursors, document excerpts and evidence links, and local Worker handoff. It also improves settings isolation, write recovery, candidate review, and scoped reads.
 - [0.9.0](docs/release-0.9.0.en.md): memory-preserving uninstall, TDB 0.9.1, source-checked extraction and same-turn redundancy suppression, pending-source review, explicit entity search/task packs, and previously measured write batching. Existing evidence is reused for this version/documentation release.
@@ -433,6 +435,7 @@ See [Unreleased changes and rollback steps](docs/UNRELEASED.md) for development 
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
 - Published package: `0.9.2` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.2)
+- Local release candidate: `0.9.3` · [Release notes](docs/release-0.9.3.en.md)
 - Tested host: `@deepseek-ai/dsh@0.2.2-rc.1` (launched and exercised on 2026-11-10: panel renders, `/status` and the proposal routes answer, zero console errors; earlier releases were verified on 0.2.1-rc.4/rc.5). The peer range also admits the 0.1.x lines.
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 

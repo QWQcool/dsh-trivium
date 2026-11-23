@@ -2,21 +2,21 @@
 import { spawnSync } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import {
-  closeSync, constants, copyFileSync, createReadStream, lstatSync, mkdirSync, openSync,
-  readSync, readdirSync, realpathSync, renameSync,
+  constants, copyFileSync, createReadStream, lstatSync, mkdirSync, readdirSync, realpathSync, renameSync,
 } from "node:fs";
 import { createRequire } from "node:module";
 import { homedir } from "node:os";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { atomicWriteFile } from "../lib/atomic.js";
 import { DIM } from "../lib/schema.js";
-import { readUpgradeState, upgradeDirectory, upgradeStatePath, upgradingPhases, workspaceIdentity } from "../lib/upgrade-state.js";
+import { DATABASE_FORMAT, KERNEL_VERSION, needsWorkspaceKernelMarker, readDatabaseFormat, readUpgradeState,
+  upgradeDirectory, upgradeStatePath, upgradingPhases, workspaceIdentity } from "../lib/upgrade-state.js";
 import { acquireWorkspaceLock } from "../lib/workspace-lock.js";
 
 const require = createRequire(import.meta.url);
 const databaseName = "trivium.tdb";
-const targetKernel = require("../package.json").dependencies.triviumdb;
-const targetFormat = 15;
+const targetKernel = KERNEL_VERSION;
+const targetFormat = DATABASE_FORMAT;
 const options = { dim: DIM, accessMode: "readOnly" };
 const isDatabaseFile = name => name === databaseName || name.startsWith(databaseName + ".");
 const sidecar = name => !isDatabaseFile(name);
@@ -37,18 +37,7 @@ function directory(path) {
 }
 
 function format(dir) {
-  if (!directory(dir)) return null;
-  const file = join(dir, databaseName);
-  const stat = entry(file);
-  if (!stat) return null;
-  if (!stat.isFile()) fail("UPGRADE_PATH_INVALID", `Expected a regular database file at ${file}`);
-  const fd = openSync(file, "r");
-  try {
-    const header = Buffer.alloc(6);
-    if (readSync(fd, header, 0, header.length, 0) !== header.length || header.toString("ascii", 0, 4) !== "TVDB")
-      fail("UPGRADE_INVALID_HEADER", `Invalid TDB header at ${file}`);
-    return header.readUInt16LE(4);
-  } finally { closeSync(fd); }
+  return directory(dir) ? readDatabaseFormat(join(dir, databaseName)) : null;
 }
 
 function *walk(root, prefix = "") {
@@ -360,8 +349,17 @@ async function run(argv) {
     const live = join(cwd, ".dsh");
     let activeFormat;
     try { activeFormat = format(live); } catch (error) { activeFormat = error.code || "unreadable"; }
+    let prepareRequired = false;
+    if (activeFormat === targetFormat && !upgradingPhases.has(state?.phase)) {
+      try { needsWorkspaceKernelMarker(cwd, state); }
+      catch (error) {
+        if (error.code !== "WORKSPACE_UPGRADE_PREPARE_REQUIRED") throw error;
+        prepareRequired = true;
+      }
+    }
     const previous = layout && join(layout.run, "previous-state.json");
-    console.log(JSON.stringify({ workspace: cwd, phase: state?.phase || "none", activeFormat,
+    console.log(JSON.stringify({ workspace: cwd, phase: state?.phase || "none", activeFormat, prepareRequired,
+      targetKernel: state?.targetKernel ?? null,
       mode: state ? (state.mode ?? "migration") : null, sourceFormat: state?.sourceFormat ?? null,
       before: layout && directory(layout.old) ? layout.old : null, after: layout && directory(layout.newer) ? layout.newer : null,
       previousRecord: previous && entry(previous)?.isFile() ? previous : null }, null, 2));

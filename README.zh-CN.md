@@ -6,11 +6,11 @@
 
 DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注入，设置页可改可归档。内核贴近 DSH：不另起进程、默认不加导航。要钉住某些记忆片段，再在设置里打开 **芯片** 注入；情节画布是可选的自嗨层，嵌在芯片开关下。每个工作区一个 `.dsh/trivium.tdb`，不另起服务。
 
-> **新工作区快速安装**：`dsh plugin --profile web add dsh-trivium` → 重启 **dsh web** → 打开工作区（设置里出现「Trivium 记忆」；标题栏 **芯片** 默认关）。完整步骤见 [安装](#安装)。
+> **已有库升级到 0.9.3 候选包前**，先退出所有宿主。格式 15 运行 `dsh-trivium-upgrade prepare` 留存旧库，格式 13 走离线迁移。 [升级说明](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md)
 >
-> 当前 npm 发布版是 **0.9.2**。改进跨语言追问、全量包数字引用、文档定向复核和自动召回防回显。卸载默认保留记忆。[发布说明](docs/release-0.9.2.md)
+> **新工作区快速安装**可运行 `dsh plugin --profile web add dsh-trivium`，重启 **dsh web** 后打开工作区。设置页会出现「Trivium 记忆」。 [安装](#安装)
 >
-> **已有 TDB 0.9.1 记忆库需要先离线迁移，再升级到 0.9.2。** 升级命令将整组文件从格式 13 切换到 15，保留原库供回退。[迁移、失败恢复与回退](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.md#升级与数据保留)
+> 当前 npm 发布版是 **0.9.2**。本地 0.9.3 候选包新增首次写入保护、双语证据检索和目录导入。 [0.9.2 发布说明](docs/release-0.9.2.md) · [0.9.3 候选说明](docs/release-0.9.3.md)
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -18,7 +18,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 
 ## 安装
 
-先安装 DeepSeek Harness 并初始化所用 profile。Node 要求 `^22.19.0 || >=24`，本包固定 `triviumdb@0.9.2`。已有记忆库请按[更新](#更新)操作。[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) · [宿主验收范围](docs/README.md)
+先安装 DeepSeek Harness 并初始化所用 profile。Node 要求 `^22.19.0 || >=24`。公开 npm 0.9.2 使用 TDB 0.9.2，本地 0.9.3 候选包使用 TDB 0.9.3。已有记忆库请按[更新](#更新)操作。 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) · [宿主验收范围](docs/README.md)
 
 ```sh
 dsh plugin --profile web add dsh-trivium
@@ -37,6 +37,7 @@ dsh plugin --profile web add dsh-trivium
 ```gitignore
 .dsh/trivium.tdb
 .dsh/trivium.tdb*
+.dsh/trivium-kernel
 .dsh/trivium-pending.json
 .dsh/trivium-pending-reviews.json
 .dsh/trivium-handoff.json
@@ -65,21 +66,21 @@ npm test              # 可选：跑全部离线 smoke
 
 ## 更新
 
-退出所有使用该工作区的宿主，包括桌面托盘进程。安装 0.9.2 前，通过 npm 运行 `dsh-trivium-upgrade`，逐个预检并迁移已有旧库。工具将原 `.dsh` 保留在 `status` 指向的 `before`。确认 `phase: active` 且 `activeFormat: 15` 后再重启宿主。[命令、官方转换器准备和失败恢复](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.md#升级与数据保留)
+升级到 0.9.3 候选包时，先完全退出使用该工作区的所有宿主，包括桌面托盘。使用同一个 0.9.3 tarball 的升级命令运行 `status` 和 `check`。格式 15 运行 `prepare`，格式 13 用官方转换器运行 `migrate`。确认 `phase: active`、`targetKernel: 0.9.3` 和旧库 `before` 后再开新版。 [升级、失败恢复与回退](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md)
 
-在原 profile 直接替换插件。旧 0.8.9 的卸载钩子可能删除记忆，也应直接用下列命令替换。
+用 `add` 在原 profile 直接替换插件，可避开旧 0.8.9 会删除记忆的卸载钩子。将路径换成实际候选 tarball。
 
 ```sh
-dsh plugin --profile desktop add dsh-trivium@0.9.2 --ignore-scripts
+dsh plugin --profile desktop add "D:/builds/dsh-trivium-0.9.3.tgz" --ignore-scripts
 ```
 
-Web 使用 `--profile web`。成功迁移和替换后打开原工作区。需要降回 0.9.1 时，先通过 `rollback` 恢复原库，再替换插件。迁移后产生的新写入留在 `after`。[回退步骤](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.md#回退到-091)
+Web 使用 `--profile web`。需要回退时先用候选包的 `rollback` 恢复旧库，再装回原版插件。升级后产生的写入保存在 `after`。若目标是已发布的 0.9.2，请使用对应版本的步骤。 [0.9.2 升级说明](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/release-0.9.2.md#升级与数据保留)
 
 ## 卸载
 
-> **0.9.2 卸载默认保留记忆。** 旧的 npm 0.8.9 带有破坏性卸载钩子，请先按上面的更新命令替换后再卸载。
+> **0.9.2 和 0.9.3 卸载默认保留记忆。** 旧的 npm 0.8.9 带有会删除记忆的卸载钩子，请先直接替换为新版再卸载。
 
-确认已安装 0.9.2，停止宿主后可从对应 profile 卸载。
+停止宿主后可从对应 profile 卸载。
 
 ```sh
 dsh plugin --profile web remove dsh-trivium
@@ -389,6 +390,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 ## 更新说明
 
+- [0.9.3 候选](docs/release-0.9.3.md) 补上已有库的首次写入保护、双语证据和同任务续接，并将目录导入接到文档依据面板。
 - [0.9.2](docs/release-0.9.2.md) 交付 TDB 0.9.2、离线迁移与回退，改进跨语言追问、数字引用、文档定向复核和后台抽取防回显。
 - [0.9.1](docs/release-0.9.1.md) 加入实体名称查找、紧凑记忆包和变化游标、文档依据、本机 Worker 交接，并改进设置隔离、写入恢复、候选复核和按范围读取。
 - [0.9.0](docs/release-0.9.0.md)：卸载保留数据、TDB 0.9.1、抽取来源检查和同轮去冗余、候选核对入口、实体范围检索/显式记忆包及已测写入批处理；版本和文档发布沿用既有验证证据。
@@ -438,6 +440,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
 - 已发布包：`0.9.2` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.2)
+- 本地发布候选：`0.9.3` · [版本说明](docs/release-0.9.3.md)
 - 测试宿主：`@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证：面板可开、`/status` 与提案接口应答、控制台零报错；更早版本在 0.2.1-rc.4/rc.5 上验证过）。peer 范围同时接受 0.1.x 各线。
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

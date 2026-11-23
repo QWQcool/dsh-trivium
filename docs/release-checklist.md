@@ -36,13 +36,12 @@
 - [ ] 从 [开发中变更](UNRELEASED.md) 整理双语 release：分别说明**新增、改进、删除/移除、兼容与数据影响**。没有删除项也明确写“无”；写清哪些功能默认关闭、尚未接宿主或仍有未测边界。
 
 - [ ] `npm version <x.y.z> --no-git-tag-version`，确认 `package.json` 与 `package-lock.json` 同步。
-- [ ] **四处版本声明一起改**（之前每次都漏一处）：`README.md` 横幅 + Release info、`README.zh-CN.md` 横幅 + 发布信息、
-  `docs/README.md` 发布状态表（含 tag）、`docs/CURRENT-STATE.md` 的 `latest`。
+- [ ] 同步双语 README、`docs/README.md` 和 `docs/CURRENT-STATE.md`。发布准备阶段分别写清本地候选和 registry 上的已发布版本。在 registry 确认新版本后更新 `latest`、tag 及发布回执。
 - [ ] `README.md` / `README.zh-CN.md`：
-  - [ ] `## Release info` / `## 发布信息` 的包版本是新版本。
+  - [ ] `## Release info` / `## 发布信息` 对得上本地候选和已发布版本。
   - [ ] 更新说明（Changelog）顶部有新版本条目。
   - [ ] 新增的命令、参数、支持范围已经写进正文或排障章节。
-- [ ] `docs/release-<version>.md`（和 `.en.md`，如果上一版有英文）写成**回执**而不是计划：不出现"待发布/尚未发布"。
+- [ ] 双语发布说明准确描述候选已有的功能和验收。发布后记录 registry 中实际存在的版本、时间、标签和 tarball 校验值。
 - [ ] `docs/README.md`、`docs/CURRENT-STATE.md` 和 `PLAN.md` 的内核／宿主与实际依赖一致；更新 ROADMAP 的完成状态，历史结果保留原测量日期。
 - [ ] **`node scripts/smoke-p91.mjs` 必须通过**——它就是上面这些声明的自动检查，版本没同步会直接失败。
 - [ ] 确认 `package.json` 的 `files` 覆盖所有**文档承诺随包分发**的文件（尤其 `scripts/` 与 `bin` 目标）。

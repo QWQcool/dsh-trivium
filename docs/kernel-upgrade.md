@@ -1,52 +1,55 @@
 # TDB 0.9.3 升级与回退
 
-当前源码固定 `triviumdb@0.9.3`。已发布的 npm `dsh-trivium@0.9.2` 仍使用 TDB 0.9.2。已有格式 15 的库可由新内核直接打开，首次可写检查点会发布 WAL 基准封条，应在升级前保留完整旧库供回退。格式 13 等旧库走官方离线迁移。 [English](#english) · [上游兼容说明](https://github.com/Astrmira/TriviumDB/blob/v0.9.3/docs/changes/0.9.3.md) · [npm 0.9.2 说明](release-0.9.2.md)
+本地候选 `dsh-trivium@0.9.3` 固定 TDB 0.9.3，公开 npm 0.9.2 使用 TDB 0.9.2。格式 15 可原位升级，首次可写检查点会发布 WAL 基准封条。候选包会在打开已有库以供写入前要求留存整组旧库。格式 13 等旧库走官方离线迁移。 [English](#english) · [上游兼容说明](https://github.com/Astrmira/TriviumDB/blob/v0.9.3/docs/changes/0.9.3.md) · [npm 0.9.2 说明](release-0.9.2.md)
 
 ## 准备
 
-退出持有工作区的桌面程序（含托盘）、Web、Router 和 Worker，包括只读进程。从预检到替换插件保持离线。在源码目录运行 `npm ci`。工作区参数指包含 `.dsh/trivium.tdb` 的目录，请用实际路径替换示例。先运行 `status` 查看 `activeFormat` 和有无未完成操作。新建工作区可直接使用。
+完全退出使用工作区的桌面程序（含托盘）、Web、Router 和 Worker，包括只读进程。从预检到替换插件保持宿主关闭。工作区参数指包含 `.dsh/trivium.tdb` 的目录。将示例路径换成实际工作区和本地 0.9.3 tarball。先运行 `status` 查看 `activeFormat` 和操作状态。新工作区可直接启动。
 
 ```sh
-node scripts/upgrade-kernel.mjs status "D:/projects/my-project"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade status "D:/projects/my-project"
 ```
+
+源码联调时可在 `npm ci` 后使用 `node scripts/upgrade-kernel.mjs` 执行同样的子命令。0.9.3 正式发布后，安装包参数可改用固定的 `dsh-trivium@0.9.3`。
 
 ## 格式 15 直接升级
 
-使用 `check` 只读打开原库。在第一次以 TDB 0.9.3 启动宿主之前运行 `prepare`，把完整 `.dsh` 留存到 `before`。原工作区文件维持原位，无需构建官方迁移器。`status` 显示 `mode: direct`、`phase: active`、`activeFormat: 15` 后可替换插件。如果此前有升级记录，`previousRecord` 指向留存的旧记录，原操作目录也会保留。
+使用 `check` 只读打开原库。运行 `prepare` 将完整 `.dsh` 留存到 `before`，原文件留在原位。格式 15 无需外部转换器。`status` 显示 `mode: direct`、`phase: active`、`activeFormat: 15`、`targetKernel: "0.9.3"`、`prepareRequired: false` 且列出 `before` 后可替换插件。如果此前有升级记录，`previousRecord` 指向留存的旧记录，原操作目录也会保留。
 
 ```sh
-node scripts/upgrade-kernel.mjs check "D:/projects/my-project"
-node scripts/upgrade-kernel.mjs prepare "D:/projects/my-project"
-node scripts/upgrade-kernel.mjs status "D:/projects/my-project"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade check "D:/projects/my-project"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade prepare "D:/projects/my-project"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade status "D:/projects/my-project"
 ```
 
-运行 `prepare` 的时点决定回退恢复点。格式号本身无法区分 0.9.2 和 0.9.3 写过的库，请在新版宿主首次打开前完成留存。
+直接换包后如果看到「需要先留存旧库」，候选包已拦住可写打开。退出宿主后按上面的命令留存，再重新启动。旧版格式迁移记录即使显示 `active`，仍需为 TDB 0.9.3 执行 `prepare`。完成留存后保持旧宿主关闭，回退恢复点为 `prepare` 时保存的文件组。
+
+首次允许可写打开时，插件在 `.dsh/trivium-kernel` 记录当前内核版本，之后按同一文件组正常重开。复制、恢复库或回退时须使用完整文件组。纯只读的 `check` 和诊断可在留存前使用。
 
 ## 格式 13 离线迁移
 
-从 `Astrmira/TriviumDB` 检出 `v0.9.3`。在该检出目录用 Rust 工具链构建独立转换器，再回到插件源码目录运行预检和迁移。转换器需要 Python 3。预检要求已有 TDB 协调锁文件，缺失时请用旧宿主正常打开并关闭原库。预留原库、目标库及暂存文件的空间。 [官方工具与资源要求](https://github.com/Astrmira/TriviumDB/blob/v0.9.3/docs/migration.md)
+从 `Astrmira/TriviumDB` 检出 `v0.9.3`。在该检出目录用 Rust 工具链构建独立转换器，再用候选包运行预检和迁移。转换器需要 Python 3。预检要求已有 TDB 协调锁文件，缺失时请用旧宿主正常打开并关闭原库。预留原库、目标库及暂存文件的空间。 [官方工具与资源要求](https://github.com/Astrmira/TriviumDB/blob/v0.9.3/docs/migration.md)
 
 ```sh
 # 在 TriviumDB v0.9.3 检出目录构建
 cargo build --locked --manifest-path crates/triviumdb-migrate/Cargo.toml --target-dir target/migration
 
-# 在插件源码目录运行
-node scripts/upgrade-kernel.mjs check "D:/projects/my-project" --upstream "D:/tools/TriviumDB-0.9.3"
-node scripts/upgrade-kernel.mjs migrate "D:/projects/my-project" --upstream "D:/tools/TriviumDB-0.9.3"
-node scripts/upgrade-kernel.mjs status "D:/projects/my-project"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade check "D:/projects/my-project" --upstream "D:/tools/TriviumDB-0.9.3"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade migrate "D:/projects/my-project" --upstream "D:/tools/TriviumDB-0.9.3"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade status "D:/projects/my-project"
 ```
 
 转换器构建在其他位置时，给 `check` 和首次 `migrate` 加 `--tool` 指定可执行文件。可用 `--python` 指定 Python 3 命令或路径。命令核验官方回执和新库，再切换完整 `.dsh`。文档引用、待补写、复核历史、快照和交接回执随原工作区保留。确认 `mode: migration`、`phase: active`、`activeFormat: 15` 后替换插件。
 
 ## 替换插件和检查快照
 
-在原 profile 直接安装当前源码构建的 tarball。先建好输出目录，再用 `npm pack --pack-destination "D:/builds"` 打包。使用 `npm pack` 报告的文件名作为安装参数。
+在原 profile 直接安装完成上述准备的同一个候选包。源码打包时先建好输出目录，再运行 `npm pack --pack-destination "D:/builds"`。
 
 ```sh
-dsh plugin --profile web add "D:/builds/dsh-trivium-0.9.2.tgz" --ignore-scripts
+dsh plugin --profile web add "D:/builds/dsh-trivium-0.9.3.tgz" --ignore-scripts
 ```
 
-桌面使用 `--profile desktop`。启动宿主并打开原工作区。格式 15 快照可继续使用原 ID 查询。格式 13 快照原样保留，0.9.3 下请重新捕获，回退到原内核后旧快照仍可读。`.dsh-trivium-upgrade/` 含原始记忆和来源，应排除在版本库之外。
+桌面使用 `--profile desktop`。启动宿主并打开原工作区。格式 15 快照可继续使用原 ID 查询。格式 13 快照原样保留，可以在 0.9.3 中为当前库重新捕获快照，原快照在回退到原内核后仍可读。`.dsh-trivium-upgrade/` 含原始记忆和来源，应排除在版本库之外。
 
 ## 失败恢复
 
@@ -58,17 +61,18 @@ dsh plugin --profile web add "D:/builds/dsh-trivium-0.9.2.tgz" --ignore-scripts
 | `preparing` / `migration` | 原 `.dsh` 仍在原处。修正工具、占用或磁盘问题，带 `--upstream` 重跑 `migrate`，或用 `rollback` 取消。 |
 | `activating` | 重跑 `migrate` 完成切换，此时可省略官方工具参数。也可用 `rollback` 恢复。 |
 | `rolling-back` | 重跑 `rollback` 完成回退。已经移出的新库保留在 `after`。 |
+| `prepareRequired: true` | 如果尚未准备，按格式 15 的步骤留存。已有 0.9.3 的 `active` 记录时也要核对其 `before` 是否完整。 |
 | 校验不符或目录冲突 | 保留 `.dsh` 和 `.dsh-trivium-upgrade/` 中的所有文件，核对工作区路径及操作记录。工具会在覆盖前停止。 |
 
 进程强制退出后，残留工作区锁可能需要约 30 秒才可回收。活动写者的锁会阻止回退。工具遇到符号链接等特殊文件会在复制或切换前停止。
 
 ## 回退
 
-退出所有宿主后，用 0.9.3 源码的升级命令恢复整组旧库。`status` 显示 `phase: rolled-back` 和原格式后，再以原 profile 装回原插件。`before` 仍保留原库，`after` 留存整个新版 `.dsh` 和升级后产生的写入。
+退出所有宿主后，用同一个 0.9.3 候选包的升级命令恢复整组旧库。`status` 显示 `phase: rolled-back` 和原格式后，再以原 profile 装回原插件。`before` 仍保留原库，`after` 留存整个新版 `.dsh` 和升级后产生的写入。装回 0.9.2 时，回退到的是 `prepare` 时的恢复点。
 
 ```sh
-node scripts/upgrade-kernel.mjs rollback "D:/projects/my-project"
-node scripts/upgrade-kernel.mjs status "D:/projects/my-project"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade rollback "D:/projects/my-project"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade status "D:/projects/my-project"
 ```
 
 原库来自 TDB 0.9.2 时，用 `dsh plugin --profile web add dsh-trivium@0.9.2 --ignore-scripts` 装回。来自 TDB 0.9.1 的格式 13 库使用 `@0.9.1`。桌面将 `--profile web` 换成 `--profile desktop`。
@@ -87,11 +91,55 @@ node scripts/upgrade-kernel.mjs status "D:/projects/my-project"
 
 此前的 TDB 0.9.2 迁移回退结论见当时的操作记录。 [0.9.2 验收](https://github.com/QWQcool/dsh-trivium/blob/v0.9.2/docs/kernel-upgrade.md#隔离-web-验收)
 
+## 0.9.3 候选包验收
+
+2026-11-23 使用 Windows x64、Node 24.15.0、DeepSeek Harness 0.2.2-rc.3 Web 和隔离 Chromium。取最终 `dsh-trivium-0.9.3.tgz` 安装到全新 Web profile，运行内核为 TDB 0.9.3。回退使用已发布 npm 0.9.2 的独立 profile。两个工作区均为合成库，模型和 embedding 调用均为 0。
+
+| 场景 | 实际结果 |
+|---|---|
+| 干净安装 | 新工作区无需 `prepare` 即可写入文档来源，重启后仍可读取。独立 npm 消费目录 13/13，升级命令可启动。 |
+| 跳过留存 | 0.9.2 创建的格式 15 库显示 `prepareRequired`。实际 Web 面板提示留存，写入返回 409 `WORKSPACE_UPGRADE_PREPARE_REQUIRED`。原库 17 个文件逐字节不变。 |
+| 续跑留存与升级 | 模拟副本完成后中断，重跑 `prepare` 复用已核验的整组副本。新内核写入后生成新 WAL 基准封条。重启可读原文档引用、原快照和四份交接回执，以及新版的写入和快照。 |
+| 回退 | 模拟两次目录重命名之间中断，新版继续拦截写入。续跑后 17 个原文件逐字节恢复，新库 27 个文件完整保存在 `after`。新版再次打开恢复的未留存库时仍会拦截，0.9.2 Web 可读原快照并继续写入。 |
+
+候选包包含 70 个文件，安装后的文件与打包时的工作区内容逐一核对。tarball SHA-256 为 `e99554261538f0feca1dd8b8ee60089bf4c1a8e74de7fa247eae2216e96d7d37`。
+
+专项 `p120` 通过 5 项，涵盖旧目标版本记录、缺少旧库、只读访问、重新打开和回退。面板专项 `p101` 40/40、卸载保留专项 `p11` 通过、文档检查 14/14。本次沿用前述格式 13 迁移验收。
+
 ## English
 
-The current source pins TDB 0.9.3. Published `dsh-trivium@0.9.2` pins TDB 0.9.2. Stop every process using the workspace, including readers, and run `npm ci` in the new source checkout. Use `status` with the workspace directory above to inspect the format and any unfinished operation.
+The local 0.9.3 candidate pins TDB 0.9.3. Published `dsh-trivium@0.9.2` pins TDB 0.9.2. Stop every host using the workspace, including the tray app, Web, Router, Workers and read-only processes. Replace the paths below with the local tarball and the workspace that contains `.dsh/trivium.tdb`. When 0.9.3 is published, use the pinned `dsh-trivium@0.9.3` in place of the tarball path.
 
-- For format 15, run `check` and `prepare` before the new host opens the library. The new engine opens it in place. `prepare` retains the full pre-upgrade `.dsh` in `before` for rollback after the first writable checkpoint. It needs no external converter.
-- For format 13, build the official tool from the `v0.9.3` checkout and run `check` and `migrate` with `--upstream`. After `status` reports `active` and format 15, replace the plugin with the tarball built from the new source. Keep all workspaces and operation records at their original paths. [Official migration tool](https://github.com/Astrmira/TriviumDB/blob/v0.9.3/docs/migration.md)
-- Keep hosts stopped after an interruption. Rerun `prepare` for `preparing` in direct mode, `migrate` for a legacy migration, and `rollback` for `rolling-back`. When resuming `activating`, `migrate` can run without the external converter. Retain all files if verification fails.
-- Run the 0.9.3 source command `rollback` before reinstalling the original plugin. The tool restores the complete old library and retains the complete newer group in `after`. Format 15 snapshots remain readable in 0.9.3. Format 13 snapshots are retained for the original engine and can be recaptured in the new format after migration.
+### Prepare an existing format 15 library
+
+Use the candidate's CLI to inspect and retain the complete old file group. The first writable checkpoint with TDB 0.9.3 publishes a WAL baseline seal. The candidate blocks writable opening until `prepare` has retained the old `.dsh` in `before`. A format 15 library created by the candidate opens normally on restart. An earlier migration record for TDB 0.9.2 still needs 0.9.3 preparation.
+
+```sh
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade status "D:/projects/my-project"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade check "D:/projects/my-project"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade prepare "D:/projects/my-project"
+```
+
+Run `status` again. Confirm `phase: active`, `activeFormat: 15`, `targetKernel: "0.9.3"`, `prepareRequired: false` and a `before` path. If you already replaced the plugin and see the preparation alert, stop the host and finish these steps before reopening. Keep the original host stopped after preparing. The candidate records the kernel in `.dsh/trivium-kernel` when it first allows a writable open. Restore or move the full file group together.
+
+### Migrate format 13 and replace the plugin
+
+Use Python 3 and the converter built from the official `v0.9.3` checkout. Run `check` and `migrate` with `--upstream "D:/tools/TriviumDB-0.9.3"` as in the commands above. If the source lock file is missing, open and close the workspace with the original host before retrying. Allow space for both groups and the staging files. After `status` reports `mode: migration`, `phase: active` and format 15, use the same candidate tarball to replace the plugin. [Build and migration commands](#格式-13-离线迁移) · [Official migration guide](https://github.com/Astrmira/TriviumDB/blob/v0.9.3/docs/migration.md)
+
+```sh
+dsh plugin --profile web add "D:/builds/dsh-trivium-0.9.3.tgz" --ignore-scripts
+```
+
+Use `--profile desktop` for the desktop profile. Start the host and reopen the workspace. Format 15 snapshots remain readable by ID. Format 13 snapshots are retained for the original engine. Capture a new snapshot of the current library after migration when needed.
+
+### Recover or roll back
+
+Keep hosts stopped and use `status`. Rerun `prepare` for `preparing` in direct mode, `migrate` for a legacy migration, and `rollback` for `rolling-back`. When resuming `activating`, `migrate` can run without the external converter. If verification fails, retain both groups and the upgrade journal for inspection. Workspace locks left by a stopped process can take about 30 seconds to clear.
+
+```sh
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade rollback "D:/projects/my-project"
+npm exec --yes --package="D:/builds/dsh-trivium-0.9.3.tgz" -- dsh-trivium-upgrade status "D:/projects/my-project"
+dsh plugin --profile web add dsh-trivium@0.9.2 --ignore-scripts
+```
+
+Confirm `phase: rolled-back` and the original format before replacing the plugin. The candidate keeps the original group in `before` and the upgraded `.dsh` including new writes in `after`. Use the original compatible plugin version, such as 0.9.1 if the original library was format 13. Keep the upgrade directory outside source control.

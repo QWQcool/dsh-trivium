@@ -6,9 +6,8 @@
  * described a release that was two versions old. The fix is not discipline, it is
  * a check that fails the suite.
  *
- * This pins the *declarations*, not the prose: where a document claims "the
- * published package is X", X has to be package.json's version, the matching
- * release notes have to exist, and the index has to agree.
+ * The candidate in package.json and the latest published npm package can
+ * differ during release preparation. Check both sets of declarations offline.
  */
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -32,7 +31,10 @@ function check(fn, label) {
 }
 
 const version = JSON.parse(read('package.json')).version;
-const escaping = version.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const state = read('docs/CURRENT-STATE.md');
+const published = /^\| npm 发布包 \|[^\r\n]*\x60latest = (\d+\.\d+\.\d+)\x60/m.exec(state)?.[1] || '';
+const preparing = version !== published;
+const escaping = published.replace(/\./g, '\\.');
 
 /** Every "this is the published version" claim, as [file, regex, what]. */
 const claims = [
@@ -45,7 +47,7 @@ const claims = [
 ];
 
 for (const [file, pattern, what] of claims) {
-  check(() => assert.match(read(file), pattern), `${what} names ${version}`);
+  check(() => assert.match(read(file), pattern), `${what} names published ${published}`);
 }
 
 check(() => {
@@ -65,19 +67,19 @@ check(() => {
     const text = read(file);
     for (const m of text.matchAll(/published npm package is \*\*([0-9][^*]*)\*\*|当前 npm 发布版是 \*\*([0-9][^*]*)\*\*|已发布包：`([0-9][^`]*)`|Published package: `([0-9][^`]*)`/g)) {
       const found = (m[1] || m[2] || m[3] || m[4] || '').trim();
-      assert.equal(found, version, `${file} still claims "${found}" as the published version`);
+      assert.equal(found, published, `${file} claims "${found}" as the published version`);
     }
   }
 }, 'no living document still advertises an older published version');
 
 check(() => {
-  const state = read('docs/CURRENT-STATE.md');
-  assert.match(state, new RegExp(`latest = ${escaping}|latest=\`?${escaping}`), `CURRENT-STATE does not mention latest ${version}`);
+  assert.match(published, /^\d+\.\d+\.\d+$/, 'CURRENT-STATE needs one npm latest version');
+  assert.ok(existsSync(join(ROOT, `docs/release-${published}.md`)), 'missing notes for the published version');
 }, 'the current-state page names the published version');
 
 check(() => {
   /*
-   * "not published" is fine for the *next* version, never for the current one.
+   * "not published" is fine for the candidate, never for the published version.
    * A sentence like "no unpublished code" is not a stale claim, so the negative
    * forms are skipped before matching — this check is for the assertion, not for
    * the word.
@@ -87,15 +89,25 @@ check(() => {
     const stale = lines.filter((line) => new RegExp(escaping).test(line)
       && /未发布|尚未发布|not published/i.test(line)
       && !/没有未发布|无未发布|不含未发布|no unpublished|0 个未发布|未发布的代码|unpublished code/i.test(line));
-    assert.deepEqual(stale, [], `${file} calls ${version} unpublished: ${stale[0] || ''}`);
+    assert.deepEqual(stale, [], `${file} calls ${published} unpublished: ${stale[0] || ''}`);
   }
-}, 'the current version is not described as unpublished');
+}, 'the published version is not described as unpublished');
 
 check(() => {
-  const notes = read(`docs/release-${version}.md`);
-  // The notes have to say what shipped, not that it is planned.
-  assert.doesNotMatch(notes, /待发布|尚未发布|not published/i, `docs/release-${version}.md still reads as a plan`);
-}, 'the release notes are written as a record, not a plan');
+  const notes = read(`docs/release-${published}.md`);
+  assert.doesNotMatch(notes, /待发布|尚未发布|not published/i, `docs/release-${published}.md still reads as a plan`);
+}, 'the published release notes are written as a record');
+
+check(() => {
+  const lock = JSON.parse(read('package-lock.json'));
+  assert.equal(lock.version, version);
+  assert.equal(lock.packages[''].version, version);
+  for (const name of ['README.md', 'README.zh-CN.md', 'docs/README.md', 'docs/CURRENT-STATE.md']) {
+    const candidateLine = read(name).split(/\r?\n/).find(line => /^(?:- (?:Local release candidate:|本地发布候选：)|\| 本地发布候选 \|)/.test(line));
+    if (preparing) assert.ok(candidateLine?.includes(version), `${name} must name local candidate ${version}`);
+    else assert.equal(candidateLine, undefined, `${name} still advertises a local candidate`);
+  }
+}, 'candidate declarations and lockfile agree with package.json');
 
 check(() => {
   function markdownFiles(dir) {
