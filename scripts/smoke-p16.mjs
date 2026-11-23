@@ -271,7 +271,7 @@ try {
   );
   for (const [i, tool] of projection.entries()) {
     const want = baseline.tools[i];
-    const optional = tool.name === 'ctx_find' ? ['entity_id','entity_name','pack_tokens','since'] : [];
+    const optional = tool.name === 'ctx_find' ? ['entity_id','entity_name','pack_tokens','since','followup_cursor'] : [];
     check(
       JSON.stringify(Object.keys(tool.parameters.properties)) === JSON.stringify([...Object.keys(want.parameters.properties),...optional])
         && JSON.stringify(tool.parameters.required) === JSON.stringify(want.parameters.required),

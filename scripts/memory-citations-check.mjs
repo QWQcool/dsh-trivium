@@ -11,7 +11,7 @@
  *
  * It does not generate answers, so final-answer accuracy stays "not measured".
  *
- * Usage: node scripts/memory-citations-check.mjs [--fixture FILE] [--out FILE] [--budget 300] [--print]
+ * Usage: node scripts/memory-citations-check.mjs [--strict] [--require-evidence] [--fixture FILE] [--out FILE] [--budget 300] [--print]
  */
 import { mkdtempSync, readFileSync, rmSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -36,14 +36,40 @@ process.env.DSH_HOME = join(root, 'home');
 process.env.DSH_TRIVIUM_SETTINGS = join(root, 'settings.json');
 
 const store = await import('../lib/store.js');
-const { searchEntity } = await import('../lib/entity-search.js');
+const { isScopedFollowup, scopedPackEvidence, searchEntity } = await import('../lib/entity-search.js');
+const { estimateTokens } = await import('../lib/tokens.js');
+
+function inspectContext(context, factIds) {
+  const ids = [], referenced = new Set(), malformed = [];
+  const numericId = id => Number.isSafeInteger(id) && id > 0;
+  for (const line of context.split('\n')) {
+    if (line.startsWith('{')) {
+      let row;
+      try { row = JSON.parse(line); }
+      catch { malformed.push('invalid row'); continue; }
+      ids.push(String(row.id));
+      const pathIds = row.path ? [...row.path.nodes, ...row.path.edges.flatMap(edge => [edge.from,edge.to])] : [];
+      const all = [row.id, ...pathIds];
+      all.forEach(id => referenced.add(String(id)));
+      if (!all.every(numericId)) malformed.push(String(row.id));
+    } else if (line.startsWith('UNRESOLVED ')) {
+      const group = line.match(/: (\[.*\]) are all still current\.$/);
+      try {
+        const members = JSON.parse(group?.[1]);
+        if (!Array.isArray(members) || !members.every(numericId)) malformed.push('ambiguity ids');
+        if (Array.isArray(members)) members.forEach(id => referenced.add(String(id)));
+      } catch { malformed.push('invalid ambiguity'); }
+    }
+  }
+  if (ids.length !== factIds.size || new Set(ids).size !== ids.length || ids.some(id => !factIds.has(id))) malformed.push('row identities');
+  return { referenced, malformed };
+}
 
 const rows = [];
 try {
   for (const [index, testCase] of fixture.cases.entries()) {
     const cwd = join(root, `c-${index}-${testCase.id}`);
     const db = await store.openWorkspaceDb(cwd);
-    const anchor = Number(testCase.facts[0]?.id || 101);
     const anchorId = 101;
     db.insertWithId(anchorId, Array(1536).fill(0), {
       type: 'entity', name: testCase.entity, aliases: testCase.alias ? [testCase.alias] : [],
@@ -97,27 +123,30 @@ try {
     }
     db.flush();
 
+    let previous = null;
     for (const question of testCase.questions) {
-      const result = await searchEntity(db, { entityId: anchorId, query: question.q, limit: 8, packTokens: BUDGET });
+      const followupEvidence = isScopedFollowup(question.q) ? previous : null;
+      const result = await searchEntity(db, { entityId: anchorId, query: question.q, limit: 8, packTokens: BUDGET }, { followupEvidence });
+      previous = scopedPackEvidence(result);
       const pack = result.memoryPack || null;
       const factIds = new Set((pack?.facts || []).map((fact) => String(fact.id)));
       const context = String(pack?.context || '');
+      const { referenced, malformed } = inspectContext(context, factIds);
       const missing = (question.relevant || []).map(String).filter((id) => !factIds.has(id));
-      const leaked = (question.forbidden || []).map(String).filter((id) => factIds.has(id));
-      // The pack renders ids as unquoted JSON integers on purpose; a quoted id is a format defect.
-      const numericRelevant = (question.relevant || []).filter((id) =>
-        !context.includes(`"id":${id},`) || context.includes(`"id":"${id}"`));
+      const leaked = (question.forbidden || []).map(String).filter(id => factIds.has(id) || referenced.has(id));
       rows.push({
         id: testCase.id,
         split: testCase.split,
         category: testCase.category,
         q: question.q,
+        readMode: result.channels.text.method,
         pack: !!pack,
-        budgetOk: !!pack && pack.estimatedTokens <= BUDGET,
+        budgetOk: !!pack && pack.estimatedTokens === estimateTokens(context) && pack.estimatedTokens <= BUDGET,
         tokens: pack?.estimatedTokens ?? null,
+        embeddingCalls: result.work.embeddingCalls,
         missing,
         leaked,
-        nonNumeric: numericRelevant,
+        nonNumeric: malformed,
       });
     }
     store.closeAll();
@@ -127,7 +156,6 @@ try {
   rmSync(root, { recursive: true, force: true });
 }
 
-const sum = (fn) => rows.reduce((total, row) => total + fn(row), 0);
 const report = {
   meta: {
     fixture: fixture.version,
@@ -137,7 +165,7 @@ const report = {
     cases: fixture.cases.length,
     finalAnswerAccuracy: 'not measured (no answer is generated)',
     realModelCalls: 0,
-    realEmbeddingCalls: 0,
+    realEmbeddingCalls: rows.reduce((total, row) => total + row.embeddingCalls, 0),
     at: new Date().toISOString(),
   },
   summary: {
@@ -186,9 +214,9 @@ if (args.out) {
  * and a fact that IS in the pack is always rendered with an unquoted id.
  * Missing evidence is reported, not failed: lexical recall is a known limit.
  */
-if (args.strict) {
-  const broken = rows.filter((row) => row.leaked.length || !row.pack || !row.budgetOk
-    || row.nonNumeric.some((id) => !row.missing.includes(String(id))));
+if (args.strict || args['require-evidence']) {
+  const broken = rows.filter(row => row.leaked.length || !row.pack || !row.budgetOk || row.nonNumeric.length || row.embeddingCalls
+    || (args['require-evidence'] && row.missing.length));
   if (broken.length) {
     console.error('invariants broken: ' + broken.map((row) => row.id).join(','));
     process.exitCode = 1;

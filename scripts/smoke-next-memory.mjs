@@ -8,7 +8,7 @@ import {join,resolve,basename} from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {spawn} from 'node:child_process';
-export const cases=Object.freeze({p107,p108,p109,p110,p111,p112,p113,p114,p115,p116});
+export const cases=Object.freeze({p107,p108,p109,p110,p111,p112,p113,p114,p115,p116,p121});
 const reportDir=resolve('.tmp/next-memory-20261117');
 async function environment(fn) {
   const root=mkdtempSync(join(tmpdir(),'trivium-next-'));
@@ -22,6 +22,7 @@ async function environment(fn) {
   finally{s.closeAll();globalThis.fetch=originalFetch;assert.ok(realpathSync(root).startsWith(realpathSync(tmpdir()))&&basename(root).startsWith('trivium-next-'));rmSync(root,{recursive:true,force:true});}
 }
 const report=(file,value)=>{mkdirSync(reportDir,{recursive:true});writeFileSync(join(reportDir,file),JSON.stringify(value,null,2)+'\n');};
+const cursorOf=output=>/^Cursor: ([\w-]{12})$/m.exec(output)?.[1];
 async function seedScope(s,cwd,scenario) {
   const {zeroVector}=await import('../lib/schema.js');const db=await s.openWorkspaceDb(cwd);
   const put=(id,type,name,text)=>db.insertWithId(id,zeroVector(),{type,name,text,status:'active',createdAt:'2026-11-01T00:00:00.000Z',updatedAt:'2026-11-01T00:00:00.000Z'});
@@ -292,7 +293,6 @@ async function p112(){await environment(async({root,s,check})=>{
   const db=await seedScope(s,cwd,{entity:'QuartzVault',fact:'QuartzVault backup retention is 21 days.',distractor:'QuartzVault mirror backup retention is 9 days.'});
   db.updatePayload(202,{...db.getPayload(202),name:'mirror retention'});
   await seedScope(s,other,{entity:'OtherVault',fact:'OtherVault backup retention is 99 days.',distractor:'Unrelated port.'});
-  const cursorOf=output=>/Cursor: ([\w-]{12})/.exec(output)?.[1];
   let scoped,cursor,unchanged,delta,verbose;
   await check('real tool default is unchanged; opt-in packs contain full same-scope facts at lower estimated cost',async()=>{
     const legacy=await find.execute({query:args.query},exec);
@@ -323,6 +323,86 @@ async function p112(){await environment(async({root,s,check})=>{
     assert.match(await find.execute({query:args.query,pack_tokens:300},exec),/entityId must be/);
   });
   console.log('task budget evidence '+JSON.stringify({verbose:estimateTokens(verbose),initial:estimateTokens(scoped),unchanged:estimateTokens(unchanged),delta:estimateTokens(delta),embeddingCalls:0}));
+});}
+
+async function p121(){await environment(async({root,s,check})=>{
+  const {searchEntity}=await import('../lib/entity-search.js');
+  const {createTaskMemoryReader,scopedToolRequest}=await import('../lib/task-memory.js');
+  const {estimateTokens}=await import('../lib/tokens.js');
+  const cwd=join(root,'continued-task'),other=join(root,'other-task');
+  const seed={entity:'Calla Archive',fact:'Calla Archive keeps query logs for 28 days.',distractor:'Calla Archive keeps billing logs for 220 days.'};
+  const db=await seedScope(s,cwd,seed),dbB=await seedScope(s,other,seed);
+  await check('bilingual body matching needs both concepts and preserves literal numbers, code identities and scope',async()=>{
+    db.updatePayload(101,{...db.getPayload(101),aliases:['海芋归档','日志保留']});
+    const search=(query,options={})=>searchEntity(db,{entityId:101,query,packTokens:300,...options});
+    const both=await search('海芋归档的查询日志留存多久？');
+    assert.deepEqual(both.memoryPack.facts.map(row=>row.id),['201']);
+    assert.equal(both.work.embeddingCalls,0);
+    for(const input of ['海芋归档的查询日志留存 2 天吗？','X-Archive-01的查询日志留存多久？','日志保留多久收集查询日志？']) {
+      const result=await search(input);
+      assert.ok(!result.memoryPack.facts.some(row=>['201','202','302'].includes(row.id)),input);
+    }
+  });
+
+  const args={entity_id:101,query:'Calla Archive query logs',pack_tokens:300};
+  const brief={...args,query:'Confirm the same retention again.'};
+  const sessionId='ticket-A';
+  let clock=1_000_000;
+  const reader=createTaskMemoryReader({now:()=>clock});
+  const read=(input,scope={})=>reader.read(scope.db || db,scopedToolRequest(input,scope.limit || 1),{sessionId:scope.sessionId ?? sessionId});
+  const previous=async()=>{
+    const output=await read(args),cursor=cursorOf(output);
+    assert.ok(cursor);assert.match(output,/id=201/);assert.doesNotMatch(output,/id=202|id=302/);
+    return cursor;
+  };
+  const mustRefresh=async(cursor,input={},scope={})=>{
+    const output=await read({...brief,followup_cursor:cursor,...input},scope);
+    assert.match(output,/prior scoped evidence is unavailable/i);
+    assert.doesNotMatch(output,/id=|28 days|220 days/);
+  };
+  await check('abbreviated reads replay the preceding delivered facts with a fresh bounded cursor',async()=>{
+    const cursor=await previous();
+    db.updatePayload(302,{...db.getPayload(302),text:'Unrelated project retention is 999 days.'});
+    const follow=await read({...brief,entity_name:'海芋归档',entity_id:undefined,followup_cursor:cursor});
+    assert.match(follow,/id=201/);assert.match(follow,/28 days/);assert.doesNotMatch(follow,/id=202|id=302|999 days/);
+    assert.ok(estimateTokens(follow)<=300);
+    const next=cursorOf(follow);
+    assert.ok(next && next!==cursor);
+    const unchanged=await read({...brief,entity_name:'海芋归档',entity_id:undefined,since:next});
+    assert.match(unchanged,/unchanged/);assert.doesNotMatch(unchanged,/28 days/);
+    await mustRefresh(cursor);
+  });
+  await check('task, entity, handle, session, budget and expiry are independent reuse gates',async()=>{
+    const cursor=await previous();
+    await mustRefresh(cursor,{entity_id:301});
+    await mustRefresh(cursor,{}, {db:dbB});
+    await mustRefresh(cursor,{}, {sessionId:'ticket-B'});
+    await mustRefresh(cursor,{pack_tokens:250});
+    await mustRefresh(cursor,{}, {limit:2});
+    await mustRefresh(cursor,{query:'What is the encryption key?'});
+    assert.throws(()=>scopedToolRequest({...brief,followup_cursor:cursor,since:cursor},8),/either since or followup_cursor/);
+    const unlinked=await read(brief);
+    assert.doesNotMatch(unlinked,/28 days/);
+    await mustRefresh(cursor);
+    const expiring=await previous();
+    clock+=5*60_000;
+    await mustRefresh(expiring);
+    const cleared=await previous();
+    reader.dropSession(sessionId);
+    await mustRefresh(cleared);
+  });
+  await check('edited, expired, archived and detached facts cannot be replayed from a prior cursor',async()=>{
+    const fact=db.getPayload(201);
+    for (const patch of [{text:'Calla Archive keeps query logs for 45 days.'},{untilAt:'2025-01-01T00:00:00.000Z'},{status:'archived'}]) {
+      const cursor=await previous();
+      db.updatePayload(201,{...fact,...patch});
+      await mustRefresh(cursor);
+      db.updatePayload(201,fact);
+    }
+    const cursor=await previous();
+    db.unlink(201,101,'about');
+    await mustRefresh(cursor);
+  });
 });}
 
 async function p113(){await environment(async({root,s,check})=>{

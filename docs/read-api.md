@@ -374,6 +374,16 @@ snapshot explicitly for concurrent checking. Help commands do not open a store.
 
 同会话拿到 `Cursor` 后，在相同问题、实体、`top_k` 和预算下将它传为 `since`。结果只发送变化的已选事实和退出选择的 ID；退出选择不表示删除原记忆。游标在进程内保留最多 5 分钟，重开库、压缩会话或换作用域后重新完整请求。对照冲突组一起呈现，超预算或游标无效不静默退回全域检索。没有新增工具或默认注入。
 
+### 双语正文与省略式追问（当前源码）
+
+实体范围词面检索对原规则未命中的正文补做有限的中英词组匹配。先去掉已经解析的实体名和别名，再要求至少两组不同概念在正文中匹配。显式数字和完整标识符仍须对应。正文保持原样，补充匹配遵守原有实体范围、版本和预算约束。
+
+同一任务需要重述或确认上一轮结果时，在 `ctx_find` 传 `followup_cursor`，取该任务最近一次已返回的 `Cursor`。保留同一工作区、会话、实体、`top_k` 和 `pack_tokens`。例如上一轮用 `entity_id: 101` 检索分片数，下一轮可传 `query: "Confirm the shard count after the change."`，并带上该游标。`since` 继续用于同一问题的增量读取，两者分开使用。
+
+续接只重新呈现上一轮实际送出的证据。后续按当前实体范围和事实指纹重新校验。事实改动、过期、归档、脱离范围或出现新的独立查询时，应重新发起显式检索。没有游标时照常独立检索。HTTP 实体检索仍按单次请求处理。 [35 题严格对照与实机复验](reviews/MEMORY-CITATIONS-2026-11-20.md#2026-11-23-漏召回复验)
+
+In the current source, `ctx_find` accepts `followup_cursor` for a brief repeat or confirmation. Use the latest cursor in the same explicit task, with the same workspace, session, entity, hit limit and budget. A fresh query starts a new task. The host revalidates the scope and only sends the facts delivered on the preceding read. For the same query's changes, use `since`.
+
 派生缓存用于插件跟踪的活句柄和确定性词面、地图结果。实体 `work.cache` 报告命中及避免的 payload 读取量，查询预算、取消和来源变更仍需校验。差异地图和投递账本决定是否注入。缓存命中是查库工作量指标。
 
 <a id="开发中的文档依据接口"></a>
