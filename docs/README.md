@@ -7,6 +7,7 @@
 | 范围 | 记录 |
 |---|---|
 | 已发布包 | `dsh-trivium@0.9.3`，tag `v0.9.3`。 [中文发布回执](release-0.9.3.md) · [English](release-0.9.3.en.md) |
+| 本地发布候选 | 0.9.4，尚未发布。 [中文候选说明](release-0.9.4.md) · [English](release-0.9.4.en.md) |
 | 运行依赖 | npm 包固定 `triviumdb@0.9.3`。已有格式 15 库先留存再打开，格式 13 走离线迁移。 [内核升级、失败恢复与回退](kernel-upgrade.md) |
 | 已验证宿主 | Web `0.2.2-rc.1`；桌面 `0.2.2-rc.3` 隔离宿主已验证源码包，具体边界见当前状态 |
 
@@ -40,6 +41,7 @@
 | 向量与检索质量 | [结果](reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) · [融合归因](reviews/F-EMB-04-ATTRIBUTION-2026-11-12.md) · [范围实验](reviews/SCOPED-TEXT-CAPABILITY-2026-11-12.md) |
 | 写延迟和批处理 | [测量结果](reviews/WRITE-LATENCY-RESULTS-2026-11-12.md) |
 | 发布/复审 | [0.9.3 发布回执](release-0.9.3.md) · [0.9.2 发布说明](release-0.9.2.md) · [0.9.1 发布说明](release-0.9.1.md) · [0.9.0 回执与沿用证据](release-0.9.0.md) · [0.8.9 验收](reviews/0.8.9-RESULTS-2026-11-12.md) |
+| 0.9.4 使用和限制 | [任务记忆变更](read-api.md#任务记忆变更) · [选定来源内查找原文](read-api.md#在选定文档来源内查找原文) · [已知读取限制](release-0.9.4.md#修复) |
 | 旧计划、实验修正、原文位置 | [HISTORY](HISTORY.md) |
 | 原始测量 | [evidence](evidence/README.md) · [写入/宿主证据](next-memory/evidence-write-provenance) |
 

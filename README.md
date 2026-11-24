@@ -16,6 +16,8 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 The published npm package is **0.9.3**. It adds first-write protection with TDB 0.9.3, bilingual evidence retrieval, and directory import. [Release notes](docs/release-0.9.3.en.md)
 
+The local **0.9.4 release candidate** is not yet published. It adds explicit task baselines and selected-source document search, groups identical citation displays without deleting citations, and repairs both 1,000-row read boundaries. [Candidate notes](docs/release-0.9.4.en.md)
+
 ---
 
 ## Installation
@@ -74,6 +76,8 @@ dsh plugin --profile desktop add dsh-trivium@0.9.3 --ignore-scripts
 ```
 
 For Web, use `--profile web`. To roll back, run `rollback` from 0.9.3 before reinstalling the original plugin. `after` retains post-upgrade writes. [Rollback guide](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md#recover-or-roll-back)
+
+An existing library already upgraded for 0.9.3 does not need another kernel preparation or migration when moving to 0.9.4. Libraries still on an older kernel must follow the upgrade guide above.
 
 ## Uninstall
 
@@ -381,10 +385,13 @@ Follow-up [scoped-text experiments](docs/reviews/SCOPED-TEXT-CAPABILITY-2026-11-
 
 The entity-search panel uses separate lexical and semantic channels with query embeddings opt-in. Its memory-pack budget defaults to 0. In 0.9.1, the panel can resolve a name or alias, with an explicit choice for ambiguous matches. `ctx_find` accepts an explicit entity and can return a compact pack or its changes from a cursor. [Read API and tool options](docs/read-api.md#按需任务记忆091)
 
+In 0.9.4, **Context → Task memory changes** compares current facts after you explicitly save a baseline for one entity. It does not subscribe to events or inject memory. In **Context → Document evidence**, choose up to eight saved sources to find excerpts from their exact revisions. Grouped identical citations keep every fact link. [Baselines](docs/read-api.md#任务记忆变更) · [Source search](docs/read-api.md#在选定文档来源内查找原文)
+
 The [historical evidence ledger](docs/evidence/README.md) contains other datasets; A-series evidence has separate directories. Its manifest verifies file hashes, not the validity of an experiment. Some older comparisons reused data between arms or omitted host history; see the [independent review](docs/HISTORY.md). These results do not establish a general cost saving, comparative ranking or long-session accuracy.
 
 ## Changelog
 
+- [0.9.4 (local candidate)](docs/release-0.9.4.en.md) adds task change baselines, exact-revision source search, and grouped duplicate citations, and fixes read-path limits.
 - [0.9.3](docs/release-0.9.3.en.md) protects the first writable open, adds bilingual evidence retrieval and scoped follow-ups, and brings directory import to the document panel.
 - [0.9.2](docs/release-0.9.2.en.md) ships TDB 0.9.2 with offline migration and rollback, improves cross-language follow-ups and numeric citations, flags affected document evidence, and suppresses exact memory echoes during extraction.
 - [0.9.1](docs/release-0.9.1.en.md) adds named entity lookup, compact task memory with change cursors, document excerpts and evidence links, and local Worker handoff. It also improves settings isolation, write recovery, candidate review, and scoped reads.
@@ -434,6 +441,7 @@ Local source checkout: `npm ci`, then `node scripts/link-dsh.mjs`, then restart 
 See [Unreleased changes and rollback steps](docs/UNRELEASED.md) for development additions, improvements, removals, and data compatibility. Each published version has its own bilingual notes.
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
+- Local release candidate: **0.9.4** (not yet published) · [Candidate notes](docs/release-0.9.4.en.md)
 - Published package: `0.9.3` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.3) · [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.3)
 - Tested host: `@deepseek-ai/dsh@0.2.2-rc.1` (launched and exercised on 2026-11-10: panel renders, `/status` and the proposal routes answer, zero console errors; earlier releases were verified on 0.2.1-rc.4/rc.5). The peer range also admits the 0.1.x lines.
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)

@@ -94,7 +94,7 @@ npm 0.9.3 固定 `triviumdb@0.9.3`。隔离 Web 已验格式 15 留存后原位�
 
 依据：[0.9.0](https://github.com/YoKONCy/TriviumDB/blob/v0.9.0/docs/changes/0.9.0.md)、[0.9.1 说明](https://github.com/YoKONCy/TriviumDB/blob/46f767f8c5befeb7da091267f2b19052f3cba8d9/docs/changes/0.9.1.md)、[文档模型](https://github.com/YoKONCy/TriviumDB/blob/46f767f8c5befeb7da091267f2b19052f3cba8d9/docs/documents.md)、[命名图](https://github.com/YoKONCy/TriviumDB/blob/46f767f8c5befeb7da091267f2b19052f3cba8d9/docs/named-graphs.md)。表中是从能力推导的产品候选，尚不是本插件的实测收益。
 
-最值得先试：**任务相关记忆包 → 事实变更订阅 → 文档证据记忆**。文档依据首版已在合成库验证修订、删除和引用范围；后续评估自动导入和命名图，再考虑会话抽取接入。
+任务记忆包已提供按需读取；0.9.4 本地候选增加显式保存基线后查看净变化，以及按选定来源找原文、重复引用分组展示。事实变更订阅、自动导入、命名图和会话抽取接入仍是后续评估项，不计为已交付。 [候选边界](release-0.9.4.md)
 
 ## 5. 仍开放的问题
 

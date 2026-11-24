@@ -12,6 +12,8 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 >
 > 当前 npm 发布版是 **0.9.3**。本版新增首次写入保护、双语证据检索和目录导入。 [发布说明](docs/release-0.9.3.md)
 
+> 本地 **0.9.4 发布候选**尚未发布，新增显式任务基线、按选定来源查原文、重复引用分组展示，并修复两处 1,000 行读取边界。 [候选说明](docs/release-0.9.4.md)
+
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
 ---
@@ -75,6 +77,8 @@ dsh plugin --profile desktop add dsh-trivium@0.9.3 --ignore-scripts
 ```
 
 Web 使用 `--profile web`。需要回退时先用 0.9.3 的 `rollback` 恢复旧库，再装回原版插件。升级后产生的写入保存在 `after`。 [回退说明](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md#回退)
+
+已经随 0.9.3 完成内核升级的现有库，切换到 0.9.4 无需再次准备或迁移；尚在旧内核的库仍按上面的升级指南操作。
 
 ## 卸载
 
@@ -386,10 +390,13 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 实体范围面板分开返回词面和语义候选，查询 embedding 按需开启，记忆包预算默认 0。0.9.1 支持按名称或别名定位，有多个命中时可选定实体后再检索。`ctx_find` 可显式指定实体，返回紧凑记忆包，或按游标只取变化。[接口和参数](docs/read-api.md#按需任务记忆091)
 
+0.9.4 的「上下文 → 任务记忆变更」可为一个实体显式保存基线，再比较当前事实的净变化；不会订阅事件或自动注入。「上下文 → 文档依据」可选择最多八个已保存来源，查找确切修订的原文片段。合并展示相同引用，但保留每个事实的关联。 [任务基线](docs/read-api.md#任务记忆变更) · [来源检索](docs/read-api.md#在选定文档来源内查找原文)
+
 上述真实模型样本不能证明模型总会调用工具、完整会话效果或普遍降低成本。旧 D0 部分对照臂重复种植，D1 的 `0.51×` 模拟未计入完整注入历史和短地图；应按[独立审查](docs/HISTORY.md)的限制解读。
 
 ## 更新说明
 
+- [0.9.4（本地候选）](docs/release-0.9.4.md) 新增任务记忆变更基线、按确切修订找原文和重复引用分组，修复读路径的行数边界。
 - [0.9.3](docs/release-0.9.3.md) 补上已有库的首次写入保护、双语证据和同任务续接，并将目录导入接到文档依据面板。
 - [0.9.2](docs/release-0.9.2.md) 交付 TDB 0.9.2、离线迁移与回退，改进跨语言追问、数字引用、文档定向复核和后台抽取防回显。
 - [0.9.1](docs/release-0.9.1.md) 加入实体名称查找、紧凑记忆包和变化游标、文档依据、本机 Worker 交接，并改进设置隔离、写入恢复、候选复核和按范围读取。
@@ -439,6 +446,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 开发分支的新增、改进、移除及数据兼容见[开发中变更与回退步骤](docs/UNRELEASED.md)。每个正式版本另有双语发布说明。
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
+- 本地发布候选：**0.9.4**（尚未发布） · [候选说明](docs/release-0.9.4.md)
 - 已发布包：`0.9.3` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.3) · [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.3)
 - 测试宿主：`@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证：面板可开、`/status` 与提案接口应答、控制台零报错；更早版本在 0.2.1-rc.4/rc.5 上验证过）。peer 范围同时接受 0.1.x 各线。
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
