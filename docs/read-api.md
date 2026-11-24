@@ -410,3 +410,20 @@ In the current source, `ctx_find` accepts `followup_cursor` for a brief repeat o
 - `POST /api/dsh-trivium/document-evidence/directory?cwd=…` 接收 `{dir,previewId}`。确认时重新核对该目录的文件和现有来源修订，有变化返回 409 `DOCUMENT_DIRECTORY_CHANGED`，需重新预览。已成功逐项保存的来源列于 `added`、`updated`，其余查看 `unchanged`、`skipped`。
 - 来源按规范化导入根目录与文件相对路径区分。已有未分目录的来源和旧引用保留原 ID，首次用新入口导入会单独建立来源。从磁盘移除文件不会删除库中的来源。
 - `updated` 中的 `affectedFactIds` 是该来源首个关联页内待复核的事实 ID。`moreLinks` 表示还有后续关联，`reviewUnavailable` 表示已保存修订但需重新读取复核状态。面板可按来源和事实打开原引用与新修订对照。
+
+## 任务记忆变更（开发分支）
+
+在「上下文 → 任务记忆变更」选择明确的当前实体，点击「查看变化」。第一次没有基线；只有点击「保存当前为基线」，才会原子保存此次展示的比较位置。再次查看会列出**净变化**：新增/进入范围、正文或关系更新、替代、归档、到期、离开范围。离开范围不表示已删除；既发生又撤回的中间事件也不保证出现。可从「已保存的基线」忘记不再可查的实体基线。
+
+- `GET /api/dsh-trivium/task-changes?cwd=…&entityId=123` 预览，返回 `viewRevision`、当前范围、上一次基线及变化。省略 `entityId` 列出基线，包括各自的 `forgetRevision`。
+- `POST /api/dsh-trivium/task-changes?cwd=…` 接收 `{entityId,viewRevision,action:"remember"}`。忘记用 `action:"forget"`，将展示出的 `forgetRevision` 作为请求的 `viewRevision`。两者均以单独回执为准，旧标记及预览后发生的变更会被拒为 409。
+- 只使用明确、已打开的工作区和一跳当前事实；保留已有工作预算，单个比较最多 128 个当前事实（含实体），每工作区最多 32 个基线。超限、读文件异常或身份无法验证时不会当作“没有变化”，也不会自动清除。
+- 比较位置在工作区本地的 `.dsh/trivium.task-checkpoints.json`，只保存身份和版本哈希，不复制原文。它不是 TDB 事实、备份或完整审计，不会进入模型上下文；不改变 `ctx_find` 的短时追问 Cursor、自动召回、工具或默认开关。
+
+## 在选定文档来源内查找原文（开发分支）
+
+「上下文 → 文档依据 → 按已保存来源找原文」可同时选择 1–8 个已导入来源。相同文件名在不同目录仍分别显示，结果呈现各自的来源、修订和原文位置。选择过程中来源若已修订，应刷新列表再查，不会悄悄改读当前版本。
+
+- `GET /api/dsh-trivium/document-evidence?cwd=…&sourcesOnly=1` 分页读取来源目录，无需扫描引用；续页可带 `documentAfter`。
+- `POST /api/dsh-trivium/document-evidence/search-sources?cwd=…` 接收 `{sources:[{sourceId,documentId,revision}],query,limit,budgetTokens}`。默认 8 条片段、600 估算 token。查找只针对列出的精确修订；返回 UTF-8 字节区间和可定位原文、覆盖范围和截断提示。不会判断候选能否回答问题，不调用模型或 embedding。
+- 现有依据入口带 `groupCitations=1` 时，增加紧凑的 `citationGroups`（组键和原各 `evidenceIds`）。同来源、同文档、同修订、同字节区间和完全相同原文才合并展示；每份事实引用、ID、待复核状态和修订对照均保留。面板在已加载窗口内跨页合并，不删除持久化引用。
