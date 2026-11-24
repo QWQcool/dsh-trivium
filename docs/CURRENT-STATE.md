@@ -6,7 +6,6 @@
 
 | 范围 | 状态 |
 |---|---|
-| 本地发布候选 | `dsh-trivium@0.9.4` @ 当前 main：修 0.9.3 上不可用的两个读接口（`orphanEntities`、`limit=1000` 的实时 TQL）；登记发布后本行改为已发布 |
 | npm 发布包 | 正式版 `latest = 0.9.3`，运行内核 TDB 0.9.3，tag `v0.9.3`。GitHub Release 附件与 npm registry 的已验收 tarball 逐字节一致。 [发布回执](release-0.9.3.md#发布回执) · [English](release-0.9.3.en.md#publication-receipt) |
 | 0.9.3 功能基线 | `1fe3c6e` 交付已有库首次可写打开保护、双语证据检索、目录导入和交接读写分权。 [版本说明](release-0.9.3.md) |
 | 0.9.2 功能基线 | `ad3499b` 补齐离线迁移、跨语言追问、全量包数字引用、文档定向复核和自动召回防回显。历史实验的执行版本见各自的结果文件。 |
