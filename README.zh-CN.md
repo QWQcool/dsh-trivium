@@ -6,13 +6,11 @@
 
 DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注入，设置页可改可归档。内核贴近 DSH：不另起进程、默认不加导航。要钉住某些记忆片段，再在设置里打开 **芯片** 注入；情节画布是可选的自嗨层，嵌在芯片开关下。每个工作区一个 `.dsh/trivium.tdb`，不另起服务。
 
-> **已有库升级到 0.9.3 前**，先退出所有宿主。格式 15 运行 `dsh-trivium-upgrade prepare` 留存旧库，格式 13 走离线迁移。 [升级说明](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md)
+> **已有库首次升级到 TDB 0.9.3 前**，先退出所有宿主。格式 15 运行 `dsh-trivium-upgrade prepare` 留存旧库，格式 13 走离线迁移。 [升级说明](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md)
 >
 > **新工作区快速安装**可运行 `dsh plugin --profile web add dsh-trivium`，重启 **dsh web** 后打开工作区。设置页会出现「Trivium 记忆」。 [安装](#安装)
 >
-> 当前 npm 发布版是 **0.9.3**。本版新增首次写入保护、双语证据检索和目录导入。 [发布说明](docs/release-0.9.3.md)
-
-> 本地 **0.9.4 发布候选**尚未发布，新增显式任务基线、按选定来源查原文、重复引用分组展示，并修复两处 1,000 行读取边界。 [候选说明](docs/release-0.9.4.md)
+> 当前 npm 发布版是 **0.9.4**。新增显式任务基线、按选定来源查原文、重复引用分组展示，并修复两处 1,000 行读取边界。 [发布说明](docs/release-0.9.4.md)
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -68,12 +66,12 @@ npm test              # 可选：跑全部离线 smoke
 
 ## 更新
 
-升级到 0.9.3 前，先完全退出使用该工作区的所有宿主，包括桌面托盘。用 0.9.3 的升级命令运行 `status` 和 `check`。格式 15 运行 `prepare`，格式 13 用官方转换器运行 `migrate`。确认 `phase: active`、`targetKernel: 0.9.3` 和旧库 `before` 后再开新版。 [升级、失败恢复与回退](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md)
+首次切换到 TDB 0.9.3 前，先完全退出使用该工作区的所有宿主，包括桌面托盘。用 0.9.3 的升级命令运行 `status` 和 `check`。格式 15 运行 `prepare`，格式 13 用官方转换器运行 `migrate`。确认 `phase: active`、`targetKernel: 0.9.3` 和旧库 `before` 后再开新版。 [升级、失败恢复与回退](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md)
 
 用 `add` 在原 profile 直接替换插件，可避开旧 0.8.9 会删除记忆的卸载钩子。
 
 ```sh
-dsh plugin --profile desktop add dsh-trivium@0.9.3 --ignore-scripts
+dsh plugin --profile desktop add dsh-trivium@0.9.4 --ignore-scripts
 ```
 
 Web 使用 `--profile web`。需要回退时先用 0.9.3 的 `rollback` 恢复旧库，再装回原版插件。升级后产生的写入保存在 `after`。 [回退说明](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md#回退)
@@ -396,7 +394,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 ## 更新说明
 
-- [0.9.4（本地候选）](docs/release-0.9.4.md) 新增任务记忆变更基线、按确切修订找原文和重复引用分组，修复读路径的行数边界。
+- [0.9.4](docs/release-0.9.4.md) 新增任务记忆变更基线、按确切修订找原文和重复引用分组，修复读路径的行数边界。
 - [0.9.3](docs/release-0.9.3.md) 补上已有库的首次写入保护、双语证据和同任务续接，并将目录导入接到文档依据面板。
 - [0.9.2](docs/release-0.9.2.md) 交付 TDB 0.9.2、离线迁移与回退，改进跨语言追问、数字引用、文档定向复核和后台抽取防回显。
 - [0.9.1](docs/release-0.9.1.md) 加入实体名称查找、紧凑记忆包和变化游标、文档依据、本机 Worker 交接，并改进设置隔离、写入恢复、候选复核和按范围读取。
@@ -446,8 +444,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 开发分支的新增、改进、移除及数据兼容见[开发中变更与回退步骤](docs/UNRELEASED.md)。每个正式版本另有双语发布说明。
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 本地发布候选：**0.9.4**（尚未发布） · [候选说明](docs/release-0.9.4.md)
-- 已发布包：`0.9.3` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.3) · [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.3)
+- 已发布包：`0.9.4` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.4) · [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.4)
 - 测试宿主：`@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证：面板可开、`/status` 与提案接口应答、控制台零报错；更早版本在 0.2.1-rc.4/rc.5 上验证过）。peer 范围同时接受 0.1.x 各线。
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 

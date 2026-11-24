@@ -6,8 +6,7 @@
 
 | 范围 | 记录 |
 |---|---|
-| 已发布包 | `dsh-trivium@0.9.3`，tag `v0.9.3`。 [中文发布回执](release-0.9.3.md) · [English](release-0.9.3.en.md) |
-| 本地发布候选 | 0.9.4，尚未发布。 [中文候选说明](release-0.9.4.md) · [English](release-0.9.4.en.md) |
+| 已发布包 | `dsh-trivium@0.9.4`，tag `v0.9.4`。 [中文发布回执](release-0.9.4.md) · [English](release-0.9.4.en.md) |
 | 运行依赖 | npm 包固定 `triviumdb@0.9.3`。已有格式 15 库先留存再打开，格式 13 走离线迁移。 [内核升级、失败恢复与回退](kernel-upgrade.md) |
 | 已验证宿主 | Web `0.2.2-rc.1`；桌面 `0.2.2-rc.3` 隔离宿主已验证源码包，具体边界见当前状态 |
 

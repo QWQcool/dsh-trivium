@@ -1,6 +1,6 @@
 # dsh-trivium 0.9.4
 
-**Local release candidate, not yet published.** The npm registry baseline remains `dsh-trivium@0.9.3`. [中文](release-0.9.4.md)
+Published on npm under `latest` on 2026-11-24. [中文](release-0.9.4.md)
 
 ## Added
 
@@ -22,10 +22,19 @@ None.
 
 ## Upgrade, compatibility, and data
 
-The candidate still pins `triviumdb@0.9.3`. No TDB format, default switch, `DIM`, or four-tool contract change; no additional `prepare` or `migrate` step is required for an already-upgraded 0.9.3 library. If your older library has not yet been upgraded to TDB 0.9.3, follow the [existing upgrade and rollback guide](kernel-upgrade.md#english). Node remains `^22.19.0 || >=24`.
+The release still pins `triviumdb@0.9.3`. No TDB format, default switch, `DIM`, or four-tool contract change; no additional `prepare` or `migrate` step is required for an already-upgraded 0.9.3 library. If your older library has not yet been upgraded to TDB 0.9.3, follow the [existing upgrade and rollback guide](kernel-upgrade.md#english). Node remains `^22.19.0 || >=24`.
 
 Saving or forgetting a task baseline modifies only the new workspace-local sidecar. Keep that file if you want its baselines available after reinstalling a compatible version. It is not part of the TDB fact store or a snapshot of it. The source search and citation grouping do not rewrite saved sources, facts, or evidence links. Existing APIs remain available; the new source and checkpoint operations are explicit.
 
 ## Verification scope
 
-Release checks are tracked separately from this candidate note. No new claim is made here about retrieval quality, model answers, latency across platforms, a registry publication, or a release tag.
+The 0.9.4 release passed **111/111** aggregate checks; the focused suites passed **P91 14/14**, **P93 17/17** and **P97 29/29**. The release also passed **31** isolated official Web HTTP checks, **13** clean-consumer checks against the actual tarball, and **3** official Web GUI scenarios in headless mode without an account.
+Read/write compatibility with 0.9.3 was checked on an isolated fixture. This is not new evidence about model-answer quality, cross-platform latency, or an upgrade of a user’s existing workspace.
+
+## Publication receipt
+
+- Published as `dsh-trivium@0.9.4` under `latest` at `2026-11-24T06:45:03.847Z`. [npm version page](https://www.npmjs.com/package/dsh-trivium/v/0.9.4)
+- Tag `v0.9.4` points to `1a66a30f02db66c2ab696b61a9b129cf00a75c5c`. [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.4) · [Release archive](https://github.com/QWQcool/dsh-trivium/releases/download/v0.9.4/dsh-trivium-0.9.4.tgz)
+- The release archive has 72 files and 388336 bytes. SHA-256 `6bf8770c8b19c9b057733b061cae63d1601fd52169b441772c91435d8093905b`; npm SHA-1 `9fd012a74e4f425f6b68eaedaca17e8604185ddb`.
+- npm integrity `sha512-x9uhpce8K/c55BSio7YnoP8OjQt84+of5ku3N2Unrux+iqFmOWXi9fRFnf9k781LfBx3MlYtPdtx6ssgc3v3Sw==`.
+- The tested archive was published unchanged. The bundled READMEs retain the candidate wording from when it was packed; the repository READMEs record the confirmed publication. [Structured receipt](reviews/NPM-RELEASE-0.9.4-2026-11-24.json)

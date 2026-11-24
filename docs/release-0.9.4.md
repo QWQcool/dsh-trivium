@@ -1,6 +1,6 @@
 # dsh-trivium 0.9.4
 
-**本地发布候选，尚未发布。** npm Registry 上的已发布基线仍为 `dsh-trivium@0.9.3`。 [English](release-0.9.4.en.md)
+2026-11-24 已在 npm 发布并设为 `latest`。 [English](release-0.9.4.en.md)
 
 ## 新增
 
@@ -22,10 +22,19 @@
 
 ## 升级、兼容与数据
 
-候选包仍固定 `triviumdb@0.9.3`，不更改 TDB 数据格式、默认开关、`DIM` 或四工具契约。已随插件 0.9.3 完成内核升级的库，无需再执行 `prepare` 或 `migrate`。尚未升级到 TDB 0.9.3 的旧库仍按[原升级与回退指南](kernel-upgrade.md)处理。Node 要求仍为 `^22.19.0 || >=24`。
+发布包仍固定 `triviumdb@0.9.3`，不更改 TDB 数据格式、默认开关、`DIM` 或四工具契约。已随插件 0.9.3 完成内核升级的库，无需再执行 `prepare` 或 `migrate`。尚未升级到 TDB 0.9.3 的旧库仍按[原升级与回退指南](kernel-upgrade.md)处理。Node 要求仍为 `^22.19.0 || >=24`。
 
 保存或忘记任务基线只写入新增的工作区侧车文件。希望重装兼容版本后仍能使用基线，请保留这份文件；它不属于 TDB 事实库，也不是事实库快照。来源检索和引用分组不会改写保存的来源、事实或引用关联。既有接口保留，新增的来源检索和检查点操作均由用户显式执行。
 
 ## 验收范围
 
-发布检查另行记录。这份候选说明不新增检索质量、模型回答、跨平台性能、Registry 发布或发布标签方面的结论。
+0.9.4 完整回归 **111/111**；专项 **P91 14/14**、**P93 17/17**、**P97 29/29**。另通过官方隔离 Web 的 **31** 项 HTTP 检查、实际 tarball 的 **13** 项干净消费测试，以及不登录账号的官方 Web 无头 GUI **3** 个场景。
+已在隔离测试库验证与 0.9.3 的读写兼容性。这些结果不代表新的模型回答质量、跨平台性能或用户已有工作区升级实测。
+
+## 发布回执
+
+- npm 在 `2026-11-24T06:45:03.847Z` 发布 `dsh-trivium@0.9.4`，设为 `latest`。 [npm 版本页](https://www.npmjs.com/package/dsh-trivium/v/0.9.4)
+- 标签 `v0.9.4` 指向 `1a66a30f02db66c2ab696b61a9b129cf00a75c5c`。 [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.4) · [发布附件](https://github.com/QWQcool/dsh-trivium/releases/download/v0.9.4/dsh-trivium-0.9.4.tgz)
+- 成品含 72 个文件，共 388336 字节。SHA-256 `6bf8770c8b19c9b057733b061cae63d1601fd52169b441772c91435d8093905b`；npm SHA-1 `9fd012a74e4f425f6b68eaedaca17e8604185ddb`。
+- npm integrity `sha512-x9uhpce8K/c55BSio7YnoP8OjQt84+of5ku3N2Unrux+iqFmOWXi9fRFnf9k781LfBx3MlYtPdtx6ssgc3v3Sw==`。
+- 已验收的 tarball 原样发布。包内 README 保留打包时的候选状态，仓库 README 记录已核实的发布状态。 [结构化回执](reviews/NPM-RELEASE-0.9.4-2026-11-24.json)

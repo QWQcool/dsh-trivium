@@ -1,0 +1,49 @@
+{
+  "recordedAt": "2026-11-24T06:51:00.346Z",
+  "package": "dsh-trivium",
+  "version": "0.9.4",
+  "registry": "https://registry.npmjs.org",
+  "npmUrl": "https://www.npmjs.com/package/dsh-trivium/v/0.9.4",
+  "publishedAt": "2026-11-24T06:45:03.847Z",
+  "distTags": {
+    "latest": "0.9.4"
+  },
+  "sourceCommit": "1a66a30f02db66c2ab696b61a9b129cf00a75c5c",
+  "tag": "v0.9.4",
+  "kernel": "0.9.3",
+  "artifact": {
+    "tarball": "https://registry.npmjs.org/dsh-trivium/-/dsh-trivium-0.9.4.tgz",
+    "githubRelease": "https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.4",
+    "githubAsset": "https://github.com/QWQcool/dsh-trivium/releases/download/v0.9.4/dsh-trivium-0.9.4.tgz",
+    "githubReleasePublishedAt": "2026-11-24T06:49:04Z",
+    "bytes": 388336,
+    "files": 72,
+    "sha1": "9fd012a74e4f425f6b68eaedaca17e8604185ddb",
+    "sha256": "6bf8770c8b19c9b057733b061cae63d1601fd52169b441772c91435d8093905b",
+    "integrity": "sha512-x9uhpce8K/c55BSio7YnoP8OjQt84+of5ku3N2Unrux+iqFmOWXi9fRFnf9k781LfBx3MlYtPdtx6ssgc3v3Sw==",
+    "downloadedNpmBytesMatch": true,
+    "downloadedGithubBytesMatch": true
+  },
+  "verification": {
+    "fullRegression": "111/111",
+    "docs": "14/14",
+    "p93": "17/17",
+    "p97": "29/29",
+    "isolatedOfficialWebHttp": "31/31",
+    "exactTarballCleanConsumer": "13/13",
+    "officialWebHeadlessGui": {
+      "scenarios": 3,
+      "accountRequired": false
+    },
+    "isolatedCompatibility": {
+      "with": "0.9.3",
+      "readWrite": true
+    },
+    "limits": "No model-answer quality, cross-platform latency or migration evidence is claimed from these release checks."
+  },
+  "git": {
+    "annotatedTagObject": "af87c46902790f7d8e1ae90f6c67eef726ddb839",
+    "tagTarget": "1a66a30f02db66c2ab696b61a9b129cf00a75c5c",
+    "remoteVerified": true
+  }
+}
