@@ -175,9 +175,15 @@
     });
 
     const large = open("large");
-    for (let id = 1; id <= READ_QUERY_MAX_NODES + 1; id++) {
+    for (let id = 1; id <= READ_QUERY_MAX_NODES; id++) {
       large.insertWithId(id, [1, 0], { type: "entity", name: `entity-${id}` });
     }
+    check("an orphan scan refuses exactly 1000 candidates", () => {
+      assert.equal(large.nodeCount(), READ_QUERY_MAX_NODES);
+      rejects(() => executeReadQuery(large, { kind: "orphanEntities", limit: 1 }), 422, "READ_QUERY_WORK_LIMIT");
+    });
+    const overBudgetId = READ_QUERY_MAX_NODES + 1;
+    large.insertWithId(overBudgetId, [1, 0], { type: "entity", name: "entity-" + overBudgetId });
     check("raw scans and excessive orphan candidates retain their work limits", () => {
       for (const body of [{ kind: "nodes", limit: 1 }, { kind: "orphanEntities", limit: 1 }]) {
         rejects(() => executeReadQuery(large, body), 422, "READ_QUERY_WORK_LIMIT");
@@ -938,6 +944,19 @@
       assert.deepEqual(result.rows, [{ id: 1 }]);
       assert.equal(result.truncated, true);
     });
+    check("only a full result at the live row cap is conservatively truncated", () => {
+      const boundary = open("at-row-cap");
+      const body = { tql: "MATCH (n) RETURN n.id AS id", limit: 1000, timeoutMs: 50 };
+      for (let id = 1; id < body.limit; id++) boundary.insertWithId(id, [1, 0], { type: "entity" });
+      const below = executeLiveTql(boundary, body);
+      assert.equal(below.rowCount, 999);
+      assert.equal(below.truncated, false);
+      boundary.insertWithId(body.limit, [1, 0], { type: "entity" });
+      const full = executeLiveTql(boundary, body);
+      assert.equal(full.rowCount, 1000);
+      assert.equal(full.truncated, true);
+      assert.equal(full.truncationReason, undefined);
+    });
     check("a store over 1000 nodes has no admission gate and still supports bound point reads", () => {
       const result = executeLiveTql(large, {
         tql: "MATCH (n) WHERE n.name == $name RETURN n.id AS id",
@@ -1021,6 +1040,18 @@
         assert.ok(executions >= 1 && executions <= 6);
         if (code !== "TDB_CONSOLE_RESPONSE_TOO_LARGE") assert.equal(executions, 1);
       }
+    });
+    check("a successful response-byte retry still reports truncation at limit 1000", () => {
+      const wide = open("wide-at-row-cap");
+      const text = "x".repeat(1800);
+      for (let id = 1; id <= 300; id++) wide.insertWithId(id, [1, 0], { type: "entity", text });
+      const tql = "MATCH (n) RETURN n.text AS text";
+      // The full response exceeds the native byte cap, but a smaller retry fits.
+      const result = executeLiveTql(wide, { tql, limit: 1000, timeoutMs: 50 });
+      assert.ok(result.rowCount > 0 && result.rowCount < wide.nodeCount());
+      assert.equal(result.truncated, true);
+      assert.equal(result.truncationReason, "response-byte-budget");
+      assert.ok(Buffer.byteLength(JSON.stringify(result)) <= LIVE_TQL_RESPONSE_BYTES);
     });
     check("wide 585-node, 1536-dimension Issue JOIN works for small and default display limits", () => {
       const wide = open("wide", { dim: 1536 });
