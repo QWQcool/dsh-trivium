@@ -36,17 +36,36 @@ async function check(fn, label) {
 
 const cwd = join(root, 'ws');
 const db = await store.openWorkspaceDb(cwd);
-const options = { mapTokenBudget: 400 };
+const handlers = new Map();
+const ctx = {
+  logger: () => ({ warn() {}, info() {}, error() {} }),
+  inject(_deps, fn) { fn(ctx); },
+  effect(fn) { fn(); },
+  on(event, handler) { handlers.set(event, handler); return () => {}; },
+  tools: { register() { return () => {}; } },
+};
+plugin.apply(ctx, {});
+const preStep = handlers.get('agent/pre-step');
 
 function fakeAgent(id) {
   const agent = {
     session: { id, header: { cwd } },
     injected: [],
-    inject(message) { agent.injected.push(message); },
+    inject() { assert.fail('map must not be queued directly'); },
   };
   return agent;
 }
 const textOf = (message) => (message?.content || []).map((block) => block?.text || '').join('\n');
+async function runStep(agent, turnKey) {
+  const messages = turnKey ? [{ id: turnKey, role: 'user', source: { kind: 'user' },
+    content: [{ type: 'text', text: 'Fixture question' }] }] : [];
+  const status = plugin.workspaceStatus(cwd);
+  const before = status.lastMapInjection;
+  const actual = await preStep({ agent, messages }, () => ({ kind: 'enter', messages }));
+  const delivered = actual.messages.filter(m => /^dsh-trivium memory map/.test(textOf(m)));
+  agent.injected.push(...delivered);
+  return status.lastMapInjection !== before ? status.lastMapInjection : null;
+}
 
 try {
   // Five noise entities keep the map at exactly its eight slots once the three
@@ -59,7 +78,7 @@ try {
   ];
 
   const agent = fakeAgent('sess-p74');
-  await plugin.ensureShortMap(agent, options);
+  await runStep(agent, 'turn-1');
   const firstText = textOf(agent.injected[0]);
   const fullTokens = store.buildShortMapReport(db, 400).tokens;
   await check(() => assert.equal(agent.injected.length, 1), 'the first turn injects the map');
@@ -79,7 +98,7 @@ try {
   // Three quiet turns: same database, only the turn key moves.
   const quiet = [];
   for (const turnKey of ['turn-2', 'turn-3', 'turn-4']) {
-    const plan = plugin.refreshShortMap(agent, db, options, turnKey);
+    const plan = await runStep(agent, turnKey);
     quiet.push({ turnKey, plan });
   }
   const quietTokens = quiet.reduce((sum, row) => sum + Number(row.plan?.tokens || 0), 0);
@@ -97,12 +116,12 @@ try {
   );
 
   // Same user turn re-entered (tool loop): no counter movement, no injection.
-  await check(() => assert.equal(plugin.refreshShortMap(agent, db, options, 'turn-4'), null), 'a repeated pre-step in the same turn does nothing');
+  await check(async () => assert.equal(await runStep(agent, 'turn-4'), null), 'a repeated pre-step in the same turn does nothing');
   await check(() => assert.equal(agent.injected.length, 1), 'the repeated pre-step injects nothing');
 
   // A new fact: summary + diff line.
   const added = store.insertNode(db, { type: 'decision', name: 'release-train', text: 'release-train' });
-  const changedPlan = plugin.refreshShortMap(agent, db, options, 'turn-5');
+  const changedPlan = await runStep(agent, 'turn-5');
   const changedText = textOf(agent.injected[agent.injected.length - 1]);
   await check(() => assert.equal(changedPlan?.mode, 'diff'), 'a changed fact set injects a diff');
   await check(() => assert.equal(agent.injected.length, 2), 'exactly one new message is injected');
@@ -115,7 +134,7 @@ try {
   // A retired fact shows up as a removal.
   const { archiveNode } = store;
   archiveNode(db, added);
-  const retirePlan = plugin.refreshShortMap(agent, db, options, 'turn-6');
+  const retirePlan = await runStep(agent, 'turn-6');
   const retireText = textOf(agent.injected[agent.injected.length - 1]);
   await check(() => assert.equal(retirePlan?.mode, 'diff'), 'a retired fact injects a diff');
   await check(() => assert.ok(retireText.includes('-decision:release-train')), `the retired fact is listed as removed (got ${retireText})`);
@@ -176,36 +195,21 @@ try {
    * (2026-11-06, measured twice), which buys a forced full map every second turn.
    */
   const beforeDeltas = agent.injected.length;
-  const deltas = [1, 2, 3].map(() => plugin.refreshShortMap(agent, db, options, ''));
+  const deltas = [];
+  for (let i = 0; i < 3; i++) deltas.push(await runStep(agent, ''));
   await check(() => assert.deepEqual(deltas, [null, null, null]), 'pre-steps without a user message do not move the counter');
   await check(() => assert.equal(agent.injected.length, beforeDeltas), 'those pre-steps inject nothing');
-  await check(() => assert.ok(plugin.refreshShortMap(agent, db, options, 'turn-7')), 'the next real turn still refreshes');
+  await check(async () => assert.ok(await runStep(agent, 'turn-7')), 'the next real turn still refreshes');
 
-  /*
-   * F86-01 (external review, 2026-11-06): a host that never exposes a user
-   * message keeps writing "" into `previous.turnKey`, so the anchor is missing
-   * and six empty pre-steps walked 1 -> 2 -> 3 -> 4 -> 5 -> full/refresh.
-   * The first empty observation may start a turn; the rest may not.
-   */
+  // F86-01: producer-only/empty steps do not start a map cycle, not even
+  // before the first real message. A real human step can still get the full map.
   const keyless = fakeAgent('sess-p74-keyless');
-  await plugin.ensureShortMap(keyless, options);
-  const keylessInjections = keyless.injected.length;
-  const firstEmpty = plugin.refreshShortMap(keyless, db, options, '');
-  const restEmpty = [1, 2, 3, 4, 5].map(() => plugin.refreshShortMap(keyless, db, options, ''));
-  await check(() => assert.ok(firstEmpty), 'a key-less host still gets its first refresh');
-  await check(
-    () => assert.deepEqual(restEmpty, [null, null, null, null, null]),
-    'repeated empty observations do not move the counter',
-  );
-  await check(
-    () => assert.equal(keyless.injected.length, keylessInjections),
-    'six empty pre-steps never force a full refresh',
-  );
-  await check(
-    () => assert.ok(plugin.refreshShortMap(keyless, db, options, 'turn-after-keyless')),
-    'a real key still starts a new turn after empty observations',
-  );
-
+  const empty = [];
+  for (let i = 0; i < 6; i++) empty.push(await runStep(keyless, ''));
+  await check(() => assert.deepEqual(empty, Array(6).fill(null)), 'empty observations never move the counter');
+  await check(() => assert.equal(keyless.injected.length, 0), 'six empty pre-steps never inject a map');
+  await check(async () => assert.equal((await runStep(keyless, 'turn-after-keyless'))?.mode, 'full'),
+    'a real message still starts the map after empty observations');
 
   // F3 budget contracts consolidated from smoke-p88.
   const entry = (id, label) => ({ id, label });
