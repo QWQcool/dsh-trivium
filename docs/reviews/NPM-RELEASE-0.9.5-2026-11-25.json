@@ -1,0 +1,100 @@
+{
+  "recordedAt": "2026-11-25T03:45:42.119Z",
+  "package": "dsh-trivium",
+  "version": "0.9.5",
+  "registry": "https://registry.npmjs.org",
+  "npmUrl": "https://www.npmjs.com/package/dsh-trivium/v/0.9.5",
+  "publishedAt": "2026-11-25T03:30:25.291Z",
+  "distTags": {
+    "latest": "0.9.5"
+  },
+  "sourceCommit": "875e6556c980fe68b5ae34bdf88d61dac27f50b9",
+  "tag": "v0.9.5",
+  "kernel": "0.9.3",
+  "artifact": {
+    "tarball": "https://registry.npmjs.org/dsh-trivium/-/dsh-trivium-0.9.5.tgz",
+    "githubRelease": "https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.5",
+    "githubAsset": "https://github.com/QWQcool/dsh-trivium/releases/download/v0.9.5/dsh-trivium-0.9.5.tgz",
+    "githubReleasePublishedAt": "2026-11-25T03:41:46Z",
+    "githubReleaseId": 457623675,
+    "githubAssetId": 789925464,
+    "githubAssetDigest": "sha256:4dcae1988aaafac1fa3d584210a4c144e2cb900f3b5bbd41f6b54e55db54c93d",
+    "githubReleaseIsLatest": true,
+    "bytes": 392794,
+    "files": 74,
+    "sha1": "c86f731e4babe62613fba9ef8798454736e81a73",
+    "sha256": "4dcae1988aaafac1fa3d584210a4c144e2cb900f3b5bbd41f6b54e55db54c93d",
+    "integrity": "sha512-/YutcBCfDZqb0KosVUylgi0JgMA+1z4tEYVnTbaxpkHG9Z2xo1gpnrGJedKBag3TPhxe9zpr97mNvk8AUS+FPg==",
+    "downloadedNpmBytesMatch": true,
+    "downloadedGithubBytesMatch": true,
+    "fileListsMatch": true
+  },
+  "verification": {
+    "scope": "Exact sealed package and runtime at the tag; Windows with isolated test profiles and synthetic workspaces.",
+    "node": "v24.15.0",
+    "fullRegression": "115/115",
+    "docs": "14/14",
+    "p125": "13/13",
+    "p126": "8/8",
+    "p127": "passed",
+    "p128": "8/8",
+    "exactTarballCleanConsumer": "13/13",
+    "exactInstalledFileMatches": 74,
+    "cliHelp": "5/5",
+    "officialWindowsDSH": {
+      "version": "0.2.2-rc.5",
+      "issue10PendingReplay": {
+        "attempts": 2,
+        "reasoningEffort": [
+          "off",
+          "omitted"
+        ],
+        "maxTokens": 900,
+        "pendingAfter": 0,
+        "written": 1
+      },
+      "pull8MapOnlySteps": {
+        "mapOnlyStepsBefore": 1,
+        "mapOnlyStepsAfter": 0,
+        "modelCallsBefore": 5,
+        "modelCallsAfter": 4
+      },
+      "issue9NativeDimensionsAndWebSettings": {
+        "storedWidths": [
+          1024,
+          1536
+        ],
+        "existingLibraryToolWritesAndReads": true,
+        "invalidSaveHttp": 400,
+        "validSaveHttp": 200,
+        "persistedDefault": 768,
+        "requestDimensions": true
+      }
+    },
+    "limits": "No browser-click, real external model or embedding-provider, or cross-platform verification is claimed.",
+    "officialReadmeUpgrade": {
+      "os": "Windows",
+      "host": "0.2.2-rc.5",
+      "profile": "Fresh isolated Web profile",
+      "from": "0.9.4",
+      "to": "0.9.5",
+      "command": "dsh plugin --profile web add dsh-trivium@0.9.5 --ignore-scripts",
+      "confirmationCommand": "dsh plugin --profile web list dsh-trivium",
+      "installedWithoutRemoving": true,
+      "baselineInstallExit": 0,
+      "directUpgradeExit": 0,
+      "listExit": 0,
+      "finalInstalledVersion": "0.9.5",
+      "syntheticWorkspaceMarkerUnchanged": true,
+      "nonfatalPeerDependencyWarning": true,
+      "limits": "Package installation and upgrade only; no GUI or existing user profile."
+    }
+  },
+  "git": {
+    "annotatedTagObject": "8baacefc88614fac83fc7f11d92d1dea79d63bca",
+    "tagTarget": "875e6556c980fe68b5ae34bdf88d61dac27f50b9",
+    "remoteVerified": true,
+    "mainBeforeReceipt": "725f34042e969e99bb0b751d06e72f272f675b44",
+    "originalPull8Head": "b3fb905dee94fea3f72695e6af72e0bd9b86578e"
+  }
+}

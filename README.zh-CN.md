@@ -10,7 +10,7 @@ DeepSeek Harness 的进程内图记忆插件：按节点和边记，默认少注
 >
 > **新工作区快速安装**可运行 `dsh plugin --profile web add dsh-trivium`，重启 **dsh web** 后打开工作区。设置页会出现「Trivium 记忆」。 [安装](#安装)
 >
-> 当前 npm 发布版是 **0.9.4**。新增显式任务基线、按选定来源查原文、重复引用分组展示，并修复两处 1,000 行读取边界。 [发布说明](docs/release-0.9.4.md)
+> 当前 npm 发布版是 **0.9.5**。修复后台抽取对推理档位的兼容、短地图投递，以及无法打开 1024 等非默认维数现有库的问题。 [发布说明](docs/release-0.9.5.md)
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
@@ -66,21 +66,23 @@ npm test              # 可选：跑全部离线 smoke
 
 ## 更新
 
-首次切换到 TDB 0.9.3 前，先完全退出使用该工作区的所有宿主，包括桌面托盘。用 0.9.3 的升级命令运行 `status` 和 `check`。格式 15 运行 `prepare`，格式 13 用官方转换器运行 `migrate`。确认 `phase: active`、`targetKernel: 0.9.3` 和旧库 `before` 后再开新版。 [升级、失败恢复与回退](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md)
+1. 先停止正在使用该工作区的宿主。桌面版请完全退出（包括托盘进程）；Web 请停止当前运行的 `dsh web`。
+2. 在原 profile 内直接更新插件，不要先卸载。特别是 0.8.9 的旧卸载钩子可能删除记忆。
 
-用 `add` 在原 profile 直接替换插件，可避开旧 0.8.9 会删除记忆的卸载钩子。
+   ```sh
+   dsh plugin --profile desktop add dsh-trivium@0.9.5 --ignore-scripts
+   ```
 
-```sh
-dsh plugin --profile desktop add dsh-trivium@0.9.4 --ignore-scripts
-```
+   Web 用户运行 `dsh plugin --profile web add dsh-trivium@0.9.5 --ignore-scripts`。用 `dsh plugin --profile web list dsh-trivium` 核对版本；桌面版核对时改用 `--profile desktop`。
+3. 已经完成 TDB 0.9.3 升级的库，更新后重启桌面版或 `dsh web`，打开原工作区确认旧记忆可读即可。不用重装宿主、新建库或再次迁移。「设置 → 向量」可核对实际库维数，包括 1024。
 
-Web 使用 `--profile web`。需要回退时先用 0.9.3 的 `rollback` 恢复旧库，再装回原版插件。升级后产生的写入保存在 `after`。 [回退说明](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md#回退)
+如果工作区尚未升级到 TDB 0.9.3，请保持宿主已停止，先完整备份工作区的 `.dsh` 目录及整组数据库文件。用升级命令运行 `status` 和 `check`；需要首次可写保护的格式 15 库执行 `prepare`，格式 13 则用官方转换器执行 `migrate`。确认 `phase: active`、`targetKernel: 0.9.3` 且有保留的 `before` 目录后再重启。 [升级、失败恢复与回退](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md)
 
-已经随 0.9.3 完成内核升级的现有库，切换到 0.9.4 无需再次准备或迁移；尚在旧内核的库仍按上面的升级指南操作。
+此补丁不会重算库存向量。回退到插件 0.9.4 后仍无法打开 1024 维库。如果要撤销之前的内核升级，按指南执行 `rollback`；升级后的写入独立保留在 `after`。
 
 ## 卸载
 
-> **0.9.2 和 0.9.3 卸载默认保留记忆。** 旧的 npm 0.8.9 带有会删除记忆的卸载钩子，请先直接替换为新版再卸载。
+> **0.9.2 起卸载默认保留记忆。** 旧的 npm 0.8.9 带有会删除记忆的卸载钩子，请先直接替换为新版再卸载。
 
 停止宿主后可从对应 profile 卸载。
 
@@ -120,7 +122,7 @@ dsh plugin --profile web remove dsh-trivium
 
 官方 DeepSeek 对话接口没有 embeddings。不开 embedding 也能用关键词 + 图遍历。开关会保存；embedding 地址、模型和密钥需要点「保存设置」。如果设置保存后仍未生效，重启 `dsh web` 再检查。
 
-0.9.5 候选版「设置 → 向量」中的「新建记忆库的向量维数」（`embeddingDimensions`）默认 **1536**，请在建库前设置。现有库按原文件记录的维数（包括 1024）打开，不受此默认值影响。「在请求中发送 dimensions」（`embeddingRequestDimensions`）默认关闭，请仅在接口支持该参数时启用；关闭时需要让服务本身返回正确维数。维数不匹配时不会补零、截断或写入错误向量，关键词和图检索仍可用。库存向量和查询应使用同一个模型及同一套配置；维数一样不代表模型可以互换。这些设置不会迁移库或重算原有向量。
+0.9.5「设置 → 向量」里的「新建记忆库的向量维数」（`embeddingDimensions`）默认 **1536**，请在建库前设置。现有库按原文件记录的维数（包括 1024）打开，不受此默认值影响。「在请求中发送 dimensions」（`embeddingRequestDimensions`）默认关闭，请仅在接口支持该参数时启用；关闭时需要让服务本身返回正确维数。维数不匹配时不会补零、截断或写入错误向量，关键词和图检索仍可用。库存向量和查询应使用同一个模型及同一套配置；维数一样不代表模型可以互换。这些设置不会迁移库或重算原有向量。
 
 ## AI 时代安装
 
@@ -155,11 +157,11 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 - **进程内、一个文件** — TriviumDB（向量 + JSON payload + 有向带权图）随 DSH 进程打开。不另起 HTTP / Python 服务。
 - **只有四个工具** — `ctx_find` / `ctx_read` / `ctx_remember` / `ctx_link`。芯片 / 会话层不加第五个。
-- **短地图跟随人类输入步骤**（0.9.5 候选版）：附到宿主确认接纳的人类输入步骤，不排入 agent 收件箱，也不写入 system prompt。
+- **短地图跟随人类输入步骤**（0.9.5）：附到宿主确认接纳的人类输入步骤，不排入 agent 收件箱，也不写入 system prompt。
 - **召回带路径** — 每条命中都说明从哪个节点、沿哪条边过来。
 - **失败不挡主循环** — 存储 / embedding / 抽取出错只记日志，Agent 继续。
 - **界面跟随宿主语言** — 设置页和「芯片」标签随 DSH `locale/change` 切换（`zh` / `en`），也可在配置设置里锁定。其它已解析的宿主语言、以及浏览器未命名任何注册语言的情况，一律回落英文（与宿主自己的 `FALLBACK_LOCALE` 一致）。
-- **首轮短地图**（0.9.5 候选版）：短地图在首次符合条件、被宿主接纳的人类输入步骤生成并附上。刷新也等符合条件的步骤；生产者、后台和合成步骤不推进投递状态。
+- **首轮短地图**（0.9.5）：短地图在首次符合条件、被宿主接纳的人类输入步骤生成并附上。刷新也等符合条件的步骤；生产者、后台和合成步骤不推进投递状态。
 
 ## 功能
 
@@ -188,7 +190,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 | 选择 → 删除 | 从 `.tdb` 去掉，不可恢复 |
 | 已经发出去的轮次 | 不回写 |
 
-芯片按会话隔离。新开会话、fork 出的子会话默认都不勾。0.9.5 候选版的短地图随首次符合条件且被接纳的人类输入步骤投递，不占芯片位。
+芯片按会话隔离。新开会话、fork 出的子会话默认都不勾。0.9.5 的短地图随首次符合条件且被接纳的人类输入步骤投递，不占芯片位。
 
 其下 **会话层** 也默认关。打开后，同一标签里画出 compaction / 分叉方框（生成检查点、更新检查点、从方框 fork）。`episode` 不进 `ctx_find`。关掉会话层就停止写检查点，已有节点仍在 `.tdb`。
 
@@ -396,7 +398,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 ## 更新说明
 
-- [0.9.5 候选版](docs/release-0.9.5.md) 修复不支持推理档位 `off` 的接口抽取、短地图仅随确认的人类输入步骤投递、现有向量库按原维数打开。
+- [0.9.5](docs/release-0.9.5.md) 修复不支持推理档位 `off` 的接口抽取、短地图仅随确认的人类输入步骤投递、现有向量库按原维数打开。
 - [0.9.4](docs/release-0.9.4.md) 新增任务记忆变更基线、按确切修订找原文和重复引用分组，修复读路径的行数边界。
 - [0.9.3](docs/release-0.9.3.md) 补上已有库的首次写入保护、双语证据和同任务续接，并将目录导入接到文档依据面板。
 - [0.9.2](docs/release-0.9.2.md) 交付 TDB 0.9.2、离线迁移与回退，改进跨语言追问、数字引用、文档定向复核和后台抽取防回显。
@@ -447,9 +449,8 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 开发分支的新增、改进、移除及数据兼容见[开发中变更与回退步骤](docs/UNRELEASED.md)。每个正式版本另有双语发布说明。
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- 本地发布候选：`0.9.5`（尚未发布）· [候选说明](docs/release-0.9.5.md)
-- 已发布包：`0.9.4` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.4) · [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.4)
-- 测试宿主：`@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证：面板可开、`/status` 与提案接口应答、控制台零报错；更早版本在 0.2.1-rc.4/rc.5 上验证过）。peer 范围同时接受 0.1.x 各线。
+- 已发布包：`0.9.5` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.5) · [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.5)
+- 0.9.5 在 Windows 上用官方 DSH `0.2.2-rc.5` 的隔离 Web profile 与合成工作区验收。[验证范围](docs/release-0.9.5.md#验证边界)
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）
 
 ---

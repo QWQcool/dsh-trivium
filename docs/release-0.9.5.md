@@ -1,8 +1,8 @@
-# dsh-trivium 0.9.5 候选发布说明
+# dsh-trivium 0.9.5 发布说明
 
 [English](release-0.9.5.en.md)
 
-**本地发布候选，尚未发布。** 正式 npm 版本仍见[发布状态](README.md#发布状态)。本次保留 `triviumdb@0.9.3`，只处理三个已知问题。
+npm 已正式发布 `dsh-trivium@0.9.5`（`latest`）。本次保留 `triviumdb@0.9.3`，只处理三个已知问题。
 
 ## 新增
 
@@ -24,4 +24,12 @@
 
 ## 验证边界
 
-同一运行源码树在 Windows 离线回归通过 115/115（包含 P125–P128）。在隔离的官方 DeepSeek Harness 0.2.2-rc.5 中，仅含地图的独立步骤从 1 次降到 0 次，`/status` 显示实际库维数。这些是源码和隔离宿主结果，不是对 0.9.5 成品 tarball、独立安装、所有操作系统或外部模型服务的验证。
+同一运行源码树在 Windows 离线回归通过 115/115（含 P125–P128），文档检查 14/14、干净消费安装 13/13、CLI 帮助 5/5。封存的 tarball 在隔离的官方 DeepSeek Harness 0.2.2-rc.5 中全新安装：仅含地图的独立步骤由 1 次降到 0 次，下一条符合条件的人类步骤收到一次地图；现有 1024 和 1536 维库均保留旧记忆，可写入并读回，`/status` 显示实际维数；Web 设置接口拒绝无效维数，修改新库默认值不改变原库维数；用模拟接口拒绝推理档位 `off` 后，在同一模型上重试一次，抽取结果只写入一次。未覆盖浏览器界面、真实用户账户、外部 embedding 服务或其他操作系统。
+
+## 发布回执
+
+- npm 于 `2026-11-25T03:30:25.291Z` 发布并设为 `latest`。 [npm 版本页](https://www.npmjs.com/package/dsh-trivium/v/0.9.5)
+- [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.5) 于 `2026-11-25T03:41:46Z` 发布。附注标签 `v0.9.5`（`8baacefc88614fac83fc7f11d92d1dea79d63bca`）指向 `875e6556c980fe68b5ae34bdf88d61dac27f50b9`。
+- [发布附件](https://github.com/QWQcool/dsh-trivium/releases/download/v0.9.5/dsh-trivium-0.9.5.tgz) 与封存成品和 npm 下载逐字节一致：74 个文件、392,794 字节。SHA-256 `4dcae1988aaafac1fa3d584210a4c144e2cb900f3b5bbd41f6b54e55db54c93d`；npm SHA-1 `c86f731e4babe62613fba9ef8798454736e81a73`。
+- npm integrity `sha512-/YutcBCfDZqb0KosVUylgi0JgMA+1z4tEYVnTbaxpkHG9Z2xo1gpnrGJedKBag3TPhxe9zpr97mNvk8AUS+FPg==`。
+- 测试过的归档未经修改即发布。归档内的 README 保留封存时的候选文案；仓库 README 记录确认后的发布状态。 [结构化回执](reviews/NPM-RELEASE-0.9.5-2026-11-25.json)

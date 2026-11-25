@@ -6,8 +6,8 @@
 
 | 范围 | 状态 |
 |---|---|
-| npm 发布包 | 正式版 `latest = 0.9.4`，运行内核 TDB 0.9.3，tag `v0.9.4`。GitHub Release 附件与 npm 成品一致。 [发布回执](release-0.9.4.md#发布回执) · [English](release-0.9.4.en.md#publication-receipt) |
-| 本地发布候选 | `0.9.5`（尚未发布），修复 [#10](https://github.com/QWQcool/dsh-trivium/issues/10)、[#9](https://github.com/QWQcool/dsh-trivium/issues/9) 与 [PR #8](https://github.com/QWQcool/dsh-trivium/pull/8)，内核与默认开关不变。功能已合入 [main@725f340](https://github.com/QWQcool/dsh-trivium/commit/725f34042e969e99bb0b751d06e72f272f675b44)，保留 PR #8 原始提交。 [中文](release-0.9.5.md) · [English](release-0.9.5.en.md) |
+| npm 发布包 | 正式版 `latest = 0.9.5`，运行内核 TDB 0.9.3，tag `v0.9.5`。GitHub Release 附件与 npm 成品一致。 [发布回执](release-0.9.5.md#发布回执) · [English](release-0.9.5.en.md#publication-receipt) |
+| 0.9.5 功能基线 | 修复 [#10](https://github.com/QWQcool/dsh-trivium/issues/10)、[#9](https://github.com/QWQcool/dsh-trivium/issues/9) 与 [PR #8](https://github.com/QWQcool/dsh-trivium/pull/8)，内核与默认开关不变。功能已合入 [main@725f340](https://github.com/QWQcool/dsh-trivium/commit/725f34042e969e99bb0b751d06e72f272f675b44)，保留 PR #8 原始提交。 [中文](release-0.9.5.md) · [English](release-0.9.5.en.md) |
 | 0.9.4 功能基线 | `1a66a30`：任务记忆变更、选定来源文档检索、重复引用分组及两处读取边界修复。 [验证记录](reviews/NPM-RELEASE-0.9.4-2026-11-24.json) |
 | 0.9.3 功能基线 | `1fe3c6e` 交付已有库首次可写打开保护、双语证据检索、目录导入和交接读写分权。 [版本说明](release-0.9.3.md) |
 | 0.9.2 功能基线 | `ad3499b` 补齐离线迁移、跨语言追问、全量包数字引用、文档定向复核和自动召回防回显。历史实验的执行版本见各自的结果文件。 |
@@ -21,7 +21,7 @@
 | 本机交接与中央复核 | 隔离 DeepSeek Harness 0.2.2-rc.3 Web 中，两条自动交接新增一个节点并保留两份回执。人工确认和补充依据共用一个节点，不采纳生成记录且未新增节点。两个合成库均保留原记忆，原抽取队列不变，切库后复核记录按范围显示。专项 `p116`、旧交接 `p110`、复核 `p105`/`p108` 和面板 `p101` 通过。模型和 embedding 请求均为 0。[协议](handoff-protocol.md) |
 | 0.9.2 发布范围 | 沿用隔离 Web 的迁移回退、跨语言与数字引用和记忆回显验收。发布包的核对范围见回执。[回执](release-0.9.2.md#发布回执) |
 | 面板错误态实机（11 月 20 日） | 官方 `dsh web` + npm 0.9.2 + 隔离 `DSH_HOME`，1202 节点合成库实测 `422 WORK_LIMIT`（27 ms）、`409 WORKSPACE_NOT_OPEN`（1 ms）、`404 ENTITY_NOT_FOUND`（22 ms）、`404 SNAPSHOT_NOT_FOUND`（2 ms）；8 个并发检索全部 422，未出现 429 | 429/408/409 SCOPE_CHANGED 与迟到应答**未复现**：同步执行 + 1000 节点预算先于 150 ms 窗口触发，需要异步等待点或故障注入才能产生。界面层本轮未驱动（Chromium 构建缺 `icudtl.dat`，Edge 会挂到用户会话）。[记录](reviews/PANEL-ERROR-STATES-2026-11-20.md) |
-| 运行依赖 | npm 0.9.4 固定 `triviumdb@0.9.3`。已有格式 15 库先用 `prepare` 留存整组旧库，插件在创建可写句柄前检查留存状态。格式 13 继续走官方离线迁移。 [内核升级、恢复与回退](kernel-upgrade.md) |
+| 运行依赖 | npm 0.9.5 固定 `triviumdb@0.9.3`。已有格式 15 库先用 `prepare` 留存整组旧库，插件在创建可写句柄前检查留存状态。格式 13 继续走官方离线迁移。 [内核升级、恢复与回退](kernel-upgrade.md) |
 | 0.9.3 成品验收 | 发布的 tarball 已在隔离 Web 通过干净安装、拦截未留存格式 15 旧库、留存后写入及回退。17 个原文件逐字节恢复，升级后 27 个文件留在 `after`。 [包校验与验收](kernel-upgrade.md#093-候选包验收) |
 | TDB 0.9.3 升级专项 | 隔离 Web 验证了格式 15 原位打开、格式 13→15 官方迁移，以及首个可写检查点后的中断恢复和回退。原库各 17、23 个文件逐字节恢复，两个工作区均保留原文档引用、只读快照和四份交接回执。 [验收范围](kernel-upgrade.md#隔离-web-验收) |
 | 跨语言追问、文档定向复核 | 20 次真实模型配对中，两路有支持证据却回答 `unknown` 均从 1 次降到 0 次。文档修订只提醒 22 条关联中受影响的 5 条，原引用在隔离 Web 重开后仍可读。 [用量、格式失分与原始结果](reviews/FOLLOWUP-DOCUMENT-REVIEW-2026-11-19.md) |
@@ -42,7 +42,7 @@
 
 | 对象 | 记录中的验证 | 边界 |
 |---|---|---|
-| 0.9.5 候选源码 | 同一运行源码树：Windows 离线回归 115/115（含 P125–P128）；隔离官方 DeepSeek Harness 0.2.2-rc.5 复核仅含地图的独立步骤 1→0，以及 `/status` 的实际库维数 | 不代表候选 tarball、独立安装、跨平台或外部服务兼容性通过。[验收边界](release-0.9.5.md#验证边界) |
+| 0.9.5 发布验收 | Windows 源码回归 115/115（含 P125–P128），文档 14/14，干净消费 13/13，CLI 帮助 5/5；封存 tarball 在隔离官方 DeepSeek Harness 0.2.2-rc.5 验证地图独立步骤 1→0、1024/1536 库及 Web API、受控接口拒绝 `off` 后重试 | 未覆盖 GUI、真实外部模型或 embedding 服务和非 Windows 平台。[验证边界](release-0.9.5.md#验证边界) |
 | 0.8.9 成品 | 回归 86/86，585/5000 节点负载 148/148，成品安装与真实宿主验收 | [记录](reviews/0.8.9-RESULTS-2026-11-12.md) |
 | 后续本地 embedding / 查询 | 85/85；5000 条真实本地向量回填与重开；32 问对照；真实宿主三类卡片 | 合成候选命中不等于通用回答准确率。[结果](reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 | 实体范围后端 | 新协议/并发段 35/35；新题 live/snapshot 语义 Top-1 各 24/24；真实宿主 HTTP | 无答案仍有近邻；未选融合排序、未接工具/自动召回。[结果](reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) |

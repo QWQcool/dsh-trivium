@@ -14,7 +14,7 @@ The kernel stays close to DSH: no extra process, no extra nav by default. Pin me
 
 [**English**](README.md) | [中文版](README.zh-CN.md)
 
-The published npm package is **0.9.4**. It adds explicit task baselines and selected-source document search, groups identical citation displays without deleting citations, and repairs both 1,000-row read boundaries. [Release notes](docs/release-0.9.4.en.md)
+The published npm package is **0.9.5**. It fixes background extraction on providers that reject reasoning `off`, limits the opening map to an admitted human step, and opens existing libraries at their stored vector width. [Release notes](docs/release-0.9.5.en.md)
 
 ---
 
@@ -65,21 +65,23 @@ Then restart `dsh web`.
 
 ## Updating
 
-Before opening a library on TDB 0.9.3 for the first time, stop every host using the workspace, including the desktop tray process. Run `status` and `check` with the 0.9.3 upgrade command. Run `prepare` for format 15, or `migrate` with the official converter for format 13. Wait for `phase: active`, `targetKernel: 0.9.3` and a retained `before` directory before opening the workspace with the new plugin. [Upgrade, recovery and rollback](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md#english)
+1. Stop the hosts that are using the workspace. Quit Desktop completely, including the tray process, or stop the running `dsh web` process.
+2. Replace the plugin in the same profile. Do not uninstall first. In particular, 0.8.9 has an uninstall hook that can delete memory.
 
-Use the add command to replace the plugin directly in its existing profile. This also avoids the memory-deleting uninstall hook in 0.8.9.
+   ```sh
+   dsh plugin --profile desktop add dsh-trivium@0.9.5 --ignore-scripts
+   ```
 
-```sh
-dsh plugin --profile desktop add dsh-trivium@0.9.4 --ignore-scripts
-```
+   For Web, run `dsh plugin --profile web add dsh-trivium@0.9.5 --ignore-scripts`. Check the installed version with `dsh plugin --profile web list dsh-trivium` (use `--profile desktop` to check Desktop).
+3. If the library is already ready for TDB 0.9.3, restart Desktop or `dsh web`, reopen the same workspace, and check that existing memory is readable. No reinstall of the host, new database, or repeat migration is needed. **Settings → Vector** shows the database's actual width, including 1024.
 
-For Web, use `--profile web`. To roll back, run `rollback` from 0.9.3 before reinstalling the original plugin. `after` retains post-upgrade writes. [Rollback guide](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md#recover-or-roll-back)
+If the workspace has not yet been upgraded to TDB 0.9.3, keep the host stopped and back up the complete workspace `.dsh` directory and its database files. Run the upgrade command's `status` and `check`; format 15 libraries that require first-write preparation use `prepare`, while format 13 uses `migrate` with the official converter. Confirm `phase: active`, `targetKernel: 0.9.3`, and a retained `before` directory before restarting. [Upgrade, recovery and rollback](https://github.com/QWQcool/dsh-trivium/blob/main/docs/kernel-upgrade.md#english)
 
-An existing library already upgraded for 0.9.3 does not need another kernel preparation or migration when moving to 0.9.4. Libraries still on an older kernel must follow the upgrade guide above.
+The patch keeps your stored vectors unchanged. Rolling back the plugin to 0.9.4 will not restore access to a 1024-dimensional library. If you need to undo an earlier kernel migration, follow the guide's `rollback` procedure; it preserves post-upgrade writes separately in `after`.
 
 ## Uninstall
 
-> **0.9.2 and 0.9.3 retain memory by default.** The published 0.8.9 package contains a destructive uninstall hook. Replace it directly with a newer package before uninstalling.
+> **0.9.2 and later retain memory by default.** The published 0.8.9 package contains a destructive uninstall hook. Replace it directly with a newer package before uninstalling.
 
 Stop the host and remove the plugin from its profile.
 
@@ -119,7 +121,7 @@ The plugin loads inside the `dsh web` process. It does not open its own port or 
 
 The official DeepSeek chat API has no embeddings endpoint. Keyword + graph walk still work without it. Save embedding fields after editing; if the change does not take effect, restart `dsh web`.
 
-In the 0.9.5 candidate, **Settings → Vector → Vector width for new databases** (`embeddingDimensions`) defaults to **1536**. Set it before creating a new library; existing libraries open at their stored width (including 1024), regardless of this setting. **Send dimensions in embedding requests** (`embeddingRequestDimensions`) is off by default. Enable it only if the endpoint accepts the optional parameter. Otherwise the endpoint should already return the correct width. A mismatched vector is never padded, truncated or saved; keyword and graph lookup remain available. Use the same embedding model and configuration for stored and query vectors; matching widths alone do not make models interchangeable. This setting does not migrate a database or re-embed its existing vectors.
+In 0.9.5, **Settings → Vector → Vector width for new databases** (`embeddingDimensions`) defaults to **1536**. Set it before creating a new library; existing libraries open at their stored width (including 1024), regardless of this setting. **Send dimensions in embedding requests** (`embeddingRequestDimensions`) is off by default. Enable it only if the endpoint accepts the optional parameter. Otherwise the endpoint should already return the correct width. A mismatched vector is never padded, truncated or saved; keyword and graph lookup remain available. Use the same embedding model and configuration for stored and query vectors; matching widths alone do not make models interchangeable. This setting does not migrate a database or re-embed its existing vectors.
 
 ## AI-era installation
 
@@ -156,11 +158,11 @@ In a test workspace, ask the agent in session A to remember a project decision a
 
 - **In-process, one store per workspace** — TriviumDB (vectors + JSON payload + directed weighted graph) opens with the DSH process. Its file group includes storage sidecars; no separate HTTP/Python service is needed.
 - **Four tools only** — `ctx_find` / `ctx_read` / `ctx_remember` / `ctx_link`. Chips / session layer do not add a fifth.
-- **Opening map stays with the human step** (0.9.5 candidate): it is attached to the admitted step prompt, not queued in the agent inbox or written to the system prompt.
+- **Opening map stays with the human step** (0.9.5): it is attached to the admitted step prompt, not queued in the agent inbox or written to the system prompt.
 - **Recall carries paths** — every hit says which node it came from and along which edge.
 - **Failure handling** — embedding failures fall back to keyword and graph retrieval; extraction failures can be queued for replay. Some storage failures still need attention; see the [known limits](docs/HISTORY.md).
 - **UI follows the host language** — Settings and the Chips (memory whitelist) tab switch with DSH `locale/change` (`zh` / `en`). Any other resolved host language — and a browser that names no registered language — falls to English, the same `FALLBACK_LOCALE` the host itself uses.
-- **First-turn map** (0.9.5 candidate): the first eligible human step builds and receives the short map. A refresh also waits for an eligible step. Producer, background and synthetic turns do not advance delivery.
+- **First-turn map** (0.9.5): the first eligible human step builds and receives the short map. A refresh also waits for an eligible step. Producer, background and synthetic turns do not advance delivery.
 
 ## Features
 
@@ -189,7 +191,7 @@ Lists unarchived preference / decision / entity (experience stays out). Check to
 | Select → Delete | Removed from `.tdb`, not recoverable |
 | Turns already sent | Not rewritten |
 
-Chips are per session. New sessions and forked children start unchecked. Inherit pins when the session layer fork dialog is on, or check them again on the child. In the 0.9.5 candidate, the short map rides the first eligible admitted human step and does not use a chip slot.
+Chips are per session. New sessions and forked children start unchecked. Inherit pins when the session layer fork dialog is on, or check them again on the child. In 0.9.5, the short map rides the first eligible admitted human step and does not use a chip slot.
 
 **Session layer** is a nested switch, also off. When on, the same tab draws compaction / fork boxes (Create checkpoint, Update checkpoints, fork from a box). Episode nodes are not recalled by `ctx_find`. Turning the layer off stops writing episodes; existing `.tdb` nodes stay.
 
@@ -391,7 +393,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 
 ## Changelog
 
-- [0.9.5 candidate](docs/release-0.9.5.en.md) fixes background extraction on providers that reject reasoning `off`, limits the opening map to an admitted human step, and opens existing vector libraries at their stored width.
+- [0.9.5](docs/release-0.9.5.en.md) fixes background extraction on providers that reject reasoning `off`, limits the opening map to an admitted human step, and opens existing vector libraries at their stored width.
 - [0.9.4](docs/release-0.9.4.en.md) adds task change baselines, exact-revision source search, and grouped duplicate citations, and fixes read-path limits.
 - [0.9.3](docs/release-0.9.3.en.md) protects the first writable open, adds bilingual evidence retrieval and scoped follow-ups, and brings directory import to the document panel.
 - [0.9.2](docs/release-0.9.2.en.md) ships TDB 0.9.2 with offline migration and rollback, improves cross-language follow-ups and numeric citations, flags affected document evidence, and suppresses exact memory echoes during extraction.
@@ -442,9 +444,8 @@ Local source checkout: `npm ci`, then `node scripts/link-dsh.mjs`, then restart 
 See [Unreleased changes and rollback steps](docs/UNRELEASED.md) for development additions, improvements, removals, and data compatibility. Each published version has its own bilingual notes.
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
-- Local release candidate: `0.9.5` (not published) · [Candidate notes](docs/release-0.9.5.en.md)
-- Published package: `0.9.4` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.4) · [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.4)
-- Tested host: `@deepseek-ai/dsh@0.2.2-rc.1` (launched and exercised on 2026-11-10: panel renders, `/status` and the proposal routes answer, zero console errors; earlier releases were verified on 0.2.1-rc.4/rc.5). The peer range also admits the 0.1.x lines.
+- Published package: `0.9.5` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.5) · [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.5)
+- Tested for 0.9.5: official DSH `0.2.2-rc.5` on Windows, with an isolated Web profile and synthetic workspaces. [Verification scope](docs/release-0.9.5.en.md#verification-scope)
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)
 
 ---
