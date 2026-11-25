@@ -119,6 +119,8 @@ The plugin loads inside the `dsh web` process. It does not open its own port or 
 
 The official DeepSeek chat API has no embeddings endpoint. Keyword + graph walk still work without it. Save embedding fields after editing; if the change does not take effect, restart `dsh web`.
 
+In **Settings → Vector**, **Vector width for new databases** (`embeddingDimensions`) defaults to **1536**. Set it before creating a new library; existing libraries open at their stored width (including 1024), regardless of this setting. **Send dimensions in embedding requests** (`embeddingRequestDimensions`) is off by default. Enable it only if the endpoint accepts the optional parameter. Otherwise the endpoint should already return the correct width. A mismatched vector is never padded, truncated or saved; keyword and graph lookup remain available. Use the same embedding model for stored and query vectors. This setting does not migrate a database or re-embed its existing vectors.
+
 ## AI-era installation
 
 Copy this to your assistant:

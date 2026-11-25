@@ -120,6 +120,8 @@ dsh plugin --profile web remove dsh-trivium
 
 官方 DeepSeek 对话接口没有 embeddings。不开 embedding 也能用关键词 + 图遍历。开关会保存；embedding 地址、模型和密钥需要点「保存设置」。如果设置保存后仍未生效，重启 `dsh web` 再检查。
 
+「设置 → 向量」中的「新建记忆库的向量维数」（`embeddingDimensions`）默认 **1536**，请在建库前设置。现有库按原文件记录的维数（包括 1024）打开，不受此默认值影响。「在请求中发送 dimensions」（`embeddingRequestDimensions`）默认关闭，请仅在接口支持该参数时启用；关闭时需要让服务本身返回正确维数。维数不匹配时不会补零、截断或写入错误向量，关键词和图检索仍可用。库存向量和查询应使用同一个模型；这些设置不会迁移库或重算原有向量。
+
 ## AI 时代安装
 
 把下面这句话复制给助手即可：

@@ -8,7 +8,7 @@ import { createRequire } from "node:module";
 import { homedir } from "node:os";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { atomicWriteFile } from "../lib/atomic.js";
-import { DIM } from "../lib/schema.js";
+import { databaseDimension, openExistingDatabaseReadOnly, validateDatabaseDimension } from "../lib/database-dimensions.js";
 import { DATABASE_FORMAT, KERNEL_VERSION, needsWorkspaceKernelMarker, readDatabaseFormat, readUpgradeState,
   upgradeDirectory, upgradeStatePath, upgradingPhases, workspaceIdentity } from "../lib/upgrade-state.js";
 import { acquireWorkspaceLock } from "../lib/workspace-lock.js";
@@ -17,7 +17,6 @@ const require = createRequire(import.meta.url);
 const databaseName = "trivium.tdb";
 const targetKernel = KERNEL_VERSION;
 const targetFormat = DATABASE_FORMAT;
-const options = { dim: DIM, accessMode: "readOnly" };
 const isDatabaseFile = name => name === databaseName || name.startsWith(databaseName + ".");
 const sidecar = name => !isDatabaseFile(name);
 
@@ -145,13 +144,15 @@ function official({ upstream, tool, python }, source, destination, execute) {
   if (result.status !== 0) fail("UPGRADE_TOOL_FAILED", result.stderr.trim() || result.stdout.trim() || "The official migrator failed.");
   const report = JSON.parse(result.stdout);
   if (report.tool !== "tdb-migrate-2" || report.protocol !== 1 || !report.checked ||
-      report.committed !== execute || report.target_format !== targetFormat || report.facts?.dimension !== DIM ||
-      !Number.isSafeInteger(report.facts?.nodes)) fail("UPGRADE_TOOL_RESULT", "The official migration receipt did not match the workspace contract.");
+      report.committed !== execute || report.target_format !== targetFormat ||
+      !Number.isSafeInteger(report.facts?.nodes) || report.facts.nodes < 0) fail("UPGRADE_TOOL_RESULT", "The official migration receipt did not match the workspace contract.");
+  try { validateDatabaseDimension(report.facts?.dimension); }
+  catch { fail("UPGRADE_TOOL_RESULT", "The official migration receipt did not report a valid database dimension."); }
   return report;
 }
 
 function readDatabase(path) {
-  return new (require("triviumdb").TriviumDB)(join(path, databaseName), options);
+  return openExistingDatabaseReadOnly(require("triviumdb").TriviumDB, join(path, databaseName));
 }
 
 function checkDatabaseIdle(path) {
@@ -217,7 +218,7 @@ async function prepare(cwd, state) {
       await verify(live, source);
       move(cwd, captured, old);
     }
-    return save(cwd, state, "active", { target: source });
+    return save(cwd, state, "active", { target: source, facts: { dimension: databaseDimension(db), nodes: db.nodeCount() } });
   } finally { db.close(); }
 }
 
@@ -249,7 +250,12 @@ async function migrate(cwd, state, args) {
   const { run, ready } = paths(cwd, state);
   const source = await fingerprint(live);
   const native = join(run, "native");
+  const trial = official(args, join(live, databaseName), join(run, "checked"), false);
+  if (trial.source_format !== sourceFormat) fail("UPGRADE_SOURCE_FORMAT", "The source format changed before migration.");
+  await verify(live, source);
   const report = official(args, join(live, databaseName), native, true);
+  if (report.facts.dimension !== trial.facts.dimension || report.facts.nodes !== trial.facts.nodes)
+    fail("UPGRADE_TOOL_RESULT", "The conversion receipt disagrees with the checked source dimension or node count.");
   if (report.source_format !== sourceFormat) fail("UPGRADE_SOURCE_FORMAT", "The source format changed while the migrator was running.");
   if (!directory(native)) fail("UPGRADE_TOOL_RESULT", "The official migrator did not publish a directory.");
   await verify(live, source);
@@ -264,7 +270,8 @@ async function migrate(cwd, state, args) {
   if (format(ready) !== targetFormat) fail("UPGRADE_TOOL_RESULT", "The staged database format is invalid.");
   const db = readDatabase(ready);
   try {
-    if (db.nodeCount() !== report.facts.nodes) fail("UPGRADE_TOOL_RESULT", "The staged database differs from the conversion receipt.");
+    if (databaseDimension(db) !== report.facts.dimension || db.nodeCount() !== report.facts.nodes)
+      fail("UPGRADE_TOOL_RESULT", "The staged database differs from the conversion receipt.");
   } finally { db.close(); }
   state = save(cwd, state, "activating", { source, target: await fingerprint(ready), facts: report.facts });
   return activate(cwd, state);
@@ -315,11 +322,13 @@ function check(cwd, _state, args) {
     const db = readDatabase(live);
     try {
       return { mode: "direct", source_format: targetFormat, target_format: targetFormat, checked: true, committed: false,
-        facts: { nodes: db.nodeCount() } };
+        facts: { dimension: databaseDimension(db), nodes: db.nodeCount() } };
     } finally { db.close(); }
   }
-  requireLegacy(live);
-  return official(args, join(live, databaseName), join(upgradeDirectory(cwd), "check-" + randomUUID()), false);
+  const sourceFormat = requireLegacy(live);
+  const report = official(args, join(live, databaseName), join(upgradeDirectory(cwd), "check-" + randomUUID()), false);
+  if (report.source_format !== sourceFormat) fail("UPGRADE_SOURCE_FORMAT", "The source format changed during the check.");
+  return report;
 }
 
 const help = `Usage: dsh-trivium-upgrade <status|check|prepare|migrate|rollback> <workspace> [--upstream <checkout>] [--tool <executable>] [--python <command>]
