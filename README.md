@@ -119,7 +119,7 @@ The plugin loads inside the `dsh web` process. It does not open its own port or 
 
 The official DeepSeek chat API has no embeddings endpoint. Keyword + graph walk still work without it. Save embedding fields after editing; if the change does not take effect, restart `dsh web`.
 
-In **Settings → Vector**, **Vector width for new databases** (`embeddingDimensions`) defaults to **1536**. Set it before creating a new library; existing libraries open at their stored width (including 1024), regardless of this setting. **Send dimensions in embedding requests** (`embeddingRequestDimensions`) is off by default. Enable it only if the endpoint accepts the optional parameter. Otherwise the endpoint should already return the correct width. A mismatched vector is never padded, truncated or saved; keyword and graph lookup remain available. Use the same embedding model for stored and query vectors. This setting does not migrate a database or re-embed its existing vectors.
+In the 0.9.5 candidate, **Settings → Vector → Vector width for new databases** (`embeddingDimensions`) defaults to **1536**. Set it before creating a new library; existing libraries open at their stored width (including 1024), regardless of this setting. **Send dimensions in embedding requests** (`embeddingRequestDimensions`) is off by default. Enable it only if the endpoint accepts the optional parameter. Otherwise the endpoint should already return the correct width. A mismatched vector is never padded, truncated or saved; keyword and graph lookup remain available. Use the same embedding model and configuration for stored and query vectors; matching widths alone do not make models interchangeable. This setting does not migrate a database or re-embed its existing vectors.
 
 ## AI-era installation
 
@@ -156,11 +156,11 @@ In a test workspace, ask the agent in session A to remember a project decision a
 
 - **In-process, one store per workspace** — TriviumDB (vectors + JSON payload + directed weighted graph) opens with the DSH process. Its file group includes storage sidecars; no separate HTTP/Python service is needed.
 - **Four tools only** — `ctx_find` / `ctx_read` / `ctx_remember` / `ctx_link`. Chips / session layer do not add a fifth.
-- **Injection via `agent.inject()`** — not the system prompt, so `persona.complete: true` cannot silently drop the map.
+- **Opening map stays with the human step** (0.9.5 candidate): it is attached to the admitted step prompt, not queued in the agent inbox or written to the system prompt.
 - **Recall carries paths** — every hit says which node it came from and along which edge.
 - **Failure handling** — embedding failures fall back to keyword and graph retrieval; extraction failures can be queued for replay. Some storage failures still need attention; see the [known limits](docs/HISTORY.md).
 - **UI follows the host language** — Settings and the Chips (memory whitelist) tab switch with DSH `locale/change` (`zh` / `en`). Any other resolved host language — and a browser that names no registered language — falls to English, the same `FALLBACK_LOCALE` the host itself uses.
-- **First-turn map** — the short map is injected once per session. If `session-start` loses a race with the first model step, `pre-step` fills it in; it is not rewritten every step (prefix-cache friendly).
+- **First-turn map** (0.9.5 candidate): the first eligible human step builds and receives the short map. A refresh also waits for an eligible step. Producer, background and synthetic turns do not advance delivery.
 
 ## Features
 
@@ -189,7 +189,7 @@ Lists unarchived preference / decision / entity (experience stays out). Check to
 | Select → Delete | Removed from `.tdb`, not recoverable |
 | Turns already sent | Not rewritten |
 
-Chips are per session. New sessions and forked children start unchecked. Inherit pins when the session layer fork dialog is on, or check them again on the child. The short map still arrives at session-start and does not use a chip slot.
+Chips are per session. New sessions and forked children start unchecked. Inherit pins when the session layer fork dialog is on, or check them again on the child. In the 0.9.5 candidate, the short map rides the first eligible admitted human step and does not use a chip slot.
 
 **Session layer** is a nested switch, also off. When on, the same tab draws compaction / fork boxes (Create checkpoint, Update checkpoints, fork from a box). Episode nodes are not recalled by `ctx_find`. Turning the layer off stops writing episodes; existing `.tdb` nodes stay.
 
@@ -391,6 +391,7 @@ The [historical evidence ledger](docs/evidence/README.md) contains other dataset
 
 ## Changelog
 
+- [0.9.5 candidate](docs/release-0.9.5.en.md) fixes background extraction on providers that reject reasoning `off`, limits the opening map to an admitted human step, and opens existing vector libraries at their stored width.
 - [0.9.4](docs/release-0.9.4.en.md) adds task change baselines, exact-revision source search, and grouped duplicate citations, and fixes read-path limits.
 - [0.9.3](docs/release-0.9.3.en.md) protects the first writable open, adds bilingual evidence retrieval and scoped follow-ups, and brings directory import to the document panel.
 - [0.9.2](docs/release-0.9.2.en.md) ships TDB 0.9.2 with offline migration and rollback, improves cross-language follow-ups and numeric citations, flags affected document evidence, and suppresses exact memory echoes during extraction.
@@ -441,6 +442,7 @@ Local source checkout: `npm ci`, then `node scripts/link-dsh.mjs`, then restart 
 See [Unreleased changes and rollback steps](docs/UNRELEASED.md) for development additions, improvements, removals, and data compatibility. Each published version has its own bilingual notes.
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
+- Local release candidate: `0.9.5` (not published) · [Candidate notes](docs/release-0.9.5.en.md)
 - Published package: `0.9.4` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.4) · [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.4)
 - Tested host: `@deepseek-ai/dsh@0.2.2-rc.1` (launched and exercised on 2026-11-10: panel renders, `/status` and the proposal routes answer, zero console errors; earlier releases were verified on 0.2.1-rc.4/rc.5). The peer range also admits the 0.1.x lines.
 - License: MIT (depends on [TriviumDB](https://github.com/YoKONCy/TriviumDB), Apache-2.0)

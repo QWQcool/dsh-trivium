@@ -1,12 +1,13 @@
 # 当前状态
 
-更新于 2026-11-24。这里记录已实现、已验证和尚未交付的边界。后续任务统一见 [ROADMAP](ROADMAP.md)。历史报告里的“当前/下一步”按原日期理解。
+更新于 2026-11-25。这里记录已实现、已验证和尚未交付的边界。后续任务统一见 [ROADMAP](ROADMAP.md)。历史报告里的“当前/下一步”按原日期理解。
 
 ## 发布包与源码
 
 | 范围 | 状态 |
 |---|---|
 | npm 发布包 | 正式版 `latest = 0.9.4`，运行内核 TDB 0.9.3，tag `v0.9.4`。GitHub Release 附件与 npm 成品一致。 [发布回执](release-0.9.4.md#发布回执) · [English](release-0.9.4.en.md#publication-receipt) |
+| 本地发布候选 | `0.9.5`（尚未发布），修复 [#10](https://github.com/QWQcool/dsh-trivium/issues/10)、[#9](https://github.com/QWQcool/dsh-trivium/issues/9) 与 [PR #8](https://github.com/QWQcool/dsh-trivium/pull/8)，内核与默认开关不变。功能已合入 [main@725f340](https://github.com/QWQcool/dsh-trivium/commit/725f34042e969e99bb0b751d06e72f272f675b44)，保留 PR #8 原始提交。 [中文](release-0.9.5.md) · [English](release-0.9.5.en.md) |
 | 0.9.4 功能基线 | `1a66a30`：任务记忆变更、选定来源文档检索、重复引用分组及两处读取边界修复。 [验证记录](reviews/NPM-RELEASE-0.9.4-2026-11-24.json) |
 | 0.9.3 功能基线 | `1fe3c6e` 交付已有库首次可写打开保护、双语证据检索、目录导入和交接读写分权。 [版本说明](release-0.9.3.md) |
 | 0.9.2 功能基线 | `ad3499b` 补齐离线迁移、跨语言追问、全量包数字引用、文档定向复核和自动召回防回显。历史实验的执行版本见各自的结果文件。 |
@@ -41,6 +42,7 @@
 
 | 对象 | 记录中的验证 | 边界 |
 |---|---|---|
+| 0.9.5 候选源码 | 同一运行源码树：Windows 离线回归 115/115（含 P125–P128）；隔离官方 DeepSeek Harness 0.2.2-rc.5 复核仅含地图的独立步骤 1→0，以及 `/status` 的实际库维数 | 不代表候选 tarball、独立安装、跨平台或外部服务兼容性通过。[验收边界](release-0.9.5.md#验证边界) |
 | 0.8.9 成品 | 回归 86/86，585/5000 节点负载 148/148，成品安装与真实宿主验收 | [记录](reviews/0.8.9-RESULTS-2026-11-12.md) |
 | 后续本地 embedding / 查询 | 85/85；5000 条真实本地向量回填与重开；32 问对照；真实宿主三类卡片 | 合成候选命中不等于通用回答准确率。[结果](reviews/LOCAL-EMBEDDING-READ-RESULTS-2026-11-12.md) |
 | 实体范围后端 | 新协议/并发段 35/35；新题 live/snapshot 语义 Top-1 各 24/24；真实宿主 HTTP | 无答案仍有近邻；未选融合排序、未接工具/自动召回。[结果](reviews/ENTITY-SEARCH-BACKEND-2026-11-12.md) |

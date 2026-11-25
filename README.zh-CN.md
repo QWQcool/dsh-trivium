@@ -120,7 +120,7 @@ dsh plugin --profile web remove dsh-trivium
 
 官方 DeepSeek 对话接口没有 embeddings。不开 embedding 也能用关键词 + 图遍历。开关会保存；embedding 地址、模型和密钥需要点「保存设置」。如果设置保存后仍未生效，重启 `dsh web` 再检查。
 
-「设置 → 向量」中的「新建记忆库的向量维数」（`embeddingDimensions`）默认 **1536**，请在建库前设置。现有库按原文件记录的维数（包括 1024）打开，不受此默认值影响。「在请求中发送 dimensions」（`embeddingRequestDimensions`）默认关闭，请仅在接口支持该参数时启用；关闭时需要让服务本身返回正确维数。维数不匹配时不会补零、截断或写入错误向量，关键词和图检索仍可用。库存向量和查询应使用同一个模型；这些设置不会迁移库或重算原有向量。
+0.9.5 候选版「设置 → 向量」中的「新建记忆库的向量维数」（`embeddingDimensions`）默认 **1536**，请在建库前设置。现有库按原文件记录的维数（包括 1024）打开，不受此默认值影响。「在请求中发送 dimensions」（`embeddingRequestDimensions`）默认关闭，请仅在接口支持该参数时启用；关闭时需要让服务本身返回正确维数。维数不匹配时不会补零、截断或写入错误向量，关键词和图检索仍可用。库存向量和查询应使用同一个模型及同一套配置；维数一样不代表模型可以互换。这些设置不会迁移库或重算原有向量。
 
 ## AI 时代安装
 
@@ -155,11 +155,11 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 
 - **进程内、一个文件** — TriviumDB（向量 + JSON payload + 有向带权图）随 DSH 进程打开。不另起 HTTP / Python 服务。
 - **只有四个工具** — `ctx_find` / `ctx_read` / `ctx_remember` / `ctx_link`。芯片 / 会话层不加第五个。
-- **注入走 `agent.inject()`** — 不写 system prompt，避免 `persona.complete: true` 把地图静默丢掉。
+- **短地图跟随人类输入步骤**（0.9.5 候选版）：附到宿主确认接纳的人类输入步骤，不排入 agent 收件箱，也不写入 system prompt。
 - **召回带路径** — 每条命中都说明从哪个节点、沿哪条边过来。
 - **失败不挡主循环** — 存储 / embedding / 抽取出错只记日志，Agent 继续。
 - **界面跟随宿主语言** — 设置页和「芯片」标签随 DSH `locale/change` 切换（`zh` / `en`），也可在配置设置里锁定。其它已解析的宿主语言、以及浏览器未命名任何注册语言的情况，一律回落英文（与宿主自己的 `FALLBACK_LOCALE` 一致）。
-- **首轮短地图** — 每个会话只注入一次。若 `session-start` 和第一步赛跑输了，`pre-step` 会补上；不会每步重写（前缀缓存友好）。
+- **首轮短地图**（0.9.5 候选版）：短地图在首次符合条件、被宿主接纳的人类输入步骤生成并附上。刷新也等符合条件的步骤；生产者、后台和合成步骤不推进投递状态。
 
 ## 功能
 
@@ -188,7 +188,7 @@ Trivium 是记忆内核，不是日记、日历或聊天伴侣。它按**节点�
 | 选择 → 删除 | 从 `.tdb` 去掉，不可恢复 |
 | 已经发出去的轮次 | 不回写 |
 
-芯片按会话隔离。新开会话、fork 出的子会话默认都不勾。短地图仍在 session-start 自动带，不占芯片位。
+芯片按会话隔离。新开会话、fork 出的子会话默认都不勾。0.9.5 候选版的短地图随首次符合条件且被接纳的人类输入步骤投递，不占芯片位。
 
 其下 **会话层** 也默认关。打开后，同一标签里画出 compaction / 分叉方框（生成检查点、更新检查点、从方框 fork）。`episode` 不进 `ctx_find`。关掉会话层就停止写检查点，已有节点仍在 `.tdb`。
 
@@ -396,6 +396,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 
 ## 更新说明
 
+- [0.9.5 候选版](docs/release-0.9.5.md) 修复不支持推理档位 `off` 的接口抽取、短地图仅随确认的人类输入步骤投递、现有向量库按原维数打开。
 - [0.9.4](docs/release-0.9.4.md) 新增任务记忆变更基线、按确切修订找原文和重复引用分组，修复读路径的行数边界。
 - [0.9.3](docs/release-0.9.3.md) 补上已有库的首次写入保护、双语证据和同任务续接，并将目录导入接到文档依据面板。
 - [0.9.2](docs/release-0.9.2.md) 交付 TDB 0.9.2、离线迁移与回退，改进跨语言追问、数字引用、文档定向复核和后台抽取防回显。
@@ -446,6 +447,7 @@ npx --package=dsh-trivium dsh-trivium-prefs --help
 开发分支的新增、改进、移除及数据兼容见[开发中变更与回退步骤](docs/UNRELEASED.md)。每个正式版本另有双语发布说明。
 
 - GitHub: https://github.com/QWQcool/dsh-trivium
+- 本地发布候选：`0.9.5`（尚未发布）· [候选说明](docs/release-0.9.5.md)
 - 已发布包：`0.9.4` · [npm](https://www.npmjs.com/package/dsh-trivium/v/0.9.4) · [GitHub Release](https://github.com/QWQcool/dsh-trivium/releases/tag/v0.9.4)
 - 测试宿主：`@deepseek-ai/dsh@0.2.2-rc.1`（2026-11-10 实机启动验证：面板可开、`/status` 与提案接口应答、控制台零报错；更早版本在 0.2.1-rc.4/rc.5 上验证过）。peer 范围同时接受 0.1.x 各线。
 - License: MIT（依赖 [TriviumDB](https://github.com/YoKONCy/TriviumDB) 为 Apache-2.0）

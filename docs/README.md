@@ -1,14 +1,15 @@
 # 文档入口
 
-维护状态更新于 2026-11-23。安装和日常使用看[中文 README](../README.zh-CN.md) / [English README](../README.md)，接手开发先读 [CURRENT-STATE](CURRENT-STATE.md)。
+维护状态更新于 2026-11-25。安装和日常使用看[中文 README](../README.zh-CN.md) / [English README](../README.md)，接手开发先读 [CURRENT-STATE](CURRENT-STATE.md)。
 
 ## 发布状态
 
 | 范围 | 记录 |
 |---|---|
 | 已发布包 | `dsh-trivium@0.9.4`，tag `v0.9.4`。 [中文发布回执](release-0.9.4.md) · [English](release-0.9.4.en.md) |
+| 本地发布候选 | `0.9.5`（尚未发布）：抽取兼容、短地图投递和已有向量库维数三项修复。 [中文](release-0.9.5.md) · [English](release-0.9.5.en.md) |
 | 运行依赖 | npm 包固定 `triviumdb@0.9.3`。已有格式 15 库先留存再打开，格式 13 走离线迁移。 [内核升级、失败恢复与回退](kernel-upgrade.md) |
-| 已验证宿主 | Web `0.2.2-rc.1`；桌面 `0.2.2-rc.3` 隔离宿主已验证源码包，具体边界见当前状态 |
+| 已验证宿主 | Web `0.2.2-rc.1`；桌面 `0.2.2-rc.3` 隔离宿主已验证源码包，0.9.5 候选源码另在隔离官方 `0.2.2-rc.5` 验证短地图与库宽度，具体边界见当前状态 |
 
 ## 日常维护
 
