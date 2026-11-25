@@ -146,9 +146,8 @@ try {
         : "";
 
       let history = [];
-      const mapInbox = [];
       const liveSession = { id: `${arm.id}-${session.id}`, header: { cwd: ws } };
-      const agent = { session: liveSession, inject: m => mapInbox.push({role:"user", content:(m.content||[]).map(c=>c.text||"").join("\n")}) };
+      const agent = { session: liveSession, inject() { assert.fail("A memory map must not enqueue a separate user step"); } };
       const sessionRow = { arm: arm.id, session: session.id, compact: arm.compact, turns: [], promptTokens: 0, completionTokens: 0, injectedTokens: 0, cost: 0, passed: 0, asked: 0 };
       for (const [i, turn] of TURNS(session, TURN_COUNT).entries()) {
         const compacted = arm.compact && i >= 3;
@@ -161,12 +160,12 @@ try {
 
         let injected = "";
         if (arm.memory === "trivium" && preStep) {
-          const decision = await preStep(
-            { agent, messages: [userMsg(promptText, `${session.id}-t${i}`)] },
-            async () => ({ kind: "enter", messages: [] }),
-          );
-          injected = (decision.messages || []).flatMap((m) => m.content || []).map((x) => x.text || "").join("\n");
-          additions.push(...mapInbox.splice(0));
+          const claimed = [userMsg(promptText, session.id + "-t" + i)];
+          const decision = await preStep({ agent, messages: claimed }, () => ({ kind: "enter", messages: claimed }));
+          const delivered = (decision.messages || []).filter(m => m.source?.kind === "plugin:dsh-trivium");
+          const bodyOf = m => (m.content || []).map(c => c.text || "").join("\n");
+          additions.push(...delivered.filter(m => m.source.form === "snapshot").map(m => ({ role: "user", content: bodyOf(m) })));
+          injected = delivered.filter(m => m.source.form !== "snapshot").map(bodyOf).join("\n");
           if (injected.trim()) additions.push({ role: "user", content: `记忆材料：\n${injected}` });
         } else if (arm.memory === "plain" && corpus) {
           injected = corpus;

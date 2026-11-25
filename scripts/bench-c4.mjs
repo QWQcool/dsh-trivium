@@ -190,13 +190,13 @@ async function armTrivium(rep, sc) {
   const db = await trivium.store.openWorkspaceDb(planted.cwd);
   assert.equal(trivium.store.nodeCountOf(db), sc.facts.length + 1);
   const fixture = fixtureReceipt(sc.facts, planted.ids.map(id => db.get(id).payload.text));
-  const maps = [];
+  const claimed = [userMsg(sc.question)];
   if (!trivium.preStep) throw new Error("agent/pre-step 未注册");
   const decision = await trivium.preStep(
-    { agent: { inject: (m) => maps.push(m), session: { id: activeCell.sessionId, header: { cwd: planted.cwd } } }, signal: new AbortController().signal, messages: [userMsg(sc.question)] },
-    async () => ({ kind: "enter", messages: [] }),
+    { agent: { session: { id: activeCell.sessionId, header: { cwd: planted.cwd } } }, signal: new AbortController().signal, messages: claimed },
+    () => ({ kind: "enter", messages: claimed }),
   );
-  const context = textOf([...maps, ...(decision?.messages || [])]);
+  const context = textOf((decision?.messages || []).filter(m => !claimed.includes(m)));
   return { planted, fixture, context, source: { kind: "trivium-pre-step", bytes: Buffer.byteLength(context, "utf8") }, tokens: trivium.tokens.estimateTokens(context) };
 }
 

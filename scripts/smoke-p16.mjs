@@ -68,11 +68,28 @@ try {
   const map = buildShortMapReport(db, MAP_TOKEN_BUDGET);
   check(MAP_TOKEN_BUDGET === 400, "CTX-01 the session map budget is still 400");
   check(map.tokens <= 400, "CTX-01 the map stays within 400 estimated tokens");
-  const indexSrc = readFileSync(join(ROOT, "lib", "index.js"), "utf8");
-  check(
-    /if \(!chipsOn && mode === "off"\) \{[\s\S]{0,120}?return decision;/.test(indexSrc),
-    "CTX-01 both channels off returns before any pin/recall planning",
+  const { apply, workspaceStatus } = await import("../lib/index.js");
+  const hooks = new Map();
+  const host = {
+    logger: () => ({ warn() {}, info() {}, error() {} }),
+    inject(_deps, fn) { fn(host); },
+    effect(fn) { fn(); },
+    on(event, fn) { hooks.set(event, fn); return () => {}; },
+    tools: { register() { return () => {}; } },
+  };
+  apply(host);
+  const cwd = join(root, "workspace");
+  const human = { ...userMessage("channels-off", "A real human question"), role: "user" };
+  const claimed = [human];
+  const step = await hooks.get("agent/pre-step")(
+    { agent: { session: { id: "channels-off", header: { cwd } } }, messages: claimed },
+    () => ({ kind: "enter", messages: claimed }),
   );
+  const ctxStatus = workspaceStatus(cwd);
+  const sent = step.messages.filter(msg => msg !== human);
+  check(ctxStatus.preStep.stage === "channels-off" && !ctxStatus.lastContextPlan
+    && sent.length === 1 && sent[0].source?.form === "snapshot",
+    "CTX-01 both channels off attaches only the map, without planning pin/recall");
   const serverSrc = readFileSync(join(ROOT, "lib", "server.js"), "utf8");
   check(
     !/agent\.inject|\.inject\(/.test(serverSrc),
@@ -163,12 +180,26 @@ try {
   ledger.commit(ledger.reserve(s5, turn5, retry.records));
   const after = selectContextRecords({ pins: smallPins, budget: 300, delivered: ledger.deliveredOf(s5, turn5) });
   check(after.records.length === 0, "CTX-05 after the successful retry nothing repeats");
-  const reserveAt = indexSrc.indexOf("const reservation = reserve(");
-  const commitAt = indexSrc.indexOf("commit(reservation);");
-  check(
-    reserveAt > 0 && commitAt > reserveAt && /rollback\(reservation\);/.test(indexSrc),
-    "CTX-05 the pre-step wires reserve -> assemble -> commit with a rollback path",
-  );
+  const { writeUiSettings } = await import("../lib/settings.js");
+  writeUiSettings({ chipsEnabled: true });
+  const retrySession = "ctx05-real-hook";
+  const retryHuman = { ...userMessage("ctx05-human", "Use the pinned fixture"), role: "user" };
+  const realKey = "uid:" + retryHuman.id;
+  const realAgent = { session: { id: retrySession, header: { cwd } } };
+  setSessionPins(db, retrySession, [only]);
+  const input = { agent: realAgent, messages: [retryHuman] };
+  const bad = { kind: "enter", messages: [retryHuman] };
+  Object.defineProperty(bad, "hostOutput", { enumerable: true, get() { throw Error("fixture could not compose"); } });
+  const blocked = await hooks.get("agent/pre-step")(input, () => bad);
+  check(blocked === bad && ledger.spentOf(retrySession, realKey) === 0
+    && ledger.deliveredOf(retrySession, realKey).size === 0,
+    "CTX-05 a real pre-step composition error rolls back the reservation");
+  const deliver = () => hooks.get("agent/pre-step")(input, () => ({ kind: "enter", messages: [retryHuman] }));
+  const actual = await deliver();
+  const hasPin = value => value.messages.some(msg => msg.content?.some(c => /^dsh-trivium pins/.test(c.text || "")));
+  check(hasPin(actual) && ledger.spentOf(retrySession, realKey) > 0
+    && ledger.spentOf(retrySession, realKey) <= TURN_ADDITIONAL_BUDGET && !hasPin(await deliver()),
+    "CTX-05 the real retry commits within budget and never repeats the pin");
 
   /* ---------------------------------------------------------------- CTX-06 */
   const s6 = "s-compact";
